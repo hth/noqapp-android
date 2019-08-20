@@ -1,19 +1,11 @@
 package com.noqapp.android.merchant.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
@@ -39,7 +31,6 @@ public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePerso
     private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
     private ExpandableListView listview;
     private RelativeLayout rl_empty;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -50,12 +41,8 @@ public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePerso
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_people);
         listview = findViewById(R.id.exp_list_view);
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         rl_empty = findViewById(R.id.rl_empty);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> finish());
+        initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_queue_history));
         setProgressMessage("Fetching data...");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -77,7 +64,7 @@ public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePerso
             createData(jsonQueuePersonList.getQueuedPeople());
             List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
             ViewAllExpandableListAdapter adapter = new ViewAllExpandableListAdapter(ViewAllPeopleInQActivity.this, expandableListTitle,
-                    expandableListDetail,getIntent().getBooleanExtra("visibility",false));
+                    expandableListDetail, getIntent().getBooleanExtra("visibility", false));
             listview.setAdapter(adapter);
             if (expandableListTitle.size() <= 0) {
                 listview.setVisibility(View.GONE);

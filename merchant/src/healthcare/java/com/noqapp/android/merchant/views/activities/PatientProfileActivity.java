@@ -19,6 +19,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -96,24 +97,32 @@ public class PatientProfileActivity extends BaseActivity implements
         pb_history = findViewById(R.id.pb_history);
         TextView tv_start_diagnosis = findViewById(R.id.tv_start_diagnosis);
         tv_start_diagnosis.setOnClickListener(v -> {
-            if(null == jsonProfile || null == jsonMedicalRecordTemp){
-                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
-            }else {
-                Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
-                intent.putExtra("qCodeQR", codeQR);
-                intent.putExtra("data", jsonQueuedPerson);
-                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                intent.putExtra("jsonProfile", jsonProfile);
-                intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
-                startActivity(intent);
-                finish();
+            if (null == jsonProfile || null == jsonMedicalRecordTemp) {
+                new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
+            } else {
+                if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.NEU) {
+                    Intent intent = new Intent(PatientProfileActivity.this, NeuroActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    intent.putExtra("jsonProfile", jsonProfile);
+                    intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
         TextView tv_hospital_schedule = findViewById(R.id.tv_hospital_schedule);
         tv_hospital_schedule.setOnClickListener(v -> {
-            if(null == jsonProfile || null == jsonMedicalRecordTemp){
-                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
-            }else {
+            if (null == jsonProfile || null == jsonMedicalRecordTemp) {
+                new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
+            } else {
                 Intent intent = new Intent(PatientProfileActivity.this, HospitalVisitScheduleActivity.class);
                 intent.putExtra("qCodeQR", codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
@@ -122,33 +131,14 @@ public class PatientProfileActivity extends BaseActivity implements
             }
         });
         TextView tv_draw = findViewById(R.id.tv_draw);
-        tv_draw.setVisibility(AppUtils.isRelease()?View.GONE:View.VISIBLE);
+        tv_draw.setVisibility(AppUtils.isRelease() ? View.GONE : View.VISIBLE);
         tv_draw.setOnClickListener(v -> {
-            if(null == jsonProfile || null == jsonMedicalRecordTemp){
-                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
-            }else {
+            if (null == jsonProfile || null == jsonMedicalRecordTemp) {
+                new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
+            } else {
                 PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
                 if (permissionHelper.isStoragePermissionAllowed()) {
                     Intent intent = new Intent(PatientProfileActivity.this, DrawActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
-                    intent.putExtra("data", jsonQueuedPerson);
-                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                    startActivity(intent);
-                } else {
-                    permissionHelper.requestStoragePermission();
-                }
-            }
-        });
-
-        TextView tv_dental = findViewById(R.id.tv_dental);
-        tv_dental.setVisibility(AppUtils.isRelease()?View.GONE:View.VISIBLE);
-        tv_dental.setOnClickListener(v -> {
-            if(null == jsonProfile || null == jsonMedicalRecordTemp){
-                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
-            }else {
-                PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
-                if (permissionHelper.isStoragePermissionAllowed()) {
-                    Intent intent = new Intent(PatientProfileActivity.this, DentalActivity.class);
                     intent.putExtra("qCodeQR", codeQR);
                     intent.putExtra("data", jsonQueuedPerson);
                     intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
@@ -358,7 +348,7 @@ public class PatientProfileActivity extends BaseActivity implements
         }
     }
 
-    public void updateList(){
+    public void updateList() {
         pb_history.setVisibility(View.VISIBLE);
         PatientProfileApiCalls profileModel = new PatientProfileApiCalls(PatientProfileActivity.this);
         profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));

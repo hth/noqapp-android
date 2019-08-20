@@ -264,13 +264,19 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
     }
 
     @Override
-    public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+    public void purchaseOrderListResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
         dismissProgress();
-        if (null != jsonPurchaseOrderList) {
-            Log.v("order data:", jsonPurchaseOrderList.toString());
+        // do nothing
+    }
+
+    @Override
+    public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        dismissProgress();
+        if (null != jsonPurchaseOrder) {
+            Log.v("order data:", jsonPurchaseOrder.toString());
             // Navigate to order detail screen
             try {
-                StoreMenuActivity.storeMenuActivity.updateAndCallPayment(jsonPurchaseOrderList.getPurchaseOrders().get(0));
+                StoreMenuActivity.storeMenuActivity.updateAndCallPayment(jsonPurchaseOrder);
             }catch (Exception e){
                 e.printStackTrace();
             }

@@ -18,6 +18,11 @@ import java.util.List;
 
 public class StoreMenuGridAdapter extends RecyclerView.Adapter {
 
+    public void setMenuItemsList(List<StoreCartItem> menuItemsList) {
+        this.menuItemsList = menuItemsList;
+        notifyDataSetChanged();
+    }
+
     private List<StoreCartItem> menuItemsList;
     private StoreMenuActivity storeMenuActivity;
     private CartOrderUpdate cartOrderUpdate;

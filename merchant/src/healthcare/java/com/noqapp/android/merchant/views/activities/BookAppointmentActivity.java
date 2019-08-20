@@ -111,9 +111,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> finish());
+        initActionsViews(false);
         tv_toolbar_title.setText("Book Appointment");
         tv_empty_slots = findViewById(R.id.tv_empty_slots);
         rv_available_date = findViewById(R.id.rv_available_date);

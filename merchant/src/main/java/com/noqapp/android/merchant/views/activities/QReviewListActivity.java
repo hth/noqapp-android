@@ -1,17 +1,10 @@
 package com.noqapp.android.merchant.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,24 +48,19 @@ public class QReviewListActivity extends BaseActivity implements
         rcv_review.setHasFixedSize(true);
         rcv_review.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rcv_review.setItemAnimator(new DefaultItemAnimator());
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> finish());
+        initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_all_review));
 
         JsonReviewList jsonReviewList = (JsonReviewList) getIntent().getSerializableExtra("data");
         tv_queue_name.setText(TextUtils.isEmpty(jsonReviewList.getDisplayName()) ? "N/A" : jsonReviewList.getDisplayName());
         QueueReviewListAdapter queueReviewCardAdapter = new QueueReviewListAdapter(jsonReviewList, this);
         rcv_review.setAdapter(queueReviewCardAdapter);
-        if (null == jsonReviewList.getJsonReviews()|| jsonReviewList.getJsonReviews().size() <= 0) {
+        if (null == jsonReviewList.getJsonReviews() || jsonReviewList.getJsonReviews().size() <= 0) {
             rl_empty.setVisibility(View.VISIBLE);
         } else {
             rl_empty.setVisibility(View.GONE);
         }
     }
-
 
 
     @Override

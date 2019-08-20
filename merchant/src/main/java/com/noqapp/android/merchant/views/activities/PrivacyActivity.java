@@ -5,11 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -17,7 +13,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 
 
-public class PrivacyActivity extends AppCompatActivity implements View.OnClickListener {
+public class PrivacyActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +28,7 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
         TextView tv_info = findViewById(R.id.tv_info);
         Button btn_privacy = findViewById(R.id.btn_privacy);
         Button btn_term_condition = findViewById(R.id.btn_term_condition);
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> finish());
+        initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.legal));
         btn_privacy.setOnClickListener(this);
         btn_term_condition.setOnClickListener(this);
@@ -56,7 +48,7 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
                     in.putExtra("url", Constants.URL_PRIVACY_POLICY);
-                    in.putExtra("title","Privacy In Detail");
+                    in.putExtra("title", "Privacy In Detail");
                     startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(PrivacyActivity.this);
@@ -66,7 +58,7 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
                     in.putExtra("url", Constants.URL_TERM_CONDITION);
-                    in.putExtra("title","Terms & Conditions");
+                    in.putExtra("title", "Terms & Conditions");
                     startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(PrivacyActivity.this);

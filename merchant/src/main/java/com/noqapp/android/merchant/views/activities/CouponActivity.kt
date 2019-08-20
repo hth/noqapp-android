@@ -5,9 +5,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -39,11 +36,7 @@ class CouponActivity : BaseActivity(), CouponAdapter.OnItemClickListener, Coupon
         couponApiCalls!!.setCouponPresenter(this)
 
 
-        val fl_notification = findViewById<FrameLayout>(R.id.fl_notification)
-        val tv_toolbar_title = findViewById<TextView>(R.id.tv_toolbar_title)
-        val actionbarBack = findViewById<ImageView>(R.id.actionbarBack)
-        fl_notification.visibility = View.INVISIBLE
-        actionbarBack.setOnClickListener { finish() }
+        initActionsViews(false)
         tv_toolbar_title.text = getString(R.string.activity_discount)
 
         showProgress()
@@ -55,7 +48,7 @@ class CouponActivity : BaseActivity(), CouponAdapter.OnItemClickListener, Coupon
 
     override fun discountItemClick(jsonCoupon: JsonCoupon?) {
         val intent = Intent()
-        intent.putExtra(IBConstant.KEY_OBJECT,jsonCoupon)
+        intent.putExtra(IBConstant.KEY_OBJECT, jsonCoupon)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

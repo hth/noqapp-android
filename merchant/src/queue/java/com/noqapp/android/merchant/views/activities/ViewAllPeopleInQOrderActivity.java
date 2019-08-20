@@ -90,7 +90,7 @@ public class ViewAllPeopleInQOrderActivity extends BaseActivity implements Purch
     }
 
     @Override
-    public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+    public void purchaseOrderListResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
         if (null != jsonPurchaseOrderList) {
             Log.e("data", jsonPurchaseOrderList.toString());
             Log.e("data size", "" + jsonPurchaseOrderList.getPurchaseOrders().size());
@@ -109,6 +109,12 @@ public class ViewAllPeopleInQOrderActivity extends BaseActivity implements Purch
 
         }
         dismissProgress();
+    }
+
+    @Override
+    public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        dismissProgress();
+        // do nothing
     }
 
     @Override

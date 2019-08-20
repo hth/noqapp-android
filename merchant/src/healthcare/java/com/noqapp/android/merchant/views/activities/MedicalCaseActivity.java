@@ -36,13 +36,13 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.merchant.views.fragments.DiagnosisFragment;
+import com.noqapp.android.merchant.views.fragments.ExaminationTabFragment;
 import com.noqapp.android.merchant.views.fragments.InstructionFragment;
 import com.noqapp.android.merchant.views.fragments.LabTestsFragment;
 import com.noqapp.android.merchant.views.fragments.PrimaryCheckupFragment;
 import com.noqapp.android.merchant.views.fragments.PrintFragment;
 import com.noqapp.android.merchant.views.fragments.SymptomsFragment;
-import com.noqapp.android.merchant.views.fragments.TreatmentFragment;
+import com.noqapp.android.merchant.views.fragments.TreatmentTabFragment;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.pojos.FormDataObj;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
@@ -63,8 +63,8 @@ public class MedicalCaseActivity extends BaseActivity implements
     private PrimaryCheckupFragment primaryCheckupFragment;
     public SymptomsFragment symptomsFragment;
     private LabTestsFragment labTestsFragment;
-    private TreatmentFragment treatmentFragment;
-    private DiagnosisFragment diagnosisFragment;
+    private TreatmentTabFragment treatmentTabFragment;
+    private ExaminationTabFragment examinationTabFragment;
     private InstructionFragment instructionFragment;
     private PrintFragment printFragment;
     public boolean isGynae = false;
@@ -92,7 +92,7 @@ public class MedicalCaseActivity extends BaseActivity implements
     public JsonQueuedPerson jsonQueuedPerson;
     public String codeQR;
     public List<JsonPreferredBusiness> jsonPreferredBusiness;
-    private String bizCategoryId;
+    public String bizCategoryId;
     private ProgressBar pb_case;
 
     @Override
@@ -251,9 +251,9 @@ public class MedicalCaseActivity extends BaseActivity implements
     private void saveAllData() {
         primaryCheckupFragment.saveData();
         symptomsFragment.saveData();
-        diagnosisFragment.saveData();
+        examinationTabFragment.saveData();
         labTestsFragment.saveData();
-        treatmentFragment.saveData();
+        treatmentTabFragment.saveData();
         instructionFragment.saveData();
     }
 
@@ -432,17 +432,17 @@ public class MedicalCaseActivity extends BaseActivity implements
         bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
         primaryCheckupFragment.setArguments(bppf);
         symptomsFragment = new SymptomsFragment();
-        diagnosisFragment = new DiagnosisFragment();
+        examinationTabFragment = new ExaminationTabFragment();
         labTestsFragment = new LabTestsFragment();
-        treatmentFragment = new TreatmentFragment();
+        treatmentTabFragment = new TreatmentTabFragment();
         instructionFragment = new InstructionFragment();
         printFragment = new PrintFragment();
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
         adapter.addFragment(symptomsFragment, "FRAG" + 1);
-        adapter.addFragment(diagnosisFragment, "FRAG" + 2);
+        adapter.addFragment(examinationTabFragment, "FRAG" + 2);
         adapter.addFragment(labTestsFragment, "FRAG" + 3);
-        adapter.addFragment(treatmentFragment, "FRAG" + 4);
+        adapter.addFragment(treatmentTabFragment, "FRAG" + 4);
         adapter.addFragment(instructionFragment, "FRAG" + 5);
         adapter.addFragment(printFragment, "FRAG" + 6);
         menuAdapter = new MenuHeaderAdapter(data, this, this);

@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -70,14 +69,11 @@ public class AppointmentActivityNew extends BaseActivity implements
         setProgressCancel(false);
         tv_header = findViewById(R.id.tv_header);
         tv_date = findViewById(R.id.tv_date);
-
+        initActionsViews(false);
         tv_appointment_accepted = findViewById(R.id.tv_appointment_accepted);
         tv_total_appointment = findViewById(R.id.tv_total_appointment);
         tv_appointment_cancelled = findViewById(R.id.tv_appointment_cancelled);
         tv_appointment_pending = findViewById(R.id.tv_appointment_pending);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText("Appointment List");
         int count = 2;
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -108,13 +104,13 @@ public class AppointmentActivityNew extends BaseActivity implements
                 int position = segmentViewHolder.getAbsolutePosition();
                 switch (position) {
                     case 0:
-                        rcv_appointments.setAdapter(new AppointmentListAdapter(events, AppointmentActivityNew.this, AppointmentActivityNew.this,bizCategoryId));
+                        rcv_appointments.setAdapter(new AppointmentListAdapter(events, AppointmentActivityNew.this, AppointmentActivityNew.this, bizCategoryId));
                         break;
                     case 1:
-                        rcv_appointments.setAdapter(new AppointmentListAdapter(eventsAccepted, AppointmentActivityNew.this, AppointmentActivityNew.this,bizCategoryId));
+                        rcv_appointments.setAdapter(new AppointmentListAdapter(eventsAccepted, AppointmentActivityNew.this, AppointmentActivityNew.this, bizCategoryId));
                         break;
                     case 2:
-                        rcv_appointments.setAdapter(new AppointmentListAdapter(eventsPending, AppointmentActivityNew.this, AppointmentActivityNew.this,bizCategoryId));
+                        rcv_appointments.setAdapter(new AppointmentListAdapter(eventsPending, AppointmentActivityNew.this, AppointmentActivityNew.this, bizCategoryId));
                         break;
                 }
             }
@@ -209,10 +205,10 @@ public class AppointmentActivityNew extends BaseActivity implements
         Intent in = new Intent(AppointmentActivityNew.this, BookAppointmentActivity.class);
         in.putExtra("jsonScheduleList", getIntent().getExtras().getSerializable("jsonScheduleList"));
         in.putExtra(IBConstant.KEY_CODE_QR, getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
-        in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
-        in.putExtra("displayName",getIntent().getStringExtra("displayName"));
-        in.putExtra("jsonSchedule",jsonSchedule);
-        in.putExtra("isEdit",true);
+        in.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
+        in.putExtra("displayName", getIntent().getStringExtra("displayName"));
+        in.putExtra("jsonSchedule", jsonSchedule);
+        in.putExtra("isEdit", true);
         startActivityForResult(in, BOOKING_SUCCESS);
     }
 

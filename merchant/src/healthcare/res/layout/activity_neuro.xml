@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout_home" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_save_upload"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Diagnosis:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Duration of illness" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="H/o: any other illness: HT/DM/TB/Others:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="H/o: any previous treatment taken:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Initial assessment done by:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Time:" />
+
+                <TextView
+                    android:id="@+id/tv_initial_assessment_time"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Final consultation done by:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Time:" />
+
+                <TextView
+                    android:id="@+id/tv_final_assessment_time"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Co-ordinators Name:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Date:" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Time:" />
+
+                <TextView
+                    android:id="@+id/tv_coordinate_time"
+                    style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="History given by:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Pre Natal:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Natal:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Post Natal:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Menstrual History:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Family History:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Present Complaint:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Past History (Medical):" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Seizure History:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/sc_seizure_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Allergy if any:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Personal History:" />
+
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/sc_personal_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Investigation done:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="On going Medications:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Current Hemoglobin:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Current Weight:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Advice by Senior Doctor:" />
+
+                <EditText style="@style/style_edt_neuro" />
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_save_upload"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_gradient_round"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_fourteen" />
+    </RelativeLayout>
+</LinearLayout>

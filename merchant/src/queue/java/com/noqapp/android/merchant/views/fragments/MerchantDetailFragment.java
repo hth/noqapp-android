@@ -148,7 +148,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     }
 
     @Override
-    public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+    public void purchaseOrderListResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
             purchaseOrders = jsonPurchaseOrderList.getPurchaseOrders();
@@ -169,6 +169,13 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
         dismissProgress();
     }
+
+    @Override
+    public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        dismissProgress();
+        // do nothing
+    }
+
 
     @Override
     public void purchaseOrderError() {

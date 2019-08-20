@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -84,9 +83,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> finish());
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(false);
         tv_toolbar_title.setText("Verify Mobile Number");
         edt_phoneNo = findViewById(R.id.edt_phone);
         btn_login = findViewById(R.id.btn_login);

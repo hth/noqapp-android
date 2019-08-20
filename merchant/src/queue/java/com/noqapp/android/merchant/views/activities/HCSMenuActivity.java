@@ -744,14 +744,19 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                 }
             });
         }
-
     }
 
     @Override
-    public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+    public void purchaseOrderListResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
         dismissProgress();
-        if (null != jsonPurchaseOrderList) {
-            Log.v("order data:", jsonPurchaseOrderList.toString());
+        // do nothing
+    }
+
+    @Override
+    public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        dismissProgress();
+        if (null != jsonPurchaseOrder) {
+            Log.v("order data:", jsonPurchaseOrder.toString());
             finish();
             if (null != updateWholeList) {
                 updateWholeList.updateWholeList();

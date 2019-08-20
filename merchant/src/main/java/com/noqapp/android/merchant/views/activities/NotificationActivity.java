@@ -1,20 +1,10 @@
 package com.noqapp.android.merchant.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.merchant.R;
@@ -25,7 +15,7 @@ import com.noqapp.android.merchant.views.adapters.NotificationListAdapter;
 import java.util.List;
 
 
-public class NotificationActivity extends AppCompatActivity  {
+public class NotificationActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +27,16 @@ public class NotificationActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         ListView listview = findViewById(R.id.listview);
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(false);
         RelativeLayout rl_empty = findViewById(R.id.rl_empty);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText(getString(R.string.screen_notification));
         List<DisplayNotification> notificationsList = NotificationDB.getNotificationsList();
         NotificationListAdapter adapter = new NotificationListAdapter(NotificationActivity.this, notificationsList);
         listview.setAdapter(adapter);
-        if(notificationsList.size()<=0){
+        if (notificationsList.size() <= 0) {
             listview.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             listview.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }

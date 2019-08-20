@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -53,11 +50,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
         setContentView(R.layout.activity_immunization);
         rl_empty = findViewById(R.id.rl_empty);
         ll_data = findViewById(R.id.ll_data);
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> finish());
+        initActionsViews(true);
         tv_toolbar_title.setText("Hospital Visit Schedule");
         String codeQR = getIntent().getStringExtra("qCodeQR");
         JsonQueuedPerson jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");

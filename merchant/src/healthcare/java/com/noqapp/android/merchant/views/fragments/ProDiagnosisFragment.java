@@ -27,24 +27,20 @@ import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 
-public class DiagnosisFragment extends BaseFragment implements AutoCompleteAdapterNew.SearchByPos {
+public class ProDiagnosisFragment extends BaseFragment implements AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_provisional_diagnosis;
     private StaggeredGridAdapter provisionalDiagnosisAdapter;
-    private AutoCompleteTextView actv_clinical_findings, actv_examination_results;
     private AutoCompleteTextView actv_search_provisional_dia;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.frag_diagnosis, container, false);
-        actv_clinical_findings = v.findViewById(R.id.actv_clinical_findings);
-        actv_examination_results = v.findViewById(R.id.actv_examination_results);
+        View v = inflater.inflate(R.layout.frag_pro_diagnosis, container, false);
         TextView tv_add_provisional_diagnosis = v.findViewById(R.id.tv_add_provisional_diagnosis);
         rcv_provisional_diagnosis = v.findViewById(R.id.rcv_provisional_diagnosis);
         tv_add_provisional_diagnosis.setOnClickListener(v1 -> AddItemDialog(getActivity(), "Add Provisional Diagnosis", true));
-
         actv_search_provisional_dia = v.findViewById(R.id.actv_search_provisional_dia);
         actv_search_provisional_dia.setThreshold(1);
         ImageView iv_clear_actv_dia = v.findViewById(R.id.iv_clear_actv_dia);
@@ -61,12 +57,6 @@ public class DiagnosisFragment extends BaseFragment implements AutoCompleteAdapt
         rcv_provisional_diagnosis.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
         provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
         rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
-
-        JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
-        if(null != jsonMedicalRecord) {
-            actv_clinical_findings.setText(jsonMedicalRecord.getClinicalFinding() == null ? "" :jsonMedicalRecord.getClinicalFinding() );
-            actv_examination_results.setText(jsonMedicalRecord.getExamination() == null ? "" : jsonMedicalRecord.getExamination());
-        }
         try {
             if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() && null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis()) {
                 String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis().split(",");
@@ -75,7 +65,7 @@ public class DiagnosisFragment extends BaseFragment implements AutoCompleteAdapt
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AutoCompleteAdapterNew adapterSearchPath = new AutoCompleteAdapterNew(getActivity(), R.layout.layout_autocomplete, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList(), null,this);
+        AutoCompleteAdapterNew adapterSearchPath = new AutoCompleteAdapterNew(getActivity(), R.layout.layout_autocomplete, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList(), null, this);
         actv_search_provisional_dia.setAdapter(adapterSearchPath);
     }
 
@@ -121,8 +111,6 @@ public class DiagnosisFragment extends BaseFragment implements AutoCompleteAdapt
 
     public void saveData() {
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setProvisionalDiagnosis(provisionalDiagnosisAdapter.getSelectedData());
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setClinicalFindings(actv_clinical_findings.getText().toString());
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setExaminationResults(actv_examination_results.getText().toString());
     }
 
     @Override

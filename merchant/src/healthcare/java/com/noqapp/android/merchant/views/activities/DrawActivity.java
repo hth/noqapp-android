@@ -77,9 +77,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> onBackPressed());
+       initActionsViews(true);
         tv_toolbar_title.setText("Select and draw");
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");

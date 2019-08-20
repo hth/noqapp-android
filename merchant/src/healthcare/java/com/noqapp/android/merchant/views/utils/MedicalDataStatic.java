@@ -404,35 +404,35 @@ public class MedicalDataStatic {
 
         public static ArrayList<DataObj> getDiagnosis() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
-            dataObjs.add(new DataObj(" CONSULTATION ", "", false));
-            dataObjs.add(new DataObj(" OPG REVIEWW ", "", false));
-            dataObjs.add(new DataObj(" IOPA (XRAYS) ", "", false));
-            dataObjs.add(new DataObj(" SCALING ", "", false));
-            dataObjs.add(new DataObj(" SCALING + POLISHING ", "", false));
-            dataObjs.add(new DataObj(" SCALING + FLUORIDE ", "", false));
-            dataObjs.add(new DataObj(" SEALNTS ", "", false));
-            dataObjs.add(new DataObj(" LDD ", "", false));
-            dataObjs.add(new DataObj(" RESTORATION ", "", false));
-            dataObjs.add(new DataObj(" CORE ", "", false));
-            dataObjs.add(new DataObj(" GIC FILLING ", "", false));
-            dataObjs.add(new DataObj(" RCX ", "", false));
-            dataObjs.add(new DataObj(" RCX+ SSC ", "", false));
-            dataObjs.add(new DataObj(" PULPECTOMY ", "", false));
-            dataObjs.add(new DataObj(" CALCIFIED TOOTH RCX ", "", false));
-            dataObjs.add(new DataObj(" EXTRACTION ", "", false));
-            dataObjs.add(new DataObj(" IMPACTION SURGERY ", "", false));
-            dataObjs.add(new DataObj(" ALVEOLECTOMY ", "", false));
-            dataObjs.add(new DataObj(" OPERCULECTOMY ", "", false));
-            dataObjs.add(new DataObj(" PARTIAL DENTURE ", "", false));
-            dataObjs.add(new DataObj(" COMPLETE DENTURE ", "", false));
-            dataObjs.add(new DataObj(" IMPLANT ", "", false));
-            dataObjs.add(new DataObj(" CROWN ", "", false));
-            dataObjs.add(new DataObj(" BRIDGE ", "", false));
-            dataObjs.add(new DataObj(" ORTHO BRACES ", "", false));
-            dataObjs.add(new DataObj(" SPACE MAINTAINER ", "", false));
-            dataObjs.add(new DataObj(" RETAINER PLATE ", "", false));
-            dataObjs.add(new DataObj(" SPLINT ", "", false));
-            dataObjs.add(new DataObj(" NTI ", "", false));
+            dataObjs.add(new DataObj("CONSULTATION", "", false));
+            dataObjs.add(new DataObj("OPG REVIEW", "", false));
+            dataObjs.add(new DataObj("IOPA (XRAYS)", "", false));
+            dataObjs.add(new DataObj("SCALING", "", false));
+            dataObjs.add(new DataObj("SCALING + POLISHING", "", false));
+            dataObjs.add(new DataObj("SCALING + FLUORIDE", "", false));
+            dataObjs.add(new DataObj("SEALNTS", "", false));
+            dataObjs.add(new DataObj("LDD", "", false));
+            dataObjs.add(new DataObj("RESTORATION", "", false));
+            dataObjs.add(new DataObj("CORE", "", false));
+            dataObjs.add(new DataObj("GIC FILLING", "", false));
+            dataObjs.add(new DataObj("RCX", "", false));
+            dataObjs.add(new DataObj("RCX+ SSC", "", false));
+            dataObjs.add(new DataObj("PULPECTOMY", "", false));
+            dataObjs.add(new DataObj("CALCIFIED TOOTH RCX", "", false));
+            dataObjs.add(new DataObj("EXTRACTION", "", false));
+            dataObjs.add(new DataObj("IMPACTION SURGERY", "", false));
+            dataObjs.add(new DataObj("ALVEOLECTOMY", "", false));
+            dataObjs.add(new DataObj("OPERCULECTOMY", "", false));
+            dataObjs.add(new DataObj("PARTIAL DENTURE", "", false));
+            dataObjs.add(new DataObj("COMPLETE DENTURE", "", false));
+            dataObjs.add(new DataObj("IMPLANT", "", false));
+            dataObjs.add(new DataObj("CROWN", "", false));
+            dataObjs.add(new DataObj("BRIDGE", "", false));
+            dataObjs.add(new DataObj("ORTHO BRACES", "", false));
+            dataObjs.add(new DataObj("SPACE MAINTAINER", "", false));
+            dataObjs.add(new DataObj("RETAINER PLATE", "", false));
+            dataObjs.add(new DataObj("SPLINT", "", false));
+            dataObjs.add(new DataObj("NTI", "", false));
             return dataObjs;
         }
 
@@ -442,35 +442,60 @@ public class MedicalDataStatic {
 
         public static ArrayList<DataObj> getSymptoms() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
-            dataObjs.add(new DataObj(" CONSULTATION ", "", false));
-            dataObjs.add(new DataObj(" OPG REVIEWW ", "", false));
-            dataObjs.add(new DataObj(" IOPA (XRAYS) ", "", false));
-            dataObjs.add(new DataObj(" SCALING ", "", false));
-            dataObjs.add(new DataObj(" SCALING + POLISHING ", "", false));
-            dataObjs.add(new DataObj(" SCALING + FLUORIDE ", "", false));
-            dataObjs.add(new DataObj(" SEALNTS ", "", false));
-            dataObjs.add(new DataObj(" LDD ", "", false));
-            dataObjs.add(new DataObj(" RESTORATION ", "", false));
-            dataObjs.add(new DataObj(" CORE ", "", false));
-            dataObjs.add(new DataObj(" GIC FILLING ", "", false));
-            dataObjs.add(new DataObj(" RCX ", "", false));
-            dataObjs.add(new DataObj(" RCX+ SSC ", "", false));
-            dataObjs.add(new DataObj(" PULPECTOMY ", "", false));
-            dataObjs.add(new DataObj(" CALCIFIED TOOTH RCX ", "", false));
-            dataObjs.add(new DataObj(" EXTRACTION ", "", false));
-            dataObjs.add(new DataObj(" IMPACTION SURGERY ", "", false));
-            dataObjs.add(new DataObj(" ALVEOLECTOMY ", "", false));
-            dataObjs.add(new DataObj(" OPERCULECTOMY ", "", false));
-            dataObjs.add(new DataObj(" PARTIAL DENTURE ", "", false));
-            dataObjs.add(new DataObj(" COMPLETE DENTURE ", "", false));
-            dataObjs.add(new DataObj(" IMPLANT ", "", false));
-            dataObjs.add(new DataObj(" CROWN ", "", false));
-            dataObjs.add(new DataObj(" BRIDGE ", "", false));
-            dataObjs.add(new DataObj(" ORTHO BRACES ", "", false));
-            dataObjs.add(new DataObj(" SPACE MAINTAINER ", "", false));
-            dataObjs.add(new DataObj(" RETAINER PLATE ", "", false));
-            dataObjs.add(new DataObj(" SPLINT ", "", false));
-            dataObjs.add(new DataObj(" NTI ", "", false));
+            dataObjs.add(new DataObj("TOOTHACHE", "", false));
+            dataObjs.add(new DataObj("CAVITIES", "", false));
+            dataObjs.add(new DataObj("BLEEDING, PAINFUL GUMS OR TEETH", "", false));
+            dataObjs.add(new DataObj("NEED FOR SCALING AND CLEANING", "", false));
+            dataObjs.add(new DataObj("NEED REPAIR OF APPLIANCE OR RESTORATION", "", false));
+            dataObjs.add(new DataObj("EXTRACTION", "", false));
+            dataObjs.add(new DataObj("DIAGNOSTICS SERVICE / ROUTINE CHECKUP", "", false));
+            dataObjs.add(new DataObj("FULL DENTURE / PARTIAL DENTURE", "", false));
+            dataObjs.add(new DataObj("CROWNS / VENEERS", "", false));
+            dataObjs.add(new DataObj("ROOT CANAL THERAPY", "", false));
+            dataObjs.add(new DataObj("COSMETIC TREATMENT", "", false));
+            dataObjs.add(new DataObj("IMPLANTS", "", false));
+            return dataObjs;
+        }
+
+        public static ArrayList<DataObj> getDentalDiagnosisList() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.clear();
+            dataObjs.add(new DataObj("18", false));
+            dataObjs.add(new DataObj("17", false));
+            dataObjs.add(new DataObj("16", false));
+            dataObjs.add(new DataObj("15", false));
+            dataObjs.add(new DataObj("14", false));
+            dataObjs.add(new DataObj("13", false));
+            dataObjs.add(new DataObj("12", false));
+            dataObjs.add(new DataObj("11", false));
+
+            dataObjs.add(new DataObj("21", false));
+            dataObjs.add(new DataObj("22", false));
+            dataObjs.add(new DataObj("23", false));
+            dataObjs.add(new DataObj("24", false));
+            dataObjs.add(new DataObj("25", false));
+            dataObjs.add(new DataObj("26", false));
+            dataObjs.add(new DataObj("27", false));
+            dataObjs.add(new DataObj("28", false));
+
+            dataObjs.add(new DataObj("48", false));
+            dataObjs.add(new DataObj("47", false));
+            dataObjs.add(new DataObj("46", false));
+            dataObjs.add(new DataObj("45", false));
+            dataObjs.add(new DataObj("44", false));
+            dataObjs.add(new DataObj("43", false));
+            dataObjs.add(new DataObj("42", false));
+            dataObjs.add(new DataObj("41", false));
+
+            dataObjs.add(new DataObj("31", false));
+            dataObjs.add(new DataObj("32", false));
+            dataObjs.add(new DataObj("33", false));
+            dataObjs.add(new DataObj("34", false));
+            dataObjs.add(new DataObj("35", false));
+            dataObjs.add(new DataObj("36", false));
+            dataObjs.add(new DataObj("37", false));
+            dataObjs.add(new DataObj("38", false));
+
             return dataObjs;
         }
     }
@@ -690,6 +715,16 @@ public class MedicalDataStatic {
         }
         return tempList;
     }
+
+
+    public static ArrayList<String> convertDataObjListAsStringList(ArrayList<DataObj> tempList) {
+        ArrayList<String> dataObjs = new ArrayList<>();
+        for (int i = 0; i < tempList.size(); i++) {
+            dataObjs.add(tempList.get(i).getShortName());
+        }
+        return dataObjs;
+    }
+
 }
 
 

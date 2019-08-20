@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 public class CustomCalendar {
     private Activity context;
     private DateSelectListener dateSelectListener;
+    private boolean hideMsg = false;
 
     public interface DateSelectListener {
         void calendarDate(String date);
@@ -23,7 +25,10 @@ public class CustomCalendar {
 
     public CustomCalendar(Activity context) {
         this.context = context;
-
+    }
+    public CustomCalendar(Activity context, boolean hideMsg) {
+        this.context = context;
+        this.hideMsg = hideMsg;
     }
 
     public CustomCalendar setDateSelectListener(DateSelectListener dateSelectListener) {
@@ -34,6 +39,8 @@ public class CustomCalendar {
     public void showDobCalendar() {
         View customView = context.getLayoutInflater().inflate(R.layout.custom_date_picker, null);
         final DatePicker dpDobDate = customView.findViewById(R.id.dpDobDate);
+        TextView tv_date_msg = customView.findViewById(R.id.tv_date_msg);
+        tv_date_msg.setVisibility(hideMsg?View.GONE:View.VISIBLE);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(customView);
         builder.setTitle("");

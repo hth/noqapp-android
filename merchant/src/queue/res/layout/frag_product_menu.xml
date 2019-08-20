@@ -18,11 +18,11 @@
             android:background="@android:color/white"
             android:paddingBottom="1dp" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/pager"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/tv_place_order"
+            android:layout_above="@+id/btn_view_order"
             android:layout_below="@+id/rcv_header" />
 
         <Button
@@ -33,9 +33,9 @@
             android:layout_margin="10dp"
             android:background="@drawable/bg_nogradient_round"
             android:paddingRight="10dp"
+            android:text="View Order"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_fourteen"
-            android:text="View Order"
             android:visibility="gone" />
     </RelativeLayout>
 

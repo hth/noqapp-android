@@ -78,17 +78,13 @@ public class PhysicalActivity extends BaseActivity implements
             int height = (int) (metrics.heightPixels * 0.70);
             getWindow().setLayout(screenWidth, height);
         }
-
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        actionbarBack = findViewById(R.id.actionbarBack);
+        initActionsViews(false);
         actionbarBack.setBackgroundResource(R.drawable.cross);
-
         ScrollView scroll_view = findViewById(R.id.scroll_view);
         scroll_view.setScrollBarFadeDuration(0);
         scroll_view.setScrollbarFadingEnabled(false);
         setProgressMessage("Loading Patient data...");
-        actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText(getString(R.string.screen_physical));
         TextView tv_title = findViewById(R.id.tv_title);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
