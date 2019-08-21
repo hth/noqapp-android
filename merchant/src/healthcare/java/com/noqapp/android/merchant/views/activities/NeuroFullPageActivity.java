@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -54,13 +55,14 @@ public class NeuroFullPageActivity extends BaseActivity {
             if (i == 0) {
                 tv_header.setText("Parameter");
                 tv_value.setText("I / AP / ND");
-                // tv_header.setGravity(Gravity.CENTER );
+                tv_header.setGravity(Gravity.CENTER );
                 tv_header.setTypeface(null, Typeface.BOLD);
                 tv_value.setTypeface(null, Typeface.BOLD);
 
             } else {
                 TempNeuroObj tempNeuroObj = tempNeuroObjs1.get(i - 1);
                 tv_header.setText(tempNeuroObj.getTitle());
+                tv_header.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL );
                 tv_value.setText(tempNeuroObj.getRightValue());
                 tv_header.setTypeface(null, tempNeuroObj.isHeader() ? Typeface.BOLD : Typeface.NORMAL);
                 tv_value.setTypeface(null, Typeface.NORMAL);

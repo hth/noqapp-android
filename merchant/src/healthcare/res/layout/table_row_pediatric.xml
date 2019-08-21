@@ -7,6 +7,8 @@
         android:height="30dp"
         android:background="@drawable/table_border_temp"
         android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_span="3"
         android:textColor="#333"
         android:textStyle="bold" />
