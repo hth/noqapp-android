@@ -1,32 +1,25 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
-import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
-import com.noqapp.android.merchant.views.adapters.StaggeredGridMedicineAdapter;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridDentalAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
@@ -37,28 +30,29 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
-public class TreatmentDiagnosisDentalFragment extends BaseFragment implements StaggeredGridMedicineAdapter.StaggeredMedicineClick,
+
+public class TreatmentDiagnosisDentalFragment extends BaseFragment implements StaggeredGridDentalAdapter.StaggeredMedicineClick,
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView recyclerView, rcv_medicine;
     private TextView tv_add_medicine, tv_close, tv_remove, tv_medicine_name;
-    private StaggeredGridMedicineAdapter medicineAdapter, medicineSelectedAdapter;
+    private StaggeredGridDentalAdapter dentalAdapter, dentalSelectAdapter;
     private ScrollView ll_medicine;
     private SegmentedControl sc_dental_option;
     private List<String> dental_option_data;
     private Button btn_done;
     private String dentalOption;
     private View view_med;
-    private ArrayList<DataObj> selectedMedicineList = new ArrayList<>();
+    private ArrayList<DataObj> selectedDentalList = new ArrayList<>();
     private DataObj dataObj;
-    private int selectionPos = -1;
-    private AutoCompleteTextView actv_search_medicine;
+    private int spanCount = 4;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_treatment_diagnosis_dental, container, false);
+        spanCount = LaunchActivity.isTablet ? 8 : 4;
         recyclerView = v.findViewById(R.id.recyclerView);
         rcv_medicine = v.findViewById(R.id.rcv_medicine);
         view_med = v.findViewById(R.id.view_med);
@@ -78,18 +72,9 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
                 if (isSelected) {
                     dentalOption = dental_option_data.get(segmentViewHolder.getAbsolutePosition());
                     if (null != dataObj)
-                        dataObj.setMedicineTiming(dentalOption);
+                        dataObj.setDentalProcedure(dentalOption);
                 }
             }
-        });
-
-
-        actv_search_medicine = v.findViewById(R.id.actv_search_medicine);
-        actv_search_medicine.setThreshold(1);
-        ImageView iv_clear_actv_medicine = v.findViewById(R.id.iv_clear_actv_medicine);
-        iv_clear_actv_medicine.setOnClickListener(v14 -> {
-            actv_search_medicine.setText("");
-            new AppUtils().hideKeyBoard(getActivity());
         });
         return v;
     }
@@ -105,28 +90,33 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-        medicineAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalDataStatic.Dental.getDentalDiagnosisList(), this, false);
-        recyclerView.setAdapter(medicineAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+        dentalAdapter = new StaggeredGridDentalAdapter(getActivity(), MedicalDataStatic.Dental.getDentalDiagnosisList(), this, false);
+        recyclerView.setAdapter(dentalAdapter);
 
-        rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-        medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
-        rcv_medicine.setAdapter(medicineSelectedAdapter);
-
-//        selectedMedicineList = medicineSelectedAdapter.updateMedicineSelectList(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalMedicines(),
-//                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
-        medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
-        rcv_medicine.setAdapter(medicineSelectedAdapter);
+        rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+        dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
+        rcv_medicine.setAdapter(dentalSelectAdapter);
         clearOptionSelection();
-        view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
+        view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
 
-        AutoCompleteAdapterNew adapter = new AutoCompleteAdapterNew(getActivity(), android.R.layout.simple_dropdown_item_1line, MedicalDataStatic.Dental.getDentalDiagnosisList(), this, null);
-        actv_search_medicine.setAdapter(adapter);
+        try {
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() &&
+                    null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis()) {
+                selectedDentalList = dentalSelectAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis(), MedicalDataStatic.Dental.getDentalDiagnosisList());
+                dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
+                rcv_medicine.setAdapter(dentalSelectAdapter);
+                dentalSelectAdapter.notifyDataSetChanged();
+                view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void saveData() {
-       // MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setJsonMedicineList(medicineSelectedAdapter.getSelectedDataListObject());
-    }
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDiagnosis(dentalSelectAdapter.getSelectedData());  }
 
     @Override
     public void staggeredMedicineClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
@@ -141,7 +131,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         tv_medicine_name.setText(dataObj.getShortName());
         if (isEdit) {
             // Pre fill the data
-            // sc_dental_option.setSelectedSegment(duration_data.indexOf(dataObj.getMedicineDuration()));
+            sc_dental_option.setSelectedSegment(dental_option_data.indexOf(dataObj.getDentalProcedure()));
         } else {
             dentalOption = "";
             sc_dental_option.clearSelection();
@@ -150,35 +140,34 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
             if (TextUtils.isEmpty(dentalOption)) {
                 new CustomToast().showToast(getActivity(), "All fields are mandatory");
             } else {
-                // medicineAdapter.updateMedicine(medicine_name, medicineTiming, medicineDuration, medicineFrequency);
                 if (isEdit) {
-                    selectedMedicineList.set(pos, dataObj);
+                    selectedDentalList.set(pos, dataObj);
                 } else {
-                    selectedMedicineList.add(dataObj);
+                    selectedDentalList.add(dataObj);
                 }
                 clearOptionSelection();
-                view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
+                view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
 
-                rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-                medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
-                rcv_medicine.setAdapter(medicineSelectedAdapter);
+                rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+                dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
+                rcv_medicine.setAdapter(dentalSelectAdapter);
             }
         });
         tv_remove.setOnClickListener(v -> {
             if (isEdit) {
-                selectedMedicineList.remove(pos);
+                selectedDentalList.remove(pos);
             }
             clearOptionSelection();
-            view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
-            rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-            medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
-            rcv_medicine.setAdapter(medicineSelectedAdapter);
+            view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
+            rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+            dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
+            rcv_medicine.setAdapter(dentalSelectAdapter);
         });
     }
 
     private boolean isItemExist(String name) {
-        for (int i = 0; i < selectedMedicineList.size(); i++) {
-            if (selectedMedicineList.get(i).getShortName().equals(name))
+        for (int i = 0; i < selectedDentalList.size(); i++) {
+            if (selectedDentalList.get(i).getShortName().equals(name))
                 return true;
         }
         return false;
@@ -187,7 +176,6 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     @Override
     public void searchClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos) {
         new AppUtils().hideKeyBoard(getActivity());
-        actv_search_medicine.setText("");
         staggeredMedicineClick(isOpen, isEdit, dataObj, pos);
     }
 

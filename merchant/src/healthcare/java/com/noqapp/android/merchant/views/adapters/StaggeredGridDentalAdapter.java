@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,36 +18,34 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 
-public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter {
+public class StaggeredGridDentalAdapter extends RecyclerView.Adapter {
 
     private ArrayList<DataObj> dataObjArrayList;
     private Context context;
-    private StaggeredClick staggeredClick;
+    private StaggeredMedicineClick staggeredClick;
     private boolean isEdit;
-    private final String SPLIT_SYMBOL = "|";
+    private final String SPLIT_SYMBOL = ":";
 
-    public interface StaggeredClick {
-        void staggeredClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos);
+    public interface StaggeredMedicineClick {
+        void staggeredMedicineClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos);
     }
 
 
-    public StaggeredGridSymptomAdapter(Context context, ArrayList<DataObj> dataObjArrayList,
-                                       StaggeredClick staggeredClick, boolean isEdit) {
+    public StaggeredGridDentalAdapter(Context context, ArrayList<DataObj> dataObjArrayList,
+                                      StaggeredMedicineClick staggeredClick, boolean isEdit) {
         this.context = context;
         this.dataObjArrayList = dataObjArrayList;
         this.staggeredClick = staggeredClick;
         this.isEdit = isEdit;
-        Collections.sort(dataObjArrayList);
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayout, parent, false);
-        return  new MyViewHolder(v);
+        return new MyViewHolder(v);
     }
 
     @Override
@@ -70,12 +67,12 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
                     holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                     if (null != staggeredClick)
-                        staggeredClick.staggeredClick(true, isEdit, dataObjArrayList.get(position), position);
+                        staggeredClick.staggeredMedicineClick(true, isEdit, dataObjArrayList.get(position), position);
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
                     holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                     if (null != staggeredClick)
-                        staggeredClick.staggeredClick(true, isEdit, dataObjArrayList.get(position), position);
+                        staggeredClick.staggeredMedicineClick(true, isEdit, dataObjArrayList.get(position), position);
                 }
 
             }
@@ -87,7 +84,6 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter {
             anim.setRepeatMode(Animation.REVERSE);
             anim.setRepeatCount(20);
             holder.name.startAnimation(anim);
-
         } else {
             holder.name.clearAnimation();
         }
@@ -115,48 +111,30 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter {
         String data = "";
         for (int i = 0; i < dataObjArrayList.size(); i++) {
             if (dataObjArrayList.get(i).isSelect()) {
-                if (TextUtils.isEmpty(dataObjArrayList.get(i).getAdditionalNotes())) {
-                    data += "Having " + dataObjArrayList.get(i).getShortName() + " since last " + dataObjArrayList.get(i).getNoOfDays() + "." + "\n";
-                } else {
-                    data += "Having " + dataObjArrayList.get(i).getShortName() + " since last " + dataObjArrayList.get(i).getNoOfDays() + ". " + dataObjArrayList.get(i).getAdditionalNotes() + "\n";
-                }
+                data += dataObjArrayList.get(i).getShortName() + ":" + dataObjArrayList.get(i).getDentalProcedure() + "|";
             }
         }
-        if (data.endsWith(", "))
+        if (data.endsWith("| "))
             data = data.substring(0, data.length() - 2);
         return data;
     }
 
-    public String getSelectedSymptomData() {
-        String data = "";
-        for (int i = 0; i < dataObjArrayList.size(); i++) {
-            if (dataObjArrayList.get(i).isSelect()) {
-                data += dataObjArrayList.get(i).getShortName() + SPLIT_SYMBOL + dataObjArrayList.get(i).getNoOfDays() + SPLIT_SYMBOL + dataObjArrayList.get(i).getAdditionalNotes() + "\n";
-            }
-        }
-        if (data.endsWith(", "))
-            data = data.substring(0, data.length() - 2);
-        return data;
-    }
 
     public ArrayList<DataObj> updateDataObj(String str, ArrayList<DataObj> list) {
 
         ArrayList<DataObj> dataObjs = new ArrayList<>();
         try {
-            String[] temp = str.split("\\r?\\n");
+            String[] temp = str.split("\\|");
             if (null != temp && temp.length > 0) {
                 for (int i = 0; i < temp.length; i++) {
                     String act = temp[i];
                     if (act.contains(SPLIT_SYMBOL)) {
-                        String[] strArray = act.split("\\|");
-                        String shortName = strArray[0];
+                        String[] strArray = act.split(":");
+                        String shortName = strArray[0].trim();
                         String val = strArray[1];
-                        String desc = "";
-                        if (strArray.length == 3)
-                            desc = strArray[2];
                         for (DataObj d : list) {
                             if (d.getShortName().equals(shortName)) {
-                                dataObjs.add(d.setNoOfDays(val).setAdditionalNotes(desc).setSelect(true));
+                                dataObjs.add(d.setDentalProcedure(val).setSelect(true));
                                 break;
                             }
                         }

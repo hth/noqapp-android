@@ -23,80 +23,17 @@
                 android:weightSum="1">
 
 
-                <RelativeLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:orientation="horizontal">
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Dental Treatment"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/iv_search_medicine"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/ic_search"
-                        android:backgroundTint="@color/colorAccent" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_search_medicine"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/iv_clear_actv_medicine"
-                        android:layout_toRightOf="@+id/iv_search_medicine"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="10dp"
-                        android:hint="Search Diagnosis"
-                        android:maxLines="1"
-                        android:minWidth="200dp"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:textSize="@dimen/text_size_fourteen" />
-
-                    <ImageView
-                        android:id="@+id/iv_clear_actv_medicine"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/ic_cancel"
-                        android:backgroundTint="@color/colorAccent" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/tv_add_medicine"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="Dental Treatment"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_add_medicine"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/btn_add_round"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="Add New"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
-                </RelativeLayout>
             </LinearLayout>
 
 

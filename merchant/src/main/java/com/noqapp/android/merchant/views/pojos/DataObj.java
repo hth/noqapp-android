@@ -8,6 +8,7 @@ public class DataObj implements Comparable<DataObj> {
     private String medicineTiming;
     private String medicineDuration;
     private String medicineFrequency;
+    private String dentalProcedure;
     private String additionalNotes = "";
     private String noOfDays;
     private boolean isNewlyAdded = false;
@@ -117,6 +118,15 @@ public class DataObj implements Comparable<DataObj> {
         return this;
     }
 
+    public String getDentalProcedure() {
+        return dentalProcedure;
+    }
+
+    public DataObj setDentalProcedure(String dentalProcedure) {
+        this.dentalProcedure = dentalProcedure;
+        return this;
+    }
+
     public boolean isNewlyAdded() {
         return isNewlyAdded;
     }
@@ -132,9 +142,9 @@ public class DataObj implements Comparable<DataObj> {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof DataObj) {
+        if (obj instanceof DataObj) {
             return (this.shortName.equalsIgnoreCase(((DataObj) obj).shortName));
-        }else{
+        } else {
             return false;
         }
     }
@@ -158,17 +168,19 @@ public class DataObj implements Comparable<DataObj> {
 
     @Override
     public String toString() {
-        return "DataObj{" +
-                "shortName='" + shortName + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", category='" + category + '\'' +
-                ", isSelect=" + isSelect +
-                ", medicineTiming='" + medicineTiming + '\'' +
-                ", medicineDuration='" + medicineDuration + '\'' +
-                ", medicineFrequency='" + medicineFrequency + '\'' +
-                ", additionalNotes='" + additionalNotes + '\'' +
-                ", noOfDays='" + noOfDays + '\'' +
-                ", isNewlyAdded=" + isNewlyAdded +
-                '}';
+        final StringBuilder sb = new StringBuilder("DataObj{");
+        sb.append("shortName='").append(shortName).append('\'');
+        sb.append(", fullName='").append(fullName).append('\'');
+        sb.append(", category='").append(category).append('\'');
+        sb.append(", isSelect=").append(isSelect);
+        sb.append(", medicineTiming='").append(medicineTiming).append('\'');
+        sb.append(", medicineDuration='").append(medicineDuration).append('\'');
+        sb.append(", medicineFrequency='").append(medicineFrequency).append('\'');
+        sb.append(", dentalProcedure='").append(dentalProcedure).append('\'');
+        sb.append(", additionalNotes='").append(additionalNotes).append('\'');
+        sb.append(", noOfDays='").append(noOfDays).append('\'');
+        sb.append(", isNewlyAdded=").append(isNewlyAdded);
+        sb.append('}');
+        return sb.toString();
     }
 }
