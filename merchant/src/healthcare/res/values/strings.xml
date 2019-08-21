@@ -82,6 +82,19 @@
         <item>Others</item>
     </string-array>
 
+    <string-array name="v_control">
+        <item>Normal</item>
+        <item>Good</item>
+        <item>Fair</item>
+        <item>Poor</item>
+        <item>Absent</item>
+    </string-array>
+    <string-array name="pediatric_reflexes">
+        <item>Integrated</item>
+        <item>Abnormally Present</item>
+        <item>Not Developed</item>
+    </string-array>
+
 
     <string-array name="array_neonatal">
         <item>Meningitis</item>

@@ -510,6 +510,35 @@
                     style="@style/style_edt_neuro"
                     android:minLines="3"
                     android:singleLine="false" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Pediatric Reflexes:(I = Integrated, AP = Abnormally Present, ND = Not Developed )"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:id="@+id/tl_pediatric_reflexes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:stretchColumns="*">
+                </TableLayout>
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Voluntary Control: (N = Normal, G = Good, F = Fair, P = Poor, A = Absent )"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:id="@+id/tl_voluntary_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:stretchColumns="*">
+
+                </TableLayout>
             </LinearLayout>
 
 
