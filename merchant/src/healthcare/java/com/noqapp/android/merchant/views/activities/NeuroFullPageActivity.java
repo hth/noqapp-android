@@ -206,7 +206,7 @@ public class NeuroFullPageActivity extends BaseActivity implements View.OnClickL
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_set_valountary_control, null, false);
+        View customDialogView = inflater.inflate(R.layout.dialog_set_voluntary_control, null, false);
         right = "";
         left = "";
         SegmentedControl sc_right = customDialogView.findViewById(R.id.sc_right);
@@ -255,7 +255,7 @@ public class NeuroFullPageActivity extends BaseActivity implements View.OnClickL
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_set_p_reflexesl, null, false);
+        View customDialogView = inflater.inflate(R.layout.dialog_set_p_reflexes, null, false);
         reflex_value = "";
         TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
         tvtitle.setText(title);
@@ -384,7 +384,6 @@ public class NeuroFullPageActivity extends BaseActivity implements View.OnClickL
         tempNeuroObjs.add(new TempNeuroObj("CORTICAL", true));
         tempNeuroObjs.add(new TempNeuroObj("Protective ext"));
         tempNeuroObjs.add(new TempNeuroObj("Equilibrium ractions"));
-
 
         return tempNeuroObjs;
     }
