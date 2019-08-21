@@ -100,7 +100,13 @@ public class PatientProfileActivity extends BaseActivity implements
             if (null == jsonProfile || null == jsonMedicalRecordTemp) {
                 new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
             } else {
-                if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.NEU) {
+                if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.SPS) {
+                    Intent intent = new Intent(PatientProfileActivity.this, NeuroActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    startActivity(intent);
+                } else if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.NEU) {
                     Intent intent = new Intent(PatientProfileActivity.this, NeuroFullPageActivity.class);
                     intent.putExtra("qCodeQR", codeQR);
                     intent.putExtra("data", jsonQueuedPerson);

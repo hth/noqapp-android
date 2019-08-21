@@ -30,12 +30,18 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
-public class NeuroFullPageActivity extends BaseActivity {
+public class NeuroFullPageActivity extends BaseActivity implements View.OnClickListener {
     public JsonQueuedPerson jsonQueuedPerson;
     public JsonMedicalRecord jsonMedicalRecord;
     private String right = "";
     private String left = "";
     private String reflex_value = "";
+    private String months[] = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+            "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
+            "41", "42", "43", "44", "45", "46", "47", "48", "49", "50",
+            "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,13 +49,14 @@ public class NeuroFullPageActivity extends BaseActivity {
         setContentView(R.layout.activity_neuro_full);
         initActionsViews(true);
         tv_toolbar_title.setText("Neuro Form");
-        //  jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        // jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
+        jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
+        jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
         TableLayout tl_reflexes_1 = findViewById(R.id.tl_reflexes_1);
         tl_reflexes_1.removeAllViews();
         ArrayList<TempNeuroObj> tempNeuroObjsReflexes1 = getReflexesTableList1();
         String[] reflexes = getResources().getStringArray(R.array.reflexes);
         String[] v_control = getResources().getStringArray(R.array.v_control);
+        String[] pediatric_reflexes = getResources().getStringArray(R.array.pediatric_reflexes);
         for (int i = 0; i < tempNeuroObjsReflexes1.size() + 1; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.table_row, null);
             TextView tv_header = view.findViewById(R.id.tv_header);
@@ -130,7 +137,7 @@ public class NeuroFullPageActivity extends BaseActivity {
                 tv_header.setTypeface(null, tempNeuroObj.isHeader() ? Typeface.BOLD : Typeface.NORMAL);
                 tv_value.setTypeface(null, Typeface.NORMAL);
                 if (!tempNeuroObj.isHeader()) {
-                    view.setOnClickListener(v -> openPReflexesOptions(tv_value));
+                    view.setOnClickListener(v -> openPReflexesOptions(tv_value, pediatric_reflexes, "Update Pediatric Reflexes"));
                 }
             }
             tl_pediatric_reflexes.addView(view);
@@ -162,10 +169,40 @@ public class NeuroFullPageActivity extends BaseActivity {
             }
             tl_voluntary_control.addView(view);
         }
+
+        TextView tv_option_1 = findViewById(R.id.tv_option_1);
+        tv_option_1.setOnClickListener(this);
+        TextView tv_option_2 = findViewById(R.id.tv_option_2);
+        tv_option_2.setOnClickListener(this);
+        TextView tv_option_3 = findViewById(R.id.tv_option_3);
+        tv_option_3.setOnClickListener(this);
+        TextView tv_option_4 = findViewById(R.id.tv_option_4);
+        tv_option_4.setOnClickListener(this);
+        TextView tv_option_5 = findViewById(R.id.tv_option_5);
+        tv_option_5.setOnClickListener(this);
+        TextView tv_option_6 = findViewById(R.id.tv_option_6);
+        tv_option_6.setOnClickListener(this);
+        TextView tv_option_7 = findViewById(R.id.tv_option_7);
+        tv_option_7.setOnClickListener(this);
+        TextView tv_option_8 = findViewById(R.id.tv_option_8);
+        tv_option_8.setOnClickListener(this);
+        TextView tv_option_9 = findViewById(R.id.tv_option_9);
+        tv_option_9.setOnClickListener(this);
+        TextView tv_option_10 = findViewById(R.id.tv_option_10);
+        tv_option_10.setOnClickListener(this);
+        TextView tv_option_11 = findViewById(R.id.tv_option_11);
+        tv_option_11.setOnClickListener(this);
+        TextView tv_option_12 = findViewById(R.id.tv_option_12);
+        tv_option_12.setOnClickListener(this);
+        TextView tv_option_13 = findViewById(R.id.tv_option_13);
+        tv_option_13.setOnClickListener(this);
+        TextView tv_option_14 = findViewById(R.id.tv_option_14);
+        tv_option_14.setOnClickListener(this);
+
+
     }
 
     private void openOptions(TextView tv_right, TextView tv_left, String[] sc_options) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
@@ -193,7 +230,6 @@ public class NeuroFullPageActivity extends BaseActivity {
 
         sc_right.addSegments(Arrays.asList(sc_options));
         sc_left.addSegments(Arrays.asList(sc_options));
-
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -215,12 +251,14 @@ public class NeuroFullPageActivity extends BaseActivity {
         mAlertDialog.show();
     }
 
-    private void openPReflexesOptions(TextView tv_value) {
+    private void openPReflexesOptions(TextView tv_value, String[] sc_options, String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_set_p_reflexesl, null, false);
         reflex_value = "";
+        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+        tvtitle.setText(title);
         SegmentedControl sc_right = customDialogView.findViewById(R.id.sc_right);
         sc_right.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
@@ -230,6 +268,7 @@ public class NeuroFullPageActivity extends BaseActivity {
                 }
             }
         });
+        sc_right.addSegments(Arrays.asList(sc_options));
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -239,7 +278,7 @@ public class NeuroFullPageActivity extends BaseActivity {
         btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
         btn_add.setOnClickListener(v -> {
             if (TextUtils.isEmpty(reflex_value)) {
-                new CustomToast().showToast(NeuroFullPageActivity.this, "please select Pediatric Reflexes");
+                new CustomToast().showToast(NeuroFullPageActivity.this, "please select a value");
             } else {
                 switch (reflex_value) {
                     case "Integrated":
@@ -251,12 +290,19 @@ public class NeuroFullPageActivity extends BaseActivity {
                     case "Not Developed":
                         tv_value.setText("ND");
                         break;
+                    default:
+                        tv_value.setText(reflex_value);
                 }
                 reflex_value = "";
                 mAlertDialog.dismiss();
             }
         });
         mAlertDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        openPReflexesOptions((TextView) v, months, "Update Developmental history");
     }
 
     private class TextViewClick implements View.OnClickListener {

@@ -44,7 +44,6 @@
             segmentedcontrol:radiusForEverySegment="false"
             segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
             segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
-            segmentedcontrol:segments="@array/pediatric_reflexes"
             segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
             segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
             segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
