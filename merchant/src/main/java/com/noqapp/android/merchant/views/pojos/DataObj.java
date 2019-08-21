@@ -132,7 +132,11 @@ public class DataObj implements Comparable<DataObj> {
 
     @Override
     public boolean equals(Object obj) {
-        return (this.shortName.equals(((DataObj) obj).shortName));
+        if(obj instanceof DataObj) {
+            return (this.shortName.equalsIgnoreCase(((DataObj) obj).shortName));
+        }else{
+            return false;
+        }
     }
 
     private String toCamelCase(final String init) {
@@ -149,7 +153,6 @@ public class DataObj implements Comparable<DataObj> {
             if (!(ret.length() == init.length()))
                 ret.append(" ");
         }
-
         return ret.toString();
     }
 
