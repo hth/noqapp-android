@@ -23,6 +23,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.views.pojos.TempNeuroObj;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
@@ -44,6 +45,68 @@ public class NeuroFullPageActivity extends BaseActivity {
         tv_toolbar_title.setText("Neuro Form");
         //  jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         // jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
+        TableLayout tl_reflexes_1 = findViewById(R.id.tl_reflexes_1);
+        tl_reflexes_1.removeAllViews();
+        ArrayList<TempNeuroObj> tempNeuroObjsReflexes1 = getReflexesTableList1();
+        String[] reflexes = getResources().getStringArray(R.array.reflexes);
+        String[] v_control = getResources().getStringArray(R.array.v_control);
+        for (int i = 0; i < tempNeuroObjsReflexes1.size() + 1; i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.table_row, null);
+            TextView tv_header = view.findViewById(R.id.tv_header);
+            TextView tv_right = view.findViewById(R.id.tv_right);
+            TextView tv_left = view.findViewById(R.id.tv_left);
+            if (i == 0) {
+                tv_header.setText("Superficial");
+                tv_header.setTypeface(null, Typeface.BOLD);
+                tv_right.setTypeface(null, Typeface.BOLD);
+                tv_left.setTypeface(null, Typeface.BOLD);
+                tv_header.setGravity(Gravity.CENTER);
+                tv_right.setText("Right");
+                tv_left.setText("Left");
+            } else {
+                TempNeuroObj tempNeuroObj = tempNeuroObjsReflexes1.get(i - 1);
+                tv_header.setText(tempNeuroObj.getTitle());
+                tv_right.setText(tempNeuroObj.getRightValue());
+                tv_left.setText(tempNeuroObj.getLeftValue());
+                tv_header.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+                tv_header.setTypeface(null, tempNeuroObj.isHeader() ? Typeface.BOLD : Typeface.NORMAL);
+                tv_right.setTypeface(null, Typeface.NORMAL);
+                tv_left.setTypeface(null, Typeface.NORMAL);
+                view.setOnClickListener(v -> openOptions(tv_right, tv_left, reflexes));
+            }
+            tl_reflexes_1.addView(view);
+        }
+        TableLayout tl_reflexes_2 = findViewById(R.id.tl_reflexes_2);
+        tl_reflexes_2.removeAllViews();
+
+        ArrayList<TempNeuroObj> tempNeuroObjsReflexes2 = getReflexesTableList2();
+        for (int i = 0; i < tempNeuroObjsReflexes2.size() + 1; i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.table_row, null);
+            TextView tv_header = view.findViewById(R.id.tv_header);
+            TextView tv_right = view.findViewById(R.id.tv_right);
+            TextView tv_left = view.findViewById(R.id.tv_left);
+            if (i == 0) {
+                tv_header.setText("Deep tendon reflexes");
+                tv_header.setTypeface(null, Typeface.BOLD);
+                tv_right.setTypeface(null, Typeface.BOLD);
+                tv_left.setTypeface(null, Typeface.BOLD);
+                tv_header.setGravity(Gravity.CENTER);
+                tv_right.setText("Right");
+                tv_left.setText("Left");
+            } else {
+                TempNeuroObj tempNeuroObj = tempNeuroObjsReflexes2.get(i - 1);
+                tv_header.setText(tempNeuroObj.getTitle());
+                tv_right.setText(tempNeuroObj.getRightValue());
+                tv_left.setText(tempNeuroObj.getLeftValue());
+                tv_header.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+                tv_header.setTypeface(null, tempNeuroObj.isHeader() ? Typeface.BOLD : Typeface.NORMAL);
+                tv_right.setTypeface(null, Typeface.NORMAL);
+                tv_left.setTypeface(null, Typeface.NORMAL);
+                view.setOnClickListener(v -> openOptions(tv_right, tv_left, reflexes));
+            }
+            tl_reflexes_2.addView(view);
+        }
+
         TableLayout tl_pediatric_reflexes = findViewById(R.id.tl_pediatric_reflexes);
         tl_pediatric_reflexes.removeAllViews();
 
@@ -55,14 +118,14 @@ public class NeuroFullPageActivity extends BaseActivity {
             if (i == 0) {
                 tv_header.setText("Parameter");
                 tv_value.setText("I / AP / ND");
-                tv_header.setGravity(Gravity.CENTER );
+                tv_header.setGravity(Gravity.CENTER);
                 tv_header.setTypeface(null, Typeface.BOLD);
                 tv_value.setTypeface(null, Typeface.BOLD);
 
             } else {
                 TempNeuroObj tempNeuroObj = tempNeuroObjs1.get(i - 1);
                 tv_header.setText(tempNeuroObj.getTitle());
-                tv_header.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL );
+                tv_header.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
                 tv_value.setText(tempNeuroObj.getRightValue());
                 tv_header.setTypeface(null, tempNeuroObj.isHeader() ? Typeface.BOLD : Typeface.NORMAL);
                 tv_value.setTypeface(null, Typeface.NORMAL);
@@ -95,15 +158,13 @@ public class NeuroFullPageActivity extends BaseActivity {
                 tv_header.setTypeface(null, tempNeuroObj.isHeader() ? Typeface.BOLD : Typeface.NORMAL);
                 tv_right.setTypeface(null, Typeface.NORMAL);
                 tv_left.setTypeface(null, Typeface.NORMAL);
-                view.setOnClickListener(v -> openOptions(tv_right, tv_left));
+                view.setOnClickListener(v -> openOptions(tv_right, tv_left, v_control));
             }
             tl_voluntary_control.addView(view);
         }
-
-
     }
 
-    private void openOptions(TextView tv_right, TextView tv_left) {
+    private void openOptions(TextView tv_right, TextView tv_left, String[] sc_options) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -129,6 +190,10 @@ public class NeuroFullPageActivity extends BaseActivity {
                 }
             }
         });
+
+        sc_right.addSegments(Arrays.asList(sc_options));
+        sc_left.addSegments(Arrays.asList(sc_options));
+
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -225,6 +290,25 @@ public class NeuroFullPageActivity extends BaseActivity {
         }
     }
 
+    private ArrayList<TempNeuroObj> getReflexesTableList1() {
+        ArrayList<TempNeuroObj> tempNeuroObjs = new ArrayList<>();
+        tempNeuroObjs.add(new TempNeuroObj("Corneal"));
+        tempNeuroObjs.add(new TempNeuroObj("Abdominal"));
+        tempNeuroObjs.add(new TempNeuroObj("Plantar"));
+        return tempNeuroObjs;
+    }
+
+    private ArrayList<TempNeuroObj> getReflexesTableList2() {
+        ArrayList<TempNeuroObj> tempNeuroObjs = new ArrayList<>();
+        tempNeuroObjs.add(new TempNeuroObj("Biceps"));
+        tempNeuroObjs.add(new TempNeuroObj("Triceps"));
+        tempNeuroObjs.add(new TempNeuroObj("Supinator"));
+        tempNeuroObjs.add(new TempNeuroObj("Knee jerk"));
+        tempNeuroObjs.add(new TempNeuroObj("Anlke jerk"));
+        tempNeuroObjs.add(new TempNeuroObj("Jaw jerk"));
+
+        return tempNeuroObjs;
+    }
 
     private ArrayList<TempNeuroObj> getPReflexesTableList() {
         ArrayList<TempNeuroObj> tempNeuroObjs = new ArrayList<>();

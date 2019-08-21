@@ -514,6 +514,29 @@
 
                 <TextView
                     style="@style/style_tv_neuro"
+                    android:text="Reflexes (-absent, +present but depressed, ++normal, +++brisk, ++++exaggerated)"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:id="@+id/tl_reflexes_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:stretchColumns="*" />
+
+                <TableLayout
+                    android:id="@+id/tl_reflexes_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="5dp"
+                    android:stretchColumns="*" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:layout_marginTop="20dp"
                     android:text="Pediatric Reflexes:(I = Integrated, AP = Abnormally Present, ND = Not Developed )"
                     android:textStyle="bold" />
 
@@ -523,10 +546,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:stretchColumns="*">
-                </TableLayout>
+                    android:stretchColumns="*" />
+
                 <TextView
                     style="@style/style_tv_neuro"
+                    android:layout_marginTop="20dp"
                     android:text="Voluntary Control: (N = Normal, G = Good, F = Fair, P = Poor, A = Absent )"
                     android:textStyle="bold" />
 
@@ -536,9 +560,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:stretchColumns="*">
+                    android:stretchColumns="*" />
 
-                </TableLayout>
             </LinearLayout>
 
 
