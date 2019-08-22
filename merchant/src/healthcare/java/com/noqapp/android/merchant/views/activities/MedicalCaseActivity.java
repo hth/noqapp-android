@@ -126,6 +126,12 @@ public class MedicalCaseActivity extends BaseActivity implements
             preferenceObjects = new PreferenceObjects();
             initStores();
         }
+        jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
+        jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
+        codeQR = getIntent().getStringExtra("qCodeQR");
+        bizCategoryId = getIntent().getStringExtra("bizCategoryId");
+        if (!TextUtils.isEmpty(bizCategoryId))
+            isGynae = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.OGY;
         caseHistory = new CaseHistory();
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
@@ -134,15 +140,11 @@ public class MedicalCaseActivity extends BaseActivity implements
         data.add("Symptoms");
         data.add("Examination");
         data.add("Investigation");
-        data.add("Treatment");
+        data.add(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT?"Treatment Plan":"Treatment");
         data.add("Instructions");
         data.add("Preview");
-        jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
-        codeQR = getIntent().getStringExtra("qCodeQR");
-        bizCategoryId = getIntent().getStringExtra("bizCategoryId");
-        if (!TextUtils.isEmpty(bizCategoryId))
-            isGynae = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.OGY;
+
+
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
         caseHistory.setName(jsonProfile.getName());
         caseHistory.setAddress(jsonProfile.getAddress());
