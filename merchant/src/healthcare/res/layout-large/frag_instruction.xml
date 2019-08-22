@@ -55,6 +55,12 @@
         </LinearLayout>
     </ScrollView>
 
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#80000000" />
+
     <LinearLayout
             android:layout_width="0dp"
             android:layout_weight=".5"

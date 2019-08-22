@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
+import com.noqapp.android.merchant.views.pojos.ToothProcedure;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
     private Context context;
     private static final int LAYOUT_ONE = 0;
     private static final int LAYOUT_TWO = 1;
+    private final String SPLIT_SYMBOL = ":";
 
     public List<ToothInfo> getDataSet() {
         return dataSet;
@@ -51,13 +53,13 @@ public class ToothAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         ToothInfo item = dataSet.get(listPosition);
         holder.tv_count.setText(String.valueOf(item.getToothNumber()));
-        holder.iv_top.setBackground(ContextCompat.getDrawable(context, item.getToothTopView()));
-        holder.iv_front.setBackground(ContextCompat.getDrawable(context, item.getToothFrontView()));
+        holder.iv_top.setBackground(ContextCompat.getDrawable(context, item.getToothTopView().getDrawable()));
+        holder.iv_front.setBackground(ContextCompat.getDrawable(context, item.getToothFrontView().getDrawable()));
         holder.iv_front.setOnClickListener(v -> {
-                onToothFrontViewSelected(listPosition,item);
+            onToothFrontViewSelected(listPosition, item);
         });
         holder.iv_top.setOnClickListener(v -> {
-                onToothTopViewSelected(listPosition,item);
+            onToothTopViewSelected(listPosition, item);
         });
     }
 
@@ -87,7 +89,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void onToothTopViewSelected(int pos,ToothInfo toothInfo){
+    private void onToothTopViewSelected(int pos, ToothInfo toothInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
@@ -100,9 +102,10 @@ public class ToothAdapter extends RecyclerView.Adapter {
         ToothOptionAdapter toothAdapter = new ToothOptionAdapter(toothInfo.getTopViewDrawables(), item -> {
             mAlertDialog.dismiss();
             toothInfo.setToothTopView(item);
-            dataSet.set(pos,toothInfo);
+            toothInfo.setUpdated(true);
+            dataSet.set(pos, toothInfo);
             notifyDataSetChanged();
-        },context);
+        }, context);
         rcv_tooth.setAdapter(toothAdapter);
 
         mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -115,7 +118,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
         mAlertDialog.show();
     }
 
-    private void onToothFrontViewSelected(int pos,ToothInfo toothInfo){
+    private void onToothFrontViewSelected(int pos, ToothInfo toothInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
@@ -128,9 +131,10 @@ public class ToothAdapter extends RecyclerView.Adapter {
         ToothOptionAdapter toothAdapter = new ToothOptionAdapter(toothInfo.getFrontViewDrawables(), item -> {
             mAlertDialog.dismiss();
             toothInfo.setToothFrontView(item);
-            dataSet.set(pos,toothInfo);
+            toothInfo.setUpdated(true);
+            dataSet.set(pos, toothInfo);
             notifyDataSetChanged();
-        },context);
+        }, context);
         rcv_tooth.setAdapter(toothAdapter);
 
         mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -141,6 +145,56 @@ public class ToothAdapter extends RecyclerView.Adapter {
         btn_no.setOnClickListener(v1 -> mAlertDialog.dismiss());
         btn_yes.setOnClickListener(v12 -> mAlertDialog.dismiss());
         mAlertDialog.show();
+    }
+
+
+    public String getSelectedData() {
+        String data = "";
+        for (int i = 0; i < dataSet.size(); i++) {
+            if (dataSet.get(i).isUpdated()) {
+                data += dataSet.get(i).getToothNumber() + ":"
+                        + dataSet.get(i).getToothFrontView().getDrawableLabel() + ":"
+                        + dataSet.get(i).getToothTopView().getDrawableLabel() + ":"
+                        + dataSet.get(i).getToothFrontView().getDrawable() + ":"
+                        + dataSet.get(i).getToothTopView().getDrawable() + "|";
+            }
+        }
+        if (data.endsWith("| "))
+            data = data.substring(0, data.length() - 2);
+        return data;
+    }
+
+
+    public void updateToothObj(String str) {
+        try {
+            String[] temp = str.split("\\|");
+            if (temp.length > 0) {
+                for (String act : temp) {
+                    if (act.contains(SPLIT_SYMBOL)) {
+                        String[] strArray = act.split(":");
+                        String toothNumber = strArray[0].trim();
+                        String toothFrontLabel = strArray[1];
+                        String toothTopLabel = strArray[2];
+                        String toothFrontDrawable = strArray[3];
+                        String toothTopDrawable = strArray[4];
+                        for (int j = 0; j < dataSet.size(); j++) {
+                            ToothInfo tf = dataSet.get(j);
+                            if (tf.getToothNumber() == Integer.parseInt(toothNumber)) {
+                                tf.setToothTopView(new ToothProcedure(Integer.parseInt(toothTopDrawable), toothTopLabel));
+                                tf.setToothFrontView(new ToothProcedure(Integer.parseInt(toothFrontDrawable), toothFrontLabel));
+                                tf.setUpdated(true);
+                                dataSet.set(j, tf);
+                                break;
+                            }
+                        }
+
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        notifyDataSetChanged();
     }
 }
 
