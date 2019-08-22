@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hbb20.CountryCodePicker;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -32,6 +33,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
@@ -70,6 +72,10 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
     private String codeQR = "";
     private StoreMenuOrderAdapter storeMenuOrderAdapter;
     private AlertDialog mAlertDialog;
+    private String cid = "";
+    private CountryCodePicker ccp;
+    private String countryCode = "";
+    private String countryShortName = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -150,6 +156,11 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                 }
             }
         });
+        cid = "";
+        ccp = view.findViewById(R.id.ccp);
+        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
+        ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
         rb_customer_id.setVisibility(View.GONE);
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
@@ -173,13 +184,16 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
             }
             if (isValid) {
                 String phone = "";
-                String cid = "";
+                cid = "";
                 if (rb_mobile.isChecked()) {
                     edt_id.setText("");
-                    phone = "91" + edt_mobile.getText().toString();
+                    countryCode = ccp.getSelectedCountryCode();
+                    countryShortName = ccp.getDefaultCountryName().toUpperCase();
+                    phone = countryCode + edt_mobile.getText().toString();
+                    cid = "";
                 } else {
                     cid = edt_id.getText().toString();
-                    edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
+                    edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                 }
                 showProgress();
                 setProgressMessage("Searching user...");
@@ -297,6 +311,8 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
             new CustomToast().showToast(getActivity(), eej.getReason());
             Intent in = new Intent(getActivity(), LoginActivity.class);
             in.putExtra("phone_no", edt_mobile.getText().toString());
+            in.putExtra("countryCode", countryCode);
+            in.putExtra("countryShortName", countryShortName);
             startActivity(in);
             RegistrationActivity.registerCallBack = this;
             LoginActivity.loginCallBack = this;
