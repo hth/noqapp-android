@@ -130,6 +130,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected ExpandableListView mDrawerList;
     protected ActionBarDrawerToggle mDrawerToggle;
     protected boolean isInventoryApp = false;
+    public static boolean isTablet = false;
 
     public void enableDisableDrawer(boolean isEnable) {
         mDrawerLayout.setDrawerLockMode(isEnable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -139,8 +140,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            isTablet = true;
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            isTablet = false;
         }
         super.onCreate(savedInstanceState);
         sharedpreferences = this.getPreferences(Context.MODE_PRIVATE);

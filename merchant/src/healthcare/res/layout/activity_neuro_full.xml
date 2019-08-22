@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout_home" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_save_upload"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Chief Complaint:" />
+
+                <EditText
+                    style="@style/style_edt_neuro"
+                    android:minLines="3"
+                    android:singleLine="false" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Family History:" />
+
+                <EditText
+                    style="@style/style_edt_neuro"
+                    android:minLines="3"
+                    android:singleLine="false" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Any Family History of genetic disorder?" />
+
+                <include layout="@layout/lay_segment_control" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Any History of consanguineous marriage of parents?" />
+
+                <include layout="@layout/lay_segment_control" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Maternal / Parenatal History"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Age at delivery:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Previous abortion:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Time period between last abortion and the patients Date of Birth:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Fetal movements:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Metabolic diseases:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="High blood pressure:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Gestational diabetes / thyroid:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Infection:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Any drugs taken during pregnanacy:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Any trauma &amp; stress:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Any addiction i.e. smoking or alcoholism:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="History of rubella or cytomegalovirus, toxoplasmosis infection:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Others:" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Natal History"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Term" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segments="@array/array_term"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Mode of delivery" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segments="@array/array_mode_delivery"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Presentation" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segments="@array/array_presentation"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Any history of prolonged labor pain" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segments="@array/array_labour_pain"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Any birth injury?" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="PostNatal History"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Birth cry" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segments="@array/array_birth_cry"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="If delayed then minutes until baby cried" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Weight of the child at birth(in kgs)" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="History of neonatal"
+                    android:textStyle="bold" />
+
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segments="@array/array_neonatal"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="History of incubation/NICU admission"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/lay_segment_control" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="If yes then number of days"
+                    android:textStyle="bold" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Treatment receieved"
+                    android:textStyle="bold" />
+
+                <EditText style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="History of any trauma to brain during the first 2 years of life"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/lay_segment_control" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Nutritional habits of the child(malnutrition)"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/lay_segment_control" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Feeding difficulties:"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/lay_segment_control" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Developmental history:"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Head Control" />
+
+                <TextView
+                    android:id="@+id/tv_option_1"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Rolling" />
+
+                <TextView
+                    android:id="@+id/tv_option_2"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Crawling" />
+
+                <TextView
+                    android:id="@+id/tv_option_3"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Creeping" />
+
+                <TextView
+                    android:id="@+id/tv_option_4"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Sitting with support" />
+
+                <TextView
+                    android:id="@+id/tv_option_5"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Sitting independently" />
+
+                <TextView
+                    android:id="@+id/tv_option_6"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Standing with support" />
+
+                <TextView
+                    android:id="@+id/tv_option_7"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Standing independently" />
+
+                <TextView
+                    android:id="@+id/tv_option_8"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Cruising" />
+
+                <TextView
+                    android:id="@+id/tv_option_9"
+                    style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Walking with support" />
+
+                <TextView
+                    android:id="@+id/tv_option_10"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Walking independently" />
+
+                <TextView
+                    android:id="@+id/tv_option_11"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Climbing steps without support" />
+
+                <TextView
+                    android:id="@+id/tv_option_12"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Climbing steps without support(bilateral pattern)" />
+
+                <TextView
+                    android:id="@+id/tv_option_13"
+                    style="@style/style_edt_neuro" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text=" Climbing steps without support(alternate pattern)" />
+
+                <TextView
+                    android:id="@+id/tv_option_14"
+                    style="@style/style_edt_neuro" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Medical History/ any history of hospitalization:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    style="@style/style_edt_neuro"
+                    android:minLines="3"
+                    android:singleLine="false" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Surgical history:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    style="@style/style_edt_neuro"
+                    android:minLines="3"
+                    android:singleLine="false" />
+
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:text="Reflexes (-absent, +present but depressed, ++normal, +++brisk, ++++exaggerated)"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:id="@+id/tl_reflexes_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:stretchColumns="*" />
+
+                <TableLayout
+                    android:id="@+id/tl_reflexes_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="5dp"
+                    android:stretchColumns="*" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:layout_marginTop="20dp"
+                    android:text="Pediatric Reflexes:(I = Integrated, AP = Abnormally Present, ND = Not Developed )"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:id="@+id/tl_pediatric_reflexes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:stretchColumns="*" />
+
+                <TextView
+                    style="@style/style_tv_neuro"
+                    android:layout_marginTop="20dp"
+                    android:text="Voluntary Control: (N = Normal, G = Good, F = Fair, P = Poor, A = Absent )"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:id="@+id/tl_voluntary_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:stretchColumns="*" />
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_save_upload"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_gradient_round"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_fourteen" />
+    </RelativeLayout>
+</LinearLayout>

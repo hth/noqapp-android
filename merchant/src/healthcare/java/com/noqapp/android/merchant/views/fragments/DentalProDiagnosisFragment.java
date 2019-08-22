@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.medical.DentalOptionEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.ToothAdapter;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
+import com.noqapp.android.merchant.views.pojos.ToothProcedure;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
 import java.io.File;
@@ -34,6 +37,8 @@ import java.util.Locale;
 
 public class DentalProDiagnosisFragment extends BaseFragment {
     private View view;
+    private ToothAdapter toothAdapter;
+    private RecyclerView rcv_tooth;
 
     @Nullable
     @Override
@@ -41,29 +46,47 @@ public class DentalProDiagnosisFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.frag_dental, container, false);
-        RecyclerView rcv_tooth = view.findViewById(R.id.rcv_tooth);
+        rcv_tooth = view.findViewById(R.id.rcv_tooth);
         rcv_tooth.setLayoutManager(new GridLayoutManager(getActivity(), 16));
         rcv_tooth.setItemAnimator(new DefaultItemAnimator());
-        int imageFilePathTop = R.drawable.tooth_o_2_1;
-        List<Integer> drawables = getFrontAllViews();
+        Button btn_save_upload = view.findViewById(R.id.btn_save_upload);
+        btn_save_upload.setOnClickListener(v -> {
+            getCaptureAndUploadBitmap();
+        });
+        return view;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ToothProcedure imageFilePathTop = new ToothProcedure(R.drawable.tooth_o_2_1,DentalOptionEnum.NOR.getDescription());
+        List<ToothProcedure> drawables = getFrontAllViews();
         List<ToothInfo> toothInfos = new ArrayList<>();
         List<String> toothNumbers = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
         for (int i = 0; i < 32; i++) {
             ToothInfo toothInfo = new ToothInfo();
             toothInfo.setToothNumber(Integer.parseInt(toothNumbers.get(i)));
             toothInfo.setToothFrontView(drawables.get(i));
+            toothInfo.setToothDefaultFrontView(toothInfo.getToothFrontView());
             toothInfo.setToothTopView(imageFilePathTop);
+            toothInfo.setToothDefaultTopView(toothInfo.getToothTopView());
             toothInfo.setFrontViewDrawables(getFrontOptionViews());
             toothInfo.setTopViewDrawables(getTopOptionViews());
             toothInfos.add(toothInfo);
         }
-        ToothAdapter toothAdapter = new ToothAdapter(toothInfos, getActivity());
+        toothAdapter = new ToothAdapter(toothInfos, getActivity());
         rcv_tooth.setAdapter(toothAdapter);
-        Button btn_save_upload = view.findViewById(R.id.btn_save_upload);
-        btn_save_upload.setOnClickListener(v -> {
-            getCaptureAndUploadBitmap();
-        });
-        return view;
+        try {
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() && !TextUtils.isEmpty(
+                    MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis())) {
+                String temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis();
+                toothAdapter.updateToothObj(temp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void getCaptureAndUploadBitmap() {
@@ -120,34 +143,34 @@ public class DentalProDiagnosisFragment extends BaseFragment {
     }
 
 
-    private List<Integer> getTopOptionViews() {
-        List<Integer> drawables = new ArrayList<>();
+    private List<ToothProcedure> getTopOptionViews() {
+        List<ToothProcedure> drawables = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             int id = this.getResources().getIdentifier(String.valueOf("tooth_o_2_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(id);
+            drawables.add(new ToothProcedure(id, DentalOptionEnum.CAV.getDescription()));
         }
         return drawables;
     }
 
-    private List<Integer> getFrontOptionViews() {
-        List<Integer> drawables = new ArrayList<>();
+    private List<ToothProcedure> getFrontOptionViews() {
+        List<ToothProcedure> drawables = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             int id = this.getResources().getIdentifier(String.valueOf("tooth_o_1_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(id);
+            drawables.add(new ToothProcedure(id, DentalOptionEnum.IMP.getDescription()));
         }
         return drawables;
     }
 
-    private List<Integer> getFrontAllViews() {
-        List<Integer> drawables = new ArrayList<>();
+    private List<ToothProcedure> getFrontAllViews() {
+        List<ToothProcedure> drawables = new ArrayList<>();
         for (int i = 0; i < 32; i++) {
             int id = this.getResources().getIdentifier(String.valueOf("tooth_1_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(id);
+            drawables.add(new ToothProcedure(id, DentalOptionEnum.NOR.getDescription()));
         }
         return drawables;
     }
 
     public void saveData() {
-        // save later
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setProvisionalDiagnosis(toothAdapter.getSelectedData());
     }
 }

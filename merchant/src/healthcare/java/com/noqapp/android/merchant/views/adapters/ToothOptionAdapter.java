@@ -10,16 +10,17 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.ToothProcedure;
 
 import java.util.List;
 
 public class ToothOptionAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
-    private List<Integer> drawableList;
+    private List<ToothProcedure> drawableList;
     private Context context;
 
 
-    public ToothOptionAdapter(List<Integer> drawableList, OnItemClickListener listener, Context context) {
+    public ToothOptionAdapter(List<ToothProcedure> drawableList, OnItemClickListener listener, Context context) {
         this.drawableList = drawableList;
         this.listener = listener;
         this.context = context;
@@ -35,7 +36,7 @@ public class ToothOptionAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         MyViewHolder holder = (MyViewHolder) viewHolder;
-        holder.iv_option.setBackground(ContextCompat.getDrawable(context, drawableList.get(position)));
+        holder.iv_option.setBackground(ContextCompat.getDrawable(context, drawableList.get(position).getDrawable()));
         holder.iv_option.setOnClickListener(v -> {
             if (null != listener) {
                 listener.onOptionSelected(drawableList.get(position));
@@ -49,7 +50,7 @@ public class ToothOptionAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onOptionSelected(Integer item);
+        void onOptionSelected(ToothProcedure item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

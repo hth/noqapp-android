@@ -4,71 +4,95 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ToothInfo {
-    private int toothFrontView;
-    private int toothTopView;
+    private ToothProcedure toothFrontView;
+    private ToothProcedure toothTopView;
+    private ToothProcedure toothDefaultFrontView;
+    private ToothProcedure toothDefaultTopView;
     private int toothNumber;
-    private List<Integer> topViewDrawables = new ArrayList<>();
-    private List<Integer> frontViewDrawables = new ArrayList<>();
+    private List<ToothProcedure> topViewDrawables = new ArrayList<>();
+    private List<ToothProcedure> frontViewDrawables = new ArrayList<>();
+    private boolean isUpdated = false;
 
     public ToothInfo() {
         topViewDrawables.clear();
         frontViewDrawables.clear();
     }
 
-    public int getToothFrontView() {
+    public ToothProcedure getToothFrontView() {
         return toothFrontView;
     }
 
-    public ToothInfo setToothFrontView(int toothFrontView) {
+    public void setToothFrontView(ToothProcedure toothFrontView) {
         this.toothFrontView = toothFrontView;
-        return this;
     }
 
-    public int getToothTopView() {
+    public ToothProcedure getToothTopView() {
         return toothTopView;
     }
 
-    public ToothInfo setToothTopView(int toothTopView) {
+    public void setToothTopView(ToothProcedure toothTopView) {
         this.toothTopView = toothTopView;
-        return this;
+    }
+
+    public ToothProcedure getToothDefaultFrontView() {
+        return toothDefaultFrontView;
+    }
+
+    public void setToothDefaultFrontView(ToothProcedure toothDefaultFrontView) {
+        this.toothDefaultFrontView = toothDefaultFrontView;
+    }
+
+    public ToothProcedure getToothDefaultTopView() {
+        return toothDefaultTopView;
+    }
+
+    public void setToothDefaultTopView(ToothProcedure toothDefaultTopView) {
+        this.toothDefaultTopView = toothDefaultTopView;
     }
 
     public int getToothNumber() {
         return toothNumber;
     }
 
-    public ToothInfo setToothNumber(int toothNumber) {
+    public void setToothNumber(int toothNumber) {
         this.toothNumber = toothNumber;
-        return this;
     }
 
-    public List<Integer> getTopViewDrawables() {
+    public List<ToothProcedure> getTopViewDrawables() {
         return topViewDrawables;
     }
 
-    public ToothInfo setTopViewDrawables(List<Integer> topViewDrawables) {
+    public void setTopViewDrawables(List<ToothProcedure> topViewDrawables) {
         this.topViewDrawables = topViewDrawables;
-        return this;
     }
 
-    public List<Integer> getFrontViewDrawables() {
+    public List<ToothProcedure> getFrontViewDrawables() {
         return frontViewDrawables;
     }
 
-    public ToothInfo setFrontViewDrawables(List<Integer> frontViewDrawables) {
+    public void setFrontViewDrawables(List<ToothProcedure> frontViewDrawables) {
         this.frontViewDrawables = frontViewDrawables;
-        return this;
+    }
+
+    public boolean isUpdated() {
+        return isUpdated;
+    }
+
+    public void setUpdated(boolean updated) {
+        isUpdated = updated;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ToothInfo{");
-        sb.append("toothFrontView=").append(toothFrontView);
-        sb.append(", toothTopView=").append(toothTopView);
-        sb.append(", toothNumber=").append(toothNumber);
-        sb.append(", topViewDrawables=").append(topViewDrawables);
-        sb.append(", frontViewDrawables=").append(frontViewDrawables);
-        sb.append('}');
-        return sb.toString();
+        return "ToothInfo{" +
+                "toothFrontView=" + toothFrontView +
+                ", toothTopView=" + toothTopView +
+                ", toothDefaultFrontView=" + toothDefaultFrontView +
+                ", toothDefaultTopView=" + toothDefaultTopView +
+                ", toothNumber=" + toothNumber +
+                ", topViewDrawables=" + topViewDrawables +
+                ", frontViewDrawables=" + frontViewDrawables +
+                ", isUpdated=" + isUpdated +
+                '}';
     }
 }

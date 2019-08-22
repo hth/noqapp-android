@@ -13,24 +13,19 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
-import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InstructionFragment extends BaseFragment {
-    private RecyclerView recyclerView;
     private ListView list_view;
-    private TextView tv_add_instruction, tv_add_new;
+    private TextView tv_add_instruction;
     private MultiSelectListAdapter instructionAdapter;
 
     @Nullable
@@ -38,12 +33,9 @@ public class InstructionFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_instruction, container, false);
-        recyclerView = v.findViewById(R.id.recyclerView);
         list_view = v.findViewById(R.id.list_view);
         tv_add_instruction = v.findViewById(R.id.tv_add_instruction);
-        tv_add_new = v.findViewById(R.id.tv_add_new);
-        tv_add_new.setOnClickListener(v1 -> AddItemDialog(getActivity(), "Add Medicine", true));
-        tv_add_instruction.setOnClickListener(v12 -> AddItemDialog(getActivity(), "Add Instruction", false));
+        tv_add_instruction.setOnClickListener(v12 -> AddItemDialog(getActivity(), "Add Instruction"));
         return v;
     }
 
@@ -73,7 +65,7 @@ public class InstructionFragment extends BaseFragment {
     }
 
 
-    private void AddItemDialog(final Context mContext, String title, final boolean isMedicine) {
+    private void AddItemDialog(final Context mContext, String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
@@ -93,27 +85,16 @@ public class InstructionFragment extends BaseFragment {
             if (edt_item.getText().toString().equals("")) {
                 edt_item.setError("Empty field not allowed");
             } else {
-                if (isMedicine) {
-                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
-                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-                    recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
-
-                    StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
-                    recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
-                } else {
-                    ArrayList<String> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList();
-                    temp.add(edt_item.getText().toString());
-                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setInstructionList(temp);
-                    DataObj dataObj = new DataObj();
-                    dataObj.setShortName(edt_item.getText().toString());
-                    dataObj.setSelect(false);
-                    instructionAdapter.addData(dataObj);
-                    list_view.setAdapter(instructionAdapter);
-                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getInstructionList().add(edt_item.getText().toString());
-                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                }
+                ArrayList<String> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList();
+                temp.add(edt_item.getText().toString());
+                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setInstructionList(temp);
+                DataObj dataObj = new DataObj();
+                dataObj.setShortName(edt_item.getText().toString());
+                dataObj.setSelect(false);
+                instructionAdapter.addData(dataObj);
+                list_view.setAdapter(instructionAdapter);
+                MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getInstructionList().add(edt_item.getText().toString());
+                MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                 new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                 mAlertDialog.dismiss();
             }

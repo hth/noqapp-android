@@ -20,6 +20,11 @@
             android:layout_height="match_parent"
             android:layout_weight=".7" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#80000000" />
+
         <FrameLayout
             android:id="@+id/fl_product_list"
             android:layout_width="0dp"

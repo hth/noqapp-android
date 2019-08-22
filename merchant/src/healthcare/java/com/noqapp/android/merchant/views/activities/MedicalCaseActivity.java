@@ -37,7 +37,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.ExaminationTabFragment;
-import com.noqapp.android.merchant.views.fragments.InstructionFragment;
+import com.noqapp.android.merchant.views.fragments.InstructionTabFragment;
 import com.noqapp.android.merchant.views.fragments.LabTestsFragment;
 import com.noqapp.android.merchant.views.fragments.PrimaryCheckupFragment;
 import com.noqapp.android.merchant.views.fragments.PrintFragment;
@@ -65,7 +65,7 @@ public class MedicalCaseActivity extends BaseActivity implements
     private LabTestsFragment labTestsFragment;
     private TreatmentTabFragment treatmentTabFragment;
     private ExaminationTabFragment examinationTabFragment;
-    private InstructionFragment instructionFragment;
+    private InstructionTabFragment instructionTabFragment;
     private PrintFragment printFragment;
     public boolean isGynae = false;
 
@@ -126,6 +126,12 @@ public class MedicalCaseActivity extends BaseActivity implements
             preferenceObjects = new PreferenceObjects();
             initStores();
         }
+        jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
+        jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
+        codeQR = getIntent().getStringExtra("qCodeQR");
+        bizCategoryId = getIntent().getStringExtra("bizCategoryId");
+        if (!TextUtils.isEmpty(bizCategoryId))
+            isGynae = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.OGY;
         caseHistory = new CaseHistory();
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
@@ -134,15 +140,11 @@ public class MedicalCaseActivity extends BaseActivity implements
         data.add("Symptoms");
         data.add("Examination");
         data.add("Investigation");
-        data.add("Treatment");
+        data.add(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT?"Treatment Plan":"Treatment");
         data.add("Instructions");
         data.add("Preview");
-        jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
-        codeQR = getIntent().getStringExtra("qCodeQR");
-        bizCategoryId = getIntent().getStringExtra("bizCategoryId");
-        if (!TextUtils.isEmpty(bizCategoryId))
-            isGynae = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.OGY;
+
+
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
         caseHistory.setName(jsonProfile.getName());
         caseHistory.setAddress(jsonProfile.getAddress());
@@ -263,7 +265,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         examinationTabFragment.saveData();
         labTestsFragment.saveData();
         treatmentTabFragment.saveData();
-        instructionFragment.saveData();
+        instructionTabFragment.saveData();
     }
 
     private void initLists() {
@@ -444,7 +446,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         examinationTabFragment = new ExaminationTabFragment();
         labTestsFragment = new LabTestsFragment();
         treatmentTabFragment = new TreatmentTabFragment();
-        instructionFragment = new InstructionFragment();
+        instructionTabFragment = new InstructionTabFragment();
         printFragment = new PrintFragment();
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
@@ -452,7 +454,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         adapter.addFragment(examinationTabFragment, "FRAG" + 2);
         adapter.addFragment(labTestsFragment, "FRAG" + 3);
         adapter.addFragment(treatmentTabFragment, "FRAG" + 4);
-        adapter.addFragment(instructionFragment, "FRAG" + 5);
+        adapter.addFragment(instructionTabFragment, "FRAG" + 5);
         adapter.addFragment(printFragment, "FRAG" + 6);
         menuAdapter = new MenuHeaderAdapter(data, this, this);
         rcv_header.setAdapter(menuAdapter);
