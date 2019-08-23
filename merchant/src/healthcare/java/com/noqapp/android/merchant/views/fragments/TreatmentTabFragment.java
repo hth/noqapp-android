@@ -33,15 +33,15 @@ public class TreatmentTabFragment extends BaseFragment {
             FrameLayout fl_treatment_medicine = v.findViewById(R.id.fl_treatment_medicine);
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
+            if(LaunchActivity.isTablet) {
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
+                LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
+                fl_treatment_diagnosis.setLayoutParams(lp1);
+                fl_treatment_medicine.setLayoutParams(lp2);
+            }
             treatmentMedicineFragment = new TreatmentMedicineFragment();
             transaction.replace(R.id.fl_treatment_medicine, treatmentMedicineFragment).commit();
             if (MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT) {
-                if(LaunchActivity.isTablet) {
-                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
-                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
-                    fl_treatment_diagnosis.setLayoutParams(lp1);
-                    fl_treatment_medicine.setLayoutParams(lp2);
-                }
                 treatmentDiagnosisDentalFragment = new TreatmentDiagnosisDentalFragment();
                 transaction.replace(R.id.fl_treatment_diagnosis, treatmentDiagnosisDentalFragment).commit();
             } else {
