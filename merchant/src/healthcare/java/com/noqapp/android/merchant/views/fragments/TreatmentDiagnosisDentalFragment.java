@@ -116,7 +116,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDiagnosis(dentalSelectAdapter.getSelectedData());  }
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setNoteForPatient(dentalSelectAdapter.getSelectedData());  }
 
     @Override
     public void staggeredMedicineClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {

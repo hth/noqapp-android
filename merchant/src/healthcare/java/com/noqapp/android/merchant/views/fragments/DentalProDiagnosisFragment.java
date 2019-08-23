@@ -171,6 +171,12 @@ public class DentalProDiagnosisFragment extends BaseFragment {
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setProvisionalDiagnosis(toothAdapter.getSelectedData());
+        // save to dental anatomy
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDentalAnatomy(toothAdapter.getSelectedData());
+        if(!TextUtils.isEmpty(toothAdapter.getSelectedData())){
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDentalAnatomyFilled(true);
+        }else{
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDentalAnatomyFilled(false);
+        }
     }
 }

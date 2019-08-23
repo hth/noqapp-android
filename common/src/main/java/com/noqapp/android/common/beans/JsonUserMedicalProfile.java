@@ -50,10 +50,13 @@ public class JsonUserMedicalProfile implements Serializable {
     private String medicineAllergies;
 
     @JsonProperty("da")
-    private String [] dentalAnatomy;
+    private String dentalAnatomy;
 
     @JsonProperty("hd")
     private boolean historyDirty;
+
+   // @JsonProperty("hd")
+    private boolean anatomyDirty;
 
     @JsonProperty("er")
     private List<JsonNameDateHealth> externalMedicalReports;
@@ -112,11 +115,11 @@ public class JsonUserMedicalProfile implements Serializable {
         return this;
     }
 
-    public String[] getDentalAnatomy() {
+    public String getDentalAnatomy() {
         return dentalAnatomy;
     }
 
-    public JsonUserMedicalProfile setDentalAnatomy(String[] dentalAnatomy) {
+    public JsonUserMedicalProfile setDentalAnatomy(String dentalAnatomy) {
         this.dentalAnatomy = dentalAnatomy;
         return this;
     }
@@ -127,6 +130,15 @@ public class JsonUserMedicalProfile implements Serializable {
 
     public JsonUserMedicalProfile setHistoryDirty(boolean historyDirty) {
         this.historyDirty = historyDirty;
+        return this;
+    }
+
+    public boolean isAnatomyDirty() {
+        return anatomyDirty;
+    }
+
+    public JsonUserMedicalProfile setAnatomyDirty(boolean anatomyDirty) {
+        this.anatomyDirty = anatomyDirty;
         return this;
     }
 
@@ -141,15 +153,18 @@ public class JsonUserMedicalProfile implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonUserMedicalProfile{" +
-                "bloodType=" + bloodType +
-                ", occupation=" + occupation +
-                ", pastHistory='" + pastHistory + '\'' +
-                ", familyHistory='" + familyHistory + '\'' +
-                ", knownAllergies='" + knownAllergies + '\'' +
-                ", medicineAllergies='" + medicineAllergies + '\'' +
-                ", historyDirty=" + historyDirty +
-                ", externalMedicalReports=" + externalMedicalReports +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonUserMedicalProfile{");
+        sb.append("bloodType=").append(bloodType);
+        sb.append(", occupation=").append(occupation);
+        sb.append(", pastHistory='").append(pastHistory).append('\'');
+        sb.append(", familyHistory='").append(familyHistory).append('\'');
+        sb.append(", knownAllergies='").append(knownAllergies).append('\'');
+        sb.append(", medicineAllergies='").append(medicineAllergies).append('\'');
+        sb.append(", dentalAnatomy='").append(dentalAnatomy).append('\'');
+        sb.append(", historyDirty=").append(historyDirty);
+        sb.append(", anatomyDirty=").append(anatomyDirty);
+        sb.append(", externalMedicalReports=").append(externalMedicalReports);
+        sb.append('}');
+        return sb.toString();
     }
 }
