@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class DentalWorkDoneFragment extends BaseFragment {
     private String teethNumber;
     private String teethProcedure;
     private EditText edt_summary;
-    private ArrayList<String> toothNumbers = new ArrayList<>();
+    private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -86,8 +88,8 @@ public class DentalWorkDoneFragment extends BaseFragment {
                 // Save data
                 if (isItemExist(teethNumber)) {
                     new CustomToast().showToast(getActivity(), "Tooth already added to list");
-                }else {
-                    toothNumbers.add(teethNumber);
+                } else {
+                    toothWorkDoneList.add(new ToothWorkDone(teethNumber, teethProcedure, edt_summary.getText().toString()));
                     drawTable(false);
                     clearOptionSelection();
                 }
@@ -142,16 +144,24 @@ public class DentalWorkDoneFragment extends BaseFragment {
     }
 
     private boolean isItemExist(String name) {
-        for (int i = 0; i < toothNumbers.size(); i++) {
-            if (toothNumbers.get(i).equals(name))
+        for (int i = 0; i < toothWorkDoneList.size(); i++) {
+            if (toothWorkDoneList.get(i).getToothNumber().equals(name))
                 return true;
         }
         return false;
     }
 
+    public String getSelectedData() {
+        String data = "";
+        for (int i = 0; i < toothWorkDoneList.size(); i++) {
+            data += toothWorkDoneList.get(i).getToothNumber() + ":" + toothWorkDoneList.get(i).getProcedure() + ":" + toothWorkDoneList.get(i).getSummary() + "|";
+        }
+        if (data.endsWith("| "))
+            data = data.substring(0, data.length() - 2);
+        return data;
+    }
 
     public void saveData() {
-//        if (null != instructionAdapter)
-//            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setInstructions(instructionAdapter.getAllSelectedString());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setNoteToDiagnoser(getSelectedData());
     }
 }

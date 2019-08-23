@@ -27,6 +27,9 @@ public class CaseHistory {
     private String provisionalDiagnosis;
     private String instructions;
     private String followup;
+    private String dentalAnatomy;
+    private String noteForPatient;
+    private String noteToDiagnoser;
 
     private List<String> mriList = new ArrayList<>();
     private List<String> sonoList = new ArrayList<>();
@@ -41,6 +44,7 @@ public class CaseHistory {
     private String medicineAllergies;
     private boolean physicalFilled;
     private boolean historyFilled;
+    private boolean dentalAnatomyFilled;
 
 
     private List<JsonMedicalMedicine> jsonMedicineList = new ArrayList<>();
@@ -324,12 +328,48 @@ public class CaseHistory {
         return this;
     }
 
+    public boolean isDentalAnatomyFilled() {
+        return dentalAnatomyFilled;
+    }
+
+    public CaseHistory setDentalAnatomyFilled(boolean dentalAnatomyFilled) {
+        this.dentalAnatomyFilled = dentalAnatomyFilled;
+        return this;
+    }
+
     public String getSymptomsObject() {
         return symptomsObject;
     }
 
     public CaseHistory setSymptomsObject(String symptomsObject) {
         this.symptomsObject = symptomsObject;
+        return this;
+    }
+
+    public String getDentalAnatomy() {
+        return dentalAnatomy;
+    }
+
+    public CaseHistory setDentalAnatomy(String dentalAnatomy) {
+        this.dentalAnatomy = dentalAnatomy;
+        return this;
+    }
+
+    public String getNoteForPatient() {
+        return noteForPatient;
+    }
+
+    public CaseHistory setNoteForPatient(String noteForPatient) {
+        this.noteForPatient = noteForPatient;
+        return this;
+    }
+
+    public String getNoteToDiagnoser() {
+        return noteToDiagnoser;
+    }
+
+    public CaseHistory setNoteToDiagnoser(String noteToDiagnoser) {
+        this.noteToDiagnoser = noteToDiagnoser;
         return this;
     }
 
@@ -354,6 +394,9 @@ public class CaseHistory {
                 ", diagnosis='" + diagnosis + '\'' +
                 ", provisionalDiagnosis='" + provisionalDiagnosis + '\'' +
                 ", instructions='" + instructions + '\'' +
+                ", dentalAnatomy='" + dentalAnatomy + '\'' +
+                ", noteForPatient='" + noteForPatient + '\'' +
+                ", noteToDiagnoser='" + noteToDiagnoser + '\'' +
                 ", followup='" + followup + '\'' +
                 ", mriList=" + mriList +
                 ", sonoList=" + sonoList +
@@ -367,6 +410,7 @@ public class CaseHistory {
                 ", medicineAllergies='" + medicineAllergies + '\'' +
                 ", physicalFilled=" + physicalFilled +
                 ", historyFilled=" + historyFilled +
+                ", dentalAnatomyFilled=" + dentalAnatomyFilled +
                 ", jsonMedicineList=" + jsonMedicineList +
                 '}';
     }
