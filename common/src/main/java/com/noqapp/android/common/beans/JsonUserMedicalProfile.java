@@ -50,7 +50,7 @@ public class JsonUserMedicalProfile implements Serializable {
     private String medicineAllergies;
 
     @JsonProperty("da")
-    private String [] dentalAnatomy;
+    private String dentalAnatomy;
 
     @JsonProperty("hd")
     private boolean historyDirty;
@@ -112,11 +112,11 @@ public class JsonUserMedicalProfile implements Serializable {
         return this;
     }
 
-    public String[] getDentalAnatomy() {
+    public String getDentalAnatomy() {
         return dentalAnatomy;
     }
 
-    public JsonUserMedicalProfile setDentalAnatomy(String[] dentalAnatomy) {
+    public JsonUserMedicalProfile setDentalAnatomy(String dentalAnatomy) {
         this.dentalAnatomy = dentalAnatomy;
         return this;
     }
