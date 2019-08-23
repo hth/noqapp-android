@@ -44,7 +44,7 @@ public class StaggeredGridDentalAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayoutdental, parent, false);
         return new MyViewHolder(v);
     }
 

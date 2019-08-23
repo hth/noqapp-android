@@ -52,7 +52,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_treatment_diagnosis_dental, container, false);
-        spanCount = LaunchActivity.isTablet ? 8 : 4;
+        spanCount = LaunchActivity.isTablet ? 16 : 4;
         recyclerView = v.findViewById(R.id.recyclerView);
         rcv_medicine = v.findViewById(R.id.rcv_medicine);
         view_med = v.findViewById(R.id.view_med);

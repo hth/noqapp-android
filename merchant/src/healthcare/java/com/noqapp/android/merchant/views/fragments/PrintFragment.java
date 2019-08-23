@@ -51,6 +51,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
     private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri, tv_radio_special, tv_details, tv_followup;
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
+    private TextView tv_note_for_patient;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private SegmentedControl sc_follow_up;
     private Button btn_print_pdf;
@@ -90,6 +91,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         tv_bp = v.findViewById(R.id.tv_bp);
         tv_pulse = v.findViewById(R.id.tv_pulse);
         tv_followup = v.findViewById(R.id.tv_followup);
+        tv_note_for_patient = v.findViewById(R.id.tv_note_for_patient);
         tv_provisional_diagnosis = v.findViewById(R.id.tv_provisional_diagnosis);
         lv_medicine = v.findViewById(R.id.lv_medicine);
         acsp_mri = v.findViewById(R.id.acsp_mri);
@@ -362,6 +364,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         tv_radio_xray.setText(covertStringList2String(caseHistory.getXrayList()));
         tv_radio_special.setText(covertStringList2String(caseHistory.getSpecList()));
         tv_pathology.setText(covertStringList2String(caseHistory.getPathologyList()));
+        tv_note_for_patient.setText(caseHistory.getNoteForPatient());
         hideInvestigationViews(caseHistory);
         if (null != caseHistory.getRespiratory()) {
             tv_respiratory.setText("Respiration Rate: " + caseHistory.getRespiratory());
