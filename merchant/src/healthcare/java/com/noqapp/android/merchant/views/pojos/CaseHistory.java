@@ -45,8 +45,7 @@ public class CaseHistory {
     private boolean physicalFilled;
     private boolean historyFilled;
     private boolean dentalAnatomyFilled;
-
-
+    
     private List<JsonMedicalMedicine> jsonMedicineList = new ArrayList<>();
 
     public String getName() {

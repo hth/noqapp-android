@@ -55,8 +55,8 @@ public class JsonUserMedicalProfile implements Serializable {
     @JsonProperty("hd")
     private boolean historyDirty;
 
-   // @JsonProperty("hd")
-    private boolean anatomyDirty;
+    @JsonProperty("dd")
+    private boolean dentalAnatomyDirty;
 
     @JsonProperty("er")
     private List<JsonNameDateHealth> externalMedicalReports;
@@ -133,12 +133,12 @@ public class JsonUserMedicalProfile implements Serializable {
         return this;
     }
 
-    public boolean isAnatomyDirty() {
-        return anatomyDirty;
+    public boolean isDentalAnatomyDirty() {
+        return dentalAnatomyDirty;
     }
 
-    public JsonUserMedicalProfile setAnatomyDirty(boolean anatomyDirty) {
-        this.anatomyDirty = anatomyDirty;
+    public JsonUserMedicalProfile setDentalAnatomyDirty(boolean dentalAnatomyDirty) {
+        this.dentalAnatomyDirty = dentalAnatomyDirty;
         return this;
     }
 
@@ -162,7 +162,7 @@ public class JsonUserMedicalProfile implements Serializable {
         sb.append(", medicineAllergies='").append(medicineAllergies).append('\'');
         sb.append(", dentalAnatomy='").append(dentalAnatomy).append('\'');
         sb.append(", historyDirty=").append(historyDirty);
-        sb.append(", anatomyDirty=").append(anatomyDirty);
+        sb.append(", dentalAnatomyDirty=").append(dentalAnatomyDirty);
         sb.append(", externalMedicalReports=").append(externalMedicalReports);
         sb.append('}');
         return sb.toString();
