@@ -160,7 +160,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             jsonMedicalRecord.getJsonUserMedicalProfile().setMedicineAllergies(caseHistory.getMedicineAllergies());
             jsonMedicalRecord.getJsonUserMedicalProfile().setHistoryDirty(caseHistory.isHistoryFilled());
             jsonMedicalRecord.getJsonUserMedicalProfile().setDentalAnatomy(caseHistory.getDentalAnatomy());
-            jsonMedicalRecord.getJsonUserMedicalProfile().setAnatomyDirty(caseHistory.isDentalAnatomyFilled());
+            jsonMedicalRecord.getJsonUserMedicalProfile().setDentalAnatomyDirty(caseHistory.isDentalAnatomyFilled());
             jsonMedicalRecord.setClinicalFinding(caseHistory.getClinicalFindings());
             jsonMedicalRecord.setProvisionalDifferentialDiagnosis(caseHistory.getProvisionalDiagnosis());
             jsonMedicalRecord.setExamination(caseHistory.getExaminationResults());
