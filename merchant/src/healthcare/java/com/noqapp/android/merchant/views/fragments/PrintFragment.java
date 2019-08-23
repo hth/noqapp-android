@@ -9,6 +9,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
@@ -25,18 +26,23 @@ import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
+import com.noqapp.android.merchant.views.pojos.ToothInfo;
+import com.noqapp.android.merchant.views.pojos.ToothProcedure;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -62,6 +68,8 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec, ll_path;
     private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono, acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
     private PreferredStoreList preferredStoreList;
+    private TableLayout tl_work_done;
+    private TextView tv_tr,tv_nfp;
 
     @Nullable
     @Override
@@ -69,6 +77,8 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_print, container, false);
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
+        tv_tr = v.findViewById(R.id.tv_tr);
+        tv_nfp = v.findViewById(R.id.tv_nfp);
         tv_patient_name = v.findViewById(R.id.tv_patient_name);
         tv_address = v.findViewById(R.id.tv_address);
         tv_symptoms = v.findViewById(R.id.tv_symptoms);
@@ -83,6 +93,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         tv_pathology = v.findViewById(R.id.tv_pathology);
         tv_clinical_findings = v.findViewById(R.id.tv_clinical_findings);
         tv_examination = v.findViewById(R.id.tv_examination);
+        tl_work_done = v.findViewById(R.id.tl_work_done);
 
         tv_weight = v.findViewById(R.id.tv_weight);
         tv_height = v.findViewById(R.id.tv_height);
@@ -364,7 +375,23 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         tv_radio_xray.setText(covertStringList2String(caseHistory.getXrayList()));
         tv_radio_special.setText(covertStringList2String(caseHistory.getSpecList()));
         tv_pathology.setText(covertStringList2String(caseHistory.getPathologyList()));
-        tv_note_for_patient.setText(caseHistory.getNoteForPatient());
+        if(MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT){
+            tl_work_done.setVisibility(View.VISIBLE);
+            tv_tr.setVisibility(View.VISIBLE);
+            tl_work_done.removeAllViews();
+            parseDentalDiagnosis(caseHistory.getNoteForPatient());
+            tv_note_for_patient.setVisibility(View.GONE);
+            tv_nfp.setVisibility(View.GONE);
+
+        }else{
+            tv_note_for_patient.setText(caseHistory.getNoteForPatient());
+            tv_note_for_patient.setVisibility(View.VISIBLE);
+            tv_nfp.setVisibility(View.VISIBLE);
+            tl_work_done.setVisibility(View.GONE);
+            tv_tr.setVisibility(View.GONE);
+        }
+
+
         hideInvestigationViews(caseHistory);
         if (null != caseHistory.getRespiratory()) {
             tv_respiratory.setText("Respiration Rate: " + caseHistory.getRespiratory());
@@ -669,5 +696,49 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         dismissProgress();
         new CustomToast().showToast(getActivity(), "Failed to update");
     }
+    private void drawTable(boolean isHeader,String str1,String str2,String str3) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.table_row_dental, null);
+        TextView tv_header = view.findViewById(R.id.tv_header);
+        TextView tv_right = view.findViewById(R.id.tv_right);
+        TextView tv_left = view.findViewById(R.id.tv_left);
+        if (isHeader) {
+            tv_header.setText("Tooth Number");
+            tv_header.setTypeface(null, Typeface.BOLD);
+            tv_right.setTypeface(null, Typeface.BOLD);
+            tv_left.setTypeface(null, Typeface.BOLD);
+            tv_header.setGravity(Gravity.CENTER);
+            tv_right.setText("Procedure");
+            tv_left.setText("Summary");
+        } else {
+            tv_header.setText(str1);
+            tv_right.setText(str2);
+            tv_left.setText(str3);
+            tv_header.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            tv_header.setTypeface(null, Typeface.NORMAL);
+            tv_right.setTypeface(null, Typeface.NORMAL);
+            tv_left.setTypeface(null, Typeface.NORMAL);
+        }
+        tl_work_done.addView(view);
+    }
 
+
+    public void parseDentalDiagnosis(String str) {
+        try {
+            String[] temp = str.split("\\|");
+            if (temp.length > 0) {
+                drawTable(true,"","","");
+                for (String act : temp) {
+                    if (act.contains(":")) {
+                        String[] strArray = act.split(":");
+                        String str1 = strArray[0].trim();
+                        String str2 = strArray[1];
+
+                        drawTable(false,str1,str2,"");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

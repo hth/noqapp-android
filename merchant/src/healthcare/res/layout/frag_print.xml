@@ -547,6 +547,7 @@
 
 
         <TextView
+            android:id="@+id/tv_nfp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -563,6 +564,24 @@
             android:text=""
             android:textSize="16sp"
             android:paddingLeft="10dp" />
+
+        <TextView
+            android:id="@+id/tv_tr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:text="Treatment recommendation:"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TableLayout
+            android:id="@+id/tl_work_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:stretchColumns="*" />
 
         <TextView
             android:layout_width="wrap_content"
