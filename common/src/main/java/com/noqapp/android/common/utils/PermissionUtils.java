@@ -23,10 +23,6 @@ public class PermissionUtils {
     public static final int PERMISSION_REQUEST_STORAGE = 100;
     public static final int PERMISSION_REQUEST_CAMERA_AND_STORAGE = 101;
 
-
-
-
-
     public static boolean isExternalStoragePermissionAllowed(Context ctx) {
         //Getting the permission status
         int result_read = ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_EXTERNAL_STORAGE);
