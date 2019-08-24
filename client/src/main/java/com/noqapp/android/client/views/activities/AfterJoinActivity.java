@@ -163,7 +163,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             } else {
                 Intent in = new Intent(AfterJoinActivity.this, CouponsActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
-                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+                startActivityForResult(in, Constants.ACTIVITY_RESULT_BACK);
             }
         });
         TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
@@ -689,7 +689,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
+        if (requestCode == Constants.ACTIVITY_RESULT_BACK) {
             if (RESULT_OK == resultCode) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
                 Log.e("Data received", jsonCoupon.toString());

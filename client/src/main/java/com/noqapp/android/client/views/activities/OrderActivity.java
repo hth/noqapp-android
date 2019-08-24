@@ -133,7 +133,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             } else {
                 Intent in = new Intent(OrderActivity.this, CouponsActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
-                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+                startActivityForResult(in, Constants.ACTIVITY_RESULT_BACK);
             }
         });
         TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
@@ -234,7 +234,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 }
             }
         }
-        if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
+        if (requestCode == Constants.ACTIVITY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
                 jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
                 Log.e("data recieve", jsonCoupon.toString());

@@ -2,7 +2,6 @@ package com.noqapp.android.common.utils;
 
 public class BaseConstants {
 
-
     //Urls
     public static final String URL_MERCHANT_LOGIN = "https://q.noqapp.com/";
     public static final String URL_MERCHANT_REGISTER = "https://q.noqapp.com/open/register.htm";
@@ -16,10 +15,10 @@ public class BaseConstants {
     public static final int INVALID_CREDENTIAL = 401;
 
     public static int SUCCESS = 1;
-    public static  String RELEASE = "release";;
-    public static  String DEBUG = "debug";;
+    public static  String RELEASE = "release";
+    public static  String DEBUG = "debug";
 
     public static final String MESSAGE_ORIGIN = "mo";
 
-    public static final int ACTIVITTY_RESULT_BACK = 23;
+    public static final int ACTIVITY_RESULT_BACK = 23;
 }

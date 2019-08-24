@@ -141,7 +141,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             } else {
                 Intent in = new Intent(JoinActivity.this, CouponsActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
-                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+                startActivityForResult(in, Constants.ACTIVITY_RESULT_BACK);
             }
         });
         TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
@@ -778,7 +778,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
+        if (requestCode == Constants.ACTIVITY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
                 Log.e("data recieve", jsonCoupon.toString());
