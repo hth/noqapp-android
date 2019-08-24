@@ -10,11 +10,10 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-
 public class FileUtils {
 
     @SuppressLint("NewApi")
-    public  String getFilePath(Context context, Uri uri) {
+    public String getFilePath(Context context, Uri uri) {
         String selection = null;
         String[] selectionArgs = null;
         if (Build.VERSION.SDK_INT >= 19 && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
@@ -28,8 +27,7 @@ public class FileUtils {
                     return Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
                 }
                 final String id = DocumentsContract.getDocumentId(uri);
-                uri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                uri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
             } else if (isMediaDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -42,25 +40,18 @@ public class FileUtils {
                     uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
                 selection = "_id=?";
-                selectionArgs = new String[]{
-                        split[1]
-                };
+                selectionArgs = new String[]{split[1]};
             }
         }
         if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-
             if (isGooglePhotosUri(uri)) {
                 return uri.getLastPathSegment();
             }
 
-            String[] projection = {
-                    MediaStore.Images.Media.DATA
-            };
-            Cursor cursor = null;
+            String[] projection = {MediaStore.Images.Media.DATA};
+            Cursor cursor;
             try {
-                cursor = context.getContentResolver()
-                        .query(uri, projection, selection, selectionArgs, null);
+                cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 if (cursor.moveToFirst()) {
                     return cursor.getString(column_index);
@@ -89,25 +80,14 @@ public class FileUtils {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    public static String getFilePathFromDownload(Context context, Uri uri) {
-
-        Cursor cursor = null;
-        final String[] projection = {
-                MediaStore.MediaColumns.DISPLAY_NAME
-        };
-
-        try {
-            cursor = context.getContentResolver().query(uri, projection, null, null,
-                    null);
+    private static String getFilePathFromDownload(Context context, Uri uri) {
+        final String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME};
+        try (Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 final int index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
                 return cursor.getString(index);
             }
-        } finally {
-            if (cursor != null)
-                cursor.close();
         }
         return null;
     }
-
 }
