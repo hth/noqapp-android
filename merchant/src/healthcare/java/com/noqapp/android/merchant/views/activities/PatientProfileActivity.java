@@ -320,12 +320,15 @@ public class PatientProfileActivity extends BaseActivity implements
                     tv_respiration.setText(notAvailable);
                     tv_height.setText(notAvailable);
                 }
-                ll_dental_history.setVisibility(View.VISIBLE);
-                Bundle b= new Bundle();
-                b.putSerializable("jsonMedicalRecord", jsonMedicalRecordTemp);
-                DentalStatusFragment dentalStatusFragment = new DentalStatusFragment();
-                dentalStatusFragment.setArguments(b);
-                replaceFragmentWithoutBackStack(R.id.fl_dental_history,dentalStatusFragment);
+
+                if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.DNT) {
+                    ll_dental_history.setVisibility(View.VISIBLE);
+                    Bundle b = new Bundle();
+                    b.putSerializable("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    DentalStatusFragment dentalStatusFragment = new DentalStatusFragment();
+                    dentalStatusFragment.setArguments(b);
+                    replaceFragmentWithoutBackStack(R.id.fl_dental_history, dentalStatusFragment);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
