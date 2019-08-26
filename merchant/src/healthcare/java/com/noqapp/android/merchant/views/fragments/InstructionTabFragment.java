@@ -24,7 +24,12 @@ public class InstructionTabFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.frag_instruction_tab, container, false);
+        return inflater.inflate(R.layout.frag_instruction_tab, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         try {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -37,9 +42,7 @@ public class InstructionTabFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return v;
     }
-
 
     public void saveData() {
         if (null != dentalWorkDoneFragment)

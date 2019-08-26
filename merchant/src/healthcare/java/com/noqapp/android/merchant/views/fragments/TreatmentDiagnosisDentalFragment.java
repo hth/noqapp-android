@@ -102,8 +102,8 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
 
         try {
             if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() &&
-                    null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis()) {
-                selectedDentalList = dentalSelectAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis(), MedicalDataStatic.Dental.getDentalDiagnosisList());
+                    null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteForPatient()) {
+                selectedDentalList = dentalSelectAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteForPatient(), MedicalDataStatic.Dental.getDentalDiagnosisList());
                 dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
                 rcv_medicine.setAdapter(dentalSelectAdapter);
                 dentalSelectAdapter.notifyDataSetChanged();

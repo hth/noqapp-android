@@ -19,21 +19,27 @@ public class TreatmentTabFragment extends BaseFragment {
     private TreatmentDiagnosisFragment treatmentDiagnosisFragment;
     private TreatmentMedicineFragment treatmentMedicineFragment;
     private TreatmentDiagnosisDentalFragment treatmentDiagnosisDentalFragment;
+    private View view;
 
     @Nullable
     @Override
-    public View onCreateView(
-            LayoutInflater inflater,
-            @Nullable ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.frag_treatment_tab, container, false);
+        view = inflater.inflate(R.layout.frag_treatment_tab, container, false);
+        return view;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         try {
-            FrameLayout fl_treatment_diagnosis = v.findViewById(R.id.fl_treatment_diagnosis);
-            FrameLayout fl_treatment_medicine = v.findViewById(R.id.fl_treatment_medicine);
+            FrameLayout fl_treatment_diagnosis = view.findViewById(R.id.fl_treatment_diagnosis);
+            FrameLayout fl_treatment_medicine = view.findViewById(R.id.fl_treatment_medicine);
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            if (LaunchActivity.isTablet) {
+            if (MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT && LaunchActivity.isTablet) {
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
                 LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
                 fl_treatment_diagnosis.setLayoutParams(lp1);
@@ -51,9 +57,7 @@ public class TreatmentTabFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return v;
     }
-
 
     public void saveData() {
         if (null != treatmentDiagnosisFragment) {

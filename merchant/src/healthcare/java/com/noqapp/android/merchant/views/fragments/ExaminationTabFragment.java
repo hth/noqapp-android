@@ -28,6 +28,12 @@ public class ExaminationTabFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.frag_examination_tab, container, false);
         actv_clinical_findings = v.findViewById(R.id.actv_clinical_findings);
         actv_examination_results = v.findViewById(R.id.actv_examination_results);
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT) {
@@ -37,14 +43,6 @@ public class ExaminationTabFragment extends BaseFragment {
             proDiagnosisFragment = new ProDiagnosisFragment();
             transaction.replace(R.id.fl_pro_diagnosis, proDiagnosisFragment).commit();
         }
-
-
-        return v;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
         if (null != jsonMedicalRecord) {
             actv_clinical_findings.setText(jsonMedicalRecord.getClinicalFinding() == null ? "" : jsonMedicalRecord.getClinicalFinding());
