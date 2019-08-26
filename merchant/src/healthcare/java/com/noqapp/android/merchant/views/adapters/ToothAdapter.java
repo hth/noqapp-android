@@ -27,6 +27,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
     private static final int LAYOUT_ONE = 0;
     private static final int LAYOUT_TWO = 1;
     private final String SPLIT_SYMBOL = ":";
+    private boolean isClickEnable = true;
 
     public List<ToothInfo> getDataSet() {
         return dataSet;
@@ -35,6 +36,12 @@ public class ToothAdapter extends RecyclerView.Adapter {
     public ToothAdapter(List<ToothInfo> data, Context context) {
         this.dataSet = data;
         this.context = context;
+    }
+
+    public ToothAdapter(List<ToothInfo> data, Context context, boolean isClickEnable) {
+        this.dataSet = data;
+        this.context = context;
+        this.isClickEnable = isClickEnable;
     }
 
     @Override
@@ -56,10 +63,12 @@ public class ToothAdapter extends RecyclerView.Adapter {
         holder.iv_top.setBackground(ContextCompat.getDrawable(context, item.getToothTopView().getDrawable()));
         holder.iv_front.setBackground(ContextCompat.getDrawable(context, item.getToothFrontView().getDrawable()));
         holder.iv_front.setOnClickListener(v -> {
-            onToothFrontViewSelected(listPosition, item);
+            if (isClickEnable)
+                onToothFrontViewSelected(listPosition, item);
         });
         holder.iv_top.setOnClickListener(v -> {
-            onToothTopViewSelected(listPosition, item);
+            if (isClickEnable)
+                onToothTopViewSelected(listPosition, item);
         });
     }
 
