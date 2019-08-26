@@ -110,6 +110,36 @@ public class MedicalHistoryApiCalls {
     }
 
 
+    public void historicalFiltered(String did, String mail, String auth, FindMedicalProfile findMedicalProfile) {
+        medicalRecordApiUrls.historicalFiltered(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("historicalFiltered", String.valueOf(response.body()));
+                        medicalRecordListPresenter.medicalRecordDentalListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch historicalFiltered");
+                        medicalRecordListPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        medicalRecordListPresenter.authenticationFailure();
+                    } else {
+                        medicalRecordListPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
+                Log.e("historicalFiltered Fail", t.getLocalizedMessage(), t);
+                medicalRecordListPresenter.medicalRecordListError();
+            }
+        });
+    }
+
+
     public void historical(String did, String mail, String auth, FindMedicalProfile findMedicalProfile) {
         medicalRecordApiUrls.historical(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override

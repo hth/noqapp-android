@@ -303,39 +303,39 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
     }
 
     static class RecordHolder {
-        TextView tv_diagnosed_by;
-        TextView tv_complaints;
-        TextView tv_create;
-        TextView tv_business_name;
-        TextView tv_business_category_name;
-        TextView tv_examination;
-        TextView tv_medicine;
-        TextView tv_attachment;
+        private TextView tv_diagnosed_by;
+        private TextView tv_complaints;
+        private TextView tv_create;
+        private TextView tv_business_name;
+        private TextView tv_business_category_name;
+        private TextView tv_examination;
+        private TextView tv_medicine;
+        private TextView tv_attachment;
 
-        TextView tv_attachment_xray;
-        TextView tv_attachment_sono;
-        TextView tv_attachment_scan;
-        TextView tv_attachment_pathology;
-        TextView tv_attachment_spec;
-        TextView tv_attachment_mri;
+        private TextView tv_attachment_xray;
+        private TextView tv_attachment_sono;
+        private TextView tv_attachment_scan;
+        private TextView tv_attachment_pathology;
+        private TextView tv_attachment_spec;
+        private TextView tv_attachment_mri;
 
-        TextView tv_observation_xray_label;
-        TextView tv_observation_sono_label;
-        TextView tv_observation_scan_label;
-        TextView tv_observation_pathology_label;
-        TextView tv_observation_spec_label;
-        TextView tv_observation_mri_label;
+        private TextView tv_observation_xray_label;
+        private TextView tv_observation_sono_label;
+        private TextView tv_observation_scan_label;
+        private TextView tv_observation_pathology_label;
+        private TextView tv_observation_spec_label;
+        private TextView tv_observation_mri_label;
 
-        LinearLayout ll_medical;
-        LinearLayout ll_xray;
-        LinearLayout ll_sono;
-        LinearLayout ll_scan;
-        LinearLayout ll_pathology;
-        LinearLayout ll_spec;
-        LinearLayout ll_mri;
+        private LinearLayout ll_medical;
+        private LinearLayout ll_xray;
+        private LinearLayout ll_sono;
+        private LinearLayout ll_scan;
+        private LinearLayout ll_pathology;
+        private LinearLayout ll_spec;
+        private LinearLayout ll_mri;
 
-        View view_separator;
-        CardView cardview;
+        private View view_separator;
+        private CardView cardview;
 
         RecordHolder() {
         }

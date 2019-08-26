@@ -7,6 +7,8 @@ public interface MedicalRecordListPresenter extends ResponseErrorPresenter{
 
     void medicalRecordListResponse(JsonMedicalRecordList jsonMedicalRecordList);
 
+    void medicalRecordDentalListResponse(JsonMedicalRecordList jsonMedicalRecordList);
+
     void medicalRecordListError();
 
 }
