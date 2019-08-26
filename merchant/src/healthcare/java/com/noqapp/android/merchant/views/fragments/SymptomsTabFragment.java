@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.merchant.R;
 
@@ -27,12 +25,10 @@ public class SymptomsTabFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         try {
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
             pastHistoryFragment = new PastHistoryFragment();
-            transaction.replace(R.id.fl_past_history, pastHistoryFragment).commit();
+            getFragmentTransaction().replace(R.id.fl_past_history, pastHistoryFragment).commit();
             symptomsFragment = new SymptomsFragment();
-            transaction.replace(R.id.fl_symptoms, symptomsFragment).commit();
+            getFragmentTransaction().replace(R.id.fl_symptoms, symptomsFragment).commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
