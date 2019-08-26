@@ -112,7 +112,7 @@ public interface MedicalRecordApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ENTRY_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalRecord/historical/{md}.json")
+    @POST("api/m/h/medicalRecord/historical.json")
     Call<JsonMedicalRecordList> historicalFiltered(
             @Header("X-R-DID")
             String did,
@@ -125,9 +125,6 @@ public interface MedicalRecordApiUrls {
 
             @Header("X-R-AUTH")
             String auth,
-
-            @Path("md")
-            String medicalDepartment,
 
             @Body
             FindMedicalProfile findMedicalProfile
