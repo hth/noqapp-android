@@ -718,6 +718,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             tv_right.setTypeface(null, Typeface.NORMAL);
             tv_left.setTypeface(null, Typeface.NORMAL);
         }
+        tv_left.setVisibility(View.GONE);
         tl_work_done.addView(view);
     }
 

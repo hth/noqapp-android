@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
+import com.noqapp.android.merchant.views.fragments.DentalStatusFragment;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 import com.squareup.picasso.Picasso;
 
@@ -61,6 +63,7 @@ public class PatientProfileActivity extends BaseActivity implements
     private TextView tv_empty_list;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     public static PatientProfileActivity patientProfileActivity;
+    private LinearLayout ll_dental_history;
 
 
     public static PatientProfileActivity getPatientProfileActivity() {
@@ -80,6 +83,7 @@ public class PatientProfileActivity extends BaseActivity implements
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         codeQR = getIntent().getStringExtra("qCodeQR");
         listview = findViewById(R.id.listview);
+        ll_dental_history = findViewById(R.id.ll_dental_history);
         tv_patient_name = findViewById(R.id.tv_patient_name);
         tv_address = findViewById(R.id.tv_address);
         tv_details = findViewById(R.id.tv_details);
@@ -317,6 +321,14 @@ public class PatientProfileActivity extends BaseActivity implements
                     tv_height.setText(notAvailable);
                 }
 
+                if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.DNT) {
+                    ll_dental_history.setVisibility(View.VISIBLE);
+                    Bundle b = new Bundle();
+                    b.putSerializable("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    DentalStatusFragment dentalStatusFragment = new DentalStatusFragment();
+                    dentalStatusFragment.setArguments(b);
+                    replaceFragmentWithoutBackStack(R.id.fl_dental_history, dentalStatusFragment);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

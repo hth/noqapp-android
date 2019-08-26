@@ -34,6 +34,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 public class TreatmentDiagnosisDentalFragment extends BaseFragment implements StaggeredGridDentalAdapter.StaggeredMedicineClick,
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
+    private static final String ADDITIONAL_OPTION = "Mouth" ;
     private RecyclerView recyclerView, rcv_medicine;
     private TextView tv_add_medicine, tv_close, tv_remove, tv_medicine_name;
     private StaggeredGridDentalAdapter dentalAdapter, dentalSelectAdapter;
@@ -91,7 +92,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
-        dentalAdapter = new StaggeredGridDentalAdapter(getActivity(), MedicalDataStatic.Dental.getDentalDiagnosisList(), this, false);
+        dentalAdapter = new StaggeredGridDentalAdapter(getActivity(), getToothNumbersList(), this, false);
         recyclerView.setAdapter(dentalAdapter);
 
         rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
@@ -103,7 +104,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         try {
             if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() &&
                     null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteForPatient()) {
-                selectedDentalList = dentalSelectAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteForPatient(), MedicalDataStatic.Dental.getDentalDiagnosisList());
+                selectedDentalList = dentalSelectAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteForPatient(), getToothNumbersList());
                 dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
                 rcv_medicine.setAdapter(dentalSelectAdapter);
                 dentalSelectAdapter.notifyDataSetChanged();
@@ -128,7 +129,8 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         }
         tv_remove.setVisibility(isEdit ? View.VISIBLE : View.GONE);
         dataObj = temp;
-        tv_medicine_name.setText(dataObj.getShortName());
+        tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(ADDITIONAL_OPTION)?
+                dataObj.getShortName():"Tooth Number: "+dataObj.getShortName());
         if (isEdit) {
             // Pre fill the data
             sc_dental_option.setSelectedSegment(dental_option_data.indexOf(dataObj.getDentalProcedure()));
@@ -182,5 +184,12 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     @Override
     public void searchByPos(DataObj dataObj) {
         new AppUtils().hideKeyBoard(getActivity());
+    }
+
+
+    private ArrayList<DataObj> getToothNumbersList(){
+       ArrayList<DataObj> temp = MedicalDataStatic.Dental.getDentalDiagnosisList();
+        temp.add(new DataObj(ADDITIONAL_OPTION, false));
+        return temp;
     }
 }
