@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
@@ -28,23 +26,20 @@ public class ExaminationTabFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.frag_examination_tab, container, false);
         actv_clinical_findings = v.findViewById(R.id.actv_clinical_findings);
         actv_examination_results = v.findViewById(R.id.actv_examination_results);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT) {
-            dentalDiagnosisFragment = new DentalProDiagnosisFragment();
-            transaction.replace(R.id.fl_pro_diagnosis, dentalDiagnosisFragment).commit();
-        } else {
-            proDiagnosisFragment = new ProDiagnosisFragment();
-            transaction.replace(R.id.fl_pro_diagnosis, proDiagnosisFragment).commit();
-        }
-
-
         return v;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT) {
+            dentalDiagnosisFragment = new DentalProDiagnosisFragment();
+            getFragmentTransaction().replace(R.id.fl_pro_diagnosis, dentalDiagnosisFragment).commit();
+        } else {
+            proDiagnosisFragment = new ProDiagnosisFragment();
+            getFragmentTransaction().replace(R.id.fl_pro_diagnosis, proDiagnosisFragment).commit();
+        }
         JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
         if (null != jsonMedicalRecord) {
             actv_clinical_findings.setText(jsonMedicalRecord.getClinicalFinding() == null ? "" : jsonMedicalRecord.getClinicalFinding());

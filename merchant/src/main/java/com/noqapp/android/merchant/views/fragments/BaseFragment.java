@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
@@ -72,6 +74,12 @@ public class BaseFragment extends Fragment implements ResponseErrorPresenter {
     public void onDetach() {
         dismissProgress();
         super.onDetach();
+    }
+
+    protected FragmentTransaction getFragmentTransaction(){
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        return ft;
     }
 }
 

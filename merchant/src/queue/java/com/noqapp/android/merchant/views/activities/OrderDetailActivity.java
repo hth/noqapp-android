@@ -163,7 +163,7 @@ public class OrderDetailActivity
         btn_discount.setOnClickListener(v -> {
             Intent in = new Intent(OrderDetailActivity.this, CouponActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
-            startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+            startActivityForResult(in, Constants.ACTIVITY_RESULT_BACK);
         });
         btn_remove_discount.setOnClickListener(v -> {
             ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, true);
@@ -682,7 +682,7 @@ public class OrderDetailActivity
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
+        if (requestCode == Constants.ACTIVITY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
                 Log.e("Data received", jsonCoupon.toString());

@@ -79,8 +79,8 @@ public class DentalProDiagnosisFragment extends BaseFragment {
         rcv_tooth.setAdapter(toothAdapter);
         try {
             if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() && !TextUtils.isEmpty(
-                    MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis())) {
-                String temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis();
+                    MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getJsonUserMedicalProfile().getDentalAnatomy())) {
+                String temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getJsonUserMedicalProfile().getDentalAnatomy();
                 toothAdapter.updateToothObj(temp);
             }
         } catch (Exception e) {
