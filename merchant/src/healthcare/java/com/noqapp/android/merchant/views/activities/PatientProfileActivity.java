@@ -8,9 +8,9 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,27 +34,23 @@ import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.fragments.DentalStatusFragment;
+import com.noqapp.android.merchant.views.fragments.MedicalHistoryFilteredFragment;
 import com.noqapp.android.merchant.views.fragments.MedicalHistoryFragment;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PatientProfileActivity extends BaseActivity implements
         PatientProfilePresenter, JsonMedicalRecordPresenter {
     private long lastPress;
     private Toast backPressToast;
-    public ProgressBar pb_physical, pb_dental_history;
+    public ProgressBar pb_physical;
     private TextView tv_patient_name, tv_address, tv_details;
     private ImageView iv_profile;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
     private JsonQueuedPerson jsonQueuedPerson;
     private String codeQR;
-    private ListView lv_dental_history;
     private final String notAvailable = "N/A";
     private JsonMedicalRecord jsonMedicalRecordTemp;
     private JsonProfile jsonProfile;
-    private TextView tv_empty_list_dental;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private LinearLayout ll_dental_history;
     private boolean isDental = false;
@@ -75,7 +71,6 @@ public class PatientProfileActivity extends BaseActivity implements
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
 
-        lv_dental_history = findViewById(R.id.lv_dental_history);
         ll_dental_history = findViewById(R.id.ll_dental_history);
         tv_patient_name = findViewById(R.id.tv_patient_name);
         tv_address = findViewById(R.id.tv_address);
@@ -89,11 +84,7 @@ public class PatientProfileActivity extends BaseActivity implements
         tv_bp = findViewById(R.id.tv_bp);
         tv_respiration = findViewById(R.id.tv_respiration);
 
-
-        tv_empty_list_dental = findViewById(R.id.tv_empty_list_dental);
         pb_physical = findViewById(R.id.pb_physical);
-
-        pb_dental_history = findViewById(R.id.pb_dental_history);
         TextView tv_start_diagnosis = findViewById(R.id.tv_start_diagnosis);
         tv_start_diagnosis.setOnClickListener(v -> {
             if (null == jsonProfile || null == jsonMedicalRecordTemp) {
@@ -162,6 +153,19 @@ public class PatientProfileActivity extends BaseActivity implements
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
+
+        FrameLayout fl_medical_history = findViewById(R.id.fl_medical_history);
+        FrameLayout fl_medical_history_filtered = findViewById(R.id.fl_medical_history_filtered);
+        TextView tv_history_all = findViewById(R.id.tv_history_all);
+        TextView tv_history_filtered = findViewById(R.id.tv_history_filtered);
+        tv_history_filtered.setOnClickListener(v -> {
+            fl_medical_history_filtered.setVisibility(View.VISIBLE);
+            fl_medical_history.setVisibility(View.GONE);
+        });
+        tv_history_all.setOnClickListener(v -> {
+            fl_medical_history_filtered.setVisibility(View.GONE);
+            fl_medical_history.setVisibility(View.VISIBLE);
+        });
     }
 
     class AsyncTaskTemp extends AsyncTask<Void, Void, Void> {
@@ -169,25 +173,24 @@ public class PatientProfileActivity extends BaseActivity implements
         protected void onPreExecute() {
             super.onPreExecute();
             pb_physical.setVisibility(View.VISIBLE);
-            pb_dental_history.setVisibility(isDental ? View.VISIBLE : View.GONE);
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             PatientProfileApiCalls profileModel = new PatientProfileApiCalls(PatientProfileActivity.this);
             profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-//            if (isDental) {
-//                medicalHistoryApiCalls.historicalFiltered(BaseLaunchActivity.getDeviceID(),
-//                        LaunchActivity.getLaunchActivity().getEmail(),
-//                        LaunchActivity.getLaunchActivity().getAuth(),bizCategoryId,
-//                        new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-//            }
             MedicalHistoryFragment mhf = new MedicalHistoryFragment();
             Bundle b = new Bundle();
             b.putString("codeQR", codeQR);
             b.putSerializable("jsonQueuedPerson", jsonQueuedPerson);
+            b.putString("bizCategoryId", bizCategoryId);
             mhf.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history, mhf);
+
+            MedicalHistoryFilteredFragment mhff = new MedicalHistoryFilteredFragment();
+            mhff.setArguments(b);
+            replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
+
 
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
@@ -227,55 +230,20 @@ public class PatientProfileActivity extends BaseActivity implements
     @Override
     public void authenticationFailure() {
         pb_physical.setVisibility(View.GONE);
-        pb_dental_history.setVisibility(View.GONE);
         AppUtils.authenticationProcessing();
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         pb_physical.setVisibility(View.GONE);
-        pb_dental_history.setVisibility(View.GONE);
         new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         pb_physical.setVisibility(View.GONE);
-        pb_dental_history.setVisibility(View.GONE);
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
-
-
-//    @Override
-//    public void medicalRecordDentalListResponse(JsonMedicalRecordList jsonMedicalRecordList) {
-//        Log.d("data", jsonMedicalRecordList.toString());
-//        if (!jsonMedicalRecordList.getJsonMedicalRecords().isEmpty()) {
-//            List<JsonMedicalRecord> jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
-//
-//            Collections.sort(jsonMedicalRecords, new Comparator<JsonMedicalRecord>() {
-//                public int compare(JsonMedicalRecord o1, JsonMedicalRecord o2) {
-//                    try {
-//                        return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getCreateDate()));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        return 0;
-//                    }
-//                }
-//            });
-//            MedicalHistoryDentalAdapter adapter = new MedicalHistoryDentalAdapter(this, jsonMedicalRecords);
-//            lv_dental_history.setAdapter(adapter);
-//            if (null == jsonMedicalRecords || jsonMedicalRecords.size() == 0) {
-//                tv_empty_list_dental.setVisibility(View.VISIBLE);
-//            }
-//            pb_dental_history.setVisibility(View.GONE);
-//        }
-//
-//    }
-//
-//    @Override
-//    public void medicalRecordListError() {
-//        pb_dental_history.setVisibility(View.GONE);
-//    }
 
     @Override
     public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
