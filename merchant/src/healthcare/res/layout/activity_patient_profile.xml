@@ -158,9 +158,6 @@
                     android:visibility="gone"
                     android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -173,7 +170,7 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
-                    </RelativeLayout>
+
 
                     <FrameLayout
                         android:id="@+id/fl_dental_history"
@@ -191,6 +188,25 @@
                             android:visibility="gone" />
 
                     </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Work Done"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+
+                    <TableLayout
+                        android:id="@+id/tl_work_done"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:stretchColumns="*" />
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -589,8 +605,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:orientation="horizontal">
 

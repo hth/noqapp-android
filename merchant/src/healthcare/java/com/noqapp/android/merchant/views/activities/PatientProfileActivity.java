@@ -2,16 +2,20 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +26,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
@@ -40,6 +45,8 @@ import com.noqapp.android.merchant.views.fragments.MedicalHistoryFilteredFragmen
 import com.noqapp.android.merchant.views.fragments.MedicalHistoryFragment;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class PatientProfileActivity extends BaseActivity implements
         PatientProfilePresenter, JsonMedicalRecordPresenter {
     private long lastPress;
@@ -57,6 +64,13 @@ public class PatientProfileActivity extends BaseActivity implements
     private LinearLayout ll_dental_history;
     private boolean isDental = false;
     private String bizCategoryId = "";
+    private TableLayout tl_work_done;
+
+    public static PatientProfileActivity getPatientProfileActivity() {
+        return patientProfileActivity;
+    }
+
+    public static PatientProfileActivity patientProfileActivity;
 
 
     @Override
@@ -68,12 +82,14 @@ public class PatientProfileActivity extends BaseActivity implements
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
+        patientProfileActivity = this;
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         codeQR = getIntent().getStringExtra("qCodeQR");
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
 
         ll_dental_history = findViewById(R.id.ll_dental_history);
+        tl_work_done = findViewById(R.id.tl_work_done);
         tv_patient_name = findViewById(R.id.tv_patient_name);
         tv_address = findViewById(R.id.tv_address);
         tv_details = findViewById(R.id.tv_details);
@@ -163,19 +179,19 @@ public class PatientProfileActivity extends BaseActivity implements
         tv_history_filtered.setOnClickListener(v -> {
             fl_medical_history_filtered.setVisibility(View.VISIBLE);
             fl_medical_history.setVisibility(View.GONE);
-            tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileActivity.this,R.color.white));
+            tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.white));
             tv_history_all.setBackground(null);
-            tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileActivity.this,R.color.pressed_color));
-            tv_history_filtered.setBackground(ContextCompat.getDrawable(PatientProfileActivity.this,R.drawable.button_drawable_white));
+            tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.pressed_color));
+            tv_history_filtered.setBackground(ContextCompat.getDrawable(PatientProfileActivity.this, R.drawable.button_drawable_white));
 
         });
         tv_history_all.setOnClickListener(v -> {
             fl_medical_history_filtered.setVisibility(View.GONE);
             fl_medical_history.setVisibility(View.VISIBLE);
-            tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileActivity.this,R.color.white));
+            tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.white));
             tv_history_filtered.setBackground(null);
-            tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileActivity.this,R.color.pressed_color));
-            tv_history_all.setBackground(ContextCompat.getDrawable(PatientProfileActivity.this,R.drawable.button_drawable_white));
+            tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.pressed_color));
+            tv_history_all.setBackground(ContextCompat.getDrawable(PatientProfileActivity.this, R.drawable.button_drawable_white));
         });
     }
 
@@ -201,6 +217,7 @@ public class PatientProfileActivity extends BaseActivity implements
             MedicalHistoryFilteredFragment mhff = new MedicalHistoryFilteredFragment();
             mhff.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
+
 
 
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
@@ -349,6 +366,65 @@ public class PatientProfileActivity extends BaseActivity implements
             }
             //super.onBackPressed();
             finish();
+        }
+    }
+
+    public void updateWorkDone(List<JsonMedicalRecord> jsonMedicalRecords) {
+        tl_work_done.removeAllViews();
+        drawTable(true, "", "", "");
+        for (int i = 0; i < jsonMedicalRecords.size(); i++) {
+            JsonMedicalRecord jsonMedicalRecord = jsonMedicalRecords.get(i);
+            String createdDate = "";
+            try {
+                createdDate = CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(CommonHelper.SDF_ISO8601_FMT.parse(jsonMedicalRecord.getCreateDate()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            parseAndRedrawTable(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
+        }
+    }
+
+    private void drawTable(boolean isHeader, String teethNumber, String teethProcedure, String summary) {
+        View view = LayoutInflater.from(this).inflate(R.layout.table_row_dental, null);
+        TextView tv_header = view.findViewById(R.id.tv_header);
+        TextView tv_right = view.findViewById(R.id.tv_right);
+        TextView tv_left = view.findViewById(R.id.tv_left);
+        if (isHeader) {
+            tv_header.setText("Tooth No.");
+            tv_header.setTypeface(null, Typeface.BOLD);
+            tv_right.setTypeface(null, Typeface.BOLD);
+            tv_left.setTypeface(null, Typeface.BOLD);
+            tv_header.setGravity(Gravity.CENTER);
+            tv_right.setText("Procedure");
+            tv_left.setText("Date");
+        } else {
+            tv_header.setText(teethNumber);
+            tv_right.setText(teethProcedure);
+            tv_left.setText(summary);
+            tv_header.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            tv_header.setTypeface(null, Typeface.NORMAL);
+            tv_right.setTypeface(null, Typeface.NORMAL);
+            tv_left.setTypeface(null, Typeface.NORMAL);
+        }
+        tl_work_done.addView(view);
+    }
+
+    public void parseAndRedrawTable(String str, String createdDate) {
+        try {
+            String[] temp = str.split("\\|");
+            if (null != temp && temp.length > 0) {
+                for (int i = 0; i < temp.length; i++) {
+                    String act = temp[i];
+                    if (act.contains(":")) {
+                        String[] strArray = act.split(":");
+                        String toothNum = strArray[0].trim();
+                        String procedure = strArray[1];
+                        drawTable(false, toothNum, procedure, createdDate);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
