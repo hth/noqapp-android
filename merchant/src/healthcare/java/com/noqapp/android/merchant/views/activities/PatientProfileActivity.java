@@ -66,6 +66,7 @@ public class PatientProfileActivity extends BaseActivity implements
     public static PatientProfileActivity patientProfileActivity;
     private LinearLayout ll_dental_history;
     private boolean isDental = false;
+    private String bizCategoryId = "";
 
 
     public static PatientProfileActivity getPatientProfileActivity() {
@@ -84,7 +85,8 @@ public class PatientProfileActivity extends BaseActivity implements
         patientProfileActivity = this;
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         codeQR = getIntent().getStringExtra("qCodeQR");
-        isDental = MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.DNT;
+        bizCategoryId = getIntent().getStringExtra("bizCategoryId");
+        isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
         listview = findViewById(R.id.listview);
         lv_dental_history = findViewById(R.id.lv_dental_history);
         ll_dental_history = findViewById(R.id.ll_dental_history);
@@ -190,7 +192,8 @@ public class PatientProfileActivity extends BaseActivity implements
             if (isDental) {
                 medicalHistoryApiCalls.historicalFiltered(BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
+                        LaunchActivity.getLaunchActivity().getAuth(),bizCategoryId,
+                        new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
             }
             medicalHistoryApiCalls.historical(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
@@ -415,7 +418,8 @@ public class PatientProfileActivity extends BaseActivity implements
         if (isDental) {
             medicalHistoryApiCalls.historicalFiltered(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
+                    LaunchActivity.getLaunchActivity().getAuth(),bizCategoryId,
+                    new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
         }
         medicalHistoryApiCalls.historical(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
