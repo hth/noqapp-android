@@ -51,6 +51,10 @@ public class MedicalHistoryApiCalls {
         this.updateObservationPresenter = updateObservationPresenter;
     }
 
+    public MedicalHistoryApiCalls() {
+
+    }
+
     public void setJsonMedicalRecordPresenter(JsonMedicalRecordPresenter jsonMedicalRecordPresenter) {
         this.jsonMedicalRecordPresenter = jsonMedicalRecordPresenter;
     }
@@ -105,6 +109,36 @@ public class MedicalHistoryApiCalls {
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("on Failure update", t.getLocalizedMessage(), t);
                 medicalRecordPresenter.medicalRecordError();
+            }
+        });
+    }
+
+
+    public void historicalFiltered(String did, String mail, String auth, String medicalDepartment, FindMedicalProfile findMedicalProfile) {
+        medicalRecordApiUrls.historicalFiltered(did, Constants.DEVICE_TYPE, mail, auth, medicalDepartment, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("historicalFiltered", String.valueOf(response.body()));
+                        medicalRecordListPresenter.medicalRecordDentalListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch historicalFiltered");
+                        medicalRecordListPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        medicalRecordListPresenter.authenticationFailure();
+                    } else {
+                        medicalRecordListPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
+                Log.e("historicalFiltered Fail", t.getLocalizedMessage(), t);
+                medicalRecordListPresenter.medicalRecordListError();
             }
         });
     }
