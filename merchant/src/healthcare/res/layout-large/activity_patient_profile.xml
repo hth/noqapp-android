@@ -134,10 +134,10 @@
 
                 <LinearLayout
                     android:id="@+id/ll_dental_history"
-                    android:layout_margin="5dp"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -149,8 +149,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:gravity="center"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
+                            android:padding="10dp"
                             android:text="Dental History"
                             android:textColor="@android:color/white"
                             android:textSize="18sp"
@@ -159,30 +158,14 @@
                     </RelativeLayout>
 
                     <FrameLayout
+                        android:id="@+id/fl_dental_history"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white">
 
-                        <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                            android:id="@+id/lv_dental_history"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@android:color/transparent"
-                            android:divider="@null" />
-
-                        <TextView
-                            android:id="@+id/tv_empty_list_dental"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:background="@android:color/white"
-                            android:gravity="center"
-                            android:text="Dental history not created for this patient yet :(."
-                            android:textColor="@android:color/black"
-                            android:textSize="14sp"
-                            android:visibility="gone" />
 
                         <ProgressBar
-                            android:id="@+id/pb_dental_history"
+                            android:id="@+id/pb_dental"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -191,6 +174,69 @@
 
                     </FrameLayout>
 
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#80000000" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="center"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp"
+                                android:text="Dental History"
+                                android:textColor="@android:color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                                android:id="@+id/lv_dental_history"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:divider="@null" />
+
+                            <TextView
+                                android:id="@+id/tv_empty_list_dental"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:text="Dental history not created for this patient yet :(."
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+
+                            <ProgressBar
+                                android:id="@+id/pb_dental_history"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:indeterminateTint="#CD334E"
+                                android:visibility="gone" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
