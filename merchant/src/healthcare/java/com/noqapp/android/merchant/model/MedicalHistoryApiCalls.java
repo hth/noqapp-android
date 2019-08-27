@@ -51,6 +51,10 @@ public class MedicalHistoryApiCalls {
         this.updateObservationPresenter = updateObservationPresenter;
     }
 
+    public MedicalHistoryApiCalls() {
+
+    }
+
     public void setJsonMedicalRecordPresenter(JsonMedicalRecordPresenter jsonMedicalRecordPresenter) {
         this.jsonMedicalRecordPresenter = jsonMedicalRecordPresenter;
     }
@@ -110,8 +114,8 @@ public class MedicalHistoryApiCalls {
     }
 
 
-    public void historicalFiltered(String did, String mail, String auth,String medicalDepartment, FindMedicalProfile findMedicalProfile) {
-        medicalRecordApiUrls.historicalFiltered(did, Constants.DEVICE_TYPE, mail, auth, medicalDepartment,findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
+    public void historicalFiltered(String did, String mail, String auth, String medicalDepartment, FindMedicalProfile findMedicalProfile) {
+        medicalRecordApiUrls.historicalFiltered(did, Constants.DEVICE_TYPE, mail, auth, medicalDepartment, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

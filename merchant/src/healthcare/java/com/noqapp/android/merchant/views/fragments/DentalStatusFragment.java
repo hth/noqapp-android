@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.DentalOptionEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.ToothAdapter;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
 import com.noqapp.android.merchant.views.pojos.ToothProcedure;
