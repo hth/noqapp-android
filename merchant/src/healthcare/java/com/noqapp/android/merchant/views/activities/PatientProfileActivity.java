@@ -380,7 +380,9 @@ public class PatientProfileActivity extends BaseActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            parseAndRedrawTable(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
+            if(!TextUtils.isEmpty(jsonMedicalRecord.getNoteToDiagnoser())) {
+                parseAndRedrawTable(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
+            }
         }
     }
 

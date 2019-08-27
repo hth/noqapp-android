@@ -634,8 +634,7 @@
                 android:text="All Medical History"
                 android:gravity="center"
                 android:padding="10dp"
-                android:textColor="@color/pressed_color"
-                android:background="@drawable/button_drawable_white"
+                android:textColor="@android:color/white"
                 android:layout_marginRight="5dp"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
@@ -647,7 +646,8 @@
                 android:text="Dental History"
                 android:gravity="center"
                 android:padding="10dp"
-                android:textColor="@android:color/white"
+                android:background="@drawable/button_drawable_white"
+                android:textColor="@color/pressed_color"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
         </LinearLayout>
