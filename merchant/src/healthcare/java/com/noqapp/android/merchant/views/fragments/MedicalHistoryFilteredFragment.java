@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
@@ -22,6 +23,7 @@ import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProf
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryDentalAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
@@ -94,6 +96,11 @@ public class MedicalHistoryFilteredFragment extends BaseFragment implements Medi
             listview.setAdapter(adapter);
             if (null == jsonMedicalRecords || jsonMedicalRecords.size() == 0) {
                 tv_empty_list.setVisibility(View.VISIBLE);
+            }else{
+                if(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT){
+                    if(null != PatientProfileActivity.getPatientProfileActivity())
+                        PatientProfileActivity.getPatientProfileActivity().updateWorkDone(jsonMedicalRecords);
+                }
             }
             pb_history.setVisibility(View.GONE);
         }
