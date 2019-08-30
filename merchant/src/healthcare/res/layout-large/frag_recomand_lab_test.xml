@@ -141,17 +141,26 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:text="Pathology"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:orientation="horizontal">
 
 
             <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight=".6"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/tv_add_pathology"
                     android:orientation="horizontal">
 
                 <ImageView
@@ -191,22 +200,8 @@
                         android:background="@drawable/ic_cancel"/>
             </RelativeLayout>
 
-            <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight=".4"
-                    android:layout_height="wrap_content">
 
-                <TextView
-                        android:text="Pathology"
-                        android:layout_width="match_parent"
-                        android:padding="10dp"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/tv_add_pathology"
-                        android:textColor="@android:color/black"
-                        android:layout_height="wrap_content"/>
+
 
                 <TextView
                         android:id="@+id/tv_add_pathology"
@@ -221,8 +216,8 @@
                         android:layout_alignParentRight="true"
                         android:textColor="@color/colorPrimary"
                         android:layout_height="wrap_content"/>
-            </RelativeLayout>
-        </LinearLayout>
+
+        </RelativeLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
