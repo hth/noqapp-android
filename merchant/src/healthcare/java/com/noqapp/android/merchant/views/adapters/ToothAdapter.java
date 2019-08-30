@@ -106,7 +106,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
         builder.setView(dialogView);
         final AlertDialog mAlertDialog = builder.create();
         RecyclerView rcv_tooth = dialogView.findViewById(R.id.rcv_tooth_option);
-        rcv_tooth.setLayoutManager(new GridLayoutManager(context, 4));
+        rcv_tooth.setLayoutManager(new GridLayoutManager(context, 5));
         rcv_tooth.setItemAnimator(new DefaultItemAnimator());
         ToothOptionAdapter toothAdapter = new ToothOptionAdapter(toothInfo.getTopViewDrawables(), item -> {
             mAlertDialog.dismiss();
@@ -135,7 +135,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
         builder.setView(dialogView);
         final AlertDialog mAlertDialog = builder.create();
         RecyclerView rcv_tooth = dialogView.findViewById(R.id.rcv_tooth_option);
-        rcv_tooth.setLayoutManager(new GridLayoutManager(context, 4));
+        rcv_tooth.setLayoutManager(new GridLayoutManager(context, 5));
         rcv_tooth.setItemAnimator(new DefaultItemAnimator());
         ToothOptionAdapter toothAdapter = new ToothOptionAdapter(toothInfo.getFrontViewDrawables(), item -> {
             mAlertDialog.dismiss();

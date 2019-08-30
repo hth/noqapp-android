@@ -42,7 +42,6 @@ public enum LabCategoryEnum {
         for (LabCategoryEnum radiologyCategory : LabCategoryEnum.values()) {
             a.add(radiologyCategory.description);
         }
-
         return a;
     }
 

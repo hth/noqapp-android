@@ -1,5 +1,8 @@
 package com.noqapp.android.common.model.types.medical;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 2019-08-17 09:17
@@ -47,6 +50,15 @@ public enum DentalOptionEnum {
     public String getDescription() {
         return description;
     }
+
+    public static List<String> asListOfDescription() {
+        List<String> a = new LinkedList<>();
+        for (DentalOptionEnum dentalOptionEnum : DentalOptionEnum.values()) {
+            a.add(dentalOptionEnum.description);
+        }
+        return a;
+    }
+
 
     @Override
     public String toString() {

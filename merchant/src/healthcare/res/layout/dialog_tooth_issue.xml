@@ -5,6 +5,7 @@
     android:layout_gravity="center"
     android:background="#fff"
     android:gravity="center"
+    android:layout_margin="15dp"
     android:paddingTop="20dp">
 
     <RelativeLayout
@@ -48,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_title"
+            android:layout_above="@+id/ll_btm"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -64,12 +66,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/ll_dental"
+            android:layout_above="@+id/ll_btm"
             android:background="@color/color_grey_bg" />
 
         <LinearLayout
+            android:id="@+id/ll_btm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_dental"
+            android:layout_alignParentBottom="true"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:weightSum="1">

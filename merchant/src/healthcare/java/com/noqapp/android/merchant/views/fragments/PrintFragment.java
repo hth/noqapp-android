@@ -1,5 +1,19 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
+
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathologyList;
@@ -27,33 +41,16 @@ import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
-import com.noqapp.android.merchant.views.pojos.ToothInfo;
-import com.noqapp.android.merchant.views.pojos.ToothProcedure;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatSpinner;
+import java.util.ArrayList;
+import java.util.List;
+
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PrintFragment extends BaseFragment implements MedicalRecordPresenter {
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
@@ -71,7 +68,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono, acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
     private PreferredStoreList preferredStoreList;
     private ListView list_view;
-    private TextView tv_tr,tv_nfp;
+    private TextView tv_tr, tv_nfp;
 
     @Nullable
     @Override
@@ -377,14 +374,14 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         tv_radio_xray.setText(covertStringList2String(caseHistory.getXrayList()));
         tv_radio_special.setText(covertStringList2String(caseHistory.getSpecList()));
         tv_pathology.setText(covertStringList2String(caseHistory.getPathologyList()));
-        if(MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT){
+        if (MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT) {
             list_view.setVisibility(View.VISIBLE);
             tv_tr.setVisibility(View.VISIBLE);
             parseDentalDiagnosis(caseHistory.getNoteForPatient());
             tv_note_for_patient.setVisibility(View.GONE);
             tv_nfp.setVisibility(View.GONE);
 
-        }else{
+        } else {
             tv_note_for_patient.setText(caseHistory.getNoteForPatient());
             tv_note_for_patient.setVisibility(View.VISIBLE);
             tv_nfp.setVisibility(View.VISIBLE);
@@ -499,82 +496,13 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private int getSelectionPos(List<JsonPreferredBusiness> temp, HealthCareServiceEnum hcse, String storeId) {
         if (null == storeId) {
             return 0;
-        }
-
-        if (null == hcse) {
+        } else {
             for (int i = 0; i < temp.size(); i++) {
                 if (temp.get(i).getBizStoreId().equals(storeId)) {
                     return i;
                 }
             }
             return 0;
-        }
-
-        switch (hcse) {
-            case SONO: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getBizStoreId().equals(storeId)) {
-                        return i;
-                    }
-                }
-                return 0;
-            }
-            case SCAN: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getBizStoreId().equals(storeId)) {
-                        return i;
-                    }
-                }
-                return 0;
-            }
-            case MRI: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getBizStoreId().equals(storeId)) {
-                        return i;
-                    }
-                }
-                return 0;
-            }
-            case PATH: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getBizStoreId().equals(storeId)) {
-                        return i;
-                    }
-                }
-                return 0;
-            }
-            case XRAY: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getBizStoreId().equals(storeId)) {
-                        return i;
-                    }
-                }
-                return 0;
-            }
-            case SPEC: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getBizStoreId().equals(storeId)) {
-                        return i;
-                    }
-                }
-                return 0;
-            }
-            case PHYS: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getBizStoreId().equals(storeId)) {
-                        return i;
-                    }
-                }
-                return 0;
-            }
-            default: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getBizStoreId().equals(storeId)) {
-                        return i;
-                    }
-                }
-                return 0;
-            }
         }
     }
 
@@ -709,7 +637,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
                         String[] strArray = act.split(":");
                         String str1 = strArray[0].trim();
                         String str2 = strArray[1];
-                        toothWorkDoneList.add(new ToothWorkDone(str1,str2,""));
+                        toothWorkDoneList.add(new ToothWorkDone(str1, str2, ""));
                     }
                 }
             }
