@@ -47,12 +47,12 @@
                     android:textStyle="bold" />
             </RelativeLayout>
 
-            <TableLayout
-            android:id="@+id/tl_work_done"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:stretchColumns="*" />
+            <ListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:layout_margin="10dp"/>
 
         </LinearLayout>
 

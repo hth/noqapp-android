@@ -4,11 +4,19 @@ public class ToothWorkDone {
     private String toothNumber;
     private String procedure;
     private String summary;
+    private String createdDate;
 
     public ToothWorkDone(String toothNumber, String procedure, String summary) {
         this.toothNumber = toothNumber;
         this.procedure = procedure;
         this.summary = summary;
+    }
+
+    public ToothWorkDone(String toothNumber, String procedure, String summary, String createdDate) {
+        this.toothNumber = toothNumber;
+        this.procedure = procedure;
+        this.summary = summary;
+        this.createdDate = createdDate;
     }
 
     public String getToothNumber() {
@@ -38,12 +46,22 @@ public class ToothWorkDone {
         return this;
     }
 
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public ToothWorkDone setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ToothWorkDone{");
         sb.append("toothNumber='").append(toothNumber).append('\'');
         sb.append(", procedure='").append(procedure).append('\'');
         sb.append(", summary='").append(summary).append('\'');
+        sb.append(", createdDate='").append(createdDate).append('\'');
         sb.append('}');
         return sb.toString();
     }

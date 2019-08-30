@@ -23,11 +23,13 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
+import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
 import com.noqapp.android.merchant.views.pojos.ToothProcedure;
+import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
@@ -68,7 +70,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec, ll_path;
     private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono, acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
     private PreferredStoreList preferredStoreList;
-    private TableLayout tl_work_done;
+    private ListView list_view;
     private TextView tv_tr,tv_nfp;
 
     @Nullable
@@ -93,7 +95,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         tv_pathology = v.findViewById(R.id.tv_pathology);
         tv_clinical_findings = v.findViewById(R.id.tv_clinical_findings);
         tv_examination = v.findViewById(R.id.tv_examination);
-        tl_work_done = v.findViewById(R.id.tl_work_done);
+        list_view = v.findViewById(R.id.list_view);
 
         tv_weight = v.findViewById(R.id.tv_weight);
         tv_height = v.findViewById(R.id.tv_height);
@@ -376,9 +378,8 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         tv_radio_special.setText(covertStringList2String(caseHistory.getSpecList()));
         tv_pathology.setText(covertStringList2String(caseHistory.getPathologyList()));
         if(MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT){
-            tl_work_done.setVisibility(View.VISIBLE);
+            list_view.setVisibility(View.VISIBLE);
             tv_tr.setVisibility(View.VISIBLE);
-            tl_work_done.removeAllViews();
             parseDentalDiagnosis(caseHistory.getNoteForPatient());
             tv_note_for_patient.setVisibility(View.GONE);
             tv_nfp.setVisibility(View.GONE);
@@ -387,7 +388,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             tv_note_for_patient.setText(caseHistory.getNoteForPatient());
             tv_note_for_patient.setVisibility(View.VISIBLE);
             tv_nfp.setVisibility(View.VISIBLE);
-            tl_work_done.setVisibility(View.GONE);
+            list_view.setVisibility(View.GONE);
             tv_tr.setVisibility(View.GONE);
         }
 
@@ -696,48 +697,24 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         dismissProgress();
         new CustomToast().showToast(getActivity(), "Failed to update");
     }
-    private void drawTable(boolean isHeader,String str1,String str2,String str3) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.table_row_dental, null);
-        TextView tv_header = view.findViewById(R.id.tv_header);
-        TextView tv_right = view.findViewById(R.id.tv_right);
-        TextView tv_left = view.findViewById(R.id.tv_left);
-        if (isHeader) {
-            tv_header.setText("Tooth Number");
-            tv_header.setTypeface(null, Typeface.BOLD);
-            tv_right.setTypeface(null, Typeface.BOLD);
-            tv_left.setTypeface(null, Typeface.BOLD);
-            tv_header.setGravity(Gravity.CENTER);
-            tv_right.setText("Procedure");
-            tv_left.setText("Summary");
-        } else {
-            tv_header.setText(str1);
-            tv_right.setText(str2);
-            tv_left.setText(str3);
-            tv_header.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            tv_header.setTypeface(null, Typeface.NORMAL);
-            tv_right.setTypeface(null, Typeface.NORMAL);
-            tv_left.setTypeface(null, Typeface.NORMAL);
-        }
-        tv_left.setVisibility(View.GONE);
-        tl_work_done.addView(view);
-    }
 
 
     public void parseDentalDiagnosis(String str) {
         try {
+            ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
             String[] temp = str.split("\\|");
             if (temp.length > 0) {
-                drawTable(true,"","","");
                 for (String act : temp) {
                     if (act.contains(":")) {
                         String[] strArray = act.split(":");
                         String str1 = strArray[0].trim();
                         String str2 = strArray[1];
-
-                        drawTable(false,str1,str2,"");
+                        toothWorkDoneList.add(new ToothWorkDone(str1,str2,""));
                     }
                 }
             }
+            WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList);
+            list_view.setAdapter(workDoneAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
