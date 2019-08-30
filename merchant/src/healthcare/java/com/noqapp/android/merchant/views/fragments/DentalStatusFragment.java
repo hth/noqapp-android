@@ -76,7 +76,7 @@ public class DentalStatusFragment extends BaseFragment {
         List<ToothProcedure> drawables = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             int id = this.getResources().getIdentifier(String.valueOf("tooth_o_2_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(new ToothProcedure(id, DentalOptionEnum.CAV.getDescription()));
+            drawables.add(new ToothProcedure(id, DentalOptionEnum.CAO.getDescription()));
         }
         return drawables;
     }
