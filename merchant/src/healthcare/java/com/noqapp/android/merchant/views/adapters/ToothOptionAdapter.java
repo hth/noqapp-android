@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class ToothOptionAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.iv_option.setBackground(ContextCompat.getDrawable(context, drawableList.get(position).getDrawable()));
+        holder.tooth_label.setText(drawableList.get(position).getDrawableLabel());
         holder.iv_option.setOnClickListener(v -> {
             if (null != listener) {
                 listener.onOptionSelected(drawableList.get(position));
@@ -55,9 +57,11 @@ public class ToothOptionAdapter extends RecyclerView.Adapter {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView iv_option;
+        private TextView tooth_label;
         private MyViewHolder(View itemView) {
             super(itemView);
             this.iv_option = itemView.findViewById(R.id.iv_option);
+            this.tooth_label = itemView.findViewById(R.id.tooth_label);
         }
     }
 }

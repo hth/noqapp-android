@@ -184,12 +184,13 @@
                         android:textStyle="bold" />
 
 
-                    <TableLayout
-                        android:id="@+id/tl_work_done"
+                    <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                        android:id="@+id/list_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:stretchColumns="*" />
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:divider="@null"
+                        android:layout_margin="0dp"/>
 
                 </LinearLayout>
 

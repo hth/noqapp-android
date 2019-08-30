@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
 import com.noqapp.android.merchant.views.pojos.ToothProcedure;
 
@@ -106,7 +107,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
         builder.setView(dialogView);
         final AlertDialog mAlertDialog = builder.create();
         RecyclerView rcv_tooth = dialogView.findViewById(R.id.rcv_tooth_option);
-        rcv_tooth.setLayoutManager(new GridLayoutManager(context, 4));
+        rcv_tooth.setLayoutManager(new GridLayoutManager(context, LaunchActivity.isTablet?6:4));
         rcv_tooth.setItemAnimator(new DefaultItemAnimator());
         ToothOptionAdapter toothAdapter = new ToothOptionAdapter(toothInfo.getTopViewDrawables(), item -> {
             mAlertDialog.dismiss();
@@ -135,7 +136,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
         builder.setView(dialogView);
         final AlertDialog mAlertDialog = builder.create();
         RecyclerView rcv_tooth = dialogView.findViewById(R.id.rcv_tooth_option);
-        rcv_tooth.setLayoutManager(new GridLayoutManager(context, 4));
+        rcv_tooth.setLayoutManager(new GridLayoutManager(context,  LaunchActivity.isTablet?6:4));
         rcv_tooth.setItemAnimator(new DefaultItemAnimator());
         ToothOptionAdapter toothAdapter = new ToothOptionAdapter(toothInfo.getFrontViewDrawables(), item -> {
             mAlertDialog.dismiss();

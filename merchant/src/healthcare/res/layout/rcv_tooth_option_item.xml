@@ -12,4 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp" />
 
+    <TextView
+        android:id="@+id/tooth_label"
+        android:layout_width="wrap_content"
+        android:padding="5dp"
+        android:textColor="#333"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

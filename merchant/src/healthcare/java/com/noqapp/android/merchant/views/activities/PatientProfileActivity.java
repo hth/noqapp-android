@@ -2,20 +2,17 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +37,14 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
 import com.noqapp.android.merchant.views.fragments.DentalStatusFragment;
 import com.noqapp.android.merchant.views.fragments.MedicalHistoryFilteredFragment;
 import com.noqapp.android.merchant.views.fragments.MedicalHistoryFragment;
+import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientProfileActivity extends BaseActivity implements
@@ -64,7 +64,9 @@ public class PatientProfileActivity extends BaseActivity implements
     private LinearLayout ll_dental_history;
     private boolean isDental = false;
     private String bizCategoryId = "";
-    private TableLayout tl_work_done;
+    private ListView list_view;
+    private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
+    private WorkDoneAdapter workDoneAdapter;
 
     public static PatientProfileActivity getPatientProfileActivity() {
         return patientProfileActivity;
@@ -89,7 +91,7 @@ public class PatientProfileActivity extends BaseActivity implements
         isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
 
         ll_dental_history = findViewById(R.id.ll_dental_history);
-        tl_work_done = findViewById(R.id.tl_work_done);
+        list_view = findViewById(R.id.list_view);
         tv_patient_name = findViewById(R.id.tv_patient_name);
         tv_address = findViewById(R.id.tv_address);
         tv_details = findViewById(R.id.tv_details);
@@ -217,7 +219,6 @@ public class PatientProfileActivity extends BaseActivity implements
             MedicalHistoryFilteredFragment mhff = new MedicalHistoryFilteredFragment();
             mhff.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
-
 
 
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
@@ -370,58 +371,34 @@ public class PatientProfileActivity extends BaseActivity implements
     }
 
     public void updateWorkDone(List<JsonMedicalRecord> jsonMedicalRecords) {
-        tl_work_done.removeAllViews();
-        drawTable(true, "", "", "");
+        toothWorkDoneList.clear();
         for (int i = 0; i < jsonMedicalRecords.size(); i++) {
             JsonMedicalRecord jsonMedicalRecord = jsonMedicalRecords.get(i);
             String createdDate = "";
             try {
-                createdDate = CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(CommonHelper.SDF_ISO8601_FMT.parse(jsonMedicalRecord.getCreateDate()));
+                createdDate = CommonHelper.SDF_YYYY_MM_DD.format(CommonHelper.SDF_ISO8601_FMT.parse(jsonMedicalRecord.getCreateDate()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if(!TextUtils.isEmpty(jsonMedicalRecord.getNoteToDiagnoser())) {
-                parseAndRedrawTable(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
+            if (!TextUtils.isEmpty(jsonMedicalRecord.getNoteToDiagnoser())) {
+                parseWorkDoneData(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
             }
         }
+        workDoneAdapter = new WorkDoneAdapter(this, toothWorkDoneList);
+        list_view.setAdapter(workDoneAdapter);
     }
 
-    private void drawTable(boolean isHeader, String teethNumber, String teethProcedure, String summary) {
-        View view = LayoutInflater.from(this).inflate(R.layout.table_row_dental, null);
-        TextView tv_header = view.findViewById(R.id.tv_header);
-        TextView tv_right = view.findViewById(R.id.tv_right);
-        TextView tv_left = view.findViewById(R.id.tv_left);
-        if (isHeader) {
-            tv_header.setText("Tooth No.");
-            tv_header.setTypeface(null, Typeface.BOLD);
-            tv_right.setTypeface(null, Typeface.BOLD);
-            tv_left.setTypeface(null, Typeface.BOLD);
-            tv_header.setGravity(Gravity.CENTER);
-            tv_right.setText("Procedure");
-            tv_left.setText("Date");
-        } else {
-            tv_header.setText(teethNumber);
-            tv_right.setText(teethProcedure);
-            tv_left.setText(summary);
-            tv_header.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            tv_header.setTypeface(null, Typeface.NORMAL);
-            tv_right.setTypeface(null, Typeface.NORMAL);
-            tv_left.setTypeface(null, Typeface.NORMAL);
-        }
-        tl_work_done.addView(view);
-    }
-
-    public void parseAndRedrawTable(String str, String createdDate) {
+    public void parseWorkDoneData(String str, String createdDate) {
         try {
             String[] temp = str.split("\\|");
-            if (null != temp && temp.length > 0) {
+            if (temp.length > 0) {
                 for (int i = 0; i < temp.length; i++) {
                     String act = temp[i];
                     if (act.contains(":")) {
                         String[] strArray = act.split(":");
                         String toothNum = strArray[0].trim();
                         String procedure = strArray[1];
-                        drawTable(false, toothNum, procedure, createdDate);
+                        toothWorkDoneList.add(new ToothWorkDone(toothNum, procedure, "",createdDate));
                     }
                 }
             }

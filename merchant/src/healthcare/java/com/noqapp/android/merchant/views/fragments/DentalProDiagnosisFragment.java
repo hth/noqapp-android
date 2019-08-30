@@ -60,7 +60,7 @@ public class DentalProDiagnosisFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ToothProcedure imageFilePathTop = new ToothProcedure(R.drawable.tooth_o_2_1,DentalOptionEnum.NOR.getDescription());
+        ToothProcedure imageFilePathTop = new ToothProcedure(R.drawable.tooth_o_2_1, DentalOptionEnum.NOR.getDescription());
         List<ToothProcedure> drawables = getFrontAllViews();
         List<ToothInfo> toothInfos = new ArrayList<>();
         List<String> toothNumbers = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
@@ -145,18 +145,28 @@ public class DentalProDiagnosisFragment extends BaseFragment {
 
     private List<ToothProcedure> getTopOptionViews() {
         List<ToothProcedure> drawables = new ArrayList<>();
+        List<String> options = DentalOptionEnum.asListOfDescription();
+        int[] drawable = new int[6];
         for (int i = 0; i < 6; i++) {
-            int id = this.getResources().getIdentifier(String.valueOf("tooth_o_2_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(new ToothProcedure(id, DentalOptionEnum.CAV.getDescription()));
+            drawable[i] = this.getResources().getIdentifier(String.valueOf("tooth_o_2_" + (i + 1)), "drawable", getActivity().getPackageName());
+        }
+        for (int i = 0; i < options.size(); i++) {
+            int pos = i % 6;
+            drawables.add(new ToothProcedure(drawable[pos], options.get(i)));
         }
         return drawables;
     }
 
     private List<ToothProcedure> getFrontOptionViews() {
         List<ToothProcedure> drawables = new ArrayList<>();
+        List<String> options = DentalOptionEnum.asListOfDescription();
+        int[] drawable = new int[4];
         for (int i = 0; i < 4; i++) {
-            int id = this.getResources().getIdentifier(String.valueOf("tooth_o_1_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(new ToothProcedure(id, DentalOptionEnum.IMP.getDescription()));
+            drawable[i] = this.getResources().getIdentifier(String.valueOf("tooth_o_1_" + (i + 1)), "drawable", getActivity().getPackageName());
+        }
+        for (int i = 0; i < options.size(); i++) {
+            int pos = i % 4;
+            drawables.add(new ToothProcedure(drawable[pos], options.get(i)));
         }
         return drawables;
     }
@@ -173,9 +183,9 @@ public class DentalProDiagnosisFragment extends BaseFragment {
     public void saveData() {
         // save to dental anatomy
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDentalAnatomy(toothAdapter.getSelectedData());
-        if(!TextUtils.isEmpty(toothAdapter.getSelectedData())){
+        if (!TextUtils.isEmpty(toothAdapter.getSelectedData())) {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDentalAnatomyFilled(true);
-        }else{
+        } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDentalAnatomyFilled(false);
         }
     }

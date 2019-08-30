@@ -1,15 +1,13 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -17,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
@@ -29,7 +28,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 public class DentalWorkDoneFragment extends BaseFragment {
 
-    private TableLayout tl_work_done;
+    private ListView list_view;
     private TextView tv_add_work, tv_close;
     private SegmentedControl sc_teeth_number, sc_procedure;
     private List<String> dental_procedure;
@@ -40,13 +39,14 @@ public class DentalWorkDoneFragment extends BaseFragment {
     private String teethProcedure;
     private EditText edt_summary;
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
+    private WorkDoneAdapter workDoneAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_dental_work_done, container, false);
-        tl_work_done = v.findViewById(R.id.tl_work_done);
+        list_view = v.findViewById(R.id.list_view);
         tv_add_work = v.findViewById(R.id.tv_add_work);
         sc_teeth_number = v.findViewById(R.id.sc_teeth_number);
         sc_procedure = v.findViewById(R.id.sc_procedure);
@@ -90,7 +90,7 @@ public class DentalWorkDoneFragment extends BaseFragment {
                     new CustomToast().showToast(getActivity(), "Tooth already added to list");
                 } else {
                     toothWorkDoneList.add(new ToothWorkDone(teethNumber, teethProcedure, edt_summary.getText().toString()));
-                    drawTable(false, teethNumber, teethProcedure, edt_summary.getText().toString());
+                    workDoneAdapter.setWorkDoneList(toothWorkDoneList);
                     clearOptionSelection();
                 }
             }
@@ -99,40 +99,15 @@ public class DentalWorkDoneFragment extends BaseFragment {
         return v;
     }
 
-    private void drawTable(boolean isHeader, String teethNumber, String teethProcedure, String summary) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.table_row_dental, null);
-        TextView tv_header = view.findViewById(R.id.tv_header);
-        TextView tv_right = view.findViewById(R.id.tv_right);
-        TextView tv_left = view.findViewById(R.id.tv_left);
-        if (isHeader) {
-            tv_header.setText("Tooth No.");
-            tv_header.setTypeface(null, Typeface.BOLD);
-            tv_right.setTypeface(null, Typeface.BOLD);
-            tv_left.setTypeface(null, Typeface.BOLD);
-            tv_header.setGravity(Gravity.CENTER);
-            tv_right.setText("Procedure");
-            tv_left.setText("Summary");
-        } else {
-            tv_header.setText(teethNumber);
-            tv_right.setText(teethProcedure);
-            tv_left.setText(summary);
-            tv_header.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            tv_header.setTypeface(null, Typeface.NORMAL);
-            tv_right.setTypeface(null, Typeface.NORMAL);
-            tv_left.setTypeface(null, Typeface.NORMAL);
-        }
-        tl_work_done.addView(view);
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tl_work_done.removeAllViews();
-        drawTable(true, "", "", "");
+        workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList);
+        list_view.setAdapter(workDoneAdapter);
         try {
             if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() &&
                     null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser()) {
-                parseAndRedrawTable(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser());
+                parseWorkDoneDate(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -172,10 +147,10 @@ public class DentalWorkDoneFragment extends BaseFragment {
     }
 
 
-    public void parseAndRedrawTable(String str) {
+    public void parseWorkDoneDate(String str) {
         try {
             String[] temp = str.split("\\|");
-            if (null != temp && temp.length > 0) {
+            if (temp.length > 0) {
                 for (int i = 0; i < temp.length; i++) {
                     String act = temp[i];
                     if (act.contains(":")) {
@@ -183,11 +158,12 @@ public class DentalWorkDoneFragment extends BaseFragment {
                         String toothNum = strArray[0].trim();
                         String procedure = strArray[1];
                         String summary = strArray.length == 3 ? strArray[2] : "";
-                        drawTable(false, toothNum, procedure, summary);
                         toothWorkDoneList.add(new ToothWorkDone(toothNum, procedure, summary));
                     }
                 }
             }
+            workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList);
+            list_view.setAdapter(workDoneAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
