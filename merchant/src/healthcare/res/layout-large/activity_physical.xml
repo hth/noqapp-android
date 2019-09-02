@@ -43,7 +43,7 @@
                 android:background="@drawable/button_drawable_white"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Hospital Visit Schedule"
+                android:text="Upcoming Visit"
                 android:textColor="#31b7bd"
                 android:textSize="14sp"
                 android:textStyle="bold" />

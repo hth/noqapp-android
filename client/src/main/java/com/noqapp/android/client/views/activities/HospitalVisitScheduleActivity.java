@@ -48,7 +48,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_immunization);
         initActionsViews(true);
-        tv_toolbar_title.setText("Hospital Visit Schedule");
+        tv_toolbar_title.setText("Upcoming Hospital Visit");
         rl_empty = findViewById(R.id.rl_empty);
         ll_data = findViewById(R.id.ll_data);
         viewPager = findViewById(R.id.viewpager);

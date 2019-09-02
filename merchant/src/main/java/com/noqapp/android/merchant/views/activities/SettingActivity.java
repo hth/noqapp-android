@@ -290,7 +290,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         Button btn_update_appointment = findViewById(R.id.btn_update_appointment);
         Button btn_update_permanent_setting = findViewById(R.id.btn_update_permanent_setting);
         btn_update_appointment.setOnClickListener(v -> {
-            if (sc_enable_appointment.getSelectedAbsolutePosition() != 0) {
+            if (sc_enable_appointment.getLastSelectedAbsolutePosition() != 0) {
                 if (validateAppointmentSetting()) {
                     updateAppointmentSettings();
                 }
@@ -618,7 +618,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             getParent().setResult(Activity.RESULT_OK, intent);
         }
         finish();
-
     }
 
     private void expandCollapseViewWithArrow(boolean isExpand, LinearLayout linearLayout, ImageView imageView) {
@@ -678,10 +677,10 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 setProgressMessage("Updating Queue Settings...");
                 StoreSetting storeSetting = new StoreSetting();
                 storeSetting.setCodeQR(codeQR);
-                storeSetting.setDayClosed(sc_day_closed.getSelectedAbsolutePosition() == 0 ? true : false);
-                storeSetting.setPreventJoining(sc_prevent_join.getSelectedAbsolutePosition() == 0 ? true : false);
-                storeSetting.setTempDayClosed(sc_today_closed.getSelectedAbsolutePosition() == 0 ? true : false);
-                storeSetting.setStoreActionType(sc_store_offline.getSelectedAbsolutePosition() == 0 ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
+                storeSetting.setDayClosed(sc_day_closed.getLastSelectedAbsolutePosition() == 0);
+                storeSetting.setPreventJoining(sc_prevent_join.getLastSelectedAbsolutePosition() == 0);
+                storeSetting.setTempDayClosed(sc_today_closed.getLastSelectedAbsolutePosition() == 0);
+                storeSetting.setStoreActionType(sc_store_offline.getLastSelectedAbsolutePosition() == 0 ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
                 storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
                 if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
                     storeSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
@@ -736,9 +735,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             }
         });
         showDialog.displayDialog(getString(R.string.setting_title), TextUtils.isEmpty(alertMsg) ? getString(R.string.setting_msg) : alertMsg);
-
     }
-
 
     private void updatePaymentSettings() {
         ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
@@ -749,11 +746,13 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     setProgressMessage("Updating payment settings...");
                     showProgress();
                     StoreSetting storeSetting = SerializationUtils.clone(SettingActivity.this.storeSettingTemp);
+
                     if (TextUtils.isEmpty(edt_deduction_amount.getText().toString())) {
                         storeSetting.setCancellationPrice(0);
                     } else {
                         storeSetting.setCancellationPrice(Integer.parseInt(edt_deduction_amount.getText().toString()) * 100);
                     }
+
                     if (TextUtils.isEmpty(edt_fees.getText().toString())) {
                         storeSetting.setProductPrice(0);
                     } else {
@@ -765,11 +764,14 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     } else {
                         storeSetting.setFreeFollowupDays(Integer.parseInt(edt_follow_up_in_days.getText().toString()));
                     }
+
                     if (TextUtils.isEmpty(edt_limited_followup_days.getText().toString())) {
                         storeSetting.setDiscountedFollowupDays(0);
                     } else {
                         storeSetting.setDiscountedFollowupDays(Integer.parseInt(edt_limited_followup_days.getText().toString()));
                     }
+
+
                     if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
                         storeSetting.setDiscountedFollowupProductPrice(0);
                     } else {
@@ -792,7 +794,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     }
 
     private void updateAppointmentSettings() {
-
         ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
@@ -811,7 +812,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     } else {
                         storeSetting.setAppointmentOpenHowFar(Integer.parseInt(edt_appointment_accepting_week.getText().toString()));
                     }
-                    switch (sc_enable_appointment.getSelectedAbsolutePosition()) {
+                    switch (sc_enable_appointment.getLastSelectedAbsolutePosition()) {
                         case 0:
                             storeSetting.setAppointmentState(AppointmentStateEnum.O);
                             break;
@@ -912,21 +913,17 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
 
     private void openDatePicker(final TextView tv) {
         Calendar newCalendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+            Calendar newDate = Calendar.getInstance();
+            newDate.set(year, monthOfYear, dayOfMonth);
+            Date current = newDate.getTime();
+            int date_diff = new Date().compareTo(current);
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
-
-                if (date_diff < 0) {
-                    tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
-                } else {
-                    new CustomToast().showToast(SettingActivity.this, getString(R.string.error_past_date));
-                    tv.setText("");
-                }
-
+            if (date_diff < 0) {
+                tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
+            } else {
+                new CustomToast().showToast(SettingActivity.this, getString(R.string.error_past_date));
+                tv.setText("");
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));

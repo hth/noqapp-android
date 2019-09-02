@@ -51,7 +51,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
         rl_empty = findViewById(R.id.rl_empty);
         ll_data = findViewById(R.id.ll_data);
         initActionsViews(true);
-        tv_toolbar_title.setText("Hospital Visit Schedule");
+        tv_toolbar_title.setText("Upcoming Visit");
         String codeQR = getIntent().getStringExtra("qCodeQR");
         JsonQueuedPerson jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");

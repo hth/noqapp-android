@@ -140,7 +140,7 @@ public class MedicalProfileActivity
             ShowAlertInformation.showNetworkDialog(this);
         }
     }
-    
+
     @Override
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
         this.jsonMedicalProfile = jsonMedicalProfile;
