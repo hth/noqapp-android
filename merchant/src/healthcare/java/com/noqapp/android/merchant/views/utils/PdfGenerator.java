@@ -1,10 +1,16 @@
 package com.noqapp.android.merchant.views.utils;
 
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+import com.noqapp.android.common.utils.HeaderFooterPageEvent;
+import com.noqapp.android.common.utils.PdfHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.pojos.CaseHistory;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -19,16 +25,11 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
-import com.noqapp.android.common.utils.HeaderFooterPageEvent;
-import com.noqapp.android.common.utils.PdfHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.pojos.CaseHistory;
+
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +46,7 @@ public class PdfGenerator extends PdfHelper {
     private String notAvailable = "N/A";
 
     public PdfGenerator(Context mContext) {
-       super(mContext);
+        super(mContext);
     }
 
 
@@ -143,7 +144,7 @@ public class PdfGenerator extends PdfHelper {
             Paragraph paragraphDiagnosis = new Paragraph(chunkDiagnosis);
             document.add(paragraphDiagnosis);
 
-            Chunk chunkDiagnosisValue = new Chunk(caseHistory.getDiagnosis(), normalFont);
+            Chunk chunkDiagnosisValue = new Chunk(caseHistory.getDiagnosis() == null ? "" : caseHistory.getDiagnosis(), normalFont);
             Paragraph paragraphDiagnosisValue = new Paragraph(chunkDiagnosisValue);
             document.add(paragraphDiagnosisValue);
             document.add(addVerticalSpaceAfter(20.0f));

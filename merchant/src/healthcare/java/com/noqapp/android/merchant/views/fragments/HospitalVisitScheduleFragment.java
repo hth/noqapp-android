@@ -104,12 +104,14 @@ public class HospitalVisitScheduleFragment
                     HospitalVisitFor hospitalVisitFor = new HospitalVisitFor();
                     hospitalVisitFor.setHospitalVisitScheduleId(jsonHospitalVisitSchedule.getHospitalVisitScheduleId());
                     hospitalVisitFor.setVisitingFor(key);
-                    hospitalVisitFor.setBooleanReplacement(BooleanReplacementEnum.getValue(tempList.get(sc_hvs_status.getSelectedAbsolutePosition())));
+                    hospitalVisitFor.setBooleanReplacement(BooleanReplacementEnum.getValue(tempList.get(sc_hvs_status.getLastSelectedAbsolutePosition())));
                     hospitalVisitFor.setQid(getArguments().getString("qUserId"));
                     MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
-                    medicalHistoryApiCalls.modifyVisitingFor(BaseLaunchActivity.getDeviceID(),
+                    medicalHistoryApiCalls.modifyVisitingFor(
+                            BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(), hospitalVisitFor);
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            hospitalVisitFor);
                     mAlertDialog.dismiss();
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());

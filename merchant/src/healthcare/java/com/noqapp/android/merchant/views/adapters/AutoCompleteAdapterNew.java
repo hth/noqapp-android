@@ -1,5 +1,8 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +25,13 @@ public class AutoCompleteAdapterNew extends ArrayAdapter<DataObj> implements Fil
     private SearchClick searchClick;
     private SearchByPos searchByPos;
 
-    public AutoCompleteAdapterNew(Context context, int resource, List<DataObj> objects,SearchClick searchClick,SearchByPos searchByPos) {
+    public AutoCompleteAdapterNew(Context context, int resource, List<DataObj> objects, SearchClick searchClick, SearchByPos searchByPos) {
 
         super(context, resource, objects);
         fullList = (ArrayList<DataObj>) objects;
         mOriginalValues = new ArrayList<DataObj>(fullList);
         this.context = context;
-        this.searchClick =searchClick;
+        this.searchClick = searchClick;
         this.searchByPos = searchByPos;
 
     }
@@ -41,9 +41,8 @@ public class AutoCompleteAdapterNew extends ArrayAdapter<DataObj> implements Fil
     }
 
     public interface SearchByPos {
-        void searchByPos( DataObj dataObj);
+        void searchByPos(DataObj dataObj);
     }
-
 
 
     @Override
@@ -69,10 +68,10 @@ public class AutoCompleteAdapterNew extends ArrayAdapter<DataObj> implements Fil
         if (lblName != null)
             lblName.setText(dataObj.getShortName());
         lblName.setOnClickListener(v -> {
-            if(null != searchClick && !isLocalUpdate){
-                searchClick.searchClick(true,false, fullList.get(position),position);
+            if (null != searchClick && !isLocalUpdate) {
+                searchClick.searchClick(true, false, fullList.get(position), position);
             }
-            if( null != searchByPos){
+            if (null != searchByPos) {
                 searchByPos.searchByPos(fullList.get(position));
             }
         });
@@ -135,9 +134,9 @@ public class AutoCompleteAdapterNew extends ArrayAdapter<DataObj> implements Fil
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            if(results.values!=null){
+            if (results.values != null) {
                 fullList = (ArrayList<DataObj>) results.values;
-            }else{
+            } else {
                 fullList = new ArrayList<DataObj>();
             }
             if (results.count > 0) {
