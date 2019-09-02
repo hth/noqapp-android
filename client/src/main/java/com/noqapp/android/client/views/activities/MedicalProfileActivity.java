@@ -1,19 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
@@ -31,13 +17,25 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
-import java.util.ArrayList;
-
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
-public class MedicalProfileActivity extends BaseActivity implements
-        MedicalRecordProfilePresenter, View.OnClickListener {
+import java.util.ArrayList;
 
+public class MedicalProfileActivity
+        extends BaseActivity
+        implements MedicalRecordProfilePresenter, View.OnClickListener {
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
     private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy, tv_blood_type_update_msg;
     private SegmentedControl sc_blood_type;
@@ -133,7 +131,7 @@ public class MedicalProfileActivity extends BaseActivity implements
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 userMedicalProfileApiCalls.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                setProgressMessage("fetching medical profile...");
+                setProgressMessage("Fetching medical profile...");
                 showProgress();
             } else {
                 new CustomToast().showToast(this, "Please login to see the details");
@@ -142,8 +140,7 @@ public class MedicalProfileActivity extends BaseActivity implements
             ShowAlertInformation.showNetworkDialog(this);
         }
     }
-
-
+    
     @Override
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
         this.jsonMedicalProfile = jsonMedicalProfile;
@@ -188,7 +185,7 @@ public class MedicalProfileActivity extends BaseActivity implements
             String notAvailable = "N/A";
 
             boolean isPulseFound = false, isBloodPressureFound = false, isTemperatureFound = false, isWeigthFound = false, isHeightFound = false, isRRFound = false;
-            String pulse = "", bloodpressure = "", temperature = "", weight = "", height = "", rr = "";
+            String pulse = "", bloodPressure = "", temperature = "", weight = "", height = "", rr = "";
             if (null != jsonMedicalProfile.getJsonMedicalPhysicals())
                 for (int i = 0; i < jsonMedicalProfile.getJsonMedicalPhysicals().size(); i++) {
                     JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalProfile.getJsonMedicalPhysicals().get(i);
@@ -204,7 +201,7 @@ public class MedicalProfileActivity extends BaseActivity implements
                         //Do nothing
                     } else {
                         if (null != jsonMedicalPhysical.getBloodPressure() && jsonMedicalPhysical.getBloodPressure().length == 2) {
-                            bloodpressure = jsonMedicalPhysical.getBloodPressure()[0] + "/" + jsonMedicalPhysical.getBloodPressure()[1];
+                            bloodPressure = jsonMedicalPhysical.getBloodPressure()[0] + "/" + jsonMedicalPhysical.getBloodPressure()[1];
                             isBloodPressureFound = true;
                         }
                     }
@@ -245,7 +242,7 @@ public class MedicalProfileActivity extends BaseActivity implements
 
                 }
             tv_pulse.setText(TextUtils.isEmpty(pulse) ? notAvailable : pulse);
-            tv_bp.setText(TextUtils.isEmpty(bloodpressure) ? notAvailable : bloodpressure);
+            tv_bp.setText(TextUtils.isEmpty(bloodPressure) ? notAvailable : bloodPressure);
             tv_weight.setText(TextUtils.isEmpty(weight) ? notAvailable : weight);
             tv_temperature.setText(TextUtils.isEmpty(temperature) ? notAvailable : temperature);
             tv_respiration.setText(TextUtils.isEmpty(rr) ? notAvailable : rr);
@@ -260,19 +257,14 @@ public class MedicalProfileActivity extends BaseActivity implements
         switch (id) {
             case R.id.iv_edit_occupation:
                 showHideOccupationEdit(true);
-                scroll_view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scroll_view.smoothScrollTo(0, cv_occupation.getBottom());
-                    }
-                });
+                scroll_view.post(() -> scroll_view.smoothScrollTo(0, cv_occupation.getBottom()));
                 break;
             case R.id.tv_cancel_occupation:
                 showHideOccupationEdit(false);
                 break;
             case R.id.tv_update_occupation:
-                if (-1 == sc_occupation_type.getSelectedAbsolutePosition()) {
-                    new CustomToast().showToast(this, "Please select occupation type to update ");
+                if (-1 == sc_occupation_type.getLastSelectedAbsolutePosition()) {
+                    new CustomToast().showToast(this, "Please select occupation type to update");
                 } else {
                     if (NetworkUtils.isConnectingToInternet(this)) {
                         try {
@@ -283,10 +275,10 @@ public class MedicalProfileActivity extends BaseActivity implements
                             } else {
                                 jump = jsonMedicalProfile.getJsonUserMedicalProfile();
                             }
-                            jump.setOccupation(OccupationEnum.getEnum(sc_occupation_type_data.get(sc_occupation_type.getSelectedAbsolutePosition())));
+                            jump.setOccupation(OccupationEnum.getEnum(sc_occupation_type_data.get(sc_occupation_type.getLastSelectedAbsolutePosition())));
                             medicalProfile.setJsonUserMedicalProfile(jump);
                             userMedicalProfileApiCalls.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                            setProgressMessage("Updating occupation type....");
+                            setProgressMessage("Updating occupation type...");
                             showProgress();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -298,17 +290,12 @@ public class MedicalProfileActivity extends BaseActivity implements
                 break;
             case R.id.iv_edit_medical_history:
                 showHideMedicalEdit(true);
-                scroll_view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scroll_view.smoothScrollTo(0, cv_personal_history.getTop());
-                    }
-                });
+                scroll_view.post(() -> scroll_view.smoothScrollTo(0, cv_personal_history.getTop()));
                 break;
             case R.id.tv_cancel_medical_history:
                 showHideMedicalEdit(false);
                 break;
-            case R.id.tv_update_medical_history: {
+            case R.id.tv_update_medical_history:
                 if (TextUtils.isEmpty(edt_medicine_allergy.getText().toString())
                         && TextUtils.isEmpty(edt_family_history.getText().toString())
                         && TextUtils.isEmpty(edt_past_history.getText().toString())
@@ -336,12 +323,10 @@ public class MedicalProfileActivity extends BaseActivity implements
                     }
                     medicalProfile.setJsonUserMedicalProfile(jump);
                     userMedicalProfileApiCalls.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                    setProgressMessage("Updating medical history....");
+                    setProgressMessage("Updating medical history...");
                     showProgress();
                 }
-            }
-            break;
-
+                break;
             case R.id.iv_edit_blood_type:
                 showHideBloodEdit(true);
                 break;
@@ -349,8 +334,8 @@ public class MedicalProfileActivity extends BaseActivity implements
                 showHideBloodEdit(false);
                 break;
             case R.id.tv_update_blood_type: {
-                if (-1 == sc_blood_type.getSelectedAbsolutePosition()) {
-                    new CustomToast().showToast(this, "Please select blood type to update ");
+                if (-1 == sc_blood_type.getLastSelectedAbsolutePosition()) {
+                    new CustomToast().showToast(this, "Please select blood type to update");
                 } else {
                     if (NetworkUtils.isConnectingToInternet(this)) {
                         ShowCustomDialog showDialog = new ShowCustomDialog(MedicalProfileActivity.this, true);
@@ -365,10 +350,10 @@ public class MedicalProfileActivity extends BaseActivity implements
                                     } else {
                                         jump = jsonMedicalProfile.getJsonUserMedicalProfile();
                                     }
-                                    jump.setBloodType(BloodTypeEnum.getEnum(sc_blood_type_data.get(sc_blood_type.getSelectedAbsolutePosition())));
+                                    jump.setBloodType(BloodTypeEnum.getEnum(sc_blood_type_data.get(sc_blood_type.getLastSelectedAbsolutePosition())));
                                     medicalProfile.setJsonUserMedicalProfile(jump);
                                     userMedicalProfileApiCalls.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                                    setProgressMessage("Updating blood type....");
+                                    setProgressMessage("Updating blood type...");
                                     showProgress();
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -415,7 +400,6 @@ public class MedicalProfileActivity extends BaseActivity implements
             iv_edit_medical_history.setTextColor(Color.parseColor("#f4511e"));
         }
     }
-
 
     private void showHideBloodEdit(boolean isShown) {
         tv_update_blood_type.setVisibility(isShown ? View.VISIBLE : View.GONE);
