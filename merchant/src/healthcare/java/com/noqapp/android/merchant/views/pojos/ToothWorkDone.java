@@ -5,11 +5,23 @@ public class ToothWorkDone {
     private String procedure;
     private String summary;
     private String createdDate;
+    private String teethStatus;
+    private String teethUnit;
+    private String teethPeriod;
 
     public ToothWorkDone(String toothNumber, String procedure, String summary) {
         this.toothNumber = toothNumber;
         this.procedure = procedure;
         this.summary = summary;
+    }
+
+    public ToothWorkDone(String toothNumber, String procedure, String summary,String teethStatus, String teethUnit, String teethPeriod) {
+        this.toothNumber = toothNumber;
+        this.procedure = procedure;
+        this.summary = summary;
+        this.teethStatus = teethStatus;
+        this.teethUnit = teethUnit;
+        this.teethPeriod = teethPeriod;
     }
 
     public ToothWorkDone(String toothNumber, String procedure, String summary, String createdDate) {
@@ -55,14 +67,40 @@ public class ToothWorkDone {
         return this;
     }
 
+    public String getTeethStatus() {
+        return teethStatus;
+    }
+
+    public void setTeethStatus(String teethStatus) {
+        this.teethStatus = teethStatus;
+    }
+
+    public String getTeethUnit() {
+        return teethUnit;
+    }
+
+    public void setTeethUnit(String teethUnit) {
+        this.teethUnit = teethUnit;
+    }
+
+    public String getTeethPeriod() {
+        return teethPeriod;
+    }
+
+    public void setTeethPeriod(String teethPeriod) {
+        this.teethPeriod = teethPeriod;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ToothWorkDone{");
-        sb.append("toothNumber='").append(toothNumber).append('\'');
-        sb.append(", procedure='").append(procedure).append('\'');
-        sb.append(", summary='").append(summary).append('\'');
-        sb.append(", createdDate='").append(createdDate).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "ToothWorkDone{" +
+                "toothNumber='" + toothNumber + '\'' +
+                ", procedure='" + procedure + '\'' +
+                ", summary='" + summary + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                ", teethStatus='" + teethStatus + '\'' +
+                ", teethUnit='" + teethUnit + '\'' +
+                ", teethPeriod='" + teethPeriod + '\'' +
+                '}';
     }
 }

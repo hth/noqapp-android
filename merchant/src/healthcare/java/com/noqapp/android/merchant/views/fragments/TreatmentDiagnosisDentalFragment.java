@@ -162,6 +162,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
                 rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
                 dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
                 rcv_medicine.setAdapter(dentalSelectAdapter);
+                clearOptionSelection();
             }
         });
     }

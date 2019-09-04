@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
@@ -79,11 +80,11 @@ public class WorkDoneAdapter extends BaseAdapter {
         recordHolder.tv_created_date.setText(toothWorkDone.getCreatedDate());
 
         String status = "<b>" + "Status: " + "</b> " + toothWorkDone.getTeethStatus();
-        recordHolder.tv_summary.setText(Html.fromHtml(status));
+        recordHolder.tv_status.setText(Html.fromHtml(status));
         String unit = "<b>" + "Unit: " + "</b> " + toothWorkDone.getTeethUnit();
-        recordHolder.tv_summary.setText(Html.fromHtml(unit));
+        recordHolder.tv_unit.setText(Html.fromHtml(unit));
         String period = "<b>" + "Period: " + "</b> " + toothWorkDone.getTeethPeriod();
-        recordHolder.tv_summary.setText(Html.fromHtml(period));
+        recordHolder.tv_period.setText(Html.fromHtml(period));
 
         recordHolder.iv_delete.setVisibility(null == listener ? View.INVISIBLE:View.VISIBLE );
         recordHolder.iv_delete.setOnClickListener(v -> {
@@ -114,7 +115,7 @@ public class WorkDoneAdapter extends BaseAdapter {
         TextView tv_unit;
         TextView tv_period;
         TextView tv_created_date;
-        TextView iv_delete;
+        ImageView iv_delete;
 
         RecordHolder() {
         }
