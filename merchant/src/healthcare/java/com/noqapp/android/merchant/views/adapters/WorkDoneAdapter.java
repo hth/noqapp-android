@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 
 import java.util.List;
@@ -16,6 +17,11 @@ import java.util.List;
 public class WorkDoneAdapter extends BaseAdapter {
     private Context context;
     private List<ToothWorkDone> workDoneList;
+    private final OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void removeWorkDone(ToothWorkDone item,int pos);
+    }
 
     public void setWorkDoneList(List<ToothWorkDone> workDoneList) {
         this.workDoneList = workDoneList;
@@ -25,6 +31,13 @@ public class WorkDoneAdapter extends BaseAdapter {
     public WorkDoneAdapter(Context context, List<ToothWorkDone> workDoneList) {
         this.context = context;
         this.workDoneList = workDoneList;
+        listener = null;
+    }
+
+    public WorkDoneAdapter(Context context, List<ToothWorkDone> workDoneList,OnItemClickListener listener) {
+        this.context = context;
+        this.workDoneList = workDoneList;
+        this.listener = listener;
     }
 
     public int getCount() {
@@ -47,7 +60,11 @@ public class WorkDoneAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.list_item_workdone, viewGroup, false);
             recordHolder.tv_tooth_no = view.findViewById(R.id.tv_tooth_no);
             recordHolder.tv_procedure = view.findViewById(R.id.tv_procedure);
+            recordHolder.tv_unit = view.findViewById(R.id.tv_unit);
+            recordHolder.tv_status = view.findViewById(R.id.tv_status);
+            recordHolder.tv_period = view.findViewById(R.id.tv_period);
             recordHolder.tv_summary = view.findViewById(R.id.tv_summary);
+            recordHolder.iv_delete = view.findViewById(R.id.iv_delete);
             recordHolder.tv_created_date = view.findViewById(R.id.tv_created_date);
             view.setTag(recordHolder);
         } else {
@@ -61,6 +78,31 @@ public class WorkDoneAdapter extends BaseAdapter {
         recordHolder.tv_summary.setText(Html.fromHtml(ts));
         recordHolder.tv_created_date.setText(toothWorkDone.getCreatedDate());
 
+        String status = "<b>" + "Status: " + "</b> " + toothWorkDone.getTeethStatus();
+        recordHolder.tv_summary.setText(Html.fromHtml(status));
+        String unit = "<b>" + "Unit: " + "</b> " + toothWorkDone.getTeethUnit();
+        recordHolder.tv_summary.setText(Html.fromHtml(unit));
+        String period = "<b>" + "Period: " + "</b> " + toothWorkDone.getTeethPeriod();
+        recordHolder.tv_summary.setText(Html.fromHtml(period));
+
+        recordHolder.iv_delete.setVisibility(null == listener ? View.INVISIBLE:View.VISIBLE );
+        recordHolder.iv_delete.setOnClickListener(v -> {
+            if(null != listener){
+                ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        listener.removeWorkDone(toothWorkDone,position);
+                    }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Delete work done", "Do you want to delete it from work done list?");
+            }
+        });
+
         return view;
     }
 
@@ -68,7 +110,11 @@ public class WorkDoneAdapter extends BaseAdapter {
         TextView tv_tooth_no;
         TextView tv_summary;
         TextView tv_procedure;
+        TextView tv_status;
+        TextView tv_unit;
+        TextView tv_period;
         TextView tv_created_date;
+        TextView iv_delete;
 
         RecordHolder() {
         }

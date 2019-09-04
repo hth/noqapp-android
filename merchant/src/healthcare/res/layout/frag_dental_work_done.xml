@@ -114,7 +114,6 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="5dp"
                     android:text="Dental Treatment Option"
-
                     android:layout_gravity="center_horizontal"
                     android:textSize="@dimen/text_size_sixteen"
                     android:textColor="#333"
@@ -163,8 +162,6 @@
                     android:layout_marginTop="10dp"
                     android:textStyle="bold" />
 
-
-
                 <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
                     android:id="@+id/sc_procedure"
                     android:layout_width="match_parent"
@@ -173,6 +170,106 @@
                     segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
                     segmentedcontrol:radius="6dp"
                     segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="0dp"
+                    android:text="Select Period"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                    android:id="@+id/sc_period"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    segmentedcontrol:columnCount="5"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segments="@array/units"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="0dp"
+                    android:text="Select Unit"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                    android:id="@+id/sc_unit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:columnCount="5"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segments="@array/units"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="0dp"
+                    android:text="Select Status"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold" />
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                    android:id="@+id/sc_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:columnCount="3"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segments="@array/wd_status"
                     segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
                     segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
                     segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
