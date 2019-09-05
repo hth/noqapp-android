@@ -69,6 +69,9 @@ public class MedicalCaseActivity extends BaseActivity implements
     private InstructionTabFragment instructionTabFragment;
     private PrintFragment printFragment;
     public boolean isGynae = false;
+    public boolean isDental = false;
+
+    public boolean isDental() { return isDental; }
 
     public boolean isGynae() {
         return isGynae;
@@ -132,8 +135,10 @@ public class MedicalCaseActivity extends BaseActivity implements
         codeQR = getIntent().getStringExtra("qCodeQR");
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
-        if (!TextUtils.isEmpty(bizCategoryId))
+        if (!TextUtils.isEmpty(bizCategoryId)) {
             isGynae = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.OGY;
+            isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
+        }
         caseHistory = new CaseHistory();
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
@@ -142,8 +147,8 @@ public class MedicalCaseActivity extends BaseActivity implements
         data.add("Symptoms");
         data.add("Examination");
         data.add("Investigation");
-        data.add(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT ? "Treatment Plan" : "Treatment");
-        data.add(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT ? "Work Done" :"Instructions");
+        data.add(isDental? "Treatment Plan" : "Treatment");
+        data.add(isDental? "Work Done" : "Instructions");
         data.add("Preview");
 
 

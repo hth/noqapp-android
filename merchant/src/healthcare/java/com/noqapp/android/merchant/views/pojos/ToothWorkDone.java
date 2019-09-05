@@ -23,6 +23,15 @@ public class ToothWorkDone {
         this.teethUnit = teethUnit;
         this.teethPeriod = teethPeriod;
     }
+    public ToothWorkDone(String toothNumber, String procedure, String summary,String teethStatus, String teethUnit, String teethPeriod, String createdDate) {
+        this.toothNumber = toothNumber;
+        this.procedure = procedure;
+        this.summary = summary;
+        this.teethStatus = teethStatus;
+        this.teethUnit = teethUnit;
+        this.teethPeriod = teethPeriod;
+        this.createdDate = createdDate;
+    }
 
     public ToothWorkDone(String toothNumber, String procedure, String summary, String createdDate) {
         this.toothNumber = toothNumber;

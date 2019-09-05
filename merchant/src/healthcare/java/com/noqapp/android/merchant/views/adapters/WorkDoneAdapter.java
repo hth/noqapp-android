@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
@@ -19,6 +20,7 @@ public class WorkDoneAdapter extends BaseAdapter {
     private Context context;
     private List<ToothWorkDone> workDoneList;
     private final OnItemClickListener listener;
+    private boolean isDentalTreatment = false;
 
     public interface OnItemClickListener {
         void removeWorkDone(ToothWorkDone item,int pos);
@@ -32,6 +34,12 @@ public class WorkDoneAdapter extends BaseAdapter {
     public WorkDoneAdapter(Context context, List<ToothWorkDone> workDoneList) {
         this.context = context;
         this.workDoneList = workDoneList;
+        listener = null;
+    }
+    public WorkDoneAdapter(Context context, List<ToothWorkDone> workDoneList, boolean isDentalTreatment) {
+        this.context = context;
+        this.workDoneList = workDoneList;
+        this.isDentalTreatment = isDentalTreatment;
         listener = null;
     }
 
@@ -67,6 +75,7 @@ public class WorkDoneAdapter extends BaseAdapter {
             recordHolder.tv_summary = view.findViewById(R.id.tv_summary);
             recordHolder.iv_delete = view.findViewById(R.id.iv_delete);
             recordHolder.tv_created_date = view.findViewById(R.id.tv_created_date);
+            recordHolder.ll_ups = view.findViewById(R.id.ll_ups);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
@@ -75,35 +84,47 @@ public class WorkDoneAdapter extends BaseAdapter {
         recordHolder.tv_tooth_no.setText(toothWorkDone.getToothNumber());
         String ps = "<b>" + "Procedure: " + "</b> " + toothWorkDone.getProcedure();
         recordHolder.tv_procedure.setText(Html.fromHtml(ps));
-        String ts = "<b>" + "Summary: " + "</b> " + toothWorkDone.getSummary();
-        recordHolder.tv_summary.setText(Html.fromHtml(ts));
-        recordHolder.tv_created_date.setText(toothWorkDone.getCreatedDate());
 
-        String status = "<b>" + "Status: " + "</b> " + toothWorkDone.getTeethStatus();
-        recordHolder.tv_status.setText(Html.fromHtml(status));
-        String unit = "<b>" + "Unit: " + "</b> " + toothWorkDone.getTeethUnit();
-        recordHolder.tv_unit.setText(Html.fromHtml(unit));
-        String period = "<b>" + "Period: " + "</b> " + toothWorkDone.getTeethPeriod();
-        recordHolder.tv_period.setText(Html.fromHtml(period));
 
-        recordHolder.iv_delete.setVisibility(null == listener ? View.INVISIBLE:View.VISIBLE );
-        recordHolder.iv_delete.setOnClickListener(v -> {
-            if(null != listener){
-                ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        listener.removeWorkDone(toothWorkDone,position);
-                    }
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Delete work done", "Do you want to delete it from work done list?");
-            }
-        });
 
+        recordHolder.iv_delete.setVisibility(null == listener ? View.INVISIBLE : View.VISIBLE);
+        if(isDentalTreatment){
+            recordHolder.ll_ups.setVisibility(View.GONE);
+            recordHolder.tv_summary.setVisibility(View.VISIBLE);
+            recordHolder.tv_created_date.setVisibility(View.GONE);
+        }else {
+            recordHolder.ll_ups.setVisibility(View.VISIBLE);
+            recordHolder.tv_summary.setVisibility(View.VISIBLE);
+            recordHolder.tv_created_date.setVisibility(View.VISIBLE);
+            String ts = "<b>" + "Summary: " + "</b> " + toothWorkDone.getSummary();
+            recordHolder.tv_summary.setText(Html.fromHtml(ts));
+            recordHolder.tv_created_date.setText(toothWorkDone.getCreatedDate());
+
+            String status = "<b>" + "Status: " + "</b> " + toothWorkDone.getTeethStatus();
+            recordHolder.tv_status.setText(Html.fromHtml(status));
+            String unit = "<b>" + "Unit: " + "</b> " + toothWorkDone.getTeethUnit();
+            recordHolder.tv_unit.setText(Html.fromHtml(unit));
+            String period = "<b>" + "Period: " + "</b> " + toothWorkDone.getTeethPeriod();
+            recordHolder.tv_period.setText(Html.fromHtml(period));
+
+            recordHolder.iv_delete.setOnClickListener(v -> {
+                if (null != listener) {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                        @Override
+                        public void btnPositiveClick() {
+                            listener.removeWorkDone(toothWorkDone, position);
+                        }
+
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
+                        }
+                    });
+                    showDialog.displayDialog("Delete work done", "Do you want to delete it from work done list?");
+                }
+            });
+        }
         return view;
     }
 
@@ -115,6 +136,7 @@ public class WorkDoneAdapter extends BaseAdapter {
         TextView tv_unit;
         TextView tv_period;
         TextView tv_created_date;
+        LinearLayout ll_ups;
         ImageView iv_delete;
 
         RecordHolder() {

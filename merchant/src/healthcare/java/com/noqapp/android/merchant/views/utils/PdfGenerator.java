@@ -1,16 +1,10 @@
 package com.noqapp.android.merchant.views.utils;
 
 
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
-import com.noqapp.android.common.utils.HeaderFooterPageEvent;
-import com.noqapp.android.common.utils.PdfHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.pojos.CaseHistory;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -25,11 +19,16 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+import com.noqapp.android.common.utils.HeaderFooterPageEvent;
+import com.noqapp.android.common.utils.PdfHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.pojos.CaseHistory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +41,6 @@ import java.util.Locale;
 
 public class PdfGenerator extends PdfHelper {
     private CaseHistory caseHistory;
-    private int follow_up = 0;
     private String notAvailable = "N/A";
 
     public PdfGenerator(Context mContext) {
@@ -50,9 +48,8 @@ public class PdfGenerator extends PdfHelper {
     }
 
 
-    public void createPdf(CaseHistory mcp, int follow_up) {
+    public void createPdf(CaseHistory mcp, int follow_up, boolean isDental) {
         this.caseHistory = mcp;
-        this.follow_up = follow_up;
         String fileName = new SimpleDateFormat("'NoQueue_" + caseHistory.getName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         String dest = getAppPath(mContext.getResources().getString(R.string.app_name)) + fileName;
         if (new File(dest).exists()) {
@@ -155,6 +152,15 @@ public class PdfGenerator extends PdfHelper {
             document.add(addVerticalSpace());
             document.add(getMedicineData());
             document.add(addVerticalSpaceBefore(20f));
+
+            if (isDental) {
+                Chunk chunkTr = new Chunk("Treatment Recommendation:", normalBigFont);
+                Paragraph paragraphTr = new Paragraph(chunkTr);
+                document.add(paragraphTr);
+                document.add(addVerticalSpace());
+                document.add(getTreatRecommendationData(caseHistory.getNoteForPatient()));
+                document.add(addVerticalSpaceBefore(20f));
+            }
 
             Chunk chunkInstruction = new Chunk("Instruction:", normalBigFont);
             Paragraph paragraphInstruction = new Paragraph(chunkInstruction);
@@ -282,7 +288,29 @@ public class PdfGenerator extends PdfHelper {
             table.addCell(pdfPCellWithBorder(jsonMedicalMedicine.getDailyFrequency(), normalFont));
             table.addCell(pdfPCellWithBorder(jsonMedicalMedicine.getCourse(), normalFont));
         }
+        table.setTotalWidth(PageSize.A4.getWidth() - 80);
+        table.setLockedWidth(true);
+        return table;
+    }
 
+    private PdfPTable getTreatRecommendationData(String str) {
+        PdfPTable table = new PdfPTable(2);
+        try {
+            String[] temp = str.split("\\|");
+            if (temp.length > 0) {
+                for (String act : temp) {
+                    if (act.contains(":")) {
+                        String[] strArray = act.split(":");
+                        String str1 = strArray[0].trim();
+                        String str2 = strArray[1];
+                        table.addCell(pdfPCellWithBorder(str1, normalFont));
+                        table.addCell(pdfPCellWithBorder(str2, normalFont));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
         return table;
