@@ -143,7 +143,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         data.add("Examination");
         data.add("Investigation");
         data.add(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT ? "Treatment Plan" : "Treatment");
-        data.add("Instructions");
+        data.add(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT ? "Work Done" :"Instructions");
         data.add("Preview");
 
 
