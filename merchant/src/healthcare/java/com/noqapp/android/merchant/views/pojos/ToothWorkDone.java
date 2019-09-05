@@ -5,9 +5,9 @@ public class ToothWorkDone {
     private String procedure;
     private String summary;
     private String createdDate;
-    private String teethStatus;
-    private String teethUnit;
-    private String teethPeriod;
+    private String teethStatus = "";
+    private String teethUnit = "";
+    private String teethPeriod = "";
 
     public ToothWorkDone(String toothNumber, String procedure, String summary) {
         this.toothNumber = toothNumber;

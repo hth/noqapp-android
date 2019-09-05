@@ -54,7 +54,6 @@ public class PhysicalActivity extends BaseActivity implements
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private JsonQueuedPerson jsonQueuedPerson;
     protected boolean isDialog = false;
-    protected ImageView actionbarBack;
     private SwitchCompat sc_enable_pulse, sc_enable_temp, sc_enable_weight, sc_enable_oxygen, sc_enable_bp, sc_enable_rr, sc_enable_height;
     private SegmentedControl sc_follow_up;
     private ArrayList<String> follow_up_data = new ArrayList<>();

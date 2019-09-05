@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -130,6 +131,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
         codeQR = getIntent().getStringExtra("qCodeQR");
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
+        bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         if (!TextUtils.isEmpty(bizCategoryId))
             isGynae = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.OGY;
         caseHistory = new CaseHistory();
@@ -140,12 +142,14 @@ public class MedicalCaseActivity extends BaseActivity implements
         data.add("Symptoms");
         data.add("Examination");
         data.add("Investigation");
-        data.add(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT?"Treatment Plan":"Treatment");
+        data.add(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT ? "Treatment Plan" : "Treatment");
         data.add("Instructions");
         data.add("Preview");
 
 
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
+        TextView tv_patient_info = findViewById(R.id.tv_patient_info);
+        tv_patient_info.setText(jsonProfile.getName() + " (" + new AppUtils().calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
         caseHistory.setName(jsonProfile.getName());
         caseHistory.setAddress(jsonProfile.getAddress());
         caseHistory.setAge(new AppUtils().calculateAge(jsonProfile.getBirthday()));
