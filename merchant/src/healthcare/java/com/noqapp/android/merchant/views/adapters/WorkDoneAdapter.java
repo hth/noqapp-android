@@ -87,7 +87,7 @@ public class WorkDoneAdapter extends BaseAdapter {
 
 
 
-        recordHolder.iv_delete.setVisibility(null == listener ? View.INVISIBLE : View.VISIBLE);
+        recordHolder.iv_delete.setVisibility(null == listener ? View.GONE : View.VISIBLE);
         if(isDentalTreatment){
             recordHolder.ll_ups.setVisibility(View.GONE);
             recordHolder.tv_summary.setVisibility(View.VISIBLE);
