@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -84,10 +85,15 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        context = getActivity();
-        ((LaunchActivity) context).fragmentCommunicator = this;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity a;
+        if (context instanceof Activity) {
+            a = (Activity) context;
+            ((LaunchActivity) a).fragmentCommunicator = this;
+        }
+
+
     }
 
     @Override
@@ -486,6 +492,19 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         topics.clear();
         if (null != adapter)
             adapter.notifyDataSetChanged();
+        try {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            if (merchantDetailFragment != null) {
+                transaction.remove(merchantDetailFragment);
+                transaction.commit();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                merchantDetailFragment = null;
+                Log.e("FragDetailRemoved", "Success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public class CustomComparator implements Comparator<JsonTopic> {
