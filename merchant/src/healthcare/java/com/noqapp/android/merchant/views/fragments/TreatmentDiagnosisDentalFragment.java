@@ -36,7 +36,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
 
     private static final String ADDITIONAL_OPTION = "Mouth" ;
     private RecyclerView recyclerView, rcv_medicine;
-    private TextView tv_add_medicine,btn_done, tv_close,  tv_medicine_name;
+    private TextView tv_add_medicine,btn_done, tv_close,  tv_medicine_name,tv_remove;
     private StaggeredGridDentalAdapter dentalAdapter, dentalSelectAdapter;
     private ScrollView ll_medicine;
     private SegmentedControl sc_dental_option;
@@ -58,6 +58,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         view_med = v.findViewById(R.id.view_med);
         tv_add_medicine = v.findViewById(R.id.tv_add_medicine);
         tv_close = v.findViewById(R.id.tv_close);
+        tv_remove = v.findViewById(R.id.tv_remove);
         tv_medicine_name = v.findViewById(R.id.tv_medicine_name);
         ll_medicine = v.findViewById(R.id.ll_medicine);
         sc_dental_option = v.findViewById(R.id.sc_dental_option);
@@ -125,6 +126,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         } else {
             ll_medicine.setVisibility(isOpen ? View.VISIBLE : View.GONE);
         }
+        tv_remove.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
         dataObj = temp;
         tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(ADDITIONAL_OPTION)?
                 dataObj.getShortName():"Tooth Number: "+dataObj.getShortName());
@@ -150,6 +152,17 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
                 rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
                 dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
                 rcv_medicine.setAdapter(dentalSelectAdapter);
+            }
+        });
+
+        tv_remove.setOnClickListener(v -> {
+            if (isEdit) {
+                selectedDentalList.remove(pos);
+                view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
+                rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+                dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
+                rcv_medicine.setAdapter(dentalSelectAdapter);
+                clearOptionSelection();
             }
         });
     }

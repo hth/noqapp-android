@@ -117,5 +117,25 @@
         <item>Dehydration</item>
         <item>Others</item>
     </string-array>
+	
+
+<string-array name="units">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+    <item>7</item>
+    <item>8</item>
+    <item>9</item>
+    <item>10</item>
+</string-array>
+
+<string-array name="wd_status">
+    <item>Incomplete</item>
+    <item>Complete</item>
+    <item>Delayed</item>
+</string-array>
 
 </resources>

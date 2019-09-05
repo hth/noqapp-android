@@ -428,7 +428,8 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         btn_print_pdf.setOnClickListener(v -> {
             if (permissionHelper.isStoragePermissionAllowed()) {
                 PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
-                pdfGenerator.createPdf(caseHistory, TextUtils.isEmpty(followup) ? 0 : Integer.parseInt(followup));
+                pdfGenerator.createPdf(caseHistory, TextUtils.isEmpty(followup) ? 0 : Integer.parseInt(followup),
+                        MedicalCaseActivity.getMedicalCaseActivity().isDental());
             } else {
                 permissionHelper.requestStoragePermission();
             }
@@ -641,7 +642,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
                     }
                 }
             }
-            WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList);
+            WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList,true);
             list_view.setAdapter(workDoneAdapter);
         } catch (Exception e) {
             e.printStackTrace();

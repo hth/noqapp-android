@@ -208,6 +208,15 @@
                         android:divider="@null"
                         android:background="@android:color/transparent"
                         android:layout_margin="0dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_empty_work_done"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:background="@android:color/white"
+                        android:text="No work done created yet"/>
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView

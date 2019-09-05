@@ -65,6 +65,7 @@ public class PatientProfileActivity extends BaseActivity implements
     private boolean isDental = false;
     private String bizCategoryId = "";
     private ListView list_view;
+    private TextView tv_empty_work_done;
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
     private WorkDoneAdapter workDoneAdapter;
 
@@ -92,6 +93,7 @@ public class PatientProfileActivity extends BaseActivity implements
 
         ll_dental_history = findViewById(R.id.ll_dental_history);
         list_view = findViewById(R.id.list_view);
+        tv_empty_work_done = findViewById(R.id.tv_empty_work_done);
         tv_patient_name = findViewById(R.id.tv_patient_name);
         tv_address = findViewById(R.id.tv_address);
         tv_details = findViewById(R.id.tv_details);
@@ -386,19 +388,28 @@ public class PatientProfileActivity extends BaseActivity implements
         }
         workDoneAdapter = new WorkDoneAdapter(this, toothWorkDoneList);
         list_view.setAdapter(workDoneAdapter);
+        tv_empty_work_done.setVisibility(toothWorkDoneList.size() > 0 ? View.GONE : View.VISIBLE);
     }
 
     public void parseWorkDoneData(String str, String createdDate) {
         try {
-            String[] temp = str.split("\\|");
+            String[] temp = str.split("\\|", -1);
             if (temp.length > 0) {
                 for (int i = 0; i < temp.length; i++) {
                     String act = temp[i];
                     if (act.contains(":")) {
-                        String[] strArray = act.split(":");
+                        String[] strArray = act.split(":", -1);
                         String toothNum = strArray[0].trim();
                         String procedure = strArray[1];
-                        toothWorkDoneList.add(new ToothWorkDone(toothNum, procedure, "",createdDate));
+                        String summary = strArray.length == 3 ? strArray[2] : "";
+                        if (strArray.length > 3) {
+                            String status = strArray[3].trim();
+                            String unit = strArray[4];
+                            String period = strArray[5];
+                            toothWorkDoneList.add(new ToothWorkDone(toothNum, procedure, summary, status, unit, period, createdDate));
+                        } else {
+                            toothWorkDoneList.add(new ToothWorkDone(toothNum, procedure, "", createdDate));
+                        }
                     }
                 }
             }
