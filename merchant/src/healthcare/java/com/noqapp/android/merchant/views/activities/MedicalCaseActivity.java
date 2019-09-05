@@ -71,7 +71,9 @@ public class MedicalCaseActivity extends BaseActivity implements
     public boolean isGynae = false;
     public boolean isDental = false;
 
-    public boolean isDental() { return isDental; }
+    public boolean isDental() {
+        return isDental;
+    }
 
     public boolean isGynae() {
         return isGynae;
@@ -139,6 +141,11 @@ public class MedicalCaseActivity extends BaseActivity implements
             isGynae = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.OGY;
             isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
         }
+        TextView tv_summary = findViewById(R.id.tv_summary);
+        String summary = createSummary(jsonMedicalRecord);
+        tv_summary.setText(summary);
+        tv_summary.setVisibility(TextUtils.isEmpty(summary) ? View.GONE : View.VISIBLE);
+        tv_summary.setOnClickListener(v -> menuHeaderClick(1));
         caseHistory = new CaseHistory();
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
@@ -147,8 +154,8 @@ public class MedicalCaseActivity extends BaseActivity implements
         data.add("Symptoms");
         data.add("Examination");
         data.add("Investigation");
-        data.add(isDental? "Treatment Plan" : "Treatment");
-        data.add(isDental? "Work Done" : "Instructions");
+        data.add(isDental ? "Treatment Plan" : "Treatment");
+        data.add(isDental ? "Work Done" : "Instructions");
         data.add("Preview");
 
 
@@ -199,6 +206,23 @@ public class MedicalCaseActivity extends BaseActivity implements
         }, 100);
 
 
+    }
+
+    private String createSummary(JsonMedicalRecord jsonMedicalRecord) {
+        String str = "";
+        if (null != jsonMedicalRecord && null != jsonMedicalRecord.getJsonUserMedicalProfile()) {
+            if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies())
+                str += jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies() + " ; ";
+            if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory())
+                str += jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory() + " ; ";
+            if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory())
+                str += jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory() + " ; ";
+            if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getMedicineAllergies())
+                str += jsonMedicalRecord.getJsonUserMedicalProfile().getMedicineAllergies() + " ; ";
+            if (str.endsWith(" ; "))
+                str = str.substring(0, str.length() - 2);
+        }
+        return str;
     }
 
     @Override
