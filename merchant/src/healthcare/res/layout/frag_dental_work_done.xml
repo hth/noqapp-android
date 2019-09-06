@@ -287,7 +287,6 @@
                     segmentedcontrol:columnCount="3"
                     segmentedcontrol:radius="6dp"
                     segmentedcontrol:radiusForEverySegment="false"
-                    segmentedcontrol:segments="@array/wd_status"
                     segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
                     segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
                     segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"

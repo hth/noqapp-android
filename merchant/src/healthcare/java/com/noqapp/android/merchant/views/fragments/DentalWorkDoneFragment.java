@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.medical.DentalWorkDoneEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
@@ -73,7 +74,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
         });
         dental_procedure = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getSymptoms());
         dental_number = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
-        dental_status = Arrays.asList(getResources().getStringArray(R.array.wd_status));
+        dental_status = DentalWorkDoneEnum.asListOfDescription();
         dental_units = Arrays.asList(getResources().getStringArray(R.array.units));
         dental_period = Arrays.asList(getResources().getStringArray(R.array.units));
 
@@ -117,7 +118,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
                 }
             }
         });
-
+        sc_status.addSegments(dental_status);
         sc_status.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {

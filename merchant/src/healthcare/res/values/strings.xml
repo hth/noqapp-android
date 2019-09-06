@@ -132,10 +132,4 @@
     <item>10</item>
 </string-array>
 
-<string-array name="wd_status">
-    <item>Incomplete</item>
-    <item>Complete</item>
-    <item>Delayed</item>
-</string-array>
-
 </resources>
