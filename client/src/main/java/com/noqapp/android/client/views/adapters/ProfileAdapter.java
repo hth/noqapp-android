@@ -41,7 +41,7 @@ public class ProfileAdapter extends RecyclerView.Adapter {
         final JsonProfile jsonProfile = jsonProfiles.get(position);
         holder.tv_name.setText(jsonProfile.getName());
         AppUtilities.loadProfilePic(holder.iv_profile, jsonProfile.getProfileImage(), context);
-        holder.cardview.setOnClickListener((View v) -> {
+        holder.btn_view_profile.setOnClickListener((View v) -> {
             if (null != listener)
                 listener.onProfileItemClick(jsonProfile);
         });
@@ -67,6 +67,7 @@ public class ProfileAdapter extends RecyclerView.Adapter {
         private TextView tv_name;
         private ImageView iv_profile;
         private Button btn_hospital_visit;
+        private Button btn_view_profile;
         private CardView cardview;
 
         public ViewHolder(View itemView) {
@@ -74,6 +75,7 @@ public class ProfileAdapter extends RecyclerView.Adapter {
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.iv_profile = itemView.findViewById(R.id.iv_profile);
             this.btn_hospital_visit = itemView.findViewById(R.id.btn_hospital_visit);
+            this.btn_view_profile = itemView.findViewById(R.id.btn_view_profile);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
