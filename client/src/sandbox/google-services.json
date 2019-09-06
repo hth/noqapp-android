@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-9442utn9qd0t5rod2p206aclcjd2kf3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.client",
+            "certificate_hash": "e366a34ceceda4fa8bdfbc8e0722b19f26326cc3"
+          }
+        },
+        {
           "client_id": "742452513487-27ju68092stapqeqomj2cbluirldbni0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.noqapp.android.client",
             "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
-          }
-        },
-        {
-          "client_id": "742452513487-co0hjrfojo0m4npmb4v1bu229309m4o4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.client",
-            "certificate_hash": "ce894260c6b648530aefc830dbd172430a4dd31f"
           }
         },
         {
@@ -75,19 +75,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-6lbkndjko2ft6dbp3lf47gf0nqpnqtbn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant",
+            "certificate_hash": "e366a34ceceda4fa8bdfbc8e0722b19f26326cc3"
+          }
+        },
+        {
           "client_id": "742452513487-gks7t1iuk39t0iprin1o5455h58tfamb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.noqapp.android.merchant",
             "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
-          }
-        },
-        {
-          "client_id": "742452513487-guh2cqojat305s2de74vjp8m7idvh98f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.merchant",
-            "certificate_hash": "ce894260c6b648530aefc830dbd172430a4dd31f"
           }
         },
         {
@@ -135,19 +135,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-dh1m94q741pafibdhum3sanjnqf70kd9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.healthcare",
+            "certificate_hash": "e366a34ceceda4fa8bdfbc8e0722b19f26326cc3"
+          }
+        },
+        {
           "client_id": "742452513487-du9vd1lnpl7053a1al9mieo4p66783n5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.noqapp.android.merchant.healthcare",
             "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
-          }
-        },
-        {
-          "client_id": "742452513487-fag2dfqbha5k9gcjs2absueeu2gjssmh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.merchant.healthcare",
-            "certificate_hash": "ce894260c6b648530aefc830dbd172430a4dd31f"
           }
         },
         {
@@ -195,19 +195,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-g940oa78l1ncvsu6pgac6km0otb1ik90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.inventory",
+            "certificate_hash": "e366a34ceceda4fa8bdfbc8e0722b19f26326cc3"
+          }
+        },
+        {
           "client_id": "742452513487-l6grvvjf4qpo8v2jpopglcnmrit7b8it.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.noqapp.android.merchant.inventory",
             "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
-          }
-        },
-        {
-          "client_id": "742452513487-0vht89bki520rrob8kvqapjk9vl3g54m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.merchant.inventory",
-            "certificate_hash": "ce894260c6b648530aefc830dbd172430a4dd31f"
           }
         },
         {
@@ -255,19 +255,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-3hk2qffuduhj4klbltots1vchqhtkdo5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.tv",
+            "certificate_hash": "e366a34ceceda4fa8bdfbc8e0722b19f26326cc3"
+          }
+        },
+        {
           "client_id": "742452513487-9lfvoueomme6gkgv6g7993toskb2dfap.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.noqapp.android.merchant.tv",
             "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
-          }
-        },
-        {
-          "client_id": "742452513487-s64lmssfb6uibqt0qn2g5j8p55caggq2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.merchant.tv",
-            "certificate_hash": "ce894260c6b648530aefc830dbd172430a4dd31f"
           }
         },
         {
