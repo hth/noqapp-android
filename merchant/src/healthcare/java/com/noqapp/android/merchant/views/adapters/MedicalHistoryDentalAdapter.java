@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,8 +68,8 @@ public class MedicalHistoryDentalAdapter extends BaseAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        recordHolder.tv_dental_treatment.setText(jsonMedicalRecord.getNoteForPatient());
-        recordHolder.tv_dental_work_done.setText(jsonMedicalRecord.getNoteToDiagnoser());
+        recordHolder.tv_dental_treatment.setText(beautifyString(jsonMedicalRecord.getNoteForPatient()));
+        recordHolder.tv_dental_work_done.setText(beautifyString(jsonMedicalRecord.getNoteToDiagnoser()));
 
         return view;
     }
@@ -86,6 +87,20 @@ public class MedicalHistoryDentalAdapter extends BaseAdapter {
 
         RecordHolder() {
         }
+    }
+
+    private String beautifyString(String str){
+        if(TextUtils.isEmpty(str)){
+            return str;
+        }else{
+            if(str.contains("|")){
+                String temp = str.replaceAll("\\|",", ");
+                return temp;
+            }else {
+                return str;
+            }
+        }
+
     }
 
 }
