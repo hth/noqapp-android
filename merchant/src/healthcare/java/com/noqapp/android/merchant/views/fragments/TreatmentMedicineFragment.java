@@ -43,12 +43,13 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView recyclerView, rcv_medicine;
-    private TextView tv_add_medicine,  tv_close, tv_remove, tv_medicine_name;
+    private TextView tv_add_medicine,  tv_remove, tv_medicine_name;
+    private ImageView tv_close;
     private StaggeredGridMedicineAdapter medicineAdapter, medicineSelectedAdapter;
     private ScrollView ll_medicine;
     private SegmentedControl sc_duration, sc_medicine_timing, sc_frequency;
     private List<String> duration_data, timing_data, frequency_data;
-    private Button btn_done;
+    private TextView btn_done;
     private String medicineTiming, medicineDuration, medicineFrequency;
     private View view_med;
     private ArrayList<DataObj> selectedMedicineList = new ArrayList<>();

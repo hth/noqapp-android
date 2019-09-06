@@ -39,7 +39,7 @@ public class SymptomsFragment extends BaseFragment implements
         StaggeredGridSymptomAdapter.StaggeredClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_gynac, rcv_obstretics, rcv_symptom_select;
-    private TextView tv_add_new, tv_symptoms_name, tv_close, tv_remove, tv_output;
+    private TextView tv_add_new, tv_symptoms_name, tv_remove, tv_output;
     private StaggeredGridSymptomAdapter symptomsAdapter, obstreticsAdapter, symptomSelectedAdapter;
     private EditText edt_output;
     private ScrollView ll_symptom_note;
@@ -47,7 +47,8 @@ public class SymptomsFragment extends BaseFragment implements
     private SegmentedControl sc_duration;
     private List<String> duration_data;
     private String no_of_days;
-    private Button btn_done;
+    private TextView btn_done;
+    private ImageView tv_close;
     private View view_med;
     private ArrayList<DataObj> selectedSymptomsList = new ArrayList<>();
     private TextView tv_obes, tv_gyanc;
