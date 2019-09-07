@@ -1,28 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -49,6 +26,29 @@ import com.noqapp.android.merchant.views.pojos.FormDataObj;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.gson.Gson;
+
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,14 +212,14 @@ public class MedicalCaseActivity extends BaseActivity implements
         String str = "";
         if (null != jsonMedicalRecord && null != jsonMedicalRecord.getJsonUserMedicalProfile()) {
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies())
-                str += jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies() + " ; ";
+                str += jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies() + ", ";
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory())
-                str += jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory() + " ; ";
+                str += jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory() + ", ";
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory())
-                str += jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory() + " ; ";
+                str += jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory() + ", ";
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getMedicineAllergies())
-                str += jsonMedicalRecord.getJsonUserMedicalProfile().getMedicineAllergies() + " ; ";
-            if (str.endsWith(" ; "))
+                str += jsonMedicalRecord.getJsonUserMedicalProfile().getMedicineAllergies() + ", ";
+            if (str.endsWith(", "))
                 str = str.substring(0, str.length() - 2);
         }
         return str;
@@ -440,7 +440,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         formDataObj.getInstructionList().add("Plenty of fluids");
         formDataObj.getInstructionList().add("Nebulization");
         formDataObj.getInstructionList().add("Plenty of Green vegetables & fruits");
-        formDataObj.getInstructionList().add("To avoid strong smells of perfumes, deodrent, agarbatti dhoop");
+        formDataObj.getInstructionList().add("To avoid strong smells of perfumes, deodorant, agarbatti dhoop");
         formDataObj.getInstructionList().add("No oil & no spicy food ");
         formDataObj.getInstructionList().add("Drink more water");
         formDataObj.getInstructionList().add("Increase content of salad in your diet");
@@ -473,6 +473,8 @@ public class MedicalCaseActivity extends BaseActivity implements
         Bundle bppf = new Bundle();
         bppf.putString("qUserId", jsonQueuedPerson.getQueueUserId());
         bppf.putString("qCodeQR", codeQR);
+
+        //TODO fix typo
         bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
         primaryCheckupFragment.setArguments(bppf);
         symptomsTabFragment = new SymptomsTabFragment();
