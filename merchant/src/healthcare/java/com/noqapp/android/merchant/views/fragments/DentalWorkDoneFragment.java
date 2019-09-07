@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.medical.DentalWorkDoneEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
@@ -28,18 +30,15 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_col
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdapter.OnItemClickListener{
-
     private ListView list_view;
-    private TextView tv_add_work, tv_close;
+    private TextView tv_add_work;
     private SegmentedControl sc_teeth_number, sc_procedure, sc_status, sc_unit, sc_period;
     private List<String> dental_procedure;
     private List<String> dental_number;
-
     private List<String> dental_status;
     private List<String> dental_units;
     private List<String> dental_period;
-
-
+    private ImageView tv_close;
     private TextView tv_done;
     private ScrollView ll_work_done;
     private String teethNumber;
@@ -75,7 +74,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
         });
         dental_procedure = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getSymptoms());
         dental_number = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
-        dental_status = Arrays.asList(getResources().getStringArray(R.array.wd_status));
+        dental_status = DentalWorkDoneEnum.asListOfDescription();
         dental_units = Arrays.asList(getResources().getStringArray(R.array.units));
         dental_period = Arrays.asList(getResources().getStringArray(R.array.units));
 
@@ -119,7 +118,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
                 }
             }
         });
-
+        sc_status.addSegments(dental_status);
         sc_status.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {

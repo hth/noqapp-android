@@ -43,12 +43,13 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView recyclerView, rcv_medicine;
-    private TextView tv_add_medicine,  tv_close, tv_remove, tv_medicine_name;
+    private TextView tv_add_medicine,  tv_remove, tv_medicine_name;
+    private ImageView tv_close;
     private StaggeredGridMedicineAdapter medicineAdapter, medicineSelectedAdapter;
     private ScrollView ll_medicine;
     private SegmentedControl sc_duration, sc_medicine_timing, sc_frequency;
     private List<String> duration_data, timing_data, frequency_data;
-    private Button btn_done;
+    private TextView btn_done;
     private String medicineTiming, medicineDuration, medicineFrequency;
     private View view_med;
     private ArrayList<DataObj> selectedMedicineList = new ArrayList<>();
@@ -188,9 +189,9 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
+        ImageView iv_close = customDialogView.findViewById(R.id.iv_close);
         Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
+        iv_close.setOnClickListener(v -> mAlertDialog.dismiss());
         btn_add.setOnClickListener(v -> {
             edt_item.setError(null);
             if (edt_item.getText().toString().equals("")) {

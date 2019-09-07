@@ -1,20 +1,17 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.ContextCompat;
-
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
 public class PastHistoryFragment extends BaseFragment {
     private EditText edt_past_history, edt_known_allergy, edt_family_history, edt_medicine_allergies;
@@ -22,8 +19,7 @@ public class PastHistoryFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_past_history, container, false);
         edt_past_history = v.findViewById(R.id.edt_past_history);
@@ -32,26 +28,24 @@ public class PastHistoryFragment extends BaseFragment {
         edt_medicine_allergies = v.findViewById(R.id.edt_medicine_allergies);
         sc_enable_history = v.findViewById(R.id.sc_enable_history);
         sc_enable_history.setChecked(false);
-        sc_enable_history.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    disableEditText(true, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
-                } else {
-                    disableEditText(false, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
-                }
+        sc_enable_history.setOnCheckedChangeListener((compoundButton, bChecked) -> {
+            if (bChecked) {
+                disableEditText(true, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
+            } else {
+                disableEditText(false, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
             }
         });
         return v;
     }
 
     private void disableEditText(boolean isChecked, EditText... editTexts) {
-        for (EditText edt :
-                editTexts) {
+        for (EditText edt : editTexts) {
             edt.setEnabled(isChecked);
             edt.setFocusable(isChecked);
             edt.setFocusableInTouchMode(isChecked);
-            edt.setBackground(isChecked ? ContextCompat.getDrawable(getActivity(), R.drawable.square_white_bg_drawable) : ContextCompat.getDrawable(getActivity(), R.drawable.edt_roun_rect));
+            edt.setBackground(isChecked
+                    ? ContextCompat.getDrawable(getActivity(), R.drawable.square_white_bg_drawable)
+                    : ContextCompat.getDrawable(getActivity(), R.drawable.edt_roun_rect));
         }
     }
 
@@ -109,4 +103,3 @@ public class PastHistoryFragment extends BaseFragment {
         }
     }
 }
-

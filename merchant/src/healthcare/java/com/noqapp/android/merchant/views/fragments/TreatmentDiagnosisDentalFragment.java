@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -36,13 +37,14 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
 
     private static final String ADDITIONAL_OPTION = "Mouth" ;
     private RecyclerView recyclerView, rcv_medicine;
-    private TextView tv_add_medicine,btn_done, tv_close,  tv_medicine_name,tv_remove;
+    private TextView tv_add_medicine,btn_done, tv_medicine_name,tv_remove;
     private StaggeredGridDentalAdapter dentalAdapter, dentalSelectAdapter;
     private ScrollView ll_medicine;
     private SegmentedControl sc_dental_option;
     private List<String> dental_option_data;
     private String dentalOption;
     private View view_med;
+    private ImageView tv_close;
     private ArrayList<DataObj> selectedDentalList = new ArrayList<>();
     private DataObj dataObj;
     private int spanCount = 4;

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -77,9 +78,9 @@ public class InstructionFragment extends BaseFragment {
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
+        ImageView iv_close = customDialogView.findViewById(R.id.iv_close);
         Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
+        iv_close.setOnClickListener(v -> mAlertDialog.dismiss());
         btn_add.setOnClickListener(v -> {
             edt_item.setError(null);
             if (edt_item.getText().toString().equals("")) {

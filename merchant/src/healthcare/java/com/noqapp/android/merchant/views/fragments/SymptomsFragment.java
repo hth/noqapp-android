@@ -39,7 +39,7 @@ public class SymptomsFragment extends BaseFragment implements
         StaggeredGridSymptomAdapter.StaggeredClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_gynac, rcv_obstretics, rcv_symptom_select;
-    private TextView tv_add_new, tv_symptoms_name, tv_close, tv_remove, tv_output;
+    private TextView tv_add_new, tv_symptoms_name, tv_remove, tv_output;
     private StaggeredGridSymptomAdapter symptomsAdapter, obstreticsAdapter, symptomSelectedAdapter;
     private EditText edt_output;
     private ScrollView ll_symptom_note;
@@ -47,7 +47,8 @@ public class SymptomsFragment extends BaseFragment implements
     private SegmentedControl sc_duration;
     private List<String> duration_data;
     private String no_of_days;
-    private Button btn_done;
+    private TextView btn_done;
+    private ImageView tv_close;
     private View view_med;
     private ArrayList<DataObj> selectedSymptomsList = new ArrayList<>();
     private TextView tv_obes, tv_gyanc;
@@ -150,9 +151,9 @@ public class SymptomsFragment extends BaseFragment implements
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
+        ImageView iv_close = customDialogView.findViewById(R.id.iv_close);
         Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
+        iv_close.setOnClickListener(v -> mAlertDialog.dismiss());
         btn_add.setOnClickListener(v -> {
             edt_item.setError(null);
             if (edt_item.getText().toString().equals("")) {
