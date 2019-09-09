@@ -6,15 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.customviews.CustomToast;
@@ -24,6 +20,7 @@ import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
+import com.noqapp.android.merchant.views.utils.ShowAddDialog;
 
 import java.util.ArrayList;
 
@@ -42,7 +39,7 @@ public class TreatmentDiagnosisFragment extends BaseFragment implements
         View v = inflater.inflate(R.layout.frag_treatment_diagnosis, container, false);
         recyclerView_one = v.findViewById(R.id.recyclerViewOne);
         tv_add_diagnosis = v.findViewById(R.id.tv_add_diagnosis);
-        tv_add_diagnosis.setOnClickListener(v12 -> AddItemDialog(getActivity(), "Add Diagnosis"));
+        tv_add_diagnosis.setOnClickListener(v12 -> AddItemDialog(getActivity()));
         actv_search_dia = v.findViewById(R.id.actv_search_dia);
         actv_search_dia.setThreshold(1);
         ImageView iv_clear_actv_dia = v.findViewById(R.id.iv_clear_actv_dia);
@@ -71,39 +68,23 @@ public class TreatmentDiagnosisFragment extends BaseFragment implements
         actv_search_dia.setAdapter(adapterSearchDia);
     }
 
-    private void AddItemDialog(final Context mContext, String title) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.add_item, null, false);
-        final EditText edt_item = customDialogView.findViewById(R.id.edt_item);
-        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-        tvtitle.setText(title);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        ImageView iv_close = customDialogView.findViewById(R.id.iv_close);
-        Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        iv_close.setOnClickListener(v -> mAlertDialog.dismiss());
-        btn_add.setOnClickListener(v -> {
-            edt_item.setError(null);
-            if (edt_item.getText().toString().equals("")) {
-                edt_item.setError("Empty field not allowed");
-            } else {
+    private void AddItemDialog(Context mContext) {
+        ShowAddDialog showDialog = new ShowAddDialog(mContext);
+        showDialog.setDialogClickListener(new ShowAddDialog.DialogClickListener() {
+            @Override
+            public void btnDoneClick(String str) {
                 ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList();
-                temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                temp.add(new DataObj(str, false).setNewlyAdded(true));
                 MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDiagnosisList(temp);
                 recyclerView_one.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                 StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
                 recyclerView_one.setAdapter(customAdapter);
-                MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
+                MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDiagnosisList().add(new DataObj(str, false));
                 MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
-                mAlertDialog.dismiss();
+                new CustomToast().showToast(getActivity(), "'" + str + "' added successfully to list");
             }
         });
-        mAlertDialog.show();
+        showDialog.displayDialog("Add Diagnosis");
     }
 
 
