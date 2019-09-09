@@ -12,6 +12,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +45,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
     private List<String> dental_number= new ArrayList<>();
     private ImageView tv_close;
     private TextView tv_done;
-    private ScrollView ll_work_done;
+    private NestedScrollView ll_work_done;
     private String teethNumber;
     private String teethProcedure;
     private String teethStatus;
