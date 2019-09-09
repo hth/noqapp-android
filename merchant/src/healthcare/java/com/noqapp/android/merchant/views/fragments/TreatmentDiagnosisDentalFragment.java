@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -35,9 +34,9 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 public class TreatmentDiagnosisDentalFragment extends BaseFragment implements StaggeredGridDentalAdapter.StaggeredMedicineClick,
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
-    private static final String ADDITIONAL_OPTION = "Mouth" ;
+    private static final String ADDITIONAL_OPTION = "Mouth";
     private RecyclerView recyclerView, rcv_medicine;
-    private TextView tv_add_medicine,btn_done, tv_medicine_name,tv_remove;
+    private TextView tv_add_medicine, btn_done, tv_medicine_name, tv_remove;
     private StaggeredGridDentalAdapter dentalAdapter, dentalSelectAdapter;
     private ScrollView ll_medicine;
     private SegmentedControl sc_dental_option;
@@ -118,7 +117,8 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setNoteForPatient(dentalSelectAdapter.getSelectedData());  }
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setNoteForPatient(dentalSelectAdapter.getSelectedData());
+    }
 
     @Override
     public void staggeredMedicineClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
@@ -130,8 +130,8 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         }
         tv_remove.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
         dataObj = temp;
-        tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(ADDITIONAL_OPTION)?
-                dataObj.getShortName():"Tooth Number: "+dataObj.getShortName());
+        tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(ADDITIONAL_OPTION) ?
+                dataObj.getShortName() : "Tooth Number: " + dataObj.getShortName());
         if (isEdit) {
             // Pre fill the data
             sc_dental_option.setSelectedSegment(dental_option_data.indexOf(dataObj.getDentalProcedure()));
@@ -189,8 +189,8 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     }
 
 
-    private ArrayList<DataObj> getToothNumbersList(){
-       ArrayList<DataObj> temp = MedicalDataStatic.Dental.getDentalDiagnosisList();
+    private ArrayList<DataObj> getToothNumbersList() {
+        ArrayList<DataObj> temp = MedicalDataStatic.Dental.getDentalDiagnosisList();
         temp.add(new DataObj(ADDITIONAL_OPTION, false));
         return temp;
     }

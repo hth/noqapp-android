@@ -147,26 +147,11 @@
                     android:textSize="@dimen/text_size_fourteen"
                     android:textStyle="bold" />
 
-                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
-                    android:id="@+id/sc_teeth_number"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_tooth_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    segmentedcontrol:distributeEvenly="true"
-                    segmentedcontrol:columnCount="6"
-                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
-                    segmentedcontrol:radius="6dp"
-                    segmentedcontrol:radiusForEverySegment="false"
-                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
-                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
-                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                    segmentedcontrol:strokeWidth="1dp"
-                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                    segmentedcontrol:textVerticalPadding="5dp"
-                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
-                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+                    android:layout_margin="5dp" />
 
 
                 <TextView

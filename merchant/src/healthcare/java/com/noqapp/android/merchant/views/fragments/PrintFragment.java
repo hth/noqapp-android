@@ -650,6 +650,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             }
             WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList,true);
             list_view.setAdapter(workDoneAdapter);
+            workDoneAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -680,6 +681,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             }
             WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList);
             list_view_wd.setAdapter(workDoneAdapter);
+            workDoneAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
