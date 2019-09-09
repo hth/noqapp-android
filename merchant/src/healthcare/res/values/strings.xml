@@ -31,7 +31,7 @@
     <string name="mds_medication">Medication:</string>
     <string name="mds_assist">Assist</string>
     <string name="mds_preferred_pharmacy">Preferred Pharmacy:</string>
-    <string name="mds_follow_up">Follow up:</string>
+    <string name="mds_follow_up">Follow-up:</string>
     <string name="mds_instruction">Instruction/Plan to patient:</string>
 
     <string name="pe_oxygen">Oxygen </string>

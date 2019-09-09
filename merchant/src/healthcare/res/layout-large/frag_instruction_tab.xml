@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:background="#80000000" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/fl_dental_work_done"
         android:layout_width="0dp"
         android:layout_height="match_parent"
