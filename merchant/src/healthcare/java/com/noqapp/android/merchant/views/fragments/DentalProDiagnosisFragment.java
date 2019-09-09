@@ -60,14 +60,15 @@ public class DentalProDiagnosisFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ToothProcedure imageFilePathTop = new ToothProcedure(R.drawable.tooth_o_2_1, DentalOptionEnum.NOR.getDescription());
+        ToothProcedure imageFilePathTop = new ToothProcedure(R.drawable.top, DentalOptionEnum.NOR.getDescription());
         List<ToothProcedure> drawables = getFrontAllViews();
         List<ToothInfo> toothInfos = new ArrayList<>();
         List<String> toothNumbers = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
         for (int i = 0; i < 32; i++) {
             ToothInfo toothInfo = new ToothInfo();
             toothInfo.setToothNumber(Integer.parseInt(toothNumbers.get(i)));
-            toothInfo.setToothFrontView(drawables.get(i));
+            //toothInfo.setToothFrontView(drawables.get(i));
+            toothInfo.setToothFrontView(new ToothProcedure(R.drawable.bottom, DentalOptionEnum.NOR.getDescription()));
             toothInfo.setToothDefaultFrontView(toothInfo.getToothFrontView());
             toothInfo.setToothTopView(imageFilePathTop);
             toothInfo.setToothDefaultTopView(toothInfo.getToothTopView());
@@ -86,7 +87,6 @@ public class DentalProDiagnosisFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void getCaptureAndUploadBitmap() {
