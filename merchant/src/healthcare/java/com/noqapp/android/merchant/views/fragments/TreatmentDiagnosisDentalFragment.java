@@ -34,7 +34,6 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 public class TreatmentDiagnosisDentalFragment extends BaseFragment implements StaggeredGridDentalAdapter.StaggeredMedicineClick,
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
-    private static final String ADDITIONAL_OPTION = "Mouth";
     private RecyclerView recyclerView, rcv_medicine;
     private TextView tv_add_medicine, btn_done, tv_medicine_name, tv_remove;
     private StaggeredGridDentalAdapter dentalAdapter, dentalSelectAdapter;
@@ -130,7 +129,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         }
         tv_remove.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
         dataObj = temp;
-        tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(ADDITIONAL_OPTION) ?
+        tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(MedicalDataStatic.Dental.ADDITIONAL_OPTION) ?
                 dataObj.getShortName() : "Tooth Number: " + dataObj.getShortName());
         if (isEdit) {
             // Pre fill the data
@@ -191,7 +190,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
 
     private ArrayList<DataObj> getToothNumbersList() {
         ArrayList<DataObj> temp = MedicalDataStatic.Dental.getDentalDiagnosisList();
-        temp.add(new DataObj(ADDITIONAL_OPTION, false));
+        temp.add(new DataObj(MedicalDataStatic.Dental.ADDITIONAL_OPTION, false));
         return temp;
     }
 }

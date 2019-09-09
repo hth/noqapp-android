@@ -658,6 +658,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
 
     private void parseDentalWDDiagnosis(String str) {
         try {
+            list_view_wd.setAdapter(new WorkDoneAdapter(getActivity(), new ArrayList<>()));
             ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
             String[] temp = str.split("\\|", -1);
             if (temp.length > 0) {
@@ -679,9 +680,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
                     }
                 }
             }
-            WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList);
-            list_view_wd.setAdapter(workDoneAdapter);
-            workDoneAdapter.notifyDataSetChanged();
+            list_view_wd.setAdapter(new WorkDoneAdapter(getActivity(), toothWorkDoneList));
         } catch (Exception e) {
             e.printStackTrace();
         }

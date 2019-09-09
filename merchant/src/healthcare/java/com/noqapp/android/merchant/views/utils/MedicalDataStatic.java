@@ -401,6 +401,7 @@ public class MedicalDataStatic {
     }
 
     public static class Dental {
+        public static String ADDITIONAL_OPTION = "All";
 
         public static ArrayList<DataObj> getDiagnosis() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();

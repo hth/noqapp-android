@@ -78,6 +78,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
         });
         dental_procedure = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getSymptoms());
         List<String> dental_number = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
+        dental_number.add(MedicalDataStatic.Dental.ADDITIONAL_OPTION);
         dental_status = DentalWorkDoneEnum.asListOfDescription();
         dental_units = Arrays.asList(getResources().getStringArray(R.array.units));
         dental_period = Arrays.asList(getResources().getStringArray(R.array.units));
@@ -124,11 +125,13 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
             }
         });
         tv_done.setOnClickListener(v1 -> {
+            teethNumber = teethNumberAdapter.getSelectedItem();
             if (TextUtils.isEmpty(teethProcedure)) {
                 new CustomToast().showToast(getActivity(), "Procedure is mandatory");
+            }else if (TextUtils.isEmpty(teethNumber)) {
+                new CustomToast().showToast(getActivity(), "Teeth number is mandatory");
             } else {
                 // Save data
-                teethNumber = teethNumberAdapter.getSelectedItem();
                 if (isItemExist(teethNumber)) {
                     new CustomToast().showToast(getActivity(), "Tooth already added to list");
                 } else {
