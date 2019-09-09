@@ -46,14 +46,14 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     private ImageView tv_close;
     private ArrayList<DataObj> selectedDentalList = new ArrayList<>();
     private DataObj dataObj;
-    private int spanCount = 4;
+    private int spanCount = 8;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_treatment_diagnosis_dental, container, false);
-        spanCount = LaunchActivity.isTablet ? 16 : 4;
+        spanCount = LaunchActivity.isTablet ? 16 : 8;
         recyclerView = v.findViewById(R.id.recyclerView);
         rcv_medicine = v.findViewById(R.id.rcv_medicine);
         view_med = v.findViewById(R.id.view_med);

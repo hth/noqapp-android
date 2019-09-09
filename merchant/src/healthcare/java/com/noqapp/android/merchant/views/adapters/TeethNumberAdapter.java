@@ -2,12 +2,12 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,26 +19,25 @@ import java.util.List;
 
 public class TeethNumberAdapter extends RecyclerView.Adapter {
 
-    private List<String> dataObjArrayList;
+    private List<String> numberList;
     private Context context;
     private int selectedPos = -1;
 
-    public TeethNumberAdapter(Context context, List<String> dataObjArrayList) {
+    public TeethNumberAdapter(Context context, List<String> numberList) {
         this.context = context;
-        this.dataObjArrayList = dataObjArrayList;
+        this.numberList = numberList;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayoutdental, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_teeth_number, parent, false);
         return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         MyViewHolder holder = (MyViewHolder) viewHolder;
-        holder.name.setText(dataObjArrayList.get(position));
+        holder.name.setText(numberList.get(position));
         if (selectedPos == position) {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_select));
             holder.name.setTextColor(Color.parseColor("#FFFFFF"));
@@ -54,12 +53,10 @@ public class TeethNumberAdapter extends RecyclerView.Adapter {
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_select));
                     holder.name.setTextColor(Color.parseColor("#FFFFFF"));
-
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
                     holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                 }
-
             }
         });
     }
@@ -67,11 +64,11 @@ public class TeethNumberAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return dataObjArrayList.size();
+        return numberList.size();
     }
 
     public String getSelectedItem() {
-        return selectedPos == -1 ? "" : dataObjArrayList.get(selectedPos);
+        return selectedPos == -1 ? "" : numberList.get(selectedPos);
     }
 
     public void clearSelection() {
@@ -80,13 +77,11 @@ public class TeethNumberAdapter extends RecyclerView.Adapter {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        CheckBox name;
-        ImageView image;
+        private CheckBox name;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
-            image = itemView.findViewById(R.id.image);
         }
     }
 
