@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -35,9 +34,8 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 public class TreatmentDiagnosisDentalFragment extends BaseFragment implements StaggeredGridDentalAdapter.StaggeredMedicineClick,
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
-    private static final String ADDITIONAL_OPTION = "Mouth" ;
     private RecyclerView recyclerView, rcv_medicine;
-    private TextView tv_add_medicine,btn_done, tv_medicine_name,tv_remove;
+    private TextView tv_add_medicine, btn_done, tv_medicine_name, tv_remove;
     private StaggeredGridDentalAdapter dentalAdapter, dentalSelectAdapter;
     private ScrollView ll_medicine;
     private SegmentedControl sc_dental_option;
@@ -47,14 +45,14 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     private ImageView tv_close;
     private ArrayList<DataObj> selectedDentalList = new ArrayList<>();
     private DataObj dataObj;
-    private int spanCount = 4;
+    private int spanCount = 8;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_treatment_diagnosis_dental, container, false);
-        spanCount = LaunchActivity.isTablet ? 16 : 4;
+        spanCount = LaunchActivity.isTablet ? 16 : 8;
         recyclerView = v.findViewById(R.id.recyclerView);
         rcv_medicine = v.findViewById(R.id.rcv_medicine);
         view_med = v.findViewById(R.id.view_med);
@@ -118,7 +116,8 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setNoteForPatient(dentalSelectAdapter.getSelectedData());  }
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setNoteForPatient(dentalSelectAdapter.getSelectedData());
+    }
 
     @Override
     public void staggeredMedicineClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
@@ -130,8 +129,8 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         }
         tv_remove.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
         dataObj = temp;
-        tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(ADDITIONAL_OPTION)?
-                dataObj.getShortName():"Tooth Number: "+dataObj.getShortName());
+        tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(MedicalDataStatic.Dental.ADDITIONAL_OPTION) ?
+                dataObj.getShortName() : "Tooth Number: " + dataObj.getShortName());
         if (isEdit) {
             // Pre fill the data
             sc_dental_option.setSelectedSegment(dental_option_data.indexOf(dataObj.getDentalProcedure()));
@@ -189,9 +188,9 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     }
 
 
-    private ArrayList<DataObj> getToothNumbersList(){
-       ArrayList<DataObj> temp = MedicalDataStatic.Dental.getDentalDiagnosisList();
-        temp.add(new DataObj(ADDITIONAL_OPTION, false));
+    private ArrayList<DataObj> getToothNumbersList() {
+        ArrayList<DataObj> temp = MedicalDataStatic.Dental.getDentalDiagnosisList();
+        temp.add(new DataObj(MedicalDataStatic.Dental.ADDITIONAL_OPTION, false));
         return temp;
     }
 }

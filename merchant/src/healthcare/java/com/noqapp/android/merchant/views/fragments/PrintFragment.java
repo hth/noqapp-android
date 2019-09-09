@@ -67,8 +67,9 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec, ll_path;
     private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono, acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
     private PreferredStoreList preferredStoreList;
-    private ListView list_view;
+    private ListView list_view,list_view_wd;
     private TextView tv_tr, tv_nfp;
+    private LinearLayout ll_wd;
 
     @Nullable
     @Override
@@ -93,6 +94,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         tv_clinical_findings = v.findViewById(R.id.tv_clinical_findings);
         tv_examination = v.findViewById(R.id.tv_examination);
         list_view = v.findViewById(R.id.list_view);
+        list_view_wd = v.findViewById(R.id.list_view_wd);
 
         tv_weight = v.findViewById(R.id.tv_weight);
         tv_height = v.findViewById(R.id.tv_height);
@@ -118,6 +120,8 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         ll_xray = v.findViewById(R.id.ll_xray);
         ll_spec = v.findViewById(R.id.ll_spec);
         ll_path = v.findViewById(R.id.ll_path);
+
+        ll_wd = v.findViewById(R.id.ll_wd);
 
         sc_follow_up = v.findViewById(R.id.sc_follow_up);
         follow_up_data.clear();
@@ -378,15 +382,17 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             list_view.setVisibility(View.VISIBLE);
             tv_tr.setVisibility(View.VISIBLE);
             parseDentalDiagnosis(caseHistory.getNoteForPatient());
+            parseDentalWDDiagnosis(caseHistory.getNoteToDiagnoser());
             tv_note_for_patient.setVisibility(View.GONE);
             tv_nfp.setVisibility(View.GONE);
-
+            ll_wd.setVisibility(View.VISIBLE);
         } else {
             tv_note_for_patient.setText(caseHistory.getNoteForPatient());
             tv_note_for_patient.setVisibility(View.VISIBLE);
             tv_nfp.setVisibility(View.VISIBLE);
             list_view.setVisibility(View.GONE);
             tv_tr.setVisibility(View.GONE);
+            ll_wd.setVisibility(View.GONE);
         }
 
 
@@ -628,10 +634,10 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     }
 
 
-    public void parseDentalDiagnosis(String str) {
+    private void parseDentalDiagnosis(String str) {
         try {
             ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
-            String[] temp = str.split("\\|");
+            String[] temp = str.split("\\|",-1);
             if (temp.length > 0) {
                 for (String act : temp) {
                     if (act.contains(":")) {
@@ -644,6 +650,37 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             }
             WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList,true);
             list_view.setAdapter(workDoneAdapter);
+            workDoneAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void parseDentalWDDiagnosis(String str) {
+        try {
+            list_view_wd.setAdapter(new WorkDoneAdapter(getActivity(), new ArrayList<>()));
+            ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
+            String[] temp = str.split("\\|", -1);
+            if (temp.length > 0) {
+                for (int i = 0; i < temp.length; i++) {
+                    String act = temp[i];
+                    if (act.contains(":")) {
+                        String[] strArray = act.split(":", -1);
+                        String toothNum = strArray[0].trim();
+                        String procedure = strArray[1];
+                        String summary = strArray.length == 3 ? strArray[2] : "";
+                        if (strArray.length > 3) {
+                            String status = strArray[3].trim();
+                            String unit = strArray[4];
+                            String period = strArray[5];
+                            toothWorkDoneList.add(new ToothWorkDone(toothNum, procedure, summary, status, unit, period));
+                        } else {
+                            toothWorkDoneList.add(new ToothWorkDone(toothNum, procedure, summary));
+                        }
+                    }
+                }
+            }
+            list_view_wd.setAdapter(new WorkDoneAdapter(getActivity(), toothWorkDoneList));
         } catch (Exception e) {
             e.printStackTrace();
         }
