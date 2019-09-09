@@ -22,7 +22,6 @@ import java.util.List;
 
 public class InstructionFragment extends BaseFragment {
     private ListView list_view;
-    private TextView tv_add_instruction;
     private MultiSelectListAdapter instructionAdapter;
 
     @Nullable
@@ -31,7 +30,7 @@ public class InstructionFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_instruction, container, false);
         list_view = v.findViewById(R.id.list_view);
-        tv_add_instruction = v.findViewById(R.id.tv_add_instruction);
+        TextView tv_add_instruction = v.findViewById(R.id.tv_add_instruction);
         tv_add_instruction.setOnClickListener(v12 -> AddItemDialog(getActivity()));
         return v;
     }
