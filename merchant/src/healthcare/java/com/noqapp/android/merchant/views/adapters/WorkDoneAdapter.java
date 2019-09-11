@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class WorkDoneAdapter extends BaseAdapter {
     private boolean isDentalTreatment = false;
 
     public interface OnItemClickListener {
-        void removeWorkDone(ToothWorkDone item,int pos);
+        void removeWorkDone(ToothWorkDone item, int pos);
     }
 
     public void setWorkDoneList(List<ToothWorkDone> workDoneList) {
@@ -36,6 +37,7 @@ public class WorkDoneAdapter extends BaseAdapter {
         this.workDoneList = workDoneList;
         listener = null;
     }
+
     public WorkDoneAdapter(Context context, List<ToothWorkDone> workDoneList, boolean isDentalTreatment) {
         this.context = context;
         this.workDoneList = workDoneList;
@@ -43,7 +45,7 @@ public class WorkDoneAdapter extends BaseAdapter {
         listener = null;
     }
 
-    public WorkDoneAdapter(Context context, List<ToothWorkDone> workDoneList,OnItemClickListener listener) {
+    public WorkDoneAdapter(Context context, List<ToothWorkDone> workDoneList, OnItemClickListener listener) {
         this.context = context;
         this.workDoneList = workDoneList;
         this.listener = listener;
@@ -86,20 +88,18 @@ public class WorkDoneAdapter extends BaseAdapter {
         recordHolder.tv_procedure.setText(Html.fromHtml(ps));
 
 
-
         recordHolder.iv_delete.setVisibility(null == listener ? View.GONE : View.VISIBLE);
-        if(isDentalTreatment){
+        if (isDentalTreatment) {
             recordHolder.ll_ups.setVisibility(View.GONE);
             recordHolder.tv_summary.setVisibility(View.VISIBLE);
             recordHolder.tv_created_date.setVisibility(View.GONE);
-        }else {
+        } else {
             recordHolder.ll_ups.setVisibility(View.VISIBLE);
             recordHolder.tv_summary.setVisibility(View.VISIBLE);
-            recordHolder.tv_created_date.setVisibility(View.VISIBLE);
             String ts = "<b>" + "Summary: " + "</b> " + toothWorkDone.getSummary();
             recordHolder.tv_summary.setText(Html.fromHtml(ts));
             recordHolder.tv_created_date.setText(toothWorkDone.getCreatedDate());
-
+            recordHolder.tv_created_date.setVisibility(TextUtils.isEmpty(toothWorkDone.getCreatedDate()) ? View.GONE : View.VISIBLE);
             String status = "<b>" + "Status: " + "</b> " + toothWorkDone.getTeethStatus();
             recordHolder.tv_status.setText(Html.fromHtml(status));
             String unit = "<b>" + "Unit: " + "</b> " + toothWorkDone.getTeethUnit();
