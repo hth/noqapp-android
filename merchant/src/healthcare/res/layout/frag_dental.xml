@@ -20,17 +20,4 @@
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/btn_save_upload"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_height"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:background="@drawable/bg_gradient_round"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="Save &amp; Upload"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size_fourteen" />
 </RelativeLayout>
