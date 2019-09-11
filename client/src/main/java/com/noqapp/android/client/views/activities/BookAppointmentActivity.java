@@ -1,11 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -60,7 +65,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     private boolean isAppointmentBooking = false;
     private TextView tv_slot_count, tv_slot_count_empty;
     private Button btn_book_appointment;
-    private LinearLayout ll_sector,ll_slots;
+    private LinearLayout ll_sector, ll_slots;
     private View view_available, view_full;
 
     @Override
@@ -163,8 +168,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                     } else {
                         // Process
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            setProgressMessage("Booking appointment...");
-                            showProgress();
+                            // setProgressMessage("Booking appointment...");
+                            //  showProgress();
                             String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
                                     .setCodeQR(bizStoreElastic.getCodeQR())
@@ -172,7 +177,9 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setEndTime(AppUtilities.removeColon(temp[1].trim()))
                                     .setScheduleDate(new AppUtilities().getDateWithFormat(selectedDate))
                                     .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
-                            appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                            // appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                            showConfirmationDialog(BookAppointmentActivity.this, ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
+                                    new AppUtilities().getDateWithFormat(selectedDate), appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(), jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -182,8 +189,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                         new CustomToast().showToast(BookAppointmentActivity.this, "No walk-in appointment available");
                     } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            setProgressMessage("Booking appointment...");
-                            showProgress();
+                            //  setProgressMessage("Booking appointment...");
+                            // showProgress();
                             String[] temp = firstAvailableAppointment.getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
                                     .setCodeQR(bizStoreElastic.getCodeQR())
@@ -191,7 +198,10 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setEndTime(AppUtilities.removeColon(temp[1].trim()))
                                     .setScheduleDate(new AppUtilities().getDateWithFormat(selectedDate))
                                     .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
-                            appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                            //appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+
+                            showConfirmationDialog(BookAppointmentActivity.this, ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
+                                    new AppUtilities().getDateWithFormat(selectedDate), "", jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -227,7 +237,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
 
         if (new AppUtilities().checkStoreClosedWithTime(storeHourElastic)
-        ||new AppUtilities().checkStoreClosedWithAppointmentTime(storeHourElastic)) {
+                || new AppUtilities().checkStoreClosedWithAppointmentTime(storeHourElastic)) {
             tv_empty_slots.setVisibility(View.VISIBLE);
             enableDisableBtn(false);
         } else {
@@ -239,7 +249,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             ArrayList<String> timeSlot = AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
             for (int i = 0; i < timeSlot.size() - 1; i++) {
                 listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).
-                        setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i+1))));
+                        setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i + 1))));
 
                 if (!filledTimes.contains(timeSlot.get(i)) && null == firstAvailableAppointment) {
                     firstAvailableAppointment = listData.get(i);
@@ -266,8 +276,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                         tv_slot_count_empty.setVisibility(View.VISIBLE);
                         tv_slot_count.setVisibility(View.GONE);
                         ll_sector.setVisibility(View.GONE);
-                       // btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
-                       // btn_book_appointment.setTextColor(ContextCompat.getColor(this, R.color.btn_color));
+                        // btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
+                        // btn_book_appointment.setTextColor(ContextCompat.getColor(this, R.color.btn_color));
                         enableDisableBtn(false);
                     } else {
                         ll_sector.setVisibility(View.VISIBLE);
@@ -279,8 +289,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(0, 80, (100 - f) / 100);
                         view_full.setLayoutParams(param1);
 
-                       // btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_enable));
-                      //  btn_book_appointment.setTextColor(Color.parseColor("#ffffff"));
+                        // btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_enable));
+                        //  btn_book_appointment.setTextColor(Color.parseColor("#ffffff"));
                         enableDisableBtn(true);
                         tv_slot_count_empty.setVisibility(View.GONE);
                     }
@@ -290,17 +300,18 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
 
-    private void enableDisableBtn(boolean isEnable){
+    private void enableDisableBtn(boolean isEnable) {
         btn_book_appointment.setEnabled(isEnable);
-        if(isEnable){
+        if (isEnable) {
             btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_enable));
             btn_book_appointment.setTextColor(Color.parseColor("#ffffff"));
-        }else{
+        } else {
             btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
             btn_book_appointment.setTextColor(ContextCompat.getColor(this, R.color.btn_color));
         }
 
     }
+
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
@@ -357,5 +368,39 @@ public class BookAppointmentActivity extends BaseActivity implements
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
+    }
+
+
+    public void showConfirmationDialog(Context context, String patientName, String bookingDate,
+                                       String bookingSlot, JsonSchedule jsonSchedule) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.booking_confirm, null, false);
+
+        TextView tv_patient_name = customDialogView.findViewById(R.id.tv_patient_name);
+        TextView tv_booking_date = customDialogView.findViewById(R.id.tv_booking_date);
+        TextView tv_booking_slot = customDialogView.findViewById(R.id.tv_booking_slot);
+        tv_patient_name.setText(patientName);
+        tv_booking_date.setText(bookingDate);
+        tv_booking_slot.setText(bookingSlot);
+        if (TextUtils.isEmpty(bookingSlot)) {
+            LinearLayout ll_booking_slot = customDialogView.findViewById(R.id.ll_booking_slot);
+            ll_booking_slot.setVisibility(View.GONE);
+        }
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        Button btn_no = customDialogView.findViewById(R.id.btn_no);
+        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+        btn_no.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_yes.setOnClickListener(v -> {
+            setProgressMessage("Booking appointment...");
+            showProgress();
+            appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+            mAlertDialog.dismiss();
+        });
+        mAlertDialog.show();
     }
 }

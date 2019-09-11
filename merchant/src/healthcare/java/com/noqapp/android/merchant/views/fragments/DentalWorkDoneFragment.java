@@ -210,7 +210,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
                         String[] strArray = act.split(":", -1);
                         String toothNum = strArray[0].trim();
                         String procedure = strArray[1];
-                        String summary = strArray.length == 3 ? strArray[2] : "";
+                        String summary = strArray.length >= 3 ? strArray[2] : "";
                         if (strArray.length > 3) {
                             String status = strArray[3].trim();
                             String unit = strArray[4];

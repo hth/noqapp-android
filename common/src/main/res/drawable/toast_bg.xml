@@ -9,6 +9,6 @@
     <solid android:color="@color/toast_background"/>
 
     <corners
-        android:radius="25.0dip"/>
+        android:radius="5.0dip"/>
 
 </shape>
