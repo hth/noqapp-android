@@ -50,6 +50,7 @@ public class DentalProDiagnosisFragment extends BaseFragment {
         rcv_tooth.setLayoutManager(new GridLayoutManager(getActivity(), 16));
         rcv_tooth.setItemAnimator(new DefaultItemAnimator());
         Button btn_save_upload = view.findViewById(R.id.btn_save_upload);
+        btn_save_upload.setVisibility(View.GONE);
         btn_save_upload.setOnClickListener(v -> {
             getCaptureAndUploadBitmap();
         });
@@ -68,7 +69,7 @@ public class DentalProDiagnosisFragment extends BaseFragment {
             ToothInfo toothInfo = new ToothInfo();
             toothInfo.setToothNumber(Integer.parseInt(toothNumbers.get(i)));
             //toothInfo.setToothFrontView(drawables.get(i));
-            toothInfo.setToothFrontView(new ToothProcedure(R.drawable.bottom, DentalOptionEnum.NOR.getDescription()));
+            toothInfo.setToothFrontView(getTempDrawable(i+1));
             toothInfo.setToothDefaultFrontView(toothInfo.getToothFrontView());
             toothInfo.setToothTopView(imageFilePathTop);
             toothInfo.setToothDefaultTopView(toothInfo.getToothTopView());
@@ -189,4 +190,24 @@ public class DentalProDiagnosisFragment extends BaseFragment {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDentalAnatomyFilled(false);
         }
     }
+
+
+    private ToothProcedure getTempDrawable(int pos) {
+        if (pos == 1 ||pos == 2 ||pos == 3 ||pos == 16 ||pos == 15 ||pos == 14 ) {
+            return new ToothProcedure(R.drawable.t_1, DentalOptionEnum.NOR.getDescription());
+        } else if (pos == 4 || pos == 13) {
+            return new ToothProcedure(R.drawable.t_2, DentalOptionEnum.NOR.getDescription());
+        } else if (pos > 4 && pos <13) {
+            return new ToothProcedure(R.drawable.t_3, DentalOptionEnum.NOR.getDescription());
+        } else  if (pos == 17 ||pos == 18 ||pos == 19 ||pos == 32 ||pos == 31 ||pos == 30 ) {
+            return new ToothProcedure(R.drawable.t_4, DentalOptionEnum.NOR.getDescription());
+        } else if (pos == 20 || pos == 29) {
+            return new ToothProcedure(R.drawable.t_5, DentalOptionEnum.NOR.getDescription());
+        } else if (pos > 20 && pos <29) {
+            return new ToothProcedure(R.drawable.t_6, DentalOptionEnum.NOR.getDescription());
+        }else{
+            return new ToothProcedure(R.drawable.t_3, DentalOptionEnum.NOR.getDescription());
+        }
+    }
+
 }
