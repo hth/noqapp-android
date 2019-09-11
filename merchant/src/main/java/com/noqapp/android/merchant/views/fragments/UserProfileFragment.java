@@ -1,5 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -14,12 +16,13 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
@@ -90,7 +93,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         btn_update.setOnClickListener(this);
         edt_birthday.setOnClickListener(this);
 
-          return view;
+        return view;
     }
 
 
@@ -99,18 +102,31 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         int id = v.getId();
         switch (id) {
             case R.id.edt_birthday:
-                CustomCalendar customCalendar = new CustomCalendar(getActivity());
-                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-                    @Override
-                    public void calendarDate(String date) {
-                        edt_birthday.setText(date);
-                    }
-                });
-                customCalendar.showDobCalendar();
+//                CustomCalendar customCalendar = new CustomCalendar(getActivity());
+//                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+//                    @Override
+//                    public void calendarDate(String date) {
+//                        edt_birthday.setText(date);
+//                    }
+//                });
+//                customCalendar.showDobCalendar();
+                Intent in = new Intent(getActivity(), DatePickerActivity.class);
+                startActivityForResult(in, Constants.RC_DATE_PICKER);
+
                 break;
             case R.id.btn_update:
                 updateProfile();
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.RC_DATE_PICKER && resultCode == Activity.RESULT_OK) {
+            String date = data.getStringExtra("result");
+            if (!TextUtils.isEmpty(date))
+                edt_birthday.setText(date);
         }
     }
 
