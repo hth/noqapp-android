@@ -22,7 +22,7 @@ import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DentalStatusFragment extends BaseFragment {
+public class DentalStatusFragment extends DentalAnatomyFragment {
     private RecyclerView rcv_tooth;
 
     @Nullable
@@ -49,7 +49,7 @@ public class DentalStatusFragment extends BaseFragment {
             ToothInfo toothInfo = new ToothInfo();
             toothInfo.setToothNumber(Integer.parseInt(toothNumbers.get(i)));
             //toothInfo.setToothFrontView(drawables.get(i));
-            toothInfo.setToothFrontView(new ToothProcedure(R.drawable.bottom, DentalOptionEnum.NOR.getDescription()));
+            toothInfo.setToothFrontView(getTempDrawable(i + 1));
             toothInfo.setToothDefaultFrontView(toothInfo.getToothFrontView());
             toothInfo.setToothTopView(imageFilePathTop);
             toothInfo.setToothDefaultTopView(toothInfo.getToothTopView());
@@ -57,7 +57,7 @@ public class DentalStatusFragment extends BaseFragment {
             toothInfo.setTopViewDrawables(getTopOptionViews());
             toothInfos.add(toothInfo);
         }
-        ToothAdapter toothAdapter = new ToothAdapter(toothInfos, getActivity(),false);
+        ToothAdapter toothAdapter = new ToothAdapter(toothInfos, getActivity(), false);
         rcv_tooth.setAdapter(toothAdapter);
         try {
             JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getArguments().getSerializable("jsonMedicalRecord");
@@ -71,33 +71,4 @@ public class DentalStatusFragment extends BaseFragment {
         }
 
     }
-
-
-    private List<ToothProcedure> getTopOptionViews() {
-        List<ToothProcedure> drawables = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            int id = this.getResources().getIdentifier(String.valueOf("tooth_o_2_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(new ToothProcedure(id, DentalOptionEnum.CAO.getDescription()));
-        }
-        return drawables;
-    }
-
-    private List<ToothProcedure> getFrontOptionViews() {
-        List<ToothProcedure> drawables = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            int id = this.getResources().getIdentifier(String.valueOf("tooth_o_1_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(new ToothProcedure(id, DentalOptionEnum.IMP.getDescription()));
-        }
-        return drawables;
-    }
-
-    private List<ToothProcedure> getFrontAllViews() {
-        List<ToothProcedure> drawables = new ArrayList<>();
-        for (int i = 0; i < 32; i++) {
-            int id = this.getResources().getIdentifier(String.valueOf("tooth_1_" + (i + 1)), "drawable", getActivity().getPackageName());
-            drawables.add(new ToothProcedure(id, DentalOptionEnum.NOR.getDescription()));
-        }
-        return drawables;
-    }
-
 }
