@@ -72,7 +72,7 @@ import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -342,31 +342,25 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
-        mDrawerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (menuDrawerItems.get(groupPosition).isGroup()) {
-                    if (!menuDrawerItems.get(groupPosition).isHasChildren()) {
-                        int drawableId = menuDrawerItems.get(groupPosition).getIcon();
-                        menuClick(drawableId);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-                    }
-                }
-                return false;
-            }
-        });
-
-        mDrawerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (menuDrawerItems.get(groupPosition).getChildList() != null) {
-                    MenuDrawer model = menuDrawerItems.get(groupPosition).getChildList().get(childPosition);
-                    int drawableId = model.getIcon();
+        mDrawerList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
+            if (menuDrawerItems.get(groupPosition).isGroup()) {
+                if (!menuDrawerItems.get(groupPosition).isHasChildren()) {
+                    int drawableId = menuDrawerItems.get(groupPosition).getIcon();
                     menuClick(drawableId);
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                 }
-                return false;
             }
+            return false;
+        });
+
+        mDrawerList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            if (menuDrawerItems.get(groupPosition).getChildList() != null) {
+                MenuDrawer model = menuDrawerItems.get(groupPosition).getChildList().get(childPosition);
+                int drawableId = model.getIcon();
+                menuClick(drawableId);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+            return false;
         });
         ((TextView) findViewById(R.id.tv_version)).setText(
                 AppUtils.isRelease()

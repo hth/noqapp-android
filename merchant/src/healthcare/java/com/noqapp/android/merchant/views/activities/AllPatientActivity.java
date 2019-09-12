@@ -64,9 +64,13 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
                         showProgress();
-                        manageQueueApiCalls.getAllQueuePersonListHistory(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                                UserUtils.getAuth(), jt.getCodeQR(), new AppUtils().getEarlierDateWithFormat(7),
-                                new AppUtils().getTodayDateWithFormat());
+                        manageQueueApiCalls.getAllQueuePersonListHistory(
+                                UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(),
+                                jt.getCodeQR(),
+                                new AppUtils().earlierDayAsDateFormat(7),
+                                new AppUtils().todayAsDateFormat());
                     } else {
                         ShowAlertInformation.showNetworkDialog(AllPatientActivity.this);
                     }

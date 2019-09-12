@@ -16,6 +16,8 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 public class WorkDoneAdapter extends BaseAdapter {
@@ -101,7 +103,7 @@ public class WorkDoneAdapter extends BaseAdapter {
             recordHolder.tv_summary.setText(Html.fromHtml(ts));
             recordHolder.tv_created_date.setText(toothWorkDone.getCreatedDate());
             recordHolder.tv_created_date.setVisibility(TextUtils.isEmpty(toothWorkDone.getCreatedDate()) ? View.GONE : View.VISIBLE);
-            String status = "<b>" + "Status: " + "</b> " + DentalWorkDoneEnum.valueOf(toothWorkDone.getTeethStatus()).getDescription();
+            String status = "<b>" + "Status: " + "</b> " + getWorkDoneState(toothWorkDone.getTeethStatus());
             recordHolder.tv_status.setText(Html.fromHtml(status));
             String unit = "<b>" + "Unit: " + "</b> " + toothWorkDone.getTeethUnit();
             recordHolder.tv_unit.setText(Html.fromHtml(unit));
@@ -122,11 +124,23 @@ public class WorkDoneAdapter extends BaseAdapter {
                             //Do nothing
                         }
                     });
-                    showDialog.displayDialog("Delete work done", "Do you want to delete it from work done list?");
+                    showDialog.displayDialog("Delete Work Done", "Do you want to delete it from Work Done list?");
                 }
             });
         }
         return view;
+    }
+
+    private String getWorkDoneState(String workDoneStatus) {
+        try {
+            return StringUtils.isBlank(workDoneStatus)
+                    ? ""
+                    : DentalWorkDoneEnum.valueOf(workDoneStatus).getDescription();
+        } catch (IllegalArgumentException e) {
+            return DentalWorkDoneEnum.valueOf(DentalWorkDoneEnum.getDescriptionName(workDoneStatus)).getDescription();
+        } catch (Exception e) {
+            return workDoneStatus;
+        }
     }
 
     static class RecordHolder {

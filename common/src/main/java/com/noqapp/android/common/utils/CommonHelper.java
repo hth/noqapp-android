@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.store.JsonStoreProduct;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import org.joda.time.Months;
 import org.joda.time.Years;
 
@@ -220,20 +221,25 @@ public class CommonHelper {
         return (double) Math.round(value * scale) / scale;
     }
 
-    public String getTodayDateWithFormat() {
-        Calendar cal = Calendar.getInstance();
-        return getDateWithFormat(cal);
+    public String earlierDayAsDateFormat(int days) {
+        LocalDate localDate = LocalDate.now().minusDays(days);
+        return localDate.toString();
     }
 
-    public String getTomorrowDateWithFormat() {
+    public String todayAsDateFormat() {
+        Calendar cal = Calendar.getInstance();
+        return dateFormatAsYYYY_MM_DD(cal);
+    }
+
+    public String tomorrowAsDateFormat() {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, 1);
-        return getDateWithFormat(cal);
+        return dateFormatAsYYYY_MM_DD(cal);
     }
 
-    public String getDateWithFormat(Calendar cal) {
+    public static String dateFormatAsYYYY_MM_DD(Calendar cal) {
         String output = SDF_YYYY_MM_DD.format(cal.getTime());
-        Log.e("Today date", output);
+        Log.i("Supplied date ", output);
         return output;
     }
 

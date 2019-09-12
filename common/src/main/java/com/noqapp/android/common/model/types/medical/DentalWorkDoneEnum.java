@@ -39,6 +39,7 @@ public enum DentalWorkDoneEnum {
             case "Complete":
                 return C.name;
             case "Discontinued":
+            case "Delayed":
                 return D.name;
             default:
                 return "";
