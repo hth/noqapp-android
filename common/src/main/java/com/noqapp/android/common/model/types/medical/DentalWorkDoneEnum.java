@@ -6,7 +6,7 @@ import java.util.List;
 public enum DentalWorkDoneEnum {
     I("I", "Incomplete"),
     C("C", "Complete"),
-    D("D", "Delayed");
+    D("D", "Discontinued");
 
     private final String description;
     private final String name;
