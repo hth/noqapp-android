@@ -204,6 +204,10 @@
             android:name=".views.activities.AllPatientActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.AllHistoryActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <service
             android:name=".network.NoQueueMessagingService"
