@@ -306,6 +306,12 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             case R.drawable.add_user:
                 callAddPatient();
                 break;
+            case R.drawable.all_patient:
+                callAllPatient();
+                break;
+            case R.drawable.all_history:
+                callAllHistory();
+                break;
             default:
 
         }
@@ -828,6 +834,14 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public void callAddPatient() {
+
+    }
+
+    public void callAllHistory() {
+
+    }
+
+    public void callAllPatient() {
 
     }
 

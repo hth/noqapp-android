@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="@dimen/ppq_width"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:tag="cards main container">
+
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                       android:id="@+id/card_view"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="wrap_content"
+                                       card_view:cardBackgroundColor="@android:color/white"
+                                       card_view:cardCornerRadius="10dp"
+                                       card_view:cardElevation="2dp"
+                                       card_view:cardUseCompatPadding="true">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/tv_customer_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="chandra b sharma"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+
+

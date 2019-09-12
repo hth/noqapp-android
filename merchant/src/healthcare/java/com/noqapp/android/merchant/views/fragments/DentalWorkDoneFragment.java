@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.medical.DentalOptionEnum;
 import com.noqapp.android.common.model.types.medical.DentalWorkDoneEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -135,7 +136,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
                 if (isItemExist(teethNumber)) {
                     new CustomToast().showToast(getActivity(), "Tooth already added to list");
                 } else {
-                    toothWorkDoneList.add(new ToothWorkDone(teethNumber, teethProcedure, edt_summary.getText().toString(), teethStatus, teethUnit, teethPeriod));
+                    toothWorkDoneList.add(new ToothWorkDone(teethNumber, teethProcedure, edt_summary.getText().toString(), DentalWorkDoneEnum.getDescriptionName(teethStatus), teethUnit, teethPeriod));
                     workDoneAdapter.setWorkDoneList(toothWorkDoneList);
                     clearOptionSelection();
                 }

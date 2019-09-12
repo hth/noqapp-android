@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.noqapp.android.common.model.types.medical.DentalWorkDoneEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
@@ -100,7 +101,7 @@ public class WorkDoneAdapter extends BaseAdapter {
             recordHolder.tv_summary.setText(Html.fromHtml(ts));
             recordHolder.tv_created_date.setText(toothWorkDone.getCreatedDate());
             recordHolder.tv_created_date.setVisibility(TextUtils.isEmpty(toothWorkDone.getCreatedDate()) ? View.GONE : View.VISIBLE);
-            String status = "<b>" + "Status: " + "</b> " + toothWorkDone.getTeethStatus();
+            String status = "<b>" + "Status: " + "</b> " + DentalWorkDoneEnum.valueOf(toothWorkDone.getTeethStatus()).getDescription();
             recordHolder.tv_status.setText(Html.fromHtml(status));
             String unit = "<b>" + "Unit: " + "</b> " + toothWorkDone.getTeethUnit();
             recordHolder.tv_unit.setText(Html.fromHtml(unit));

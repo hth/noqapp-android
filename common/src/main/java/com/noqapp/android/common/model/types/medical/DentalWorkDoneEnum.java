@@ -32,6 +32,20 @@ public enum DentalWorkDoneEnum {
         return a;
     }
 
+    public static String getDescriptionName(String desc) {
+        switch (desc) {
+            case "Incomplete":
+                return I.name;
+            case "Complete":
+                return C.name;
+            case "Discontinued":
+                return D.name;
+            default:
+                return "";
+        }
+
+    }
+
 
     @Override
     public String toString() {

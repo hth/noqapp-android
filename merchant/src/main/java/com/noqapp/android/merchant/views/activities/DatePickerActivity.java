@@ -1,20 +1,21 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.merchant.R;
-
-import com.google.android.material.datepicker.CalendarConstraints;
-import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-import com.google.android.material.datepicker.Month;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
+
 import androidx.annotation.AttrRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
+
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.datepicker.Month;
+import com.noqapp.android.merchant.R;
 
 import java.util.Calendar;
 
@@ -139,7 +140,8 @@ public class DatePickerActivity extends AppCompatActivity {
         }
     }
 
-    private static CalendarConstraints.Builder setupConstraintsBuilder(int boundsChoice, int openingChoice, int validationChoice) {
+    private static CalendarConstraints.Builder setupConstraintsBuilder(
+            int boundsChoice, int openingChoice, int validationChoice) {
         CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
         if (boundsChoice == BOUND_THIS_YEAR_ONLY) {
             constraintsBuilder.setStart(JAN_THIS_YEAR);
