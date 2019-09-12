@@ -1,5 +1,13 @@
 package com.noqapp.android.merchant.utils;
 
+import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -12,18 +20,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
-
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-
-import com.noqapp.android.common.beans.JsonHour;
-import com.noqapp.android.common.beans.JsonNameDatePair;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 import java.util.Locale;
@@ -72,20 +71,16 @@ public class AppUtils extends CommonHelper {
             if (language.equals("en")) {
                 LaunchActivity.language = "en_US";
                 LaunchActivity.locale = Locale.ENGLISH;
-                LaunchActivity.languagepref.edit()
-                        .putString("pref_language", "en").apply();
+                LaunchActivity.languagepref.edit().putString("pref_language", "en").apply();
             } else {
                 LaunchActivity.language = "hi";
                 LaunchActivity.locale = new Locale("hi");
-                ;
-                LaunchActivity.languagepref.edit()
-                        .putString("pref_language", "hi").apply();
+                LaunchActivity.languagepref.edit().putString("pref_language", "hi").apply();
             }
         } else {
             LaunchActivity.language = "en_US";
             LaunchActivity.locale = Locale.ENGLISH;
-            LaunchActivity.languagepref.edit()
-                    .putString("pref_language", "en").apply();
+            LaunchActivity.languagepref.edit().putString("pref_language", "en").apply();
         }
 
     }
@@ -160,18 +155,18 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public boolean checkStoreClosedWithTime( JsonHour jsonHour){
+    public boolean checkStoreClosedWithTime(JsonHour jsonHour) {
         if ((jsonHour.getStartHour() == 0 && jsonHour.getEndHour() == 0)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
-    public boolean checkStoreClosedWithAppointmentTime( JsonHour jsonHour){
+    public boolean checkStoreClosedWithAppointmentTime(JsonHour jsonHour) {
         if ((jsonHour.getAppointmentStartHour() == 0 && jsonHour.getAppointmentEndHour() == 0)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
