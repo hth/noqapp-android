@@ -6,7 +6,7 @@ import java.util.List;
 public enum DentalWorkDoneEnum {
     I("I", "Incomplete"),
     C("C", "Complete"),
-    D("D", "Delayed");
+    D("D", "Discontinued");
 
     private final String description;
     private final String name;
@@ -30,6 +30,20 @@ public enum DentalWorkDoneEnum {
             a.add(dentalWorkDoneEnum.description);
         }
         return a;
+    }
+
+    public static String getDescriptionName(String desc) {
+        switch (desc) {
+            case "Incomplete":
+                return I.name;
+            case "Complete":
+                return C.name;
+            case "Discontinued":
+                return D.name;
+            default:
+                return "";
+        }
+
     }
 
 

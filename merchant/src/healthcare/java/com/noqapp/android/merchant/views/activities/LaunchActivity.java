@@ -12,6 +12,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.pojos.MenuDrawer;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -19,12 +20,14 @@ import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.FileUploadOperation;
 import com.noqapp.android.merchant.views.pojos.MedicalFile;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +99,10 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
                 menuDrawerItems.add(2, new MenuDrawer("Medical Settings", true, true, R.drawable.medical_settings, childModelsList));
             }
             menuDrawerItems.add(2, new MenuDrawer("Add New Patient", true, false, R.drawable.add_user));
+            if (!AppUtils.isRelease()) {
+                menuDrawerItems.add(3, new MenuDrawer("List of patient", true, false, R.drawable.all_patient));
+                menuDrawerItems.add(3, new MenuDrawer("All History", true, false, R.drawable.all_history));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,6 +121,30 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
         super.callPreferredStore();
         Intent intentPreference = new Intent(launchActivity, PreferredStoreActivity.class);
         startActivity(intentPreference);
+    }
+
+    @Override
+    public void callAllHistory() {
+        super.callAllHistory();
+        if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
+            Intent in1 = new Intent(launchActivity, AllPatientActivity.class);
+            in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+            startActivity(in1);
+        } else {
+            new CustomToast().showToast(launchActivity, "No queue available");
+        }
+    }
+
+    @Override
+    public void callAllPatient() {
+        super.callAllPatient();
+        if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
+            Intent in1 = new Intent(launchActivity, AllPatientActivity.class);
+            in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+            startActivity(in1);
+        } else {
+            new CustomToast().showToast(launchActivity, "No queue available");
+        }
     }
 
     @Override
@@ -138,7 +169,7 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
     public void uploadMedicalFiles() {
         List<MedicalFile> medicalFileList = MedicalFilesDB.getMedicalFileList();
         if (medicalFileList.size() > 0) {
-            Log.e("Medical files count",""+medicalFileList.size());
+            Log.e("Medical files count", "" + medicalFileList.size());
             for (int i = 0; i < medicalFileList.size(); i++) {
                 new FileUploadOperation(this, medicalFileList.get(i)).execute();
             }
