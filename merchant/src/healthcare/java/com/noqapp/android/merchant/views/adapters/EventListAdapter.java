@@ -71,8 +71,8 @@ public class EventListAdapter extends BaseAdapter {
         recordHolder.tv_no_of_patient.setText(String.valueOf(jsonSchedule.getTotalAppointments()));
 
         try {
-            if (CommonHelper.SDF_YYYY_MM_DD.parse(new CommonHelper().getDateWithFormat(Calendar.getInstance())).compareTo(
-                    CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())) < 0) {
+            if (CommonHelper.SDF_YYYY_MM_DD.parse(CommonHelper.dateFormatAsYYYY_MM_DD(Calendar.getInstance()))
+                    .compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())) < 0) {
                 recordHolder.card_view.setCardBackgroundColor(Color.WHITE);
             } else {
                 recordHolder.card_view.setCardBackgroundColor(Color.LTGRAY);

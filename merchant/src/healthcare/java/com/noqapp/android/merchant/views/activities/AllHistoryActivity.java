@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -21,7 +20,6 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.QueueAdapter;
 import com.noqapp.android.merchant.views.adapters.ViewAllHistoryExpListAdapter;
-import com.noqapp.android.merchant.views.adapters.ViewAllPatientExpListAdapter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import java.util.ArrayList;
@@ -66,8 +64,13 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
                         showProgress();
-                        manageQueueApiCalls.getAllQueuePersonListHistory(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
-                                jt.getCodeQR(),new AppUtils().getEarlierDateWithFormat(7), new AppUtils().getTodayDateWithFormat());
+                        manageQueueApiCalls.getAllQueuePersonListHistory(
+                                UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(),
+                                jt.getCodeQR(),
+                                new AppUtils().earlierDayAsDateFormat(7),
+                                new AppUtils().todayAsDateFormat());
                     } else {
                         ShowAlertInformation.showNetworkDialog(AllHistoryActivity.this);
                     }
@@ -93,8 +96,7 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
             }else {
                 createData(jsonQueuePersonList.getQueuedPeople());
                 List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-                ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(AllHistoryActivity.this, expandableListTitle,
-                        expandableListDetail);
+                ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(AllHistoryActivity.this, expandableListTitle, expandableListDetail);
                 listview.setAdapter(adapter);
                 if (expandableListTitle.size() <= 0) {
                     listview.setVisibility(View.GONE);
@@ -116,7 +118,6 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
         dismissProgress();
     }
 
-
     private void createData(List<JsonQueuedPerson> temp) {
         if (null != temp && temp.size() > 0) {
             HashMap<Date, List<JsonQueuePersonList>> tempList = new HashMap<>();
@@ -124,7 +125,7 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
                 try {
                     Date key = new Date(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()).getTime());
                     if (null == tempList.get(key)) {
-                        tempList.put(key, new ArrayList<JsonQueuePersonList>());
+                        tempList.put(key, new ArrayList<>());
                         tempList.get(key).add(new JsonQueuePersonList());
                     }
                     tempList.get(key).get(0).getQueuedPeople().add(temp.get(i));

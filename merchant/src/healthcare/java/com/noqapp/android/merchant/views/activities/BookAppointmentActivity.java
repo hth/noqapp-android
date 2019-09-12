@@ -153,7 +153,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             @Override
             public void onDateSelected(Calendar date, int position) {
                 selectedDate = date;
-                fetchAppointments(new AppUtils().getDateWithFormat(selectedDate));
+                fetchAppointments(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate));
             }
         });
         horizontalCalendarView.refresh();
@@ -178,7 +178,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                         String endTime = getEndTime((int) diffInMinutes, temp[0].trim());
                         jsonScheduleTemp.setStartTime(AppUtils.removeColon(temp[0].trim()));
                         jsonScheduleTemp.setEndTime(AppUtils.removeColon(endTime));
-                        jsonScheduleTemp.setScheduleDate(new AppUtils().getDateWithFormat(selectedDate));
+                        jsonScheduleTemp.setScheduleDate(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate));
                         BookSchedule bookSchedule = new BookSchedule()
                                 .setBusinessCustomer(null)
                                 .setJsonSchedule(jsonScheduleTemp)
@@ -196,7 +196,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             }
         });
         selectedDate = startDate;
-        fetchAppointments(new AppUtils().getTomorrowDateWithFormat());
+        fetchAppointments(new AppUtils().tomorrowAsDateFormat());
     }
 
     @Override
@@ -495,7 +495,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setStartTime(start)
                                     .setEndTime(end)
                                     .setChiefComplain(actv_chief_complaints.getText().toString())
-                                    .setScheduleDate(new AppUtils().getDateWithFormat(selectedDate)).
+                                    .setScheduleDate(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate)).
                                             setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                             BookSchedule bookSchedule = new BookSchedule()
                                     .setBusinessCustomer(jsonBusinessCustomer)
