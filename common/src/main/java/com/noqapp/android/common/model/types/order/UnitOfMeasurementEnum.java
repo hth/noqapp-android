@@ -1,7 +1,5 @@
 package com.noqapp.android.common.model.types.order;
 
-import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,15 +38,15 @@ public enum UnitOfMeasurementEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for(UnitOfMeasurementEnum unitOfMeasurementEnum : UnitOfMeasurementEnum.values()) {
+        for (UnitOfMeasurementEnum unitOfMeasurementEnum : UnitOfMeasurementEnum.values()) {
             a.add(unitOfMeasurementEnum.description);
         }
         return a;
     }
 
-    public static UnitOfMeasurementEnum getEnum(String description){
-        for(UnitOfMeasurementEnum unitOfMeasurementEnum : UnitOfMeasurementEnum.values()) {
-            if(description.equals(unitOfMeasurementEnum.description)) {
+    public static UnitOfMeasurementEnum getEnum(String description) {
+        for (UnitOfMeasurementEnum unitOfMeasurementEnum : UnitOfMeasurementEnum.values()) {
+            if (description.equals(unitOfMeasurementEnum.description)) {
                 return unitOfMeasurementEnum;
             }
         }
