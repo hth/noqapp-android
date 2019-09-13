@@ -96,7 +96,7 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (new AppUtils().isTablet(getActivity())) {
+                if (LaunchActivity.isTablet) {
                     chartFragment.updateChart(healthCareStatList.get(position));
                     //set page for view pager
                 } else {
@@ -112,7 +112,7 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
             }
         });
 
-        if (new AppUtils().isTablet(getActivity())) {
+        if (LaunchActivity.isTablet) {
             chartFragment = new ChartFragment();
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.list_detail_fragment, chartFragment);
@@ -135,7 +135,7 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
     public void chartResponse(HealthCareStatList healthCareStatListTemp) {
         if (null != healthCareStatListTemp) {
             healthCareStatList = new ArrayList<>(healthCareStatListTemp.getHealthCareStat());
-            if (new AppUtils().isTablet(getActivity())) {
+            if (LaunchActivity.isTablet) {
                 chartFragment.updateChart(healthCareStatList.get(selected_pos));
             }
         }

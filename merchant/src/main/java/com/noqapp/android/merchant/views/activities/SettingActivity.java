@@ -96,7 +96,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -113,7 +113,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         scroll_view.setScrollbarFadingEnabled(false);
         setProgressMessage("Loading Queue Settings...");
 
-        if (!new AppUtils().isTablet(getApplicationContext())) {
+        if (!LaunchActivity.isTablet) {
 
             iv_today_settings = findViewById(R.id.iv_today_settings);
             ll_today_settings = findViewById(R.id.ll_today_settings);

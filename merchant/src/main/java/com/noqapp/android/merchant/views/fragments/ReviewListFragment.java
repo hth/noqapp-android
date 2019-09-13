@@ -75,7 +75,7 @@ public class ReviewListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selected_pos = position;
-                if (new AppUtils().isTablet(getActivity())) {
+                if (LaunchActivity.isTablet) {
                     reviewFragment.updateReviews(topics.get(selected_pos));
                     //set page for view pager
                 } else {
@@ -91,7 +91,7 @@ public class ReviewListFragment extends Fragment {
             }
         });
 
-        if (new AppUtils().isTablet(getActivity())) {
+        if (LaunchActivity.isTablet) {
             reviewFragment = new ReviewFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonTopic", topics.get(selected_pos));

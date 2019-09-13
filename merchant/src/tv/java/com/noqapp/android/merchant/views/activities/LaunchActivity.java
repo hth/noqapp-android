@@ -43,7 +43,7 @@ public class LaunchActivity extends BaseLaunchActivity {
         tv_badge.setVisibility(View.GONE);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         fl_notification.setVisibility(View.GONE);
-        if (new AppUtils().isTablet(this)) {
+        if (isTablet) {
             list_fragment = findViewById(R.id.frame_layout);
             list_detail_fragment = findViewById(R.id.list_detail_fragment);
         }

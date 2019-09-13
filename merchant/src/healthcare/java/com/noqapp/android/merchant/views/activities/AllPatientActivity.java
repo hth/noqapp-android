@@ -15,6 +15,7 @@ import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -64,13 +65,12 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
                         showProgress();
+                        CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup().
+                                setCodeQR(jt.getCodeQR()).setFrom(AppUtils.earlierDayAsDateFormat(7))
+                                .setUntil(AppUtils.todayAsDateFormat());
                         manageQueueApiCalls.getAllQueuePersonListHistory(
-                                UserUtils.getDeviceId(),
-                                UserUtils.getEmail(),
-                                UserUtils.getAuth(),
-                                jt.getCodeQR(),
-                                new AppUtils().earlierDayAsDateFormat(7),
-                                new AppUtils().todayAsDateFormat());
+                                UserUtils.getDeviceId(), UserUtils.getEmail(),
+                                UserUtils.getAuth(), codeQRDateRangeLookup);
                     } else {
                         ShowAlertInformation.showNetworkDialog(AllPatientActivity.this);
                     }

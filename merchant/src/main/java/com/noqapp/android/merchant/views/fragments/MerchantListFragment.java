@@ -296,7 +296,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (new AppUtils().isTablet(getActivity())) {
+                if (LaunchActivity.isTablet) {
                     merchantDetailFragment.setPage(position);
                 } else {
                     merchantDetailFragment = new MerchantDetailFragment();
@@ -316,7 +316,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
         updateSnackbarTxt();
         snackbar.show();
-        if (new AppUtils().isTablet(LaunchActivity.getLaunchActivity())) {
+        if (LaunchActivity.isTablet) {
             if (null != topics && topics.size() > 0) {
                 merchantDetailFragment = new MerchantDetailFragment();
                 Bundle b = new Bundle();

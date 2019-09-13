@@ -247,7 +247,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         recordHolder.tv_order_prepared.setOnClickListener(v -> peopleInQOrderAdapterClick.orderDoneClick(position));
         recordHolder.tv_customer_mobile.setOnClickListener(v -> {
             if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
+                AppUtils.makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
         });
 
         recordHolder.tv_order_accept.setOnClickListener(v -> peopleInQOrderAdapterClick.orderAcceptClick(position));

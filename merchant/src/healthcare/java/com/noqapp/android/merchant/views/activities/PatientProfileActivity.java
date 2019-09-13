@@ -247,7 +247,7 @@ public class PatientProfileActivity extends BaseActivity implements
 
     private void updateUI(JsonProfile jsonProfile) {
         this.jsonProfile = jsonProfile;
-        tv_patient_name.setText(jsonProfile.getName() + " (" + new AppUtils().calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
+        tv_patient_name.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
         tv_address.setText(jsonProfile.getAddress());
 
         loadProfilePic(jsonProfile.getProfileImage());

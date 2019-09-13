@@ -16,6 +16,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -125,7 +126,7 @@ public class MedicalProfileActivity
         });
         AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
         tv_patient_name.setText(jsonProfile.getName());
-        tv_patient_age_gender.setText(new AppUtilities().calculateAge(jsonProfile.getBirthday()) + " (" + jsonProfile.getGender() + ")");
+        tv_patient_age_gender.setText(CommonHelper.calculateAge(jsonProfile.getBirthday()) + " (" + jsonProfile.getGender() + ")");
         userMedicalProfileApiCalls = new UserMedicalProfileApiCalls();
         userMedicalProfileApiCalls.setMedicalRecordProfilePresenter(this);
         if (NetworkUtils.isConnectingToInternet(this)) {

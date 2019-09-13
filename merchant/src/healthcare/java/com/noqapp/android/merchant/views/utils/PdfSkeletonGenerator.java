@@ -82,9 +82,9 @@ public class PdfSkeletonGenerator extends PdfHelper {
             document.add(titleParagraph);
 
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-            String license = new AppUtils().getCompleteEducation(receipt.getLicenses());
+            String license = AppUtils.getCompleteEducation(receipt.getLicenses());
             String temp = TextUtils.isEmpty(license) ? notAvailable : license;
-            String education = new AppUtils().getCompleteEducation(receipt.getEducation());
+            String education = AppUtils.getCompleteEducation(receipt.getEducation());
             String education_temp = TextUtils.isEmpty(education) ? notAvailable : education;
             Chunk degreeChunk = new Chunk(education_temp + " (Reg. No.: " + temp + ")", normalFont);
             Paragraph degreeParagraph = new Paragraph();
@@ -211,7 +211,7 @@ public class PdfSkeletonGenerator extends PdfHelper {
         // table.addCell(pdfPCellWithoutBorder(pulse, normalFont));
         table.addCell(getCellWithTextAndImage(pulse, "pulse.png"));
         table.addCell(getCellWithTextAndImage(height, "height.png"));
-        table.addCell(getCellWithTextAndImage(jsonProfile.getGender().getDescription() + ", " + new AppUtils().calculateAge(jsonProfile.getBirthday()), "gender.png"));
+        table.addCell(getCellWithTextAndImage(jsonProfile.getGender().getDescription() + ", " + AppUtils.calculateAge(jsonProfile.getBirthday()), "gender.png"));
         table.addCell(getCellWithTextAndImage(bloodPressure, "blood.png"));
         table.addCell(getCellWithTextAndImage(respiration, "respiration.png"));
         table.addCell(getCellWithTextAndImage(checkNull(jsonProfile.getAddress()), "address.png"));

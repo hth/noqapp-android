@@ -15,7 +15,6 @@ import com.noqapp.android.common.beans.JsonCouponList
 import com.noqapp.android.common.presenter.CouponPresenter
 import com.noqapp.android.merchant.R
 import com.noqapp.android.merchant.model.CouponApiCalls
-import com.noqapp.android.merchant.utils.AppUtils
 import com.noqapp.android.merchant.utils.IBConstant
 import com.noqapp.android.merchant.utils.UserUtils
 import com.noqapp.android.merchant.views.adapters.CouponAdapter
@@ -25,7 +24,7 @@ class CouponActivity : BaseActivity(), CouponAdapter.OnItemClickListener, Coupon
     private var couponApiCalls: CouponApiCalls? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (AppUtils().isTablet(applicationContext)) {
+        if (LaunchActivity.isTablet) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         } else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -65,7 +64,7 @@ class CouponActivity : BaseActivity(), CouponAdapter.OnItemClickListener, Coupon
                 val couponAdapter = CouponAdapter(this, jsonCouponList.coupons, this)
                 val rcv_review = findViewById<RecyclerView>(R.id.rcv_review)
                 rcv_review.setHasFixedSize(true)
-                if (AppUtils().isTablet(applicationContext)) {
+                if (LaunchActivity.isTablet) {
                     rcv_review.layoutManager = GridLayoutManager(this, 2);
                 } else {
                     rcv_review.layoutManager = GridLayoutManager(this, 1);

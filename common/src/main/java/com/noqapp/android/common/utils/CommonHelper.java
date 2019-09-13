@@ -108,11 +108,11 @@ public class CommonHelper {
         }
     }
 
-    public boolean isValidEmail(CharSequence target) {
+    public static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
-    public String calculateAge(String dob) {
+    public static String calculateAge(String dob) {
         String age = "";
         try {
             DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(dob));
@@ -221,17 +221,17 @@ public class CommonHelper {
         return (double) Math.round(value * scale) / scale;
     }
 
-    public String earlierDayAsDateFormat(int days) {
+    public static String earlierDayAsDateFormat(int days) {
         LocalDate localDate = LocalDate.now().minusDays(days);
         return localDate.toString();
     }
 
-    public String todayAsDateFormat() {
+    public static String todayAsDateFormat() {
         Calendar cal = Calendar.getInstance();
         return dateFormatAsYYYY_MM_DD(cal);
     }
 
-    public String tomorrowAsDateFormat() {
+    public static String tomorrowAsDateFormat() {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, 1);
         return dateFormatAsYYYY_MM_DD(cal);
