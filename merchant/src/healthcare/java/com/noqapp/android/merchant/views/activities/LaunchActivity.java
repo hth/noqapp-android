@@ -100,8 +100,10 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
             }
             menuDrawerItems.add(2, new MenuDrawer("Add New Patient", true, false, R.drawable.add_user));
             if (!AppUtils.isRelease()) {
-                menuDrawerItems.add(3, new MenuDrawer("List of patient", true, false, R.drawable.all_patient));
-                menuDrawerItems.add(3, new MenuDrawer("All History", true, false, R.drawable.all_history));
+                List<MenuDrawer> childModelsList = new ArrayList<>();
+                childModelsList.add(new MenuDrawer("List of patient", false, false, R.drawable.all_patient));
+                childModelsList.add( new MenuDrawer("All History", false, false, R.drawable.all_history));
+                menuDrawerItems.add(3, new MenuDrawer("Reports", true, true, R.drawable.reports, childModelsList));
             }
         } catch (Exception e) {
             e.printStackTrace();
