@@ -55,7 +55,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -73,7 +73,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         calendarView.setSwipeEnabled(false);
         fh_list_view = findViewById(R.id.fh_list_view);
         scroll_view = findViewById(R.id.scroll_view);
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             RelativeLayout rl_parent = findViewById(R.id.rl_parent);
             LinearLayout ll_right = findViewById(R.id.ll_right);
             rl_parent.setOnTouchListener(new OnFlingGestureListener(this) {

@@ -19,7 +19,6 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ViewAllOrderExpandableListAdapter;
@@ -42,7 +41,7 @@ public class ViewAllPeopleInQOrderActivity extends BaseActivity implements Purch
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -94,10 +93,10 @@ public class ViewAllPeopleInQOrderActivity extends BaseActivity implements Purch
         if (null != jsonPurchaseOrderList) {
             Log.e("data", jsonPurchaseOrderList.toString());
             Log.e("data size", "" + jsonPurchaseOrderList.getPurchaseOrders().size());
-            createData( jsonPurchaseOrderList.getPurchaseOrders());
+            createData(jsonPurchaseOrderList.getPurchaseOrders());
             List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
             ViewAllOrderExpandableListAdapter adapter = new ViewAllOrderExpandableListAdapter(ViewAllPeopleInQOrderActivity.this, expandableListTitle,
-                    expandableListDetail,getIntent().getBooleanExtra("visibility",false));
+                    expandableListDetail, getIntent().getBooleanExtra("visibility", false));
             listview.setAdapter(adapter);
             if (expandableListTitle.size() <= 0) {
                 listview.setVisibility(View.GONE);

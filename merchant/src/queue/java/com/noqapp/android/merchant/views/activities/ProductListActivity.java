@@ -35,8 +35,8 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.EnumAdapter;
-import com.noqapp.android.merchant.views.adapters.StoreMenuAdapter;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
+import com.noqapp.android.merchant.views.adapters.StoreMenuAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.FragmentDummy;
 import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
@@ -60,7 +60,7 @@ public class ProductListActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -289,7 +289,7 @@ public class ProductListActivity extends BaseActivity implements
             } else if (sp_unit.getSelectedItemPosition() == 0) {
                 new CustomToast().showToast(ProductListActivity.this, "Please select product unit");
             } else {
-                if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount,edt_prod_unit_value,edt_prod_pack_size)) {
+                if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount, edt_prod_unit_value, edt_prod_pack_size)) {
                     jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
                     jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
                     jsonStoreProduct.setProductPrice((int) (Float.parseFloat(edt_prod_price.getText().toString()) * 100));
@@ -336,7 +336,7 @@ public class ProductListActivity extends BaseActivity implements
         }
         new AppUtils().hideKeyBoard(this);
         String errorMsg = "";
-        for (TextInputEditText  v : views) {
+        for (TextInputEditText v : views) {
             if (TextUtils.isEmpty(v.getText().toString())) {
                 v.setError(getString(R.string.error_field_required));
                 if (isValid) {
@@ -346,7 +346,7 @@ public class ProductListActivity extends BaseActivity implements
             }
         }
         if (!TextUtils.isEmpty(errorMsg))
-           new CustomToast().showToast(this, errorMsg);
+            new CustomToast().showToast(this, errorMsg);
         return isValid;
     }
 

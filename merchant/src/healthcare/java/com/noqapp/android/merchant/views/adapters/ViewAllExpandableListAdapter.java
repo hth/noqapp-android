@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -33,11 +33,11 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
     private boolean visibility;
 
     public ViewAllExpandableListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility ) {
+                                        Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
-        this.visibility =visibility;
+        this.visibility = visibility;
     }
 
     @Override
@@ -67,14 +67,14 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
         }
         childViewHolder.rv.setHasFixedSize(true);
         int columnCount;
-        if (new AppUtils().isTablet(context.getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             columnCount = 5;
         } else {
             columnCount = 2;
         }
         childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        ViewAllPeopleInQAdapter viewAllPeopleInQAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null,visibility);
+        ViewAllPeopleInQAdapter viewAllPeopleInQAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null, visibility);
         childViewHolder.rv.setAdapter(viewAllPeopleInQAdapter);
         viewAllPeopleInQAdapter.notifyDataSetChanged();
         return convertView;

@@ -58,7 +58,7 @@ public class AppointmentActivityNew extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -76,7 +76,7 @@ public class AppointmentActivityNew extends BaseActivity implements
         tv_appointment_pending = findViewById(R.id.tv_appointment_pending);
         tv_toolbar_title.setText("Appointment List");
         int count = 2;
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             count = 3;
         } else {
             count = 1;

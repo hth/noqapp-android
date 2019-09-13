@@ -18,7 +18,6 @@ import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.views.fragments.ProductMenuFragment;
 import com.noqapp.android.merchant.views.fragments.ProductMenuListFragment;
@@ -50,7 +49,7 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             isTablet = true;
         } else {
@@ -79,7 +78,7 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         productMenuFragment.setArguments(b);
         productMenuListFragment = new ProductMenuListFragment(getCartList(), storeMenuActivity);
         productMenuListFragment.setArguments(b);
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             replaceFragmentWithBackStack(R.id.fl_product_menu, productMenuFragment, "ProductMenu");
             replaceFragmentWithBackStack(R.id.fl_product_list, productMenuListFragment, "ProductList");
         } else {
