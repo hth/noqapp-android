@@ -41,8 +41,7 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class AppointmentActivity extends BaseActivity implements AppointmentPresenter,
-        EventListAdapter.OnItemClickListener {
+public class AppointmentActivity extends BaseActivity implements AppointmentPresenter {
     private FixedHeightListView fh_list_view;
     private CalendarView calendarView;
     public EventListAdapter adapter;
@@ -355,7 +354,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
     }
 
     private void fetchEvents(Calendar calendar) {
-        adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>(), this);
+        adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>());
         fh_list_view.setAdapter(adapter);
         showProgress();
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
@@ -383,7 +382,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         List<EventDay> events = parseEventList(jsonScheduleList);
 
         calendarView.setEvents(events);
-        adapter = new EventListAdapter(AppointmentActivity.this, events, this);
+        adapter = new EventListAdapter(AppointmentActivity.this, events);
         fh_list_view.setAdapter(adapter);
         dismissProgress();
     }
@@ -402,15 +401,5 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }
-
-
-    @Override
-    public void appointmentAccept(EventDay item) {
-    }
-
-    @Override
-    public void appointmentReject(EventDay item) {
-    }
-
 
 }
