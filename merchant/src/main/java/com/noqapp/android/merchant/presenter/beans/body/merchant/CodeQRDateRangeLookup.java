@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans.body.merchant;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.model.types.medical.MedicalRecordFieldFilterEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -31,7 +32,7 @@ public class CodeQRDateRangeLookup extends AbstractDomain {
     private String codeQR;
 
     @JsonProperty("populateField")
-    private String populateField;
+    private MedicalRecordFieldFilterEnum medicalRecordFieldFilter;
 
     @JsonProperty("from")
     private String from;
@@ -48,12 +49,12 @@ public class CodeQRDateRangeLookup extends AbstractDomain {
         return this;
     }
 
-    public String getPopulateField() {
-        return populateField;
+    public MedicalRecordFieldFilterEnum getMedicalRecordFieldFilter() {
+        return medicalRecordFieldFilter;
     }
 
-    public CodeQRDateRangeLookup setPopulateField(String populateField) {
-        this.populateField = populateField;
+    public CodeQRDateRangeLookup setMedicalRecordFieldFilter(MedicalRecordFieldFilterEnum medicalRecordFieldFilter) {
+        this.medicalRecordFieldFilter = medicalRecordFieldFilter;
         return this;
     }
 
