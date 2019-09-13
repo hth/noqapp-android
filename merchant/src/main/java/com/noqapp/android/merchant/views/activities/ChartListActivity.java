@@ -27,7 +27,7 @@ public class ChartListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -42,7 +42,7 @@ public class ChartListActivity extends BaseActivity {
         b.putSerializable("jsonTopic", getIntent().getExtras().getSerializable("jsonTopic"));
         chartListFragment.setArguments(b);
 
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             FrameLayout list_fragment = findViewById(R.id.frame_layout);
             FrameLayout list_detail_fragment = findViewById(R.id.list_detail_fragment);
             LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);

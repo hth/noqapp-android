@@ -138,7 +138,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (AppUtils.isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             isTablet = true;
         } else {
@@ -202,7 +202,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 if (isInventoryApp) {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getInventoryHome());
                 } else {
-                    if (new AppUtils().isTablet(getApplicationContext())) {
+                    if (isTablet) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
                         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
                         list_fragment.setLayoutParams(lp1);
@@ -219,7 +219,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     }
                 }
             } else {
-                if (new AppUtils().isTablet(getApplicationContext())) {
+                if (isTablet) {
                     LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                     LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
                     list_fragment.setLayoutParams(lp1);
@@ -233,7 +233,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
             setUserName();
         } else {
-            if (new AppUtils().isTablet(getApplicationContext())) {
+            if (isTablet) {
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                 LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
                 list_fragment.setLayoutParams(lp1);
@@ -663,7 +663,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             merchantListFragment.unSubscribeTopics();
         }
         MerchantListFragment.selected_pos = 0;
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (isTablet) {
             LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
             LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
             list_fragment.setLayoutParams(lp1);

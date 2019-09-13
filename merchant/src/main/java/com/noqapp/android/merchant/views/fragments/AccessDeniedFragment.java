@@ -27,7 +27,7 @@ public class AccessDeniedFragment extends Fragment {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.app_name));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.GONE);
-        if (new AppUtils().isTablet(getActivity())) {
+        if (LaunchActivity.isTablet) {
             LaunchActivity.getLaunchActivity().enableDisableBack(false);
         } else {
             LaunchActivity.getLaunchActivity().enableDisableBack(true);

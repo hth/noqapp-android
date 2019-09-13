@@ -168,7 +168,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                         jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO) ||
                         (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant") &&
                                 jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO)||getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
-                    if (new AppUtils().isTablet(getActivity())) {
+                    if (LaunchActivity.isTablet) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
                         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.6f);
                         view.setVisibility(View.GONE); // to hide  the login view when screen resize

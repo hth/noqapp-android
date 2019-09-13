@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.ChangeUserInQueue;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.Served;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
@@ -216,8 +217,8 @@ public class ManageQueueApiCalls {
         });
     }
 
-    public void getAllQueuePersonListHistory(String did, String mail, String auth, String codeQR,String startDate, String endDate) {
-        queueApiUrls.showClientsHistorical(did, Constants.DEVICE_TYPE, mail, auth, codeQR,startDate,endDate).enqueue(new Callback<JsonQueuePersonList>() {
+    public void getAllQueuePersonListHistory(String did, String mail, String auth, CodeQRDateRangeLookup codeQRDateRangeLookup) {
+        queueApiUrls.showClientsHistorical(did, Constants.DEVICE_TYPE, mail, auth, codeQRDateRangeLookup).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
