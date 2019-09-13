@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -34,8 +33,8 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
     public static StoreMenuActivity storeMenuActivity;
     private ProductMenuListFragment productMenuListFragment;
     private ProductMenuFragment productMenuFragment;
-    private boolean isTablet = false;
     public JsonTopic jsonTopic;
+    private String codeQR;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -45,17 +44,11 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         return orders;
     }
 
-    private String codeQR;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            isTablet = true;
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            isTablet = false;
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_menu);
         setProgressMessage("Fetching data...");
@@ -72,7 +65,7 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         codeQR = jsonTopic.getCodeQR();
         Bundle b = new Bundle();
         b.putString("codeQR", codeQR);
-        b.putBoolean("isTablet", isTablet);
+        b.putBoolean("isTablet", LaunchActivity.isTablet);
         productMenuFragment = new ProductMenuFragment();
         productMenuFragment.setProductMenuProcess(this);
         productMenuFragment.setArguments(b);

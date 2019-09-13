@@ -13,7 +13,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -32,7 +31,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         setSupportActionBar(toolbar);
-        //   getSupportActionBar().setDisplayShowTitleEnabled(false);
         launchActivity = this;
         Log.v("device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
