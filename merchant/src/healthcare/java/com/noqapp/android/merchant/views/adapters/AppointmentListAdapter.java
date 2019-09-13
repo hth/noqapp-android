@@ -74,7 +74,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter {
                         jsonSchedule.getJsonProfile().getPhoneRaw()));
         holder.tv_customer_mobile.setOnClickListener(v -> {
             if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.
+                AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.
                         formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(),
                                 jsonSchedule.getJsonProfile().getPhoneRaw()));
         });
