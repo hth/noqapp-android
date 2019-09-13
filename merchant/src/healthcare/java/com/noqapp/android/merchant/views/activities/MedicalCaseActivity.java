@@ -161,10 +161,10 @@ public class MedicalCaseActivity extends BaseActivity implements
 
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
         TextView tv_patient_info = findViewById(R.id.tv_patient_info);
-        tv_patient_info.setText(jsonProfile.getName() + " (" + new AppUtils().calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
+        tv_patient_info.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
         caseHistory.setName(jsonProfile.getName());
         caseHistory.setAddress(jsonProfile.getAddress());
-        caseHistory.setAge(new AppUtils().calculateAge(jsonProfile.getBirthday()));
+        caseHistory.setAge(AppUtils.calculateAge(jsonProfile.getBirthday()));
         caseHistory.setGender(jsonProfile.getGender().name());
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer

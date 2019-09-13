@@ -64,7 +64,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         JsonSchedule jsonSchedule = (JsonSchedule) dataSet.get(position).getEventObject();
         holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
-        holder.tv_gender_age.setText(new AppUtils().calculateAge(jsonSchedule.getJsonProfile().
+        holder.tv_gender_age.setText(AppUtils.calculateAge(jsonSchedule.getJsonProfile().
                 getBirthday()) + ", " + jsonSchedule.getJsonProfile().getGender().name());
         holder.tv_customer_mobile.setText(
                 TextUtils.isEmpty(jsonSchedule.getJsonProfile().getPhoneRaw())
