@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 
@@ -16,9 +17,9 @@ import java.util.List;
 
 public class CaseHistoryAdapter extends BaseAdapter {
     private final Context context;
-    private List<JsonQueuedPerson> dataSet;
+    private List<JsonMedicalRecord> dataSet;
 
-    public CaseHistoryAdapter(List<JsonQueuedPerson> data, Context context) {
+    public CaseHistoryAdapter(List<JsonMedicalRecord> data, Context context) {
         this.dataSet = data;
         this.context = context;
     }
@@ -36,8 +37,8 @@ public class CaseHistoryAdapter extends BaseAdapter {
         } else {
             recordHolder = (MyViewHolder) view.getTag();
         }
-        recordHolder.tv_patient_name.setText(dataSet.get(position).getCustomerName());
-        recordHolder.tv_patient_details.setText(dataSet.get(position).getCustomerPhone());
+        recordHolder.tv_patient_name.setText(dataSet.get(position).getBusinessName());
+        recordHolder.tv_patient_details.setText(dataSet.get(position).getAreaAndTown());
 
         return view;
     }

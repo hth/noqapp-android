@@ -16,6 +16,7 @@ import com.noqapp.android.merchant.interfaces.UpdateObservationPresenter;
 import com.noqapp.android.merchant.model.response.api.health.MedicalRecordApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.HospitalVisitFor;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
@@ -138,6 +139,35 @@ public class MedicalHistoryApiCalls {
             @Override
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
                 Log.e("historicalFiltered Fail", t.getLocalizedMessage(), t);
+                medicalRecordListPresenter.medicalRecordListError();
+            }
+        });
+    }
+
+    public void workHistory(String did, String mail, String auth, CodeQRDateRangeLookup codeQRDateRangeLookup) {
+        medicalRecordApiUrls.workHistory(did, Constants.DEVICE_TYPE, mail, auth, codeQRDateRangeLookup).enqueue(new Callback<JsonMedicalRecordList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("workHistory", String.valueOf(response.body()));
+                        medicalRecordListPresenter.medicalRecordListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch workHistory");
+                        medicalRecordListPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        medicalRecordListPresenter.authenticationFailure();
+                    } else {
+                        medicalRecordListPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
+                Log.e("workHistory Fail", t.getLocalizedMessage(), t);
                 medicalRecordListPresenter.medicalRecordListError();
             }
         });

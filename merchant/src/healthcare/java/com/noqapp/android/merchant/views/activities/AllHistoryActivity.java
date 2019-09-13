@@ -12,10 +12,13 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -25,6 +28,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.QueueAdapter;
 import com.noqapp.android.merchant.views.adapters.ViewAllHistoryExpListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
+import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import java.util.ArrayList;
@@ -35,13 +39,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class AllHistoryActivity extends BaseActivity implements QueuePersonListPresenter, View.OnClickListener {
-    private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
+public class AllHistoryActivity extends BaseActivity implements MedicalRecordListPresenter, View.OnClickListener {
+    private Map<Date, List<JsonMedicalRecordList>> expandableListDetail = new HashMap<>();
     private FixedHeightListView listview;
     private RelativeLayout rl_empty;
     private TextView tv_from_date, tv_until_date;
     private Spinner sp_queue_list, sp_filter_type;
-    private ManageQueueApiCalls manageQueueApiCalls;
+    private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private ScrollView scroll_view;
     private Button btn_filter;
 
@@ -73,8 +77,7 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
 
         tv_until_date = findViewById(R.id.tv_until_date);
         tv_until_date.setOnClickListener(this);
-        manageQueueApiCalls = new ManageQueueApiCalls();
-        manageQueueApiCalls.setQueuePersonListPresenter(this);
+        medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         List<JsonTopic> qList = (List<JsonTopic>) getIntent().getExtras().getSerializable("jsonTopic");
         JsonTopic jsonTopic = new JsonTopic();
         jsonTopic.setDisplayName("Select Queue");
@@ -84,57 +87,19 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
 
     }
 
-    @Override
-    public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
-        expandableListDetail.clear();
-        if (null != jsonQueuePersonList) {
-            Log.e("data", jsonQueuePersonList.toString());
-            Log.e("data size", "" + jsonQueuePersonList.getQueuedPeople().size());
-            if (jsonQueuePersonList.getQueuedPeople().size() == 0) {
-                listview.setVisibility(View.GONE);
-                rl_empty.setVisibility(View.VISIBLE);
-            } else {
-                createData(jsonQueuePersonList.getQueuedPeople());
-                List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-                ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(AllHistoryActivity.this, expandableListTitle, expandableListDetail);
-                listview.setAdapter(adapter);
-                if (expandableListTitle.size() <= 0) {
-                    listview.setVisibility(View.GONE);
-                    rl_empty.setVisibility(View.VISIBLE);
-                } else {
-                    listview.setVisibility(View.VISIBLE);
-                    rl_empty.setVisibility(View.GONE);
-                    scroll_view.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            scroll_view.scrollTo(0, btn_filter.getBottom());
-                        }
-                    });
-                }
-            }
-        } else {
-            listview.setVisibility(View.GONE);
-            rl_empty.setVisibility(View.VISIBLE);
-        }
-        dismissProgress();
-    }
 
-    @Override
-    public void queuePersonListError() {
-        dismissProgress();
-    }
 
-    private void createData(List<JsonQueuedPerson> temp) {
+    private void createData(List<JsonMedicalRecord> temp) {
         if (null != temp && temp.size() > 0) {
-            HashMap<Date, List<JsonQueuePersonList>> tempList = new HashMap<>();
+            HashMap<Date, List<JsonMedicalRecordList>> tempList = new HashMap<>();
             for (int i = 0; i < temp.size(); i++) {
                 try {
-                    Date key = new Date(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()).getTime());
+                    Date key = new Date(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreateDate()).getTime());
                     if (null == tempList.get(key)) {
                         tempList.put(key, new ArrayList<>());
-                        tempList.get(key).add(new JsonQueuePersonList());
+                        tempList.get(key).add(new JsonMedicalRecordList());
                     }
-                    tempList.get(key).get(0).getQueuedPeople().add(temp.get(i));
+                    tempList.get(key).get(0).getJsonMedicalRecords().add(temp.get(i));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -162,9 +127,10 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
                         showProgress();
                         CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup().
                                 setCodeQR(jt.getCodeQR())
+                                .setPopulateField((String)sp_filter_type.getSelectedItem())
                                 .setFrom(tv_from_date.getText().toString())
                                 .setUntil(tv_until_date.getText().toString());
-                        manageQueueApiCalls.getAllQueuePersonListHistory(
+                        medicalHistoryApiCalls.workHistory(
                                 UserUtils.getDeviceId(), UserUtils.getEmail(),
                                 UserUtils.getAuth(), codeQRDateRangeLookup);
                     } else {
@@ -210,5 +176,50 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public void medicalRecordListResponse(JsonMedicalRecordList jsonMedicalRecordList) {
+        expandableListDetail.clear();
+        if (null != jsonMedicalRecordList) {
+            Log.e("data", jsonMedicalRecordList.toString());
+            Log.e("data size", "" + jsonMedicalRecordList.getJsonMedicalRecords().size());
+            if (jsonMedicalRecordList.getJsonMedicalRecords().size() == 0) {
+                listview.setVisibility(View.GONE);
+                rl_empty.setVisibility(View.VISIBLE);
+            } else {
+                createData(jsonMedicalRecordList.getJsonMedicalRecords());
+                List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
+                ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(AllHistoryActivity.this, expandableListTitle, expandableListDetail);
+                listview.setAdapter(adapter);
+                if (expandableListTitle.size() <= 0) {
+                    listview.setVisibility(View.GONE);
+                    rl_empty.setVisibility(View.VISIBLE);
+                } else {
+                    listview.setVisibility(View.VISIBLE);
+                    rl_empty.setVisibility(View.GONE);
+                    scroll_view.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scroll_view.scrollTo(0, btn_filter.getBottom());
+                        }
+                    });
+                }
+            }
+        } else {
+            listview.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.VISIBLE);
+        }
+        dismissProgress();
+    }
+
+    @Override
+    public void medicalRecordDentalListResponse(JsonMedicalRecordList jsonMedicalRecordList) {
+        dismissProgress();
+    }
+
+    @Override
+    public void medicalRecordListError() {
+        dismissProgress();
     }
 }
