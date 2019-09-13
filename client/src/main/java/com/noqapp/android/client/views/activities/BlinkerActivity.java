@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 
 
 public class BlinkerActivity extends Activity {
@@ -51,7 +51,7 @@ public class BlinkerActivity extends Activity {
         rl_blinker.startAnimation(animation);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (AppUtilities.isRelease()) {
+        if (AppUtils.isRelease()) {
             Answers.getInstance().logCustom(new CustomEvent("Buzzer Screen"));
         }
 

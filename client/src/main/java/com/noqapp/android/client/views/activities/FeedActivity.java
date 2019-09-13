@@ -19,7 +19,7 @@ import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.squareup.picasso.Picasso;
@@ -73,7 +73,7 @@ public class FeedActivity extends AppCompatActivity {
             tv_details.setText(Html.fromHtml(data));
         }
 
-        if (AppUtilities.isRelease()) {
+        if (AppUtils.isRelease()) {
             Answers.getInstance().logContentView(new ContentViewEvent()
                     .putContentName(jsonFeed.getTitle())
                     .putContentType(jsonFeed.getContentType())

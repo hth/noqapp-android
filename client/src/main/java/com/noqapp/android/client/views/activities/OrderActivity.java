@@ -29,7 +29,7 @@ import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
@@ -162,7 +162,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         initActionsViews(true);
         purchaseOrderApiCall = new PurchaseOrderApiCall(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
-        currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
+        currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
         tv_user_name.setText(NoQueueBaseActivity.getUserName());
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
@@ -182,7 +182,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + "  " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + "  " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             ll_order_details.addView(inflatedLayout);
         }
@@ -307,7 +307,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         float long_s = (float) GeoHashUtils.decodeLongitude(storeGeoHash);
                         float lat_d = (float) GeoHashUtils.decodeLatitude(jsonUserAddress.getGeoHash());
                         float long_d = (float) GeoHashUtils.decodeLongitude(jsonUserAddress.getGeoHash());
-                        float distance = (float) AppUtilities.calculateDistance(lat_s, long_s, lat_d, long_d);
+                        float distance = (float) AppUtils.calculateDistance(lat_s, long_s, lat_d, long_d);
                         switch (jsonPurchaseOrder.getBusinessType()) {
                             case RS:
                             case FT:
@@ -370,7 +370,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
             bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
-            bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
+            bundle.putString(AppUtils.CURRENCY_SYMBOL, currencySymbol);
             bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
             startActivity(in);
@@ -520,7 +520,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
             bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
-            bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
+            bundle.putString(AppUtils.CURRENCY_SYMBOL, currencySymbol);
             bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
             startActivity(in);

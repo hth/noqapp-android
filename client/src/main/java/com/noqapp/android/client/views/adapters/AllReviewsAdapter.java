@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -49,7 +49,7 @@ public class AllReviewsAdapter extends RecyclerView.Adapter {
         try {
             if (!TextUtils.isEmpty(jsonReview.getProfileImage())) {
                 Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonReview.getProfileImage()))
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonReview.getProfileImage()))
                         .placeholder(ImageUtils.getProfilePlaceholder(context))
                         .error(ImageUtils.getProfileErrorPlaceholder(context))
                         .into(holder.iv_main);

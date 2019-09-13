@@ -25,7 +25,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AppointmentApiCalls;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -143,7 +143,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             @Override
             public void onDateSelected(Calendar date, int position) {
                 selectedDate = date;
-                fetchAppointments(new AppUtilities().dateFormatAsYYYY_MM_DD(selectedDate));
+                fetchAppointments(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate));
             }
         });
         horizontalCalendarView.refresh();
@@ -173,13 +173,13 @@ public class BookAppointmentActivity extends BaseActivity implements
                             String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
                                     .setCodeQR(bizStoreElastic.getCodeQR())
-                                    .setStartTime(AppUtilities.removeColon(temp[0].trim()))
-                                    .setEndTime(AppUtilities.removeColon(temp[1].trim()))
-                                    .setScheduleDate(new AppUtilities().dateFormatAsYYYY_MM_DD(selectedDate))
+                                    .setStartTime(AppUtils.removeColon(temp[0].trim()))
+                                    .setEndTime(AppUtils.removeColon(temp[1].trim()))
+                                    .setScheduleDate(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate))
                                     .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                             // appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
                             showConfirmationDialog(BookAppointmentActivity.this, ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
-                                    new AppUtilities().dateFormatAsYYYY_MM_DD(selectedDate), appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(), jsonSchedule);
+                                    new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate), appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(), jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -194,14 +194,14 @@ public class BookAppointmentActivity extends BaseActivity implements
                             String[] temp = firstAvailableAppointment.getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
                                     .setCodeQR(bizStoreElastic.getCodeQR())
-                                    .setStartTime(AppUtilities.removeColon(temp[0].trim()))
-                                    .setEndTime(AppUtilities.removeColon(temp[1].trim()))
-                                    .setScheduleDate(new AppUtilities().dateFormatAsYYYY_MM_DD(selectedDate))
+                                    .setStartTime(AppUtils.removeColon(temp[0].trim()))
+                                    .setEndTime(AppUtils.removeColon(temp[1].trim()))
+                                    .setScheduleDate(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate))
                                     .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                             //appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
 
                             showConfirmationDialog(BookAppointmentActivity.this, ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
-                                    new AppUtilities().dateFormatAsYYYY_MM_DD(selectedDate), "", jsonSchedule);
+                                    new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate), "", jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -210,7 +210,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             }
         });
         selectedDate = startDate;
-        fetchAppointments(AppUtilities.tomorrowAsDateFormat());
+        fetchAppointments(AppUtils.tomorrowAsDateFormat());
     }
 
     @Override
@@ -236,8 +236,8 @@ public class BookAppointmentActivity extends BaseActivity implements
 
     private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
 
-        if (new AppUtilities().checkStoreClosedWithTime(storeHourElastic)
-                || new AppUtilities().checkStoreClosedWithAppointmentTime(storeHourElastic)) {
+        if (new AppUtils().checkStoreClosedWithTime(storeHourElastic)
+                || new AppUtils().checkStoreClosedWithAppointmentTime(storeHourElastic)) {
             tv_empty_slots.setVisibility(View.VISIBLE);
             enableDisableBtn(false);
         } else {
@@ -246,7 +246,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             List<AppointmentSlot> listData = new ArrayList<>();
             String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
             String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-            ArrayList<String> timeSlot = AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
+            ArrayList<String> timeSlot = AppUtils.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
             for (int i = 0; i < timeSlot.size() - 1; i++) {
                 listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).
                         setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i + 1))));
@@ -318,12 +318,12 @@ public class BookAppointmentActivity extends BaseActivity implements
         ArrayList<String> filledTimes = new ArrayList<>();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                filledTimes.addAll(AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(),
-                        AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
-                        AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), true));
+                filledTimes.addAll(AppUtils.getTimeSlots(bizStoreElastic.getAppointmentDuration(),
+                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
+                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), true));
             }
         }
-        int dayOfWeek = AppUtilities.getDayOfWeek(selectedDate);
+        int dayOfWeek = AppUtils.getDayOfWeek(selectedDate);
         StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
         setAppointmentSlots(storeHourElastic, filledTimes);
         dismissProgress();

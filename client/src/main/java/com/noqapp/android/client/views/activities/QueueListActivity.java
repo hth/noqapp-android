@@ -13,7 +13,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.CategoryHeaderAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
@@ -59,7 +59,7 @@ public class QueueListActivity extends BaseActivity implements
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                int position = new AppUtilities().getFirstVisibleGroup(expandableListView);
+                int position = new AppUtils().getFirstVisibleGroup(expandableListView);
                 rcv_header.smoothScrollToPosition(position);
                 categoryHeaderAdapter.setSelectedPosition(position);
                 categoryHeaderAdapter.notifyDataSetChanged();
@@ -91,7 +91,7 @@ public class QueueListActivity extends BaseActivity implements
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
+                in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
                 startActivity(in);
                 break;
             default:

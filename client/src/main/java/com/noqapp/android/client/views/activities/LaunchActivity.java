@@ -57,7 +57,7 @@ import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
@@ -217,7 +217,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
-                AppUtilities.isRelease()
+                AppUtils.isRelease()
                         ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                         : getString(R.string.version_no, "Not for release"));
         setUpExpandableList(UserUtils.isLogin());
@@ -390,11 +390,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             try {
                 //both remaining permission allowed
                 if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-                    AppUtilities.shareTheApp(launchActivity);
+                    AppUtils.shareTheApp(launchActivity);
                 }
                 //one remaining permission allowed
                 else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    AppUtilities.shareTheApp(launchActivity);
+                    AppUtils.shareTheApp(launchActivity);
                 }
                 //No permission allowed
                 else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
@@ -465,7 +465,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
                         .into(iv_profile);
@@ -600,7 +600,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
         if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
-            if (AppUtilities.isRelease()) {
+            if (AppUtils.isRelease()) {
                 try {
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
@@ -646,17 +646,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             rb_hi.setChecked(false);
         }
         ll_hindi.setOnClickListener((View v) -> {
-            AppUtilities.changeLanguage("hi");
+            AppUtils.changeLanguage("hi");
             dialog.dismiss();
-            if (AppUtilities.isRelease()) {
+            if (AppUtils.isRelease()) {
                 Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
                         .putCustomAttribute("Language", "HINDI"));
             }
         });
         ll_english.setOnClickListener((View v) -> {
-            AppUtilities.changeLanguage("en");
+            AppUtils.changeLanguage("en");
             dialog.dismiss();
-            if (AppUtilities.isRelease()) {
+            if (AppUtils.isRelease()) {
                 Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
                         .putCustomAttribute("Language", "ENGLISH"));
             }
@@ -666,7 +666,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     @Override
     public void authenticationFailure() {
-        AppUtilities.authenticationProcessing(this);
+        AppUtils.authenticationProcessing(this);
     }
 
     private void updateNotification(Object object, String codeQR) {
@@ -969,11 +969,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
             }
             case R.drawable.ic_star:
-                AppUtilities.openPlayStore(launchActivity);
+                AppUtils.openPlayStore(launchActivity);
                 break;
             case R.drawable.ic_menu_share:
                 if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
-                    AppUtilities.shareTheApp(launchActivity);
+                    AppUtils.shareTheApp(launchActivity);
                 } else {
                     PermissionUtils.requestStoragePermission(launchActivity);
                 }

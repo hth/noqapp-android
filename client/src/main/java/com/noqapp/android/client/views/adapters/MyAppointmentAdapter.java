@@ -11,7 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -44,7 +44,7 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) Vholder;
         JsonSchedule jsonSchedule = dataSet.get(position);
         holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
-        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
+        holder.tv_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
         holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
         try {
             Date date = CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate());

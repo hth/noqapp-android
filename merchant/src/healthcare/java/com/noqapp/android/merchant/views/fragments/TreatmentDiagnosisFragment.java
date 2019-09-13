@@ -45,7 +45,7 @@ public class TreatmentDiagnosisFragment extends BaseFragment implements
         ImageView iv_clear_actv_dia = v.findViewById(R.id.iv_clear_actv_dia);
         iv_clear_actv_dia.setOnClickListener(v15 -> {
             actv_search_dia.setText("");
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
         });
         return v;
     }
@@ -95,12 +95,12 @@ public class TreatmentDiagnosisFragment extends BaseFragment implements
 
     @Override
     public void searchClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
     }
 
     @Override
     public void searchByPos(DataObj dataObj) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
         actv_search_dia.setText("");
         diagnosisAdapter.selectItem(dataObj);
         diagnosisAdapter.notifyDataSetChanged();

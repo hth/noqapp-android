@@ -234,7 +234,7 @@ public class OrderDetailActivity
             final Button btn_update = dialog.findViewById(R.id.btn_update);
             btn_update.setOnClickListener(v12 -> {
                 edt_random.setError(null);
-                new AppUtils().hideKeyBoard((Activity) OrderDetailActivity.this);
+                AppUtils.hideKeyBoard((Activity) OrderDetailActivity.this);
                 if (!edt_random.getText().toString().equals(tv_random.getText().toString())) {
                     edt_random.setError(OrderDetailActivity.this.getString(R.string.error_invalid_captcha));
                     new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));

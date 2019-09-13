@@ -15,7 +15,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -62,7 +62,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             jsonPurchaseOrder.setOrderPrice("0");
         }
         List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
-        tv_name.setText(AppUtilities.getNameFromQueueUserID(jsonPurchaseOrder.getQueueUserId(), profileList));
+        tv_name.setText(AppUtils.getNameFromQueueUserID(jsonPurchaseOrder.getQueueUserId(), profileList));
         if (tv_name.getText().toString().equals("")) {
             tv_name.setText("Guest User");
         }
@@ -76,7 +76,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
                 ll_patient.setVisibility(View.GONE);
                 tv_patient_label.setText("Customer Name:");
         }
-        String currencySymbol = AppUtilities.getCurrencySymbol(jsonPurchaseOrder.getCountryShortName());
+        String currencySymbol = AppUtils.getCurrencySymbol(jsonPurchaseOrder.getCountryShortName());
         tv_support.setOnClickListener((View v) -> {
             Feedback feedback = new Feedback();
             feedback.setMessageOrigin(MessageOriginEnum.O);
@@ -135,7 +135,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             ll_order_details.addView(inflatedLayout);
         }

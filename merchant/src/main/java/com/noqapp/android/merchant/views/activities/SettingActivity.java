@@ -245,7 +245,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     edt_token_no.setVisibility(View.INVISIBLE);
                     tv_limited_label.setText(getString(R.string.unlimited_token));
                     edt_token_no.setText("");
-                    new AppUtils().hideKeyBoard(SettingActivity.this);
+                    AppUtils.hideKeyBoard(SettingActivity.this);
                 } else {
                     edt_token_no.setVisibility(View.VISIBLE);
                     edt_token_no.setText("");
@@ -562,7 +562,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 tv_limited_label.setText(getString(R.string.limited_token));
                 if (edt_token_no != null) {
                     edt_token_no.clearFocus();
-                    new AppUtils().hideKeyBoard(this);
+                    AppUtils.hideKeyBoard(this);
                 }
             }
             edt_appointment_duration.setText(String.valueOf(storeSetting.getAppointmentDuration()));

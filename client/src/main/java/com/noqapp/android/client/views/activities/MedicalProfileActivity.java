@@ -4,7 +4,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
@@ -124,7 +124,7 @@ public class MedicalProfileActivity
                 cv_info.setVisibility(View.VISIBLE);
             }
         });
-        AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
+        AppUtils.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
         tv_patient_name.setText(jsonProfile.getName());
         tv_patient_age_gender.setText(CommonHelper.calculateAge(jsonProfile.getBirthday()) + " (" + jsonProfile.getGender() + ")");
         userMedicalProfileApiCalls = new UserMedicalProfileApiCalls();

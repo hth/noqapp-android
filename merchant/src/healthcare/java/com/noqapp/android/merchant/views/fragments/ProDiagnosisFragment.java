@@ -42,7 +42,7 @@ public class ProDiagnosisFragment extends BaseFragment implements AutoCompleteAd
         ImageView iv_clear_actv_dia = v.findViewById(R.id.iv_clear_actv_dia);
         iv_clear_actv_dia.setOnClickListener(v12 -> {
             actv_search_provisional_dia.setText("");
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
         });
         return v;
     }
@@ -91,7 +91,7 @@ public class ProDiagnosisFragment extends BaseFragment implements AutoCompleteAd
 
     @Override
     public void searchByPos(DataObj dataObj) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
         actv_search_provisional_dia.setText("");
         provisionalDiagnosisAdapter.selectItem(dataObj);
         provisionalDiagnosisAdapter.notifyDataSetChanged();

@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class ProfileAdapter extends RecyclerView.Adapter {
         ViewHolder holder = (ViewHolder) Vholder;
         final JsonProfile jsonProfile = jsonProfiles.get(position);
         holder.tv_name.setText(jsonProfile.getName());
-        AppUtilities.loadProfilePic(holder.iv_profile, jsonProfile.getProfileImage(), context);
+        AppUtils.loadProfilePic(holder.iv_profile, jsonProfile.getProfileImage(), context);
         holder.btn_view_profile.setOnClickListener((View v) -> {
             if (null != listener)
                 listener.onProfileItemClick(jsonProfile);

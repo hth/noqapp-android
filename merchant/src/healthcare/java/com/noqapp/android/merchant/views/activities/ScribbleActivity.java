@@ -62,12 +62,12 @@ public class ScribbleActivity extends BaseActivity {
         setProgressMessage("Fetching data...");
         Button btn_submit = findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(v -> {
-            new AppUtils().hideKeyBoard(ScribbleActivity.this);
+            AppUtils.hideKeyBoard(ScribbleActivity.this);
             takeScreenshot();
         });
         Button btn_clear = findViewById(R.id.btn_clear);
         btn_clear.setOnClickListener(v -> {
-            new AppUtils().hideKeyBoard(ScribbleActivity.this);
+            AppUtils.hideKeyBoard(ScribbleActivity.this);
             edt_prescription.setText("");
         });
         if (!isAppInstalled(packageName)) {

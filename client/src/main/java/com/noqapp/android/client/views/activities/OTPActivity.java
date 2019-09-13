@@ -5,16 +5,13 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,7 +31,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.hbb20.CountryCodePicker;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -328,7 +325,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         }
         if (mVerificationId != null) {
             showProgress();
-            new AppUtilities().hideKeyBoard(this);
+            AppUtils.hideKeyBoard(this);
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edt_phone_code.getText().toString());
             signInWithPhoneAuthCredential(credential);
         } else {

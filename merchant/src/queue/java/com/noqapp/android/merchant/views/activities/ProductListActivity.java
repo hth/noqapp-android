@@ -334,7 +334,7 @@ public class ProductListActivity extends BaseActivity implements
         for (TextInputEditText v : views) {
             v.setError(null);
         }
-        new AppUtils().hideKeyBoard(this);
+        AppUtils.hideKeyBoard(this);
         String errorMsg = "";
         for (TextInputEditText v : views) {
             if (TextUtils.isEmpty(v.getText().toString())) {

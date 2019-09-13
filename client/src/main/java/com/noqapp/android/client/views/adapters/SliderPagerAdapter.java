@@ -13,7 +13,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.WebViewActivity;
@@ -83,7 +83,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             ImageView im_slider = view.findViewById(R.id.im_slider);
             String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
             Picasso.get()
-                    .load(AppUtilities.getImageUrls(TextUtils.isEmpty(bucket) ? BuildConfig.SERVICE_BUCKET : bucket, url))
+                    .load(AppUtils.getImageUrls(TextUtils.isEmpty(bucket) ? BuildConfig.SERVICE_BUCKET : bucket, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
                     .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
                     .into(im_slider);

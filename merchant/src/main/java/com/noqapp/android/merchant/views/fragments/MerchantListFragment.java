@@ -220,7 +220,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
 
     private void hideAndReset() {
         auto_complete_search.setText("");
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
     }
 
     @Override

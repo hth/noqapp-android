@@ -17,7 +17,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GPSTracker;
@@ -54,7 +54,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 lat = LaunchActivity.getLaunchActivity().latitute;
                 log = LaunchActivity.getLaunchActivity().longitute;
                 city = LaunchActivity.getLaunchActivity().cityName;
-                new AppUtilities().hideKeyBoard(getActivity());
+                AppUtils.hideKeyBoard(getActivity());
             }
             LaunchActivity.getLaunchActivity().updateLocationInfo(lat, log, city);
         });
@@ -67,7 +67,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 lat = LaunchActivity.getLaunchActivity().latitute;
                 log = LaunchActivity.getLaunchActivity().longitute;
                 city = LaunchActivity.getLaunchActivity().cityName;
-                new AppUtilities().hideKeyBoard(getActivity());
+                AppUtils.hideKeyBoard(getActivity());
             }
         });
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
@@ -77,7 +77,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
                     String city_name = (String) parent.getItemAtPosition(position);
-                    LatLng latLng = AppUtilities.getLocationFromAddress(getActivity(), city_name);
+                    LatLng latLng = AppUtils.getLocationFromAddress(getActivity(), city_name);
                     if (null != latLng) {
                         lat = latLng.latitude;
                         log = latLng.longitude;
@@ -89,7 +89,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                         //  log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
                     }
                     city = city_name;
-                    new AppUtilities().hideKeyBoard(getActivity());
+                    AppUtils.hideKeyBoard(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -121,7 +121,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 return false;
             }
         });
-        if (AppUtilities.isRelease()) {
+        if (AppUtils.isRelease()) {
             Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LOCATION));
         }
         return view;

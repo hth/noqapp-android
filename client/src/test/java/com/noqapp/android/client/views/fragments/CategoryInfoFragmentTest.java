@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,7 +56,7 @@ public class CategoryInfoFragmentTest {
         jsonQueues.add(jsonQueue1);
         jsonQueues.add(jsonQueue2);
 
-        AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
+        AppUtils.sortJsonQueues(systemHourMinutes, jsonQueues);
         Assert.assertEquals(jsonQueue2, jsonQueues.get(0));
         Assert.assertEquals(jsonQueue1, jsonQueues.get(1));
         Assert.assertEquals(jsonQueueClosed, jsonQueues.get(2));
@@ -111,7 +111,7 @@ public class CategoryInfoFragmentTest {
         jsonQueues.add(jsonQueue2);
         jsonQueues.add(jsonQueue3);
 
-        AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
+        AppUtils.sortJsonQueues(systemHourMinutes, jsonQueues);
         Assert.assertEquals(jsonQueue2, jsonQueues.get(0));
         Assert.assertEquals(jsonQueue1, jsonQueues.get(1));
         Assert.assertEquals(jsonQueue3, jsonQueues.get(2));
@@ -168,7 +168,7 @@ public class CategoryInfoFragmentTest {
         jsonQueues.add(jsonQueue2);
         jsonQueues.add(jsonQueue3);
 
-        AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
+        AppUtils.sortJsonQueues(systemHourMinutes, jsonQueues);
         Assert.assertEquals(jsonQueue1, jsonQueues.get(0));
         Assert.assertEquals(jsonQueue2, jsonQueues.get(1));
         Assert.assertEquals(jsonQueue3, jsonQueues.get(2));

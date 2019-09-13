@@ -20,7 +20,7 @@ import androidx.core.content.ContextCompat;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
@@ -122,7 +122,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        AppUtilities.loadProfilePic(iv_profile,NoQueueBaseActivity.getUserProfileUri(),this);
+        AppUtils.loadProfilePic(iv_profile,NoQueueBaseActivity.getUserProfileUri(),this);
     }
 
     @Override

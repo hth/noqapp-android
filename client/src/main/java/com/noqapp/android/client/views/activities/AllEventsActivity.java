@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.EventsAdapter;
 import com.noqapp.android.common.beans.JsonAdvertisement;
@@ -40,7 +40,7 @@ public class AllEventsActivity extends BaseActivity implements EventsAdapter.OnI
         switch (item.getAdvertisementViewerType()) {
             case JBA: {
                 Intent in = new Intent(this, ImageViewerActivity.class);
-                in.putExtra(IBConstant.KEY_URL, AppUtilities.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL()));
+                in.putExtra(IBConstant.KEY_URL, AppUtils.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL()));
                 startActivity(in);
                 break;
             }

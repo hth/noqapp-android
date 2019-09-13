@@ -124,7 +124,7 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
         ImageView iv_clear_actv_medicine = v.findViewById(R.id.iv_clear_actv_medicine);
         iv_clear_actv_medicine.setOnClickListener(v14 -> {
             actv_search_medicine.setText("");
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
         });
         return v;
     }
@@ -286,13 +286,13 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
 
     @Override
     public void searchClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
         actv_search_medicine.setText("");
         staggeredMedicineClick(isOpen, isEdit, dataObj, pos);
     }
 
     @Override
     public void searchByPos(DataObj dataObj) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
     }
 }

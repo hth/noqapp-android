@@ -23,7 +23,7 @@ import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
@@ -98,11 +98,11 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
         tv_mobile.setOnClickListener((View v) -> {
-            AppUtilities.makeCall(BeforeJoinActivity.this, tv_mobile.getText().toString());
+            AppUtils.makeCall(BeforeJoinActivity.this, tv_mobile.getText().toString());
         });
 
         tv_address.setOnClickListener((View v) -> {
-            AppUtilities.openAddressInMap(BeforeJoinActivity.this, tv_address.getText().toString());
+            AppUtils.openAddressInMap(BeforeJoinActivity.this, tv_address.getText().toString());
         });
         tv_add.setOnClickListener((View v) -> {
             if (UserUtils.isLogin()) {
@@ -181,7 +181,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             } else {
                 tv_delay_in_time.setVisibility(View.GONE);
             }
-            String time = new AppUtilities().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
+            String time = new AppUtils().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener((View v) -> {
@@ -190,12 +190,12 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     Bundle bundle = new Bundle();
                     bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
                     bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
-                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
+                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtils.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
                     in.putExtras(bundle);
                     startActivity(in);
                 }
             });
-            tv_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
+            tv_rating.setText(String.valueOf(AppUtils.round(jsonQueue.getRating())));
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
             } else {
@@ -222,9 +222,9 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 case DO:
                 case PH:
                 case HS:
-                    String feeString = "<b>" + AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getProductPrice() / 100) + "</b>  Consultation fee";
+                    String feeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getProductPrice() / 100) + "</b>  Consultation fee";
                     tv_consult_fees.setText(Html.fromHtml(feeString));
-                    String cancelFeeString = "<b>" + AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getCancellationPrice() / 100) + "</b>  Cancellation fee";
+                    String cancelFeeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getCancellationPrice() / 100) + "</b>  Cancellation fee";
                     tv_cancelation_fees.setText(Html.fromHtml(cancelFeeString));
                     tv_consult_fees.setVisibility(View.VISIBLE);
                     tv_cancelation_fees.setVisibility(View.VISIBLE);
@@ -308,7 +308,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
-            if (AppUtilities.isRelease()) {
+            if (AppUtils.isRelease()) {
                 Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_JOIN_SCREEN)
                         .putCustomAttribute("Queue Name", jsonQueue.getDisplayName()));
             }

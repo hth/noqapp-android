@@ -91,7 +91,7 @@ public class ShowAlertInformation {
             mAlertDialog.dismiss();
         });
         btn_yes.setOnClickListener((View v) -> {
-            AppUtilities.openPlayStore(context);
+            AppUtils.openPlayStore(context);
         });
         try {
             mAlertDialog.show();

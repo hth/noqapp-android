@@ -148,7 +148,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         btn_update.setOnClickListener(v -> {
             edt_id.setError(null);
             edt_random.setError(null);
-            new AppUtils().hideKeyBoard((Activity) mContext);
+            AppUtils.hideKeyBoard((Activity) mContext);
 
             if (TextUtils.isEmpty(edt_id.getText().toString())) {
                 edt_id.setError(mContext.getString(R.string.error_customer_id));

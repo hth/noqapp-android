@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.SliderActivity;
@@ -67,7 +67,7 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter {
             }
         } else {
             Picasso.get()
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
+                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_photo);

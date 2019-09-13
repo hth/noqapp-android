@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -67,7 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this);
+        AppUtils.authenticationProcessing(this);
     }
 
     @Override

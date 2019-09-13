@@ -400,7 +400,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             boolean isValid = true;
             edt_mobile.setError(null);
             edt_id.setError(null);
-            new AppUtils().hideKeyBoard(BookAppointmentActivity.this);
+            AppUtils.hideKeyBoard(BookAppointmentActivity.this);
             // get selected radio button from radioGroup
             int selectedId = rg_user_id.getCheckedRadioButtonId();
             if (selectedId == R.id.rb_mobile) {

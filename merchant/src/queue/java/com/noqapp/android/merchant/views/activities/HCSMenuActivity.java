@@ -175,7 +175,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         ImageView iv_clear_actv = findViewById(R.id.iv_clear_actv);
         iv_clear_actv.setOnClickListener(v -> {
             actv_search.setText("");
-            new AppUtils().hideKeyBoard(HCSMenuActivity.this);
+            AppUtils.hideKeyBoard(HCSMenuActivity.this);
         });
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getSuggestionsProductPrefs())) {
             callFileApi();
@@ -476,7 +476,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
 
     @Override
     public void searchByPos(HCSMenuObject menuObject) {
-        new AppUtils().hideKeyBoard(this);
+        AppUtils.hideKeyBoard(this);
         actv_search.setText("");
         staggeredClick(false, menuObject, 0);
     }
@@ -484,7 +484,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
     @Override
     public void staggeredClick(boolean isRemove, HCSMenuObject hcsMenuObject, int pos) {
         {
-            new AppUtils().hideKeyBoard(this);
+            AppUtils.hideKeyBoard(this);
             if (isRemove) {
                 menuSelectData.remove(pos);
                 view_test.setVisibility(menuSelectData.size() > 0 ? View.VISIBLE : View.GONE);
@@ -624,7 +624,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                 boolean isValid = true;
                 edt_mobile.setError(null);
                 edt_id.setError(null);
-                new AppUtils().hideKeyBoard(HCSMenuActivity.this);
+                AppUtils.hideKeyBoard(HCSMenuActivity.this);
                 int selectedId = rg_user_id.getCheckedRadioButtonId();
                 if (selectedId == R.id.rb_mobile) {
                     if (TextUtils.isEmpty(edt_mobile.getText())) {

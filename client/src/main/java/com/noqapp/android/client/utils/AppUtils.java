@@ -66,8 +66,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-public class AppUtilities extends CommonHelper {
-    private static final String TAG = AppUtilities.class.getSimpleName();
+public class AppUtils extends CommonHelper {
+    private static final String TAG = AppUtils.class.getSimpleName();
     private static Map<String, Locale> localeMap;
 
     public static String iso3CountryCodeToIso2CountryCode(String iso3CountryCode) {
@@ -540,7 +540,7 @@ public class AppUtilities extends CommonHelper {
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
                         .placeholder(ImageUtils.getProfilePlaceholder(context))
                         .error(ImageUtils.getProfileErrorPlaceholder(context))
                         .into(iv_profile);

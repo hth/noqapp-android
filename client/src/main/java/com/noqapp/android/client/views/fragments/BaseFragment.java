@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
@@ -47,7 +47,7 @@ public abstract class BaseFragment extends Fragment implements ResponseErrorPres
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        AppUtilities.authenticationProcessing(getActivity());
+        AppUtils.authenticationProcessing(getActivity());
     }
 
     @Override

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -102,7 +102,7 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
         int listSize = 0;
         RatingBar ratingBar = findViewById(R.id.ratingBar);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        AppUtilities.setRatingBarColor(stars, this);
+        AppUtils.setRatingBarColor(stars, this);
         if (null != jsonReviews && jsonReviews.size() > 0) {
             listSize = jsonReviews.size();
             jsonReviewsOnlyText.clear();
@@ -139,7 +139,7 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
                         listSize;
                 ratingBar.setRating(f);
                 TextView tv_rating = findViewById(R.id.tv_rating);
-                tv_rating.setText(String.valueOf(AppUtilities.round(f)));
+                tv_rating.setText(String.valueOf(AppUtils.round(f)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

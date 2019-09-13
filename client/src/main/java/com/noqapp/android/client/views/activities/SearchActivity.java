@@ -25,7 +25,7 @@ import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -69,7 +69,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         lat = getIntent().getStringExtra("lat");
         longitude = getIntent().getStringExtra("long");
         scrollId = "";
-        AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
+        AppUtils.setAutoCompleteText(autoCompleteTextView, city);
         rv_search.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_search.setLayoutManager(horizontalLayoutManager);
@@ -84,7 +84,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 final int DRAWABLE_LEFT = 0;
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (edt_search.getRight() - edt_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        new AppUtilities().hideKeyBoard(SearchActivity.this);
+                        AppUtils.hideKeyBoard(SearchActivity.this);
                         edt_search.setText("");
                         return true;
                     }
@@ -110,9 +110,8 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 lat = String.valueOf(LaunchActivity.getLaunchActivity().latitute);
                 longitude = String.valueOf(LaunchActivity.getLaunchActivity().longitute);
                 city = LaunchActivity.getLaunchActivity().cityName;
-                AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
-
-                new AppUtilities().hideKeyBoard(SearchActivity.this);
+                AppUtils.setAutoCompleteText(autoCompleteTextView, city);
+                AppUtils.hideKeyBoard(SearchActivity.this);
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
@@ -120,11 +119,11 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String city_name = (String) parent.getItemAtPosition(position);
-                LatLng latLng = AppUtilities.getLocationFromAddress(SearchActivity.this, city_name);
+                LatLng latLng = AppUtils.getLocationFromAddress(SearchActivity.this, city_name);
                 lat = String.valueOf(latLng.latitude);
                 longitude = String.valueOf(latLng.longitude);
                 city = city_name;
-                new AppUtilities().hideKeyBoard(SearchActivity.this);
+                AppUtils.hideKeyBoard(SearchActivity.this);
 
             }
         });
@@ -143,7 +142,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             }
         });
 
-        if (AppUtilities.isRelease()) {
+        if (AppUtils.isRelease()) {
             Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_SEARCH));
         }
     }
@@ -164,7 +163,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
             }
         }
-        new AppUtilities().hideKeyBoard(SearchActivity.this);
+        AppUtils.hideKeyBoard(SearchActivity.this);
     }
 
     @Override

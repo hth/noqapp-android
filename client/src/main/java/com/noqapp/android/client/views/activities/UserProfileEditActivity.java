@@ -27,7 +27,7 @@ import com.noqapp.android.client.model.DependentApiCall;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
@@ -124,7 +124,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
                         .into(iv_profile);
@@ -292,7 +292,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         UpdateProfile updateProfile = new UpdateProfile();
                         updateProfile.setAddress(address);
                         updateProfile.setFirstName(name);
-                        updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
+                        updateProfile.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                         updateProfile.setGender(gender);
                         updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                         updateProfile.setQueueUserId(dependentProfile.getQueueUserId());
@@ -303,14 +303,14 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         registration.setFirstName(name);
                         registration.setMail("");
                         registration.setPassword("");
-                        registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
+                        registration.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                         registration.setGender(gender);
                         registration.setTimeZoneId(TimeZone.getDefault().getID());
                         registration.setCountryShortName(NoQueueBaseActivity.getCountryShortName());
                         registration.setInviteCode("");
                         DependentApiCall dependentModel = new DependentApiCall(this);
                         dependentModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
-                        if (AppUtilities.isRelease()) {
+                        if (AppUtils.isRelease()) {
                             Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_DEPENDENT_ADDED));
                         }
                     }
@@ -318,7 +318,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     UpdateProfile updateProfile = new UpdateProfile();
                     updateProfile.setAddress(address);
                     updateProfile.setFirstName(name);
-                    updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
+                    updateProfile.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
@@ -422,7 +422,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         edt_Name.setError(null);
         edt_Mail.setError(null);
         tv_birthday.setError(null);
-        new AppUtilities().hideKeyBoard(this);
+        AppUtils.hideKeyBoard(this);
         String name = edt_Name.getText().toString().toUpperCase();
         if (TextUtils.isEmpty(name)) {
             edt_Name.setError(getString(R.string.error_name_blank));

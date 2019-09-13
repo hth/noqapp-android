@@ -88,7 +88,7 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
                 } else {
                     new CustomToast().showToast(getActivity(), "Already selected");
                 }
-                new AppUtils().hideKeyBoard(getActivity());
+                AppUtils.hideKeyBoard(getActivity());
             }
         });
         actv_search.setOnTouchListener(new View.OnTouchListener() {
@@ -99,7 +99,7 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (actv_search.getRight() - actv_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         actv_search.setText("");
-                        new AppUtils().hideKeyBoard(getActivity());
+                        AppUtils.hideKeyBoard(getActivity());
                         return true;
                     }
                     if (event.getRawX() <= (20 + actv_search.getLeft() + actv_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
@@ -128,7 +128,7 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
 
         Button btn_add = v.findViewById(R.id.btn_add);
         btn_add.setOnClickListener(v1 -> {
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
             edt_add.setError(null);
             if (TextUtils.isEmpty(edt_add.getText().toString())) {
                 edt_add.setError(getString(R.string.error_field_required));
