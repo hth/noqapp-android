@@ -40,7 +40,7 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_patient);
         initActionsViews(false);
-        tv_toolbar_title.setText("All Patient");
+        tv_toolbar_title.setText("List of Patients");
         listview = findViewById(R.id.exp_list_view);
         rl_empty = findViewById(R.id.rl_empty);
         Spinner sp_queue_list = findViewById(R.id.sp_queue_list);

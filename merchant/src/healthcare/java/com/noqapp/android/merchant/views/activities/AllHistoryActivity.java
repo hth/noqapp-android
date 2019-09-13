@@ -48,7 +48,7 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_history);
         initActionsViews(false);
-        tv_toolbar_title.setText("All History");
+        tv_toolbar_title.setText("My Work History");
         listview = findViewById(R.id.exp_list_view);
         rl_empty = findViewById(R.id.rl_empty);
         sp_queue_list = findViewById(R.id.sp_queue_list);
@@ -78,31 +78,7 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
         qList.add(0, jsonTopic);
         QueueAdapter adapter = new QueueAdapter(this, qList);
         sp_queue_list.setAdapter(adapter);
-//        sp_queue_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (position > 0) {
-//                    setProgressMessage("Fetching data...");
-//                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-//                        JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
-//                        showProgress();
-//                        CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup().
-//                                setCodeQR(jt.getCodeQR()).setFrom(AppUtils.earlierDayAsDateFormat(7))
-//                                .setUntil(AppUtils.todayAsDateFormat());
-//                        manageQueueApiCalls.getAllQueuePersonListHistory(
-//                                UserUtils.getDeviceId(), UserUtils.getEmail(),
-//                                UserUtils.getAuth(), codeQRDateRangeLookup);
-//                    } else {
-//                        ShowAlertInformation.showNetworkDialog(AllHistoryActivity.this);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-        //       });
+
     }
 
     @Override
