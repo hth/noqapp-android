@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,7 +20,6 @@ import com.noqapp.android.merchant.model.M_MerchantProfileApiCalls;
 import com.noqapp.android.merchant.model.PreferredBusinessApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
@@ -60,11 +58,7 @@ public class PreferredStoreActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         preferredStoreActivity = this;
         try {

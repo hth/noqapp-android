@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,11 +53,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
         initActionsViews(false);

@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -11,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.fragments.ReviewListFragment;
 
 
@@ -19,15 +17,12 @@ public class ReviewListActivity extends BaseActivity {
     public static ReviewListActivity getReviewListActivity() {
         return reviewListActivity;
     }
+
     private static ReviewListActivity reviewListActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         reviewListActivity = this;

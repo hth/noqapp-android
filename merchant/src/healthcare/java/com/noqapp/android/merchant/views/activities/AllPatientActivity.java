@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,11 +36,7 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_patient);
         initActionsViews(false);

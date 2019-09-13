@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,11 +34,7 @@ public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePerso
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_people);
         listview = findViewById(R.id.exp_list_view);

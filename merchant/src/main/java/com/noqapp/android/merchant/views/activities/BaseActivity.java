@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -101,5 +102,13 @@ public class BaseActivity extends AppCompatActivity implements ResponseErrorPres
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
+    }
+
+    public void setScreenOrientation(){
+        if (LaunchActivity.isTablet) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 }

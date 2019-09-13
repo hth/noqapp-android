@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.Manifest;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,7 +27,6 @@ import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileApiCalls;
 import com.noqapp.android.merchant.model.MasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
@@ -82,11 +80,7 @@ public class PreferenceActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);

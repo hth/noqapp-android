@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -9,7 +8,6 @@ import android.widget.RelativeLayout;
 import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.NotificationListAdapter;
 
 import java.util.List;
@@ -19,11 +17,7 @@ public class NotificationActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         ListView listview = findViewById(R.id.listview);

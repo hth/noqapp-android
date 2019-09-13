@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +24,6 @@ import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,11 +42,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (AppUtils.isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         //   getSupportActionBar().hide();
