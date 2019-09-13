@@ -6,6 +6,7 @@ import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.HospitalVisitFor;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
@@ -294,5 +295,23 @@ public interface MedicalRecordApiUrls {
 
             @Body
             JsonMedicalRecord jsonMedicalRecord
+    );
+
+    @POST("api/m/h/medicalRecord/workHistory.json")
+    Call<JsonMedicalRecordList> workHistory(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            CodeQRDateRangeLookup codeQRDateRangeLookup
     );
 }

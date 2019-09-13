@@ -30,6 +30,9 @@ public class CodeQRDateRangeLookup extends AbstractDomain {
     @JsonProperty("codeQR")
     private String codeQR;
 
+    @JsonProperty("populateField")
+    private String populateField;
+
     @JsonProperty("from")
     private String from;
 
@@ -42,6 +45,15 @@ public class CodeQRDateRangeLookup extends AbstractDomain {
 
     public CodeQRDateRangeLookup setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public String getPopulateField() {
+        return populateField;
+    }
+
+    public CodeQRDateRangeLookup setPopulateField(String populateField) {
+        this.populateField = populateField;
         return this;
     }
 
