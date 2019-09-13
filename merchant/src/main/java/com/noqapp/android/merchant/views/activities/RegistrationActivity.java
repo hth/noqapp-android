@@ -197,7 +197,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             errorMsg = getString(R.string.error_email_blank);
             isValid = false;
         } else {
-            if (!new CommonHelper().isValidEmail(edt_Mail.getText().toString())) {
+            if (!CommonHelper.isValidEmail(edt_Mail.getText().toString())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
                 if (TextUtils.isEmpty(errorMsg))
                     errorMsg = getString(R.string.error_invalid_email);

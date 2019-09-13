@@ -343,7 +343,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             }
         }
         loadProfilePic();
-        tv_age.setText(new AppUtilities().calculateAge(NoQueueBaseActivity.getUserDOB()) + " (" + gender + ")");
+        tv_age.setText(CommonHelper.calculateAge(NoQueueBaseActivity.getUserDOB()) + " (" + gender + ")");
     }
 
     @Override

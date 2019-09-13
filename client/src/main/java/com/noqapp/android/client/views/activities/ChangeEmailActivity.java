@@ -78,7 +78,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_verify_email:
                 if (TextUtils.isEmpty(edt_email.getText())) {
                     edt_email.setError(getString(R.string.error_email_blank));
-                } else if (new CommonHelper().isValidEmail(edt_email.getText())) {
+                } else if (CommonHelper.isValidEmail(edt_email.getText())) {
                     setProgressMessage("Request OTP in progress...");
                     showProgress();
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);

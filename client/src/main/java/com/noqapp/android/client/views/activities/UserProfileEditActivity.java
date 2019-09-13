@@ -437,7 +437,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             edt_Name.setError(getString(R.string.error_name_exist));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Mail.getText().toString()) && !new CommonHelper().isValidEmail(edt_Mail.getText().toString())) {
+        if (!TextUtils.isEmpty(edt_Mail.getText().toString()) && !CommonHelper.isValidEmail(edt_Mail.getText().toString())) {
             edt_Mail.setError(getString(R.string.error_invalid_email));
             isValid = false;
         }

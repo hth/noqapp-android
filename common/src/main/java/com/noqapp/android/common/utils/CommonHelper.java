@@ -108,11 +108,11 @@ public class CommonHelper {
         }
     }
 
-    public boolean isValidEmail(CharSequence target) {
+    public static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
-    public String calculateAge(String dob) {
+    public static String calculateAge(String dob) {
         String age = "";
         try {
             DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(dob));

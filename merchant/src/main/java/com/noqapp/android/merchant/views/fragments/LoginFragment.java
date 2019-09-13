@@ -256,7 +256,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
             actv_email.setError(getString(R.string.error_email_blank));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(email) && !new CommonHelper().isValidEmail(email)) {
+        if (!TextUtils.isEmpty(email) && !CommonHelper.isValidEmail(email)) {
             actv_email.setError(getString(R.string.error_email_invalid));
             isValid = false;
         }
