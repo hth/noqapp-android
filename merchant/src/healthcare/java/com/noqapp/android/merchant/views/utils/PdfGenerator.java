@@ -98,9 +98,9 @@ public class PdfGenerator extends PdfHelper {
 
 
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-            String license = AppUtils.getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getLicenses());
+            String license = new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getLicenses());
             String temp = TextUtils.isEmpty(license) ? notAvailable : license;
-            Chunk degreeChunk = new Chunk(AppUtils.getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation())
+            Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation())
                     + " (Reg. Id: " + temp + ")", normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);

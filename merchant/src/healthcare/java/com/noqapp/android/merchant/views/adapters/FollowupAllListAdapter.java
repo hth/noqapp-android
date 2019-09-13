@@ -47,10 +47,10 @@ public class FollowupAllListAdapter extends RecyclerView.Adapter {
         if (visibility) {
             holder.tv_customer_mobile.setOnClickListener(v -> {
                 if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    AppUtils.makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
-            holder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
+            holder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
         }
     }
 
