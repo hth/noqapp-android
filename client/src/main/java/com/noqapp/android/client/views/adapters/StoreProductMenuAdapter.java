@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.pojos.StoreCartItem;
@@ -83,7 +83,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_product_details.setText(jsonStoreProduct.getProductInfo());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
-        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtilities.getPriceWithUnits(jsonStoreProduct));
+        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
         String url = TextUtils.isEmpty(jsonStoreProduct.getProductImage()) ? "https://www.uig-hotel-skye.com/images/Food/Food-7.jpg" :
                 jsonStoreProduct.getProductImage();

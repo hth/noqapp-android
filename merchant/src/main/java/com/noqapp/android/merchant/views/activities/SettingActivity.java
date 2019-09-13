@@ -1,5 +1,27 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
@@ -22,40 +44,17 @@ import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalTime;
-
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 public class SettingActivity extends BaseActivity implements StoreSettingPresenter, View.OnClickListener {
     protected ImageView actionbarBack, iv_delete_scheduling;
@@ -96,11 +95,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         storeSettingApiCalls = new StoreSettingApiCalls(this);
         setContentView(R.layout.activity_setting);
@@ -245,7 +240,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     edt_token_no.setVisibility(View.INVISIBLE);
                     tv_limited_label.setText(getString(R.string.unlimited_token));
                     edt_token_no.setText("");
-                    new AppUtils().hideKeyBoard(SettingActivity.this);
+                    AppUtils.hideKeyBoard(SettingActivity.this);
                 } else {
                     edt_token_no.setVisibility(View.VISIBLE);
                     edt_token_no.setText("");
@@ -562,7 +557,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 tv_limited_label.setText(getString(R.string.limited_token));
                 if (edt_token_no != null) {
                     edt_token_no.clearFocus();
-                    new AppUtils().hideKeyBoard(this);
+                    AppUtils.hideKeyBoard(this);
                 }
             }
             edt_appointment_duration.setText(String.valueOf(storeSetting.getAppointmentDuration()));

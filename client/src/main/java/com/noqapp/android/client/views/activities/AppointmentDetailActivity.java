@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AppointmentApiCalls;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -53,15 +53,15 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             TextView tv_appointment_status = findViewById(R.id.tv_appointment_status);
             TextView tv_msg = findViewById(R.id.tv_msg);
             tv_title.setText(jsonQueueDisplay.getDisplayName());
-            tv_address.setText(AppUtilities.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
+            tv_address.setText(AppUtils.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
             tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonSchedule.getJsonQueueDisplay().getCountryShortName(), jsonSchedule.getJsonQueueDisplay().getStorePhone()));
             tv_mobile.setOnClickListener((View v) -> {
-                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
+                AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             });
             tv_patient_name.setText(jsonSchedule.getJsonProfile().getName());
             tv_address.setOnClickListener((View v) -> {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress());
+                AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress());
             });
 
             try {
@@ -120,7 +120,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             } else {
                 isNavigateHome = true;
                 // iv_main.setVisibility(View.VISIBLE);
-                AppUtilities.loadProfilePic(iv_main, getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL), this);
+                AppUtils.loadProfilePic(iv_main, getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL), this);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -65,7 +65,7 @@ public class ViewAllPatientExpListAdapter extends BaseExpandableListAdapter {
         }
         childViewHolder.rv.setHasFixedSize(true);
         int columnCount;
-        if (new AppUtils().isTablet(context.getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             columnCount = 5;
         } else {
             columnCount = 2;

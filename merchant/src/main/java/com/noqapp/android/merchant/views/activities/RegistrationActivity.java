@@ -132,7 +132,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     @Override
     public void onClick(View v) {
         if (v == tv_birthday) {
-            new AppUtils().hideKeyBoard(this);
+            AppUtils.hideKeyBoard(this);
             CustomCalendar customCalendar = new CustomCalendar(RegistrationActivity.this);
             customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
                 @Override
@@ -179,7 +179,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         edt_Mail.setError(null);
         tv_birthday.setError(null);
         edt_pwd.setError(null);
-        new AppUtils().hideKeyBoard(this);
+        AppUtils.hideKeyBoard(this);
         String errorMsg = "";
         if (TextUtils.isEmpty(edt_Name.getText().toString())) {
             edt_Name.setError(getString(R.string.error_name_blank));

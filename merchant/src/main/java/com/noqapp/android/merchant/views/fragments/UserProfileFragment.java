@@ -219,7 +219,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         edt_name.setError(null);
         edt_email.setError(null);
         edt_birthday.setError(null);
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
         if (TextUtils.isEmpty(edt_name.getText())) {
             edt_name.setError(getString(R.string.error_name_blank));
             isValid = false;

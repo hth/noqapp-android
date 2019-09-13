@@ -19,7 +19,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
@@ -72,11 +72,11 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         if (viewHolder instanceof MyViewHolder) {
             final MyViewHolder holder = (MyViewHolder) viewHolder;
             final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
-            holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+            holder.tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
-            holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-            holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance(
+            holder.tv_store_rating.setText(String.valueOf(AppUtils.round(bizStoreElastic.getRating())));
+            holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
                     (float) lat,
                     (float) log,
                     (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
@@ -102,7 +102,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
                 Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                         .placeholder(ImageUtils.getThumbPlaceholder(context))
                         .error(ImageUtils.getThumbErrorPlaceholder(context))
                         .into(holder.iv_main);
@@ -118,7 +118,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                 holder.tv_store_rating.setVisibility(View.VISIBLE);
             }
             // holder.tv_store_special.setText();
-            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
+            StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
                 case BK:
@@ -132,8 +132,8 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                 default:
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.VISIBLE);
-                    holder.tv_status.setText(AppUtilities.getStoreOpenStatus(bizStoreElastic));
-                    holder.tv_category_name.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
+                    holder.tv_status.setText(AppUtils.getStoreOpenStatus(bizStoreElastic));
+                    holder.tv_category_name.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
             }

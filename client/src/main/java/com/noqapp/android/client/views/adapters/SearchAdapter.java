@@ -20,7 +20,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
@@ -78,11 +78,11 @@ public class SearchAdapter extends RecyclerView.Adapter {
         if (viewHolder instanceof MyViewHolder) {
             final MyViewHolder holder = (MyViewHolder) viewHolder;
             final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
-            holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+            holder.tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
-            holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-            holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance(
+            holder.tv_store_rating.setText(String.valueOf(AppUtils.round(bizStoreElastic.getRating())));
+            holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
                     (float) lat,
                     (float) log,
                     (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
@@ -96,8 +96,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
                 holder.tv_store_review.setText("No Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
             }
-            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
-            holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
+            StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
+            holder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
             holder.tv_store_review.setOnClickListener((View v) -> {
                 if (bizStoreElastic.getReviewCount() > 0) {
                     Intent in = new Intent(context, AllReviewsActivity.class);
@@ -111,7 +111,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
             });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
                 Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                         .placeholder(ImageUtils.getThumbPlaceholder(context))
                         .error(ImageUtils.getThumbErrorPlaceholder(context))
                         .into(holder.iv_main);

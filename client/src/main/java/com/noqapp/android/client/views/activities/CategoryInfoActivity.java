@@ -29,7 +29,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -115,7 +115,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(false);
         tv_mobile.setOnClickListener((View v) -> {
-            AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
+            AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
         });
 
         btn_join_queues.setOnClickListener((View v) -> {
@@ -176,17 +176,17 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
-            tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+            tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
             tv_complete_address.setOnClickListener((View v) -> {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
+                AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
 
             });
             tv_address_title.setOnClickListener((View v) -> {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
+                AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
             });
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
-            tv_rating.setText(AppUtilities.round(rating) + " -");
+            tv_rating.setText(AppUtils.round(rating) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
             } else {
@@ -223,7 +223,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             rcv_facility.setLayoutManager(getFlexBoxLayoutManager());
             rcv_facility.setAdapter(new StaggeredGridAdapter(facilities));
             Picasso.get()
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
                     .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(iv_category_banner);
@@ -235,7 +235,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
                 // load first image default
                 Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
+                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
                         .placeholder(ImageUtils.getBannerPlaceholder(this))
                         .error(ImageUtils.getBannerErrorPlaceholder(this))
                         .into(iv_category_banner);
@@ -404,7 +404,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
+                in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
                 startActivity(in);
                 break;
             default:

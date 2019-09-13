@@ -102,7 +102,7 @@ public class BookAppointmentActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             count = 6;
         } else {
@@ -153,7 +153,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             @Override
             public void onDateSelected(Calendar date, int position) {
                 selectedDate = date;
-                fetchAppointments(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate));
+                fetchAppointments(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate));
             }
         });
         horizontalCalendarView.refresh();
@@ -178,7 +178,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                         String endTime = getEndTime((int) diffInMinutes, temp[0].trim());
                         jsonScheduleTemp.setStartTime(AppUtils.removeColon(temp[0].trim()));
                         jsonScheduleTemp.setEndTime(AppUtils.removeColon(endTime));
-                        jsonScheduleTemp.setScheduleDate(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate));
+                        jsonScheduleTemp.setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate));
                         BookSchedule bookSchedule = new BookSchedule()
                                 .setBusinessCustomer(null)
                                 .setJsonSchedule(jsonScheduleTemp)
@@ -400,7 +400,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             boolean isValid = true;
             edt_mobile.setError(null);
             edt_id.setError(null);
-            new AppUtils().hideKeyBoard(BookAppointmentActivity.this);
+            AppUtils.hideKeyBoard(BookAppointmentActivity.this);
             // get selected radio button from radioGroup
             int selectedId = rg_user_id.getCheckedRadioButtonId();
             if (selectedId == R.id.rb_mobile) {
@@ -495,7 +495,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setStartTime(start)
                                     .setEndTime(end)
                                     .setChiefComplain(actv_chief_complaints.getText().toString())
-                                    .setScheduleDate(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate)).
+                                    .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate)).
                                             setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                             BookSchedule bookSchedule = new BookSchedule()
                                     .setBusinessCustomer(jsonBusinessCustomer)

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
@@ -117,7 +117,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecord.getRecordAccess().size());
 
         List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
-        tv_patient_name.setText(AppUtilities.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
+        tv_patient_name.setText(AppUtils.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
 
         if (StringUtils.isBlank(tv_complaints.getText())) {
             ll_complaints.setVisibility(View.GONE);

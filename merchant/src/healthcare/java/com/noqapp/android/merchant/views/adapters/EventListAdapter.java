@@ -15,30 +15,20 @@ import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
 public class EventListAdapter extends BaseAdapter {
     private Context context;
-    private final OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void appointmentAccept(EventDay item);
-
-        void appointmentReject(EventDay item);
-    }
-
+    private List<EventDay> eventDayList;
     public List<EventDay> getEventDayList() {
         return eventDayList;
     }
 
-    private List<EventDay> eventDayList;
-
-    public EventListAdapter(Context context, List<EventDay> eventDayList, OnItemClickListener onItemClickListener) {
+    public EventListAdapter(Context context, List<EventDay> eventDayList) {
         this.context = context;
         this.eventDayList = eventDayList;
-        this.listener = onItemClickListener;
     }
 
     public int getCount() {
@@ -71,8 +61,7 @@ public class EventListAdapter extends BaseAdapter {
         recordHolder.tv_no_of_patient.setText(String.valueOf(jsonSchedule.getTotalAppointments()));
 
         try {
-            if (CommonHelper.SDF_YYYY_MM_DD.parse(CommonHelper.dateFormatAsYYYY_MM_DD(Calendar.getInstance()))
-                    .compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())) < 0) {
+            if (new Date().compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())) < 0) {
                 recordHolder.card_view.setCardBackgroundColor(Color.WHITE);
             } else {
                 recordHolder.card_view.setCardBackgroundColor(Color.LTGRAY);

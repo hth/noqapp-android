@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,15 +36,11 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_patient);
         initActionsViews(false);
-        tv_toolbar_title.setText("All Patient");
+        tv_toolbar_title.setText("List of Patients");
         listview = findViewById(R.id.exp_list_view);
         rl_empty = findViewById(R.id.rl_empty);
         Spinner sp_queue_list = findViewById(R.id.sp_queue_list);

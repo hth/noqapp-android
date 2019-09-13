@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
 
 public class WebViewActivity extends BaseActivity {
     private WebView webView;
@@ -40,11 +38,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
@@ -56,7 +50,7 @@ public class WebViewActivity extends BaseActivity {
         if (null != getIntent().getStringExtra("title")) {
             tv_toolbar_title.setText(getIntent().getStringExtra("title"));
         }
-        isPdf = getIntent().getBooleanExtra("isPdf",false);
+        isPdf = getIntent().getBooleanExtra("isPdf", false);
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -72,9 +66,9 @@ public class WebViewActivity extends BaseActivity {
             webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        if(isPdf){
-            webView.loadUrl("http://docs.google.com/viewer?url="+url);
-        }else {
+        if (isPdf) {
+            webView.loadUrl("http://docs.google.com/viewer?url=" + url);
+        } else {
             webView.loadUrl(url);
         }
         webView.setOnKeyListener(new OnKeyListener() {
@@ -116,7 +110,7 @@ public class WebViewActivity extends BaseActivity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             dismissProgress();
-            if ( active) {
+            if (active) {
                 setProgressMessage("Loading...");
                 showProgress();
             }
@@ -132,7 +126,7 @@ public class WebViewActivity extends BaseActivity {
         public void onPageFinished(WebView view, String url) {
             //super.onPageFinished(view, url);
             try {
-               dismissProgress();
+                dismissProgress();
                 webView.loadUrl("javascript:(function() { " +
                         "document.querySelector('[role=\"toolbar\"]').remove();})()");
             } catch (Exception exception) {

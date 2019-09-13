@@ -416,7 +416,7 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         final Button btn_update = customDialogView.findViewById(R.id.btn_update);
         btn_update.setOnClickListener(v -> {
             edt_observation.setError(null);
-            new AppUtils().hideKeyBoard((Activity) context);
+            AppUtils.hideKeyBoard((Activity) context);
             if (TextUtils.isEmpty(edt_observation.getText().toString())) {
                 edt_observation.setError(context.getString(R.string.error_all_field_required));
             } else {

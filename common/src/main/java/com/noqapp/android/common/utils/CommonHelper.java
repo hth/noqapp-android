@@ -96,7 +96,7 @@ public class CommonHelper {
         }
     }
 
-    public void hideKeyBoard(Activity activity) {
+    public static void hideKeyBoard(Activity activity) {
         if (null != activity) {
             View view = activity.getCurrentFocus();
             if (view != null) {

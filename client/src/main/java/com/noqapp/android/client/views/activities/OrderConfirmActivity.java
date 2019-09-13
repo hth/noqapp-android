@@ -21,7 +21,7 @@ import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -132,7 +132,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 setProgressMessage("Fetching order details in progress..");
                 int token = getIntent().getExtras().getInt("token");
                 purchaseOrderApiCall.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
-                if (AppUtilities.isRelease()) {
+                if (AppUtils.isRelease()) {
                     if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                         Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_PLACE_ORDER)
                                 .putCustomAttribute("Order Id", jsonPurchaseOrder.getTransactionId()));
@@ -189,7 +189,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             setProgressMessage("Order cancel in progress..");
             purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
 
-            if (AppUtilities.isRelease()) {
+            if (AppUtils.isRelease()) {
                 if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                     Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_ORDER)
                             .putCustomAttribute("Order Id", jsonPurchaseOrder.getTransactionId()));
@@ -214,7 +214,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     }
 
     private void updateUI() {
-        String currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
+        String currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
         tv_tax_amt.setText(currencySymbol + "0.00");
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
@@ -249,7 +249,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {
                 //added for  Pharmacy order place from merchant side directly

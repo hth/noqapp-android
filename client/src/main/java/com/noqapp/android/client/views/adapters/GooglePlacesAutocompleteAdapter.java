@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implem
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     // Retrieve the autocomplete results.
-                    resultList = AppUtilities.autocomplete(constraint.toString());
+                    resultList = AppUtils.autocomplete(constraint.toString());
 
                     // Assign the data to the FilterResults
                     filterResults.values = resultList;

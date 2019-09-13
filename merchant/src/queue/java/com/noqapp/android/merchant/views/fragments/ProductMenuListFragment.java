@@ -169,7 +169,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
             boolean isValid = true;
             edt_mobile.setError(null);
             edt_id.setError(null);
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
             int selectedId = rg_user_id.getCheckedRadioButtonId();
             if (selectedId == R.id.rb_mobile) {
                 if (TextUtils.isEmpty(edt_mobile.getText())) {

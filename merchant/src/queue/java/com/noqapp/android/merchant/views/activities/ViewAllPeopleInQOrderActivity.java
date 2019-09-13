@@ -1,11 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +13,6 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ViewAllOrderExpandableListAdapter;
@@ -35,18 +28,13 @@ import java.util.TreeMap;
 
 
 public class ViewAllPeopleInQOrderActivity extends BaseActivity implements PurchaseOrderPresenter {
-
     private Map<Date, List<JsonPurchaseOrderList>> expandableListDetail = new HashMap<>();
     private ExpandableListView listview;
     private RelativeLayout rl_empty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_people);
         listview = findViewById(R.id.exp_list_view);
@@ -94,10 +82,10 @@ public class ViewAllPeopleInQOrderActivity extends BaseActivity implements Purch
         if (null != jsonPurchaseOrderList) {
             Log.e("data", jsonPurchaseOrderList.toString());
             Log.e("data size", "" + jsonPurchaseOrderList.getPurchaseOrders().size());
-            createData( jsonPurchaseOrderList.getPurchaseOrders());
+            createData(jsonPurchaseOrderList.getPurchaseOrders());
             List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
             ViewAllOrderExpandableListAdapter adapter = new ViewAllOrderExpandableListAdapter(ViewAllPeopleInQOrderActivity.this, expandableListTitle,
-                    expandableListDetail,getIntent().getBooleanExtra("visibility",false));
+                    expandableListDetail, getIntent().getBooleanExtra("visibility", false));
             listview.setAdapter(adapter);
             if (expandableListTitle.size() <= 0) {
                 listview.setVisibility(View.GONE);

@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,11 +57,7 @@ public class AppointmentActivityNew extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_new);
         setProgressMessage("Fetching appointments...");
@@ -76,7 +71,7 @@ public class AppointmentActivityNew extends BaseActivity implements
         tv_appointment_pending = findViewById(R.id.tv_appointment_pending);
         tv_toolbar_title.setText("Appointment List");
         int count = 2;
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             count = 3;
         } else {
             count = 1;

@@ -5,7 +5,6 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 
 
@@ -27,11 +25,7 @@ public class ChartListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (LaunchActivity.isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         chartListActivity = this;

@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -18,7 +17,6 @@ import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.views.fragments.ProductMenuFragment;
 import com.noqapp.android.merchant.views.fragments.ProductMenuListFragment;
@@ -35,8 +33,8 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
     public static StoreMenuActivity storeMenuActivity;
     private ProductMenuListFragment productMenuListFragment;
     private ProductMenuFragment productMenuFragment;
-    private boolean isTablet = false;
     public JsonTopic jsonTopic;
+    private String codeQR;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -46,17 +44,11 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         return orders;
     }
 
-    private String codeQR;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            isTablet = true;
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            isTablet = false;
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_menu);
         setProgressMessage("Fetching data...");
@@ -73,13 +65,13 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         codeQR = jsonTopic.getCodeQR();
         Bundle b = new Bundle();
         b.putString("codeQR", codeQR);
-        b.putBoolean("isTablet", isTablet);
+        b.putBoolean("isTablet", LaunchActivity.isTablet);
         productMenuFragment = new ProductMenuFragment();
         productMenuFragment.setProductMenuProcess(this);
         productMenuFragment.setArguments(b);
         productMenuListFragment = new ProductMenuListFragment(getCartList(), storeMenuActivity);
         productMenuListFragment.setArguments(b);
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             replaceFragmentWithBackStack(R.id.fl_product_menu, productMenuFragment, "ProductMenu");
             replaceFragmentWithBackStack(R.id.fl_product_list, productMenuListFragment, "ProductList");
         } else {

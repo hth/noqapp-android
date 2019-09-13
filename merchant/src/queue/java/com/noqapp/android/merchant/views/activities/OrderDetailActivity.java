@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -118,11 +117,7 @@ public class OrderDetailActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_order_detail);
 
@@ -243,7 +238,7 @@ public class OrderDetailActivity
             final Button btn_update = dialog.findViewById(R.id.btn_update);
             btn_update.setOnClickListener(v12 -> {
                 edt_random.setError(null);
-                new AppUtils().hideKeyBoard((Activity) OrderDetailActivity.this);
+                AppUtils.hideKeyBoard((Activity) OrderDetailActivity.this);
                 if (!edt_random.getText().toString().equals(tv_random.getText().toString())) {
                     edt_random.setError(OrderDetailActivity.this.getString(R.string.error_invalid_captcha));
                     new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));
@@ -515,7 +510,7 @@ public class OrderDetailActivity
             } else {
                 ll_partial.setVisibility(View.GONE);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

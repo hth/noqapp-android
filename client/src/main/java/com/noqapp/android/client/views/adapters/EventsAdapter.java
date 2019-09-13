@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.squareup.picasso.Picasso;
 
@@ -55,9 +55,9 @@ public class EventsAdapter extends RecyclerView.Adapter {
         if (null == item.getImageUrls() || item.getImageUrls().size() == 0) {
             holder.tv_title.setTextColor(Color.WHITE);
             holder.tv_subtitle.setTextColor(Color.WHITE);
-            holder.iv_bg.setBackgroundColor(AppUtilities.generateRandomColor());
+            holder.iv_bg.setBackgroundColor(AppUtils.generateRandomColor());
         } else {
-            Picasso.get().load(AppUtilities.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL())).into(holder.iv_bg);
+            Picasso.get().load(AppUtils.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL())).into(holder.iv_bg);
             holder.tv_title.setTextColor(Color.TRANSPARENT);
             holder.tv_subtitle.setTextColor(Color.TRANSPARENT);
         }

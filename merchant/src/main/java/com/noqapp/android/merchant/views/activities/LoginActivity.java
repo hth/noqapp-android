@@ -216,7 +216,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     }
 
     private boolean validate() {
-        new AppUtils().hideKeyBoard(this);
+        AppUtils.hideKeyBoard(this);
         boolean isValid = true;
         edt_phoneNo.setError(null);
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {
@@ -322,7 +322,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         }
         if (mVerificationId != null) {
             showProgress();
-            new AppUtils().hideKeyBoard(this);
+            AppUtils.hideKeyBoard(this);
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
             signInWithPhoneAuthCredential(credential);
         } else {

@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -139,11 +138,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hs_menu);
         setProgressMessage("Updating data...");
@@ -175,7 +170,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         ImageView iv_clear_actv = findViewById(R.id.iv_clear_actv);
         iv_clear_actv.setOnClickListener(v -> {
             actv_search.setText("");
-            new AppUtils().hideKeyBoard(HCSMenuActivity.this);
+            AppUtils.hideKeyBoard(HCSMenuActivity.this);
         });
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getSuggestionsProductPrefs())) {
             callFileApi();
@@ -476,7 +471,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
 
     @Override
     public void searchByPos(HCSMenuObject menuObject) {
-        new AppUtils().hideKeyBoard(this);
+        AppUtils.hideKeyBoard(this);
         actv_search.setText("");
         staggeredClick(false, menuObject, 0);
     }
@@ -484,7 +479,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
     @Override
     public void staggeredClick(boolean isRemove, HCSMenuObject hcsMenuObject, int pos) {
         {
-            new AppUtils().hideKeyBoard(this);
+            AppUtils.hideKeyBoard(this);
             if (isRemove) {
                 menuSelectData.remove(pos);
                 view_test.setVisibility(menuSelectData.size() > 0 ? View.VISIBLE : View.GONE);
@@ -624,7 +619,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                 boolean isValid = true;
                 edt_mobile.setError(null);
                 edt_id.setError(null);
-                new AppUtils().hideKeyBoard(HCSMenuActivity.this);
+                AppUtils.hideKeyBoard(HCSMenuActivity.this);
                 int selectedId = rg_user_id.getCheckedRadioButtonId();
                 if (selectedId == R.id.rb_mobile) {
                     if (TextUtils.isEmpty(edt_mobile.getText())) {

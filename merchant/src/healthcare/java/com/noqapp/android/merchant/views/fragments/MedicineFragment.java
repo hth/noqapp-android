@@ -70,7 +70,7 @@ public class MedicineFragment extends BaseFragment implements CustomExpandListAd
                     selectionPos = -1;
                     edt_item.setText("");
                 }
-                new AppUtils().hideKeyBoard(getActivity());
+                AppUtils.hideKeyBoard(getActivity());
             }
 
         });

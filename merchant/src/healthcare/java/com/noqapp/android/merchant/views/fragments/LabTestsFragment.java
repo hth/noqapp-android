@@ -58,7 +58,7 @@ public class LabTestsFragment extends BaseFragment implements AutoCompleteAdapte
         ImageView iv_clear_actv_path = v.findViewById(R.id.iv_clear_actv_path);
         iv_clear_actv_path.setOnClickListener(v1 -> {
             actv_search_path.setText("");
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
         });
 
         rcv_pathology = v.findViewById(R.id.rcv_pathology);
@@ -263,7 +263,7 @@ public class LabTestsFragment extends BaseFragment implements AutoCompleteAdapte
 
     @Override
     public void searchByPos(DataObj dataObj) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
         actv_search_path.setText("");
         pathalogyAdapter.selectItem(dataObj);
         pathalogyAdapter.notifyDataSetChanged();

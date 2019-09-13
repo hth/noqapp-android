@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
@@ -48,7 +48,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             holder.ll_appointment.setVisibility(View.GONE);
             final JsonTokenAndQueue jsonTokenAndQueue = (JsonTokenAndQueue) object;
             holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
-            holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(), jsonTokenAndQueue.getArea()));
+            holder.tv_address.setText(AppUtils.getStoreAddress(jsonTokenAndQueue.getTown(), jsonTokenAndQueue.getArea()));
             holder.card_view.setOnClickListener((View v) -> {
                 listener.currentQorOrderItemClick(jsonTokenAndQueue);
             });
@@ -93,7 +93,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             holder.ll_appointment.setVisibility(View.VISIBLE);
             holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
             holder.tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
-            holder.tv_store_address.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
+            holder.tv_store_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
             holder.tv_schedule_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));

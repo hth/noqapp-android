@@ -46,7 +46,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
@@ -387,7 +387,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         isProgressFirstTime = false;
         if (isAdded()) {
             if (NoQueueBaseActivity.getShowHelper()) {
-                if (AppUtilities.isRelease()) {
+                if (AppUtils.isRelease()) {
                     presentShowcaseSequence();
                 }
                 NoQueueBaseActivity.setShowHelper(false);
@@ -474,7 +474,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 bundle.putInt("currentServing", item.getServingNumber());
                 bundle.putString(IBConstant.KEY_STORE_NAME, item.getDisplayName());
                 bundle.putString(IBConstant.KEY_STORE_ADDRESS, item.getStoreAddress());
-                bundle.putString(AppUtilities.CURRENCY_SYMBOL, AppUtilities.getCurrencySymbol(item.getCountryShortName()));
+                bundle.putString(AppUtils.CURRENCY_SYMBOL, AppUtils.getCurrencySymbol(item.getCountryShortName()));
                 in.putExtras(bundle);
                 startActivity(in);
             }
@@ -538,8 +538,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
             public int compare(JsonSchedule o1, JsonSchedule o2) {
                 try {
-                    String two = o2.getScheduleDate() + " " + AppUtilities.getTimeFourDigitWithColon(o2.getStartTime());
-                    String one = o1.getScheduleDate() + " " + AppUtilities.getTimeFourDigitWithColon(o1.getStartTime());
+                    String two = o2.getScheduleDate() + " " + AppUtils.getTimeFourDigitWithColon(o2.getStartTime());
+                    String one = o1.getScheduleDate() + " " + AppUtils.getTimeFourDigitWithColon(o1.getStartTime());
                     return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -577,7 +577,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        AppUtilities.authenticationProcessing(getActivity());
+        AppUtils.authenticationProcessing(getActivity());
         pb_current.setVisibility(View.GONE);
         pb_health_care.setVisibility(View.GONE);
         pb_near.setVisibility(View.GONE);
@@ -795,7 +795,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         switch (item.getAdvertisementViewerType()) {
             case JBA: {
                 Intent in = new Intent(getActivity(), ImageViewerActivity.class);
-                in.putExtra(IBConstant.KEY_URL, AppUtilities.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL()));
+                in.putExtra(IBConstant.KEY_URL, AppUtils.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL()));
                 startActivity(in);
                 break;
             }

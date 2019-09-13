@@ -155,7 +155,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             boolean isValid = true;
             edt_mobile.setError(null);
             edt_id.setError(null);
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
             // get selected radio button from radioGroup
             int selectedId = rg_user_id.getCheckedRadioButtonId();
             if (selectedId == R.id.rb_mobile) {

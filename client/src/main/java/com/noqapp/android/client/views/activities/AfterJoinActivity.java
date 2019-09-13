@@ -39,7 +39,7 @@ import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
@@ -251,7 +251,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             if (null != jsonTokenAndQueue) {
-                currencySymbol = AppUtilities.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
+                currencySymbol = AppUtils.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
             }
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();
@@ -266,7 +266,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             }
 
             if (!TextUtils.isEmpty(queueUserId)) {
-                jsonProfile = AppUtilities.getJsonProfileQueueUserID(queueUserId, profileList);
+                jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
                 tv_name.setText(jsonProfile.getName());
             }
 
@@ -303,14 +303,14 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             } else {
                 tv_delay_in_time.setVisibility(View.GONE);
             }
-            String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
+            String time = new AppUtils().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
             tv_mobile.setOnClickListener((View v) -> {
-                AppUtilities.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString());
+                AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString());
             });
             tv_address.setOnClickListener((View v) -> {
-                AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
+                AppUtils.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
             });
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
@@ -384,7 +384,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 queueApiUnAuthenticCall.setResponsePresenter(this);
                 queueApiUnAuthenticCall.abortQueue(UserUtils.getDeviceId(), codeQR);
             }
-            if (AppUtilities.isRelease()) {
+            if (AppUtils.isRelease()) {
                 try {
                     String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
                     Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_QUEUE).putCustomAttribute("Queue Name", displayName));
@@ -616,7 +616,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
                 TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
                 TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-                tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+                tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
                 tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
                 ll_order_details.addView(inflatedLayout);
             }

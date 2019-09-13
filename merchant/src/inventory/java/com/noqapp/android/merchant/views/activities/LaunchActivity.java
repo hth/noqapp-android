@@ -57,7 +57,7 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
             Intent in = new Intent(launchActivity, NotificationActivity.class);
             startActivity(in);
         });
-        if (new AppUtils().isTablet(this)) {
+        if (isTablet) {
             list_fragment = findViewById(R.id.frame_layout);
             list_detail_fragment = findViewById(R.id.list_detail_fragment);
         }

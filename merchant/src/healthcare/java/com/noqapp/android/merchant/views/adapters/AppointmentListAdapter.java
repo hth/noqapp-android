@@ -239,7 +239,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter {
             if (actv_chief_complaints.getText().toString().equals("")) {
                 actv_chief_complaints.setError("Cheif complaints can not be empty");
             } else {
-                new AppUtils().hideKeyBoard((Activity) mContext);
+                AppUtils.hideKeyBoard((Activity) mContext);
                 jsonSchedule.setChiefComplain(actv_chief_complaints.getText().toString());
                 listener.appointmentEdit(jsonSchedule, position);
                 dialog.dismiss();

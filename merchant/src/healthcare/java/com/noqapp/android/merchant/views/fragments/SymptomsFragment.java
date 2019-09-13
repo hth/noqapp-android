@@ -93,7 +93,7 @@ public class SymptomsFragment extends BaseFragment implements
         ImageView iv_clear_actv = v.findViewById(R.id.iv_clear_actv);
         iv_clear_actv.setOnClickListener(v13 -> {
             actv_search.setText("");
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
         });
         return v;
     }
@@ -166,7 +166,7 @@ public class SymptomsFragment extends BaseFragment implements
 
     @Override
     public void staggeredClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
         if (!isEdit && isItemExist(temp.getShortName())) {
             ll_symptom_note.setVisibility(View.GONE);
             new CustomToast().showToast(getActivity(), "Symptom Already added in list");
@@ -189,7 +189,7 @@ public class SymptomsFragment extends BaseFragment implements
             no_of_days = "";
         }
         btn_done.setOnClickListener(v -> {
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
             dataObj.setNoOfDays(no_of_days);
             if (TextUtils.isEmpty(no_of_days)) {
                 new CustomToast().showToast(getActivity(), "All fields are mandatory");
@@ -211,7 +211,7 @@ public class SymptomsFragment extends BaseFragment implements
             }
         });
         tv_remove.setOnClickListener(v -> {
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
             if (isEdit) {
                 selectedSymptomsList.remove(pos);
             }
@@ -248,7 +248,7 @@ public class SymptomsFragment extends BaseFragment implements
 
     @Override
     public void searchByPos(DataObj dataObj) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
         actv_search.setText("");
         staggeredClick(true, false, dataObj, 0);
     }

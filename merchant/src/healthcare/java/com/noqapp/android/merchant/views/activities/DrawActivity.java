@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -25,7 +24,6 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.ColorPaletteAdapter;
 import com.noqapp.android.merchant.views.customviews.DrawViewUndoRedo;
 
@@ -70,14 +68,10 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
-       initActionsViews(true);
+        initActionsViews(true);
         tv_toolbar_title.setText("Select and draw");
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
@@ -115,7 +109,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
                     if (!folder.exists()) {
                         folder.mkdirs();
                     }
-                  //  String fileName = new SimpleDateFormat("yyyyMMddhhmm'_draw_report.jpg'").format(new Date());
+                    //  String fileName = new SimpleDateFormat("yyyyMMddhhmm'_draw_report.jpg'").format(new Date());
                     String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_'yyyyMMddhhmm'.jpg'", Locale.getDefault()).format(new Date());
 
                     File myPath = new File(extr, fileName);

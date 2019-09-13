@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.widget.RelativeLayout
@@ -24,11 +23,7 @@ class CouponActivity : BaseActivity(), CouponAdapter.OnItemClickListener, Coupon
     private var couponApiCalls: CouponApiCalls? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (LaunchActivity.isTablet) {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        } else {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+        setScreenOrientation()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discount)
         couponApiCalls = CouponApiCalls()

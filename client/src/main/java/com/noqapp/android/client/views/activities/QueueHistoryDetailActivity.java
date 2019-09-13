@@ -11,7 +11,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
@@ -90,7 +90,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
             tv_store_rating.setVisibility(View.VISIBLE);
         }
         List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
-        tv_name.setText(AppUtilities.getNameFromQueueUserID(jsonQueueHistorical.getQueueUserId(), profileList));
+        tv_name.setText(AppUtils.getNameFromQueueUserID(jsonQueueHistorical.getQueueUserId(), profileList));
         if (tv_name.getText().toString().equals("")) {
             tv_name.setText("Guest User");
         }
@@ -133,7 +133,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         tv_order_number.setText("TOKEN NO.  " + String.valueOf(jsonQueueHistorical.getTokenNumber()));
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
         if (null != jsonQueueHistorical.getJsonPurchaseOrder()) {
-            String currencySymbol = AppUtilities.getCurrencySymbol(jsonQueueHistorical.getCountryShortName());
+            String currencySymbol = AppUtils.getCurrencySymbol(jsonQueueHistorical.getCountryShortName());
             ;
             tv_total_order_amt.setText(currencySymbol + jsonQueueHistorical.getJsonPurchaseOrder().computeFinalAmountWithDiscount());
             tv_grand_total.setText(currencySymbol + CommonHelper.displayPrice(jsonQueueHistorical.getJsonPurchaseOrder().getOrderPrice()));

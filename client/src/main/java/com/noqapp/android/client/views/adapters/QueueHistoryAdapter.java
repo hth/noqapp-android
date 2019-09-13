@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.activities.BeforeJoinActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
@@ -49,7 +49,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonQueueHistorical jsonQueueHistorical = dataSet.get(listPosition);
         holder.tv_name.setText(jsonQueueHistorical.getDisplayName());
-        holder.tv_business_name_address.setText(jsonQueueHistorical.getBusinessName() + " " + AppUtilities.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
+        holder.tv_business_name_address.setText(jsonQueueHistorical.getBusinessName() + " " + AppUtils.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
         holder.tv_queue_join_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription());
         holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());

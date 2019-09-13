@@ -11,7 +11,7 @@ import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FeedbackApiCall;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
@@ -53,7 +53,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             new CustomToast().showToast(this, "Please login to contact us");
         }
         btn_submit.setOnClickListener((View v) -> {
-            new AppUtilities().hideKeyBoard(ContactUsActivity.this);
+            AppUtils.hideKeyBoard(ContactUsActivity.this);
             edt_body.setError(null);
             edt_subject.setError(null);
             if (TextUtils.isEmpty(edt_subject.getText().toString())) {
@@ -69,7 +69,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
 
         });
 
-        if (AppUtilities.isRelease()) {
+        if (AppUtils.isRelease()) {
             Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CONTACT_US_SCREEN));
         }
     }

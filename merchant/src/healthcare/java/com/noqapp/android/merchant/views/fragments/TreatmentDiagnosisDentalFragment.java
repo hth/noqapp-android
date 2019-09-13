@@ -178,13 +178,13 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
 
     @Override
     public void searchClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
         staggeredMedicineClick(isOpen, isEdit, dataObj, pos);
     }
 
     @Override
     public void searchByPos(DataObj dataObj) {
-        new AppUtils().hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(getActivity());
     }
 
 

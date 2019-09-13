@@ -21,7 +21,7 @@ import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -61,11 +61,11 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
         MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical = dataSet.get(listPosition);
         holder.tv_name.setText(jsonPurchaseOrderHistorical.getDisplayName());
-        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonPurchaseOrderHistorical.getTown(), jsonPurchaseOrderHistorical.getArea()));
+        holder.tv_address.setText(AppUtils.getStoreAddress(jsonPurchaseOrderHistorical.getTown(), jsonPurchaseOrderHistorical.getArea()));
         holder.tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonPurchaseOrderHistorical.getCreated()));
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         try {
-            holder.tv_order_amount.setText(AppUtilities.getCurrencySymbol(jsonPurchaseOrderHistorical.getCountryShortName()) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+            holder.tv_order_amount.setText(AppUtils.getCurrencySymbol(jsonPurchaseOrderHistorical.getCountryShortName()) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
         } catch (Exception e) {
             holder.tv_order_amount.setText("0");
             e.printStackTrace();
@@ -158,7 +158,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     @Override
     public void authenticationFailure() {
         progressDialog.dismiss();
-        AppUtilities.authenticationProcessing(context);
+        AppUtils.authenticationProcessing(context);
     }
 
     @Override

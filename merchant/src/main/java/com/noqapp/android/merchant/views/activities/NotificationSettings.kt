@@ -14,6 +14,7 @@ import com.noqapp.android.merchant.views.interfaces.MerchantPreferencePresenter
 class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setScreenOrientation()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_settings)
         initActionsViews(false)

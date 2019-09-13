@@ -14,7 +14,7 @@ import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
 import com.noqapp.android.client.presenter.beans.body.mail.ChangeMailOTP;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -66,7 +66,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     setProgressMessage("OTP validation in progress...");
                     showProgress();
-                    new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
+                    AppUtils.hideKeyBoard(ChangeEmailActivity.this);
                     ChangeMailOTP changeMailOTP = new ChangeMailOTP();
                     changeMailOTP.setUserId(edt_email.getText().toString());
                     changeMailOTP.setMailOTP(edt_otp.getText().toString());
@@ -81,7 +81,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                 } else if (CommonHelper.isValidEmail(edt_email.getText())) {
                     setProgressMessage("Request OTP in progress...");
                     showProgress();
-                    new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
+                    AppUtils.hideKeyBoard(ChangeEmailActivity.this);
                     MigrateMail migrateMail = new MigrateMail();
                     migrateMail.setMail(edt_email.getText().toString());
                     ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();

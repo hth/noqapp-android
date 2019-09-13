@@ -12,7 +12,6 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.pojos.MenuDrawer;
-import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -20,7 +19,6 @@ import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.FileUploadOperation;
 import com.noqapp.android.merchant.views.pojos.MedicalFile;
@@ -60,7 +58,7 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
             Intent in = new Intent(launchActivity, NotificationActivity.class);
             startActivity(in);
         });
-        if (new AppUtils().isTablet(this)) {
+        if (LaunchActivity.isTablet) {
             list_fragment = findViewById(R.id.frame_layout);
             list_detail_fragment = findViewById(R.id.list_detail_fragment);
         }
@@ -101,8 +99,8 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
             menuDrawerItems.add(2, new MenuDrawer("Add New Patient", true, false, R.drawable.add_user));
             if (!AppUtils.isRelease()) {
                 List<MenuDrawer> childModelsList = new ArrayList<>();
-                childModelsList.add(new MenuDrawer("List of patient", false, false, R.drawable.all_patient));
-                childModelsList.add( new MenuDrawer("All History", false, false, R.drawable.all_history));
+                childModelsList.add(new MenuDrawer("List of Patients", false, false, R.drawable.all_patient));
+                childModelsList.add(new MenuDrawer("My Work History", false, false, R.drawable.all_history));
                 menuDrawerItems.add(3, new MenuDrawer("Reports", true, true, R.drawable.reports, childModelsList));
             }
         } catch (Exception e) {

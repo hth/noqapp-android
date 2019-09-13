@@ -15,7 +15,7 @@ import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.presenter.beans.body.Login;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -49,7 +49,7 @@ public class LoginActivity extends OTPActivity {
 
     @Override
     protected boolean validate() {
-        new AppUtilities().hideKeyBoard(this);
+        AppUtils.hideKeyBoard(this);
         boolean isValid = true;
         Log.e("country code: ", ccp.getSelectedCountryCodeWithPlus());
         edt_phoneNo.setError(null);

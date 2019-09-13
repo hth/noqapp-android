@@ -23,7 +23,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
@@ -112,8 +112,8 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             }
 
             childViewHolder.tv_name.setText(bizStoreElastic.getDisplayName());
-            childViewHolder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-            childViewHolder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+            childViewHolder.tv_store_rating.setText(String.valueOf(AppUtils.round(bizStoreElastic.getRating())));
+            childViewHolder.tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             childViewHolder.tv_store_review.setPaintFlags(childViewHolder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             if (bizStoreElastic.getReviewCount() == 0) {
                 childViewHolder.tv_store_review.setText("No Review");
@@ -130,13 +130,13 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     Bundle bundle = new Bundle();
                     bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                     bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
-                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
                     in.putExtras(bundle);
                     context.startActivity(in);
                 }
             });
             childViewHolder.tv_specialization.setText(bizStoreElastic.getCompleteEducation());
-            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
+            StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
             childViewHolder.tv_join.setEnabled(!storeHourElastic.isDayClosed());
             if (storeHourElastic.isDayClosed()) {
                 childViewHolder.tv_status.setText(context.getString(R.string.store_closed));
@@ -149,7 +149,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             } else {
                 childViewHolder.tv_store_timing.setVisibility(View.VISIBLE);
                 childViewHolder.tv_status.setVisibility(View.VISIBLE);
-                childViewHolder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
+                childViewHolder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
                 childViewHolder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
                 childViewHolder.tv_join.setText("Walk-in");
@@ -159,7 +159,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             }
 
 
-            int timeIn24HourFormat = AppUtilities.getTimeIn24HourFormat();
+            int timeIn24HourFormat = AppUtils.getTimeIn24HourFormat();
             if (!storeHourElastic.isDayClosed()) {
                 // Before Token Available Time
                 if (timeIn24HourFormat < storeHourElastic.getTokenAvailableFrom()) {
@@ -232,14 +232,14 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_status.setText("Closed");
                 childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
             }
-            AppUtilities.loadProfilePic(childViewHolder.iv_main, bizStoreElastic.getDisplayImage(), context);
+            AppUtils.loadProfilePic(childViewHolder.iv_main, bizStoreElastic.getDisplayImage(), context);
             childViewHolder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE : View.VISIBLE);
             if (bizStoreElastic.getProductPrice() == 0) {
                 childViewHolder.tv_consult_fees.setVisibility(View.GONE);
                 childViewHolder.tv_consult_fees_header.setVisibility(View.GONE);
             } else {
                 // String feeString = "<font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>  Consultation fee";
-                String feeString = "fees <font color=#000000><b>" + AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>";
+                String feeString = "fees <font color=#000000><b>" + AppUtils.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>";
                 childViewHolder.tv_consult_fees.setText(Html.fromHtml(feeString));
                 childViewHolder.tv_consult_fees.setVisibility(View.VISIBLE);
                 childViewHolder.tv_consult_fees_header.setVisibility(View.VISIBLE);

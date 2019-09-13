@@ -21,7 +21,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfessionalProfileApiCall;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
@@ -67,7 +67,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         tv_total_review = findViewById(R.id.tv_total_review);
         tv_total_rating = findViewById(R.id.tv_total_rating);
         tv_name.setText(managerName);
-        AppUtilities.loadProfilePic(iv_profile, managerImageUrl, this);
+        AppUtils.loadProfilePic(iv_profile, managerImageUrl, this);
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         loadTabs = new LoadTabs();
@@ -115,7 +115,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
                 tv_total_rating.setVisibility(View.VISIBLE);
                 tv_total_review.setVisibility(View.VISIBLE);
             }
-            tv_total_rating.setText(String.valueOf(AppUtilities.round(val)));
+            tv_total_rating.setText(String.valueOf(AppUtils.round(val)));
             tv_total_review.setText("Reviews");
             tv_total_review.setPaintFlags(tv_total_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_total_review.setOnClickListener(v -> {

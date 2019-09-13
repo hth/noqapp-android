@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.presenter.beans.JsonStore;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 
 import java.util.List;
 
@@ -46,13 +46,13 @@ public class UserProfileFragment extends Fragment {
                     tv_name.setText(stores.get(i).getJsonQueue().getBusinessName());
                     tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
                     try {
-                        double dd = AppUtilities.round(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount() * 1.0f /
+                        double dd = AppUtils.round(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount() * 1.0f /
                                 jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getJsonReviews().size());
                         tv_store_rating.setText(String.valueOf(dd));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    String timing = new AppUtilities().formatWeeklyTimings(getActivity(), stores.get(i).getJsonHours());
+                    String timing = new AppUtils().formatWeeklyTimings(getActivity(), stores.get(i).getJsonHours());
                     tv_opening_date.setText(Html.fromHtml(timing));
                     ll_multiple_store.addView(inflatedLayout);
                 }

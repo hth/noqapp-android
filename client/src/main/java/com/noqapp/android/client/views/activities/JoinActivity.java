@@ -33,7 +33,7 @@ import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -247,7 +247,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
             isEnabledPayment = bundle.getBooleanExtra(IBConstant.KEY_IS_PAYMENT_ENABLE, false);
             if (null != jsonTokenAndQueue) {
-                currencySymbol = AppUtilities.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
+                currencySymbol = AppUtils.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
             }
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
@@ -262,7 +262,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 profileList = NoQueueBaseActivity.getAllProfileList();
             }
             if (!TextUtils.isEmpty(queueUserId)) {
-                jsonProfile = AppUtilities.getJsonProfileQueueUserID(queueUserId, profileList);
+                jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
                 tv_name.setText(jsonProfile.getName());
             }
 
@@ -292,14 +292,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     tv_add.setVisibility(View.GONE);
                     tv_name.setVisibility(View.GONE);
             }
-            String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
+            String time = new AppUtils().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
             tv_mobile.setOnClickListener((View v) -> {
-                AppUtilities.makeCall(JoinActivity.this, tv_mobile.getText().toString());
+                AppUtils.makeCall(JoinActivity.this, tv_mobile.getText().toString());
             });
             tv_address.setOnClickListener((View v) -> {
-                AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
+                AppUtils.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
             });
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 if (isResumeFirst) {
@@ -709,7 +709,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             ll_order_details.addView(inflatedLayout);
         }

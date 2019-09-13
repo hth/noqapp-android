@@ -28,7 +28,7 @@ import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderReview;
 import com.noqapp.android.client.presenter.beans.body.QueueReview;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
@@ -110,7 +110,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 edt_review.setHint("Please provide review for " + jtk.getDisplayName());
                 if (UserUtils.isLogin()) {
                     List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
-                    tv_details.setText(AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList) + " with token #" + jtk.getToken());
+                    tv_details.setText(AppUtils.getNameFromQueueUserID(jtk.getQueueUserId(), profileList) + " with token #" + jtk.getToken());
                 } else {
                     tv_details.setText("Guest user with token #" + jtk.getToken());
                 }
@@ -127,7 +127,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                         tv_review_msg.setText(getString(R.string.review_msg_queue_done));
 
                 }
-                if (AppUtilities.isRelease()) {
+                if (AppUtils.isRelease()) {
                     Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_REVIEW_SCREEN)
                             .putCustomAttribute("Business Type", jtk.getBusinessType().getName()));
                 }

@@ -351,7 +351,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             if (actv_counter.getText().toString().equals("")) {
                 actv_counter.setError(mContext.getString(R.string.empty_counter));
             } else {
-                new AppUtils().hideKeyBoard(getActivity());
+                AppUtils.hideKeyBoard(getActivity());
                 textView.setText(actv_counter.getText().toString());
                 mAdapterCallback.saveCounterNames(codeQR, actv_counter.getText().toString().trim());
                 if (!names.contains(actv_counter.getText().toString())) {

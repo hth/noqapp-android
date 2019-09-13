@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,8 +40,7 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class AppointmentActivity extends BaseActivity implements AppointmentPresenter,
-        EventListAdapter.OnItemClickListener {
+public class AppointmentActivity extends BaseActivity implements AppointmentPresenter {
     private FixedHeightListView fh_list_view;
     private CalendarView calendarView;
     public EventListAdapter adapter;
@@ -55,11 +53,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
         initActionsViews(false);
@@ -73,7 +67,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         calendarView.setSwipeEnabled(false);
         fh_list_view = findViewById(R.id.fh_list_view);
         scroll_view = findViewById(R.id.scroll_view);
-        if (new AppUtils().isTablet(getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             RelativeLayout rl_parent = findViewById(R.id.rl_parent);
             LinearLayout ll_right = findViewById(R.id.ll_right);
             rl_parent.setOnTouchListener(new OnFlingGestureListener(this) {
@@ -355,14 +349,14 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
     }
 
     private void fetchEvents(Calendar calendar) {
-        adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>(), this);
+        adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>());
         fh_list_view.setAdapter(adapter);
         showProgress();
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForMonth(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), new AppUtils().dateFormatAsYYYY_MM_DD(calendar), codeRQ);
+                LaunchActivity.getLaunchActivity().getAuth(), AppUtils.dateFormatAsYYYY_MM_DD(calendar), codeRQ);
     }
 
 
@@ -383,7 +377,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         List<EventDay> events = parseEventList(jsonScheduleList);
 
         calendarView.setEvents(events);
-        adapter = new EventListAdapter(AppointmentActivity.this, events, this);
+        adapter = new EventListAdapter(AppointmentActivity.this, events);
         fh_list_view.setAdapter(adapter);
         dismissProgress();
     }
@@ -402,15 +396,5 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }
-
-
-    @Override
-    public void appointmentAccept(EventDay item) {
-    }
-
-    @Override
-    public void appointmentReject(EventDay item) {
-    }
-
 
 }

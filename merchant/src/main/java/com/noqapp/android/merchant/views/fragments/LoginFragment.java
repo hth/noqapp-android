@@ -69,7 +69,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         actv_email.setThreshold(1);//will start working from first character
         actv_email.setAdapter(adapter);
         btn_login.setOnClickListener(v -> {
-            new AppUtils().hideKeyBoard(getActivity());
+            AppUtils.hideKeyBoard(getActivity());
             if (isValidInput()) {
              //   btn_login.setBackgroundResource(R.drawable.button_drawable_red);
              //   btn_login.setTextColor(Color.WHITE);

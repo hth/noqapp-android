@@ -53,7 +53,7 @@ public class RateTheAppManager {
 
     private void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
 
-        if (AppUtilities.isRelease()) {
+        if (AppUtils.isRelease()) {
             Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_RATE_APP));
         }
         final Dialog dialog = new Dialog(mContext);

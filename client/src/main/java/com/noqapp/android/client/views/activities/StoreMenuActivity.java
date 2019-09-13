@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -49,7 +49,7 @@ public class StoreMenuActivity extends BaseActivity implements
         tv_place_order = findViewById(R.id.tv_place_order);
         expandableListView = findViewById(R.id.expandableListView);
         jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
-        currencySymbol = AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());
+        currencySymbol = AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName());
         List<JsonStoreCategory> headerList = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
         HashMap<String, List<StoreCartItem>> expandableListDetail = (HashMap<String, List<StoreCartItem>>) getIntent().getExtras().getSerializable("listDataChild");
 
@@ -84,7 +84,7 @@ public class StoreMenuActivity extends BaseActivity implements
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                int position = new AppUtilities().getFirstVisibleGroup(expandableListView);
+                int position = new AppUtils().getFirstVisibleGroup(expandableListView);
                 rcv_header.smoothScrollToPosition(position);
                 menuHeaderAdapter.setSelectedPosition(position);
                 menuHeaderAdapter.notifyDataSetChanged();
@@ -131,7 +131,7 @@ public class StoreMenuActivity extends BaseActivity implements
                         bundle.putString("GeoHash", jsonQueue.getGeoHash());
                         bundle.putInt("deliveryRange", jsonQueue.getDeliveryRange());
                         bundle.putString("topic", jsonQueue.getTopic());
-                        bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
+                        bundle.putString(AppUtils.CURRENCY_SYMBOL, currencySymbol);
                         bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
                         intent.putExtras(bundle);
                         startActivity(intent);

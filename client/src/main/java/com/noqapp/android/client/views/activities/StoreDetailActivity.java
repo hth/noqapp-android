@@ -8,7 +8,7 @@ import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -176,9 +176,9 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_toolbar_title.setText(jsonQueue.getDisplayName());
         tv_contact_no.setText(jsonQueue.getStorePhone());
         tv_address.setText(jsonQueue.getStoreAddress());
-        tv_address.setOnClickListener(v -> AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString()));
-        tv_address_title.setOnClickListener(v -> AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString()));
-        tv_store_address.setText(AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
+        tv_address.setOnClickListener(v -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString()));
+        tv_address_title.setOnClickListener(v -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString()));
+        tv_store_address.setText(AppUtils.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_known_for.setText(jsonQueue.getFamousFor());
         if (TextUtils.isEmpty(jsonQueue.getFamousFor())) {
@@ -192,7 +192,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         rcv_payment_mode.setLayoutManager(getFlexBoxLayoutManager());
         rcv_payment_mode.setAdapter(new StaggeredGridAdapter(payment_data));
 
-        tv_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
+        tv_rating.setText(String.valueOf(AppUtils.round(jsonQueue.getRating())));
         if (tv_rating.getText().toString().equals("0.0")) {
             tv_rating.setVisibility(View.INVISIBLE);
         } else {
@@ -208,7 +208,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         }
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.get()
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
                     .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(iv_category_banner);
@@ -312,12 +312,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             tv_menu.setClickable(false);
             tv_menu.setText("Closed");
         }
-        tv_store_timings.setText(Html.fromHtml(new AppUtilities().formatWeeklyTimings(this, jsonStore.getJsonHours())));
+        tv_store_timings.setText(Html.fromHtml(new AppUtils().formatWeeklyTimings(this, jsonStore.getJsonHours())));
     }
 
     private boolean isStoreOpenToday(JsonStore jsonStore) {
         List<JsonHour> jsonHourList = jsonStore.getJsonHours();
-        JsonHour jsonHour = AppUtilities.getJsonHour(jsonHourList);
+        JsonHour jsonHour = AppUtils.getJsonHour(jsonHourList);
         DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
         String time = df.format(Calendar.getInstance().getTime());
         int timeData = Integer.parseInt(time.replace(":", ""));

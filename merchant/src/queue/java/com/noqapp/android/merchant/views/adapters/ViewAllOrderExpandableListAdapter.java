@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -34,7 +34,7 @@ public class ViewAllOrderExpandableListAdapter extends BaseExpandableListAdapter
 
     public ViewAllOrderExpandableListAdapter(Context context, List<Date> listDataHeader,
                                              Map<Date, List<JsonPurchaseOrderList>> listChildData,
-                                             boolean visibility ) {
+                                             boolean visibility) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
@@ -68,14 +68,14 @@ public class ViewAllOrderExpandableListAdapter extends BaseExpandableListAdapter
         }
         childViewHolder.rv.setHasFixedSize(true);
         int columnCount;
-        if (new AppUtils().isTablet(context.getApplicationContext())) {
+        if (LaunchActivity.isTablet) {
             columnCount = 5;
         } else {
             columnCount = 2;
         }
         childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        ViewAllPeopleInQOrderAdapter viewAllPeopleInQOrderAdapter = new ViewAllPeopleInQOrderAdapter(childData.getPurchaseOrders(), context,  visibility);
+        ViewAllPeopleInQOrderAdapter viewAllPeopleInQOrderAdapter = new ViewAllPeopleInQOrderAdapter(childData.getPurchaseOrders(), context, visibility);
         childViewHolder.rv.setAdapter(viewAllPeopleInQOrderAdapter);
         viewAllPeopleInQOrderAdapter.notifyDataSetChanged();
         return convertView;

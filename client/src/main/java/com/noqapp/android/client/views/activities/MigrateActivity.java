@@ -7,7 +7,7 @@ import android.util.Log;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.beans.body.MigratePhone;
-import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -44,7 +44,7 @@ public class MigrateActivity extends OTPActivity {
 
     @Override
     protected boolean validate() {
-        new AppUtilities().hideKeyBoard(this);
+        AppUtils.hideKeyBoard(this);
         boolean isValid = true;
         edt_phoneNo.setError(null);
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {
