@@ -33,6 +33,7 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
     private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
     private ExpandableListView listview;
     private RelativeLayout rl_empty;
+    private JsonTopic jt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +59,17 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
                 if (position > 0) {
                     setProgressMessage("Fetching data...");
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
+                        jt = (JsonTopic) sp_queue_list.getSelectedItem();
                         showProgress();
-                        CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup().
-                                setCodeQR(jt.getCodeQR()).setFrom(AppUtils.earlierDayAsDateFormat(7))
+                        CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()
+                                .setCodeQR(jt.getCodeQR())
+                                .setFrom(AppUtils.earlierDayAsDateFormat(7))
                                 .setUntil(AppUtils.todayAsDateFormat());
                         manageQueueApiCalls.getAllQueuePersonListHistory(
-                                UserUtils.getDeviceId(), UserUtils.getEmail(),
-                                UserUtils.getAuth(), codeQRDateRangeLookup);
+                                UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(),
+                                codeQRDateRangeLookup);
                     } else {
                         ShowAlertInformation.showNetworkDialog(AllPatientActivity.this);
                     }
@@ -91,8 +95,7 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
             } else {
                 createData(jsonQueuePersonList.getQueuedPeople());
                 List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-                ViewAllPatientExpListAdapter adapter = new ViewAllPatientExpListAdapter(AllPatientActivity.this, expandableListTitle,
-                        expandableListDetail);
+                ViewAllPatientExpListAdapter adapter = new ViewAllPatientExpListAdapter(AllPatientActivity.this, expandableListTitle, expandableListDetail,jt);
                 listview.setAdapter(adapter);
                 if (expandableListTitle.size() <= 0) {
                     listview.setVisibility(View.GONE);
@@ -113,7 +116,6 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
     public void queuePersonListError() {
         dismissProgress();
     }
-
 
     private void createData(List<JsonQueuedPerson> temp) {
         if (null != temp && temp.size() > 0) {

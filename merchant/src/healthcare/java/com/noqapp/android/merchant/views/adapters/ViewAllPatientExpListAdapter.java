@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.Date;
@@ -30,12 +31,14 @@ public class ViewAllPatientExpListAdapter extends BaseExpandableListAdapter {
     private List<Date> listDataHeader; // header titles
     // child data in format of header title, child title
     private Map<Date, List<JsonQueuePersonList>> listDataChild;
+    private JsonTopic jt;
 
     public ViewAllPatientExpListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonQueuePersonList>> listChildData) {
+                                        Map<Date, List<JsonQueuePersonList>> listChildData, JsonTopic jt) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
+        this.jt = jt;
     }
 
     @Override
@@ -72,7 +75,7 @@ public class ViewAllPatientExpListAdapter extends BaseExpandableListAdapter {
         }
         childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        ViewAllPatientInQAdapter viewAllPeopleInQAdapter = new ViewAllPatientInQAdapter(childData.getQueuedPeople(), context, null);
+        ViewAllPatientInQAdapter viewAllPeopleInQAdapter = new ViewAllPatientInQAdapter(childData.getQueuedPeople(), context, jt);
         childViewHolder.rv.setAdapter(viewAllPeopleInQAdapter);
         viewAllPeopleInQAdapter.notifyDataSetChanged();
         return convertView;

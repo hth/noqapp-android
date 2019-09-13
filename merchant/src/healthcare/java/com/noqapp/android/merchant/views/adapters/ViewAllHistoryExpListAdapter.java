@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -24,10 +25,10 @@ public class ViewAllHistoryExpListAdapter extends BaseAdapter {
     private Context context;
     private List<Date> listDataHeader; // header titles
     // child data in format of header title, child title
-    private Map<Date, List<JsonQueuePersonList>> listDataChild;
+    private Map<Date, List<JsonMedicalRecordList>> listDataChild;
 
     public ViewAllHistoryExpListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonQueuePersonList>> listChildData) {
+                                        Map<Date, List<JsonMedicalRecordList>> listChildData) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
@@ -36,7 +37,7 @@ public class ViewAllHistoryExpListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ChildViewHolder childViewHolder;
-        final JsonQueuePersonList childData = listDataChild.get(listDataHeader.get(position)).get(0);
+        final JsonMedicalRecordList childData = listDataChild.get(listDataHeader.get(position)).get(0);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item_history, parent, false);
@@ -49,7 +50,7 @@ public class ViewAllHistoryExpListAdapter extends BaseAdapter {
         }
         Date headerTitle = listDataHeader.get(position);
         childViewHolder.tv_title.setText(CommonHelper.SDF_DOB_FROM_UI.format(headerTitle));
-        CaseHistoryAdapter caseHistoryAdapter = new CaseHistoryAdapter(childData.getQueuedPeople(), context);
+        CaseHistoryAdapter caseHistoryAdapter = new CaseHistoryAdapter(childData.getJsonMedicalRecords(), context);
         childViewHolder.fh_list_view.setAdapter(caseHistoryAdapter);
         caseHistoryAdapter.notifyDataSetChanged();
         return convertView;
