@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,6 +24,7 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.QueueAdapter;
 import com.noqapp.android.merchant.views.adapters.ViewAllHistoryExpListAdapter;
+import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import java.util.ArrayList;
@@ -36,11 +37,13 @@ import java.util.TreeMap;
 
 public class AllHistoryActivity extends BaseActivity implements QueuePersonListPresenter, View.OnClickListener {
     private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
-    private ListView listview;
+    private FixedHeightListView listview;
     private RelativeLayout rl_empty;
     private TextView tv_from_date, tv_until_date;
     private Spinner sp_queue_list, sp_filter_type;
     private ManageQueueApiCalls manageQueueApiCalls;
+    private ScrollView scroll_view;
+    private Button btn_filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +52,20 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
         setContentView(R.layout.activity_all_history);
         initActionsViews(false);
         tv_toolbar_title.setText("My Work History");
-        listview = findViewById(R.id.exp_list_view);
+        listview = findViewById(R.id.fh_list_view);
         rl_empty = findViewById(R.id.rl_empty);
+        scroll_view = findViewById(R.id.scroll_view);
         sp_queue_list = findViewById(R.id.sp_queue_list);
         sp_filter_type = findViewById(R.id.sp_filter_type);
         ArrayList<String> filterOptions = new ArrayList<>();
         filterOptions.add("Select Options");
         filterOptions.add("Work Done");
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item,
-                        filterOptions); //selected item will look like a spinner set from XML
+                (this, android.R.layout.simple_spinner_item, filterOptions);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_filter_type.setAdapter(spinnerArrayAdapter);
-        Button btn_filter = findViewById(R.id.btn_filter);
+        btn_filter = findViewById(R.id.btn_filter);
         btn_filter.setOnClickListener(this);
 
         tv_from_date = findViewById(R.id.tv_from_date);
@@ -101,6 +104,12 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
                 } else {
                     listview.setVisibility(View.VISIBLE);
                     rl_empty.setVisibility(View.GONE);
+                    scroll_view.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scroll_view.scrollTo(0, btn_filter.getBottom());
+                        }
+                    });
                 }
             }
         } else {
@@ -153,8 +162,6 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
                         showProgress();
                         CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup().
                                 setCodeQR(jt.getCodeQR())
-                                //.setFrom(AppUtils.earlierDayAsDateFormat(7))
-                                // .setUntil(AppUtils.todayAsDateFormat());
                                 .setFrom(tv_from_date.getText().toString())
                                 .setUntil(tv_until_date.getText().toString());
                         manageQueueApiCalls.getAllQueuePersonListHistory(
