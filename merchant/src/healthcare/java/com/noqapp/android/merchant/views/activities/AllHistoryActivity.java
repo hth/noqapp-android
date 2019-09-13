@@ -15,12 +15,10 @@ import android.widget.TextView;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.medical.WorkHistoryOptionEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
@@ -29,7 +27,6 @@ import com.noqapp.android.merchant.views.adapters.QueueAdapter;
 import com.noqapp.android.merchant.views.adapters.ViewAllHistoryExpListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
-import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +60,7 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
         sp_filter_type = findViewById(R.id.sp_filter_type);
         ArrayList<String> filterOptions = new ArrayList<>();
         filterOptions.add("Select Options");
-        filterOptions.add("Work Done");
+        filterOptions.addAll(WorkHistoryOptionEnum.asListOfDescription());
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_spinner_item, filterOptions);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout
@@ -86,7 +83,6 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
         sp_queue_list.setAdapter(adapter);
 
     }
-
 
 
     private void createData(List<JsonMedicalRecord> temp) {
@@ -127,7 +123,7 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
                         showProgress();
                         CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup().
                                 setCodeQR(jt.getCodeQR())
-                                .setPopulateField((String)sp_filter_type.getSelectedItem())
+                                .setPopulateField((String) sp_filter_type.getSelectedItem())
                                 .setFrom(tv_from_date.getText().toString())
                                 .setUntil(tv_until_date.getText().toString());
                         medicalHistoryApiCalls.workHistory(
