@@ -6,6 +6,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.ChangeUserInQueue;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.Served;
 
 import retrofit2.Call;
@@ -100,7 +101,7 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/q/showClients/{codeQR}/{from}/{until}/historical.json")
+    @POST("api/m/q/showClients/historical.json")
     Call<JsonQueuePersonList> showClientsHistorical(
             @Header("X-R-DID")
             String did,
@@ -114,14 +115,8 @@ public interface QueueApiUrls {
             @Header("X-R-AUTH")
             String auth,
 
-            @Path("codeQR")
-            String codeQR,
-
-            @Path("from")
-            String from,
-
-            @Path("until")
-            String until
+            @Body
+            CodeQRDateRangeLookup codeQRDateRangeLookup
     );
 
     /**
