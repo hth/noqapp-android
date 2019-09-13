@@ -210,7 +210,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             }
         });
         selectedDate = startDate;
-        fetchAppointments(new AppUtilities().tomorrowAsDateFormat());
+        fetchAppointments(AppUtilities.tomorrowAsDateFormat());
     }
 
     @Override

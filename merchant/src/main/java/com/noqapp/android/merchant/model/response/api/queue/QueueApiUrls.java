@@ -100,31 +100,6 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @Deprecated
-    @POST("api/m/q/showClients/{codeQR}/historical.json")
-    Call<JsonQueuePersonList> showClientsHistorical(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     */
     @POST("api/m/q/showClients/{codeQR}/{from}/{until}/historical.json")
     Call<JsonQueuePersonList> showClientsHistorical(
             @Header("X-R-DID")

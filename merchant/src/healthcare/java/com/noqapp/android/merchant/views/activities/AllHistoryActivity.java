@@ -69,8 +69,8 @@ public class AllHistoryActivity extends BaseActivity implements QueuePersonListP
                                 UserUtils.getEmail(),
                                 UserUtils.getAuth(),
                                 jt.getCodeQR(),
-                                new AppUtils().earlierDayAsDateFormat(7),
-                                new AppUtils().todayAsDateFormat());
+                                AppUtils.earlierDayAsDateFormat(7),
+                                AppUtils.todayAsDateFormat());
                     } else {
                         ShowAlertInformation.showNetworkDialog(AllHistoryActivity.this);
                     }

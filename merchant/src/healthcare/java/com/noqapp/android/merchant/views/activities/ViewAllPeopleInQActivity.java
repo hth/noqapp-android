@@ -49,7 +49,9 @@ public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePerso
             showProgress();
             ManageQueueApiCalls manageQueueApiCalls = new ManageQueueApiCalls();
             manageQueueApiCalls.setQueuePersonListPresenter(this);
-            manageQueueApiCalls.getAllQueuePersonListHistory(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
+            manageQueueApiCalls.getAllQueuePersonListHistory(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+                    getIntent().getStringExtra("codeQR"),    AppUtils.earlierDayAsDateFormat(7),
+                    AppUtils.todayAsDateFormat());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
