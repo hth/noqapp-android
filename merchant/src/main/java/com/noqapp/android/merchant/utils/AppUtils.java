@@ -33,7 +33,6 @@ import java.util.Locale;
  */
 
 public class AppUtils extends CommonHelper {
-    private final String TAG = AppUtils.class.getSimpleName();
 
     public static ApkVersionModel parseVersion(String version) {
         if (null == version || !version.contains(".")) {
@@ -53,14 +52,14 @@ public class AppUtils extends CommonHelper {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public void makeCall(Activity context, String phoneNumber) {
+    public static void makeCall(Activity context, String phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             try {
                 Intent callIntent = new Intent(Intent.ACTION_DIAL);
                 callIntent.setData(Uri.parse("tel:" + phoneNumber));
                 context.startActivity(callIntent);
             } catch (ActivityNotFoundException ex) {
-                Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
+                Log.w(AppUtils.class.getSimpleName(), "Failed calling reason=" + ex.getLocalizedMessage());
                 new CustomToast().showToast(context, "Please install a calling application");
             }
         }
@@ -89,7 +88,7 @@ public class AppUtils extends CommonHelper {
         LaunchActivity.getLaunchActivity().clearLoginData(true);
     }
 
-    public String getCompleteEducation(List<JsonNameDatePair> education) {
+    public static String getCompleteEducation(List<JsonNameDatePair> education) {
         if (null == education || education.size() == 0)
             return "";
         else {
@@ -104,7 +103,7 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public String hidePhoneNumberWithX(String phoneNo) {
+    public static String hidePhoneNumberWithX(String phoneNo) {
         if (null != phoneNo && phoneNo.length() >= 10) {
             return phoneNo.substring(0, 4) + "XXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());
         } else {

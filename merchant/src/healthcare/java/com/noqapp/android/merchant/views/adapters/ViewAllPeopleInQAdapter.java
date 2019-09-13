@@ -74,10 +74,10 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter {
             }
             holder.tv_customer_mobile.setOnClickListener(v -> {
                 if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    AppUtils.makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
-            holder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+            holder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
         }
 
         holder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));

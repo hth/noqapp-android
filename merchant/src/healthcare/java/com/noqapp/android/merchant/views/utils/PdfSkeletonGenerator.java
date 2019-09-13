@@ -82,9 +82,9 @@ public class PdfSkeletonGenerator extends PdfHelper {
             document.add(titleParagraph);
 
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-            String license = new AppUtils().getCompleteEducation(receipt.getLicenses());
+            String license = AppUtils.getCompleteEducation(receipt.getLicenses());
             String temp = TextUtils.isEmpty(license) ? notAvailable : license;
-            String education = new AppUtils().getCompleteEducation(receipt.getEducation());
+            String education = AppUtils.getCompleteEducation(receipt.getEducation());
             String education_temp = TextUtils.isEmpty(education) ? notAvailable : education;
             Chunk degreeChunk = new Chunk(education_temp + " (Reg. No.: " + temp + ")", normalFont);
             Paragraph degreeParagraph = new Paragraph();
