@@ -12,6 +12,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -31,6 +32,7 @@ public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePerso
     private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
     private ExpandableListView listview;
     private RelativeLayout rl_empty;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -49,9 +51,11 @@ public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePerso
             showProgress();
             ManageQueueApiCalls manageQueueApiCalls = new ManageQueueApiCalls();
             manageQueueApiCalls.setQueuePersonListPresenter(this);
+            CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup().
+                    setCodeQR(getIntent().getStringExtra("codeQR")).setFrom(AppUtils.earlierDayAsDateFormat(7))
+                    .setUntil(AppUtils.todayAsDateFormat());
             manageQueueApiCalls.getAllQueuePersonListHistory(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
-                    getIntent().getStringExtra("codeQR"),    AppUtils.earlierDayAsDateFormat(7),
-                    AppUtils.todayAsDateFormat());
+                    codeQRDateRangeLookup);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
