@@ -143,7 +143,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             @Override
             public void onDateSelected(Calendar date, int position) {
                 selectedDate = date;
-                fetchAppointments(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate));
+                fetchAppointments(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate));
             }
         });
         horizontalCalendarView.refresh();
@@ -175,11 +175,11 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setCodeQR(bizStoreElastic.getCodeQR())
                                     .setStartTime(AppUtils.removeColon(temp[0].trim()))
                                     .setEndTime(AppUtils.removeColon(temp[1].trim()))
-                                    .setScheduleDate(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate))
+                                    .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate))
                                     .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                             // appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
                             showConfirmationDialog(BookAppointmentActivity.this, ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
-                                    new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate), appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(), jsonSchedule);
+                                    AppUtils.dateFormatAsYYYY_MM_DD(selectedDate), appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(), jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -196,12 +196,12 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setCodeQR(bizStoreElastic.getCodeQR())
                                     .setStartTime(AppUtils.removeColon(temp[0].trim()))
                                     .setEndTime(AppUtils.removeColon(temp[1].trim()))
-                                    .setScheduleDate(new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate))
+                                    .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate))
                                     .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                             //appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
 
                             showConfirmationDialog(BookAppointmentActivity.this, ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
-                                    new AppUtils().dateFormatAsYYYY_MM_DD(selectedDate), "", jsonSchedule);
+                                    AppUtils.dateFormatAsYYYY_MM_DD(selectedDate), "", jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }

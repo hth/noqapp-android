@@ -362,7 +362,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForMonth(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), new AppUtils().dateFormatAsYYYY_MM_DD(calendar), codeRQ);
+                LaunchActivity.getLaunchActivity().getAuth(), AppUtils.dateFormatAsYYYY_MM_DD(calendar), codeRQ);
     }
 
 
