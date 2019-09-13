@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class AllPatientActivity extends BaseActivity implements QueuePersonListPresenter {
+public class ReportPastPatientActivity extends BaseActivity implements QueuePersonListPresenter {
     private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
     private ExpandableListView listview;
     private RelativeLayout rl_empty;
@@ -71,7 +71,7 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
                                 UserUtils.getAuth(),
                                 codeQRDateRangeLookup);
                     } else {
-                        ShowAlertInformation.showNetworkDialog(AllPatientActivity.this);
+                        ShowAlertInformation.showNetworkDialog(ReportPastPatientActivity.this);
                     }
                 }
             }
@@ -95,7 +95,7 @@ public class AllPatientActivity extends BaseActivity implements QueuePersonListP
             } else {
                 createData(jsonQueuePersonList.getQueuedPeople());
                 List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-                ViewAllPatientExpListAdapter adapter = new ViewAllPatientExpListAdapter(AllPatientActivity.this, expandableListTitle, expandableListDetail,jt);
+                ViewAllPatientExpListAdapter adapter = new ViewAllPatientExpListAdapter(ReportPastPatientActivity.this, expandableListTitle, expandableListDetail,jt);
                 listview.setAdapter(adapter);
                 if (expandableListTitle.size() <= 0) {
                     listview.setVisibility(View.GONE);

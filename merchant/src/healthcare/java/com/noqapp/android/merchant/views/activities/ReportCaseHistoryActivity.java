@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.medical.WorkHistoryOptionEnum;
+import com.noqapp.android.common.model.types.medical.MedicalRecordFieldFilterEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class AllHistoryActivity extends BaseActivity implements MedicalRecordListPresenter, View.OnClickListener {
+public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRecordListPresenter, View.OnClickListener {
     private Map<Date, List<JsonMedicalRecordList>> expandableListDetail = new HashMap<>();
     private FixedHeightListView listview;
     private RelativeLayout rl_empty;
@@ -60,11 +60,9 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
         sp_filter_type = findViewById(R.id.sp_filter_type);
         ArrayList<String> filterOptions = new ArrayList<>();
         filterOptions.add("Select Options");
-        filterOptions.addAll(WorkHistoryOptionEnum.asListOfDescription());
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item, filterOptions);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
+        filterOptions.addAll(MedicalRecordFieldFilterEnum.asListOfDescription());
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, filterOptions);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_filter_type.setAdapter(spinnerArrayAdapter);
         btn_filter = findViewById(R.id.btn_filter);
         btn_filter.setOnClickListener(this);
@@ -81,9 +79,7 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
         qList.add(0, jsonTopic);
         QueueAdapter adapter = new QueueAdapter(this, qList);
         sp_queue_list.setAdapter(adapter);
-
     }
-
 
     private void createData(List<JsonMedicalRecord> temp) {
         if (null != temp && temp.size() > 0) {
@@ -109,28 +105,30 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
         switch (v.getId()) {
             case R.id.btn_filter:
                 if (TextUtils.isEmpty(tv_from_date.getText().toString()) || TextUtils.isEmpty(tv_until_date.getText().toString())) {
-                    new CustomToast().showToast(AllHistoryActivity.this, "Both dates are required");
+                    new CustomToast().showToast(ReportCaseHistoryActivity.this, "Both dates are required");
                 } else if (isEndDateNotAfterStartDate()) {
-                    new CustomToast().showToast(AllHistoryActivity.this, "Until Date should be after From Date");
+                    new CustomToast().showToast(ReportCaseHistoryActivity.this, "Until Date should be after From Date");
                 } else if (sp_queue_list.getSelectedItemPosition() == 0) {
-                    new CustomToast().showToast(AllHistoryActivity.this, "Please select Queue");
+                    new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Queue");
                 } else if (sp_filter_type.getSelectedItemPosition() == 0) {
-                    new CustomToast().showToast(AllHistoryActivity.this, "Please select Filter Option");
+                    new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Filter Option");
                 } else {
                     setProgressMessage("Fetching data...");
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
                         showProgress();
-                        CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup().
-                                setCodeQR(jt.getCodeQR())
-                                .setPopulateField((String) sp_filter_type.getSelectedItem())
+                        CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()
+                                .setCodeQR(jt.getCodeQR())
+                                .setMedicalRecordFieldFilter(MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()))
                                 .setFrom(tv_from_date.getText().toString())
                                 .setUntil(tv_until_date.getText().toString());
                         medicalHistoryApiCalls.workHistory(
-                                UserUtils.getDeviceId(), UserUtils.getEmail(),
-                                UserUtils.getAuth(), codeQRDateRangeLookup);
+                                UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(),
+                                codeQRDateRangeLookup);
                     } else {
-                        ShowAlertInformation.showNetworkDialog(AllHistoryActivity.this);
+                        ShowAlertInformation.showNetworkDialog(ReportCaseHistoryActivity.this);
                     }
                 }
                 break;
@@ -155,7 +153,7 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
             if (date_diff > 0) {
                 tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
             } else {
-                new CustomToast().showToast(AllHistoryActivity.this, "Future date not allowed");
+                new CustomToast().showToast(ReportCaseHistoryActivity.this, "Future date not allowed");
                 tv.setText("");
             }
 
@@ -186,7 +184,7 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
             } else {
                 createData(jsonMedicalRecordList.getJsonMedicalRecords());
                 List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-                ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(AllHistoryActivity.this, expandableListTitle, expandableListDetail);
+                ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(ReportCaseHistoryActivity.this, expandableListTitle, expandableListDetail);
                 listview.setAdapter(adapter);
                 if (expandableListTitle.size() <= 0) {
                     listview.setVisibility(View.GONE);
@@ -194,12 +192,7 @@ public class AllHistoryActivity extends BaseActivity implements MedicalRecordLis
                 } else {
                     listview.setVisibility(View.VISIBLE);
                     rl_empty.setVisibility(View.GONE);
-                    scroll_view.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            scroll_view.scrollTo(0, btn_filter.getBottom());
-                        }
-                    });
+                    scroll_view.post(() -> scroll_view.scrollTo(0, btn_filter.getBottom()));
                 }
             }
         } else {

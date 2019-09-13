@@ -201,11 +201,11 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.activities.AllPatientActivity"
+            android:name=".views.activities.ReportPastPatientActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.activities.AllHistoryActivity"
+            android:name=".views.activities.ReportCaseHistoryActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
 

@@ -60,5 +60,4 @@ public enum MedicationIntakeEnum {
             return input;
         }
     }
-
 }

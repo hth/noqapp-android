@@ -128,7 +128,7 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
     public void callAllHistory() {
         super.callAllHistory();
         if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
-            Intent in1 = new Intent(launchActivity, AllHistoryActivity.class);
+            Intent in1 = new Intent(launchActivity, ReportCaseHistoryActivity.class);
             in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
             startActivity(in1);
         } else {
@@ -140,7 +140,7 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
     public void callAllPatient() {
         super.callAllPatient();
         if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
-            Intent in1 = new Intent(launchActivity, AllPatientActivity.class);
+            Intent in1 = new Intent(launchActivity, ReportPastPatientActivity.class);
             in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
             startActivity(in1);
         } else {
