@@ -351,11 +351,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             e.printStackTrace();
                         }
                     }
-                    if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()))) {
-                        tv_degree1.setText(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()));
-                    } else {
-                        tv_degree1.setText("");
-                    }
+
+                    tv_degree1.setText(AppUtils.getCompleteEducation(jsonProfessionalProfileTV.getEducation()));
+
                     if (TextUtils.isEmpty(jsonProfessionalProfileTV.getProfileImage())) {
                         Picasso.get().load(R.drawable.profile_tv).into(image1);
                     } else {
@@ -390,8 +388,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     }
                     title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
                     tv_category.setText(MedicalDepartmentEnum.valueOf(topicAndQueueTV.getJsonTopic().getBizCategoryId()).getDescription());
-                    if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()))) {
-                        tv_degree.setText(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()));
+                    if (!TextUtils.isEmpty(AppUtils.getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()))) {
+                        tv_degree.setText(AppUtils.getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()));
                     } else {
                         tv_degree.setText("");
                     }
@@ -423,7 +421,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             tv_seq.setText(String.valueOf((data.get(i).getToken())));
                             tv_name.setText(data.get(i).getCustomerName());
                             String phoneNo = data.get(i).getCustomerPhone();
-                            tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+                            tv_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
                             if (topicAndQueueTV.getJsonTopic().getServingNumber() == data.get(i).getToken()) {
                                 tv_mobile.setText("It's your turn");
                                 cardview.setBackgroundColor(Color.parseColor("#8c1515"));

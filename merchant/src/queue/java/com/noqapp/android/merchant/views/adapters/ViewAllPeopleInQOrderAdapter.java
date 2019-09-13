@@ -67,10 +67,10 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter {
             }
             recordHolder.tv_customer_mobile.setOnClickListener(v -> {
                 if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
-            recordHolder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+            recordHolder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
         }
         recordHolder.tv_order_data.setOnClickListener(v -> {
             Intent in = new Intent(context, OrderDetailActivity.class);
@@ -83,7 +83,7 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter {
         recordHolder.tv_order_status.setText(Html.fromHtml("<b>Order Status: </b>" + jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription()));
         recordHolder.tv_customer_mobile.setOnClickListener(v -> {
             if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
+                AppUtils.makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
         });
     }
 

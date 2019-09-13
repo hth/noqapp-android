@@ -116,7 +116,7 @@ public class DetailFragment extends Fragment {
                 });
             }
             title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
-            tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
+            tv_degree.setText(" ( " + AppUtils.getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
             tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                     + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
 
@@ -147,7 +147,7 @@ public class DetailFragment extends Fragment {
                     tv_seq.setText(String.valueOf((data.get(i).getToken())));
                     textView.setText(data.get(i).getCustomerName());
                     String phoneNo = data.get(i).getCustomerPhone();
-                    tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+                    tv_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
 
                     if (topicAndQueueTV.getJsonTopic().getServingNumber() == data.get(i).getToken()) {
                         tv_mobile.setText("It's your turn");

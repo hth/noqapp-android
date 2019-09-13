@@ -33,7 +33,6 @@ import java.util.Locale;
  */
 
 public class AppUtils extends CommonHelper {
-    private final String TAG = AppUtils.class.getSimpleName();
 
     public static ApkVersionModel parseVersion(String version) {
         if (null == version || !version.contains(".")) {
