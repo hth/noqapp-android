@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,13 +40,15 @@ import java.util.TreeMap;
 
 public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRecordListPresenter, View.OnClickListener {
     private Map<Date, List<JsonMedicalRecordList>> expandableListDetail = new HashMap<>();
-    private FixedHeightListView listview;
+    private FixedHeightListView fh_list_view;
     private RelativeLayout rl_empty;
     private TextView tv_from_date, tv_until_date;
     private Spinner sp_queue_list, sp_filter_type;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private ScrollView scroll_view;
     private Button btn_filter;
+    private final int RC_DATE_PICKER_FROM = 11;
+    private final int RC_DATE_PICKER_UNTIL = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRe
         setContentView(R.layout.activity_all_history);
         initActionsViews(false);
         tv_toolbar_title.setText("My Work History");
-        listview = findViewById(R.id.fh_list_view);
+        fh_list_view = findViewById(R.id.fh_list_view);
         rl_empty = findViewById(R.id.rl_empty);
         scroll_view = findViewById(R.id.scroll_view);
         sp_queue_list = findViewById(R.id.sp_queue_list);
@@ -132,14 +136,32 @@ public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRe
                     }
                 }
                 break;
-            case R.id.tv_from_date:
-                openDatePicker(tv_from_date);
-                break;
-            case R.id.tv_until_date:
-                openDatePicker(tv_until_date);
-                break;
+            case R.id.tv_from_date: {
+                Intent in = new Intent(this, DatePickerActivity.class);
+                startActivityForResult(in, RC_DATE_PICKER_FROM);
+            }
+            break;
+            case R.id.tv_until_date: {
+                Intent in = new Intent(this, DatePickerActivity.class);
+                startActivityForResult(in, RC_DATE_PICKER_UNTIL);
+            }
+            break;
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_DATE_PICKER_UNTIL && resultCode == Activity.RESULT_OK) {
+            String date = data.getStringExtra("result");
+            if (!TextUtils.isEmpty(date))
+                tv_until_date.setText(CommonHelper.convertDOBToValidFormat(date));
+        } else if (requestCode == RC_DATE_PICKER_FROM && resultCode == Activity.RESULT_OK) {
+            String date = data.getStringExtra("result");
+            if (!TextUtils.isEmpty(date))
+                tv_from_date.setText(CommonHelper.convertDOBToValidFormat(date));
+        }
     }
 
     private void openDatePicker(final TextView tv) {
@@ -179,25 +201,25 @@ public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRe
             Log.e("data", jsonMedicalRecordList.toString());
             Log.e("data size", "" + jsonMedicalRecordList.getJsonMedicalRecords().size());
             if (jsonMedicalRecordList.getJsonMedicalRecords().size() == 0) {
-                listview.setVisibility(View.GONE);
+                fh_list_view.setVisibility(View.GONE);
                 rl_empty.setVisibility(View.VISIBLE);
             } else {
                 createData(jsonMedicalRecordList.getJsonMedicalRecords());
                 List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
                 ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(ReportCaseHistoryActivity.this,
-                        expandableListTitle, expandableListDetail,MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()));
-                listview.setAdapter(adapter);
+                        expandableListTitle, expandableListDetail, MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()));
+                fh_list_view.setAdapter(adapter);
                 if (expandableListTitle.size() <= 0) {
-                    listview.setVisibility(View.GONE);
+                    fh_list_view.setVisibility(View.GONE);
                     rl_empty.setVisibility(View.VISIBLE);
                 } else {
-                    listview.setVisibility(View.VISIBLE);
+                    fh_list_view.setVisibility(View.VISIBLE);
                     rl_empty.setVisibility(View.GONE);
                     scroll_view.post(() -> scroll_view.scrollTo(0, btn_filter.getBottom()));
                 }
             }
         } else {
-            listview.setVisibility(View.GONE);
+            fh_list_view.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
         }
         dismissProgress();
