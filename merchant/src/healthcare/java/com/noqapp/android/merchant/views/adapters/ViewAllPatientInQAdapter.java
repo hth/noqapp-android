@@ -15,6 +15,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
+import com.noqapp.android.merchant.views.activities.PatientProfileHistoryActivity;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class ViewAllPatientInQAdapter extends RecyclerView.Adapter {
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(listPosition);
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         holder.card_view.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PatientProfileActivity.class);
+            Intent intent = new Intent(context, PatientProfileHistoryActivity.class);
             intent.putExtra("qCodeQR", jsonTopic.getCodeQR());
             intent.putExtra("data", jsonQueuedPerson);
             intent.putExtra("bizCategoryId", jsonTopic.getBizCategoryId());

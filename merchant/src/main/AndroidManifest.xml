@@ -94,7 +94,7 @@
         <activity
             android:name=".views.activities.CouponActivity"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".views.activities.BookAppointmentActivity"
             android:theme="@style/BaseTheme"
@@ -117,6 +117,10 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".views.activities.PatientProfileActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.PatientProfileHistoryActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
