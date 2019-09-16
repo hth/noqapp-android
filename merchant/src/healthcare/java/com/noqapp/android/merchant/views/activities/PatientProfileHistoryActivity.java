@@ -163,7 +163,11 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
 
     private void updateUI(JsonProfile jsonProfile) {
         tv_patient_name.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
-        tv_address.setText(jsonProfile.getAddress());
+        if (TextUtils.isEmpty(jsonProfile.getAddress())) {
+            tv_address.setText(Html.fromHtml("<b> Address: </b> N/A"));
+        } else {
+            tv_address.setText(Html.fromHtml("<b> Address: </b>" + jsonProfile.getAddress()));
+        }
         loadProfilePic(jsonProfile.getProfileImage());
     }
 
@@ -216,7 +220,7 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
     }
 
     private void loadProfilePic(String imageUrl) {
-        Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
+        Picasso.get().load(R.drawable.profile_blue).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()

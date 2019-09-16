@@ -43,6 +43,8 @@ import com.noqapp.android.merchant.views.fragments.MedicalHistoryFragment;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -244,8 +246,11 @@ public class PatientProfileActivity extends BaseActivity implements
     private void updateUI(JsonProfile jsonProfile) {
         this.jsonProfile = jsonProfile;
         tv_patient_name.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
-        tv_address.setText(jsonProfile.getAddress());
-
+        if (TextUtils.isEmpty(jsonProfile.getAddress())) {
+            tv_address.setText(Html.fromHtml("<b> Address: </b> N/A"));
+        } else {
+            tv_address.setText(Html.fromHtml("<b> Address: </b>" + jsonProfile.getAddress()));
+        }
         loadProfilePic(jsonProfile.getProfileImage());
     }
 
@@ -339,7 +344,7 @@ public class PatientProfileActivity extends BaseActivity implements
     }
 
     private void loadProfilePic(String imageUrl) {
-        Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
+        Picasso.get().load(R.drawable.profile_blue).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
