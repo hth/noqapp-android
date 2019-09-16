@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,7 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRecordListPresenter, View.OnClickListener {
+public class ReportCaseHistoryActivity extends BaseActivity implements
+        MedicalRecordListPresenter, View.OnClickListener {
     private Map<Date, List<JsonMedicalRecordList>> expandableListDetail = new HashMap<>();
     private FixedHeightListView fh_list_view;
     private RelativeLayout rl_empty;
@@ -155,32 +155,29 @@ public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_DATE_PICKER_UNTIL && resultCode == Activity.RESULT_OK) {
             String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date))
+            if (!TextUtils.isEmpty(date)&& isDateBeforeToday(date))
                 tv_until_date.setText(CommonHelper.convertDOBToValidFormat(date));
         } else if (requestCode == RC_DATE_PICKER_FROM && resultCode == Activity.RESULT_OK) {
             String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date))
+            if (!TextUtils.isEmpty(date) && isDateBeforeToday(date))
                 tv_from_date.setText(CommonHelper.convertDOBToValidFormat(date));
         }
     }
 
-    private void openDatePicker(final TextView tv) {
-        Calendar newCalendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
-            Calendar newDate = Calendar.getInstance();
-            newDate.set(year, monthOfYear, dayOfMonth);
-            Date current = newDate.getTime();
-            int date_diff = new Date().compareTo(current);
-
+    private boolean isDateBeforeToday(String selectedDay){
+        try {
+            Date selectedDate = CommonHelper.SDF_DOB_FROM_UI.parse(selectedDay);
+            int date_diff = new Date().compareTo(selectedDate);
             if (date_diff >= 0) {
-                tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
+                return true;
             } else {
                 new CustomToast().showToast(ReportCaseHistoryActivity.this, "Future date not allowed");
-                tv.setText("");
+                return false;
             }
-
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return true;
     }
 
     private boolean isEndDateNotAfterStartDate() {
