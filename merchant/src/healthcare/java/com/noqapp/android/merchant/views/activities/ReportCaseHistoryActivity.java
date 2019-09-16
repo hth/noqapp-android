@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -30,7 +31,6 @@ import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +49,8 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     private Button btn_filter;
     private final int RC_DATE_PICKER_FROM = 11;
     private final int RC_DATE_PICKER_UNTIL = 12;
+    private LinearLayout ll_paging;
+    private final int PAGE_SIZE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         tv_toolbar_title.setText("My Work History");
         fh_list_view = findViewById(R.id.fh_list_view);
         rl_empty = findViewById(R.id.rl_empty);
+        ll_paging = findViewById(R.id.ll_paging);
         scroll_view = findViewById(R.id.scroll_view);
         sp_queue_list = findViewById(R.id.sp_queue_list);
         sp_filter_type = findViewById(R.id.sp_filter_type);
@@ -83,6 +86,19 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         qList.add(0, jsonTopic);
         QueueAdapter adapter = new QueueAdapter(this, qList);
         sp_queue_list.setAdapter(adapter);
+
+        TextView tv_page_1 = findViewById(R.id.tv_page_1);
+        TextView tv_page_2 = findViewById(R.id.tv_page_2);
+        TextView tv_page_3 = findViewById(R.id.tv_page_3);
+        TextView tv_page_4 = findViewById(R.id.tv_page_4);
+        TextView tv_page_5 = findViewById(R.id.tv_page_5);
+        tv_page_1.setOnClickListener(this::onClick);
+        tv_page_2.setOnClickListener(this::onClick);
+        tv_page_3.setOnClickListener(this::onClick);
+        tv_page_4.setOnClickListener(this::onClick);
+        tv_page_5.setOnClickListener(this::onClick);
+        ll_paging.setVisibility(View.GONE);
+
     }
 
     private void createData(List<JsonMedicalRecord> temp) {
@@ -108,33 +124,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_filter:
-                if (TextUtils.isEmpty(tv_from_date.getText().toString()) || TextUtils.isEmpty(tv_until_date.getText().toString())) {
-                    new CustomToast().showToast(ReportCaseHistoryActivity.this, "Both dates are required");
-                } else if (isEndDateNotAfterStartDate()) {
-                    new CustomToast().showToast(ReportCaseHistoryActivity.this, "Until Date should be after From Date");
-                } else if (sp_queue_list.getSelectedItemPosition() == 0) {
-                    new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Queue");
-                } else if (sp_filter_type.getSelectedItemPosition() == 0) {
-                    new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Filter Option");
-                } else {
-                    setProgressMessage("Fetching data...");
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
-                        showProgress();
-                        CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()
-                                .setCodeQR(jt.getCodeQR())
-                                .setMedicalRecordFieldFilter(MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()))
-                                .setFrom(tv_from_date.getText().toString())
-                                .setUntil(tv_until_date.getText().toString());
-                        medicalHistoryApiCalls.workHistory(
-                                UserUtils.getDeviceId(),
-                                UserUtils.getEmail(),
-                                UserUtils.getAuth(),
-                                codeQRDateRangeLookup);
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(ReportCaseHistoryActivity.this);
-                    }
-                }
+                callApi(1);
                 break;
             case R.id.tv_from_date: {
                 Intent in = new Intent(this, DatePickerActivity.class);
@@ -146,8 +136,47 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 startActivityForResult(in, RC_DATE_PICKER_UNTIL);
             }
             break;
+            case R.id.tv_page_1:
+            case R.id.tv_page_2:
+            case R.id.tv_page_3:
+            case R.id.tv_page_4:
+            case R.id.tv_page_5:
+                new CustomToast().showToast(ReportCaseHistoryActivity.this, ((TextView) v).getText().toString() + " Clicked");
+                callApi(Integer.parseInt((String) v.getTag()));
+                break;
         }
 
+    }
+
+    private void callApi(int page) {
+        if (TextUtils.isEmpty(tv_from_date.getText().toString()) || TextUtils.isEmpty(tv_until_date.getText().toString())) {
+            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Both dates are required");
+        } else if (isEndDateNotAfterStartDate()) {
+            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Until Date should be after From Date");
+        } else if (sp_queue_list.getSelectedItemPosition() == 0) {
+            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Queue");
+        } else if (sp_filter_type.getSelectedItemPosition() == 0) {
+            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Filter Option");
+        } else {
+            setProgressMessage("Fetching data...");
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
+                showProgress();
+                int currentDataCount = page * PAGE_SIZE;
+                CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()
+                        .setCodeQR(jt.getCodeQR())
+                        .setMedicalRecordFieldFilter(MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()))
+                        .setFrom(tv_from_date.getText().toString())
+                        .setUntil(tv_until_date.getText().toString());
+                medicalHistoryApiCalls.workHistory(
+                        UserUtils.getDeviceId(),
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        codeQRDateRangeLookup);
+            } else {
+                ShowAlertInformation.showNetworkDialog(ReportCaseHistoryActivity.this);
+            }
+        }
     }
 
     @Override
@@ -155,7 +184,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_DATE_PICKER_UNTIL && resultCode == Activity.RESULT_OK) {
             String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date)&& isDateBeforeToday(date))
+            if (!TextUtils.isEmpty(date) && isDateBeforeToday(date))
                 tv_until_date.setText(CommonHelper.convertDOBToValidFormat(date));
         } else if (requestCode == RC_DATE_PICKER_FROM && resultCode == Activity.RESULT_OK) {
             String date = data.getStringExtra("result");
@@ -164,7 +193,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         }
     }
 
-    private boolean isDateBeforeToday(String selectedDay){
+    private boolean isDateBeforeToday(String selectedDay) {
         try {
             Date selectedDate = CommonHelper.SDF_DOB_FROM_UI.parse(selectedDay);
             int date_diff = new Date().compareTo(selectedDate);
@@ -174,7 +203,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 new CustomToast().showToast(ReportCaseHistoryActivity.this, "Future date not allowed");
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return true;
@@ -194,6 +223,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     @Override
     public void medicalRecordListResponse(JsonMedicalRecordList jsonMedicalRecordList) {
         expandableListDetail.clear();
+        ll_paging.setVisibility(View.VISIBLE);
         if (null != jsonMedicalRecordList) {
             Log.e("data", jsonMedicalRecordList.toString());
             Log.e("data size", "" + jsonMedicalRecordList.getJsonMedicalRecords().size());
