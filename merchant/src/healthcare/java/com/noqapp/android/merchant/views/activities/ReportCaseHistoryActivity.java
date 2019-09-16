@@ -61,8 +61,8 @@ public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRe
         ArrayList<String> filterOptions = new ArrayList<>();
         filterOptions.add("Select Options");
         filterOptions.addAll(MedicalRecordFieldFilterEnum.asListOfDescription());
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, filterOptions);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_general, filterOptions);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_general);
         sp_filter_type.setAdapter(spinnerArrayAdapter);
         btn_filter = findViewById(R.id.btn_filter);
         btn_filter.setOnClickListener(this);
@@ -150,7 +150,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRe
             Date current = newDate.getTime();
             int date_diff = new Date().compareTo(current);
 
-            if (date_diff > 0) {
+            if (date_diff >= 0) {
                 tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
             } else {
                 new CustomToast().showToast(ReportCaseHistoryActivity.this, "Future date not allowed");
@@ -184,7 +184,8 @@ public class ReportCaseHistoryActivity extends BaseActivity implements MedicalRe
             } else {
                 createData(jsonMedicalRecordList.getJsonMedicalRecords());
                 List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-                ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(ReportCaseHistoryActivity.this, expandableListTitle, expandableListDetail);
+                ViewAllHistoryExpListAdapter adapter = new ViewAllHistoryExpListAdapter(ReportCaseHistoryActivity.this,
+                        expandableListTitle, expandableListDetail,MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()));
                 listview.setAdapter(adapter);
                 if (expandableListTitle.size() <= 0) {
                     listview.setVisibility(View.GONE);

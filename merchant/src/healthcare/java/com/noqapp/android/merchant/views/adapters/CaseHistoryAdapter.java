@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +11,21 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.medical.MedicalRecordFieldFilterEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 
 import java.util.List;
 
 public class CaseHistoryAdapter extends BaseAdapter {
     private final Context context;
     private List<JsonMedicalRecord> dataSet;
+    private MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum;
 
-    public CaseHistoryAdapter(List<JsonMedicalRecord> data, Context context) {
+    public CaseHistoryAdapter(List<JsonMedicalRecord> data, Context context,
+                              MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum) {
         this.dataSet = data;
         this.context = context;
+        this.medicalRecordFieldFilterEnum = medicalRecordFieldFilterEnum;
     }
 
 
@@ -38,7 +42,24 @@ public class CaseHistoryAdapter extends BaseAdapter {
             recordHolder = (MyViewHolder) view.getTag();
         }
         recordHolder.tv_patient_name.setText(dataSet.get(position).getBusinessName());
-        recordHolder.tv_patient_details.setText(dataSet.get(position).getAreaAndTown());
+        switch (medicalRecordFieldFilterEnum) {
+            case ND:
+                recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getNoteToDiagnoser()));
+                break;
+            case NP:
+                recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getNoteForPatient()));
+                break;
+            case CC:
+                recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getChiefComplain()));
+                break;
+            case DI:
+                recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getDiagnosis()));
+                break;
+            case PP:
+                recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getPlanToPatient()));
+                break;
+        }
+
 
         return view;
     }
@@ -61,4 +82,9 @@ public class CaseHistoryAdapter extends BaseAdapter {
         private TextView tv_patient_details;
         private CardView card_view;
     }
+
+    private String checkForNullOrEmpty(String str) {
+        return TextUtils.isEmpty(str) ? "N/A" : str;
+    }
+
 }

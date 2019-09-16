@@ -191,7 +191,8 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
                 showProgress();
                 setProgressMessage("Removing profile image");
                 merchantProfileApiCalls.setImageUploadPresenter(this);
-                merchantProfileApiCalls.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId()));
+                merchantProfileApiCalls.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(),
+                        UserUtils.getAuth(), new UpdateProfile().setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId()));
             }
             break;
         }
