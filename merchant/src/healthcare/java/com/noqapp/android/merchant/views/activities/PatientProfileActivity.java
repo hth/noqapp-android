@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatientProfileActivity extends BaseActivity implements
-        PatientProfilePresenter, JsonMedicalRecordPresenter {
+        PatientProfilePresenter, JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
     private long lastPress;
     private Toast backPressToast;
     public ProgressBar pb_physical;
@@ -214,6 +214,7 @@ public class PatientProfileActivity extends BaseActivity implements
             replaceFragmentWithoutBackStack(R.id.fl_medical_history, mhf);
 
             MedicalHistoryFilteredFragment mhff = new MedicalHistoryFilteredFragment();
+            mhff.setUpdateWorkDone(PatientProfileActivity.this::updateWorkDone);
             mhff.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
 
@@ -367,6 +368,7 @@ public class PatientProfileActivity extends BaseActivity implements
         }
     }
 
+    @Override
     public void updateWorkDone(List<JsonMedicalRecord> jsonMedicalRecords) {
         toothWorkDoneList.clear();
         for (int i = 0; i < jsonMedicalRecords.size(); i++) {

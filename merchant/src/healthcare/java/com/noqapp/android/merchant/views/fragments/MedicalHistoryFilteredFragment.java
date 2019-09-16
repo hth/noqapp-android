@@ -23,7 +23,6 @@ import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProf
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryDentalAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
@@ -41,6 +40,15 @@ public class MedicalHistoryFilteredFragment extends BaseFragment implements Medi
     private String codeQR = "";
     private String bizCategoryId;
     private JsonQueuedPerson jsonQueuedPerson;
+    private UpdateWorkDone updateWorkDone;
+
+    public void setUpdateWorkDone(UpdateWorkDone updateWorkDone) {
+        this.updateWorkDone = updateWorkDone;
+    }
+
+    public interface UpdateWorkDone {
+        void updateWorkDone(List<JsonMedicalRecord> jsonMedicalRecords);
+    }
 
     @Nullable
     @Override
@@ -96,10 +104,10 @@ public class MedicalHistoryFilteredFragment extends BaseFragment implements Medi
             listview.setAdapter(adapter);
             if (null == jsonMedicalRecords || jsonMedicalRecords.size() == 0) {
                 tv_empty_list.setVisibility(View.VISIBLE);
-            }else{
-                if(MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT){
-                    if(null != PatientProfileActivity.getPatientProfileActivity())
-                        PatientProfileActivity.getPatientProfileActivity().updateWorkDone(jsonMedicalRecords);
+            } else {
+                if (MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT) {
+                    if (null != updateWorkDone)
+                        updateWorkDone.updateWorkDone(jsonMedicalRecords);
                 }
             }
             pb_history.setVisibility(View.GONE);
@@ -138,16 +146,8 @@ public class MedicalHistoryFilteredFragment extends BaseFragment implements Medi
 
 
     public void updateList() {
-//         if (isDental) {
-//            medicalHistoryApiCalls.historicalFiltered(BaseLaunchActivity.getDeviceID(),
-//                    LaunchActivity.getLaunchActivity().getEmail(),
-//                    LaunchActivity.getLaunchActivity().getAuth(), bizCategoryId,
-//                    new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-//        }
         medicalHistoryApiCalls.historical(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-
-
     }
 }

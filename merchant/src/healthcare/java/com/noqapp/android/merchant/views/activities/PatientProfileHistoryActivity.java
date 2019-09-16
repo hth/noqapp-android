@@ -44,8 +44,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientProfileHistoryActivity extends BaseActivity implements
-        PatientProfilePresenter, JsonMedicalRecordPresenter {
+public class PatientProfileHistoryActivity extends BaseActivity implements PatientProfilePresenter,
+        JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
     private long lastPress;
     private Toast backPressToast;
     public ProgressBar pb_physical;
@@ -54,8 +54,6 @@ public class PatientProfileHistoryActivity extends BaseActivity implements
     private JsonQueuedPerson jsonQueuedPerson;
     private String codeQR;
     private final String notAvailable = "N/A";
-    private JsonMedicalRecord jsonMedicalRecordTemp;
-    private JsonProfile jsonProfile;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private LinearLayout ll_dental_history;
     private boolean isDental = false;
@@ -63,7 +61,6 @@ public class PatientProfileHistoryActivity extends BaseActivity implements
     private ListView list_view;
     private TextView tv_empty_work_done;
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
-    private WorkDoneAdapter workDoneAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +134,7 @@ public class PatientProfileHistoryActivity extends BaseActivity implements
             replaceFragmentWithoutBackStack(R.id.fl_medical_history, mhf);
 
             MedicalHistoryFilteredFragment mhff = new MedicalHistoryFilteredFragment();
+            mhff.setUpdateWorkDone(PatientProfileHistoryActivity.this::updateWorkDone);
             mhff.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
 
@@ -164,10 +162,8 @@ public class PatientProfileHistoryActivity extends BaseActivity implements
     }
 
     private void updateUI(JsonProfile jsonProfile) {
-        this.jsonProfile = jsonProfile;
         tv_patient_name.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
         tv_address.setText(jsonProfile.getAddress());
-
         loadProfilePic(jsonProfile.getProfileImage());
     }
 
@@ -196,7 +192,6 @@ public class PatientProfileHistoryActivity extends BaseActivity implements
 
     @Override
     public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
-        jsonMedicalRecordTemp = jsonMedicalRecord;
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             try {
@@ -208,7 +203,7 @@ public class PatientProfileHistoryActivity extends BaseActivity implements
                 if (isDental) {
                     ll_dental_history.setVisibility(View.VISIBLE);
                     Bundle b = new Bundle();
-                    b.putSerializable("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    b.putSerializable("jsonMedicalRecord", jsonMedicalRecord);
                     DentalStatusFragment dentalStatusFragment = new DentalStatusFragment();
                     dentalStatusFragment.setArguments(b);
                     replaceFragmentWithoutBackStack(R.id.fl_dental_history, dentalStatusFragment);
@@ -250,6 +245,7 @@ public class PatientProfileHistoryActivity extends BaseActivity implements
         }
     }
 
+    @Override
     public void updateWorkDone(List<JsonMedicalRecord> jsonMedicalRecords) {
         toothWorkDoneList.clear();
         for (int i = 0; i < jsonMedicalRecords.size(); i++) {
@@ -264,7 +260,7 @@ public class PatientProfileHistoryActivity extends BaseActivity implements
                 parseWorkDoneData(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
             }
         }
-        workDoneAdapter = new WorkDoneAdapter(this, toothWorkDoneList);
+        WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(this, toothWorkDoneList);
         list_view.setAdapter(workDoneAdapter);
         tv_empty_work_done.setVisibility(toothWorkDoneList.size() > 0 ? View.GONE : View.VISIBLE);
     }
