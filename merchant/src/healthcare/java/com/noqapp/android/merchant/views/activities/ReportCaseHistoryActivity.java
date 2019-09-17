@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -84,8 +85,8 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                     Log.d("-----", "end");
                     if (isMoreToDownload) {
                         callApi();
-                    }else{
-                        new CustomToast().showToast(ReportCaseHistoryActivity.this,"No more data to load");
+                    } else {
+                        new CustomToast().showToast(ReportCaseHistoryActivity.this, "No more data to load");
                     }
                 }
             }
@@ -98,6 +99,8 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         sp_filter_type.setAdapter(spinnerArrayAdapter);
         Button btn_filter = findViewById(R.id.btn_filter);
         btn_filter.setOnClickListener(this);
+        ImageView iv_close = findViewById(R.id.iv_close);
+        iv_close.setOnClickListener(this);
 
         btn_clear_filter = findViewById(R.id.btn_clear_filter);
         btn_clear_filter.setOnClickListener(this);
@@ -158,6 +161,10 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
             break;
             case R.id.tv_filter: {
                 AnimationUtils.expand(ll_filter);
+            }
+            break;
+            case R.id.iv_close: {
+                AnimationUtils.collapse(ll_filter);
             }
             break;
             case R.id.btn_clear_filter: {
