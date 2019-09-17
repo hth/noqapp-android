@@ -48,7 +48,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private final int RC_DATE_PICKER_FROM = 11;
     private final int RC_DATE_PICKER_UNTIL = 12;
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 20;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
     private boolean isMoreToDownload = true;
     private RecyclerView rcv_work_history;
@@ -82,7 +82,11 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     Log.d("-----", "end");
-                    callApi(0);
+                    if (isMoreToDownload) {
+                        callApi();
+                    }else{
+                        new CustomToast().showToast(ReportCaseHistoryActivity.this,"No more data to load");
+                    }
                 }
             }
         });
@@ -140,7 +144,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 isMoreToDownload = true;
                 jsonMedicalRecords.clear();
                 expandableListDetail.clear();
-                callApi(1);
+                callApi();
                 break;
             case R.id.tv_from_date: {
                 Intent in = new Intent(this, DatePickerActivity.class);
@@ -168,7 +172,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
 
     }
 
-    private void callApi(int page) {
+    private void callApi() {
         if (TextUtils.isEmpty(tv_from_date.getText().toString()) || TextUtils.isEmpty(tv_until_date.getText().toString())) {
             new CustomToast().showToast(ReportCaseHistoryActivity.this, "Both dates are required");
         } else if (isEndDateNotAfterStartDate()) {
@@ -179,14 +183,11 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
             new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Filter Option");
         } else {
             bottomLayout.setVisibility(View.VISIBLE);
-            //  setProgressMessage("Fetching data...");
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
-                //  showProgress();
                 CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()
                         .setCodeQR(jt.getCodeQR())
-                        // .setCurrentPosition(jsonMedicalRecords.size())
-                        .setCurrentPosition(0)
+                        .setCurrentPosition(jsonMedicalRecords.size())
                         .setMedicalRecordFieldFilter(MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()))
                         .setFrom(tv_from_date.getText().toString())
                         .setUntil(tv_until_date.getText().toString());
@@ -264,7 +265,6 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                     workHistoryAdapter = new WorkHistoryAdapter(ReportCaseHistoryActivity.this,
                             expandableListTitle, expandableListDetail, MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()));
                     rcv_work_history.setAdapter(workHistoryAdapter);
-                    new CustomToast().showToast(this, "adapter null");
                 } else {
                     workHistoryAdapter.notifyDataSetChanged();
                 }
