@@ -14,9 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
@@ -83,12 +85,21 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter {
         holder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
         holder.tv_sequence_number.setTextColor(Color.WHITE);
         holder.tv_join_timing.setTextColor(Color.WHITE);
+        if (null == jsonQueuedPerson.getJsonPurchaseOrder()) {
+            holder.tv_order_data.setBackground(ContextCompat.getDrawable(context,R.drawable.grey_background));
+        }else{
+            holder.tv_order_data.setBackground(ContextCompat.getDrawable(context,R.drawable.button_drawable_red));
+        }
         holder.tv_order_data.setOnClickListener(v -> {
-            Intent in = new Intent(context, OrderDetailActivity.class);
-            in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
-            in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
-            in.putExtra(IBConstant.KEY_IS_HISTORY, true);
-            ((Activity) context).startActivity(in);
+            if (null == jsonQueuedPerson.getJsonPurchaseOrder()) {
+                new CustomToast().showToast(context,"No order available for this user");
+            } else {
+                Intent in = new Intent(context, OrderDetailActivity.class);
+                in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
+                in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
+                in.putExtra(IBConstant.KEY_IS_HISTORY, true);
+                ((Activity) context).startActivity(in);
+            }
         });
         holder.card_view.setOnClickListener(v -> {
             if (null != listener) {
