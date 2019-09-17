@@ -68,7 +68,7 @@ public class ViewAllPatientInQAdapter extends RecyclerView.Adapter {
                         if(event.getAction() == MotionEvent.ACTION_UP) {
                             if(event.getRawX() >= (holder.tv_customer_mobile.getRight() - holder.tv_customer_mobile.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                                 // your action here
-                                copyText(context,phoneNo);
+                                copyText(context,PhoneFormatterUtil.phoneStripCountryCode("+"+phoneNo));
                                 return true;
                             }
                         }
