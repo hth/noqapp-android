@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +45,10 @@ public class CaseHistoryAdapter extends BaseAdapter {
         recordHolder.tv_patient_name.setText(dataSet.get(position).getBusinessName());
         switch (medicalRecordFieldFilterEnum) {
             case ND:
-                recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getNoteToDiagnoser()));
+                recordHolder.tv_patient_details.setText(Html.fromHtml(parseWorkDone(dataSet.get(position).getNoteToDiagnoser())));
                 break;
             case NP:
-                recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getNoteForPatient()));
+                recordHolder.tv_patient_details.setText(Html.fromHtml(parseWorkDone(dataSet.get(position).getNoteForPatient())));
                 break;
             case CC:
                 recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getChiefComplain()));
@@ -87,4 +88,38 @@ public class CaseHistoryAdapter extends BaseAdapter {
         return TextUtils.isEmpty(str) ? "N/A" : str;
     }
 
+    private String parseWorkDone(String str) {
+        if (TextUtils.isEmpty(str))
+            return "N/A";
+        else {
+            try {
+                String[] temp = str.split("\\|", -1);
+                if (temp.length > 0) {
+                    String output = "";
+                    for (String act : temp) {
+                        if (act.contains(":")) {
+                            String[] strArray = act.split(":", -1);
+                            String toothNum = strArray[0].trim();
+                            String procedure = strArray[1];
+                            String summary = strArray.length >= 3 ? strArray[2] : "";
+                            if (strArray.length > 3) {
+                                String status = strArray[3].trim();
+                                String unit = strArray[4];
+                                String period = strArray[5];
+                                output += "<b> Tooth Number:  " + toothNum + "</b><b> Procedure: </b> " + procedure + "<br> <b> Summary: </b> " + summary + " <br>" +
+                                        "<b> Unit: </b> " + unit + "   <b> Period: </b> " + period + "   " + "<b> Status: </b> " + status + "<br> ";
+                            }
+                            if (strArray.length == 2)
+                                output += "<b> Tooth Number: </b> " + toothNum + "<br> <b> Procedure: </b> " + procedure + "<br> ";
+                        }
+                    }
+                    return output;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "N/A";
+            }
+            return "N/A";
+        }
+    }
 }
