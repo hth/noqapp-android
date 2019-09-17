@@ -15,17 +15,18 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class WorkHistoryAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<Date> listDataHeader; // header titles
-    private Map<Date, List<JsonMedicalRecordList>> listDataChild;
+    private LinkedHashMap<Date, List<JsonMedicalRecordList>> listDataChild;
     private MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum;
 
     public WorkHistoryAdapter(Context context, List<Date> listDataHeader,
-                              Map<Date, List<JsonMedicalRecordList>> listChildData,
+                              LinkedHashMap<Date, List<JsonMedicalRecordList>> listChildData,
                               MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum) {
         this.context = context;
         this.listDataHeader = listDataHeader;

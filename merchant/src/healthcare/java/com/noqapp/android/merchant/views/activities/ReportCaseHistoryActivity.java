@@ -36,13 +36,14 @@ import com.noqapp.android.merchant.views.utils.AnimationUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ReportCaseHistoryActivity extends BaseActivity implements
         MedicalRecordListPresenter, View.OnClickListener {
-    private Map<Date, List<JsonMedicalRecordList>> expandableListDetail = new HashMap<>();
+    private LinkedHashMap<Date, List<JsonMedicalRecordList>> expandableListDetail = new LinkedHashMap<>();
     private RelativeLayout rl_empty;
     private TextView tv_from_date, tv_until_date;
     private Spinner sp_queue_list, sp_filter_type;
@@ -121,7 +122,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
 
     private void createData(List<JsonMedicalRecord> temp) {
         if (null != temp && temp.size() > 0) {
-            HashMap<Date, List<JsonMedicalRecordList>> tempList = new HashMap<>();
+            LinkedHashMap<Date, List<JsonMedicalRecordList>> tempList = new LinkedHashMap<>();
             for (int i = 0; i < temp.size(); i++) {
                 try {
                     Date key = new Date(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreateDate()).getTime());
@@ -134,7 +135,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                     e.printStackTrace();
                 }
             }
-            expandableListDetail.putAll(new TreeMap(tempList).descendingMap());
+            expandableListDetail.putAll(tempList);
         }
     }
 
