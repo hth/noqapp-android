@@ -40,6 +40,9 @@ public class CodeQRDateRangeLookup extends AbstractDomain {
     @JsonProperty("until")
     private String until;
 
+    @JsonProperty("cp")
+    private int currentPosition;
+
     public String getCodeQR() {
         return codeQR;
     }
@@ -73,6 +76,15 @@ public class CodeQRDateRangeLookup extends AbstractDomain {
 
     public CodeQRDateRangeLookup setUntil(String until) {
         this.until = until;
+        return this;
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public CodeQRDateRangeLookup setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
         return this;
     }
 }
