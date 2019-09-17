@@ -79,4 +79,21 @@ public class PhoneFormatterUtil {
     public static int getCountryCodeFromRegion(String regionCode) {
         return phoneUtil.getCountryCodeForRegion(regionCode.toUpperCase());
     }
+
+    /**
+     * Parse for country code from phone.
+     *
+     * @param phone should begin with +
+     * @return
+     */
+    public static int findCountryCode(String phone) {
+        try {
+            //assertThat(phone, containsString("+"));
+            Phonenumber.PhoneNumber phoneNumber = phoneUtil.parse(phone, "");
+            return phoneNumber.getCountryCode();
+        } catch (NumberParseException e) {
+            Log.e(TAG, "Failed to parse phone " + e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed parsing country code");
+        }
+    }
 }
