@@ -7,6 +7,8 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
+import org.apache.commons.lang3.RegExUtils;
+
 import com.crashlytics.android.Crashlytics;
 
 import android.util.Log;
@@ -78,6 +80,29 @@ public class PhoneFormatterUtil {
 
     public static int getCountryCodeFromRegion(String regionCode) {
         return phoneUtil.getCountryCodeForRegion(regionCode.toUpperCase());
+    }
+
+    /**
+     * Removes country code from phone.
+     * Note: Do not pass a Raw Phone as it will strip few digits.
+     *
+     * @param phone should begin with +
+     * @return
+     */
+    public static String phoneStripCountryCode(String phone) {
+        try {
+            //assertThat(phone, containsString("+"));
+            /* Remove `+` sign with country code before sending the number back. */
+            return RegExUtils.removeFirst(phone, "\\+" + findCountryCode(phone));
+        } catch (AssertionError a) {
+            Log.w(TAG, "Phone number should begin with + phone " + phone);
+            try {
+                return phoneStripCountryCode("+" + phone);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed getting country code from phone " + e.getLocalizedMessage(), e);
+                throw new RuntimeException("Failed finding country code from phone");
+            }
+        }
     }
 
     /**
