@@ -17,11 +17,10 @@ import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class WorkHistoryAdapter extends RecyclerView.Adapter {
     private Context context;
-    private List<Date> listDataHeader; // header titles
+    private List<Date> listDataHeader;
     private LinkedHashMap<Date, List<JsonMedicalRecordList>> listDataChild;
     private MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum;
 
@@ -34,7 +33,7 @@ public class WorkHistoryAdapter extends RecyclerView.Adapter {
         this.medicalRecordFieldFilterEnum = medicalRecordFieldFilterEnum;
     }
 
-    public void resetData(){
+    public void resetData() {
 
         listDataHeader.clear();
         listDataChild.clear();
@@ -53,9 +52,9 @@ public class WorkHistoryAdapter extends RecyclerView.Adapter {
         final JsonMedicalRecordList childData = listDataChild.get(listDataHeader.get(position)).get(0);
         Date headerTitle = listDataHeader.get(position);
         mainHolder.tv_title.setText(CommonHelper.SDF_DOB_FROM_UI.format(headerTitle));
-        CaseHistoryAdapter caseHistoryAdapter = new CaseHistoryAdapter(childData.getJsonMedicalRecords(), context, medicalRecordFieldFilterEnum);
-        mainHolder.fh_list_view.setAdapter(caseHistoryAdapter);
-        caseHistoryAdapter.notifyDataSetChanged();
+        WorkHistoryItemAdapter workHistoryItemAdapter = new WorkHistoryItemAdapter(childData.getJsonMedicalRecords(), context, medicalRecordFieldFilterEnum);
+        mainHolder.fh_list_view.setAdapter(workHistoryItemAdapter);
+        workHistoryItemAdapter.notifyDataSetChanged();
     }
 
     @Override

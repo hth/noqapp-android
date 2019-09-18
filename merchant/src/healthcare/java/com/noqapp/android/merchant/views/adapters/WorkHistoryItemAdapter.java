@@ -17,13 +17,13 @@ import com.noqapp.android.merchant.R;
 
 import java.util.List;
 
-public class CaseHistoryAdapter extends BaseAdapter {
+public class WorkHistoryItemAdapter extends BaseAdapter {
     private final Context context;
     private List<JsonMedicalRecord> dataSet;
     private MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum;
 
-    public CaseHistoryAdapter(List<JsonMedicalRecord> data, Context context,
-                              MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum) {
+    public WorkHistoryItemAdapter(List<JsonMedicalRecord> data, Context context,
+                                  MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum) {
         this.dataSet = data;
         this.context = context;
         this.medicalRecordFieldFilterEnum = medicalRecordFieldFilterEnum;
