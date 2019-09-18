@@ -344,10 +344,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         }
         recordHolder.tv_payment_stat.setOnClickListener(v -> {
             if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-                peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,false);
+                peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, false);
             } else {
                 new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
-                peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,true);
+                peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, true);
             }
         });
         recordHolder.tv_create_case.setOnClickListener(v -> createCaseHistory(context, jsonQueuedPerson, bizCategoryId));
@@ -357,6 +357,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         try {
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S && queueStatusEnum == QueueStatusEnum.N) {
+                    recordHolder.tv_create_case.setClickable(true);
+                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);
+                } else if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);
                 } else {
