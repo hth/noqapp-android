@@ -70,19 +70,12 @@ public class PatientProfileActivity extends BaseActivity implements
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
     private WorkDoneAdapter workDoneAdapter;
 
-    public static PatientProfileActivity getPatientProfileActivity() {
-        return patientProfileActivity;
-    }
-
-    public static PatientProfileActivity patientProfileActivity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
-        patientProfileActivity = this;
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         codeQR = getIntent().getStringExtra("qCodeQR");
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
