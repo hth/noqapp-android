@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.views.activities;
+package com.noqapp.android.common.views.activities;
 
 
 import android.app.Activity;
@@ -15,38 +15,38 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.datepicker.Month;
-import com.noqapp.android.merchant.R;
+import com.noqapp.android.common.R;
 
 import java.util.Calendar;
 
 public class DatePickerActivity extends AppCompatActivity {
 
-    private static final long TODAY;
-    private static final long NEXT_MONTH;
-    private static final Month JAN_THIS_YEAR;
-    private static final Month DEC_THIS_YEAR;
-    private static final Month ONE_YEAR_FORWARD;
-    private static final Pair<Long, Long> TODAY_PAIR;
-    private static final Pair<Long, Long> NEXT_MONTH_PAIR;
+    private long TODAY;
+    private long NEXT_MONTH;
+    private Month JAN_THIS_YEAR;
+    private Month DEC_THIS_YEAR;
+    private Month ONE_YEAR_FORWARD;
+    private Pair<Long, Long> TODAY_PAIR;
+    private Pair<Long, Long> NEXT_MONTH_PAIR;
 
-    private static int SELECTION_MODE_DEFAULT = 0;
-    private static int SELECTION_MODE_TODAY = 1;
-    private static int SELECTION_MODE_NEXT = 2;
+    private final int SELECTION_MODE_DEFAULT = 0;
+    private final int SELECTION_MODE_TODAY = 1;
+    private final int SELECTION_MODE_NEXT = 2;
 
-    private static int TITLE_DEFAULT = 0;
-    private static int TITLE_CUSTOM = 1;
+    private final int TITLE_DEFAULT = 0;
+    private final int TITLE_CUSTOM = 1;
 
-    private static int THEME_DIALOG = 0;
-    private static int THEME_FULLSCREEN = 1;
+    private final int THEME_DIALOG = 0;
+    private final int THEME_FULLSCREEN = 1;
 
-    private static int BOUND_THIS_YEAR_ONLY = 0;
-    private static int BOUND_NEXT_ONE_YEAR = 1;
+    private final int BOUND_THIS_YEAR_ONLY = 0;
+    private final int BOUND_NEXT_ONE_YEAR = 1;
 
-    private static int OPENING_MONTH_CURRENT = 0;
-    private static int OPENING_MONTH_NEXT = 1;
+    private final int OPENING_MONTH_CURRENT = 0;
+    private final int OPENING_MONTH_NEXT = 1;
 
 
-    static {
+    private void init() {
         Calendar calToday = Calendar.getInstance();
         TODAY = calToday.getTimeInMillis();
         Calendar calNextMonth = Calendar.getInstance();
@@ -71,6 +71,7 @@ public class DatePickerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picker_lay);
+        init();
         openCalender();
     }
 
@@ -110,7 +111,7 @@ public class DatePickerActivity extends AppCompatActivity {
         }
     }
 
-    private static int resolveOrThrow(Context context, @AttrRes int attributeResId) {
+    private int resolveOrThrow(Context context, @AttrRes int attributeResId) {
         TypedValue typedValue = new TypedValue();
         if (context.getTheme().resolveAttribute(attributeResId, typedValue, true)) {
             return typedValue.data;
@@ -118,7 +119,7 @@ public class DatePickerActivity extends AppCompatActivity {
         throw new IllegalArgumentException(context.getResources().getResourceName(attributeResId));
     }
 
-    private static MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
+    private MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
             int selectionModeChoice, int selectionChoice) {
         if (selectionModeChoice == SELECTION_MODE_DEFAULT) {
             MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
@@ -140,7 +141,7 @@ public class DatePickerActivity extends AppCompatActivity {
         }
     }
 
-    private static CalendarConstraints.Builder setupConstraintsBuilder(
+    private CalendarConstraints.Builder setupConstraintsBuilder(
             int boundsChoice, int openingChoice, int validationChoice) {
         CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
         if (boundsChoice == BOUND_THIS_YEAR_ONLY) {

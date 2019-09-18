@@ -9,4 +9,6 @@
 
     <string name="empty_visiting_title">Empty hospital visit</string>
     <string name="empty_visiting_subtitle">There are no hospital visit scheduled</string>
+    <string name="cat_picker_title_custom">Select Date</string>
+
 </resources>

@@ -16,13 +16,13 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
@@ -125,7 +125,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.RC_DATE_PICKER && resultCode == Activity.RESULT_OK) {
             String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date))
+            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(getActivity(), date))
                 edt_birthday.setText(date);
         }
     }

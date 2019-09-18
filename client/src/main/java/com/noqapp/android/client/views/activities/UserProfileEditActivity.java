@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -40,9 +41,9 @@ import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
@@ -192,14 +193,17 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 break;
 
             case R.id.tv_birthday:
-                CustomCalendar customCalendar = new CustomCalendar(UserProfileEditActivity.this);
-                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-                    @Override
-                    public void calendarDate(String date) {
-                        tv_birthday.setText(date);
-                    }
-                });
-                customCalendar.showDobCalendar();
+//                CustomCalendar customCalendar = new CustomCalendar(UserProfileEditActivity.this);
+//                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+//                    @Override
+//                    public void calendarDate(String date) {
+//                        tv_birthday.setText(date);
+//                    }
+//                });
+//                customCalendar.showDobCalendar();
+
+                Intent in = new Intent(UserProfileEditActivity.this, DatePickerActivity.class);
+                startActivityForResult(in, Constants.RC_DATE_PICKER);
                 break;
             case R.id.tv_male:
                 gender = "M";
@@ -269,6 +273,11 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     Log.e("Failed getting image ", e.getLocalizedMessage(), e);
                     Crashlytics.log(1, TAG, "Failed to find and upload profile image");
                 }
+            }
+        } else if (requestCode == Constants.RC_DATE_PICKER && resultCode == Activity.RESULT_OK) {
+            String date = data.getStringExtra("result");
+            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date)) {
+                tv_birthday.setText(date);
             }
         }
     }
