@@ -64,7 +64,7 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name=".views.activities.DatePickerActivity"
+            android:name="com.noqapp.android.common.views.activities.DatePickerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BaseTheme1"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />

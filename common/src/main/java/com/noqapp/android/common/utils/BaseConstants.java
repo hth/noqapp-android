@@ -10,6 +10,8 @@ public class BaseConstants {
     public static final String URL_PRIVACY_POLICY = "https://noqapp.com/mobile/m.privacy.html";
     public static final String URL_HOW_IT_WORKS = "https://noqapp.com/mobile/m.how-invite-works.html";
 
+    public static final int RC_DATE_PICKER= 11;
+
     //error codes
     public static final int SERVER_RESPONSE_CODE_SUCESS = 200;
     public static final int INVALID_CREDENTIAL = 401;

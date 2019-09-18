@@ -22,6 +22,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.MedicalRecordFieldFilterEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -35,11 +36,8 @@ import com.noqapp.android.merchant.views.utils.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class ReportCaseHistoryActivity extends BaseActivity implements
         MedicalRecordListPresenter, View.OnClickListener {
@@ -148,7 +146,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 isMoreToDownload = true;
                 jsonMedicalRecords.clear();
                 expandableListDetail.clear();
-                if(null != workHistoryAdapter){
+                if (null != workHistoryAdapter) {
                     workHistoryAdapter.resetData();
                     workHistoryAdapter = null;
                 }
@@ -219,30 +217,15 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_DATE_PICKER_UNTIL && resultCode == Activity.RESULT_OK) {
             String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date) && isDateBeforeToday(date))
+            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date))
                 tv_until_date.setText(CommonHelper.convertDOBToValidFormat(date));
         } else if (requestCode == RC_DATE_PICKER_FROM && resultCode == Activity.RESULT_OK) {
             String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date) && isDateBeforeToday(date))
+            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date))
                 tv_from_date.setText(CommonHelper.convertDOBToValidFormat(date));
         }
     }
 
-    private boolean isDateBeforeToday(String selectedDay) {
-        try {
-            Date selectedDate = CommonHelper.SDF_DOB_FROM_UI.parse(selectedDay);
-            int date_diff = new Date().compareTo(selectedDate);
-            if (date_diff >= 0) {
-                return true;
-            } else {
-                new CustomToast().showToast(ReportCaseHistoryActivity.this, "Future date not allowed");
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
 
     private boolean isEndDateNotAfterStartDate() {
         try {

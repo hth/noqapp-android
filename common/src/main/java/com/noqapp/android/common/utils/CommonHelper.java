@@ -1,6 +1,7 @@
 package com.noqapp.android.common.utils;
 
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -320,5 +321,21 @@ public class CommonHelper {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         }
         return sb.toString();
+    }
+
+    public static boolean isDateBeforeToday(Context context,String selectedDay) {
+        try {
+            Date selectedDate = CommonHelper.SDF_DOB_FROM_UI.parse(selectedDay);
+            int date_diff = new Date().compareTo(selectedDate);
+            if (date_diff >= 0) {
+                return true;
+            } else {
+                new CustomToast().showToast(context, "Future date not allowed");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }

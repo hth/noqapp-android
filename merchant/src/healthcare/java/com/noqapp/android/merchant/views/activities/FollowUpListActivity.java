@@ -1,10 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

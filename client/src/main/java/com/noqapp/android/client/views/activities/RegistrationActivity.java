@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -21,13 +23,14 @@ import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.CustomCalendar;
+import com.noqapp.android.common.views.activities.DatePickerActivity;
 
 import java.util.Random;
 import java.util.TimeZone;
@@ -55,7 +58,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack.setOnClickListener((View v) -> {
-                finish();
+            finish();
         });
         tv_toolbar_title.setText(getString(R.string.register));
         edt_phoneNo = findViewById(R.id.edt_phone);
@@ -134,17 +137,31 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.RC_DATE_PICKER && resultCode == Activity.RESULT_OK) {
+            String date = data.getStringExtra("result");
+            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date))
+                tv_birthday.setText(date);
+        }
+    }
+
+
+    @Override
     public void onClick(View v) {
         if (v == tv_birthday) {
             AppUtils.hideKeyBoard(this);
-            CustomCalendar customCalendar = new CustomCalendar(RegistrationActivity.this);
-            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-                @Override
-                public void calendarDate(String date) {
-                    tv_birthday.setText(date);
-                }
-            });
-            customCalendar.showDobCalendar();
+//            CustomCalendar customCalendar = new CustomCalendar(RegistrationActivity.this);
+//            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+//                @Override
+//                public void calendarDate(String date) {
+//                    tv_birthday.setText(date);
+//                }
+//            });
+//            customCalendar.showDobCalendar();
+
+            Intent in = new Intent(RegistrationActivity.this, DatePickerActivity.class);
+            startActivityForResult(in, Constants.RC_DATE_PICKER);
         } else if (v == btnRegistration) {
             AppUtils.hideKeyBoard(this);
             actionRegistration();
@@ -205,7 +222,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             edt_Mail.setError(getString(R.string.error_email_blank));
             errorMsg = getString(R.string.error_email_blank);
             isValid = false;
-        }else{
+        } else {
             if (!CommonHelper.isValidEmail(edt_Mail.getText().toString())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
                 if (TextUtils.isEmpty(errorMsg))
@@ -247,7 +264,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         new RegisterApiCall(this).register(UserUtils.getDeviceId(), registration);
     }
 
-    private String generatePassword(){
+    private String generatePassword() {
         Random rnd = new Random();
         int n = 100000 + rnd.nextInt(900000);
         return String.valueOf(n);

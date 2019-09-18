@@ -1,17 +1,22 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.CustomCalendar;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +29,7 @@ public class NeuroActivity extends BaseActivity {
     private SegmentedControl sc_seizure_history, sc_personal_history;
     private ArrayList<String> seizure_history_data = new ArrayList<>();
     private ArrayList<String> personal_history_data = new ArrayList<>();
+    private TextView tv_date;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,19 +69,32 @@ public class NeuroActivity extends BaseActivity {
 
         tv_coordinate_time.setOnClickListener(new TextViewClick(tv_coordinate_time, this));
 
-        TextView tv_date = findViewById(R.id.tv_date);
+        tv_date = findViewById(R.id.tv_date);
         tv_date.setOnClickListener(v -> {
-            CustomCalendar customCalendar = new CustomCalendar(NeuroActivity.this,true);
-            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-                @Override
-                public void calendarDate(String date) {
-                    tv_date.setText(date);
-                }
-            });
-            customCalendar.showDobCalendar();
+//            CustomCalendar customCalendar = new CustomCalendar(NeuroActivity.this,true);
+//            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+//                @Override
+//                public void calendarDate(String date) {
+//                    tv_date.setText(date);
+//                }
+//            });
+//            customCalendar.showDobCalendar();
+
+            Intent in = new Intent(NeuroActivity.this, DatePickerActivity.class);
+            startActivityForResult(in, Constants.RC_DATE_PICKER);
         });
 
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.RC_DATE_PICKER && resultCode == Activity.RESULT_OK) {
+            String date = data.getStringExtra("result");
+            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date))
+                tv_date.setText(date);
+        }
     }
 
     private class TextViewClick implements View.OnClickListener {

@@ -66,7 +66,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
     }
 
 
-    public void sendInvitation() {
+    private void sendInvitation() {
         if (StringUtils.isBlank(selectedText)) {
             ShowAlertInformation.showThemeDialog(getActivity(), getString(R.string.alert), getString(R.string.empty_invite_code));
         } else {
@@ -86,7 +86,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
         }
     }
 
-    public void copyText() {
+    private void copyText() {
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", selectedText);
         clipboard.setPrimaryClip(clip);
@@ -97,7 +97,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
         }
     }
 
-    public void howItWorks() {
+    private void howItWorks() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             Intent in = new Intent(getActivity(), WebViewActivity.class);
             in.putExtra(IBConstant.KEY_URL, Constants.URL_HOW_IT_WORKS);

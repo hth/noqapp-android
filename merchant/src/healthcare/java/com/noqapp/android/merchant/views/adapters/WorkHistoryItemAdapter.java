@@ -17,13 +17,13 @@ import com.noqapp.android.merchant.R;
 
 import java.util.List;
 
-public class CaseHistoryAdapter extends BaseAdapter {
+public class WorkHistoryItemAdapter extends BaseAdapter {
     private final Context context;
     private List<JsonMedicalRecord> dataSet;
     private MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum;
 
-    public CaseHistoryAdapter(List<JsonMedicalRecord> data, Context context,
-                              MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum) {
+    public WorkHistoryItemAdapter(List<JsonMedicalRecord> data, Context context,
+                                  MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum) {
         this.dataSet = data;
         this.context = context;
         this.medicalRecordFieldFilterEnum = medicalRecordFieldFilterEnum;
@@ -51,7 +51,7 @@ public class CaseHistoryAdapter extends BaseAdapter {
                 recordHolder.tv_patient_details.setText(Html.fromHtml(parseWorkDone(dataSet.get(position).getNoteForPatient())));
                 break;
             case CC:
-                recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getChiefComplain()));
+                recordHolder.tv_patient_details.setText(parseChiefComplaint(dataSet.get(position).getChiefComplain()));
                 break;
             case DI:
                 recordHolder.tv_patient_details.setText(checkForNullOrEmpty(dataSet.get(position).getDiagnosis()));
@@ -88,6 +88,46 @@ public class CaseHistoryAdapter extends BaseAdapter {
         return TextUtils.isEmpty(str) ? "N/A" : str;
     }
 
+    private String parseChiefComplaint(String str) {
+        if (TextUtils.isEmpty(str))
+            return "N/A";
+        else {
+            try {
+                String data = "";
+                if (TextUtils.isEmpty(str)) {
+                    return "";
+                } else {
+                    String[] temp = str.split("\\r?\\n");
+                    if (temp.length > 0) {
+                        for (int i = 0; i < temp.length; i++) {
+                            String act = temp[i];
+                            if (act.contains("|")) {
+                                String[] strArray = act.split("\\|");
+                                String shortName = strArray[0];
+                                String val = strArray[1];
+                                String desc = "";
+                                if (strArray.length == 3)
+                                    desc = strArray[2];
+
+                                if (TextUtils.isEmpty(desc)) {
+                                    data += "Having " + shortName + " since last " + val + "." + "\n";
+                                } else {
+                                    data += "Having " + shortName + " since last " + val + ". " + desc + "\n";
+                                }
+                            }
+                        }
+                    }
+                }
+                if (data.endsWith("\n"))
+                    data = data.substring(0, data.length() - 2);
+                return data;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "N/A";
+            }
+        }
+    }
+
     private String parseWorkDone(String str) {
         if (TextUtils.isEmpty(str))
             return "N/A";
@@ -113,9 +153,9 @@ public class CaseHistoryAdapter extends BaseAdapter {
                                 output += "<b> Tooth Number: </b> " + toothNum + "<br> <b> Procedure: </b> " + procedure + "<br><br>";
                         }
                     }
-                    if(output.endsWith("<br><br>")){
-                        return output.substring(0, output.length()-8);
-                    }else {
+                    if (output.endsWith("<br><br>")) {
+                        return output.substring(0, output.length() - 8);
+                    } else {
                         return output;
                     }
                 }
