@@ -148,6 +148,10 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 isMoreToDownload = true;
                 jsonMedicalRecords.clear();
                 expandableListDetail.clear();
+                if(null != workHistoryAdapter){
+                    workHistoryAdapter.resetData();
+                    workHistoryAdapter = null;
+                }
                 callApi();
                 break;
             case R.id.tv_from_date: {

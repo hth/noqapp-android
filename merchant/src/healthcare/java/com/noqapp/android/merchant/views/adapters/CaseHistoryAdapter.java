@@ -107,13 +107,17 @@ public class CaseHistoryAdapter extends BaseAdapter {
                                 String unit = strArray[4];
                                 String period = strArray[5];
                                 output += "<b> Tooth Number:  " + toothNum + "</b><b> Procedure: </b> " + procedure + "<br> <b> Summary: </b> " + summary + " <br>" +
-                                        "<b> Unit: </b> " + unit + "   <b> Period: </b> " + period + "   " + "<b> Status: </b> " + status + "<br> ";
+                                        "<b> Unit: </b> " + unit + "   <b> Period: </b> " + period + "   " + "<b> Status: </b> " + status + "<br><br>";
                             }
                             if (strArray.length == 2)
-                                output += "<b> Tooth Number: </b> " + toothNum + "<br> <b> Procedure: </b> " + procedure + "<br> ";
+                                output += "<b> Tooth Number: </b> " + toothNum + "<br> <b> Procedure: </b> " + procedure + "<br><br>";
                         }
                     }
-                    return output;
+                    if(output.endsWith("<br><br>")){
+                        return output.substring(0, output.length()-8);
+                    }else {
+                        return output;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

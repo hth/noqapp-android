@@ -34,6 +34,12 @@ public class WorkHistoryAdapter extends RecyclerView.Adapter {
         this.medicalRecordFieldFilterEnum = medicalRecordFieldFilterEnum;
     }
 
+    public void resetData(){
+
+        listDataHeader.clear();
+        listDataChild.clear();
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
