@@ -457,12 +457,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         return isValid;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUI();
-    }
-
     private void setDependentProfileImageUrl(String path) {
         List<JsonProfile> jsonProfiles = NoQueueBaseActivity.getUserProfile().getDependents();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
