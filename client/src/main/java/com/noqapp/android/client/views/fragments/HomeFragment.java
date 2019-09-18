@@ -69,6 +69,7 @@ import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.OrderConfirmActivity;
 import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.client.views.activities.StoreWithMenuActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.CurrentActivityAdapter;
 import com.noqapp.android.client.views.adapters.EventsAdapter;
@@ -447,7 +448,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 break;
             default:
                 // open order screen
-                Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
+                Intent intent = new Intent(getActivity(), StoreWithMenuActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("BizStoreElastic", item);
                 intent.putExtras(bundle);
