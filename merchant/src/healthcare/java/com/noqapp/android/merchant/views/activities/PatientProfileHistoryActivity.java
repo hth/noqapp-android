@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -33,7 +32,6 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
@@ -43,24 +41,19 @@ import com.noqapp.android.merchant.views.fragments.MedicalHistoryFragment;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientProfileActivity extends BaseActivity implements
-        PatientProfilePresenter, JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
+public class PatientProfileHistoryActivity extends BaseActivity implements PatientProfilePresenter,
+        JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
     private long lastPress;
     private Toast backPressToast;
     public ProgressBar pb_physical;
     private TextView tv_patient_name, tv_address, tv_details;
     private ImageView iv_profile;
-    private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
     private JsonQueuedPerson jsonQueuedPerson;
     private String codeQR;
     private final String notAvailable = "N/A";
-    private JsonMedicalRecord jsonMedicalRecordTemp;
-    private JsonProfile jsonProfile;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private LinearLayout ll_dental_history;
     private boolean isDental = false;
@@ -68,21 +61,12 @@ public class PatientProfileActivity extends BaseActivity implements
     private ListView list_view;
     private TextView tv_empty_work_done;
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
-    private WorkDoneAdapter workDoneAdapter;
-
-    public static PatientProfileActivity getPatientProfileActivity() {
-        return patientProfileActivity;
-    }
-
-    public static PatientProfileActivity patientProfileActivity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setScreenOrientation();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_profile);
-        patientProfileActivity = this;
+        setContentView(R.layout.activity_patient_profile_history);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         codeQR = getIntent().getStringExtra("qCodeQR");
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
@@ -96,73 +80,7 @@ public class PatientProfileActivity extends BaseActivity implements
         tv_details = findViewById(R.id.tv_details);
         iv_profile = findViewById(R.id.iv_profile);
 
-        tv_weight = findViewById(R.id.tv_weight);
-        tv_pulse = findViewById(R.id.tv_pulse);
-        tv_temperature = findViewById(R.id.tv_temperature);
-        tv_height = findViewById(R.id.tv_height);
-        tv_bp = findViewById(R.id.tv_bp);
-        tv_respiration = findViewById(R.id.tv_respiration);
-
         pb_physical = findViewById(R.id.pb_physical);
-        TextView tv_start_diagnosis = findViewById(R.id.tv_start_diagnosis);
-        tv_start_diagnosis.setOnClickListener(v -> {
-            if (null == jsonProfile || null == jsonMedicalRecordTemp) {
-                new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
-            } else {
-                if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.SPS) {
-                    Intent intent = new Intent(PatientProfileActivity.this, NeuroActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
-                    intent.putExtra("data", jsonQueuedPerson);
-                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                    startActivity(intent);
-                } else if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.NEU) {
-                    Intent intent = new Intent(PatientProfileActivity.this, NeuroFullPageActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
-                    intent.putExtra("data", jsonQueuedPerson);
-                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
-                    intent.putExtra("data", jsonQueuedPerson);
-                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                    intent.putExtra("jsonProfile", jsonProfile);
-                    intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
-        TextView tv_hospital_schedule = findViewById(R.id.tv_hospital_schedule);
-        tv_hospital_schedule.setOnClickListener(v -> {
-            if (null == jsonProfile || null == jsonMedicalRecordTemp) {
-                new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
-            } else {
-                Intent intent = new Intent(PatientProfileActivity.this, HospitalVisitScheduleActivity.class);
-                intent.putExtra("qCodeQR", codeQR);
-                intent.putExtra("data", jsonQueuedPerson);
-                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                startActivity(intent);
-            }
-        });
-        TextView tv_draw = findViewById(R.id.tv_draw);
-        tv_draw.setVisibility(AppUtils.isRelease() ? View.GONE : View.VISIBLE);
-        tv_draw.setOnClickListener(v -> {
-            if (null == jsonProfile || null == jsonMedicalRecordTemp) {
-                new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
-            } else {
-                PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
-                if (permissionHelper.isStoragePermissionAllowed()) {
-                    Intent intent = new Intent(PatientProfileActivity.this, DrawActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
-                    intent.putExtra("data", jsonQueuedPerson);
-                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                    startActivity(intent);
-                } else {
-                    permissionHelper.requestStoragePermission();
-                }
-            }
-        });
 
         Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
         medicalHistoryApiCalls = new MedicalHistoryApiCalls();
@@ -180,19 +98,19 @@ public class PatientProfileActivity extends BaseActivity implements
         tv_history_filtered.setOnClickListener(v -> {
             fl_medical_history_filtered.setVisibility(View.VISIBLE);
             fl_medical_history.setVisibility(View.GONE);
-            tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.white));
+            tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileHistoryActivity.this, R.color.white));
             tv_history_all.setBackground(null);
-            tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.pressed_color));
-            tv_history_filtered.setBackground(ContextCompat.getDrawable(PatientProfileActivity.this, R.drawable.button_drawable_white));
+            tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileHistoryActivity.this, R.color.pressed_color));
+            tv_history_filtered.setBackground(ContextCompat.getDrawable(PatientProfileHistoryActivity.this, R.drawable.button_drawable_white));
 
         });
         tv_history_all.setOnClickListener(v -> {
             fl_medical_history_filtered.setVisibility(View.GONE);
             fl_medical_history.setVisibility(View.VISIBLE);
-            tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.white));
+            tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileHistoryActivity.this, R.color.white));
             tv_history_filtered.setBackground(null);
-            tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.pressed_color));
-            tv_history_all.setBackground(ContextCompat.getDrawable(PatientProfileActivity.this, R.drawable.button_drawable_white));
+            tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileHistoryActivity.this, R.color.pressed_color));
+            tv_history_all.setBackground(ContextCompat.getDrawable(PatientProfileHistoryActivity.this, R.drawable.button_drawable_white));
         });
     }
 
@@ -205,7 +123,7 @@ public class PatientProfileActivity extends BaseActivity implements
 
         @Override
         protected Void doInBackground(Void... voids) {
-            PatientProfileApiCalls profileModel = new PatientProfileApiCalls(PatientProfileActivity.this);
+            PatientProfileApiCalls profileModel = new PatientProfileApiCalls(PatientProfileHistoryActivity.this);
             profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
             MedicalHistoryFragment mhf = new MedicalHistoryFragment();
             Bundle b = new Bundle();
@@ -216,7 +134,7 @@ public class PatientProfileActivity extends BaseActivity implements
             replaceFragmentWithoutBackStack(R.id.fl_medical_history, mhf);
 
             MedicalHistoryFilteredFragment mhff = new MedicalHistoryFilteredFragment();
-            mhff.setUpdateWorkDone(PatientProfileActivity.this::updateWorkDone);
+            mhff.setUpdateWorkDone(PatientProfileHistoryActivity.this::updateWorkDone);
             mhff.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
 
@@ -244,7 +162,6 @@ public class PatientProfileActivity extends BaseActivity implements
     }
 
     private void updateUI(JsonProfile jsonProfile) {
-        this.jsonProfile = jsonProfile;
         tv_patient_name.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
         if (TextUtils.isEmpty(jsonProfile.getAddress())) {
             tv_address.setText(Html.fromHtml("<b> Address: </b> N/A"));
@@ -279,7 +196,6 @@ public class PatientProfileActivity extends BaseActivity implements
 
     @Override
     public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
-        jsonMedicalRecordTemp = jsonMedicalRecord;
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             try {
@@ -288,50 +204,10 @@ public class PatientProfileActivity extends BaseActivity implements
                 } else {
                     tv_details.setText(Html.fromHtml("<b> Blood Group: </b> N/A"));
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical()) {
-                    if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
-                        tv_respiration.setText(jsonMedicalRecord.getMedicalPhysical().getRespiratory());
-                    } else {
-                        tv_respiration.setText(notAvailable);
-                    }
-                    if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
-                        tv_height.setText(jsonMedicalRecord.getMedicalPhysical().getHeight());
-                    } else {
-                        tv_height.setText(notAvailable);
-                    }
-                    if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
-                        tv_pulse.setText(jsonMedicalRecord.getMedicalPhysical().getPulse());
-                    } else {
-                        tv_pulse.setText(notAvailable);
-                    }
-                    if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
-                        tv_bp.setText(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0] + "/" + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]);
-                    } else {
-                        tv_bp.setText(notAvailable);
-                    }
-                    if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
-                        tv_weight.setText(jsonMedicalRecord.getMedicalPhysical().getWeight());
-                    } else {
-                        tv_weight.setText(notAvailable);
-                    }
-                    if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
-                        tv_temperature.setText(jsonMedicalRecord.getMedicalPhysical().getTemperature());
-                    } else {
-                        tv_temperature.setText(notAvailable);
-                    }
-                } else {
-                    tv_pulse.setText(notAvailable);
-                    tv_bp.setText(notAvailable);
-                    tv_weight.setText(notAvailable);
-                    tv_temperature.setText(notAvailable);
-                    tv_respiration.setText(notAvailable);
-                    tv_height.setText(notAvailable);
-                }
-
                 if (isDental) {
                     ll_dental_history.setVisibility(View.VISIBLE);
                     Bundle b = new Bundle();
-                    b.putSerializable("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    b.putSerializable("jsonMedicalRecord", jsonMedicalRecord);
                     DentalStatusFragment dentalStatusFragment = new DentalStatusFragment();
                     dentalStatusFragment.setArguments(b);
                     replaceFragmentWithoutBackStack(R.id.fl_dental_history, dentalStatusFragment);
@@ -388,7 +264,7 @@ public class PatientProfileActivity extends BaseActivity implements
                 parseWorkDoneData(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
             }
         }
-        workDoneAdapter = new WorkDoneAdapter(this, toothWorkDoneList);
+        WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(this, toothWorkDoneList);
         list_view.setAdapter(workDoneAdapter);
         tv_empty_work_done.setVisibility(toothWorkDoneList.size() > 0 ? View.GONE : View.VISIBLE);
     }

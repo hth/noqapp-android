@@ -35,9 +35,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="chandra b sharma"
+                        android:text=""
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_fourteen"/>
+                <TextView
+                    android:id="@+id/tv_customer_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:textSize="@dimen/text_size_twelve"/>
+
 
 
             </LinearLayout>

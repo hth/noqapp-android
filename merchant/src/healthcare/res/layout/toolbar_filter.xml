@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:background="@drawable/bg_gradient_square"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    <ImageView
+        android:id="@+id/actionbarBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/back"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/tv_toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_toLeftOf="@+id/tv_filter"
+        android:text=""
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="right"
+        android:layout_marginEnd="10dp"
+        android:text="Filter"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_home"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="right"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ic_home"
+        android:backgroundTint="@android:color/white"
+        android:clipToPadding="false"
+        android:focusable="true"
+        android:visibility="gone" />
+
+</androidx.appcompat.widget.Toolbar>

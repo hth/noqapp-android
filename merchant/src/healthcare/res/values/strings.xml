@@ -132,4 +132,6 @@
     <item>10</item>
 </string-array>
 
+    <string name="loadmore">Loading more items please wait&#8230;</string>
+
 </resources>

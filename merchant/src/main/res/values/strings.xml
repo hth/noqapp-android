@@ -236,6 +236,8 @@
     <string name="empty_queue_subtitle">No one has joined the queue</string>
     <string name="empty_review_title">No Reviews</string>
     <string name="empty_review_subtitle">We are waiting for customers to review our service</string>
+    <string name="empty_work_history_title">Empty Work History</string>
+    <string name="empty_work_history_subtitle">No work history available </string>
     <string name="user_details">Customer details</string>
     <string name="followup_setting">Follow-up Settings</string>
     <string name="text_followup_in_days">Free follow-up until days</string>

@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.model.types.medical.MedicalRecordFieldFilterEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 
 import java.util.Date;
@@ -26,12 +26,15 @@ public class ViewAllHistoryExpListAdapter extends BaseAdapter {
     private List<Date> listDataHeader; // header titles
     // child data in format of header title, child title
     private Map<Date, List<JsonMedicalRecordList>> listDataChild;
+    private MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum;
 
     public ViewAllHistoryExpListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonMedicalRecordList>> listChildData) {
+                                        Map<Date, List<JsonMedicalRecordList>> listChildData,
+                                        MedicalRecordFieldFilterEnum medicalRecordFieldFilterEnum) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
+        this.medicalRecordFieldFilterEnum = medicalRecordFieldFilterEnum;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class ViewAllHistoryExpListAdapter extends BaseAdapter {
         }
         Date headerTitle = listDataHeader.get(position);
         childViewHolder.tv_title.setText(CommonHelper.SDF_DOB_FROM_UI.format(headerTitle));
-        CaseHistoryAdapter caseHistoryAdapter = new CaseHistoryAdapter(childData.getJsonMedicalRecords(), context);
+        CaseHistoryAdapter caseHistoryAdapter = new CaseHistoryAdapter(childData.getJsonMedicalRecords(), context,medicalRecordFieldFilterEnum);
         childViewHolder.fh_list_view.setAdapter(caseHistoryAdapter);
         caseHistoryAdapter.notifyDataSetChanged();
         return convertView;

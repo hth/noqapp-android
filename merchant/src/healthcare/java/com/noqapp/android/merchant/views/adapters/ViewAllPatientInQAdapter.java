@@ -1,9 +1,12 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,10 +14,16 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.DataVisibilityEnum;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
+import com.noqapp.android.merchant.views.activities.PatientProfileHistoryActivity;
 
 import java.util.List;
 
@@ -39,9 +48,44 @@ public class ViewAllPatientInQAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(listPosition);
+        final String phoneNo = jsonQueuedPerson.getCustomerPhone();
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
+        if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().getUserProfile()) {
+            holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
+                    PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+        }
+        if (DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+            if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
+                holder.tv_customer_mobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.copy, 0);
+                holder.tv_customer_mobile.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        final int DRAWABLE_LEFT = 0;
+                        final int DRAWABLE_TOP = 1;
+                        final int DRAWABLE_RIGHT = 2;
+                        final int DRAWABLE_BOTTOM = 3;
+
+                        if(event.getAction() == MotionEvent.ACTION_UP) {
+                            if(event.getRawX() >= (holder.tv_customer_mobile.getRight() - holder.tv_customer_mobile.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                                // your action here
+                                copyText(context,PhoneFormatterUtil.phoneStripCountryCode("+"+phoneNo));
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+            }
+            holder.tv_customer_mobile.setOnClickListener(v -> {
+                if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
+                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                }
+            });
+        } else {
+            holder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
+        }
         holder.card_view.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PatientProfileActivity.class);
+            Intent intent = new Intent(context, PatientProfileHistoryActivity.class);
             intent.putExtra("qCodeQR", jsonTopic.getCodeQR());
             intent.putExtra("data", jsonQueuedPerson);
             intent.putExtra("bizCategoryId", jsonTopic.getBizCategoryId());
@@ -57,12 +101,22 @@ public class ViewAllPatientInQAdapter extends RecyclerView.Adapter {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_customer_name;
+        private TextView tv_customer_mobile;
         private CardView card_view;
 
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
+            this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
+    }
+
+    private void copyText(Context context, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", text);
+        clipboard.setPrimaryClip(clip);
+        new CustomToast().showToast(context, "copied");
+
     }
 }
