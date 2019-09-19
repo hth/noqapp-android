@@ -114,6 +114,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("um")
     private JsonUserMedicalProfile jsonUserMedicalProfile = new JsonUserMedicalProfile();
 
+    @JsonProperty("pdn")
+    private String patientDisplayName;
+
+    @JsonProperty("ppr")
+    private String patientPhoneRaw;
+
     @JsonProperty("dbn")
     private String diagnosedByDisplayName;
 
@@ -366,6 +372,24 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getPatientDisplayName() {
+        return patientDisplayName;
+    }
+
+    public JsonMedicalRecord setPatientDisplayName(String patientDisplayName) {
+        this.patientDisplayName = patientDisplayName;
+        return this;
+    }
+
+    public String getPatientPhoneRaw() {
+        return patientPhoneRaw;
+    }
+
+    public JsonMedicalRecord setPatientPhoneRaw(String patientPhoneRaw) {
+        this.patientPhoneRaw = patientPhoneRaw;
+        return this;
+    }
+
     public String getDiagnosedByDisplayName() {
         return diagnosedByDisplayName;
     }
@@ -423,6 +447,8 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
                 ", createDate='" + createDate + '\'' +
                 ", recordReferenceId='" + recordReferenceId + '\'' +
                 ", jsonUserMedicalProfile=" + jsonUserMedicalProfile +
+                ", patientDisplayName='" + patientDisplayName + '\'' +
+                ", patientPhoneRaw='" + patientPhoneRaw + '\'' +
                 ", diagnosedByDisplayName='" + diagnosedByDisplayName + '\'' +
                 ", areaAndTown='" + areaAndTown + '\'' +
                 ", error=" + error +

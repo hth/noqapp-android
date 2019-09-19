@@ -43,8 +43,6 @@ import com.noqapp.android.merchant.views.fragments.MedicalHistoryFragment;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 

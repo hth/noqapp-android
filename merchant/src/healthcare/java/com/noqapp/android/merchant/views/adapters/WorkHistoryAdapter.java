@@ -34,7 +34,6 @@ public class WorkHistoryAdapter extends RecyclerView.Adapter {
     }
 
     public void resetData() {
-
         listDataHeader.clear();
         listDataChild.clear();
         notifyDataSetChanged();

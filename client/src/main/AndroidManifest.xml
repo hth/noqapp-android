@@ -86,6 +86,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
+            android:name=".views.activities.StoreWithMenuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
             android:name=".views.activities.MedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />

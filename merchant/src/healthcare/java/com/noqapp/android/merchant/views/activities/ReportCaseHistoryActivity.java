@@ -1,7 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,8 +7,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,22 +20,23 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.MedicalRecordFieldFilterEnum;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.QueueAdapter;
 import com.noqapp.android.merchant.views.adapters.WorkHistoryAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
-import com.noqapp.android.merchant.views.utils.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 public class ReportCaseHistoryActivity extends BaseActivity implements
         MedicalRecordListPresenter, View.OnClickListener {
@@ -46,16 +45,16 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     private TextView tv_from_date, tv_until_date;
     private Spinner sp_queue_list, sp_filter_type;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
-    private final int RC_DATE_PICKER_FROM = 11;
-    private final int RC_DATE_PICKER_UNTIL = 12;
     private final int PAGE_SIZE = 20;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
     private boolean isMoreToDownload = true;
     private RecyclerView rcv_work_history;
     private RelativeLayout bottomLayout;
     private WorkHistoryAdapter workHistoryAdapter;
-    private LinearLayout ll_filter;
+    private ScrollView sv_filter;
     private Button btn_clear_filter;
+    private SegmentedControl sc_month_from, sc_year_from, sc_month_until, sc_year_until;
+    private ArrayList<String> monthList, yearList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +67,25 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         sp_queue_list = findViewById(R.id.sp_queue_list);
         sp_filter_type = findViewById(R.id.sp_filter_type);
         bottomLayout = findViewById(R.id.loadItemsLayout_recyclerView);
+        monthList = AppUtils.getMonths();
+        yearList = AppUtils.getYearsTillNow();
 
-        TextView tv_filter = findViewById(R.id.tv_filter);
-        tv_filter.setOnClickListener(this::onClick);
+        sc_month_from = findViewById(R.id.sc_month_from);
+        sc_year_from = findViewById(R.id.sc_year_from);
+        sc_month_until = findViewById(R.id.sc_month_until);
+        sc_year_until = findViewById(R.id.sc_year_until);
 
-        ll_filter = findViewById(R.id.ll_filter);
+
+        sc_month_from.addSegments(monthList);
+        sc_year_from.addSegments(yearList);
+        sc_month_until.addSegments(monthList);
+        sc_year_until.addSegments(yearList);
+
+
+        ImageView iv_filter = findViewById(R.id.iv_filter);
+        iv_filter.setOnClickListener(this::onClick);
+
+        sv_filter = findViewById(R.id.sv_filter);
         rcv_work_history = findViewById(R.id.rcv_work_history);
         rcv_work_history.setHasFixedSize(true);
         rcv_work_history.setLayoutManager(new LinearLayoutManager(this));
@@ -141,33 +154,35 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_filter:
-                btn_clear_filter.setVisibility(View.VISIBLE);
-                AnimationUtils.collapse(ll_filter);
-                isMoreToDownload = true;
-                jsonMedicalRecords.clear();
-                expandableListDetail.clear();
-                if (null != workHistoryAdapter) {
-                    workHistoryAdapter.resetData();
-                    workHistoryAdapter = null;
+                if (sc_month_from.getLastSelectedAbsolutePosition() == -1 || sc_year_from.getLastSelectedAbsolutePosition() == -1 ||
+                        sc_month_until.getLastSelectedAbsolutePosition() == -1 || sc_year_until.getLastSelectedAbsolutePosition() == -1) {
+                    tv_from_date.setText("");
+                    tv_until_date.setText("");
+                } else {
+                    tv_from_date.setText(AppUtils.createAndParseDate(monthList.get(sc_month_from.getLastSelectedAbsolutePosition())
+                            , yearList.get(sc_year_from.getLastSelectedAbsolutePosition())));
+                    tv_until_date.setText(AppUtils.createAndParseDate(monthList.get(sc_month_until.getLastSelectedAbsolutePosition())
+                            , yearList.get(sc_year_until.getLastSelectedAbsolutePosition())));
                 }
-                callApi();
+                if (isValid()) {
+                    callApi();
+                    btn_clear_filter.setVisibility(View.VISIBLE);
+                    sv_filter.setVisibility(View.GONE);
+                    isMoreToDownload = true;
+                    jsonMedicalRecords.clear();
+                    expandableListDetail.clear();
+                    if (null != workHistoryAdapter) {
+                        workHistoryAdapter.resetData();
+                        workHistoryAdapter = null;
+                    }
+                }
                 break;
-            case R.id.tv_from_date: {
-                Intent in = new Intent(this, DatePickerActivity.class);
-                startActivityForResult(in, RC_DATE_PICKER_FROM);
-            }
-            break;
-            case R.id.tv_until_date: {
-                Intent in = new Intent(this, DatePickerActivity.class);
-                startActivityForResult(in, RC_DATE_PICKER_UNTIL);
-            }
-            break;
-            case R.id.tv_filter: {
-                AnimationUtils.expand(ll_filter);
+            case R.id.iv_filter: {
+                sv_filter.setVisibility(View.VISIBLE);
             }
             break;
             case R.id.iv_close: {
-                AnimationUtils.collapse(ll_filter);
+                sv_filter.setVisibility(View.GONE);
             }
             break;
             case R.id.btn_clear_filter: {
@@ -176,54 +191,52 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 tv_until_date.setText("");
                 tv_from_date.setText("");
                 btn_clear_filter.setVisibility(View.GONE);
+                sc_month_from.clearSelection();
+                sc_month_until.clearSelection();
+                sc_year_from.clearSelection();
+                sc_year_until.clearSelection();
             }
             break;
         }
+    }
 
+    private boolean isValid() {
+        boolean isValid = true;
+        if (TextUtils.isEmpty(tv_from_date.getText().toString()) || TextUtils.isEmpty(tv_until_date.getText().toString())) {
+            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Both dates are required");
+            return false;
+        } else if (isEndDateNotAfterStartDate()) {
+            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Until Date should be after From Date");
+            return false;
+        } else if (sp_queue_list.getSelectedItemPosition() == 0) {
+            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Queue");
+            return false;
+        } else if (sp_filter_type.getSelectedItemPosition() == 0) {
+            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Filter Option");
+            return false;
+        }
+        return isValid;
     }
 
     private void callApi() {
-        if (TextUtils.isEmpty(tv_from_date.getText().toString()) || TextUtils.isEmpty(tv_until_date.getText().toString())) {
-            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Both dates are required");
-        } else if (isEndDateNotAfterStartDate()) {
-            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Until Date should be after From Date");
-        } else if (sp_queue_list.getSelectedItemPosition() == 0) {
-            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Queue");
-        } else if (sp_filter_type.getSelectedItemPosition() == 0) {
-            new CustomToast().showToast(ReportCaseHistoryActivity.this, "Please select Filter Option");
+        bottomLayout.setVisibility(View.VISIBLE);
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
+            CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()
+                    .setCodeQR(jt.getCodeQR())
+                    .setCurrentPosition(jsonMedicalRecords.size())
+                    .setMedicalRecordFieldFilter(MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()))
+                    .setFrom(tv_from_date.getText().toString())
+                    .setUntil(tv_until_date.getText().toString());
+            medicalHistoryApiCalls.workHistory(
+                    UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(),
+                    codeQRDateRangeLookup);
         } else {
-            bottomLayout.setVisibility(View.VISIBLE);
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
-                CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()
-                        .setCodeQR(jt.getCodeQR())
-                        .setCurrentPosition(jsonMedicalRecords.size())
-                        .setMedicalRecordFieldFilter(MedicalRecordFieldFilterEnum.byDescription((String) sp_filter_type.getSelectedItem()))
-                        .setFrom(tv_from_date.getText().toString())
-                        .setUntil(tv_until_date.getText().toString());
-                medicalHistoryApiCalls.workHistory(
-                        UserUtils.getDeviceId(),
-                        UserUtils.getEmail(),
-                        UserUtils.getAuth(),
-                        codeQRDateRangeLookup);
-            } else {
-                ShowAlertInformation.showNetworkDialog(ReportCaseHistoryActivity.this);
-            }
+            ShowAlertInformation.showNetworkDialog(ReportCaseHistoryActivity.this);
         }
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_DATE_PICKER_UNTIL && resultCode == Activity.RESULT_OK) {
-            String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date))
-                tv_until_date.setText(CommonHelper.convertDOBToValidFormat(date));
-        } else if (requestCode == RC_DATE_PICKER_FROM && resultCode == Activity.RESULT_OK) {
-            String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date))
-                tv_from_date.setText(CommonHelper.convertDOBToValidFormat(date));
-        }
     }
 
 
@@ -240,6 +253,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
 
     @Override
     public void medicalRecordListResponse(JsonMedicalRecordList jsonMedicalRecordList) {
+        sv_filter.setVisibility(View.GONE);
         bottomLayout.setVisibility(View.GONE);
         if (null != jsonMedicalRecordList) {
             Log.e("data", jsonMedicalRecordList.toString());

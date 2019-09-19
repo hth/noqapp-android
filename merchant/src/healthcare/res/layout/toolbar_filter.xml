@@ -22,24 +22,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_toLeftOf="@+id/tv_filter"
+        android:layout_toLeftOf="@+id/iv_filter"
         android:text=""
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/iv_filter"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_gravity="right"
         android:layout_marginEnd="10dp"
-        android:text="Filter"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:background="@drawable/ic_search"
+        android:backgroundTint="@android:color/white"
+        android:clipToPadding="false"
+        android:focusable="true" />
 
     <ImageView
         android:id="@+id/iv_home"
@@ -49,6 +49,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="right"
         android:layout_marginEnd="10dp"
+        android:padding="5dp"
         android:background="@drawable/ic_home"
         android:backgroundTint="@android:color/white"
         android:clipToPadding="false"

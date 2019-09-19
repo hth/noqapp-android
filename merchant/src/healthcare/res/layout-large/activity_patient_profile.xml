@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".5">
+        android:layout_weight=".65">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -99,33 +99,40 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/tv_hospital_schedule"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/button_drawable_white"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="Upcoming Visit"
-                    android:textColor="#31b7bd"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                <TextView
-                    android:id="@+id/tv_draw"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/button_drawable_white"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="Draw reports"
-                    android:textColor="#31b7bd"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_hospital_schedule"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".5"
+                        android:background="@drawable/button_drawable_white"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Upcoming Visit"
+                        android:textColor="#31b7bd"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_draw"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".5"
+                        android:background="@drawable/button_drawable_white"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Draw reports"
+                        android:textColor="#31b7bd"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -137,22 +144,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
 
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="center"
-                            android:padding="10dp"
-                            android:text="Dental Anatomy"
-                            android:textColor="@android:color/white"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Dental Anatomy"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
 
                     <FrameLayout
@@ -188,18 +193,18 @@
                         android:id="@+id/list_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="0dp"
                         android:background="@android:color/transparent"
-                        android:divider="@null"
-                        android:layout_margin="0dp"/>
+                        android:divider="@null" />
 
                     <TextView
                         android:id="@+id/tv_empty_work_done"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:gravity="center"
-                        android:textStyle="bold"
                         android:background="@android:color/white"
-                        android:text="No work done created yet"/>
+                        android:gravity="center"
+                        android:text="No work done created yet"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -595,7 +600,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".5"
+        android:layout_weight=".35"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -632,34 +637,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
+            android:orientation="horizontal"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:orientation="horizontal">
+            android:paddingTop="5dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tv_history_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All Medical History"
+                android:layout_marginRight="5dp"
                 android:gravity="center"
                 android:padding="10dp"
+                android:text="All Medical History"
                 android:textColor="@android:color/white"
-                android:layout_marginRight="5dp"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_history_filtered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dental History"
+                android:background="@drawable/button_drawable_white"
                 android:gravity="center"
                 android:padding="10dp"
-                android:background="@drawable/button_drawable_white"
+                android:text="Dental History"
                 android:textColor="@color/pressed_color"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <FrameLayout

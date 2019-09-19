@@ -98,7 +98,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-        TextView tv_user_name = findViewById(R.id.tv_user_name);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         tv_due_amt = findViewById(R.id.tv_due_amt);
@@ -164,7 +163,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
-        tv_user_name.setText(NoQueueBaseActivity.getUserName());
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         //tv_address.setText(NoQueueBaseActivity.getAddress());
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
