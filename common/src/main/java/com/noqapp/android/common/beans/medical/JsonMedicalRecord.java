@@ -447,6 +447,8 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
                 ", createDate='" + createDate + '\'' +
                 ", recordReferenceId='" + recordReferenceId + '\'' +
                 ", jsonUserMedicalProfile=" + jsonUserMedicalProfile +
+                ", patientDisplayName='" + patientDisplayName + '\'' +
+                ", patientPhoneRaw='" + patientPhoneRaw + '\'' +
                 ", diagnosedByDisplayName='" + diagnosedByDisplayName + '\'' +
                 ", areaAndTown='" + areaAndTown + '\'' +
                 ", error=" + error +

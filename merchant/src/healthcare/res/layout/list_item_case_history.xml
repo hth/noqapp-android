@@ -8,6 +8,13 @@
     android:layout_marginBottom="5dp"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_patient_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textColor="#333"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_patient_details"
@@ -15,13 +22,6 @@
         android:layout_height="wrap_content"
         android:padding="5dp" />
 
-    <TextView
-        android:id="@+id/tv_patient_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textColor="#333"
-        android:textStyle="bold"
-        android:visibility="gone" />
+
 
 </LinearLayout>

@@ -42,7 +42,7 @@ public class WorkHistoryItemAdapter extends BaseAdapter {
         } else {
             recordHolder = (MyViewHolder) view.getTag();
         }
-        recordHolder.tv_patient_name.setText(dataSet.get(position).getBusinessName());
+        recordHolder.tv_patient_name.setText(Html.fromHtml("<b> Patient Name: </b> " +dataSet.get(position).getPatientDisplayName()));
         switch (medicalRecordFieldFilterEnum) {
             case ND:
                 recordHolder.tv_patient_details.setText(Html.fromHtml(parseWorkDone(dataSet.get(position).getNoteToDiagnoser())));
