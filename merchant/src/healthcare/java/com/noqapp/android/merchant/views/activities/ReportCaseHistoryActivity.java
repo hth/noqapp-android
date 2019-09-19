@@ -1,7 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,29 +20,23 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.MedicalRecordFieldFilterEnum;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.CodeQRDateRangeLookup;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.QueueAdapter;
 import com.noqapp.android.merchant.views.adapters.WorkHistoryAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class ReportCaseHistoryActivity extends BaseActivity implements
         MedicalRecordListPresenter, View.OnClickListener {
@@ -53,8 +45,6 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     private TextView tv_from_date, tv_until_date;
     private Spinner sp_queue_list, sp_filter_type;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
-    private final int RC_DATE_PICKER_FROM = 11;
-    private final int RC_DATE_PICKER_UNTIL = 12;
     private final int PAGE_SIZE = 20;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
     private boolean isMoreToDownload = true;
@@ -77,8 +67,8 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         sp_queue_list = findViewById(R.id.sp_queue_list);
         sp_filter_type = findViewById(R.id.sp_filter_type);
         bottomLayout = findViewById(R.id.loadItemsLayout_recyclerView);
-        monthList = getMonths();
-        yearList = getYearsTillNow();
+        monthList = AppUtils.getMonths();
+        yearList = AppUtils.getYearsTillNow();
 
         sc_month_from = findViewById(R.id.sc_month_from);
         sc_year_from = findViewById(R.id.sc_year_from);
@@ -87,41 +77,10 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
 
 
         sc_month_from.addSegments(monthList);
-        sc_month_from.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    //teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
-                }
-            }
-        });
         sc_year_from.addSegments(yearList);
-        sc_year_from.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    //teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
-                }
-            }
-        });
         sc_month_until.addSegments(monthList);
-        sc_month_until.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    //teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
-                }
-            }
-        });
         sc_year_until.addSegments(yearList);
-        sc_year_until.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    //teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
-                }
-            }
-        });
+
 
         ImageView iv_filter = findViewById(R.id.iv_filter);
         iv_filter.setOnClickListener(this::onClick);
@@ -170,7 +129,6 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         qList.add(0, jsonTopic);
         QueueAdapter adapter = new QueueAdapter(this, qList);
         sp_queue_list.setAdapter(adapter);
-        getYearsTillNow();
     }
 
     private void createData(List<JsonMedicalRecord> temp) {
@@ -201,9 +159,9 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                     tv_from_date.setText("");
                     tv_until_date.setText("");
                 } else {
-                    tv_from_date.setText(createAndParseDate(monthList.get(sc_month_from.getLastSelectedAbsolutePosition())
+                    tv_from_date.setText(AppUtils.createAndParseDate(monthList.get(sc_month_from.getLastSelectedAbsolutePosition())
                             , yearList.get(sc_year_from.getLastSelectedAbsolutePosition())));
-                    tv_until_date.setText(createAndParseDate(monthList.get(sc_month_until.getLastSelectedAbsolutePosition())
+                    tv_until_date.setText(AppUtils.createAndParseDate(monthList.get(sc_month_until.getLastSelectedAbsolutePosition())
                             , yearList.get(sc_year_until.getLastSelectedAbsolutePosition())));
                 }
                 if (isValid()) {
@@ -219,16 +177,6 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                     }
                 }
                 break;
-            case R.id.tv_from_date: {
-                Intent in = new Intent(this, DatePickerActivity.class);
-                startActivityForResult(in, RC_DATE_PICKER_FROM);
-            }
-            break;
-            case R.id.tv_until_date: {
-                Intent in = new Intent(this, DatePickerActivity.class);
-                startActivityForResult(in, RC_DATE_PICKER_UNTIL);
-            }
-            break;
             case R.id.iv_filter: {
                 sv_filter.setVisibility(View.VISIBLE);
             }
@@ -285,20 +233,6 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
             ShowAlertInformation.showNetworkDialog(ReportCaseHistoryActivity.this);
         }
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_DATE_PICKER_UNTIL && resultCode == Activity.RESULT_OK) {
-            String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date))
-                tv_until_date.setText(CommonHelper.convertDOBToValidFormat(date));
-        } else if (requestCode == RC_DATE_PICKER_FROM && resultCode == Activity.RESULT_OK) {
-            String date = data.getStringExtra("result");
-            if (!TextUtils.isEmpty(date) && CommonHelper.isDateBeforeToday(this, date))
-                tv_from_date.setText(CommonHelper.convertDOBToValidFormat(date));
-        }
     }
 
 
@@ -362,46 +296,6 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     @Override
     public void medicalRecordListError() {
         dismissProgress();
-    }
-
-
-    private ArrayList<String> getMonths() {
-        ArrayList<String> monthList = new ArrayList<>();
-        monthList.add("January");
-        monthList.add("February");
-        monthList.add("March");
-        monthList.add("April");
-        monthList.add("May");
-        monthList.add("June");
-        monthList.add("July");
-        monthList.add("August");
-        monthList.add("September");
-        monthList.add("October");
-        monthList.add("November");
-        monthList.add("December");
-        return monthList;
-    }
-
-    private ArrayList<String> getYearsTillNow() {
-        ArrayList<String> yearList = new ArrayList<String>();
-        int startYear = 2018;
-        int endYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = startYear; i <= endYear; i++) {
-            yearList.add(String.valueOf(i));
-        }
-        Log.e("YearList : ", yearList.toString());
-        return yearList;
-    }
-
-    private String createAndParseDate(String month, String year) {
-        try {
-            DateFormat fmt = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
-            Date date = fmt.parse(month + " 01, " + year);
-            return CommonHelper.SDF_YYYY_MM_DD.format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 
 }

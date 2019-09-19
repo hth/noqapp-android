@@ -24,6 +24,11 @@ import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -168,5 +173,45 @@ public class AppUtils extends CommonHelper {
         } else {
             return false;
         }
+    }
+
+
+    public static ArrayList<String> getMonths() {
+        ArrayList<String> monthList = new ArrayList<>();
+        monthList.add("January");
+        monthList.add("February");
+        monthList.add("March");
+        monthList.add("April");
+        monthList.add("May");
+        monthList.add("June");
+        monthList.add("July");
+        monthList.add("August");
+        monthList.add("September");
+        monthList.add("October");
+        monthList.add("November");
+        monthList.add("December");
+        return monthList;
+    }
+
+    public static ArrayList<String> getYearsTillNow() {
+        ArrayList<String> yearList = new ArrayList<String>();
+        int startYear = 2018;
+        int endYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = startYear; i <= endYear; i++) {
+            yearList.add(String.valueOf(i));
+        }
+        Log.e("YearList : ", yearList.toString());
+        return yearList;
+    }
+
+    public static String createAndParseDate(String month, String year) {
+        try {
+            DateFormat fmt = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+            Date date = fmt.parse(month + " 01, " + year);
+            return CommonHelper.SDF_YYYY_MM_DD.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
