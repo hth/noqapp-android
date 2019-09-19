@@ -448,11 +448,19 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 break;
             default:
                 // open order screen
-                Intent intent = new Intent(getActivity(), StoreWithMenuActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                if(AppUtils.isRelease()){
+                    Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("BizStoreElastic", item);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getActivity(), StoreWithMenuActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("BizStoreElastic", item);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
         }
     }
 
