@@ -46,6 +46,7 @@ public class Constants extends BaseConstants {
     public static final String INSTRUCTION = "INSTRUCTION";
     public static final String MEDICINE = "MEDICINE";
     public static final String PREFERRED_STORE = "PREFERRED_STORE";
+    public static final String DENTAL_PROCEDURE = "DENTAL_PROCEDURE";
 
     public static final int MAX_IMAGE_UPLOAD_LIMIT = 25;
 

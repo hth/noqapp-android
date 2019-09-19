@@ -268,6 +268,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         temp.setSymptomsList(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
         temp.setProDiagnosisList(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
         temp.setDiagnosisList(preferenceObjects.clearListSelection(preferenceObjects.getDiagnosisList()));
+        temp.setDentalProcedureList(preferenceObjects.clearListSelection(preferenceObjects.getDentalProcedureList()));
         temp.setInstructionList(preferenceObjects.getInstructionList());
         temp.setPreferredStoreInfoHashMap(preferenceObjects.getPreferredStoreInfoHashMap());
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
