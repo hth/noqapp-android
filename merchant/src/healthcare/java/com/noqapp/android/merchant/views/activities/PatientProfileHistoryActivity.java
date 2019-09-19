@@ -12,14 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
@@ -46,8 +44,6 @@ import java.util.List;
 
 public class PatientProfileHistoryActivity extends BaseActivity implements PatientProfilePresenter,
         JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
-    private long lastPress;
-    private Toast backPressToast;
     public ProgressBar pb_physical;
     private TextView tv_patient_name, tv_address, tv_details;
     private ImageView iv_profile;
@@ -151,12 +147,6 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
-
-    @Override
     public void patientProfileResponse(JsonProfile jsonProfile) {
         updateUI(jsonProfile);
     }
@@ -229,23 +219,6 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastPress > 3000) {
-            backPressToast = new CustomToast().getToast(this, getString(R.string.exit_medical_screen));
-            backPressToast.show();
-            lastPress = currentTime;
-        } else {
-            if (backPressToast != null) {
-                backPressToast.cancel();
-            }
-            //super.onBackPressed();
-            finish();
         }
     }
 
