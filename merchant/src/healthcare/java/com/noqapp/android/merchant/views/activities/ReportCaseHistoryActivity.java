@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -35,9 +35,14 @@ import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 import com.noqapp.android.merchant.views.utils.AnimationUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class ReportCaseHistoryActivity extends BaseActivity implements
         MedicalRecordListPresenter, View.OnClickListener {
@@ -54,8 +59,9 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     private RecyclerView rcv_work_history;
     private RelativeLayout bottomLayout;
     private WorkHistoryAdapter workHistoryAdapter;
-    private LinearLayout ll_filter;
+    private ScrollView sv_filter;
     private Button btn_clear_filter;
+    private SegmentedControl sc_month_from, sc_year_from, sc_month_until, sc_year_until;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +74,56 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         sp_queue_list = findViewById(R.id.sp_queue_list);
         sp_filter_type = findViewById(R.id.sp_filter_type);
         bottomLayout = findViewById(R.id.loadItemsLayout_recyclerView);
+        ArrayList<String> monthList = getMonths();
+        ArrayList<String> yearList = getYearsTillNow();
+
+        sc_month_from = findViewById(R.id.sc_month_from);
+        sc_year_from = findViewById(R.id.sc_year_from);
+        sc_month_until = findViewById(R.id.sc_month_until);
+        sc_year_until = findViewById(R.id.sc_year_until);
+
+
+        sc_month_from.addSegments(monthList);
+        sc_month_from.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    //teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
+                }
+            }
+        });
+        sc_year_from.addSegments(yearList);
+        sc_year_from.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    //teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
+                }
+            }
+        });
+        sc_month_until.addSegments(monthList);
+        sc_month_until.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    //teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
+                }
+            }
+        });
+        sc_year_until.addSegments(yearList);
+        sc_year_until.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    //teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
+                }
+            }
+        });
 
         TextView tv_filter = findViewById(R.id.tv_filter);
         tv_filter.setOnClickListener(this::onClick);
 
-        ll_filter = findViewById(R.id.ll_filter);
+        sv_filter = findViewById(R.id.sv_filter);
         rcv_work_history = findViewById(R.id.rcv_work_history);
         rcv_work_history.setHasFixedSize(true);
         rcv_work_history.setLayoutManager(new LinearLayoutManager(this));
@@ -116,6 +167,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         qList.add(0, jsonTopic);
         QueueAdapter adapter = new QueueAdapter(this, qList);
         sp_queue_list.setAdapter(adapter);
+        getYearsTillNow();
     }
 
     private void createData(List<JsonMedicalRecord> temp) {
@@ -142,7 +194,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.btn_filter:
                 btn_clear_filter.setVisibility(View.VISIBLE);
-                AnimationUtils.collapse(ll_filter);
+                AnimationUtils.collapse(sv_filter);
                 isMoreToDownload = true;
                 jsonMedicalRecords.clear();
                 expandableListDetail.clear();
@@ -163,11 +215,11 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
             }
             break;
             case R.id.tv_filter: {
-                AnimationUtils.expand(ll_filter);
+                AnimationUtils.expand(sv_filter);
             }
             break;
             case R.id.iv_close: {
-                AnimationUtils.collapse(ll_filter);
+                AnimationUtils.collapse(sv_filter);
             }
             break;
             case R.id.btn_clear_filter: {
@@ -286,6 +338,35 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     @Override
     public void medicalRecordListError() {
         dismissProgress();
+    }
+
+
+    private ArrayList<String> getMonths() {
+        ArrayList<String> monthList = new ArrayList<>();
+        monthList.add("January");
+        monthList.add("February");
+        monthList.add("March");
+        monthList.add("April");
+        monthList.add("May");
+        monthList.add("June");
+        monthList.add("July");
+        monthList.add("August");
+        monthList.add("September");
+        monthList.add("October");
+        monthList.add("November");
+        monthList.add("December");
+        return monthList;
+    }
+
+    private ArrayList<String> getYearsTillNow() {
+        ArrayList<String> yearList = new ArrayList<String>();
+        int startYear = 2018;
+        int endYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = startYear; i <= endYear; i++) {
+            yearList.add(String.valueOf(i));
+        }
+        Log.e("YearList : ", yearList.toString());
+        return yearList;
     }
 
 }
