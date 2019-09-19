@@ -22,17 +22,16 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileHistoryActivity;
 
 import java.util.List;
 
-public class ViewAllPatientInQAdapter extends RecyclerView.Adapter {
+public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final JsonTopic jsonTopic;
     private List<JsonQueuedPerson> dataSet;
 
-    public ViewAllPatientInQAdapter(List<JsonQueuedPerson> data, Context context, JsonTopic jsonTopic) {
+    public AllPatientHistoryAdapter(List<JsonQueuedPerson> data, Context context, JsonTopic jsonTopic) {
         this.dataSet = data;
         this.context = context;
         this.jsonTopic = jsonTopic;
@@ -65,10 +64,10 @@ public class ViewAllPatientInQAdapter extends RecyclerView.Adapter {
                         final int DRAWABLE_RIGHT = 2;
                         final int DRAWABLE_BOTTOM = 3;
 
-                        if(event.getAction() == MotionEvent.ACTION_UP) {
-                            if(event.getRawX() >= (holder.tv_customer_mobile.getRight() - holder.tv_customer_mobile.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            if (event.getRawX() >= (holder.tv_customer_mobile.getRight() - holder.tv_customer_mobile.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                                 // your action here
-                                copyText(context,PhoneFormatterUtil.phoneStripCountryCode("+"+phoneNo));
+                                copyText(context, PhoneFormatterUtil.phoneStripCountryCode("+" + phoneNo));
                                 return true;
                             }
                         }

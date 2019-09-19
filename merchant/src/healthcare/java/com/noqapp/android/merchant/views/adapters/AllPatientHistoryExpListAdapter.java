@@ -25,20 +25,25 @@ import java.util.Map;
 /**
  * Created by chandra on 3/28/18.
  */
-public class ViewAllPatientExpListAdapter extends BaseExpandableListAdapter {
+public class AllPatientHistoryExpListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<Date> listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<Date> listDataHeader;
     private Map<Date, List<JsonQueuePersonList>> listDataChild;
     private JsonTopic jt;
 
-    public ViewAllPatientExpListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonQueuePersonList>> listChildData, JsonTopic jt) {
+    public AllPatientHistoryExpListAdapter(Context context, List<Date> listDataHeader,
+                                           Map<Date, List<JsonQueuePersonList>> listChildData, JsonTopic jt) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
         this.jt = jt;
+    }
+
+    public void resetData() {
+        listDataHeader.clear();
+        listDataChild.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -75,9 +80,9 @@ public class ViewAllPatientExpListAdapter extends BaseExpandableListAdapter {
         }
         childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        ViewAllPatientInQAdapter viewAllPeopleInQAdapter = new ViewAllPatientInQAdapter(childData.getQueuedPeople(), context, jt);
-        childViewHolder.rv.setAdapter(viewAllPeopleInQAdapter);
-        viewAllPeopleInQAdapter.notifyDataSetChanged();
+        AllPatientHistoryAdapter allPatientHistoryAdapter = new AllPatientHistoryAdapter(childData.getQueuedPeople(), context, jt);
+        childViewHolder.rv.setAdapter(allPatientHistoryAdapter);
+        allPatientHistoryAdapter.notifyDataSetChanged();
         return convertView;
     }
 

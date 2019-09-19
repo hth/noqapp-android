@@ -191,6 +191,10 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 tv_until_date.setText("");
                 tv_from_date.setText("");
                 btn_clear_filter.setVisibility(View.GONE);
+                sc_month_from.clearSelection();
+                sc_month_until.clearSelection();
+                sc_year_from.clearSelection();
+                sc_year_until.clearSelection();
             }
             break;
         }
