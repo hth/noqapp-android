@@ -81,6 +81,9 @@ public class ReportPastPatientActivity extends BaseActivity implements QueuePers
 
             }
         });
+        if(null != qList && qList.size() ==1){
+            sp_queue_list.setSelection(1);
+        }
     }
 
     @Override
