@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     android:padding="5dp">
 
     <TextView
@@ -23,13 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@drawable/tooth_o_2_1" />
+        android:background="@drawable/tooth_o_2" />
 
     <ImageView
         android:id="@+id/iv_front"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@drawable/tooth_1_1" />
+        android:background="@drawable/tooth_41" />
 
 </LinearLayout>

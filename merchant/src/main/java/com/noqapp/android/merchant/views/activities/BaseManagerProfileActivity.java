@@ -34,6 +34,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.FileUtils;
+import com.noqapp.android.common.utils.ShowUploadImageDialog;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
@@ -49,7 +50,6 @@ import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -71,8 +71,6 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
     private LoadTabs loadTabs;
     private UserProfileFragment userProfileFragment;
     protected MerchantReviewQListFragment merchantReviewQListFragment;
-
-    private ImageView actionbarBack;
     private MerchantProfileApiCalls merchantProfileApiCalls;
     protected TabViewPagerAdapter adapter;
 
@@ -221,25 +219,31 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
                 Bitmap bitmap;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                    iv_profile.setImageBitmap(bitmap);
-                    //  String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
-                    // NoQueueBaseActivity.setUserProfileUri(convertedPath);
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     if (!TextUtils.isEmpty(convertedPath)) {
-                        showProgress();
-                        setProgressMessage("Updating profile image");
-                        String type = getMimeType(this, selectedImage);
-                        File file = new File(convertedPath);
-                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
-                        merchantProfileApiCalls.setImageUploadPresenter(this);
-                        merchantProfileApiCalls.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        ShowUploadImageDialog uploadImageDialog = new ShowUploadImageDialog(BaseManagerProfileActivity.this);
+                        uploadImageDialog.setDialogClickListener(new ShowUploadImageDialog.DialogClickListener() {
+                            @Override
+                            public void btnPositiveClick() {
+                                iv_profile.setImageBitmap(bitmap);
+                                showProgress();
+                                setProgressMessage("Updating profile image");
+                                String type = getMimeType(BaseManagerProfileActivity.this, selectedImage);
+                                File file = new File(convertedPath);
+                                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                                RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
+                                merchantProfileApiCalls.setImageUploadPresenter(BaseManagerProfileActivity.this);
+                                merchantProfileApiCalls.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                            }
+
+                            @Override
+                            public void btnNegativeClick() {
+                                //Do nothing
+                            }
+                        });
+                        uploadImageDialog.displayDialog(bitmap);
                     }
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }

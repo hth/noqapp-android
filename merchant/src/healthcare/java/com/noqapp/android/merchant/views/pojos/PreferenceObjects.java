@@ -38,6 +38,9 @@ public class PreferenceObjects {
     @SerializedName(Constants.DIAGNOSIS)
     private ArrayList<DataObj> diagnosisList = new ArrayList<>();
 
+    @SerializedName(Constants.DENTAL_PROCEDURE)
+    private ArrayList<DataObj> dentalProcedureList = new ArrayList<>();
+
     @SerializedName(Constants.INSTRUCTION)
     private ArrayList<String> instructionList = new ArrayList<>();
 
@@ -132,6 +135,14 @@ public class PreferenceObjects {
     public PreferenceObjects setDiagnosisList(ArrayList<DataObj> diagnosisList) {
         this.diagnosisList = diagnosisList;
         return this;
+    }
+
+    public ArrayList<DataObj> getDentalProcedureList() {
+        return dentalProcedureList;
+    }
+
+    public void setDentalProcedureList(ArrayList<DataObj> dentalProcedureList) {
+        this.dentalProcedureList = dentalProcedureList;
     }
 
     public ArrayList<String> getInstructionList() {
