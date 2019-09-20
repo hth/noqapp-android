@@ -1,12 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,30 +20,19 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.FileUtils;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-
-public class UserProfileActivity extends ProfileActivity implements View.OnClickListener,
-        ImageUploadPresenter, ProfilePresenter {
+public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ProfilePresenter {
     private TextView tv_name;
     private TextView tv_birthday;
     private EditText edt_address;
@@ -101,14 +86,11 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         tv_migrate.setOnClickListener(this);
         edt_Mail.setOnClickListener(this);
         tv_modify_email.setOnClickListener(this);
-        iv_add_dependent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
-                in.putExtra(IBConstant.IS_DEPENDENT, true);
-                in.putStringArrayListExtra("nameList", nameList);
-                startActivity(in);
-            }
+        iv_add_dependent.setOnClickListener(v -> {
+            Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
+            in.putExtra(IBConstant.IS_DEPENDENT, true);
+            in.putStringArrayListExtra("nameList", nameList);
+            startActivity(in);
         });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -122,45 +104,15 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        AppUtils.loadProfilePic(iv_profile,NoQueueBaseActivity.getUserProfileUri(),this);
+        AppUtils.loadProfilePic(iv_profile, NoQueueBaseActivity.getUserProfileUri(), this);
     }
 
-    @Override
-    public void imageUploadResponse(JsonResponse jsonResponse) {
-        dismissProgress();
-        Log.v("Image upload", "" + jsonResponse.getResponse());
-        if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            new CustomToast().showToast(this, "Profile image change successful!");
-        } else {
-            new CustomToast().showToast(this, "Failed to update profile image");
-        }
-    }
-
-    @Override
-    public void imageRemoveResponse(JsonResponse jsonResponse) {
-        dismissProgress();
-        Log.v("Image removed", "" + jsonResponse.getResponse());
-        if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
-            NoQueueBaseActivity.setUserProfileUri("");
-            new CustomToast().showToast(this, "Profile image removed successfully!");
-        } else {
-            new CustomToast().showToast(this, "Failed to remove profile image");
-        }
-    }
-
-    @Override
-    public void imageUploadError() {
-        dismissProgress();
-    }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
             case R.id.iv_profile:
-                // selectImage();
-                // break;
             case R.id.iv_edit:
                 Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
                 in.putExtra(IBConstant.IS_DEPENDENT, false);
@@ -176,45 +128,14 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             case R.id.iv_edit_mail:
             case R.id.tv_modify_email:
                 Intent changeEmail = new Intent(this, ChangeEmailActivity.class);
-                changeEmail.putExtra("email",edt_Mail.getText().toString());
-                changeEmail.putExtra("isValidated",NoQueueBaseActivity.getUserProfile().isAccountValidated());
+                changeEmail.putExtra("email", edt_Mail.getText().toString());
+                changeEmail.putExtra("isValidated", NoQueueBaseActivity.getUserProfile().isAccountValidated());
                 startActivity(changeEmail);
                 break;
 
         }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SELECT_PICTURE) {
-            if (resultCode == RESULT_OK) {
-                Uri selectedImage = data.getData();
-                Bitmap bitmap;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                    iv_profile.setImageBitmap(bitmap);
-
-                   // String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
-                    String convertedPath = new FileUtils().getFilePath(this, data.getData());
-                    NoQueueBaseActivity.setUserProfileUri(convertedPath);
-
-                    if (!TextUtils.isEmpty(convertedPath)) {
-                        showProgress();
-                        setProgressMessage("Updating profile image");
-                        String type = getMimeType(this, selectedImage);
-                        File file = new File(convertedPath);
-                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
-                        ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
-                        clientProfileApiCall.setImageUploadPresenter(this);
-                        clientProfileApiCall.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {

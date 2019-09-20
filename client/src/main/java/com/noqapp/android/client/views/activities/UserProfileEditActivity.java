@@ -43,6 +43,7 @@ import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.utils.ShowUploadImageDialog;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.squareup.picasso.Picasso;
 
@@ -247,27 +248,38 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 Bitmap bitmap;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                    iv_profile.setImageBitmap(bitmap);
-                    // String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
-                    String convertedPath = new FileUtils().getFilePath(this, data.getData());
+                    String convertedPath = new FileUtils().getFilePath(UserProfileEditActivity.this, data.getData());
                     if (StringUtils.isBlank(convertedPath)) {
                         throw new RuntimeException("Failed to find path for image");
                     }
-                    if (isDependent) {
-                        setDependentProfileImageUrl(convertedPath);
-                    } else {
-                        NoQueueBaseActivity.setUserProfileUri(convertedPath);
-                    }
-
                     if (!TextUtils.isEmpty(convertedPath)) {
-                        showProgress();
-                        setProgressMessage("Updating profile image");
-                        String type = getMimeType(this, selectedImage);
-                        File file = new File(convertedPath);
-                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), qUserId);
-                        clientProfileApiCall.setImageUploadPresenter(this);
-                        clientProfileApiCall.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        ShowUploadImageDialog uploadImageDialog = new ShowUploadImageDialog(UserProfileEditActivity.this);
+                        uploadImageDialog.setDialogClickListener(new ShowUploadImageDialog.DialogClickListener() {
+                            @Override
+                            public void btnPositiveClick() {
+                                iv_profile.setImageBitmap(bitmap);
+                                if (isDependent) {
+                                    setDependentProfileImageUrl(convertedPath);
+                                } else {
+                                    NoQueueBaseActivity.setUserProfileUri(convertedPath);
+                                }
+                                showProgress();
+                                setProgressMessage("Updating profile image");
+                                String type = getMimeType(UserProfileEditActivity.this, selectedImage);
+                                File file = new File(convertedPath);
+                                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                                RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), qUserId);
+                                clientProfileApiCall.setImageUploadPresenter(UserProfileEditActivity.this);
+                                clientProfileApiCall.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+
+                            }
+
+                            @Override
+                            public void btnNegativeClick() {
+                                //Do nothing
+                            }
+                        });
+                        uploadImageDialog.displayDialog(bitmap);
                     }
                 } catch (Exception e) {
                     Log.e("Failed getting image ", e.getLocalizedMessage(), e);
