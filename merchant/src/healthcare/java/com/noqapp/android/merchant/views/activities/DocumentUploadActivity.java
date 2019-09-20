@@ -35,6 +35,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.FileUtils;
+import com.noqapp.android.common.utils.ShowUploadImageDialog;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
@@ -431,21 +432,33 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
     private void onSelectFromGalleryResult(Intent data) {
         if (data != null) {
             try {
-                // Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                 Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                 try {
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     Log.e("file path temp:", convertedPath);
-                    if (!TextUtils.isEmpty(convertedPath)) {
-                        showProgress();
-                        setProgressMessage("Uploading document");
-                        String type = getMimeType(data.getData());
-                        //  Log.e("File type :", type);
-                        File file = new File(convertedPath);
-                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-                        medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-                    }
 
+                    if (!TextUtils.isEmpty(convertedPath)) {
+                        ShowUploadImageDialog uploadImageDialog = new ShowUploadImageDialog(DocumentUploadActivity.this);
+                        uploadImageDialog.setDialogClickListener(new ShowUploadImageDialog.DialogClickListener() {
+                            @Override
+                            public void btnPositiveClick() {
+                                showProgress();
+                                setProgressMessage("Uploading document");
+                                String type = getMimeType(data.getData());
+                                //  Log.e("File type :", type);
+                                File file = new File(convertedPath);
+                                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
+                                medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+                            }
+
+                            @Override
+                            public void btnNegativeClick() {
+                                //Do nothing
+                            }
+                        });
+                        uploadImageDialog.displayDialog(bm);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

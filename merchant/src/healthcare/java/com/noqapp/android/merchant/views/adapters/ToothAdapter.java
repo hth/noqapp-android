@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -57,19 +58,25 @@ public class ToothAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         MyViewHolder holder = (MyViewHolder) viewHolder;
-        ToothInfo item = dataSet.get(listPosition);
+        ToothInfo item = dataSet.get(position);
         holder.tv_count.setText(String.valueOf(item.getToothNumber()));
         holder.iv_top.setBackground(ContextCompat.getDrawable(context, item.getToothTopView().getDrawable()));
         holder.iv_front.setBackground(ContextCompat.getDrawable(context, item.getToothFrontView().getDrawable()));
+        if (position == 7 || position == 23) {
+            holder.ll_header.setBackgroundResource(R.drawable.vertical_line);
+        } else {
+             holder.ll_header.setBackgroundResource(0);
+        }
+
         holder.iv_front.setOnClickListener(v -> {
             if (isClickEnable)
-                onToothFrontViewSelected(listPosition, item);
+                onToothFrontViewSelected(position, item);
         });
         holder.iv_top.setOnClickListener(v -> {
             if (isClickEnable)
-                onToothTopViewSelected(listPosition, item);
+                onToothTopViewSelected(position, item);
         });
     }
 
@@ -90,12 +97,14 @@ public class ToothAdapter extends RecyclerView.Adapter {
         private TextView tv_count;
         private ImageView iv_front;
         private ImageView iv_top;
+        private LinearLayout ll_header;
 
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_count = itemView.findViewById(R.id.tv_count);
             this.iv_front = itemView.findViewById(R.id.iv_front);
             this.iv_top = itemView.findViewById(R.id.iv_top);
+            this.ll_header = itemView.findViewById(R.id.ll_header);
         }
     }
 
@@ -107,7 +116,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
         builder.setView(dialogView);
         final AlertDialog mAlertDialog = builder.create();
         RecyclerView rcv_tooth = dialogView.findViewById(R.id.rcv_tooth_option);
-        rcv_tooth.setLayoutManager(new GridLayoutManager(context, LaunchActivity.isTablet?6:4));
+        rcv_tooth.setLayoutManager(new GridLayoutManager(context, LaunchActivity.isTablet ? 6 : 4));
         rcv_tooth.setItemAnimator(new DefaultItemAnimator());
         ToothOptionAdapter toothAdapter = new ToothOptionAdapter(toothInfo.getTopViewDrawables(), item -> {
             mAlertDialog.dismiss();
@@ -136,7 +145,7 @@ public class ToothAdapter extends RecyclerView.Adapter {
         builder.setView(dialogView);
         final AlertDialog mAlertDialog = builder.create();
         RecyclerView rcv_tooth = dialogView.findViewById(R.id.rcv_tooth_option);
-        rcv_tooth.setLayoutManager(new GridLayoutManager(context,  LaunchActivity.isTablet?6:4));
+        rcv_tooth.setLayoutManager(new GridLayoutManager(context, LaunchActivity.isTablet ? 6 : 4));
         rcv_tooth.setItemAnimator(new DefaultItemAnimator());
         ToothOptionAdapter toothAdapter = new ToothOptionAdapter(toothInfo.getFrontViewDrawables(), item -> {
             mAlertDialog.dismiss();
