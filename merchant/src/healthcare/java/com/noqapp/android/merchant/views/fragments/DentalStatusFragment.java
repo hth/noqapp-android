@@ -48,8 +48,7 @@ public class DentalStatusFragment extends DentalAnatomyFragment {
         for (int i = 0; i < 32; i++) {
             ToothInfo toothInfo = new ToothInfo();
             toothInfo.setToothNumber(Integer.parseInt(toothNumbers.get(i)));
-            //toothInfo.setToothFrontView(drawables.get(i));
-            toothInfo.setToothFrontView(getTempDrawable(i + 1));
+            toothInfo.setToothFrontView(drawables.get(i));
             toothInfo.setToothDefaultFrontView(toothInfo.getToothFrontView());
             toothInfo.setToothTopView(imageFilePathTop);
             toothInfo.setToothDefaultTopView(toothInfo.getToothTopView());

@@ -10,14 +10,14 @@
         android:id="@+id/iv_front"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/tooth_1_1"/>
+        android:background="@drawable/tooth_11"/>
 
     <ImageView
         android:id="@+id/iv_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@drawable/tooth_o_2_1"/>
+        android:background="@drawable/tooth_o_1"/>
 
     <TextView
         android:id="@+id/tv_count"
