@@ -164,6 +164,7 @@ public class PatientProfileActivity extends BaseActivity implements
             ShowAlertInformation.showNetworkDialog(this);
         }
 
+
         FrameLayout fl_medical_history = findViewById(R.id.fl_medical_history);
         FrameLayout fl_medical_history_filtered = findViewById(R.id.fl_medical_history_filtered);
         TextView tv_history_all = findViewById(R.id.tv_history_all);
@@ -172,18 +173,18 @@ public class PatientProfileActivity extends BaseActivity implements
             fl_medical_history_filtered.setVisibility(View.VISIBLE);
             fl_medical_history.setVisibility(View.GONE);
             tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.white));
-            tv_history_all.setBackground(null);
+            tv_history_all.setBackgroundColor(0);
             tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.pressed_color));
-            tv_history_filtered.setBackground(ContextCompat.getDrawable(PatientProfileActivity.this, R.drawable.button_drawable_white));
+            tv_history_filtered.setBackgroundColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.white));
 
         });
         tv_history_all.setOnClickListener(v -> {
             fl_medical_history_filtered.setVisibility(View.GONE);
             fl_medical_history.setVisibility(View.VISIBLE);
             tv_history_filtered.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.white));
-            tv_history_filtered.setBackground(null);
+            tv_history_filtered.setBackgroundColor(0);
             tv_history_all.setTextColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.pressed_color));
-            tv_history_all.setBackground(ContextCompat.getDrawable(PatientProfileActivity.this, R.drawable.button_drawable_white));
+            tv_history_all.setBackgroundColor(ContextCompat.getColor(PatientProfileActivity.this, R.color.white));
         });
     }
 

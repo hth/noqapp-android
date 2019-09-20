@@ -220,35 +220,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
+            android:orientation="horizontal"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:orientation="horizontal">
+            android:paddingTop="5dp"
+            android:weightSum="1"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tv_history_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="All Medical History"
+                android:layout_width="0dp"
+                android:layout_weight=".6"
+                android:layout_height="@dimen/btn_height"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="5dp"
+                android:text="All Medical History"
                 android:textColor="@android:color/white"
-                android:layout_marginRight="5dp"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_history_filtered"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dental History"
+                android:layout_width="0dp"
+                android:layout_weight=".4"
+                android:layout_height="@dimen/btn_height"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:padding="10dp"
-                android:background="@drawable/button_drawable_white"
+                android:padding="5dp"
+                android:text="Dental History"
                 android:textColor="@color/pressed_color"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/white" />
 
         <FrameLayout
             android:layout_width="match_parent"
