@@ -66,7 +66,6 @@ public class PatientProfileActivity extends BaseActivity implements
     private ListView list_view;
     private TextView tv_empty_work_done;
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
-    private WorkDoneAdapter workDoneAdapter;
 
 
     @Override
@@ -380,8 +379,8 @@ public class PatientProfileActivity extends BaseActivity implements
                 parseWorkDoneData(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
             }
         }
-        workDoneAdapter = new WorkDoneAdapter(this, toothWorkDoneList);
-        list_view.setAdapter(workDoneAdapter);
+
+        list_view.setAdapter(new WorkDoneAdapter(this, toothWorkDoneList));
         tv_empty_work_done.setVisibility(toothWorkDoneList.size() > 0 ? View.GONE : View.VISIBLE);
     }
 
