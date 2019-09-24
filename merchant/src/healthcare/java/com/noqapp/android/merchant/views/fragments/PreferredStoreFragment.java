@@ -43,46 +43,46 @@ public class PreferredStoreFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_preferred_store, container, false);
-        RecyclerView rcv_one = v.findViewById(R.id.rcv_one);
-        TextView tv_label_one = v.findViewById(R.id.tv_label_one);
-        TextView tv_sublabel_one = v.findViewById(R.id.tv_sublabel_one);
-        rcv_one.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        RecyclerView rcv_store = v.findViewById(R.id.rcv_store);
+        TextView tv_label = v.findViewById(R.id.tv_label);
+        TextView tv_sublabel = v.findViewById(R.id.tv_sublabel);
+        rcv_store.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         pos = getArguments().getInt("type");
 
         if (pos == TAB_MRI) {
             preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.MRI));
-            tv_label_one.setText(HealthCareServiceEnum.MRI.getDescription());
-            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.MRI.getDescription()));
+            tv_label.setText(HealthCareServiceEnum.MRI.getDescription());
+            tv_sublabel.setText(getMessage(HealthCareServiceEnum.MRI.getDescription()));
         } else if (pos == TAB_CITISCAN) {
             preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SCAN));
-            tv_label_one.setText(HealthCareServiceEnum.SCAN.getDescription());
-            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.SCAN.getDescription()));
+            tv_label.setText(HealthCareServiceEnum.SCAN.getDescription());
+            tv_sublabel.setText(getMessage(HealthCareServiceEnum.SCAN.getDescription()));
         } else if (pos == TAB_SONO) {
             preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SONO));
-            tv_label_one.setText(HealthCareServiceEnum.SONO.getDescription());
-            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.SONO.getDescription()));
+            tv_label.setText(HealthCareServiceEnum.SONO.getDescription());
+            tv_sublabel.setText(getMessage(HealthCareServiceEnum.SONO.getDescription()));
         } else if (pos == TAB_XRAY) {
             preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.XRAY));
-            tv_label_one.setText(HealthCareServiceEnum.XRAY.getDescription());
-            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.XRAY.getDescription()));
+            tv_label.setText(HealthCareServiceEnum.XRAY.getDescription());
+            tv_sublabel.setText(getMessage(HealthCareServiceEnum.XRAY.getDescription()));
         } else if (pos == TAB_PATH) {
             preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PATH));
-            tv_label_one.setText(HealthCareServiceEnum.PATH.getDescription());
-            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.PATH.getDescription()));
+            tv_label.setText(HealthCareServiceEnum.PATH.getDescription());
+            tv_sublabel.setText(getMessage(HealthCareServiceEnum.PATH.getDescription()));
         }else if (pos == TAB_SPEC) {
             preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SPEC));
-            tv_label_one.setText(HealthCareServiceEnum.SPEC.getDescription());
-            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.SPEC.getDescription()));
+            tv_label.setText(HealthCareServiceEnum.SPEC.getDescription());
+            tv_sublabel.setText(getMessage(HealthCareServiceEnum.SPEC.getDescription()));
         } else if (pos == TAB_PHYSIO) {
             preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PHYS));
-            tv_label_one.setText(HealthCareServiceEnum.PHYS.getDescription());
-            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.PHYS.getDescription()));
+            tv_label.setText(HealthCareServiceEnum.PHYS.getDescription());
+            tv_sublabel.setText(getMessage(HealthCareServiceEnum.PHYS.getDescription()));
         }else if (pos == TAB_MEDICINE) {
             preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(null));
-            tv_label_one.setText("Pharmacy");
-            tv_sublabel_one.setText(getMessage("Pharmacy"));
+            tv_label.setText("Pharmacy");
+            tv_sublabel.setText(getMessage("Pharmacy"));
         }
-        rcv_one.setAdapter(preferredListAdapter);
+        rcv_store.setAdapter(preferredListAdapter);
         return v;
     }
 
@@ -337,5 +337,11 @@ public class PreferredStoreFragment extends BaseFragment {
             }
         }
         return null;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        saveData();
     }
 }

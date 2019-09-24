@@ -2,17 +2,11 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
@@ -21,8 +15,7 @@ import com.noqapp.android.merchant.model.PreferredBusinessApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
-import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.PreferredCategoryList;
 import com.noqapp.android.merchant.views.fragments.PreferredStoreFragment;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
@@ -30,15 +23,9 @@ import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferredStoreActivity extends BaseActivity implements
-        PreferredBusinessPresenter, MenuHeaderAdapter.OnItemClickListener, IntellisensePresenter {
+public class PreferredStoreActivity extends BaseActivity implements View.OnClickListener,
+        PreferredCategoryList.CategoryListener, PreferredBusinessPresenter, IntellisensePresenter {
 
-    private long lastPress;
-    private Toast backPressToast;
-    private RecyclerView rcv_header;
-    private MenuHeaderAdapter menuAdapter;
-    private ViewPager viewPager;
-    private ArrayList<String> data = new ArrayList<>();
     private PreferredStoreFragment frag_mri;
     private PreferredStoreFragment frag_scan;
     private PreferredStoreFragment frag_sono;
@@ -48,6 +35,7 @@ public class PreferredStoreActivity extends BaseActivity implements
     private PreferredStoreFragment frag_physio;
     private PreferredStoreFragment frag_medic;
     public PreferenceObjects preferenceObjects;
+    private PreferredCategoryList preferredCategoryList;
 
     public static PreferredStoreActivity getPreferredStoreActivity() {
         return preferredStoreActivity;
@@ -80,17 +68,11 @@ public class PreferredStoreActivity extends BaseActivity implements
         setContentView(R.layout.activity_preferred_business);
         initActionsViews(false);
         tv_toolbar_title.setText("Preferred Stores");
-        viewPager = findViewById(R.id.pager);
-        rcv_header = findViewById(R.id.rcv_header);
-        data.add("MRI");
-        data.add("CT Scan");
-        data.add("Sonography");
-        data.add("X-RAY");
-        data.add("Pathology");
-        data.add("Special");
-        data.add("Physiotherapy");
-        data.add("Medicine");
 
+        preferredCategoryList = new PreferredCategoryList();
+        preferredCategoryList.setCategoryListener(this);
+
+        replaceFragmentWithoutBackStack(R.id.frame_list, preferredCategoryList);
 
         if (null != LaunchActivity.merchantListFragment && null != LaunchActivity.merchantListFragment.getTopics() && LaunchActivity.merchantListFragment.getTopics().size() > 0) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -99,12 +81,6 @@ public class PreferredStoreActivity extends BaseActivity implements
                         .getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
             }
         }
-    }
-
-    @Override
-    public void menuHeaderClick(int pos) {
-        viewPager.setCurrentItem(pos);
-        // saveAllData();
     }
 
     @Override
@@ -133,50 +109,6 @@ public class PreferredStoreActivity extends BaseActivity implements
             frag_medic = new PreferredStoreFragment();
             frag_medic.setArguments(getBundle(7));
 
-            TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(frag_mri, "FRAG" + 0);
-            adapter.addFragment(frag_scan, "FRAG" + 1);
-            adapter.addFragment(frag_sono, "FRAG" + 2);
-            adapter.addFragment(frag_xray, "FRAG" + 3);
-            adapter.addFragment(frag_path, "FRAG" + 4);
-            adapter.addFragment(frag_spec, "FRAG" + 5);
-            adapter.addFragment(frag_physio, "FRAG" + 6);
-            adapter.addFragment(frag_medic, "FRAG" + 7);
-
-            rcv_header.setHasFixedSize(true);
-            LinearLayoutManager horizontalLayoutManagaer
-                    = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            rcv_header.setLayoutManager(horizontalLayoutManagaer);
-            rcv_header.setItemAnimator(new DefaultItemAnimator());
-
-
-            menuAdapter = new MenuHeaderAdapter(data, this, this, true);
-            rcv_header.setAdapter(menuAdapter);
-            menuAdapter.notifyDataSetChanged();
-            viewPager.setOffscreenPageLimit(data.size());
-            viewPager.setAdapter(adapter);
-            viewPager.setCurrentItem(0);
-            adapter.notifyDataSetChanged();
-            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    //saveAllData();
-                    rcv_header.smoothScrollToPosition(position);
-                    menuAdapter.setSelected_pos(position);
-                    menuAdapter.notifyDataSetChanged();
-
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
 
             Log.e("Pref business list: ", jsonPreferredBusinessBucket.toString());
         }
@@ -196,26 +128,16 @@ public class PreferredStoreActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastPress > 3000) {
-            backPressToast = new CustomToast().getToast(this, getString(R.string.exit_medical_screen));
-            backPressToast.show();
-            lastPress = currentTime;
-        } else {
-            if (backPressToast != null) {
-                backPressToast.cancel();
-            }
-            //super.onBackPressed();
-            finish();
-        }
-        frag_mri.saveData();
-        frag_scan.saveData();
-        frag_sono.saveData();
-        frag_xray.saveData();
-        frag_path.saveData();
-        frag_spec.saveData();
-        frag_physio.saveData();
-        frag_medic.saveData();
+        super.onBackPressed();
+
+//        frag_mri.saveData();
+//        frag_scan.saveData();
+//        frag_sono.saveData();
+//        frag_xray.saveData();
+//        frag_path.saveData();
+//        frag_spec.saveData();
+//        frag_physio.saveData();
+//        frag_medic.saveData();
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(preferenceObjects);
     }
 
@@ -242,5 +164,42 @@ public class PreferredStoreActivity extends BaseActivity implements
     @Override
     public void intellisenseError() {
         Log.v("IntelliSense upload: ", "error");
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void categorySelected(int id) {
+
+        switch (id) {
+            case R.id.cv_mri:
+                replaceFragmentWithBackStack(R.id.frame_list, frag_mri, "MRI");
+                break;
+            case R.id.cv_ctscan:
+                replaceFragmentWithBackStack(R.id.frame_list, frag_scan, "Scan");
+                break;
+            case R.id.cv_sono:
+                replaceFragmentWithBackStack(R.id.frame_list, frag_sono, "Sono");
+                break;
+            case R.id.cv_xray:
+                replaceFragmentWithBackStack(R.id.frame_list, frag_xray, "Xray");
+                break;
+            case R.id.cv_path:
+                replaceFragmentWithBackStack(R.id.frame_list, frag_path, "Path");
+                break;
+            case R.id.cv_special:
+                replaceFragmentWithBackStack(R.id.frame_list, frag_spec, "Special");
+                break;
+            case R.id.cv_physio:
+                replaceFragmentWithBackStack(R.id.frame_list, frag_physio, "Physcio");
+                break;
+            case R.id.cv_medicine:
+                replaceFragmentWithBackStack(R.id.frame_list, frag_medic, "Medicine");
+                break;
+        }
+
     }
 }
