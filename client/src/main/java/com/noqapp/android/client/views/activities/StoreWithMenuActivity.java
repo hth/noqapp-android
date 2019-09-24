@@ -1,22 +1,25 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.StoreDetailApiCalls;
@@ -70,6 +73,8 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
     private String currencySymbol;
     private List<Integer> headerPosition = new ArrayList<>();
     private ExpandableListView expandableListView;
+  //  private View headerSpace;
+  //  private FrameLayout frame_header;
 
 
     @Override
@@ -86,9 +91,20 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         iv_category_banner = findViewById(R.id.iv_category_banner);
         view_loader = findViewById(R.id.view_loader);
         rcv_header = findViewById(R.id.rcv_header);
+     //   frame_header = findViewById(R.id.frame_header);
         tv_place_order = findViewById(R.id.tv_place_order);
         expandableListView = findViewById(R.id.expandableListView);
-        initActionsViews(false);
+      //  setListViewHeader();
+     //   initActionsViews(false);
+        Toolbar mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mToolbar.setNavigationIcon(R.drawable.ic_back_new);
+        mToolbar.setNavigationOnClickListener(v -> finish());
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout.setTitle(" ");
+
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -123,37 +139,12 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.menu_favourite:
-                if (canAddItem) {
-                    item.setIcon(R.drawable.heart_fill);
-                    new CustomToast().showToast(this, "added to favourite");
-                    canAddItem = false;
-                } else {
-                    item.setIcon(R.drawable.ic_heart);
-                    new CustomToast().showToast(this, "remove from favourite");
-                    canAddItem = true;
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
-        getMenuInflater().inflate(R.menu.menu_favourite, menu);
-        //@TODO Chandra enable when the feature add on server
-        menu.findItem(R.id.menu_favourite).setVisible(false);
-        return true;
-    }
+//    private void setListViewHeader() {
+//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View listHeader = inflater.inflate(R.layout.lv_header, null, false);
+//        headerSpace = listHeader.findViewById(R.id.header_space);
+//        expandableListView.addHeaderView(listHeader);
+//    }
 
     @Override
     public void storeResponse(JsonStore jsonStore) {
@@ -173,7 +164,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         view_loader.setVisibility(View.GONE);
         jsonQueue = jsonStore.getJsonQueue();
         currencySymbol = AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName());
-        tv_toolbar_title.setText(jsonQueue.getDisplayName());
+        // tv_toolbar_title.setText(jsonQueue.getDisplayName());
         tv_store_address.setText(AppUtils.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_rating.setText(String.valueOf(AppUtils.round(jsonQueue.getRating())));
@@ -271,7 +262,20 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
-
+                // Check if the first item is already reached to top
+//                if (expandableListView.getFirstVisiblePosition() == 0) {
+//                    View firstChild = expandableListView.getChildAt(0);
+//                    int topY = 0;
+//                    if (firstChild != null) {
+//                        topY = firstChild.getTop();
+//                    }
+//
+//                    int headerTopY = headerSpace.getTop();
+//                    // headerText.setY(Math.max(0, headerTopY + topY));
+//
+//                    // Set the image to scroll half of the amount that of ListView
+//                    frame_header.setY(topY * 0.5f);
+//                }
             }
         });
 
