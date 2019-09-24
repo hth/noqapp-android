@@ -28,12 +28,15 @@ import java.util.List;
 
 public class PreferredStoreFragment extends BaseFragment {
     private int pos = -1;
-    private PreferredListAdapter preferredListAdapter1 = null;
-    private PreferredListAdapter preferredListAdapter2 = null;
-    private int TAB_MRI_CITISCAN = 0;
-    private int TAB_SONO_XRAY = 1;
-    private int TAB_PATH_SPEC = 2;
-    private int TAB_PHYSIO_MEDICINE = 3;
+    private PreferredListAdapter preferredListAdapter = null;
+    private int TAB_MRI = 0;
+    private int TAB_CITISCAN = 1;
+    private int TAB_SONO = 2;
+    private int TAB_XRAY = 3;
+    private int TAB_PATH = 4;
+    private int TAB_SPEC = 5;
+    private int TAB_PHYSIO = 6;
+    private int TAB_MEDICINE = 7;
 
     @Nullable
     @Override
@@ -41,46 +44,45 @@ public class PreferredStoreFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_preferred_store, container, false);
         RecyclerView rcv_one = v.findViewById(R.id.rcv_one);
-        RecyclerView rcv_two = v.findViewById(R.id.rcv_two);
         TextView tv_label_one = v.findViewById(R.id.tv_label_one);
-        TextView tv_label_two = v.findViewById(R.id.tv_label_two);
         TextView tv_sublabel_one = v.findViewById(R.id.tv_sublabel_one);
-        TextView tv_sublabel_two = v.findViewById(R.id.tv_sublabel_two);
         rcv_one.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        rcv_two.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         pos = getArguments().getInt("type");
 
-        if (pos == TAB_MRI_CITISCAN) {
-            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.MRI));
-            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SCAN));
+        if (pos == TAB_MRI) {
+            preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.MRI));
             tv_label_one.setText(HealthCareServiceEnum.MRI.getDescription());
-            tv_label_two.setText(HealthCareServiceEnum.SCAN.getDescription());
             tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.MRI.getDescription()));
-            tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.SCAN.getDescription()));
-        } else if (pos == TAB_SONO_XRAY) {
-            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SONO));
-            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.XRAY));
+        } else if (pos == TAB_CITISCAN) {
+            preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SCAN));
+            tv_label_one.setText(HealthCareServiceEnum.SCAN.getDescription());
+            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.SCAN.getDescription()));
+        } else if (pos == TAB_SONO) {
+            preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SONO));
             tv_label_one.setText(HealthCareServiceEnum.SONO.getDescription());
-            tv_label_two.setText(HealthCareServiceEnum.XRAY.getDescription());
             tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.SONO.getDescription()));
-            tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.XRAY.getDescription()));
-        } else if (pos == TAB_PATH_SPEC) {
-            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PATH));
-            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SPEC));
+        } else if (pos == TAB_XRAY) {
+            preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.XRAY));
+            tv_label_one.setText(HealthCareServiceEnum.XRAY.getDescription());
+            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.XRAY.getDescription()));
+        } else if (pos == TAB_PATH) {
+            preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PATH));
             tv_label_one.setText(HealthCareServiceEnum.PATH.getDescription());
-            tv_label_two.setText(HealthCareServiceEnum.SPEC.getDescription());
             tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.PATH.getDescription()));
-            tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.SPEC.getDescription()));
-        } else if (pos == TAB_PHYSIO_MEDICINE) {
-            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PHYS));
-            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(null));
+        }else if (pos == TAB_SPEC) {
+            preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SPEC));
+            tv_label_one.setText(HealthCareServiceEnum.SPEC.getDescription());
+            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.SPEC.getDescription()));
+        } else if (pos == TAB_PHYSIO) {
+            preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PHYS));
             tv_label_one.setText(HealthCareServiceEnum.PHYS.getDescription());
-            tv_label_two.setText("Pharmacy");
             tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.PHYS.getDescription()));
-            tv_sublabel_two.setText(getMessage("Pharmacy"));
+        }else if (pos == TAB_MEDICINE) {
+            preferredListAdapter = new PreferredListAdapter(getActivity(), initCheckBoxList(null));
+            tv_label_one.setText("Pharmacy");
+            tv_sublabel_one.setText(getMessage("Pharmacy"));
         }
-        rcv_one.setAdapter(preferredListAdapter1);
-        rcv_two.setAdapter(preferredListAdapter2);
+        rcv_one.setAdapter(preferredListAdapter);
         return v;
     }
 
@@ -169,8 +171,8 @@ public class PreferredStoreFragment extends BaseFragment {
 
 
     public void saveData() {
-        if (pos == TAB_MRI_CITISCAN) {
-            List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
+        if (pos == TAB_MRI) {
+            List<ParentCheckBoxObj> temp1 = preferredListAdapter.getParentCheckBoxObjs();
             for (int i = 0; i < temp1.size(); i++) {
                 if (null == PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
                         get(temp1.get(i).getJsonTopic().getCodeQR())) {
@@ -186,7 +188,8 @@ public class PreferredStoreFragment extends BaseFragment {
                             get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdMri("");
                 }
             }
-            List<ParentCheckBoxObj> temp2 = preferredListAdapter2.getParentCheckBoxObjs();
+        }else  if (pos == TAB_CITISCAN) {
+            List<ParentCheckBoxObj> temp2 = preferredListAdapter.getParentCheckBoxObjs();
             for (int i = 0; i < temp2.size(); i++) {
                 if (temp2.get(i).getSelectedPos() > -1) {
                     PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
@@ -198,8 +201,8 @@ public class PreferredStoreFragment extends BaseFragment {
                 }
             }
 
-        } else if (pos == TAB_SONO_XRAY) {
-            List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
+        } else if (pos == TAB_SONO) {
+            List<ParentCheckBoxObj> temp1 = preferredListAdapter.getParentCheckBoxObjs();
             for (int i = 0; i < temp1.size(); i++) {
                 if (temp1.get(i).getSelectedPos() > -1) {
                     PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
@@ -210,7 +213,8 @@ public class PreferredStoreFragment extends BaseFragment {
                             get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdSono("");
                 }
             }
-            List<ParentCheckBoxObj> temp2 = preferredListAdapter2.getParentCheckBoxObjs();
+        }else if (pos == TAB_XRAY) {
+            List<ParentCheckBoxObj> temp2 = preferredListAdapter.getParentCheckBoxObjs();
             for (int i = 0; i < temp2.size(); i++) {
                 if (temp2.get(i).getSelectedPos() > -1) {
                     PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
@@ -222,8 +226,8 @@ public class PreferredStoreFragment extends BaseFragment {
                 }
             }
 
-        } else if (pos == TAB_PATH_SPEC) {
-            List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
+        } else if (pos == TAB_PATH) {
+            List<ParentCheckBoxObj> temp1 = preferredListAdapter.getParentCheckBoxObjs();
             for (int i = 0; i < temp1.size(); i++) {
                 if (temp1.get(i).getSelectedPos() > -1) {
                     PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
@@ -234,7 +238,8 @@ public class PreferredStoreFragment extends BaseFragment {
                             get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPath("");
                 }
             }
-            List<ParentCheckBoxObj> temp2 = preferredListAdapter2.getParentCheckBoxObjs();
+        }else if (pos == TAB_SPEC) {
+            List<ParentCheckBoxObj> temp2 = preferredListAdapter.getParentCheckBoxObjs();
             for (int i = 0; i < temp2.size(); i++) {
                 if (temp2.get(i).getSelectedPos() > -1) {
                     PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
@@ -246,8 +251,8 @@ public class PreferredStoreFragment extends BaseFragment {
                 }
             }
 
-        } else if (pos == TAB_PHYSIO_MEDICINE) {
-            List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
+        } else if (pos == TAB_PHYSIO) {
+            List<ParentCheckBoxObj> temp1 = preferredListAdapter.getParentCheckBoxObjs();
             for (int i = 0; i < temp1.size(); i++) {
                 if (temp1.get(i).getSelectedPos() > -1) {
                     PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
@@ -258,7 +263,8 @@ public class PreferredStoreFragment extends BaseFragment {
                             get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPhysio("");
                 }
             }
-            List<ParentCheckBoxObj> temp2 = preferredListAdapter2.getParentCheckBoxObjs();
+        }else if (pos == TAB_MEDICINE) {
+            List<ParentCheckBoxObj> temp2 = preferredListAdapter.getParentCheckBoxObjs();
             for (int i = 0; i < temp2.size(); i++) {
                 if (temp2.get(i).getSelectedPos() > -1) {
                     PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().

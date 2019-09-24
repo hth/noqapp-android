@@ -39,10 +39,14 @@ public class PreferredStoreActivity extends BaseActivity implements
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
     private ArrayList<String> data = new ArrayList<>();
-    private PreferredStoreFragment frag_mri_and_scan;
-    private PreferredStoreFragment frag_sono_and_xray;
-    private PreferredStoreFragment frag_path_and_spec;
-    private PreferredStoreFragment frag_physio_medic;
+    private PreferredStoreFragment frag_mri;
+    private PreferredStoreFragment frag_scan;
+    private PreferredStoreFragment frag_sono;
+    private PreferredStoreFragment frag_xray;
+    private PreferredStoreFragment frag_path;
+    private PreferredStoreFragment frag_spec;
+    private PreferredStoreFragment frag_physio;
+    private PreferredStoreFragment frag_medic;
     public PreferenceObjects preferenceObjects;
 
     public static PreferredStoreActivity getPreferredStoreActivity() {
@@ -78,10 +82,14 @@ public class PreferredStoreActivity extends BaseActivity implements
         tv_toolbar_title.setText("Preferred Stores");
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
-        data.add("MRI & CT Scan");
-        data.add("Sonography & X-RAY");
-        data.add("Pathology & Special");
-        data.add("Physiotherapy & Medicine");
+        data.add("MRI");
+        data.add("CT Scan");
+        data.add("Sonography");
+        data.add("X-RAY");
+        data.add("Pathology");
+        data.add("Special");
+        data.add("Physiotherapy");
+        data.add("Medicine");
 
 
         if (null != LaunchActivity.merchantListFragment && null != LaunchActivity.merchantListFragment.getTopics() && LaunchActivity.merchantListFragment.getTopics().size() > 0) {
@@ -104,20 +112,36 @@ public class PreferredStoreActivity extends BaseActivity implements
         if (null != jsonPreferredBusinessBucket && jsonPreferredBusinessBucket.getJsonPreferredBusinessLists() != null && jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().size() > 0) {
             //this.jsonPreferredBusiness = jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().get(0).getPreferredBusinesses();
             this.jsonPreferredBusinessLists = jsonPreferredBusinessBucket.getJsonPreferredBusinessLists();
-            frag_mri_and_scan = new PreferredStoreFragment();
-            frag_mri_and_scan.setArguments(getBundle(0));
-            frag_sono_and_xray = new PreferredStoreFragment();
-            frag_sono_and_xray.setArguments(getBundle(1));
-            frag_path_and_spec = new PreferredStoreFragment();
-            frag_path_and_spec.setArguments(getBundle(2));
-            frag_physio_medic = new PreferredStoreFragment();
-            frag_physio_medic.setArguments(getBundle(3));
+            frag_mri = new PreferredStoreFragment();
+            frag_mri.setArguments(getBundle(0));
+            frag_scan = new PreferredStoreFragment();
+            frag_scan.setArguments(getBundle(1));
+
+            frag_sono = new PreferredStoreFragment();
+            frag_sono.setArguments(getBundle(2));
+            frag_xray = new PreferredStoreFragment();
+            frag_xray.setArguments(getBundle(3));
+
+
+            frag_path = new PreferredStoreFragment();
+            frag_path.setArguments(getBundle(4));
+            frag_spec = new PreferredStoreFragment();
+            frag_spec.setArguments(getBundle(5));
+
+            frag_physio = new PreferredStoreFragment();
+            frag_physio.setArguments(getBundle(6));
+            frag_medic = new PreferredStoreFragment();
+            frag_medic.setArguments(getBundle(7));
 
             TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(frag_mri_and_scan, "FRAG" + 0);
-            adapter.addFragment(frag_sono_and_xray, "FRAG" + 1);
-            adapter.addFragment(frag_path_and_spec, "FRAG" + 2);
-            adapter.addFragment(frag_physio_medic, "FRAG" + 3);
+            adapter.addFragment(frag_mri, "FRAG" + 0);
+            adapter.addFragment(frag_scan, "FRAG" + 1);
+            adapter.addFragment(frag_sono, "FRAG" + 2);
+            adapter.addFragment(frag_xray, "FRAG" + 3);
+            adapter.addFragment(frag_path, "FRAG" + 4);
+            adapter.addFragment(frag_spec, "FRAG" + 5);
+            adapter.addFragment(frag_physio, "FRAG" + 6);
+            adapter.addFragment(frag_medic, "FRAG" + 7);
 
             rcv_header.setHasFixedSize(true);
             LinearLayoutManager horizontalLayoutManagaer
@@ -184,10 +208,14 @@ public class PreferredStoreActivity extends BaseActivity implements
             //super.onBackPressed();
             finish();
         }
-        frag_mri_and_scan.saveData();
-        frag_sono_and_xray.saveData();
-        frag_path_and_spec.saveData();
-        frag_physio_medic.saveData();
+        frag_mri.saveData();
+        frag_scan.saveData();
+        frag_sono.saveData();
+        frag_xray.saveData();
+        frag_path.saveData();
+        frag_spec.saveData();
+        frag_physio.saveData();
+        frag_medic.saveData();
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(preferenceObjects);
     }
 
