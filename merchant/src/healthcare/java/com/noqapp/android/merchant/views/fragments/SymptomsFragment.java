@@ -1,16 +1,17 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -37,16 +38,10 @@ public class SymptomsFragment extends BaseFragment implements
         StaggeredGridSymptomAdapter.StaggeredClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_gynac, rcv_obstretics, rcv_symptom_select;
-    private TextView tv_add_new, tv_symptoms_name, tv_remove, tv_output;
     private StaggeredGridSymptomAdapter symptomsAdapter, obstreticsAdapter, symptomSelectedAdapter;
-    private EditText edt_output;
-    private ScrollView ll_symptom_note;
     private DataObj dataObj;
-    private SegmentedControl sc_duration;
     private List<String> duration_data;
     private String no_of_days;
-    private TextView btn_done;
-    private ImageView tv_close;
     private View view_med;
     private ArrayList<DataObj> selectedSymptomsList = new ArrayList<>();
     private TextView tv_obes, tv_gyanc;
@@ -60,34 +55,12 @@ public class SymptomsFragment extends BaseFragment implements
         rcv_gynac = v.findViewById(R.id.rcv_gynac);
         rcv_obstretics = v.findViewById(R.id.rcv_obstretics);
         rcv_symptom_select = v.findViewById(R.id.rcv_symptom_select);
-        edt_output = v.findViewById(R.id.edt_output);
-        btn_done = v.findViewById(R.id.btn_done);
         view_med = v.findViewById(R.id.view_med);
         tv_obes = v.findViewById(R.id.tv_obes);
         tv_gyanc = v.findViewById(R.id.tv_gyanc);
-        tv_symptoms_name = v.findViewById(R.id.tv_symptoms_name);
-        tv_close = v.findViewById(R.id.tv_close);
-        tv_remove = v.findViewById(R.id.tv_remove);
-        tv_output = v.findViewById(R.id.tv_output);
-        sc_duration = v.findViewById(R.id.sc_duration);
-        tv_close.setOnClickListener(v1 -> clearOptionSelection());
-        duration_data = DurationDaysEnum.asListOfDescription();
-        sc_duration.addSegments(duration_data);
-        sc_duration.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    no_of_days = duration_data.get(segmentViewHolder.getAbsolutePosition());
-                    tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
-                    if (null != dataObj)
-                        dataObj.setNoOfDays(no_of_days);
-                }
-            }
-        });
-        ll_symptom_note = v.findViewById(R.id.ll_symptom_note);
-        tv_add_new = v.findViewById(R.id.tv_add_new);
+        TextView tv_add_new = v.findViewById(R.id.tv_add_new);
         tv_add_new.setOnClickListener(v12 -> AddItemDialog(getActivity()));
-
+        duration_data = DurationDaysEnum.asListOfDescription();
         actv_search = v.findViewById(R.id.actv_search);
         actv_search.setThreshold(1);
         ImageView iv_clear_actv = v.findViewById(R.id.iv_clear_actv);
@@ -168,68 +141,94 @@ public class SymptomsFragment extends BaseFragment implements
     public void staggeredClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
         AppUtils.hideKeyBoard(getActivity());
         if (!isEdit && isItemExist(temp.getShortName())) {
-            ll_symptom_note.setVisibility(View.GONE);
             new CustomToast().showToast(getActivity(), "Symptom Already added in list");
         } else {
-            ll_symptom_note.setVisibility(isOpen ? View.VISIBLE : View.GONE);
-        }
-        tv_remove.setVisibility(isEdit ? View.VISIBLE : View.GONE);
-        dataObj = temp;
-        tv_symptoms_name.setText(dataObj.getShortName());
-        if (isEdit) {
-            // Pre fill the data
-            sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getNoOfDays()));
-            no_of_days = dataObj.getNoOfDays();
-            tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
-            edt_output.setText(TextUtils.isEmpty(dataObj.getAdditionalNotes()) ? "" : dataObj.getAdditionalNotes());
-        } else {
-            sc_duration.clearSelection();
-            tv_output.setText("");
-            edt_output.setText("");
-            no_of_days = "";
-        }
-        btn_done.setOnClickListener(v -> {
-            AppUtils.hideKeyBoard(getActivity());
-            dataObj.setNoOfDays(no_of_days);
-            if (TextUtils.isEmpty(no_of_days)) {
-                new CustomToast().showToast(getActivity(), "All fields are mandatory");
-            } else {
-                dataObj.setAdditionalNotes(edt_output.getText().toString());
-                if (isEdit) {
-                    selectedSymptomsList.set(pos, dataObj);
-                } else {
-                    selectedSymptomsList.add(dataObj);
+            //ll_symptom_note.setVisibility(isOpen ? View.VISIBLE : View.GONE);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            builder.setTitle(null);
+            View dialogView = inflater.inflate(R.layout.dialog_add_symptoms, null, false);
+            TextView tv_symptoms_name = dialogView.findViewById(R.id.tv_symptoms_name);
+            TextView tv_remove = dialogView.findViewById(R.id.tv_remove);
+            ImageView iv_close = dialogView.findViewById(R.id.iv_close);
+            TextView tv_output = dialogView.findViewById(R.id.tv_output);
+            EditText edt_output = dialogView.findViewById(R.id.edt_output);
+            TextView tv_done = dialogView.findViewById(R.id.tv_done);
+            SegmentedControl sc_duration = dialogView.findViewById(R.id.sc_duration);
+            sc_duration.addSegments(duration_data);
+            sc_duration.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+                @Override
+                public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                    if (isSelected) {
+                        no_of_days = duration_data.get(segmentViewHolder.getAbsolutePosition());
+                        tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
+                        if (null != dataObj)
+                            dataObj.setNoOfDays(no_of_days);
+                    }
                 }
+            });
+            builder.setView(dialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mAlertDialog.show();
+            iv_close.setOnClickListener(v1 -> {
+                clearOptionSelection();
+                mAlertDialog.dismiss();
+            });
+            tv_remove.setVisibility(isEdit ? View.VISIBLE : View.GONE);
+            dataObj = temp;
+            tv_symptoms_name.setText(dataObj.getShortName());
+            if (isEdit) {
+                // Pre fill the data
+                sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getNoOfDays()));
+                no_of_days = dataObj.getNoOfDays();
+                tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
+                edt_output.setText(TextUtils.isEmpty(dataObj.getAdditionalNotes()) ? "" : dataObj.getAdditionalNotes());
+            } else {
+                sc_duration.clearSelection();
+                tv_output.setText("");
+                edt_output.setText("");
+                no_of_days = "";
+            }
+            tv_done.setOnClickListener(v -> {
+                AppUtils.hideKeyBoard(getActivity());
+                dataObj.setNoOfDays(no_of_days);
+                if (TextUtils.isEmpty(no_of_days)) {
+                    new CustomToast().showToast(getActivity(), "All fields are mandatory");
+                } else {
+                    dataObj.setAdditionalNotes(edt_output.getText().toString());
+                    if (isEdit) {
+                        selectedSymptomsList.set(pos, dataObj);
+                    } else {
+                        selectedSymptomsList.add(dataObj);
+                    }
+                    view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
 
+                    rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                    symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
+                    rcv_symptom_select.setAdapter(symptomSelectedAdapter);
+                    clearOptionSelection();
+                    mAlertDialog.dismiss();
+                }
+            });
+            tv_remove.setOnClickListener(v -> {
+                AppUtils.hideKeyBoard(getActivity());
+                if (isEdit) {
+                    selectedSymptomsList.remove(pos);
+                }
+                clearOptionSelection();
                 view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
-
-
                 rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                 symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
                 rcv_symptom_select.setAdapter(symptomSelectedAdapter);
-                clearOptionSelection();
-            }
-        });
-        tv_remove.setOnClickListener(v -> {
-            AppUtils.hideKeyBoard(getActivity());
-            if (isEdit) {
-                selectedSymptomsList.remove(pos);
-            }
-            clearOptionSelection();
-            view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
-            rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-            symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
-            rcv_symptom_select.setAdapter(symptomSelectedAdapter);
-        });
+                mAlertDialog.dismiss();
+            });
+        }
     }
 
     private void clearOptionSelection() {
-        ll_symptom_note.setVisibility(View.GONE);
-        tv_symptoms_name.setText("");
-        sc_duration.clearSelection();
         no_of_days = "";
-        tv_output.setText("");
-        edt_output.setText("");
         dataObj = null;
     }
 

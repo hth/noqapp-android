@@ -61,7 +61,7 @@ public class MedicalCaseActivity extends BaseActivity implements
     private MenuHeaderAdapter menuAdapter;
     private ArrayList<String> data = new ArrayList<>();
     private PrimaryCheckupFragment primaryCheckupFragment;
-    public SymptomsTabFragment symptomsTabFragment;
+    private SymptomsTabFragment symptomsTabFragment;
     private LabTestsFragment labTestsFragment;
     private TreatmentTabFragment treatmentTabFragment;
     private ExaminationTabFragment examinationTabFragment;
