@@ -1,18 +1,19 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,21 +39,18 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdapter.OnItemClickListener {
     private ListView list_view;
-    private SegmentedControl sc_procedure, sc_status, sc_unit, sc_period;
     private List<String> dental_procedure;
     private List<String> dental_status;
     private List<String> dental_units;
     private List<String> dental_period;
-    private NestedScrollView ll_work_done;
     private String teethNumber;
     private String teethProcedure;
     private String teethStatus;
     private String teethUnit;
     private String teethPeriod;
-    private EditText edt_summary;
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
     private WorkDoneAdapter workDoneAdapter;
-    private TeethNumberAdapter teethNumberAdapter;
+    private List<String> dental_number;
 
 
     @Nullable
@@ -60,37 +58,68 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_dental_work_done, container, false);
-        int spanCount = 4;
-        spanCount = LaunchActivity.isTablet ? 16 : 8;
         list_view = v.findViewById(R.id.list_view);
         TextView tv_add_work = v.findViewById(R.id.tv_add_work);
-        RecyclerView rcv_tooth_number = v.findViewById(R.id.rcv_tooth_number);
-        sc_procedure = v.findViewById(R.id.sc_procedure);
-
-        sc_status = v.findViewById(R.id.sc_status);
-        sc_unit = v.findViewById(R.id.sc_unit);
-        sc_period = v.findViewById(R.id.sc_period);
-        TextView tv_done = v.findViewById(R.id.tv_done);
-        edt_summary = v.findViewById(R.id.edt_summary);
-        ImageView tv_close = v.findViewById(R.id.tv_close);
-        tv_close.setOnClickListener(v13 -> clearOptionSelection());
-        ll_work_done = v.findViewById(R.id.ll_work_done);
         tv_add_work.setOnClickListener(v12 -> {
             clearOptionSelection();
-            ll_work_done.setVisibility(View.VISIBLE);
+            showAddWorkDoneDialog();
         });
         initDentalProcedure();
-        List<String> dental_number = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
+        dental_number = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
         dental_number.add(MedicalDataStatic.Dental.ADDITIONAL_OPTION);
         dental_status = DentalWorkDoneEnum.asListOfDescription();
         dental_units = Arrays.asList(getResources().getStringArray(R.array.units));
         dental_period = Arrays.asList(getResources().getStringArray(R.array.units));
+        TextView tv_add_new = v.findViewById(R.id.tv_add_new);
+        tv_add_new.setOnClickListener(v12 -> AddItemDialog(getActivity()));
 
-        teethNumberAdapter = new TeethNumberAdapter(getActivity(), dental_number);
-        rcv_tooth_number.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+        return v;
+    }
+
+    private void initDentalProcedure() {
+        dental_procedure = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getSymptoms());
+        dental_procedure.addAll(MedicalDataStatic.convertDataObjListAsStringList(MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDentalProcedureList()));
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList, this);
+        list_view.setAdapter(workDoneAdapter);
+        try {
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() &&
+                    null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser()) {
+                parseWorkDoneDate(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearOptionSelection() {
+        teethNumber = "";
+        teethProcedure = "";
+        teethUnit = "";
+        teethPeriod = "";
+        teethStatus = "";
+    }
+
+    private void showAddWorkDoneDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        builder.setTitle(null);
+        View dialogView = inflater.inflate(R.layout.dialog_add_dental_work_done, null, false);
+        TextView tv_done = dialogView.findViewById(R.id.tv_done);
+        EditText edt_summary = dialogView.findViewById(R.id.edt_summary);
+        ImageView iv_close = dialogView.findViewById(R.id.iv_close);
+        SegmentedControl sc_procedure = dialogView.findViewById(R.id.sc_procedure);
+        SegmentedControl sc_status = dialogView.findViewById(R.id.sc_status);
+        SegmentedControl sc_unit = dialogView.findViewById(R.id.sc_unit);
+        SegmentedControl sc_period = dialogView.findViewById(R.id.sc_period);
+        RecyclerView rcv_tooth_number = dialogView.findViewById(R.id.rcv_tooth_number);
+        TeethNumberAdapter teethNumberAdapter = new TeethNumberAdapter(getActivity(), dental_number);
+        rcv_tooth_number.setLayoutManager(new GridLayoutManager(getActivity(), LaunchActivity.isTablet ? 16 : 8));
         rcv_tooth_number.setAdapter(teethNumberAdapter);
-
-
         sc_procedure.addSegments(dental_procedure);
         sc_procedure.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
@@ -128,8 +157,15 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
             }
         });
 
-        TextView tv_add_new = v.findViewById(R.id.tv_add_new);
-        tv_add_new.setOnClickListener(v12 -> AddItemDialog(getActivity()));
+        builder.setView(dialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mAlertDialog.show();
+        iv_close.setOnClickListener(v1 -> {
+            clearOptionSelection();
+            mAlertDialog.dismiss();
+        });
         tv_done.setOnClickListener(v1 -> {
             teethNumber = teethNumberAdapter.getSelectedItem();
             if (TextUtils.isEmpty(teethProcedure)) {
@@ -144,45 +180,10 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
                     toothWorkDoneList.add(new ToothWorkDone(teethNumber, teethProcedure, edt_summary.getText().toString(), DentalWorkDoneEnum.getDescriptionName(teethStatus), teethUnit, teethPeriod));
                     workDoneAdapter.setWorkDoneList(toothWorkDoneList);
                     clearOptionSelection();
+                    mAlertDialog.dismiss();
                 }
             }
         });
-        return v;
-    }
-
-    private void initDentalProcedure() {
-        dental_procedure = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getSymptoms());
-        dental_procedure.addAll(MedicalDataStatic.convertDataObjListAsStringList(MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDentalProcedureList()));
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList, this);
-        list_view.setAdapter(workDoneAdapter);
-        try {
-            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() &&
-                    null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser()) {
-                parseWorkDoneDate(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void clearOptionSelection() {
-        ll_work_done.setVisibility(View.GONE);
-        teethNumber = "";
-        teethProcedure = "";
-        teethUnit = "";
-        teethPeriod = "";
-        teethStatus = "";
-        edt_summary.setText("");
-        sc_procedure.clearSelection();
-        teethNumberAdapter.clearSelection();
-        sc_period.clearSelection();
-        sc_unit.clearSelection();
-        sc_status.clearSelection();
 
     }
 
@@ -258,8 +259,6 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
                 MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDentalProcedureList().add(new DataObj(str, false));
                 MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                 initDentalProcedure();
-                sc_procedure.removeAllSegments();
-                sc_procedure.addSegments(dental_procedure);
             }
         });
         showDialog.displayDialog("Add New Procedure");
