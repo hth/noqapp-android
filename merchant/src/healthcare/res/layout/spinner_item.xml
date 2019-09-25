@@ -4,9 +4,9 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center_vertical"
-          android:paddingStart="10dp"
-          android:paddingEnd="10dp"
-          android:paddingTop="5dp"
-          android:paddingBottom="5dp"
+          android:paddingStart="5dp"
+          android:paddingEnd="5dp"
+          android:paddingTop="3dp"
+          android:paddingBottom="3dp"
           android:textColor="@color/colorAddress"
-          android:textSize="@dimen/text_size_sixteen"/>
+          android:textSize="@dimen/spinner_text_size"/>
