@@ -5,11 +5,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,14 +36,10 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView recyclerView, rcv_medicine;
-    private TextView tv_add_medicine, btn_done, tv_medicine_name, tv_remove;
     private StaggeredGridDentalAdapter dentalAdapter, dentalSelectAdapter;
-    private ScrollView ll_medicine;
-    private SegmentedControl sc_dental_option;
     private List<String> dental_option_data;
     private String dentalOption;
     private View view_med;
-    private ImageView tv_close;
     private ArrayList<DataObj> selectedDentalList = new ArrayList<>();
     private DataObj dataObj;
     private int spanCount = 8;
@@ -56,34 +53,12 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         recyclerView = v.findViewById(R.id.recyclerView);
         rcv_medicine = v.findViewById(R.id.rcv_medicine);
         view_med = v.findViewById(R.id.view_med);
-        tv_add_medicine = v.findViewById(R.id.tv_add_medicine);
-        tv_close = v.findViewById(R.id.tv_close);
-        tv_remove = v.findViewById(R.id.tv_remove);
-        tv_medicine_name = v.findViewById(R.id.tv_medicine_name);
-        ll_medicine = v.findViewById(R.id.ll_medicine);
-        sc_dental_option = v.findViewById(R.id.sc_dental_option);
-        btn_done = v.findViewById(R.id.btn_done);
-        tv_close.setOnClickListener(v13 -> clearOptionSelection());
         dental_option_data = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getSymptoms());
-        sc_dental_option.addSegments(dental_option_data);
-        sc_dental_option.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    dentalOption = dental_option_data.get(segmentViewHolder.getAbsolutePosition());
-                    if (null != dataObj)
-                        dataObj.setDentalProcedure(dentalOption);
-                }
-            }
-        });
         return v;
     }
 
     private void clearOptionSelection() {
-        ll_medicine.setVisibility(View.GONE);
         dentalOption = "";
-        tv_medicine_name.setText("");
-        sc_dental_option.clearSelection();
         dataObj = null;
     }
 
@@ -122,50 +97,81 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
     @Override
     public void staggeredMedicineClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
         if (!isEdit && isItemExist(temp.getShortName())) {
-            ll_medicine.setVisibility(View.GONE);
-            new CustomToast().showToast(getActivity(), "Medicine Already added in list");
+            new CustomToast().showToast(getActivity(), "Tooth Number Already added in list");
         } else {
-            ll_medicine.setVisibility(isOpen ? View.VISIBLE : View.GONE);
-        }
-        tv_remove.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
-        dataObj = temp;
-        tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(MedicalDataStatic.Dental.ADDITIONAL_OPTION) ?
-                dataObj.getShortName() : "Tooth Number: " + dataObj.getShortName());
-        if (isEdit) {
-            // Pre fill the data
-            sc_dental_option.setSelectedSegment(dental_option_data.indexOf(dataObj.getDentalProcedure()));
-        } else {
-            dentalOption = "";
-            sc_dental_option.clearSelection();
-        }
-        btn_done.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(dentalOption)) {
-                new CustomToast().showToast(getActivity(), "All fields are mandatory");
-            } else {
-                if (isEdit) {
-                    selectedDentalList.set(pos, dataObj);
-                } else {
-                    selectedDentalList.add(dataObj);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            builder.setTitle(null);
+            View dialogView = inflater.inflate(R.layout.dialog_add_dental_treat, null, false);
+            TextView tv_remove = dialogView.findViewById(R.id.tv_remove);
+            TextView tv_done = dialogView.findViewById(R.id.tv_done);
+            TextView tv_medicine_name = dialogView.findViewById(R.id.tv_medicine_name);
+            ImageView iv_close = dialogView.findViewById(R.id.iv_close);
+            SegmentedControl sc_dental_option = dialogView.findViewById(R.id.sc_dental_option);
+            sc_dental_option.addSegments(dental_option_data);
+            sc_dental_option.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+                @Override
+                public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                    if (isSelected) {
+                        dentalOption = dental_option_data.get(segmentViewHolder.getAbsolutePosition());
+                        if (null != dataObj)
+                            dataObj.setDentalProcedure(dentalOption);
+                    }
                 }
+            });
+
+            builder.setView(dialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mAlertDialog.show();
+            iv_close.setOnClickListener(v1 -> {
                 clearOptionSelection();
-                view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
+                mAlertDialog.dismiss();
+            });
 
-                rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
-                dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
-                rcv_medicine.setAdapter(dentalSelectAdapter);
-            }
-        });
-
-        tv_remove.setOnClickListener(v -> {
+            tv_remove.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
+            dataObj = temp;
+            tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(MedicalDataStatic.Dental.ADDITIONAL_OPTION) ?
+                    dataObj.getShortName() : "Tooth Number: " + dataObj.getShortName());
             if (isEdit) {
-                selectedDentalList.remove(pos);
-                view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
-                rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
-                dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
-                rcv_medicine.setAdapter(dentalSelectAdapter);
-                clearOptionSelection();
+                // Pre fill the data
+                sc_dental_option.setSelectedSegment(dental_option_data.indexOf(dataObj.getDentalProcedure()));
+            } else {
+                dentalOption = "";
+                sc_dental_option.clearSelection();
             }
-        });
+            tv_done.setOnClickListener(v -> {
+                if (TextUtils.isEmpty(dentalOption)) {
+                    new CustomToast().showToast(getActivity(), "All fields are mandatory");
+                } else {
+                    if (isEdit) {
+                        selectedDentalList.set(pos, dataObj);
+                    } else {
+                        selectedDentalList.add(dataObj);
+                    }
+                    clearOptionSelection();
+                    view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
+
+                    rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+                    dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
+                    rcv_medicine.setAdapter(dentalSelectAdapter);
+                    mAlertDialog.dismiss();
+                }
+            });
+
+            tv_remove.setOnClickListener(v -> {
+                if (isEdit) {
+                    selectedDentalList.remove(pos);
+                    view_med.setVisibility(selectedDentalList.size() > 0 ? View.VISIBLE : View.GONE);
+                    rcv_medicine.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+                    dentalSelectAdapter = new StaggeredGridDentalAdapter(getActivity(), selectedDentalList, this, true);
+                    rcv_medicine.setAdapter(dentalSelectAdapter);
+                    clearOptionSelection();
+                }
+                mAlertDialog.dismiss();
+            });
+        }
     }
 
     private boolean isItemExist(String name) {

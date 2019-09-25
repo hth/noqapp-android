@@ -166,10 +166,9 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
     @Override
     public void staggeredMedicineClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
         if (!isEdit && isItemExist(temp.getShortName())) {
-
             new CustomToast().showToast(getActivity(), "Medicine Already added in list");
         } else {
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             builder.setTitle(null);
             View dialogView = inflater.inflate(R.layout.dialog_add_medicine, null, false);
@@ -215,7 +214,7 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
                 }
             });
             builder.setView(dialogView);
-            final android.app.AlertDialog mAlertDialog = builder.create();
+            final AlertDialog mAlertDialog = builder.create();
             mAlertDialog.setCanceledOnTouchOutside(false);
             mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             mAlertDialog.show();
