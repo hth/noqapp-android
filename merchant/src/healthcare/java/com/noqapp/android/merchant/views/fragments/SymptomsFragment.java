@@ -143,7 +143,6 @@ public class SymptomsFragment extends BaseFragment implements
         if (!isEdit && isItemExist(temp.getShortName())) {
             new CustomToast().showToast(getActivity(), "Symptom Already added in list");
         } else {
-            //ll_symptom_note.setVisibility(isOpen ? View.VISIBLE : View.GONE);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             builder.setTitle(null);
