@@ -30,10 +30,12 @@ import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.LocalPreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
+import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -71,6 +73,7 @@ public class PreferenceActivity extends BaseActivity implements
     private ArrayList<JsonMasterLab> masterDataSpec = new ArrayList<>();
     private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment,
             preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
+    private LocalPreferenceHCServiceFragment preSymptomsFragment,prefProDiagnosisFragment,prefDiagnosisFragment,preInstructionFragment;
     private MedicineFragment medicineFragment;
     public PreferenceObjects preferenceObjects;
 
@@ -106,6 +109,10 @@ public class PreferenceActivity extends BaseActivity implements
         data.add("Pathology");
         data.add("Special");
         data.add("Medicine");
+        data.add("Symptoms");
+        data.add("Pro-Diagnosis");
+        data.add("Diagnosis");
+        data.add("Instruction");
         medicineFragment = new MedicineFragment();
 
         preferenceMriFragment = new PreferenceHCServiceFragment();
@@ -120,6 +127,17 @@ public class PreferenceActivity extends BaseActivity implements
         preferencePathFragment.setArguments(getBundle(4));
         preferenceSpecFragment = new PreferenceHCServiceFragment();
         preferenceSpecFragment.setArguments(getBundle(5));
+
+        preSymptomsFragment =  new LocalPreferenceHCServiceFragment();
+        preSymptomsFragment.setArguments(getBundle(0));
+        prefProDiagnosisFragment =  new LocalPreferenceHCServiceFragment();
+        prefProDiagnosisFragment.setArguments(getBundle(1));
+        prefDiagnosisFragment =  new LocalPreferenceHCServiceFragment();
+        prefDiagnosisFragment.setArguments(getBundle(2));
+        preInstructionFragment =  new LocalPreferenceHCServiceFragment();
+        preInstructionFragment.setArguments(getBundle(3));
+
+
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(preferenceMriFragment, "FRAG" + 0);
         adapter.addFragment(preferenceScanFragment, "FRAG" + 1);
@@ -128,6 +146,10 @@ public class PreferenceActivity extends BaseActivity implements
         adapter.addFragment(preferencePathFragment, "FRAG" + 4);
         adapter.addFragment(preferenceSpecFragment, "FRAG" + 5);
         adapter.addFragment(medicineFragment, "FRAG" + 6);
+        adapter.addFragment(preSymptomsFragment, "FRAG" + 7);
+        adapter.addFragment(prefProDiagnosisFragment, "FRAG" + 8);
+        adapter.addFragment(prefDiagnosisFragment, "FRAG" + 9);
+        adapter.addFragment(preInstructionFragment, "FRAG" + 10);
 
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
@@ -202,6 +224,11 @@ public class PreferenceActivity extends BaseActivity implements
         temp.setPathologyList(preferencePathFragment.clearListSelection());
         temp.setSpecList(preferenceSpecFragment.clearListSelection());
         temp.setMedicineList(medicineFragment.getSelectedList());
+
+        temp.setSymptomsList(preSymptomsFragment.getSelectedList());
+        temp.setProDiagnosisList(prefProDiagnosisFragment.getSelectedList());
+        temp.setDiagnosisList(prefDiagnosisFragment.getSelectedList());
+        temp.setInstructionList(MedicalDataStatic.convertDataObjListAsStringList(preInstructionFragment.getSelectedList()));
         temp.setPreferredStoreInfoHashMap(preferenceObjects.getPreferredStoreInfoHashMap());
 
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
