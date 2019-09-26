@@ -47,7 +47,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatientProfileActivity extends BaseActivity implements
-        PatientProfilePresenter, JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
+        PatientProfilePresenter,
+        JsonMedicalRecordPresenter,
+        MedicalHistoryFilteredFragment.UpdateWorkDone {
     private long lastPress;
     private Toast backPressToast;
     public ProgressBar pb_physical;
@@ -66,7 +68,6 @@ public class PatientProfileActivity extends BaseActivity implements
     private ListView list_view;
     private TextView tv_empty_work_done;
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +164,6 @@ public class PatientProfileActivity extends BaseActivity implements
             ShowAlertInformation.showNetworkDialog(this);
         }
 
-
         FrameLayout fl_medical_history = findViewById(R.id.fl_medical_history);
         FrameLayout fl_medical_history_filtered = findViewById(R.id.fl_medical_history_filtered);
         TextView tv_history_all = findViewById(R.id.tv_history_all);
@@ -210,8 +210,7 @@ public class PatientProfileActivity extends BaseActivity implements
             mhff.setUpdateWorkDone(PatientProfileActivity.this::updateWorkDone);
             mhff.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
-
-
+            
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
@@ -238,7 +237,7 @@ public class PatientProfileActivity extends BaseActivity implements
         this.jsonProfile = jsonProfile;
         tv_patient_name.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
         if (TextUtils.isEmpty(jsonProfile.getAddress())) {
-            tv_address.setText(Html.fromHtml("<b> Address: </b> N/A"));
+            tv_address.setText(Html.fromHtml("<b> Address: </b> " + notAvailable));
         } else {
             tv_address.setText(Html.fromHtml("<b> Address: </b>" + jsonProfile.getAddress()));
         }
@@ -277,7 +276,7 @@ public class PatientProfileActivity extends BaseActivity implements
                 if (null != jsonMedicalRecord.getJsonUserMedicalProfile() && null != jsonMedicalRecord.getJsonUserMedicalProfile().getBloodType()) {
                     tv_details.setText(Html.fromHtml("<b> Blood Group: </b>" + jsonMedicalRecord.getJsonUserMedicalProfile().getBloodType().getDescription()));
                 } else {
-                    tv_details.setText(Html.fromHtml("<b> Blood Group: </b> N/A"));
+                    tv_details.setText(Html.fromHtml("<b> Blood Group: </b> " + notAvailable));
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical()) {
                     if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
@@ -346,7 +345,6 @@ public class PatientProfileActivity extends BaseActivity implements
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onBackPressed() {

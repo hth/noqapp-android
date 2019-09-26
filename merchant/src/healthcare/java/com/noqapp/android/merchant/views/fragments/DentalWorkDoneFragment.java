@@ -52,7 +52,6 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
     private WorkDoneAdapter workDoneAdapter;
     private List<String> dental_number;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,8 +86,8 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
         workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList, this);
         list_view.setAdapter(workDoneAdapter);
         try {
-            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() &&
-                    null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser()) {
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord()
+                    && null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser()) {
                 parseWorkDoneDate(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getNoteToDiagnoser());
             }
         } catch (Exception e) {
@@ -121,39 +120,25 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
         rcv_tooth_number.setLayoutManager(new GridLayoutManager(getActivity(), LaunchActivity.isTablet ? 16 : 8));
         rcv_tooth_number.setAdapter(teethNumberAdapter);
         sc_procedure.addSegments(dental_procedure);
-        sc_procedure.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
-                }
+        sc_procedure.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
+            if (isSelected) {
+                teethProcedure = dental_procedure.get(segmentViewHolder.getAbsolutePosition());
             }
         });
-
-        sc_unit.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    teethUnit = dental_units.get(segmentViewHolder.getAbsolutePosition());
-                }
+        sc_unit.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
+            if (isSelected) {
+                teethUnit = dental_units.get(segmentViewHolder.getAbsolutePosition());
             }
         });
-
-        sc_period.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    teethPeriod = dental_period.get(segmentViewHolder.getAbsolutePosition());
-                }
+        sc_period.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
+            if (isSelected) {
+                teethPeriod = dental_period.get(segmentViewHolder.getAbsolutePosition());
             }
         });
         sc_status.addSegments(dental_status);
-        sc_status.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    teethStatus = dental_status.get(segmentViewHolder.getAbsolutePosition());
-                }
+        sc_status.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
+            if (isSelected) {
+                teethStatus = dental_status.get(segmentViewHolder.getAbsolutePosition());
             }
         });
 
@@ -216,8 +201,7 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
         try {
             String[] temp = str.split("\\|", -1);
             if (temp.length > 0) {
-                for (int i = 0; i < temp.length; i++) {
-                    String act = temp[i];
+                for (String act : temp) {
                     if (act.contains(":")) {
                         String[] strArray = act.split(":", -1);
                         String toothNum = strArray[0].trim();
@@ -249,17 +233,14 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
 
     private void AddItemDialog(final Context mContext) {
         ShowAddDialog showDialog = new ShowAddDialog(mContext);
-        showDialog.setDialogClickListener(new ShowAddDialog.DialogClickListener() {
-            @Override
-            public void btnDoneClick(String str) {
-                ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDentalProcedureList();
-                temp.add(new DataObj(str, false).setNewlyAdded(true));
-                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDentalProcedureList(temp);
-                new CustomToast().showToast(getActivity(), "'" + str + "' added successfully to list");
-                MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDentalProcedureList().add(new DataObj(str, false));
-                MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                initDentalProcedure();
-            }
+        showDialog.setDialogClickListener(str -> {
+            ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDentalProcedureList();
+            temp.add(new DataObj(str, false).setNewlyAdded(true));
+            MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDentalProcedureList(temp);
+            new CustomToast().showToast(getActivity(), "'" + str + "' added successfully to list");
+            MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDentalProcedureList().add(new DataObj(str, false));
+            MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
+            initDentalProcedure();
         });
         showDialog.displayDialog("Add New Procedure");
     }
