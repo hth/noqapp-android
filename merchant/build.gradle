@@ -44,7 +44,7 @@ tasks.withType(Test) {
 
 android {
     configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.0'
+        resolutionStrategy.force 'com.googlecode.findbugs:jsr305:3.0.0'
     }
     archivesBaseName = "merchant"
 
@@ -449,7 +449,7 @@ dependencies {
     implementation 'net.danlew:android.joda:2.10.2'
     implementation 'com.google.guava:guava:28.0-android'
     implementation 'com.google.firebase:firebase-core:17.2.0'
-    implementation 'com.google.firebase:firebase-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
