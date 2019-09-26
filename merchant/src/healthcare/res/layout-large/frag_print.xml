@@ -140,6 +140,7 @@
             android:weightSum="1">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_symptoms"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".33"
@@ -191,6 +192,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_examination"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".33"
@@ -252,6 +254,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_pro_diagnosis"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".34"

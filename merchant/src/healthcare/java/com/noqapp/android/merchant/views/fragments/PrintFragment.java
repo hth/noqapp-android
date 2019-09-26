@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.cardview.widget.CardView;
 
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
@@ -159,6 +160,18 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
                 }
             }
         });
+
+        if (MedicalCaseActivity.getMedicalCaseActivity().isDental()) {
+            CardView cv_symptoms = v.findViewById(R.id.cv_symptoms);
+            CardView cv_examination = v.findViewById(R.id.cv_examination);
+            CardView cv_pro_diagnosis = v.findViewById(R.id.cv_pro_diagnosis);
+            LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, 0, 0.0f);
+            LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
+            cv_examination.setLayoutParams(lp0);
+            cv_symptoms.setLayoutParams(lp1);
+            cv_pro_diagnosis.setLayoutParams(lp1);
+        }
+
         Button btn_submit = v.findViewById(R.id.btn_submit);
         btn_print_pdf = v.findViewById(R.id.btn_print_pdf);
         btn_submit.setOnClickListener(v1 -> {
