@@ -17,7 +17,7 @@ import com.noqapp.android.merchant.views.pojos.ParentCheckBoxObj;
 
 import java.util.List;
 
-public class PreferredCategoryList extends Fragment implements View.OnClickListener {
+public class PreferredStoreCategoryList extends Fragment implements View.OnClickListener {
 
     private CircleProgress dp_mri, dp_ctscan, dp_sono, dp_xray, dp_path, dp_special, dp_physio, dp_medicine;
 

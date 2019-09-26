@@ -42,6 +42,11 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
     private AutoCompleteTextView actv_search;
     private EditText edt_add;
     private TestListAdapter testListAdapter;
+
+    public void setMasterLabArrayList(ArrayList<JsonMasterLab> masterLabArrayList) {
+        this.masterLabArrayList = masterLabArrayList;
+    }
+
     private ArrayList<JsonMasterLab> masterLabArrayList = new ArrayList<>();
 
     public ArrayList<DataObj> getSelectedList() {
@@ -142,6 +147,7 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
                 new CustomToast().showToast(getActivity(), "Test updated Successfully");
             }
         });
+        setData(masterLabArrayList);
         return v;
     }
 
@@ -235,5 +241,9 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
             new CustomToast().showToast(getActivity(), "Failed to flag data");
         }
         dismissProgress();
+    }
+
+    private void saveData(){
+
     }
 }
