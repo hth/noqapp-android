@@ -145,13 +145,22 @@ public class MedicalCaseActivity extends BaseActivity implements
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
         pb_case = findViewById(R.id.pb_case);
-        data.add("Primary checkup");
-        data.add("Symptoms");
-        data.add("Examination");
-        data.add("Investigation");
-        data.add(isDental ? "Treatment Plan" : "Treatment");
-        data.add(isDental ? "Work Done" : "Instructions");
-        data.add("Preview");
+        if (isDental) {
+            data.add("Symptoms");
+            data.add("Examination");
+            data.add("Investigation");
+            data.add("Treatment Plan");
+            data.add("Work Done");
+            data.add("Preview");
+        } else {
+            data.add("Primary checkup");
+            data.add("Symptoms");
+            data.add("Examination");
+            data.add("Investigation");
+            data.add("Treatment");
+            data.add("Instructions");
+            data.add("Preview");
+        }
 
 
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
@@ -178,7 +187,7 @@ public class MedicalCaseActivity extends BaseActivity implements
                 rcv_header.smoothScrollToPosition(position);
                 menuAdapter.setSelected_pos(position);
                 menuAdapter.notifyDataSetChanged();
-                if (position == 6)
+                if ((isDental && position == 5) || (!isDental && position == 6))
                     printFragment.updateUI();
             }
 
@@ -289,7 +298,9 @@ public class MedicalCaseActivity extends BaseActivity implements
     }
 
     private void saveAllData() {
-        primaryCheckupFragment.saveData();
+        if (!isDental) {
+            primaryCheckupFragment.saveData();
+        }
         symptomsTabFragment.saveData();
         examinationTabFragment.saveData();
         labTestsFragment.saveData();
@@ -480,13 +491,22 @@ public class MedicalCaseActivity extends BaseActivity implements
         instructionTabFragment = new InstructionTabFragment();
         printFragment = new PrintFragment();
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
-        adapter.addFragment(symptomsTabFragment, "FRAG" + 1);
-        adapter.addFragment(examinationTabFragment, "FRAG" + 2);
-        adapter.addFragment(labTestsFragment, "FRAG" + 3);
-        adapter.addFragment(treatmentTabFragment, "FRAG" + 4);
-        adapter.addFragment(instructionTabFragment, "FRAG" + 5);
-        adapter.addFragment(printFragment, "FRAG" + 6);
+        if (isDental) {
+            adapter.addFragment(symptomsTabFragment, "FRAG" + 1);
+            adapter.addFragment(examinationTabFragment, "FRAG" + 2);
+            adapter.addFragment(labTestsFragment, "FRAG" + 3);
+            adapter.addFragment(treatmentTabFragment, "FRAG" + 4);
+            adapter.addFragment(instructionTabFragment, "FRAG" + 5);
+            adapter.addFragment(printFragment, "FRAG" + 6);
+        } else {
+            adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
+            adapter.addFragment(symptomsTabFragment, "FRAG" + 1);
+            adapter.addFragment(examinationTabFragment, "FRAG" + 2);
+            adapter.addFragment(labTestsFragment, "FRAG" + 3);
+            adapter.addFragment(treatmentTabFragment, "FRAG" + 4);
+            adapter.addFragment(instructionTabFragment, "FRAG" + 5);
+            adapter.addFragment(printFragment, "FRAG" + 6);
+        }
         menuAdapter = new MenuHeaderAdapter(data, this, this);
         rcv_header.setAdapter(menuAdapter);
         menuAdapter.notifyDataSetChanged();
