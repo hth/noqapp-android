@@ -86,7 +86,7 @@ public class PreferredStoreFragment extends BaseFragment {
         return v;
     }
 
-    private List<ParentCheckBoxObj> initCheckBoxList(HealthCareServiceEnum healthCareServiceEnum) {
+    public List<ParentCheckBoxObj> initCheckBoxList(HealthCareServiceEnum healthCareServiceEnum) {
 
         List<ParentCheckBoxObj> parentCheckBoxObjs = new ArrayList<>();
         for (int j = 0; j < LaunchActivity.merchantListFragment.getTopics().size(); j++) {

@@ -7,6 +7,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
@@ -17,10 +18,10 @@ import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.fragments.PreferredCategoryList;
 import com.noqapp.android.merchant.views.fragments.PreferredStoreFragment;
+import com.noqapp.android.merchant.views.pojos.ParentCheckBoxObj;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PreferredStoreActivity extends BaseActivity implements View.OnClickListener,
@@ -109,11 +110,13 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
             frag_medic = new PreferredStoreFragment();
             frag_medic.setArguments(getBundle(7));
 
+           preferredCategoryList.updateProgress();
 
             Log.e("Pref business list: ", jsonPreferredBusinessBucket.toString());
         }
         dismissProgress();
     }
+
 
     @Override
     public void preferredBusinessError() {

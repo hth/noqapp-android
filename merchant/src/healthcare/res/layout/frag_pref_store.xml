@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:padding="5dp">
 
     <LinearLayout
@@ -18,14 +19,31 @@
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="MRI"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:padding="10dp"
+                    android:text="MRI"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold" />
+
+                <com.github.lzyzsd.circleprogress.CircleProgress
+                    android:id="@+id/dp_mri"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    custom:circle_finished_color="@color/colorAccent"
+                    custom:circle_text_color="@android:color/black"
+                    custom:circle_text_size="14sp"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -38,14 +56,30 @@
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="CT Scan"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="CT Scan"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold" />
+
+                <com.github.lzyzsd.circleprogress.CircleProgress
+                    android:id="@+id/dp_ctscan"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    custom:circle_text_size="14sp"
+                    custom:circle_finished_color="@color/colorAccent"
+                    custom:circle_text_color="@android:color/black"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -58,14 +92,30 @@
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Sonography"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Sonography"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold" />
+
+                <com.github.lzyzsd.circleprogress.CircleProgress
+                    android:id="@+id/dp_sono"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    custom:circle_finished_color="@color/colorAccent"
+                    custom:circle_text_color="@android:color/black"
+                    custom:circle_text_size="14sp"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -78,15 +128,30 @@
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="X-RAY"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:gravity="center_vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="X-RAY"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold" />
+
+                <com.github.lzyzsd.circleprogress.CircleProgress
+                    android:id="@+id/dp_xray"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    custom:circle_finished_color="@color/colorAccent"
+                    custom:circle_text_color="@android:color/black"
+                    custom:circle_text_size="14sp"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -98,14 +163,30 @@
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Pathology"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Pathology"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold" />
+
+                <com.github.lzyzsd.circleprogress.CircleProgress
+                    android:id="@+id/dp_path"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    custom:circle_finished_color="@color/colorAccent"
+                    custom:circle_text_color="@android:color/black"
+                    custom:circle_text_size="14sp"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -118,14 +199,30 @@
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Special"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Special"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold" />
+
+                <com.github.lzyzsd.circleprogress.CircleProgress
+                    android:id="@+id/dp_special"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    custom:circle_finished_color="@color/colorAccent"
+                    custom:circle_text_color="@android:color/black"
+                    custom:circle_text_size="14sp"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -138,14 +235,30 @@
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textStyle="bold"
-                android:text="Physiotherapy"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Physiotherapy"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold" />
+
+                <com.github.lzyzsd.circleprogress.CircleProgress
+                    android:id="@+id/dp_physio"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    custom:circle_finished_color="@color/colorAccent"
+                    custom:circle_text_color="@android:color/black"
+                    custom:circle_text_size="14sp"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -158,14 +271,30 @@
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Medicine"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Medicine"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold" />
+
+                <com.github.lzyzsd.circleprogress.CircleProgress
+                    android:id="@+id/dp_medicine"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    custom:circle_finished_color="@color/colorAccent"
+                    custom:circle_text_color="@android:color/black"
+                    custom:circle_text_size="14sp"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
     </LinearLayout>
