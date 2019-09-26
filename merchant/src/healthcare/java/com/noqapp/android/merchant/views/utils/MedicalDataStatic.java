@@ -726,6 +726,14 @@ public class MedicalDataStatic {
         return dataObjs;
     }
 
+    public static ArrayList<DataObj> convertStringListAsDataObjList(ArrayList<String> tempList) {
+        ArrayList<DataObj> dataObjs = new ArrayList<>();
+        for (int i = 0; i < tempList.size(); i++) {
+            dataObjs.add(new DataObj(tempList.get(i),false));
+        }
+        return dataObjs;
+    }
+
 }
 
 

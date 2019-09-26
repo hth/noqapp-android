@@ -43,13 +43,8 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
         AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView recyclerView, rcv_medicine;
-    private TextView tv_add_medicine,  tv_remove, tv_medicine_name;
-    private ImageView tv_close;
     private StaggeredGridMedicineAdapter medicineAdapter, medicineSelectedAdapter;
-    private ScrollView ll_medicine;
-    private SegmentedControl sc_duration, sc_medicine_timing, sc_frequency;
     private List<String> duration_data, timing_data, frequency_data;
-    private TextView btn_done;
     private String medicineTiming, medicineDuration, medicineFrequency;
     private View view_med;
     private ArrayList<DataObj> selectedMedicineList = new ArrayList<>();
@@ -65,60 +60,11 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
         recyclerView = v.findViewById(R.id.recyclerView);
         rcv_medicine = v.findViewById(R.id.rcv_medicine);
         view_med = v.findViewById(R.id.view_med);
-        tv_add_medicine = v.findViewById(R.id.tv_add_medicine);
-        tv_close = v.findViewById(R.id.tv_close);
-        tv_remove = v.findViewById(R.id.tv_remove);
-        tv_medicine_name = v.findViewById(R.id.tv_medicine_name);
-        ll_medicine = v.findViewById(R.id.ll_medicine);
-        sc_duration = v.findViewById(R.id.sc_duration);
-        sc_medicine_timing = v.findViewById(R.id.sc_medicine_timing);
-        sc_frequency = v.findViewById(R.id.sc_frequency);
-        btn_done = v.findViewById(R.id.btn_done);
+        TextView tv_add_medicine = v.findViewById(R.id.tv_add_medicine);
         tv_add_medicine.setOnClickListener(v1 -> AddMedicineDialog(getActivity(), "Add Medicine"));
-        tv_close.setOnClickListener(v13 -> clearOptionSelection());
         duration_data = DurationDaysEnum.asListOfDescription();
-        sc_duration.addSegments(duration_data);
-
-        sc_duration.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    medicineDuration = duration_data.get(segmentViewHolder.getAbsolutePosition());
-                    if (null != dataObj)
-                        dataObj.setMedicineDuration(medicineDuration);
-                }
-            }
-        });
-
         timing_data = MedicationIntakeEnum.asListOfDescription();
-
-        sc_medicine_timing.addSegments(timing_data);
-
-        sc_medicine_timing.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    medicineTiming = timing_data.get(segmentViewHolder.getAbsolutePosition());
-                    if (null != dataObj)
-                        dataObj.setMedicineTiming(medicineTiming);
-                }
-            }
-        });
-
         frequency_data = DailyFrequencyEnum.asListOfDescription();
-        sc_frequency.addSegments(frequency_data);
-
-        sc_frequency.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    medicineFrequency = frequency_data.get(segmentViewHolder.getAbsolutePosition());
-                    if (null != dataObj)
-                        dataObj.setMedicineFrequency(medicineFrequency);
-                }
-            }
-        });
-
         actv_search_medicine = v.findViewById(R.id.actv_search_medicine);
         actv_search_medicine.setThreshold(1);
         ImageView iv_clear_actv_medicine = v.findViewById(R.id.iv_clear_actv_medicine);
@@ -130,14 +76,9 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
     }
 
     private void clearOptionSelection() {
-        ll_medicine.setVisibility(View.GONE);
         medicineTiming = "";
         medicineDuration = "";
         medicineFrequency = "";
-        tv_medicine_name.setText("");
-        sc_medicine_timing.clearSelection();
-        sc_duration.clearSelection();
-        sc_frequency.clearSelection();
         dataObj = null;
     }
 
@@ -225,55 +166,110 @@ public class TreatmentMedicineFragment extends BaseFragment implements Staggered
     @Override
     public void staggeredMedicineClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
         if (!isEdit && isItemExist(temp.getShortName())) {
-            ll_medicine.setVisibility(View.GONE);
             new CustomToast().showToast(getActivity(), "Medicine Already added in list");
         } else {
-            ll_medicine.setVisibility(isOpen ? View.VISIBLE : View.GONE);
-        }
-        tv_remove.setVisibility(isEdit ? View.VISIBLE : View.GONE);
-        dataObj = temp;
-        tv_medicine_name.setText(dataObj.getShortName());
-        if (isEdit) {
-            // Pre fill the data
-            sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getMedicineDuration()));
-            sc_medicine_timing.setSelectedSegment(timing_data.indexOf(dataObj.getMedicineTiming()));
-            sc_frequency.setSelectedSegment(frequency_data.indexOf(dataObj.getMedicineFrequency()));
-        } else {
-            medicineTiming = "";
-            medicineDuration = "";
-            medicineFrequency = "";
-            sc_medicine_timing.clearSelection();
-            sc_duration.clearSelection();
-            sc_frequency.clearSelection();
-        }
-        btn_done.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(medicineDuration) || TextUtils.isEmpty(medicineTiming) || TextUtils.isEmpty(medicineFrequency)) {
-                new CustomToast().showToast(getActivity(), "All fields are mandatory");
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            builder.setTitle(null);
+            View dialogView = inflater.inflate(R.layout.dialog_add_medicine, null, false);
+            TextView tv_remove = dialogView.findViewById(R.id.tv_remove);
+            TextView tv_done = dialogView.findViewById(R.id.tv_done);
+            TextView tv_medicine_name = dialogView.findViewById(R.id.tv_medicine_name);
+            ImageView iv_close = dialogView.findViewById(R.id.iv_close);
+
+            SegmentedControl sc_duration = dialogView.findViewById(R.id.sc_duration);
+            SegmentedControl sc_medicine_timing = dialogView.findViewById(R.id.sc_medicine_timing);
+            SegmentedControl sc_frequency = dialogView.findViewById(R.id.sc_frequency);
+            sc_duration.addSegments(duration_data);
+            sc_duration.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+                @Override
+                public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                    if (isSelected) {
+                        medicineDuration = duration_data.get(segmentViewHolder.getAbsolutePosition());
+                        if (null != dataObj)
+                            dataObj.setMedicineDuration(medicineDuration);
+                    }
+                }
+            });
+            sc_medicine_timing.addSegments(timing_data);
+            sc_medicine_timing.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+                @Override
+                public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                    if (isSelected) {
+                        medicineTiming = timing_data.get(segmentViewHolder.getAbsolutePosition());
+                        if (null != dataObj)
+                            dataObj.setMedicineTiming(medicineTiming);
+                    }
+                }
+            });
+            sc_frequency.addSegments(frequency_data);
+            sc_frequency.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+                @Override
+                public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                    if (isSelected) {
+                        medicineFrequency = frequency_data.get(segmentViewHolder.getAbsolutePosition());
+                        if (null != dataObj)
+                            dataObj.setMedicineFrequency(medicineFrequency);
+                    }
+                }
+            });
+            builder.setView(dialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mAlertDialog.show();
+            iv_close.setOnClickListener(v1 -> {
+                clearOptionSelection();
+                mAlertDialog.dismiss();
+            });
+
+            tv_remove.setVisibility(isEdit ? View.VISIBLE : View.GONE);
+            dataObj = temp;
+            tv_medicine_name.setText(dataObj.getShortName());
+            if (isEdit) {
+                // Pre fill the data
+                sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getMedicineDuration()));
+                sc_medicine_timing.setSelectedSegment(timing_data.indexOf(dataObj.getMedicineTiming()));
+                sc_frequency.setSelectedSegment(frequency_data.indexOf(dataObj.getMedicineFrequency()));
             } else {
-                // medicineAdapter.updateMedicine(medicine_name, medicineTiming, medicineDuration, medicineFrequency);
-                if (isEdit) {
-                    selectedMedicineList.set(pos, dataObj);
+                medicineTiming = "";
+                medicineDuration = "";
+                medicineFrequency = "";
+                sc_medicine_timing.clearSelection();
+                sc_duration.clearSelection();
+                sc_frequency.clearSelection();
+            }
+            tv_done.setOnClickListener(v -> {
+                if (TextUtils.isEmpty(medicineDuration) || TextUtils.isEmpty(medicineTiming) || TextUtils.isEmpty(medicineFrequency)) {
+                    new CustomToast().showToast(getActivity(), "All fields are mandatory");
                 } else {
-                    selectedMedicineList.add(dataObj);
+                    if (isEdit) {
+                        selectedMedicineList.set(pos, dataObj);
+                    } else {
+                        selectedMedicineList.add(dataObj);
+                    }
+                    clearOptionSelection();
+                    view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
+
+                    rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                    medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
+                    rcv_medicine.setAdapter(medicineSelectedAdapter);
+                    mAlertDialog.dismiss();
+                }
+
+            });
+            tv_remove.setOnClickListener(v -> {
+                if (isEdit) {
+                    selectedMedicineList.remove(pos);
                 }
                 clearOptionSelection();
                 view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
-
                 rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                 medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
                 rcv_medicine.setAdapter(medicineSelectedAdapter);
-            }
-        });
-        tv_remove.setOnClickListener(v -> {
-            if (isEdit) {
-                selectedMedicineList.remove(pos);
-            }
-            clearOptionSelection();
-            view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
-            rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-            medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
-            rcv_medicine.setAdapter(medicineSelectedAdapter);
-        });
+                mAlertDialog.dismiss();
+            });
+        }
     }
 
     private boolean isItemExist(String name) {

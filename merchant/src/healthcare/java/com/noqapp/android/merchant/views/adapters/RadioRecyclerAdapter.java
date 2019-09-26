@@ -61,10 +61,10 @@ public class RadioRecyclerAdapter extends RecyclerView.Adapter {
         holder.checkBox.setText(ss1);
         if (selectPos != -1 && selectPos == position) {
             holder.checkBox.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_select_square));
-            holder.checkBox.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+            holder.checkBox.setTextColor(ContextCompat.getColor(context, android.R.color.holo_blue_dark));
         } else {
             holder.checkBox.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect_square));
-            holder.checkBox.setTextColor(ContextCompat.getColor(context, android.R.color.holo_blue_dark));
+            holder.checkBox.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray));
         }
         holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setOnCheckedChangeListener(

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:padding="7dp"
+        card_view:cardCornerRadius="4dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_search"
+            android:drawableRight="@drawable/ic_cancel"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/colorAccent"
+            android:hint="Search test"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="7dp"
+            android:textSize="@dimen/text_size_fourteen" />
+
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="5dp"
+            android:layout_toLeftOf="@+id/btn_add"
+            android:background="@drawable/edt_roun_rect"
+            android:hint="Add test"
+            android:inputType="textCapSentences|text"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="100dp"
+            android:layout_height="@dimen/btn_height"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/bg_nogradient_round"
+            android:text="ADD"
+            android:textColor="@color/btn_txt_color" />
+    </RelativeLayout>
+
+</LinearLayout>
