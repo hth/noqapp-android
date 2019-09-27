@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +74,8 @@ public class PatientProfileActivity extends BaseActivity implements
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
     private ArrayList<ToothWorkDone> toothDentalTreatmentList = new ArrayList<>();
 
+    private ScrollView scroll_view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setScreenOrientation();
@@ -92,6 +95,7 @@ public class PatientProfileActivity extends BaseActivity implements
         tv_address = findViewById(R.id.tv_address);
         tv_details = findViewById(R.id.tv_details);
         iv_profile = findViewById(R.id.iv_profile);
+        scroll_view = findViewById(R.id.scroll_view);
 
         tv_weight = findViewById(R.id.tv_weight);
         tv_pulse = findViewById(R.id.tv_pulse);
@@ -396,6 +400,8 @@ public class PatientProfileActivity extends BaseActivity implements
         //Dental Treatment data
         dt_list_view.setAdapter(new WorkDoneAdapter(this, toothDentalTreatmentList,true));
         tv_empty_dt.setVisibility(toothDentalTreatmentList.size() > 0 ? View.GONE : View.VISIBLE);
+
+        scroll_view.fullScroll(ScrollView.FOCUS_UP);
     }
 
     public void parseWorkDoneData(String str, String createdDate) {
