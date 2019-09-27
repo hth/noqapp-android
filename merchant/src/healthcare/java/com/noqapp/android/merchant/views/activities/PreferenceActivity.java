@@ -46,8 +46,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 
-public class PreferenceActivity extends BaseActivity implements
-        FilePresenter, IntellisensePresenter, MenuHeaderAdapter.OnItemClickListener, PreferredSettingCategoryList.CategoryListener {
+public class PreferenceActivity extends BaseActivity implements FilePresenter, IntellisensePresenter,
+        MenuHeaderAdapter.OnItemClickListener, PreferredSettingCategoryList.CategoryListener {
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -71,8 +71,6 @@ public class PreferenceActivity extends BaseActivity implements
     }
 
     public PreferenceObjects preferenceObjects;
-
-    private PreferredSettingCategoryList preferredSettingCategoryList;
 
     public static PreferenceActivity getPreferenceActivity() {
         return preferenceActivity;
@@ -98,9 +96,8 @@ public class PreferenceActivity extends BaseActivity implements
             preferenceObjects = new PreferenceObjects();
 
 
-        preferredSettingCategoryList = new PreferredSettingCategoryList();
+        PreferredSettingCategoryList preferredSettingCategoryList = new PreferredSettingCategoryList();
         preferredSettingCategoryList.setCategoryListener(this);
-
         replaceFragmentWithoutBackStack(R.id.frame_list, preferredSettingCategoryList);
 
         medicineFragment = new MedicineFragment();
@@ -145,23 +142,7 @@ public class PreferenceActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-
-        PreferenceObjects temp = new PreferenceObjects();
-        temp.setMriList(preferenceMriFragment.clearListSelection());
-        temp.setScanList(preferenceScanFragment.clearListSelection());
-        temp.setSonoList(preferenceSonoFragment.clearListSelection());
-        temp.setXrayList(preferenceXrayFragment.clearListSelection());
-        temp.setPathologyList(preferencePathFragment.clearListSelection());
-        temp.setSpecList(preferenceSpecFragment.clearListSelection());
-        temp.setMedicineList(medicineFragment.getSelectedList());
-
-        temp.setSymptomsList(preSymptomsFragment.getSelectedList());
-        temp.setProDiagnosisList(prefProDiagnosisFragment.getSelectedList());
-        temp.setDiagnosisList(prefDiagnosisFragment.getSelectedList());
-        temp.setInstructionList(MedicalDataStatic.convertDataObjListAsStringList(preInstructionFragment.getSelectedList()));
-        temp.setPreferredStoreInfoHashMap(preferenceObjects.getPreferredStoreInfoHashMap());
-
-        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
+        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(preferenceObjects);
         super.onBackPressed();
     }
 

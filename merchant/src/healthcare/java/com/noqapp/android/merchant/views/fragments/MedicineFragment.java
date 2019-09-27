@@ -29,24 +29,19 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 public class MedicineFragment extends BaseFragment implements CustomExpandListAdapter.RemoveChild {
     private CustomExpandListAdapter listAdapter;
-    private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<DataObj>> listDataChild;
     private ArrayList<DataObj> selectedList = new ArrayList<>();
     private int selectionPos = -1;
     private EditText edt_item;
-    final List<String> category_data = new ArrayList<>();
-
-    public ArrayList<DataObj> getSelectedList() {
-        return selectedList;
-    }
+    private List<String> category_data = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_medicine, container, false);
-        expListView = v.findViewById(R.id.lvExp);
+        ExpandableListView expListView = v.findViewById(R.id.lvExp);
         edt_item = v.findViewById(R.id.edt_item);
         final SegmentedControl sc_category = v.findViewById(R.id.sc_category);
         Button btn_add_medicine = v.findViewById(R.id.btn_add_medicine);
@@ -74,10 +69,10 @@ public class MedicineFragment extends BaseFragment implements CustomExpandListAd
             }
 
         });
-
+        category_data.clear();
         category_data.addAll(PharmacyCategoryEnum.asListOfDescription());
 
-
+        sc_category.removeAllSegments();
         sc_category.addSegments(category_data);
         sc_category.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
@@ -88,29 +83,27 @@ public class MedicineFragment extends BaseFragment implements CustomExpandListAd
             }
         });
         prepareListData();
-        if (null != PreferenceActivity.getPreferenceActivity().preferenceObjects)
-            selectedList = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMedicineList();
-        if (null == selectedList)
-            selectedList = new ArrayList<>();
         listAdapter = new CustomExpandListAdapter(getActivity(), listDataHeader, listDataChild, this);
         expListView.setAdapter(listAdapter);
         return v;
     }
 
     private void prepareListData() {
+        if (null != listDataHeader)
+            listDataHeader.clear();
+        if (null != listDataChild)
+            listDataChild.clear();
         listDataHeader = PharmacyCategoryEnum.asListOfDescription();
         listDataChild = new HashMap<String, List<DataObj>>();
-
         for (int i = 0; i < listDataHeader.size(); i++) {
             listDataChild.put(listDataHeader.get(i), new ArrayList<DataObj>()); // Header, Child data
         }
+        selectedList = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMedicineList();
+        if (null == selectedList)
+            selectedList = new ArrayList<>();
 
-
-        selectedList.clear();
-        ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMedicineList();
-        for (int i = 0; i < temp.size(); i++) {
-            listDataChild.get(temp.get(i).getCategory()).add(temp.get(i));
-            selectedList.add(temp.get(i));
+        for (int i = 0; i < selectedList.size(); i++) {
+            listDataChild.get(selectedList.get(i).getCategory()).add(selectedList.get(i));
         }
     }
 
@@ -120,5 +113,24 @@ public class MedicineFragment extends BaseFragment implements CustomExpandListAd
         selectedList.remove(dataObj);
         listAdapter.notifyDataSetChanged();
         new CustomToast().showToast(getActivity(), "Record deleted from List");
+    }
+
+    private void saveData() {
+        PreferenceActivity.getPreferenceActivity().preferenceObjects.setMedicineList(clearListSelection());
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        saveData();
+    }
+
+    private ArrayList<DataObj> clearListSelection() {
+        ArrayList<DataObj> temp = new ArrayList<>();
+        for (DataObj d :
+                selectedList) {
+            temp.add(d.setSelect(false));
+        }
+        return temp;
     }
 }

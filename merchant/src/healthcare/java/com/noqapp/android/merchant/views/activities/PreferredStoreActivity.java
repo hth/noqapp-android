@@ -67,7 +67,7 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_preferred_business);
         initActionsViews(false);
         tv_toolbar_title.setText("Preferred Stores");
-
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         preferredStoreCategoryList = new PreferredStoreCategoryList();
         preferredStoreCategoryList.setCategoryListener(this);
 
