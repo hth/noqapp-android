@@ -72,8 +72,6 @@ public class PreferenceActivity extends BaseActivity implements FilePresenter, I
 
     public PreferenceObjects preferenceObjects;
 
-    private PreferredSettingCategoryList preferredSettingCategoryList;
-
     public static PreferenceActivity getPreferenceActivity() {
         return preferenceActivity;
     }
@@ -98,9 +96,8 @@ public class PreferenceActivity extends BaseActivity implements FilePresenter, I
             preferenceObjects = new PreferenceObjects();
 
 
-        preferredSettingCategoryList = new PreferredSettingCategoryList();
+        PreferredSettingCategoryList preferredSettingCategoryList = new PreferredSettingCategoryList();
         preferredSettingCategoryList.setCategoryListener(this);
-
         replaceFragmentWithoutBackStack(R.id.frame_list, preferredSettingCategoryList);
 
         medicineFragment = new MedicineFragment();
