@@ -108,7 +108,7 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
             frag_medic = new PreferredStoreFragment();
             frag_medic.setArguments(getBundle(7));
 
-           preferredStoreCategoryList.updateProgress();
+            preferredStoreCategoryList.updateProgress();
 
             Log.e("Pref business list: ", jsonPreferredBusinessBucket.toString());
         }
@@ -130,15 +130,6 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-//        frag_mri.saveData();
-//        frag_scan.saveData();
-//        frag_sono.saveData();
-//        frag_xray.saveData();
-//        frag_path.saveData();
-//        frag_spec.saveData();
-//        frag_physio.saveData();
-//        frag_medic.saveData();
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(preferenceObjects);
     }
 

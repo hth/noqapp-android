@@ -23,14 +23,12 @@ import com.noqapp.android.merchant.model.MasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
-import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.LocalPreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.fragments.PreferredSettingCategoryList;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
-import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
