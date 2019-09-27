@@ -244,6 +244,40 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
     }
 
     private void saveData(){
+        switch (getArguments().getInt("type")) {
+            case 0: {
+                 PreferenceActivity.getPreferenceActivity().preferenceObjects.setMriList(clearListSelection());
+                break;
+            }
+            case 1: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setScanList(clearListSelection());
+                break;
+            }
+            case 2: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setSonoList(clearListSelection());
+                break;
+            }
+            case 3: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setXrayList(clearListSelection());
+                break;
+            }
+            case 4: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setPathologyList(clearListSelection());
+                break;
+            }
+            case 5: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setSpecList(clearListSelection());
+                break;
+            }
+            default: {
+            }
+        }
+    }
 
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        saveData();
     }
 }

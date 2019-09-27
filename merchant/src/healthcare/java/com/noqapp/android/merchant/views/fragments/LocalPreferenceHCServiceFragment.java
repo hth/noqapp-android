@@ -26,13 +26,7 @@ import java.util.Comparator;
 
 public class LocalPreferenceHCServiceFragment extends BaseFragment implements
         SelectItemListAdapter.RemoveListItem {
-
     private EditText edt_add;
-
-    public ArrayList<DataObj> getSelectedList() {
-        return selectedList;
-    }
-
     private ArrayList<DataObj> selectedList = new ArrayList<>();
     private SelectItemListAdapter selectItemListAdapter;
 
@@ -116,7 +110,37 @@ public class LocalPreferenceHCServiceFragment extends BaseFragment implements
         selectedList.remove(pos);
         selectItemListAdapter.notifyDataSetChanged();
         new CustomToast().showToast(getActivity(), "Record deleted from List");
+    }
 
+    private void saveData(){
+        switch (getArguments().getInt("type")) {
+            case 0: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setSymptomsList(selectedList);
+                break;
+            }
+            case 1: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setProDiagnosisList(selectedList);
+                break;
+            }
+            case 2: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setDiagnosisList(selectedList);
+                break;
+            }
+            case 3: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setInstructionList(MedicalDataStatic.convertDataObjListAsStringList(selectedList));
+                break;
+            }
+            default: {
+
+            }
+        }
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        saveData();
     }
 
 }

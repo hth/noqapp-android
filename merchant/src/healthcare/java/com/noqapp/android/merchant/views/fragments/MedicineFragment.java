@@ -37,10 +37,6 @@ public class MedicineFragment extends BaseFragment implements CustomExpandListAd
     private EditText edt_item;
     final List<String> category_data = new ArrayList<>();
 
-    public ArrayList<DataObj> getSelectedList() {
-        return selectedList;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -120,5 +116,15 @@ public class MedicineFragment extends BaseFragment implements CustomExpandListAd
         selectedList.remove(dataObj);
         listAdapter.notifyDataSetChanged();
         new CustomToast().showToast(getActivity(), "Record deleted from List");
+    }
+
+    private void saveData(){
+        PreferenceActivity.getPreferenceActivity().preferenceObjects.setMedicineList(selectedList);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        saveData();
     }
 }
