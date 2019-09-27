@@ -1,5 +1,27 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
+import com.hbb20.CountryCodePicker;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
@@ -13,28 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
-import com.hbb20.CountryCodePicker;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -79,21 +80,18 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         edt_phone_code = findViewById(R.id.edt_phone_code);
         tv_detail = findViewById(R.id.tv_detail);
         ccp = findViewById(R.id.ccp);
-        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                countryCode = ccp.getSelectedCountryCodeWithPlus();
-                countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
-            }
+        ccp.setOnCountryChangeListener(() -> {
+            countryCode = ccp.getSelectedCountryCodeWithPlus();
+            countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
         });
         btn_login.setOnClickListener((View v) -> {
-                actionLogin();
+            actionLogin();
         });
         btn_verify_phone.setOnClickListener((View v) -> {
-                btnVerifyClick();
+            btnVerifyClick();
         });
         actionbarBack.setOnClickListener((View v) -> {
-                finish();
+            finish();
         });
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
@@ -105,7 +103,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         countryShortName = c_codeValue.toUpperCase();
         countryCode = ccp.getSelectedCountryCodeWithPlus();
         countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
-       // edt_phone_code.setText(countryCode);
+        // edt_phone_code.setText(countryCode);
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
@@ -114,7 +112,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 // 1 - Instant verification. In some cases the phone number can be instantly
                 //     verified without needing to send or enter a verification code.
                 // 2 - Auto-retrieval. On some devices Google Play services can automatically
-                //     detect the incoming verification SMS and perform verificaiton without
+                //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:" + credential);
                 dismissProgress();
@@ -144,8 +142,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             }
 
             @Override
-            public void onCodeSent(String verificationId,
-                                   PhoneAuthProvider.ForceResendingToken token) {
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
                 // The SMS verification code has been sent to the provided phone number, we
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
@@ -200,9 +197,9 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             // [START start_phone_auth]
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
                     phoneNumber,        // Phone number to verify
-                    60,                 // Timeout duration
+                    60,              // Timeout duration
                     TimeUnit.SECONDS,   // Unit of timeout
-                    this,               // Activity (for callback binding)
+                    this,       // Activity (for callback binding)
                     mCallbacks);        // OnVerificationStateChangedCallbacks
             // [END start_phone_auth]
         } catch (Exception e) {
