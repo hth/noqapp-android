@@ -24,6 +24,7 @@
                 android:padding="10dp"
                 android:text="MRI"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -44,6 +45,7 @@
                 android:padding="10dp"
                 android:text="CT Scan"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -64,6 +66,7 @@
                 android:padding="10dp"
                 android:text="Sonography"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -84,6 +87,7 @@
                 android:padding="10dp"
                 android:text="X-RAY"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -104,6 +108,7 @@
                 android:padding="10dp"
                 android:text="Pathology"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -124,6 +129,7 @@
                 android:padding="10dp"
                 android:text="Special"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -144,6 +150,7 @@
                 android:padding="10dp"
                 android:text="Medicine"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -164,6 +171,7 @@
                 android:padding="10dp"
                 android:text="Symptoms"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -184,6 +192,7 @@
                 android:padding="10dp"
                 android:text="Pro-Diagnosis"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -204,6 +213,7 @@
                 android:padding="10dp"
                 android:text="Diagnosis"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
@@ -224,6 +234,7 @@
                 android:padding="10dp"
                 android:text="Instruction"
                 android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
 
