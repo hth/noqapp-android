@@ -239,5 +239,26 @@
                 android:textStyle="bold" />
 
         </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cv_dental_procedure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Dental Procedure"
+                android:textColor="@android:color/black"
+                android:drawableRight="@drawable/arrow_right"
+                android:textSize="@dimen/text_size_sixteen"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>

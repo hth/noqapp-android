@@ -61,7 +61,8 @@ public class PreferenceActivity extends BaseActivity implements FilePresenter, I
     private ArrayList<JsonMasterLab> masterDataSpec = new ArrayList<>();
     private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment,
             preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
-    private LocalPreferenceHCServiceFragment preSymptomsFragment, prefProDiagnosisFragment, prefDiagnosisFragment, preInstructionFragment;
+    private LocalPreferenceHCServiceFragment preSymptomsFragment, prefProDiagnosisFragment,
+            prefDiagnosisFragment, preInstructionFragment,preDentalProcedureFragment;
     private MedicineFragment medicineFragment;
 
     public PreferenceObjects getPreferenceObjects() {
@@ -121,6 +122,8 @@ public class PreferenceActivity extends BaseActivity implements FilePresenter, I
         prefDiagnosisFragment.setArguments(getBundle(2));
         preInstructionFragment = new LocalPreferenceHCServiceFragment();
         preInstructionFragment.setArguments(getBundle(3));
+        preDentalProcedureFragment = new LocalPreferenceHCServiceFragment();
+        preDentalProcedureFragment.setArguments(getBundle(4));
 
         if (isStoragePermissionAllowed()) {
             callFileApi();
@@ -371,6 +374,9 @@ public class PreferenceActivity extends BaseActivity implements FilePresenter, I
                 break;
             case R.id.cv_instruction:
                 replaceFragmentWithBackStack(R.id.frame_list, preInstructionFragment, "Instruction");
+                break;
+                case R.id.cv_dental_procedure:
+                replaceFragmentWithBackStack(R.id.frame_list, preDentalProcedureFragment, "Instruction");
                 break;
 
 
