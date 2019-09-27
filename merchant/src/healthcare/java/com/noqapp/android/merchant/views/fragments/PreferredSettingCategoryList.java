@@ -13,13 +13,11 @@ import com.noqapp.android.merchant.R;
 
 public class PreferredSettingCategoryList extends Fragment implements View.OnClickListener {
 
-
     public void setCategoryListener(CategoryListener categoryListener) {
         this.categoryListener = categoryListener;
     }
 
     private CategoryListener categoryListener;
-
     public interface CategoryListener {
         void categorySelected(int id);
     }
