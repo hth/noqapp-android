@@ -15,16 +15,15 @@ import com.noqapp.android.merchant.model.PreferredBusinessApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.fragments.PreferredCategoryList;
+import com.noqapp.android.merchant.views.fragments.PreferredStoreCategoryList;
 import com.noqapp.android.merchant.views.fragments.PreferredStoreFragment;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PreferredStoreActivity extends BaseActivity implements View.OnClickListener,
-        PreferredCategoryList.CategoryListener, PreferredBusinessPresenter, IntellisensePresenter {
+        PreferredStoreCategoryList.CategoryListener, PreferredBusinessPresenter, IntellisensePresenter {
 
     private PreferredStoreFragment frag_mri;
     private PreferredStoreFragment frag_scan;
@@ -35,7 +34,7 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
     private PreferredStoreFragment frag_physio;
     private PreferredStoreFragment frag_medic;
     public PreferenceObjects preferenceObjects;
-    private PreferredCategoryList preferredCategoryList;
+    private PreferredStoreCategoryList preferredStoreCategoryList;
 
     public static PreferredStoreActivity getPreferredStoreActivity() {
         return preferredStoreActivity;
@@ -69,10 +68,10 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
         initActionsViews(false);
         tv_toolbar_title.setText("Preferred Stores");
 
-        preferredCategoryList = new PreferredCategoryList();
-        preferredCategoryList.setCategoryListener(this);
+        preferredStoreCategoryList = new PreferredStoreCategoryList();
+        preferredStoreCategoryList.setCategoryListener(this);
 
-        replaceFragmentWithoutBackStack(R.id.frame_list, preferredCategoryList);
+        replaceFragmentWithoutBackStack(R.id.frame_list, preferredStoreCategoryList);
 
         if (null != LaunchActivity.merchantListFragment && null != LaunchActivity.merchantListFragment.getTopics() && LaunchActivity.merchantListFragment.getTopics().size() > 0) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -109,11 +108,13 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
             frag_medic = new PreferredStoreFragment();
             frag_medic.setArguments(getBundle(7));
 
+           preferredStoreCategoryList.updateProgress();
 
             Log.e("Pref business list: ", jsonPreferredBusinessBucket.toString());
         }
         dismissProgress();
     }
+
 
     @Override
     public void preferredBusinessError() {

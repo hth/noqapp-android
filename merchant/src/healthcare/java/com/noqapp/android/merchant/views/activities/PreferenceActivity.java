@@ -7,20 +7,14 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
@@ -33,6 +27,7 @@ import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.LocalPreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
+import com.noqapp.android.merchant.views.fragments.PreferredSettingCategoryList;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
@@ -52,18 +47,13 @@ import java.util.ArrayList;
 
 
 public class PreferenceActivity extends BaseActivity implements
-        FilePresenter, IntellisensePresenter, MenuHeaderAdapter.OnItemClickListener {
+        FilePresenter, IntellisensePresenter, MenuHeaderAdapter.OnItemClickListener, PreferredSettingCategoryList.CategoryListener {
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-    private RecyclerView rcv_header;
-    private MenuHeaderAdapter menuAdapter;
-    private ViewPager viewPager;
-    private long lastPress;
-    private Toast backPressToast;
+
     private static PreferenceActivity preferenceActivity;
-    private ArrayList<String> data = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterData = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterDataSono = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterDataScan = new ArrayList<>();
@@ -73,9 +63,16 @@ public class PreferenceActivity extends BaseActivity implements
     private ArrayList<JsonMasterLab> masterDataSpec = new ArrayList<>();
     private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment,
             preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
-    private LocalPreferenceHCServiceFragment preSymptomsFragment,prefProDiagnosisFragment,prefDiagnosisFragment,preInstructionFragment;
+    private LocalPreferenceHCServiceFragment preSymptomsFragment, prefProDiagnosisFragment, prefDiagnosisFragment, preInstructionFragment;
     private MedicineFragment medicineFragment;
+
+    public PreferenceObjects getPreferenceObjects() {
+        return preferenceObjects;
+    }
+
     public PreferenceObjects preferenceObjects;
+
+    private PreferredSettingCategoryList preferredSettingCategoryList;
 
     public static PreferenceActivity getPreferenceActivity() {
         return preferenceActivity;
@@ -99,20 +96,13 @@ public class PreferenceActivity extends BaseActivity implements
         }
         if (null == preferenceObjects)
             preferenceObjects = new PreferenceObjects();
-        viewPager = findViewById(R.id.pager);
 
-        rcv_header = findViewById(R.id.rcv_header);
-        data.add("MRI");
-        data.add("CT Scan");
-        data.add("SONOGRAPHY");
-        data.add("X-RAY");
-        data.add("Pathology");
-        data.add("Special");
-        data.add("Medicine");
-        data.add("Symptoms");
-        data.add("Pro-Diagnosis");
-        data.add("Diagnosis");
-        data.add("Instruction");
+
+        preferredSettingCategoryList = new PreferredSettingCategoryList();
+        preferredSettingCategoryList.setCategoryListener(this);
+
+        replaceFragmentWithoutBackStack(R.id.frame_list, preferredSettingCategoryList);
+
         medicineFragment = new MedicineFragment();
 
         preferenceMriFragment = new PreferenceHCServiceFragment();
@@ -128,63 +118,15 @@ public class PreferenceActivity extends BaseActivity implements
         preferenceSpecFragment = new PreferenceHCServiceFragment();
         preferenceSpecFragment.setArguments(getBundle(5));
 
-        preSymptomsFragment =  new LocalPreferenceHCServiceFragment();
+        preSymptomsFragment = new LocalPreferenceHCServiceFragment();
         preSymptomsFragment.setArguments(getBundle(0));
-        prefProDiagnosisFragment =  new LocalPreferenceHCServiceFragment();
+        prefProDiagnosisFragment = new LocalPreferenceHCServiceFragment();
         prefProDiagnosisFragment.setArguments(getBundle(1));
-        prefDiagnosisFragment =  new LocalPreferenceHCServiceFragment();
+        prefDiagnosisFragment = new LocalPreferenceHCServiceFragment();
         prefDiagnosisFragment.setArguments(getBundle(2));
-        preInstructionFragment =  new LocalPreferenceHCServiceFragment();
+        preInstructionFragment = new LocalPreferenceHCServiceFragment();
         preInstructionFragment.setArguments(getBundle(3));
 
-
-        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(preferenceMriFragment, "FRAG" + 0);
-        adapter.addFragment(preferenceScanFragment, "FRAG" + 1);
-        adapter.addFragment(preferenceSonoFragment, "FRAG" + 2);
-        adapter.addFragment(preferenceXrayFragment, "FRAG" + 3);
-        adapter.addFragment(preferencePathFragment, "FRAG" + 4);
-        adapter.addFragment(preferenceSpecFragment, "FRAG" + 5);
-        adapter.addFragment(medicineFragment, "FRAG" + 6);
-        adapter.addFragment(preSymptomsFragment, "FRAG" + 7);
-        adapter.addFragment(prefProDiagnosisFragment, "FRAG" + 8);
-        adapter.addFragment(prefDiagnosisFragment, "FRAG" + 9);
-        adapter.addFragment(preInstructionFragment, "FRAG" + 10);
-
-        rcv_header.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rcv_header.setLayoutManager(horizontalLayoutManagaer);
-        rcv_header.setItemAnimator(new DefaultItemAnimator());
-
-
-        menuAdapter = new MenuHeaderAdapter(data, this, this);
-        rcv_header.setAdapter(menuAdapter);
-        menuAdapter.notifyDataSetChanged();
-        viewPager.setOffscreenPageLimit(data.size());
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(0);
-        adapter.notifyDataSetChanged();
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                //saveAllData();
-                rcv_header.smoothScrollToPosition(position);
-                menuAdapter.setSelected_pos(position);
-                menuAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         if (isStoragePermissionAllowed()) {
             callFileApi();
         } else {
@@ -203,18 +145,6 @@ public class PreferenceActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastPress > 3000) {
-            backPressToast = new CustomToast().getToast(this, getString(R.string.exit_medical_screen));
-            backPressToast.show();
-            lastPress = currentTime;
-        } else {
-            if (backPressToast != null) {
-                backPressToast.cancel();
-            }
-            //super.onBackPressed();
-            finish();
-        }
 
         PreferenceObjects temp = new PreferenceObjects();
         temp.setMriList(preferenceMriFragment.clearListSelection());
@@ -232,6 +162,7 @@ public class PreferenceActivity extends BaseActivity implements
         temp.setPreferredStoreInfoHashMap(preferenceObjects.getPreferredStoreInfoHashMap());
 
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
+        super.onBackPressed();
     }
 
     @Override
@@ -265,7 +196,7 @@ public class PreferenceActivity extends BaseActivity implements
 
     @Override
     public void menuHeaderClick(int pos) {
-        viewPager.setCurrentItem(pos);
+        //  viewPager.setCurrentItem(pos);
         // saveAllData();
     }
 
@@ -418,11 +349,52 @@ public class PreferenceActivity extends BaseActivity implements
             Log.e("File exist:", tarFile.getAbsolutePath());
             tarFile.delete();
         }
-        preferenceXrayFragment.setData(masterDataXray);
-        preferenceSonoFragment.setData(masterDataSono);
-        preferenceScanFragment.setData(masterDataScan);
-        preferenceMriFragment.setData(masterDataMri);
-        preferencePathFragment.setData(masterDataPath);
-        preferenceSpecFragment.setData(masterDataSpec);
+        preferenceXrayFragment.setMasterLabArrayList(masterDataXray);
+        preferenceSonoFragment.setMasterLabArrayList(masterDataSono);
+        preferenceScanFragment.setMasterLabArrayList(masterDataScan);
+        preferenceMriFragment.setMasterLabArrayList(masterDataMri);
+        preferencePathFragment.setMasterLabArrayList(masterDataPath);
+        preferenceSpecFragment.setMasterLabArrayList(masterDataSpec);
+    }
+
+    @Override
+    public void categorySelected(int id) {
+        switch (id) {
+            case R.id.cv_mri:
+                replaceFragmentWithBackStack(R.id.frame_list, preferenceMriFragment, "MRI");
+                break;
+            case R.id.cv_ctscan:
+                replaceFragmentWithBackStack(R.id.frame_list, preferenceScanFragment, "Scan");
+                break;
+            case R.id.cv_sono:
+                replaceFragmentWithBackStack(R.id.frame_list, preferenceSonoFragment, "Sono");
+                break;
+            case R.id.cv_xray:
+                replaceFragmentWithBackStack(R.id.frame_list, preferenceXrayFragment, "Xray");
+                break;
+            case R.id.cv_path:
+                replaceFragmentWithBackStack(R.id.frame_list, preferencePathFragment, "Path");
+                break;
+            case R.id.cv_special:
+                replaceFragmentWithBackStack(R.id.frame_list, preferenceSpecFragment, "Special");
+                break;
+            case R.id.cv_medicine:
+                replaceFragmentWithBackStack(R.id.frame_list, medicineFragment, "Medicine");
+                break;
+            case R.id.cv_symptoms:
+                replaceFragmentWithBackStack(R.id.frame_list, preSymptomsFragment, "Symptoms");
+                break;
+            case R.id.cv_pro_diagnosis:
+                replaceFragmentWithBackStack(R.id.frame_list, prefProDiagnosisFragment, "Physcio");
+                break;
+            case R.id.cv_diagnosis:
+                replaceFragmentWithBackStack(R.id.frame_list, prefDiagnosisFragment, "Diagnosis");
+                break;
+            case R.id.cv_instruction:
+                replaceFragmentWithBackStack(R.id.frame_list, preInstructionFragment, "Instruction");
+                break;
+
+
+        }
     }
 }
