@@ -53,7 +53,7 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
         return selectedList;
     }
 
-    public ArrayList<DataObj> clearListSelection() {
+    private ArrayList<DataObj> clearListSelection() {
         ArrayList<DataObj> temp = new ArrayList<>();
         for (DataObj d :
                 selectedList) {

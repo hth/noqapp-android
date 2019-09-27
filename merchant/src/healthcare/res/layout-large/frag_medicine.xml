@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Medicine List"
+                android:textSize="@dimen/text_size_sixteen" />
+
+            <ExpandableListView
+                android:id="@+id/lvExp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp" />
+
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#80000000" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medicine Type"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold" />
+
+            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                android:id="@+id/sc_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                segmentedcontrol:columnCount="4"
+                segmentedcontrol:distributeEvenly="false"
+                segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:radius="6dp"
+                segmentedcontrol:radiusForEverySegment="false"
+                segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                segmentedcontrol:strokeWidth="1dp"
+                segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                segmentedcontrol:textVerticalPadding="5dp"
+                segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+
+            <EditText
+                android:id="@+id/edt_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/table_border"
+                android:gravity="left"
+                android:hint="Medicine name"
+                android:inputType="text|textMultiLine"
+                android:maxLength="100"
+                android:maxLines="2"
+                android:minHeight="40dp"
+                android:minLines="2"
+                android:padding="5dp"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_add_medicine"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_height"
+                android:layout_gravity="right"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_nogradient_round"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="ADD Medicine"
+                android:textColor="@color/btn_txt_color" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+
+
