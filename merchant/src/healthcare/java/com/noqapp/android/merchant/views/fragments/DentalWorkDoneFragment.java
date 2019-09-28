@@ -1,19 +1,18 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,8 +33,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdapter.OnItemClickListener {
     private ListView list_view;
@@ -104,7 +101,12 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
     }
 
     private void showAddWorkDoneDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder;
+        if (LaunchActivity.isTablet) {
+            builder = new AlertDialog.Builder(getActivity());
+        } else {
+            builder = new AlertDialog.Builder(getActivity(), R.style.FullScreenDialogTheme);
+        }
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         builder.setTitle(null);
         View dialogView = inflater.inflate(R.layout.dialog_add_dental_work_done, null, false);
@@ -145,7 +147,6 @@ public class DentalWorkDoneFragment extends BaseFragment implements WorkDoneAdap
         builder.setView(dialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mAlertDialog.show();
         iv_close.setOnClickListener(v1 -> {
             clearOptionSelection();

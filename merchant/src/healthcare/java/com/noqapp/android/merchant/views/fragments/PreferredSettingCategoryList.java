@@ -40,6 +40,7 @@ public class PreferredSettingCategoryList extends Fragment implements View.OnCli
         CardView cv_pro_diagnosis = v.findViewById(R.id.cv_pro_diagnosis);
         CardView cv_diagnosis = v.findViewById(R.id.cv_diagnosis);
         CardView cv_instruction = v.findViewById(R.id.cv_instruction);
+        CardView cv_dental_procedure = v.findViewById(R.id.cv_dental_procedure);
 
 
         cv_mri.setOnClickListener(this::onClick);
@@ -54,6 +55,7 @@ public class PreferredSettingCategoryList extends Fragment implements View.OnCli
         cv_pro_diagnosis.setOnClickListener(this::onClick);
         cv_diagnosis.setOnClickListener(this::onClick);
         cv_instruction.setOnClickListener(this::onClick);
+        cv_dental_procedure.setOnClickListener(this::onClick);
         return v;
     }
 

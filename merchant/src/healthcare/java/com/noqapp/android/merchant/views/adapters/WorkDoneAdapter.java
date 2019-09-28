@@ -94,8 +94,9 @@ public class WorkDoneAdapter extends BaseAdapter {
         recordHolder.iv_delete.setVisibility(null == listener ? View.GONE : View.VISIBLE);
         if (isDentalTreatment) {
             recordHolder.ll_ups.setVisibility(View.GONE);
-            recordHolder.tv_summary.setVisibility(View.VISIBLE);
-            recordHolder.tv_created_date.setVisibility(View.GONE);
+            recordHolder.tv_created_date.setText(toothWorkDone.getCreatedDate());
+            recordHolder.tv_created_date.setVisibility(TextUtils.isEmpty(toothWorkDone.getCreatedDate()) ? View.GONE : View.VISIBLE);
+            recordHolder.tv_summary.setVisibility(TextUtils.isEmpty(toothWorkDone.getCreatedDate()) ? View.INVISIBLE : View.GONE);
         } else {
             recordHolder.ll_ups.setVisibility(View.VISIBLE);
             recordHolder.tv_summary.setVisibility(View.VISIBLE);

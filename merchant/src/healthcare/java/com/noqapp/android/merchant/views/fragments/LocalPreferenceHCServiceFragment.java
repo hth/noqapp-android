@@ -87,6 +87,10 @@ public class LocalPreferenceHCServiceFragment extends BaseFragment implements
                     temp = MedicalDataStatic.convertStringListAsDataObjList(PreferenceActivity.getPreferenceActivity().preferenceObjects.getInstructionList());
                     break;
                 }
+                case 4: {
+                    temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getDentalProcedureList();
+                    break;
+                }
                 default: {
                     temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getPathologyList();
                 }
@@ -112,7 +116,7 @@ public class LocalPreferenceHCServiceFragment extends BaseFragment implements
         new CustomToast().showToast(getActivity(), "Record deleted from List");
     }
 
-    private void saveData(){
+    private void saveData() {
         switch (getArguments().getInt("type")) {
             case 0: {
                 PreferenceActivity.getPreferenceActivity().preferenceObjects.setSymptomsList(selectedList);
@@ -128,6 +132,10 @@ public class LocalPreferenceHCServiceFragment extends BaseFragment implements
             }
             case 3: {
                 PreferenceActivity.getPreferenceActivity().preferenceObjects.setInstructionList(MedicalDataStatic.convertDataObjListAsStringList(selectedList));
+                break;
+            }
+            case 4: {
+                PreferenceActivity.getPreferenceActivity().preferenceObjects.setDentalProcedureList(selectedList);
                 break;
             }
             default: {
