@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -43,7 +44,7 @@ public class ReportPastPatientActivity extends BaseActivity implements QueuePers
     private JsonTopic jt;
     private ScrollView sv_filter;
     private Button btn_clear_filter;
-    private SegmentedControl sc_month_from, sc_year_from, sc_month_until, sc_year_until;
+    private Spinner sp_from_year, sp_from_month, sp_until_year, sp_until_month;
     private ArrayList<String> monthList, yearList;
     private TextView tv_from_date, tv_until_date;
     private Spinner sp_queue_list;
@@ -71,17 +72,21 @@ public class ReportPastPatientActivity extends BaseActivity implements QueuePers
 
         btn_clear_filter = findViewById(R.id.btn_clear_filter);
         btn_clear_filter.setOnClickListener(this);
-        sc_month_from = findViewById(R.id.sc_month_from);
-        sc_year_from = findViewById(R.id.sc_year_from);
-        sc_month_until = findViewById(R.id.sc_month_until);
-        sc_year_until = findViewById(R.id.sc_year_until);
+        sp_from_year = findViewById(R.id.sp_from_year);
+        sp_from_month = findViewById(R.id.sp_from_month);
+        sp_until_year = findViewById(R.id.sp_until_year);
+        sp_until_month = findViewById(R.id.sp_until_month);
         sv_filter = findViewById(R.id.sv_filter);
 
-        sc_month_from.addSegments(monthList);
-        sc_year_from.addSegments(yearList);
-        sc_month_until.addSegments(monthList);
-        sc_year_until.addSegments(yearList);
+        ArrayAdapter<String> m_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item ,monthList);
+        ArrayAdapter<String> y_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item ,yearList);
 
+        sp_from_year.setAdapter(y_adapter);
+        sp_until_year.setAdapter(y_adapter);
+        sp_from_month.setAdapter(m_adapter);
+        sp_until_month.setAdapter(m_adapter);
         ImageView iv_filter = findViewById(R.id.iv_filter);
         iv_filter.setOnClickListener(this::onClick);
 
@@ -162,15 +167,15 @@ public class ReportPastPatientActivity extends BaseActivity implements QueuePers
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_filter:
-                if (sc_month_from.getLastSelectedAbsolutePosition() == -1 || sc_year_from.getLastSelectedAbsolutePosition() == -1 ||
-                        sc_month_until.getLastSelectedAbsolutePosition() == -1 || sc_year_until.getLastSelectedAbsolutePosition() == -1) {
+                if (sp_until_month.getSelectedItemPosition() == 0 || sp_until_year.getSelectedItemPosition() == 0  ||
+                        sp_from_month.getSelectedItemPosition() == 0  || sp_from_year.getSelectedItemPosition() == 0 ) {
                     tv_from_date.setText("");
                     tv_until_date.setText("");
                 } else {
-                    tv_from_date.setText(AppUtils.createAndParseDate(monthList.get(sc_month_from.getLastSelectedAbsolutePosition())
-                            , yearList.get(sc_year_from.getLastSelectedAbsolutePosition())));
-                    tv_until_date.setText(AppUtils.createAndParseDate(monthList.get(sc_month_until.getLastSelectedAbsolutePosition())
-                            , yearList.get(sc_year_until.getLastSelectedAbsolutePosition())));
+                    tv_from_date.setText(AppUtils.createAndParseDate(monthList.get(sp_from_month.getSelectedItemPosition())
+                            , yearList.get(sp_from_year.getSelectedItemPosition())));
+                    tv_until_date.setText(AppUtils.createAndParseDate(monthList.get(sp_until_month.getSelectedItemPosition())
+                            , yearList.get(sp_until_year.getSelectedItemPosition())));
                 }
                 if (isValid()) {
                     callApi();
@@ -197,10 +202,10 @@ public class ReportPastPatientActivity extends BaseActivity implements QueuePers
                 tv_until_date.setText("");
                 tv_from_date.setText("");
                 btn_clear_filter.setVisibility(View.GONE);
-                sc_month_from.clearSelection();
-                sc_month_until.clearSelection();
-                sc_year_from.clearSelection();
-                sc_year_until.clearSelection();
+                sp_until_year.setSelection(0);
+                sp_until_month.setSelection(0);
+                sp_from_year.setSelection(0);
+                sp_from_month.setSelection(0);
             }
             break;
         }

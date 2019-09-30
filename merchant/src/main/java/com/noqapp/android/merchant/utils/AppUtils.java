@@ -178,6 +178,7 @@ public class AppUtils extends CommonHelper {
 
     public static ArrayList<String> getMonths() {
         ArrayList<String> monthList = new ArrayList<>();
+        monthList.add("Select month");
         monthList.add("January");
         monthList.add("February");
         monthList.add("March");
@@ -195,6 +196,7 @@ public class AppUtils extends CommonHelper {
 
     public static ArrayList<String> getYearsTillNow() {
         ArrayList<String> yearList = new ArrayList<String>();
+        yearList.add("Select year");
         int startYear = 2018;
         int endYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = startYear; i <= endYear; i++) {
