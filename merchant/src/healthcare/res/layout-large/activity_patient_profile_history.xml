@@ -153,7 +153,7 @@
                         android:layout_alignParentLeft="true"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Dental Treatment"
+                        android:text="@string/treatment_plan"
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -174,7 +174,7 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:background="@android:color/white"
-                        android:text="No Dental Treatment created yet"/>
+                        android:text="No Treatment Plan created yet"/>
 
                     <TextView
                         android:layout_width="wrap_content"

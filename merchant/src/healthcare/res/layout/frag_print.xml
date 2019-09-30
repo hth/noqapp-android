@@ -706,7 +706,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:padding="10dp"
-            android:text="Treatment recommendation:"
+            android:text="@string/treatment_plan"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold" />
