@@ -1,241 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#99ffffff"
-    android:fitsSystemWindows="true">
+    android:background="#99ffffff">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:fitsSystemWindows="true"
-        android:background="@android:color/white"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="@android:color/white"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.8">
-
-
-                <ImageView
-                    android:id="@+id/iv_category_banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:scaleType="centerCrop" />
-
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="bottom"
-                    android:padding="10dp"
-                    card_view:cardBackgroundColor="@android:color/white"
-                    card_view:cardCornerRadius="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/tv_store_name"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginTop="3dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_eighteen"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_store_address"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="10dp"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_fourteen" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/tv_view_more"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".6"
-                                android:text="View more" />
-
-                            <RelativeLayout
-
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".4"
-                                android:gravity="center_vertical">
-
-
-                                <TextView
-                                    android:id="@+id/tv_rating"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_toLeftOf="@+id/tv_rating_review"
-                                    android:drawableLeft="@mipmap/star_fill"
-                                    android:drawablePadding="5dp"
-                                    android:gravity="center"
-                                    android:text="0.0"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="@dimen/rating_text_size" />
-
-                                <TextView
-                                    android:id="@+id/tv_rating_review"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/review_color"
-                                    android:textSize="@dimen/text_size_twelve" />
-
-                            </RelativeLayout>
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </FrameLayout>
-
-
-
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:layout_collapseMode="pin"
-                app:theme="@style/ToolbarTheme"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <LinearLayout
-
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/ll_cat_info"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#99ffffff"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
-
-        <RelativeLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="@dimen/app_bar_height"
+            android:background="@android:color/white"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="@android:color/white"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
-            <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_above="@+id/tv_place_order">
-
-                <LinearLayout
-                    android:id="@+id/ll_top"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:weightSum="1">
+                    android:layout_height="300dp"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.8">
 
-                    <RelativeLayout
+
+                    <ImageView
+                        android:id="@+id/iv_category_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:orientation="vertical"
-                        android:weightSum="1">
+                        android:layout_height="300dp"
+                        android:scaleType="centerCrop" />
 
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:padding="10dp"
+                        card_view:cardBackgroundColor="@android:color/white"
+                        card_view:cardCornerRadius="4dp">
 
                         <LinearLayout
-                            android:id="@+id/ll_dep_info"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/cardview"
                             android:orientation="vertical"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                            android:padding="10dp">
 
-                            <RelativeLayout
-                                android:id="@+id/layout"
+                            <TextView
+                                android:id="@+id/tv_store_name"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginTop="3dp"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_eighteen"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_store_address"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="10dp"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/tv_view_more"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".6"
+                                    android:text="View more" />
+
+                                <RelativeLayout
+
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".4"
+                                    android:gravity="center_vertical">
 
 
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/rcv_header"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="50dp"
-                                    android:layout_alignParentTop="true"
-                                    android:background="@android:color/white"
-                                    android:paddingBottom="1dp" />
+                                    <TextView
+                                        android:id="@+id/tv_rating"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_toLeftOf="@+id/tv_rating_review"
+                                        android:drawableLeft="@mipmap/star_fill"
+                                        android:drawablePadding="5dp"
+                                        android:gravity="center"
+                                        android:text="0.0"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/rating_text_size" />
 
-                                <ExpandableListView
-                                    android:id="@+id/expandableListView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="500dp"
-                                    android:layout_below="@+id/rcv_header"
-                                    android:childDivider="@android:color/darker_gray"
-                                    android:divider="@android:color/darker_gray"
-                                    android:dividerHeight="0.5dp"
-                                    android:groupIndicator="@null" />
+                                    <TextView
+                                        android:id="@+id/tv_rating_review"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/review_color"
+                                        android:textSize="@dimen/text_size_twelve" />
 
-                            </RelativeLayout>
-
+                                </RelativeLayout>
+                            </LinearLayout>
 
                         </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </FrameLayout>
 
-                    </RelativeLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:theme="@style/ToolbarTheme" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/ll_cat_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99ffffff"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-                </LinearLayout>
-
-                <include layout="@layout/loader_view" />
-            </FrameLayout>
-            <Button
-                android:id="@+id/tv_place_order"
+            <LinearLayout
+                android:id="@+id/ll_dep_info"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_standard_height"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
-                android:background="@drawable/btn_bg_enable"
-                android:clickable="true"
-                android:drawableRight="@drawable/order_arrow"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:paddingRight="10dp"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_fourteen"
-                android:visibility="gone" />
-        </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
 
-    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_alignParentTop="true"
+                        android:background="@android:color/white"
+                        android:paddingBottom="1dp" />
+
+                    <ExpandableListView
+                        android:id="@+id/expandableListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="500dp"
+                        android:layout_below="@+id/rcv_header"
+                        android:childDivider="@android:color/darker_gray"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="0.5dp"
+                        android:groupIndicator="@null" />
+
+                </RelativeLayout>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </LinearLayout>
 
 
+            <include layout="@layout/loader_view" />
+
+        </FrameLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <Button
+        android:id="@+id/tv_place_order"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_standard_height"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_bg_enable"
+        android:clickable="true"
+        android:drawableRight="@drawable/order_arrow"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:paddingRight="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_fourteen"
+        android:visibility="gone" />
+
+</FrameLayout>
