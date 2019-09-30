@@ -131,7 +131,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".35"
-                android:background="#943855"
+                android:background="#226b80"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
@@ -164,7 +164,7 @@
                         android:maxLines="1"
                         android:minLines="1"
                         android:text=""
-                        android:textColor="@color/colorAddress"
+                        android:textColor="@android:color/white"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -178,7 +178,7 @@
                         android:maxLines="1"
                         android:minLines="1"
                         android:text=""
-                        android:textColor="@color/colorAddress"
+                        android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -198,7 +198,7 @@
                             android:maxLines="1"
                             android:minLines="1"
                             android:text=""
-                            android:textColor="@color/colorAddress"
+                            android:textColor="@android:color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -213,7 +213,7 @@
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:text=""
-                            android:textColor="@color/colorAddress"
+                            android:textColor="@android:color/white"
                             android:textSize="18sp"
                             android:textStyle="normal" />
 
@@ -225,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
-                        android:textColor="@color/colorAddress"
+                        android:textColor="@android:color/white"
                         android:textSize="18sp" />
 
 
