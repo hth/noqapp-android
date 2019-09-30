@@ -32,6 +32,7 @@ import com.noqapp.android.merchant.views.adapters.WorkHistoryAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -134,6 +135,10 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         qList.add(0, jsonTopic);
         QueueAdapter adapter = new QueueAdapter(this, qList);
         sp_queue_list.setAdapter(adapter);
+        btn_clear_filter.performClick();
+        if (qList.size() == 2) {
+            sp_queue_list.setSelection(1);
+        }
     }
 
     private void createData(List<JsonMedicalRecord> temp) {
@@ -196,10 +201,12 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 tv_until_date.setText("");
                 tv_from_date.setText("");
                 btn_clear_filter.setVisibility(View.GONE);
+                int year = Calendar.getInstance().get(Calendar.YEAR);
+                int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+                sp_until_year.setSelection(yearList.indexOf(String.valueOf(year)));
+                sp_until_month.setSelection(month);
                 sp_from_month.setSelection(0);
                 sp_from_year.setSelection(0);
-                sp_until_month.setSelection(0);
-                sp_until_year.setSelection(0);
             }
             break;
         }
