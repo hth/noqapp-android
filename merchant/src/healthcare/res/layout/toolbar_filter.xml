@@ -36,8 +36,9 @@
         android:layout_centerVertical="true"
         android:layout_gravity="right"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/ic_search"
-        android:backgroundTint="@android:color/white"
+        android:padding="6dp"
+        android:src="@drawable/ic_search"
+        android:tint="@android:color/white"
         android:clipToPadding="false"
         android:focusable="true" />
 

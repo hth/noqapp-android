@@ -257,6 +257,7 @@
     <string name="setting_appointment">Changes made here is permanent. Appointment changes will reflect immediately.</string>
     <string name="setting_payment">Changes made here is permanent. Payment changes will reflect immediately.</string>
     <string name="setting_msg">Changes made here is permanent. These changes will reflect immediately.</string>
+    <string name="treatment_plan">Treatment Plan</string>
 
 
 </resources>

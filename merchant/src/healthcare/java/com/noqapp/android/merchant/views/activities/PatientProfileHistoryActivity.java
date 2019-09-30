@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -57,6 +58,11 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
     private ListView list_view;
     private TextView tv_empty_work_done;
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
+    private ArrayList<ToothWorkDone> toothDentalTreatmentList = new ArrayList<>();
+    private ScrollView scroll_view;
+
+    private ListView dt_list_view;
+    private TextView tv_empty_dt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +73,13 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
         codeQR = getIntent().getStringExtra("qCodeQR");
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
-
+        scroll_view = findViewById(R.id.scroll_view);
         ll_dental_history = findViewById(R.id.ll_dental_history);
         list_view = findViewById(R.id.list_view);
         tv_empty_work_done = findViewById(R.id.tv_empty_work_done);
+        dt_list_view = findViewById(R.id.dt_list_view);
+        tv_empty_dt = findViewById(R.id.tv_empty_dt);
+
         tv_patient_name = findViewById(R.id.tv_patient_name);
         tv_address = findViewById(R.id.tv_address);
         tv_details = findViewById(R.id.tv_details);
@@ -236,10 +245,21 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
             if (!TextUtils.isEmpty(jsonMedicalRecord.getNoteToDiagnoser())) {
                 parseWorkDoneData(jsonMedicalRecord.getNoteToDiagnoser(), createdDate);
             }
+
+            if (!TextUtils.isEmpty(jsonMedicalRecord.getNoteForPatient())) {
+                parseDentalDiagnosis(jsonMedicalRecord.getNoteForPatient(),createdDate);
+            }
+
         }
         WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(this, toothWorkDoneList);
         list_view.setAdapter(workDoneAdapter);
         tv_empty_work_done.setVisibility(toothWorkDoneList.size() > 0 ? View.GONE : View.VISIBLE);
+
+        //Dental Treatment data
+        dt_list_view.setAdapter(new WorkDoneAdapter(this, toothDentalTreatmentList,true));
+        tv_empty_dt.setVisibility(toothDentalTreatmentList.size() > 0 ? View.GONE : View.VISIBLE);
+
+        scroll_view.fullScroll(ScrollView.FOCUS_UP);
     }
 
     public void parseWorkDoneData(String str, String createdDate) {
@@ -260,6 +280,24 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
                         } else {
                             toothWorkDoneList.add(new ToothWorkDone(toothNum, procedure, "", createdDate));
                         }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void parseDentalDiagnosis(String str, String createdDate) {
+        try {
+            String[] temp = str.split("\\|",-1);
+            if (temp.length > 0) {
+                for (String act : temp) {
+                    if (act.contains(":")) {
+                        String[] strArray = act.split(":");
+                        String str1 = strArray[0].trim();
+                        String str2 = strArray[1];
+                        toothDentalTreatmentList.add(new ToothWorkDone(str1, str2, "",createdDate));
                     }
                 }
             }

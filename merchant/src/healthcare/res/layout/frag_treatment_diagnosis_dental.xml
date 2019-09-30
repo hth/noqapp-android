@@ -19,7 +19,7 @@
             android:layout_alignParentLeft="true"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Dental Treatment"
+            android:text="@string/treatment_plan"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold" />

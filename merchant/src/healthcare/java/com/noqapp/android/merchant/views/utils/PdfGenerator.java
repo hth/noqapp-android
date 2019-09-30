@@ -154,7 +154,7 @@ public class PdfGenerator extends PdfHelper {
             document.add(addVerticalSpaceBefore(20f));
 
             if (isDental) {
-                Chunk chunkTr = new Chunk("Treatment Recommendation:", normalBigFont);
+                Chunk chunkTr = new Chunk("Treatment Plan:", normalBigFont);
                 Paragraph paragraphTr = new Paragraph(chunkTr);
                 document.add(paragraphTr);
                 document.add(addVerticalSpace());

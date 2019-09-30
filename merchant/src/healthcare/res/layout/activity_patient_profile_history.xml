@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -145,6 +146,36 @@
                             android:visibility="gone" />
 
                     </FrameLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="@string/treatment_plan"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+
+                    <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                        android:id="@+id/dt_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@null"
+                        android:background="@android:color/transparent"
+                        android:layout_margin="0dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_empty_dt"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:background="@android:color/white"
+                        android:text="No Treatment Plan created yet"/>
 
                     <TextView
                         android:layout_width="wrap_content"

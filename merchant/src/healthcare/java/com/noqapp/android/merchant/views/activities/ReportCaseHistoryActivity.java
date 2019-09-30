@@ -32,6 +32,7 @@ import com.noqapp.android.merchant.views.adapters.WorkHistoryAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,7 +54,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     private WorkHistoryAdapter workHistoryAdapter;
     private ScrollView sv_filter;
     private Button btn_clear_filter;
-    private SegmentedControl sc_month_from, sc_year_from, sc_month_until, sc_year_until;
+    private Spinner sp_from_year, sp_from_month, sp_until_year, sp_until_month;
     private ArrayList<String> monthList, yearList;
 
     @Override
@@ -70,16 +71,21 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         monthList = AppUtils.getMonths();
         yearList = AppUtils.getYearsTillNow();
 
-        sc_month_from = findViewById(R.id.sc_month_from);
-        sc_year_from = findViewById(R.id.sc_year_from);
-        sc_month_until = findViewById(R.id.sc_month_until);
-        sc_year_until = findViewById(R.id.sc_year_until);
+        sp_from_year = findViewById(R.id.sp_from_year);
+        sp_from_month = findViewById(R.id.sp_from_month);
+        sp_until_year = findViewById(R.id.sp_until_year);
+        sp_until_month = findViewById(R.id.sp_until_month);
 
 
-        sc_month_from.addSegments(monthList);
-        sc_year_from.addSegments(yearList);
-        sc_month_until.addSegments(monthList);
-        sc_year_until.addSegments(yearList);
+        ArrayAdapter<String> m_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item ,monthList);
+        ArrayAdapter<String> y_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item ,yearList);
+
+        sp_from_year.setAdapter(y_adapter);
+        sp_until_year.setAdapter(y_adapter);
+        sp_from_month.setAdapter(m_adapter);
+        sp_until_month.setAdapter(m_adapter);
 
 
         ImageView iv_filter = findViewById(R.id.iv_filter);
@@ -129,6 +135,10 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
         qList.add(0, jsonTopic);
         QueueAdapter adapter = new QueueAdapter(this, qList);
         sp_queue_list.setAdapter(adapter);
+        btn_clear_filter.performClick();
+        if (qList.size() == 2) {
+            sp_queue_list.setSelection(1);
+        }
     }
 
     private void createData(List<JsonMedicalRecord> temp) {
@@ -154,15 +164,15 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_filter:
-                if (sc_month_from.getLastSelectedAbsolutePosition() == -1 || sc_year_from.getLastSelectedAbsolutePosition() == -1 ||
-                        sc_month_until.getLastSelectedAbsolutePosition() == -1 || sc_year_until.getLastSelectedAbsolutePosition() == -1) {
+                if (sp_until_month.getSelectedItemPosition() == 0 || sp_until_year.getSelectedItemPosition() == 0  ||
+                        sp_from_month.getSelectedItemPosition() == 0  || sp_from_year.getSelectedItemPosition() == 0 ) {
                     tv_from_date.setText("");
                     tv_until_date.setText("");
                 } else {
-                    tv_from_date.setText(AppUtils.createAndParseDate(monthList.get(sc_month_from.getLastSelectedAbsolutePosition())
-                            , yearList.get(sc_year_from.getLastSelectedAbsolutePosition())));
-                    tv_until_date.setText(AppUtils.createAndParseDate(monthList.get(sc_month_until.getLastSelectedAbsolutePosition())
-                            , yearList.get(sc_year_until.getLastSelectedAbsolutePosition())));
+                    tv_from_date.setText(AppUtils.createAndParseDate(monthList.get(sp_from_month.getSelectedItemPosition())
+                            , yearList.get(sp_from_year.getSelectedItemPosition())));
+                    tv_until_date.setText(AppUtils.createAndParseDate(monthList.get(sp_until_month.getSelectedItemPosition())
+                            , yearList.get(sp_until_year.getSelectedItemPosition())));
                 }
                 if (isValid()) {
                     callApi();
@@ -191,10 +201,12 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
                 tv_until_date.setText("");
                 tv_from_date.setText("");
                 btn_clear_filter.setVisibility(View.GONE);
-                sc_month_from.clearSelection();
-                sc_month_until.clearSelection();
-                sc_year_from.clearSelection();
-                sc_year_until.clearSelection();
+                int year = Calendar.getInstance().get(Calendar.YEAR);
+                int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+                sp_until_year.setSelection(yearList.indexOf(String.valueOf(year)));
+                sp_until_month.setSelection(month);
+                sp_from_month.setSelection(0);
+                sp_from_year.setSelection(0);
             }
             break;
         }
