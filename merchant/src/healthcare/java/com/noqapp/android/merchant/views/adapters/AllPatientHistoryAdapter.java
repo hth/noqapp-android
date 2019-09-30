@@ -56,23 +56,20 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
         if (DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
             if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
                 holder.tv_customer_mobile.setCompoundDrawablesWithIntrinsicBounds(R.drawable.copy, 0, 0, 0);
-                holder.tv_customer_mobile.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        final int DRAWABLE_LEFT = 0;
-                        final int DRAWABLE_TOP = 1;
-                        final int DRAWABLE_RIGHT = 2;
-                        final int DRAWABLE_BOTTOM = 3;
+                holder.tv_customer_mobile.setOnTouchListener((v, event) -> {
+                    final int DRAWABLE_LEFT = 0;
+                    final int DRAWABLE_TOP = 1;
+                    final int DRAWABLE_RIGHT = 2;
+                    final int DRAWABLE_BOTTOM = 3;
 
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            if (event.getRawX() >= (holder.tv_customer_mobile.getLeft() - holder.tv_customer_mobile.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                                // your action here
-                                copyText(context, PhoneFormatterUtil.phoneStripCountryCode("+" + phoneNo));
-                                return true;
-                            }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if (event.getRawX() >= (holder.tv_customer_mobile.getLeft() - holder.tv_customer_mobile.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                            // your action here
+                            copyText(context, PhoneFormatterUtil.phoneStripCountryCode("+" + phoneNo));
+                            return true;
                         }
-                        return false;
                     }
+                    return false;
                 });
             }
             holder.tv_customer_mobile.setOnClickListener(v -> {
@@ -97,7 +94,6 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
         return dataSet.size();
     }
 
-
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_customer_name;
         private TextView tv_customer_mobile;
@@ -115,7 +111,6 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", text);
         clipboard.setPrimaryClip(clip);
-        new CustomToast().showToast(context, "copied");
-
+        new CustomToast().showToast(context, "Copied Phone Number");
     }
 }

@@ -93,7 +93,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
         if (selectedText.equals("")) {
             new CustomToast().showToast(getActivity(), "Nothing to copy");
         }else {
-            new CustomToast().showToast(getActivity(), "copied");
+            new CustomToast().showToast(getActivity(), "Copied");
         }
     }
 
