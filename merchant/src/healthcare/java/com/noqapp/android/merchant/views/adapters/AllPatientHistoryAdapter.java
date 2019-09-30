@@ -55,7 +55,7 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
         }
         if (DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
             if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
-                holder.tv_customer_mobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.copy, 0);
+                holder.tv_customer_mobile.setCompoundDrawablesWithIntrinsicBounds(R.drawable.copy, 0, 0, 0);
                 holder.tv_customer_mobile.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -65,7 +65,7 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
                         final int DRAWABLE_BOTTOM = 3;
 
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            if (event.getRawX() >= (holder.tv_customer_mobile.getRight() - holder.tv_customer_mobile.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                            if (event.getRawX() >= (holder.tv_customer_mobile.getLeft() - holder.tv_customer_mobile.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
                                 // your action here
                                 copyText(context, PhoneFormatterUtil.phoneStripCountryCode("+" + phoneNo));
                                 return true;
@@ -83,7 +83,7 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
         } else {
             holder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
         }
-        holder.card_view.setOnClickListener(v -> {
+        holder.tv_customer_name.setOnClickListener(v -> {
             Intent intent = new Intent(context, PatientProfileHistoryActivity.class);
             intent.putExtra("qCodeQR", jsonTopic.getCodeQR());
             intent.putExtra("data", jsonQueuedPerson);
