@@ -846,12 +846,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // Fill menu items
         menuDrawerItems.clear();
 
-        List<MenuDrawer> healthList = new ArrayList<>();
-        healthList.add(new MenuDrawer(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
-        healthList.add(new MenuDrawer(getString(R.string.medical_history), false, false, R.drawable.medical_history));
-        healthList.add(new MenuDrawer(getString(R.string.my_appointments), false, false, R.drawable.appointment));
+        if(COUNTRY_CODE.equals("India")) {
+            List<MenuDrawer> healthList = new ArrayList<>();
+            healthList.add(new MenuDrawer(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
+            healthList.add(new MenuDrawer(getString(R.string.medical_history), false, false, R.drawable.medical_history));
+            healthList.add(new MenuDrawer(getString(R.string.my_appointments), false, false, R.drawable.appointment));
 
-        menuDrawerItems.add(new MenuDrawer(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
+            menuDrawerItems.add(new MenuDrawer(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
+        }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.order_history), true, false, R.drawable.purchase_order));
         menuDrawerItems.add(new MenuDrawer(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
         menuDrawerItems.add(new MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers));
