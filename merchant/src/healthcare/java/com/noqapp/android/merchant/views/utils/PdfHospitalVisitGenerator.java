@@ -64,7 +64,7 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
         try {
             Document document = new Document();
             PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(dest));
-            HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+            HeaderFooterPageEvent event = new HeaderFooterPageEvent(mContext);
             pdfWriter.setPageEvent(event);
 
             document.open();
