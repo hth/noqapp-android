@@ -154,6 +154,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         launchActivity = this;
         COUNTRY_CODE = getCountryCode();
         Log.e("Country Code: ", COUNTRY_CODE);
+        if(!COUNTRY_CODE.equals("India")){
+            Constants.DEFAULT_LATITUDE = 37.7749;
+            Constants.DEFAULT_LONGITUDE = 122.4194;
+            Constants.DEFAULT_CITY = "San Francisco";
+            Constants.DEFAULT_COUNTRY_CODE = "US";
+        }
+
         //NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
             if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
@@ -196,7 +203,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         //initProgress();
         homeFragment = new HomeFragment();
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
-
+        if (null != getIntent().getExtras()) {
+            try {
+                latitute = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
+                longitute = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
+                getAddress(latitute, longitute);
+                updateLocationUI();
+                tv_location.setText(cityName);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
