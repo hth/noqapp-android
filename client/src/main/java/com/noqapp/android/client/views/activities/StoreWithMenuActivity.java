@@ -387,7 +387,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
     public void updateCartOrderInfo(int amountString) {
         if (amountString > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: " + amountString);
+            tv_place_order.setText("Your cart amount is: "+currencySymbol + " "+amountString);
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");
