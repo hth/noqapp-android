@@ -54,6 +54,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -176,8 +177,13 @@ public class AppUtils extends CommonHelper {
                         Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         float dist = (float) (earthRadius * c);
-
-        return round(dist / 1000);// distance in km
+        if (LaunchActivity.DISTANCE_UNIT.equals("km")) {
+            return round(dist / 1000);// distance in km
+        } else {
+            double kilometers = dist / 1000;
+            double value = kilometers / 1.6;
+            return Math.round(value * 100D) / 100D;// distance in miles
+        }
     }
 
     public static void changeLanguage(String language) {
@@ -484,18 +490,18 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public boolean checkStoreClosedWithTime( StoreHourElastic storeHourElastic){
+    public boolean checkStoreClosedWithTime(StoreHourElastic storeHourElastic) {
         if ((storeHourElastic.getStartHour() == 0 && storeHourElastic.getEndHour() == 0)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
-    public boolean checkStoreClosedWithAppointmentTime( StoreHourElastic storeHourElastic){
+    public boolean checkStoreClosedWithAppointmentTime(StoreHourElastic storeHourElastic) {
         if ((storeHourElastic.getAppointmentStartHour() == 0 && storeHourElastic.getAppointmentEndHour() == 0)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }

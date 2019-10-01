@@ -134,6 +134,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private DrawerLayout drawer;
     private List<MenuDrawer> menuDrawerItems = new ArrayList<>();
     public static String COUNTRY_CODE = Constants.DEFAULT_COUNTRY_CODE;
+    public static String DISTANCE_UNIT = "km";
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -159,6 +160,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             Constants.DEFAULT_LONGITUDE = 122.4194;
             Constants.DEFAULT_CITY = "San Francisco";
             Constants.DEFAULT_COUNTRY_CODE = "US";
+            DISTANCE_UNIT = "miles";
         }
 
         //NoQueueBaseActivity.saveMailAuth("","");
@@ -203,17 +205,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         //initProgress();
         homeFragment = new HomeFragment();
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
-        if (null != getIntent().getExtras()) {
-            try {
-                latitute = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
-                longitute = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
-                getAddress(latitute, longitute);
-                updateLocationUI();
-                tv_location.setText(cityName);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -245,6 +237,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+        }
+        if (null != getIntent().getExtras()) {
+            try {
+                latitute = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
+                longitute = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
+                getAddress(latitute, longitute);
+                //updateLocationUI();
+                tv_location.setText(cityName);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

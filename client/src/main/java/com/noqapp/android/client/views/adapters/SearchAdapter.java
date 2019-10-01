@@ -27,6 +27,7 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -87,6 +88,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
                     (float) log,
                     (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
                     (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
+            holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
             holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
             if (bizStoreElastic.getReviewCount() > 0) {
@@ -189,6 +191,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
         private TextView tv_store_review;
         private TextView tv_store_special;
         private TextView tv_distance;
+        private TextView tv_distance_unit;
         private TextView tv_store_timing;
         private Button btn_join;
         private Button btn_book_appointment;
@@ -206,6 +209,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
             this.tv_store_review = itemView.findViewById(R.id.tv_store_review);
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
+            this.tv_distance_unit = itemView.findViewById(R.id.tv_distance_unit);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.btn_join = itemView.findViewById(R.id.btn_join);
             this.btn_book_appointment = itemView.findViewById(R.id.btn_book_appointment);

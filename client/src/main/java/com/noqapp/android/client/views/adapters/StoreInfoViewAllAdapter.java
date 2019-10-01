@@ -24,6 +24,7 @@ import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
@@ -81,6 +82,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     (float) log,
                     (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
                     (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
+            holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
             if (bizStoreElastic.getReviewCount() > 0) {
                 holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -163,6 +165,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         private TextView tv_status;
         private TextView tv_business_category;
         private TextView tv_distance;
+        private TextView tv_distance_unit;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -179,6 +182,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             this.tv_status = itemView.findViewById(R.id.tv_status);
             this.tv_business_category = itemView.findViewById(R.id.tv_business_category);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
+            this.tv_distance_unit = itemView.findViewById(R.id.tv_distance_unit);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
