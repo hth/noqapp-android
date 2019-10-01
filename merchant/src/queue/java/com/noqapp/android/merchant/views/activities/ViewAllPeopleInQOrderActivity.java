@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -37,13 +34,9 @@ public class ViewAllPeopleInQOrderActivity extends BaseActivity implements Purch
         setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_people);
+        initActionsViews(false);
         listview = findViewById(R.id.exp_list_view);
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         rl_empty = findViewById(R.id.rl_empty);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText(getString(R.string.screen_order_q_history));
         setProgressMessage("Fetching data...");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
