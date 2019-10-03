@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
@@ -28,9 +30,12 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.OrderDetailActFloating;
+import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import java.util.List;
 
@@ -256,6 +261,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
 
         if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             recordHolder.ll_side.setBackground(ContextCompat.getDrawable(context,R.drawable.cv_border_color));
+            Intent in = new Intent(context, OrderDetailActFloating.class);
+            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+            in.putExtra(IBConstant.KEY_IS_PAYMENT_PARTIAL_ALLOWED, jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.HS);
+            ((Activity) context).startActivity(in);
         } else {
             recordHolder.ll_side.setBackground(null);
         }
