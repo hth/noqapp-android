@@ -155,7 +155,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         launchActivity = this;
         COUNTRY_CODE = getCountryCode();
         Log.e("Country Code: ", COUNTRY_CODE);
-        if(!COUNTRY_CODE.equals("India")){
+        if(!isCountryIndia()){
             Constants.DEFAULT_LATITUDE = 37.7749;
             Constants.DEFAULT_LONGITUDE = 122.4194;
             Constants.DEFAULT_CITY = "San Francisco";
@@ -846,7 +846,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // Fill menu items
         menuDrawerItems.clear();
 
-        if(COUNTRY_CODE.equals("India")) {
+        if(isCountryIndia()) {
             List<MenuDrawer> healthList = new ArrayList<>();
             healthList.add(new MenuDrawer(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
             healthList.add(new MenuDrawer(getString(R.string.medical_history), false, false, R.drawable.medical_history));
@@ -1265,5 +1265,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         } catch (SecurityException e) {
             return Constants.DEFAULT_COUNTRY_CODE;
         }
+    }
+
+
+    public boolean isCountryIndia(){
+        return (COUNTRY_CODE.equalsIgnoreCase("India")||
+                COUNTRY_CODE.equalsIgnoreCase("IN"));
     }
 }

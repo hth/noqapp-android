@@ -223,7 +223,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         rv_events.setHasFixedSize(true);
         rv_events.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_events.setItemAnimator(new DefaultItemAnimator());
-        if(!LaunchActivity.COUNTRY_CODE.equals("India")){
+        if(!LaunchActivity.getLaunchActivity().isCountryIndia()){
             TextView tv_merchant_title = view.findViewById(R.id.tv_merchant_title);
             LinearLayout rl_feed = view.findViewById(R.id.rl_feed);
             LinearLayout rl_health_care = view.findViewById(R.id.rl_health_care);
