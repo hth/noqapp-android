@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -253,12 +255,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         recordHolder.tv_order_accept.setOnClickListener(v -> peopleInQOrderAdapterClick.orderAcceptClick(position));
 
         if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
-            Animation startAnimation = AnimationUtils.loadAnimation(context, R.anim.show_anim);
-            recordHolder.cardview.startAnimation(startAnimation);
-            Log.v("Animation true: ", String.valueOf(position));
+            recordHolder.ll_side.setBackground(ContextCompat.getDrawable(context,R.drawable.cv_border_color));
         } else {
-            Animation removeAnimation = AnimationUtils.loadAnimation(context, R.anim.remove_anim);
-            recordHolder.cardview.startAnimation(removeAnimation);
+            recordHolder.ll_side.setBackground(null);
         }
     }
 
@@ -281,6 +280,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         TextView tv_upload_document;
         TextView tv_join_timing;
         RelativeLayout rl_sequence_new_time;
+        LinearLayout ll_side;
         ImageView iv_new;
         CardView cardview;
 
@@ -298,6 +298,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
+            this.ll_side = itemView.findViewById(R.id.ll_side);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
