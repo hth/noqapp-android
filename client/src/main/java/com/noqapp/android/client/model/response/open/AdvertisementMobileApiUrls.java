@@ -1,10 +1,14 @@
 package com.noqapp.android.client.model.response.open;
 
+import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
+import com.noqapp.android.common.beans.body.DeviceToken;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 
 /**
  * hitender
@@ -23,5 +27,22 @@ public interface AdvertisementMobileApiUrls {
 
         @Header("X-R-DT")
         String dt
+    );
+
+
+    /**
+     * ERROR
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("open/vigyapan/near.json")
+    Call<JsonAdvertisementList> getAdvertisementsByLocation(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Body
+            Location location
     );
 }
