@@ -10,16 +10,14 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.StoreDetailApiCalls;
@@ -73,37 +71,33 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
     private String currencySymbol;
     private List<Integer> headerPosition = new ArrayList<>();
     private ExpandableListView expandableListView;
-  //  private View headerSpace;
-  //  private FrameLayout frame_header;
-
+    private View stickyViewSpacer;
+    private View heroImageView;
+    private LinearLayout ll_header;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu);
+        initActionsViews(false);
         tv_store_name = findViewById(R.id.tv_store_name);
         tv_store_address = findViewById(R.id.tv_store_address);
         TextView tv_view_more = findViewById(R.id.tv_view_more);
-
+        heroImageView = findViewById(R.id.heroImageView);
         //tv_menu = findViewById(R.id.tv_menu);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         view_loader = findViewById(R.id.view_loader);
         rcv_header = findViewById(R.id.rcv_header);
-     //   frame_header = findViewById(R.id.frame_header);
+        ll_header = findViewById(R.id.ll_header);
         tv_place_order = findViewById(R.id.tv_place_order);
         expandableListView = findViewById(R.id.expandableListView);
-      //  setListViewHeader();
-     //   initActionsViews(false);
-        Toolbar mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        mToolbar.setNavigationIcon(R.drawable.ic_back_new);
-        mToolbar.setNavigationOnClickListener(v -> finish());
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-        collapsingToolbarLayout.setTitle(" ");
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View listHeader = inflater.inflate(R.layout.store_list_header, null);
+        stickyViewSpacer = listHeader.findViewById(R.id.stickyViewPlaceholder);
+        expandableListView.addHeaderView(listHeader);
 
 
         Intent intent = getIntent();
@@ -139,13 +133,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         }
     }
 
-//    private void setListViewHeader() {
-//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View listHeader = inflater.inflate(R.layout.lv_header, null, false);
-//        headerSpace = listHeader.findViewById(R.id.header_space);
-//        expandableListView.addHeaderView(listHeader);
-//    }
-
     @Override
     public void storeResponse(JsonStore jsonStore) {
         this.jsonStore = jsonStore;
@@ -164,9 +151,9 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         view_loader.setVisibility(View.GONE);
         jsonQueue = jsonStore.getJsonQueue();
         currencySymbol = AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName());
-        // tv_toolbar_title.setText(jsonQueue.getDisplayName());
         tv_store_address.setText(AppUtils.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
         tv_store_name.setText(jsonQueue.getDisplayName());
+        tv_toolbar_title.setText(jsonQueue.getDisplayName());
         tv_rating.setText(String.valueOf(AppUtils.round(jsonQueue.getRating())));
         if (tv_rating.getText().toString().equals("0.0")) {
             tv_rating.setVisibility(View.INVISIBLE);
@@ -249,33 +236,38 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
         menuHeaderAdapter = new MenuHeaderAdapter(headerList, this, this);
         rcv_header.setAdapter(menuHeaderAdapter);
+
         expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int position = new AppUtils().getFirstVisibleGroup(expandableListView);
-                rcv_header.smoothScrollToPosition(position);
-                menuHeaderAdapter.setSelectedPosition(position);
-                menuHeaderAdapter.notifyDataSetChanged();
+                if(position < menuHeaderAdapter.getItemCount()) {
+                    rcv_header.smoothScrollToPosition(position + 1);
+                    menuHeaderAdapter.setSelectedPosition(position+1);
+                    menuHeaderAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-                // Check if the first item is already reached to top
-//                if (expandableListView.getFirstVisiblePosition() == 0) {
-//                    View firstChild = expandableListView.getChildAt(0);
-//                    int topY = 0;
-//                    if (firstChild != null) {
-//                        topY = firstChild.getTop();
-//                    }
-//
-//                    int headerTopY = headerSpace.getTop();
-//                    // headerText.setY(Math.max(0, headerTopY + topY));
-//
-//                    // Set the image to scroll half of the amount that of ListView
-//                    frame_header.setY(topY * 0.5f);
-//                }
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                /* Check if the first item is already reached to top.*/
+                if (expandableListView.getFirstVisiblePosition() == 0) {
+                    View firstChild = expandableListView.getChildAt(0);
+                    int topY = 0;
+                    if (firstChild != null) {
+                        topY = firstChild.getTop();
+                    }
+
+                    int heroTopY = stickyViewSpacer.getTop();
+                    ll_header.setY(Math.max(0, heroTopY + topY));
+                    ll_header.setVisibility(View.GONE);
+                    /* Set the image to scroll half of the amount that of ListView */
+                    heroImageView.setY(topY * 0.85f);
+                } else {
+                    ll_header.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -378,16 +370,21 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
     @Override
     public void menuHeaderClick(int pos) {
-        expandableListView.setSelectedGroup(pos);
-        menuHeaderAdapter.setSelectedPosition(pos);
-        menuHeaderAdapter.notifyDataSetChanged();
+        try {
+            expandableListView.setSelectedGroup(pos);
+            menuHeaderAdapter.setSelectedPosition(pos);
+            menuHeaderAdapter.notifyDataSetChanged();
+            expandableListView.scrollTo(0,-200);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void updateCartOrderInfo(int amountString) {
         if (amountString > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: "+currencySymbol + " "+amountString);
+            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString);
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");
