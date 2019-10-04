@@ -169,6 +169,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".views.activities.OrderDetailActFloating"
+            android:launchMode="singleTask"
             android:excludeFromRecents="true"
             android:theme="@style/myDialog"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
