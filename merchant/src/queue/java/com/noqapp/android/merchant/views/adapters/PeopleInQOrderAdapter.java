@@ -270,7 +270,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
                 AppUtils.makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
         });
-
+        recordHolder.tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
+        OrderItemAdapter adapter = new OrderItemAdapter(context, jsonPurchaseOrder.getPurchaseOrderProducts(), BaseLaunchActivity.getCurrencySymbol(), null);
+        recordHolder.listview.setAdapter(adapter);
         recordHolder.tv_order_accept.setOnClickListener(v -> peopleInQOrderAdapterClick.orderAcceptClick(position));
 
         if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
@@ -311,8 +313,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         TextView tv_order_accept;
         TextView tv_upload_document;
         TextView tv_join_timing;
+        TextView tv_item_count;
         RelativeLayout rl_sequence_new_time;
         LinearLayout ll_side;
+        ListView listview;
         ImageView iv_new;
         CardView cardview;
 
@@ -330,6 +334,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
+            this.tv_item_count = itemView.findViewById(R.id.tv_item_count);
+            this.listview = itemView.findViewById(R.id.listview);
             this.ll_side = itemView.findViewById(R.id.ll_side);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);
