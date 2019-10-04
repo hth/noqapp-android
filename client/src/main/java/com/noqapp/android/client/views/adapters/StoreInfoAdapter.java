@@ -18,6 +18,7 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
                 (float) GeoHashUtils.decodeLongitude(item.getGeoHash()))));
 
         holder.tv_store_rating.setText(String.valueOf(AppUtils.round(item.getRating())));
+        holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
         if (holder.tv_store_rating.getText().toString().equals("0.0"))
             holder.tv_store_rating.setVisibility(View.INVISIBLE);
         else
@@ -108,6 +110,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
         private TextView tv_distance;
         private TextView tv_status;
         private ImageView iv_main;
+        private TextView tv_distance_unit;
         private CardView card_view;
 
         private MyViewHolder(View itemView) {
@@ -118,6 +121,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.tv_status = itemView.findViewById(R.id.tv_status);
+            this.tv_distance_unit = itemView.findViewById(R.id.tv_distance_unit);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }

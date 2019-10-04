@@ -1,5 +1,7 @@
 package com.noqapp.android.common.utils;
 
+import android.content.Context;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -17,11 +19,18 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.noqapp.android.common.R;
 
 public class HeaderFooterPageEvent extends PdfPageEventHelper {
 
     private PdfTemplate t;
     private Image total;
+    private Context context;
+
+    public HeaderFooterPageEvent(Context context){
+        super();
+        this.context = context;
+    }
 
     public void onOpenDocument(PdfWriter writer, Document document) {
         t = writer.getDirectContent().createTemplate(30, 16);
@@ -63,7 +72,7 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper {
             // add copyright
 
             Phrase phrase = new Phrase();
-            phrase.add(new Chunk("\u00A9 NoQueue HealthCare", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            phrase.add(new Chunk("\u00A9 "+context.getString(R.string.pdf_author), new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
             footer.addCell(phrase);
 
             // add current page count
