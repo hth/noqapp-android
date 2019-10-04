@@ -118,7 +118,6 @@ public class OrderDetailActFloating
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_order_float);
         this.setFinishOnTouchOutside(false);
