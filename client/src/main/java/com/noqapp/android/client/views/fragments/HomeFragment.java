@@ -46,6 +46,7 @@ import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
+import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -269,7 +270,11 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
             AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
             advertisementApiCalls.setAdvertisementPresenter(this);
-            advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId());
+            Location location = new Location();
+            location.setCityName(Constants.DEFAULT_CITY);
+            location.setLatitude(String.valueOf(Constants.DEFAULT_LATITUDE));
+            location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
+            advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(),location);
             pb_events.setVisibility(View.VISIBLE);
 
 
