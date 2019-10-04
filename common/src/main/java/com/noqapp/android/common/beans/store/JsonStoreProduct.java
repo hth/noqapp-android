@@ -61,6 +61,10 @@ public class JsonStoreProduct implements Serializable {
     @JsonProperty("ps")
     private int packageSize;
 
+    //Valid for case RS: case FT:
+    @JsonProperty("ic")
+    private int inventoryCount;
+
     @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
 
@@ -158,6 +162,15 @@ public class JsonStoreProduct implements Serializable {
 
     public JsonStoreProduct setPackageSize(int packageSize) {
         this.packageSize = packageSize;
+        return this;
+    }
+
+    public int getInventoryCount() {
+        return inventoryCount;
+    }
+
+    public JsonStoreProduct setInventoryCount(int inventoryCount) {
+        this.inventoryCount = inventoryCount;
         return this;
     }
 
