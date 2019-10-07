@@ -3,5 +3,6 @@
 
     <string name="service_time">Current Customer \n Service time</string>
     <string name="pdf_author">NoQueue Merchant</string>
+    <string name="add_new">Create Order</string>
 
 </resources>

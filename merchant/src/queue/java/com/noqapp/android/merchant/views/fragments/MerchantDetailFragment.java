@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -57,7 +59,7 @@ import java.util.List;
 public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
         PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter,
         PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList,
-        HCSMenuActivity.UpdateWholeList,StoreMenuActivity.UpdateWholeList {
+        HCSMenuActivity.UpdateWholeList, StoreMenuActivity.UpdateWholeList {
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
@@ -534,5 +536,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void updateWholeList() {
         getAllPeopleInQ(jsonTopic);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.menu_appointment).setVisible(false);
+        menu.findItem(R.id.menu_followup).setVisible(false);
     }
 }

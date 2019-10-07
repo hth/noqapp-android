@@ -11,6 +11,9 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -102,6 +105,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     protected LinearLayout ll_main_section;
     protected TextView tv_appointment_count;
     protected FrameLayout fl_appointment;
+    private ImageView iv_settings;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -110,6 +114,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        setHasOptionsMenu(true);
         Bundle bundle = getArguments();
         if (null != bundle) {
             topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
@@ -148,7 +153,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         tv_skip = itemView.findViewById(R.id.tv_skip);
         iv_product_list = itemView.findViewById(R.id.iv_product_list);
         iv_appointment = itemView.findViewById(R.id.iv_appointment);
-        ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
+        iv_settings = itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                 return;
@@ -728,5 +733,43 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     protected void counterNameEmpty() {
         new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
         tv_counter_name.performClick();
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                iv_generate_token.performClick();
+                break;
+            case R.id.menu_edit:
+                tv_counter_name.performClick();
+                break;
+            case R.id.menu_appointment:
+                iv_appointment.performClick();
+                break;
+            case R.id.menu_q_history:
+                iv_queue_history.performClick();
+                break;
+            case R.id.menu_followup:
+                iv_view_followup.performClick();
+                break;
+            case R.id.menu_product_list:
+                iv_product_list.performClick();
+                break;
+            case R.id.menu_settings:
+                iv_settings.performClick();
+                break;
+            default:
+                break;
+        }
+        return true;
+
     }
 }
