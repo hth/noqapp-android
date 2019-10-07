@@ -95,7 +95,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             bizStoreElastic.setBusinessName(jsonPurchaseOrder.getDisplayName());
             bizStoreElastic.setCodeQR(jsonPurchaseOrder.getCodeQR());
             bizStoreElastic.setBusinessType(jsonPurchaseOrder.getBusinessType());
-            Intent intent = new Intent(OrderHistoryDetailActivity.this, StoreDetailActivity.class);
+            Intent intent = new Intent(OrderHistoryDetailActivity.this, StoreWithMenuActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("BizStoreElastic", bizStoreElastic);
             intent.putExtras(bundle);

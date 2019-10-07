@@ -217,8 +217,12 @@ public class JsonStoreProduct implements Serializable {
                 ", productPrice=" + productPrice +
                 ", productDiscount=" + productDiscount +
                 ", productInfo='" + productInfo + '\'' +
+                ", productImage='" + productImage + '\'' +
                 ", storeCategoryId='" + storeCategoryId + '\'' +
                 ", productType=" + productType +
+                ", unitValue=" + unitValue +
+                ", packageSize=" + packageSize +
+                ", inventoryCount=" + inventoryCount +
                 ", unitOfMeasurement=" + unitOfMeasurement +
                 ", productReference='" + productReference + '\'' +
                 ", active=" + active +

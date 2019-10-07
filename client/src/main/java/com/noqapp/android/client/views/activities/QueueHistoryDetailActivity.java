@@ -60,23 +60,34 @@ public class QueueHistoryDetailActivity extends BaseActivity {
             startActivity(in);
         });
         btn_rejoin.setOnClickListener((View v) -> {
+            Intent in;
+            Bundle b = new Bundle();
             switch (jsonQueueHistorical.getBusinessType()) {
                 case DO:
                 case BK:
                     // open hospital/Bank profile
-                    Intent in = new Intent(QueueHistoryDetailActivity.this, BeforeJoinActivity.class);
+                    in = new Intent(QueueHistoryDetailActivity.this, BeforeJoinActivity.class);
                     in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                     in.putExtra(IBConstant.KEY_FROM_LIST, true);
                     in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
                     startActivity(in);
                     break;
-                default:
+                case HS:
+                case PH: {
                     // open order screen
-                    Intent intent = new Intent(QueueHistoryDetailActivity.this, StoreDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("BizStoreElastic", null);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    in = new Intent(this, StoreDetailActivity.class);
+                    b.putSerializable("BizStoreElastic", null);
+                    in.putExtras(b);
+                    startActivity(in);
+                }
+                break;
+                default: {
+                    // open order screen
+                    in = new Intent(this, StoreWithMenuActivity.class);
+                    b.putSerializable("BizStoreElastic", null);
+                    in.putExtras(b);
+                    startActivity(in);
+                }
             }
         });
         if (0 == jsonQueueHistorical.getRatingCount()) {

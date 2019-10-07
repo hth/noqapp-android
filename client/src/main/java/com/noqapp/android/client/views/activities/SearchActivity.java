@@ -168,23 +168,34 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     @Override
     public void onStoreItemClick(BizStoreElastic item) {
+        Intent in = null;
+        Bundle b = new Bundle();
         switch (item.getBusinessType()) {
+            //Level up
             case DO:
             case BK:
             case HS:
-                Intent in = new Intent(this, BeforeJoinActivity.class);
+                in = new Intent(this, BeforeJoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
                 startActivity(in);
                 break;
-            default:
+            case PH: {
                 // open order screen
-                Intent intent = new Intent(this, StoreDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                in = new Intent(this, StoreDetailActivity.class);
+                b.putSerializable("BizStoreElastic", item);
+                in.putExtras(b);
+                startActivity(in);
+            }
+            break;
+            default: {
+                // open order screen
+                in = new Intent(this, StoreWithMenuActivity.class);
+                b.putSerializable("BizStoreElastic", item);
+                in.putExtras(b);
+                startActivity(in);
+            }
         }
     }
 

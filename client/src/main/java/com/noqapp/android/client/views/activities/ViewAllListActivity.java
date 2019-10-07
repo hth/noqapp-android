@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,28 +45,38 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
 
     @Override
     public void onStoreItemClick(BizStoreElastic item) {
+        Intent in = null;
+        Bundle b = new Bundle();
         switch (item.getBusinessType()) {
+            //Level up
             case DO:
             case BK:
             case HS:
                 // open hospital/Bank profile
-                Bundle b = new Bundle();
                 b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(IBConstant.KEY_FROM_LIST, false);
                 b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
                 b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
                 b.putSerializable("BizStoreElastic", item);
-                Intent in = new Intent(this, CategoryInfoActivity.class);
+                in = new Intent(this, CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
                 startActivity(in);
                 break;
-            default:
+            case PH: {
                 // open order screen
-                Intent intent = new Intent(this, StoreDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                in = new Intent(this, StoreDetailActivity.class);
+                b.putSerializable("BizStoreElastic", item);
+                in.putExtras(b);
+                startActivity(in);
+            }
+            break;
+            default: {
+                // open order screen
+                in = new Intent(this, StoreWithMenuActivity.class);
+                b.putSerializable("BizStoreElastic", item);
+                in.putExtras(b);
+                startActivity(in);
+            }
         }
     }
 }

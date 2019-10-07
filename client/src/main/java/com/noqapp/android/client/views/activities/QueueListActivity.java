@@ -82,25 +82,35 @@ public class QueueListActivity extends BaseActivity implements
 
     @Override
     public void onCategoryItemClick(BizStoreElastic item) {
+        Intent in;
+        Bundle b = new Bundle();
         switch (item.getBusinessType()) {
             case DO:
             case BK:
-            case HS:
                 // open hospital profile
-                Intent in = new Intent(this, BeforeJoinActivity.class);
+                in = new Intent(this, BeforeJoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
                 in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
                 startActivity(in);
                 break;
-            default:
+            case HS:
+            case PH: {
                 // open order screen
                 in = new Intent(this, StoreDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", item);
-                in.putExtras(bundle);
+                b.putSerializable("BizStoreElastic", item);
+                in.putExtras(b);
                 startActivity(in);
+            }
+            break;
+            default: {
+                // open order screen
+                in = new Intent(this, StoreWithMenuActivity.class);
+                b.putSerializable("BizStoreElastic", item);
+                in.putExtras(b);
+                startActivity(in);
+            }
         }
     }
 }

@@ -224,7 +224,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         rv_events.setHasFixedSize(true);
         rv_events.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_events.setItemAnimator(new DefaultItemAnimator());
-        if(!LaunchActivity.getLaunchActivity().isCountryIndia()){
+        if (!LaunchActivity.getLaunchActivity().isCountryIndia()) {
             TextView tv_merchant_title = view.findViewById(R.id.tv_merchant_title);
             LinearLayout rl_feed = view.findViewById(R.id.rl_feed);
             LinearLayout rl_health_care = view.findViewById(R.id.rl_health_care);
@@ -274,7 +274,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             location.setCityName(Constants.DEFAULT_CITY);
             location.setLatitude(String.valueOf(Constants.DEFAULT_LATITUDE));
             location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
-            advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(),location);
+            advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
 
 
@@ -446,36 +446,38 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
     @Override
     public void onStoreItemClick(BizStoreElastic item) {
+        Intent in;
+        Bundle b = new Bundle();
         switch (item.getBusinessType()) {
+            //Level up
             case DO:
             case BK:
             case HS:
                 // open hospital/Bank profile
-                Bundle b = new Bundle();
                 b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
                 b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
                 b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
                 b.putSerializable("BizStoreElastic", item);
-                Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
+                in = new Intent(getActivity(), CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
                 startActivity(in);
                 break;
-            default:
+            case PH: {
                 // open order screen
-                if(AppUtils.isRelease()){
-                    Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("BizStoreElastic", item);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }else {
-                    Intent intent = new Intent(getActivity(), StoreWithMenuActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("BizStoreElastic", item);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
+                in = new Intent(getActivity(), StoreDetailActivity.class);
+                b.putSerializable("BizStoreElastic", item);
+                in.putExtras(b);
+                startActivity(in);
+            }
+            break;
+            default: {
+                // open order screen
+                in = new Intent(getActivity(), StoreWithMenuActivity.class);
+                b.putSerializable("BizStoreElastic", item);
+                in.putExtras(b);
+                startActivity(in);
+            }
         }
     }
 
