@@ -1,5 +1,13 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.pojos.StoreCartItem;
+
+import com.squareup.picasso.Picasso;
+
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -14,13 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.common.beans.store.JsonStoreCategory;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.pojos.StoreCartItem;
-import com.squareup.picasso.Picasso;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,9 +34,14 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private HashMap<String, StoreCartItem> orders = new HashMap<>();
     private boolean isStoreOpen = true;
 
-    public StoreProductMenuAdapter(Context context, List<JsonStoreCategory> listDataHeader,
-                                   HashMap<String, List<StoreCartItem>> listDataChild,
-                                   CartOrderUpdate cartOrderUpdate, String currencySymbol, boolean isStoreOpen) {
+    public StoreProductMenuAdapter(
+            Context context,
+            List<JsonStoreCategory> listDataHeader,
+            HashMap<String, List<StoreCartItem>> listDataChild,
+            CartOrderUpdate cartOrderUpdate,
+            String currencySymbol,
+            boolean isStoreOpen
+    ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -66,8 +72,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         final ChildViewHolder childViewHolder;
         final StoreCartItem storeCartItem = (StoreCartItem) getChild(groupPosition, childPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_menu_child, parent, false);
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item_menu_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_title = convertView.findViewById(R.id.tv_title);
             childViewHolder.tv_product_details = convertView.findViewById(R.id.tv_product_details);
@@ -91,8 +97,9 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
-        String url = TextUtils.isEmpty(jsonStoreProduct.getProductImage()) ? "https://www.uig-hotel-skye.com/images/Food/Food-7.jpg" :
-                jsonStoreProduct.getProductImage();
+        String url = TextUtils.isEmpty(jsonStoreProduct.getProductImage())
+                ? "https://www.uig-hotel-skye.com/images/Food/Food-7.jpg"
+                : jsonStoreProduct.getProductImage();
         Picasso.get().load(url).into(childViewHolder.iv_product_image);
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -101,18 +108,18 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             childViewHolder.tv_discounted_price.setVisibility(View.INVISIBLE);
         }
-        if(isStoreOpen) {
-            if(jsonStoreProduct.getInventoryCount() > 0){
-                childViewHolder.view_disable.setVisibility(View.GONE );
+        if (isStoreOpen) {
+            if (jsonStoreProduct.getInventoryCurrent() > 0) {
+                childViewHolder.view_disable.setVisibility(View.GONE);
                 childViewHolder.ll_btns.setVisibility(View.VISIBLE);
-                childViewHolder.tv_sold_out.setVisibility(View.GONE );
-            }else{
+                childViewHolder.tv_sold_out.setVisibility(View.GONE);
+            } else {
                 childViewHolder.view_disable.setVisibility(View.VISIBLE);
                 childViewHolder.ll_btns.setVisibility(View.GONE);
-                childViewHolder.tv_sold_out.setVisibility(View.VISIBLE );
+                childViewHolder.tv_sold_out.setVisibility(View.VISIBLE);
             }
 
-        }else{
+        } else {
             childViewHolder.view_disable.setVisibility(View.VISIBLE);
         }
         switch (jsonStoreProduct.getProductType()) {

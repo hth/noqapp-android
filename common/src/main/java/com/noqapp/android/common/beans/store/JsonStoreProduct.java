@@ -62,8 +62,9 @@ public class JsonStoreProduct implements Serializable {
 
     //Valid for case RS: case FT:
     @JsonProperty("ic")
-    private int inventoryCount;
+    private int inventoryCurrent;
 
+    @JsonProperty("il")
     private int inventoryLimit;
 
     private int currentInventoryCount;
@@ -168,12 +169,12 @@ public class JsonStoreProduct implements Serializable {
         return this;
     }
 
-    public int getInventoryCount() {
-        return inventoryCount;
+    public int getInventoryCurrent() {
+        return inventoryCurrent;
     }
 
-    public JsonStoreProduct setInventoryCount(int inventoryCount) {
-        this.inventoryCount = inventoryCount;
+    public JsonStoreProduct setInventoryCurrent(int inventoryCurrent) {
+        this.inventoryCurrent = inventoryCurrent;
         return this;
     }
 
@@ -241,7 +242,7 @@ public class JsonStoreProduct implements Serializable {
                 ", productType=" + productType +
                 ", unitValue=" + unitValue +
                 ", packageSize=" + packageSize +
-                ", inventoryCount=" + inventoryCount +
+                ", inventoryCurrent=" + inventoryCurrent +
                 ", inventoryLimit=" + inventoryLimit +
                 ", currentInventoryCount=" + currentInventoryCount +
                 ", unitOfMeasurement=" + unitOfMeasurement +
