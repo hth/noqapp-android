@@ -293,6 +293,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
                 bundle.putSerializable("listDataChild", storeCartItems);
                 bundle.putSerializable("jsonQueue", jsonQueue);
+                bundle.putBoolean("isStoreOpen", isStoreOpenToday(jsonStore));
                 in.putExtras(bundle);
                 startActivity(in);
             } else {

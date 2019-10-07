@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -177,6 +179,17 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         else {
             Picasso.get().load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
         }
+
+        if (isStoreOpenToday(jsonStore)) {
+            tv_place_order.setClickable(true);
+        } else {
+            tv_place_order.setClickable(false);
+            tv_place_order.setText("Closed");
+            tv_place_order.setVisibility(View.VISIBLE);
+            tv_place_order.setTextColor(Color.parseColor("#333333"));
+            tv_place_order.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
+            tv_place_order.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
         String defaultCategory = "Un-Categorized";
         //  {
         //TODO @Chandra Optimize the loop
@@ -211,7 +224,8 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         HashMap<String, List<StoreCartItem>> expandableListDetail = storeCartItems;
 
         List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
-        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail, this, currencySymbol);
+        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
+                this, currencySymbol,isStoreOpenToday(jsonStore));
         expandableListView.setAdapter(expandableListAdapter);
 
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
@@ -242,9 +256,9 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int position = new AppUtils().getFirstVisibleGroup(expandableListView);
-                if(position < menuHeaderAdapter.getItemCount()) {
+                if (position < menuHeaderAdapter.getItemCount()) {
                     rcv_header.smoothScrollToPosition(position + 1);
-                    menuHeaderAdapter.setSelectedPosition(position+1);
+                    menuHeaderAdapter.setSelectedPosition(position + 1);
                     menuHeaderAdapter.notifyDataSetChanged();
                 }
             }
@@ -321,32 +335,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 startActivity(loginIntent);
             }
         });
-
-//        tv_menu.setOnClickListener((View v) -> {
-//            if (isOrderNow()) {
-//                Intent in = new Intent(StoreWithMenuActivity.this, StoreMenuActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
-//                bundle.putSerializable("listDataChild", storeCartItems);
-//                bundle.putSerializable("jsonQueue", jsonQueue);
-//                in.putExtras(bundle);
-//                startActivity(in);
-//            } else {
-//                //Do nothing
-//                new CustomToast().showToast(StoreWithMenuActivity.this, "Please visit store to purchase.");
-//            }
-//        });
-//        if (isStoreOpenToday(jsonStore)) {
-//            tv_menu.setClickable(true);
-//            if (isOrderNow()) {
-//                tv_menu.setText("Order Now");
-//            } else {
-//                tv_menu.setText("Visit Store");
-//            }
-//        } else {
-//            tv_menu.setClickable(false);
-//            tv_menu.setText("Closed");
-//        }
     }
 
     private boolean isStoreOpenToday(JsonStore jsonStore) {
@@ -374,8 +362,8 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             expandableListView.setSelectedGroup(pos);
             menuHeaderAdapter.setSelectedPosition(pos);
             menuHeaderAdapter.notifyDataSetChanged();
-            expandableListView.scrollTo(0,-200);
-        }catch (Exception e){
+            expandableListView.scrollTo(0, -200);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

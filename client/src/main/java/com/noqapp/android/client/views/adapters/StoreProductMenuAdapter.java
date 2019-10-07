@@ -30,15 +30,17 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
     private HashMap<String, StoreCartItem> orders = new HashMap<>();
+    private boolean isStoreOpen = true;
 
     public StoreProductMenuAdapter(Context context, List<JsonStoreCategory> listDataHeader,
                                    HashMap<String, List<StoreCartItem>> listDataChild,
-                                   CartOrderUpdate cartOrderUpdate, String currencySymbol) {
+                                   CartOrderUpdate cartOrderUpdate, String currencySymbol, boolean isStoreOpen) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
         this.cartOrderUpdate = cartOrderUpdate;
         this.currencySymbol = currencySymbol;
+        this.isStoreOpen = isStoreOpen;
         orders.clear();
     }
 
@@ -75,6 +77,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.iv_product_image = convertView.findViewById(R.id.iv_product_image);
             childViewHolder.btn_decrease = convertView.findViewById(R.id.btn_decrease);
             childViewHolder.btn_increase = convertView.findViewById(R.id.btn_increase);
+            childViewHolder.view_disable = convertView.findViewById(R.id.view_disable);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_menu_child);
@@ -94,6 +97,11 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         } else {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             childViewHolder.tv_discounted_price.setVisibility(View.INVISIBLE);
+        }
+        if(isStoreOpen) {
+            childViewHolder.view_disable.setVisibility(jsonStoreProduct.getInventoryCount() > 0 ? View.GONE : View.VISIBLE);
+        }else{
+            childViewHolder.view_disable.setVisibility(View.VISIBLE);
         }
         switch (jsonStoreProduct.getProductType()) {
             case NV:
@@ -209,6 +217,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         private TextView tv_discounted_price;
         private TextView tv_cat;
         private ImageView iv_product_image;
+        private View view_disable;
         private Button btn_decrease;
         private Button btn_increase;
     }

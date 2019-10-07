@@ -54,7 +54,8 @@ public class StoreMenuActivity extends BaseActivity implements
         HashMap<String, List<StoreCartItem>> expandableListDetail = (HashMap<String, List<StoreCartItem>>) getIntent().getExtras().getSerializable("listDataChild");
 
         List<JsonStoreCategory> expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
-        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail, this, currencySymbol);
+        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
+                this, currencySymbol,getIntent().getBooleanExtra("isStoreOpen",true));
         expandableListView.setAdapter(expandableListAdapter);
 
 
