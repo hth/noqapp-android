@@ -14,57 +14,55 @@ import androidx.core.util.Pair;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-import com.google.android.material.datepicker.Month;
 import com.noqapp.android.common.R;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class DatePickerActivity extends AppCompatActivity {
-
-    private long TODAY;
-    private long NEXT_MONTH;
-    private Month JAN_THIS_YEAR;
-    private Month DEC_THIS_YEAR;
-    private Month ONE_YEAR_FORWARD;
-    private Pair<Long, Long> TODAY_PAIR;
-    private Pair<Long, Long> NEXT_MONTH_PAIR;
+    private long today;
+    private long lastHundredYear;
+    private long nextMonth;
+    private long janThisYear;
+    private long decThisYear;
+    private long oneYearForward;
+    private Pair<Long, Long> todayPair;
+    private Pair<Long, Long> nextMonthPair;
 
     private final int SELECTION_MODE_DEFAULT = 0;
     private final int SELECTION_MODE_TODAY = 1;
     private final int SELECTION_MODE_NEXT = 2;
 
-    private final int TITLE_DEFAULT = 0;
-    private final int TITLE_CUSTOM = 1;
 
-    private final int THEME_DIALOG = 0;
-    private final int THEME_FULLSCREEN = 1;
-
-    private final int BOUND_THIS_YEAR_ONLY = 0;
-    private final int BOUND_NEXT_ONE_YEAR = 1;
-
-    private final int OPENING_MONTH_CURRENT = 0;
-    private final int OPENING_MONTH_NEXT = 1;
-
+    private static Calendar getClearedUtc() {
+        Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        utc.clear();
+        return utc;
+    }
 
     private void init() {
-        Calendar calToday = Calendar.getInstance();
-        TODAY = calToday.getTimeInMillis();
-        Calendar calNextMonth = Calendar.getInstance();
-        calNextMonth.roll(Calendar.MONTH, 1);
-        NEXT_MONTH = calNextMonth.getTimeInMillis();
+        today = MaterialDatePicker.todayInUtcMilliseconds();
+        Calendar calendar = getClearedUtc();
+        calendar.setTimeInMillis(today);
+        calendar.roll(Calendar.MONTH, 1);
+        nextMonth = calendar.getTimeInMillis();
 
-        Calendar calJanThisYear = Calendar.getInstance();
-        calJanThisYear.set(Calendar.MONTH, Calendar.JANUARY);
-        JAN_THIS_YEAR = Month.create(calJanThisYear.getTimeInMillis());
-        Calendar calDecThisYear = Calendar.getInstance();
-        calDecThisYear.set(Calendar.MONTH, Calendar.DECEMBER);
-        DEC_THIS_YEAR = Month.create(calDecThisYear.getTimeInMillis());
-        Calendar calOneYearForward = Calendar.getInstance();
-        calOneYearForward.roll(Calendar.YEAR, 1);
-        ONE_YEAR_FORWARD = Month.create(calOneYearForward.getTimeInMillis());
+        calendar.setTimeInMillis(today);
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        janThisYear = calendar.getTimeInMillis();
+        calendar.setTimeInMillis(today);
+        calendar.set(Calendar.MONTH, Calendar.DECEMBER);
+        decThisYear = calendar.getTimeInMillis();
 
-        TODAY_PAIR = new Pair<>(TODAY, TODAY);
-        NEXT_MONTH_PAIR = new Pair<>(NEXT_MONTH, NEXT_MONTH);
+        calendar.setTimeInMillis(today);
+        calendar.roll(Calendar.YEAR, 1);
+        oneYearForward = calendar.getTimeInMillis();
+        Calendar calendar1 = getClearedUtc();
+        calendar1.set(Calendar.YEAR, -100);
+        lastHundredYear =  calendar1.getTimeInMillis();
+
+        todayPair = new Pair<>(today, today);
+        nextMonthPair = new Pair<>(nextMonth, nextMonth);
     }
 
     @Override
@@ -79,22 +77,17 @@ public class DatePickerActivity extends AppCompatActivity {
         MaterialDatePicker.Builder<?> builder =
                 setupDateSelectorBuilder(SELECTION_MODE_DEFAULT, SELECTION_MODE_TODAY);
         CalendarConstraints.Builder constraintsBuilder =
-                setupConstraintsBuilder(BOUND_THIS_YEAR_ONLY, OPENING_MONTH_CURRENT, 0);
+                setupConstraintsBuilder(false);
         int dialogTheme = resolveOrThrow(this, R.attr.materialCalendarTheme);
         int fullscreenTheme = resolveOrThrow(this, R.attr.materialCalendarFullscreenTheme);
-        int themeChoice = THEME_FULLSCREEN;
-        if (themeChoice == THEME_FULLSCREEN) {
-            builder.setTheme(dialogTheme);
-        } else if (themeChoice == THEME_FULLSCREEN) {
-            builder.setTheme(fullscreenTheme);
-        }
-        int titleChoice = 0;
-        if (titleChoice == TITLE_CUSTOM) {
-            builder.setTitleTextResId(R.string.cat_picker_title_custom);
-        }
+
+        builder.setTheme(dialogTheme);
+       // builder.setTheme(fullscreenTheme);
+        builder.setTitleText(R.string.cat_picker_title_custom);
+
 
         try {
-            // builder.setCalendarConstraints(constraintsBuilder.build());
+             builder.setCalendarConstraints(constraintsBuilder.build());
             MaterialDatePicker<?> picker = builder.build();
             picker.show(DatePickerActivity.this.getSupportFragmentManager(), picker.toString());
             picker.addOnNegativeButtonClickListener(v -> {
@@ -124,9 +117,9 @@ public class DatePickerActivity extends AppCompatActivity {
         if (selectionModeChoice == SELECTION_MODE_DEFAULT) {
             MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
             if (selectionChoice == SELECTION_MODE_TODAY) {
-                builder.setSelection(TODAY);
+                builder.setSelection(today);
             } else if (selectionChoice == SELECTION_MODE_NEXT) {
-                builder.setSelection(NEXT_MONTH);
+                builder.setSelection(nextMonth);
             }
             return builder;
         } else {
@@ -142,26 +135,16 @@ public class DatePickerActivity extends AppCompatActivity {
     }
 
     private CalendarConstraints.Builder setupConstraintsBuilder(
-            int boundsChoice, int openingChoice, int validationChoice) {
+            boolean isFuture) {
         CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
-        if (boundsChoice == BOUND_THIS_YEAR_ONLY) {
-            constraintsBuilder.setStart(JAN_THIS_YEAR);
-            constraintsBuilder.setEnd(DEC_THIS_YEAR);
-        } else if (boundsChoice == BOUND_NEXT_ONE_YEAR) {
-            constraintsBuilder.setEnd(ONE_YEAR_FORWARD);
+        if (isFuture) {
+            constraintsBuilder.setStart(today);
+            constraintsBuilder.setEnd(oneYearForward);
+        } else  {
+            constraintsBuilder.setStart(lastHundredYear);
+            constraintsBuilder.setEnd(today);
         }
-
-        if (openingChoice == OPENING_MONTH_CURRENT) {
-            constraintsBuilder.setOpening(Month.today());
-        } else if (openingChoice == OPENING_MONTH_NEXT) {
-            constraintsBuilder.setOpening(Month.create(NEXT_MONTH));
-        }
-
-//        if (validationChoice == R.id.cat_picker_validation_future) {
-//            constraintsBuilder.setValidator(new DateValidatorPointForward());
-//        } else if (validationChoice == R.id.cat_picker_validation_weekdays) {
-//            constraintsBuilder.setValidator(new DateValidatorWeekdays());
-//        }
+        constraintsBuilder.setOpenAt(today);
         return constraintsBuilder;
     }
 
