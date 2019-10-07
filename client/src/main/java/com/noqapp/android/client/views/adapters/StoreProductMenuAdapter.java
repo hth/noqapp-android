@@ -56,9 +56,9 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
+    public Object getChild(int groupPosition, int childPosition) {
         return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId())
-                .get(childPosititon);
+                .get(childPosition);
     }
 
     @Override
@@ -67,8 +67,13 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(
+            final int groupPosition,
+            final int childPosition,
+            boolean isLastChild,
+            View convertView,
+            ViewGroup parent
+    ) {
         final ChildViewHolder childViewHolder;
         final StoreCartItem storeCartItem = (StoreCartItem) getChild(groupPosition, childPosition);
         if (convertView == null) {
@@ -150,7 +155,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.btn_decrease.setOnClickListener((View v) -> {
             String val = childViewHolder.tv_value.getText().toString();
             int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
-            childViewHolder.tv_value.setText("" + number);
+            childViewHolder.tv_value.setText(String.valueOf(number));
             listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                     .get(childPosition).setChildInput(number);
             if (number <= 0) {
