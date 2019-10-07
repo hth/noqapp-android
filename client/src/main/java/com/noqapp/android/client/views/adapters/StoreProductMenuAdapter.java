@@ -11,6 +11,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
@@ -74,6 +75,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);
             childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
+            childViewHolder.tv_sold_out = convertView.findViewById(R.id.tv_sold_out);
+            childViewHolder.ll_btns = convertView.findViewById(R.id.ll_btns);
             childViewHolder.iv_product_image = convertView.findViewById(R.id.iv_product_image);
             childViewHolder.btn_decrease = convertView.findViewById(R.id.btn_decrease);
             childViewHolder.btn_increase = convertView.findViewById(R.id.btn_increase);
@@ -99,7 +102,16 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_discounted_price.setVisibility(View.INVISIBLE);
         }
         if(isStoreOpen) {
-            childViewHolder.view_disable.setVisibility(jsonStoreProduct.getInventoryCount() > 0 ? View.GONE : View.VISIBLE);
+            if(jsonStoreProduct.getInventoryCount() > 0){
+                childViewHolder.view_disable.setVisibility(View.GONE );
+                childViewHolder.ll_btns.setVisibility(View.VISIBLE);
+                childViewHolder.tv_sold_out.setVisibility(View.GONE );
+            }else{
+                childViewHolder.view_disable.setVisibility(View.VISIBLE);
+                childViewHolder.ll_btns.setVisibility(View.GONE);
+                childViewHolder.tv_sold_out.setVisibility(View.VISIBLE );
+            }
+
         }else{
             childViewHolder.view_disable.setVisibility(View.VISIBLE);
         }
@@ -217,6 +229,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         private TextView tv_discounted_price;
         private TextView tv_cat;
         private ImageView iv_product_image;
+        private TextView tv_sold_out;
+        private LinearLayout ll_btns;
         private View view_disable;
         private Button btn_decrease;
         private Button btn_increase;
