@@ -228,6 +228,7 @@ public class ProductListActivity extends BaseActivity implements
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
         final TextInputEditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
         final TextInputEditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
+        final TextInputEditText edt_prod_limit = customDialogView.findViewById(R.id.edt_prod_limit);
         final TextInputEditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
         final TextInputEditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
         final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
@@ -252,6 +253,7 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_price.setText(jsonStoreProduct.getDisplayPrice());
             edt_prod_description.setText(jsonStoreProduct.getProductInfo());
             edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
+            edt_prod_limit.setText(String.valueOf(jsonStoreProduct.getInventoryLimit()));
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
             edt_prod_unit_value.setText(String.valueOf(jsonStoreProduct.getUnitValue()));
             sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId()));
@@ -294,6 +296,7 @@ public class ProductListActivity extends BaseActivity implements
                     jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
                     jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
                     jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()));
+                    jsonStoreProduct.setInventoryLimit(Integer.parseInt(edt_prod_limit.getText().toString()));
                     menuItemUpdate(jsonStoreProduct, actionTypeEnum);
                     mAlertDialog.dismiss();
                 }
