@@ -493,7 +493,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         btn_next.setOnClickListener(v -> {
             mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
             if (tv_counter_name.getText().toString().trim().equals("")) {
-                new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                counterNameEmpty();
             } else {
                 chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
@@ -522,7 +522,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
             if (queueStatus != QueueStatusEnum.S && queueStatus != QueueStatusEnum.D) {
                 if (tv_counter_name.getText().toString().trim().equals("")) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                    counterNameEmpty();
                 } else {
                     ShowCustomDialog showDialog = new ShowCustomDialog(context);
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
@@ -573,7 +573,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 new CustomToast().showToast(context, context.getString(R.string.error_done_next));
             } else {
                 if (tv_counter_name.getText().toString().trim().equals("")) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                    counterNameEmpty();
                 } else {
                     if (tv_start.getText().equals(context.getString(R.string.pause))) {
                         ShowCustomDialog showDialog = new ShowCustomDialog(context);
@@ -702,7 +702,6 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     }
 
 
-
     @Override
     public void userRegistered(JsonProfile jsonProfile) {
         userFound(jsonProfile);
@@ -724,5 +723,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(),
                 jsonBusinessCustomer);
+    }
+
+    protected void counterNameEmpty() {
+        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+        tv_counter_name.performClick();
     }
 }

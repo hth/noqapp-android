@@ -126,7 +126,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void orderAcceptClick(int position) {
         if (tv_counter_name.getText().toString().trim().equals("")) {
-            new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+            counterNameEmpty();
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
@@ -247,7 +247,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void orderDoneClick(int position) {
         if (tv_counter_name.getText().toString().trim().equals("")) {
-            new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+            counterNameEmpty();
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
@@ -419,7 +419,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             btn_next.setOnClickListener(v -> {
                 mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (tv_counter_name.getText().toString().trim().equals("")) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                    counterNameEmpty();
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         showProgress();
@@ -445,7 +445,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     new CustomToast().showToast(context, context.getString(R.string.error_done_next));
                 } else {
                     if (tv_counter_name.getText().toString().trim().equals("")) {
-                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                        counterNameEmpty();
                     } else {
                         if (tv_start.getText().equals(context.getString(R.string.pause))) {
                             ShowCustomDialog showDialog = new ShowCustomDialog(context);
