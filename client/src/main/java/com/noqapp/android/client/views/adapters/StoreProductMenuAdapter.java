@@ -219,8 +219,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_group, parent, false);
         }
-        ExpandableListView mExpandableListView = (ExpandableListView) parent;
-        mExpandableListView.expandGroup(groupPosition);
+       // ExpandableListView mExpandableListView = (ExpandableListView) parent;
+       // mExpandableListView.expandGroup(groupPosition);
         TextView tv_list_header = convertView.findViewById(R.id.tv_list_header);
         tv_list_header.setTypeface(null, Typeface.BOLD);
         tv_list_header.setText(headerTitle);
