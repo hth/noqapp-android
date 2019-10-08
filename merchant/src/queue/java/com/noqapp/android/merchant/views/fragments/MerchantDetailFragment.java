@@ -322,7 +322,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 //To update merchant list screen
                 mAdapterCallback.onMethodCallback(token);
             }
-            updateUI();
+            updateUI(false);
         }
     }
 
@@ -333,7 +333,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     }
 
     @Override
-    protected void updateUI() {
+    protected void updateUI(boolean isNewCall) {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             final PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
             purchaseOrderApiCalls.setAcquireOrderPresenter(this);
@@ -493,14 +493,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             });
 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                // progressDialog.setVisibility(View.VISIBLE);
-                showProgress();
+                if (isNewCall) // show progressbar only first time
+                    showProgress();
                 getAllPeopleInQ(jsonTopic);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
         } else {
-            super.updateUI();
+            super.updateUI(isNewCall);
         }
     }
 

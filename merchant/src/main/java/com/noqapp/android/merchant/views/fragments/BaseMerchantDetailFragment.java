@@ -187,7 +187,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         });
         iv_view_followup = itemView.findViewById(R.id.iv_view_followup);
         tv_counter_name.setOnClickListener(v -> showCounterEditDialog(context, tv_counter_name, jsonTopic.getCodeQR()));
-        updateUI();
+        updateUI(true);
         return itemView;
     }
 
@@ -210,8 +210,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
         try {
             topicsList = jsonTopics;
-            resetList();
-            updateUI();
+            // resetList();
+            updateUI(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -224,7 +224,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         chronometer.stop();
         chronometer.setBase(SystemClock.elapsedRealtime());
         resetList();
-        updateUI();
+        updateUI(true);
     }
 
     @Override
@@ -250,7 +250,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 //To update merchant list screen
                 mAdapterCallback.onMethodCallback(token);
             }
-            updateUI();
+            updateUI(false);
         }
     }
 
@@ -388,21 +388,15 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
             tv_appointment_count.setText(String.valueOf(jsonQueuePersonList.getAppointmentCountForToday()));
             Collections.sort(jsonQueuedPersonArrayList, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
-            peopleInQAdapter = new PeopleInQAdapter(
-                    jsonQueuedPersonArrayList,
-                    context,
-                    this,
-                    jsonTopic.getCodeQR(),
-                    jsonTopic.getServingNumber(),
-                    jsonTopic.getQueueStatus(),
-                    jsonTopic.getJsonDataVisibility(),
-                    jsonTopic.getJsonPaymentPermission(),
-                    jsonTopic.getBizCategoryId());
-            rv_queue_people.setAdapter(peopleInQAdapter);
+            if (null == peopleInQAdapter) {
+                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
+                rv_queue_people.setAdapter(peopleInQAdapter);
+            } else {
+                peopleInQAdapter.updateDataSet(jsonQueuedPersonArrayList);
+            }
             if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
             }
-
         }
         dismissProgress();
     }
@@ -412,7 +406,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         dismissProgress();
     }
 
-    protected void updateUI() {
+    protected void updateUI(boolean isNewCall) {
         final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
         queueStatusOuter = queueStatus == QueueStatusEnum.N;
         String cName = mAdapterCallback.getNameList().get(jsonTopic.getCodeQR());
@@ -641,7 +635,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            showProgress();
+            if (isNewCall) // show progressbar only first time
+                showProgress();
             getAllPeopleInQ(jsonTopic);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());

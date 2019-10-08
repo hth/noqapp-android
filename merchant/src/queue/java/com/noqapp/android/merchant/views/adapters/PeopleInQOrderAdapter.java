@@ -277,13 +277,13 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
 
         if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             recordHolder.ll_side.setBackground(ContextCompat.getDrawable(context, R.drawable.cv_border_color));
-            OrderDetailActFloating.peopleInQOrderAdapterClick = peopleInQOrderAdapterClick;
-            Intent in = new Intent(context, OrderDetailActFloating.class);
-            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-            in.putExtra("jsonPaymentPermission", jsonPaymentPermission);
-            in.putExtra("position", position);
-            in.putExtra(IBConstant.KEY_IS_PAYMENT_PARTIAL_ALLOWED, jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.HS);
-            ((Activity) context).startActivity(in);
+//            OrderDetailActFloating.peopleInQOrderAdapterClick = peopleInQOrderAdapterClick;
+//            Intent in = new Intent(context, OrderDetailActFloating.class);
+//            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+//            in.putExtra("jsonPaymentPermission", jsonPaymentPermission);
+//            in.putExtra("position", position);
+//            in.putExtra(IBConstant.KEY_IS_PAYMENT_PARTIAL_ALLOWED, jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.HS);
+//            ((Activity) context).startActivity(in);
 
 //            if (null == mAlertDialog)
 //                showLargeDialog(context, jsonPurchaseOrder, position);

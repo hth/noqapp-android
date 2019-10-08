@@ -78,8 +78,6 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
     private boolean isFragmentVisible = false;
     private AutoCompleteTextView auto_complete_search;
     private ManageQueueApiCalls manageQueueApiCalls;
-
-
     public MerchantListFragment() {
 
     }
@@ -92,8 +90,6 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
             a = (Activity) context;
             ((LaunchActivity) a).fragmentCommunicator = this;
         }
-
-
     }
 
     @Override
@@ -452,7 +448,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         }
     }
 
-    public void updateListData(List<JsonTopic> jsonTopics) {
+    private void updateListData(List<JsonTopic> jsonTopics) {
         topics = new ArrayList<>();
         if (null != jsonTopics && jsonTopics.size() > 0)
             topics.addAll(jsonTopics);
