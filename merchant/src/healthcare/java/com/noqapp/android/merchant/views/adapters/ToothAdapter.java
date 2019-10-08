@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
 import com.noqapp.android.merchant.views.pojos.ToothProcedure;
@@ -62,8 +63,8 @@ public class ToothAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         ToothInfo item = dataSet.get(position);
         holder.tv_count.setText(String.valueOf(item.getToothNumber()));
-        holder.iv_top.setBackground(ContextCompat.getDrawable(context, item.getToothTopView().getDrawable()));
-        holder.iv_front.setBackground(ContextCompat.getDrawable(context, item.getToothFrontView().getDrawable()));
+        holder.iv_top.setBackground(ContextCompat.getDrawable(context, AppUtils.getDrawableFromString(item.getToothTopView().getDrawable(),context)));
+        holder.iv_front.setBackground(ContextCompat.getDrawable(context, AppUtils.getDrawableFromString(item.getToothFrontView().getDrawable(),context)));
         if (position == 7 || position == 23) {
             holder.ll_header.setBackgroundResource(R.drawable.vertical_line);
         } else {
@@ -199,8 +200,8 @@ public class ToothAdapter extends RecyclerView.Adapter {
                         for (int j = 0; j < dataSet.size(); j++) {
                             ToothInfo tf = dataSet.get(j);
                             if (tf.getToothNumber() == Integer.parseInt(toothNumber)) {
-                                tf.setToothTopView(new ToothProcedure(Integer.parseInt(toothTopDrawable), toothTopLabel));
-                                tf.setToothFrontView(new ToothProcedure(Integer.parseInt(toothFrontDrawable), toothFrontLabel));
+                                tf.setToothTopView(new ToothProcedure(toothTopDrawable, toothTopLabel));
+                                tf.setToothFrontView(new ToothProcedure(toothFrontDrawable, toothFrontLabel));
                                 tf.setUpdated(true);
                                 dataSet.set(j, tf);
                                 break;

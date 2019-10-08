@@ -1,19 +1,19 @@
 package com.noqapp.android.merchant.views.pojos;
 
 public class ToothProcedure {
-    private int drawable;
+    private String drawable;
     private String drawableLabel;
 
-    public ToothProcedure(int drawable, String drawableLabel) {
+    public ToothProcedure(String drawable, String drawableLabel) {
         this.drawable = drawable;
         this.drawableLabel = drawableLabel;
     }
 
-    public int getDrawable() {
+    public String getDrawable() {
         return drawable;
     }
 
-    public void setDrawable(int drawable) {
+    public void setDrawable(String drawable) {
         this.drawable = drawable;
     }
 

@@ -338,4 +338,9 @@ public class CommonHelper {
         }
         return true;
     }
+
+    public static int getDrawableFromString(String val,Context context){
+        return context.getResources().getIdentifier(val, "drawable", context.getPackageName());
+    }
+
 }
