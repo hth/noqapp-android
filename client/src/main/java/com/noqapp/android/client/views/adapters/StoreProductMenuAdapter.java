@@ -1,9 +1,12 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 
 import com.squareup.picasso.Picasso;
@@ -33,6 +36,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private String currencySymbol;
     private HashMap<String, StoreCartItem> orders = new HashMap<>();
     private boolean isStoreOpen = true;
+    private BusinessTypeEnum businessType;
 
     public StoreProductMenuAdapter(
             Context context,
@@ -40,14 +44,15 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             HashMap<String, List<StoreCartItem>> listDataChild,
             CartOrderUpdate cartOrderUpdate,
             String currencySymbol,
-            boolean isStoreOpen
-    ) {
+            boolean isStoreOpen,
+            BusinessTypeEnum businessType) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
         this.cartOrderUpdate = cartOrderUpdate;
         this.currencySymbol = currencySymbol;
         this.isStoreOpen = isStoreOpen;
+        this.businessType = businessType;
         orders.clear();
     }
 
@@ -102,10 +107,12 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
-        String url = TextUtils.isEmpty(jsonStoreProduct.getProductImage())
-                ? "https://www.uig-hotel-skye.com/images/Food/Food-7.jpg"
-                : jsonStoreProduct.getProductImage();
-        Picasso.get().load(url).into(childViewHolder.iv_product_image);
+        
+        Picasso.get()
+                .load(jsonStoreProduct.getProductImage())
+                .placeholder(ImageUtils.getThumbPlaceholder(context))
+                .error(ImageUtils.getThumbErrorPlaceholder(context))
+                .into(childViewHolder.iv_product_image);
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -114,18 +121,29 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_discounted_price.setVisibility(View.INVISIBLE);
         }
         if (isStoreOpen) {
-            if (jsonStoreProduct.getInventoryCurrent() > 0) {
-                childViewHolder.view_disable.setVisibility(View.GONE);
-                childViewHolder.ll_btns.setVisibility(View.VISIBLE);
-                childViewHolder.tv_sold_out.setVisibility(View.GONE);
-            } else {
-                childViewHolder.view_disable.setVisibility(View.VISIBLE);
-                childViewHolder.ll_btns.setVisibility(View.GONE);
-                childViewHolder.tv_sold_out.setVisibility(View.VISIBLE);
+            switch (businessType){
+                case RS:
+                case FT:
+                    if (jsonStoreProduct.getInventoryCurrent() > 0) {
+                        childViewHolder.view_disable.setVisibility(View.GONE);
+                        childViewHolder.ll_btns.setVisibility(View.VISIBLE);
+                        childViewHolder.tv_sold_out.setVisibility(View.GONE);
+                    } else {
+                        childViewHolder.view_disable.setVisibility(View.VISIBLE);
+                        childViewHolder.ll_btns.setVisibility(View.GONE);
+                        childViewHolder.tv_sold_out.setVisibility(View.VISIBLE);
+                    }
+                    break;
+               default:{
+                   childViewHolder.view_disable.setVisibility(View.GONE);
+                   childViewHolder.ll_btns.setVisibility(View.VISIBLE);
+                   childViewHolder.tv_sold_out.setVisibility(View.GONE);
+               }
             }
-
         } else {
             childViewHolder.view_disable.setVisibility(View.VISIBLE);
+            childViewHolder.ll_btns.setVisibility(View.GONE);
+            childViewHolder.tv_sold_out.setVisibility(View.GONE);
         }
         switch (jsonStoreProduct.getProductType()) {
             case NV:

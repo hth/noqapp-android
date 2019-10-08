@@ -102,6 +102,7 @@
                 android:paddingLeft="5dp"
                 android:text="Sold Out"
                 android:textColor="@android:color/darker_gray"
+                android:visibility="gone"
                 android:textSize="@dimen/text_size_sixteen" />
 
 

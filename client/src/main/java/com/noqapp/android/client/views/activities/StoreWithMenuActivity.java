@@ -145,7 +145,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 break;
             default:
                 populateStore();
-
         }
     }
 
@@ -182,7 +181,9 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
         if (isStoreOpenToday(jsonStore)) {
             tv_place_order.setClickable(true);
+            tv_place_order.setEnabled(true);
         } else {
+            tv_place_order.setEnabled(false);
             tv_place_order.setClickable(false);
             tv_place_order.setText("Closed");
             tv_place_order.setVisibility(View.VISIBLE);
@@ -225,7 +226,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
         List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
         StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
-                this, currencySymbol,isStoreOpenToday(jsonStore));
+                this, currencySymbol,isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
         expandableListView.setAdapter(expandableListAdapter);
 
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
