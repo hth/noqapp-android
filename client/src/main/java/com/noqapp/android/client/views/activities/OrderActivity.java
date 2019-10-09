@@ -71,7 +71,6 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter,
         ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter {
     private TextView tv_address;
-    private EditText edt_phone;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ClientProfileApiCall clientProfileApiCall;
@@ -114,7 +113,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Intent in = new Intent(OrderActivity.this, AddressBookActivity.class);
             startActivityForResult(in, 78);
         });
-        edt_phone = findViewById(R.id.edt_phone);
         edt_optional = findViewById(R.id.edt_optional);
         tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
@@ -163,7 +161,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
-        edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         //tv_address.setText(NoQueueBaseActivity.getAddress());
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         clientProfileApiCall = new ClientProfileApiCall();
@@ -204,7 +201,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
                                     .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                     .setPaymentMode(null) //not required here
-                                    .setCustomerPhone(edt_phone.getText().toString())
+                                    .setCustomerPhone(NoQueueBaseActivity.getPhoneNo())
                                     .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
                             purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
@@ -276,16 +273,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     private boolean validateForm() {
         boolean isValid = true;
-        edt_phone.setError(null);
         tv_address.setError(null);
-        if (edt_phone.getText().toString().equals("")) {
-            edt_phone.setError("Please enter mobile no.");
-            isValid = false;
-        }
-        if (!edt_phone.getText().toString().equals("") && edt_phone.getText().length() < 10) {
-            edt_phone.setError("Please enter valid mobile no.");
-            isValid = false;
-        }
         if (!NoQueueBaseActivity.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
             isValid = false;

@@ -78,17 +78,6 @@
                         android:textSize="@dimen/text_size_fourteen" />
 
 
-                    <EditText
-                        android:id="@+id/edt_phone"
-                        style="@style/style_register_edt"
-                        android:layout_width="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:hint="@string/mobile_no"
-                        android:inputType="phone"
-                        android:maxLength="12"
-                        android:textSize="@dimen/text_size_fourteen" />
-
                     <TextView
                         android:id="@+id/tv_payment_mode"
                         android:layout_width="match_parent"
