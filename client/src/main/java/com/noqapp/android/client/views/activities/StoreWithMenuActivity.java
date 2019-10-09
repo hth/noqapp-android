@@ -179,7 +179,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             Picasso.get().load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
         }
 
-        if (isStoreOpenToday(jsonStore)) {
+        if (AppUtils.isStoreOpenToday(jsonStore)) {
             tv_place_order.setClickable(true);
             tv_place_order.setEnabled(true);
         } else {
@@ -226,7 +226,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
         List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
         StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
-                this, currencySymbol,isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
+                this, currencySymbol,AppUtils.isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
         expandableListView.setAdapter(expandableListAdapter);
 
         for(int i=0; i < expandableListAdapter.getGroupCount(); i++)
@@ -347,25 +347,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 startActivity(loginIntent);
             }
         });
-    }
-
-    private boolean isStoreOpenToday(JsonStore jsonStore) {
-        List<JsonHour> jsonHourList = jsonStore.getJsonHours();
-        JsonHour jsonHour = AppUtils.getJsonHour(jsonHourList);
-        DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
-        String time = df.format(Calendar.getInstance().getTime());
-        int timeData = Integer.parseInt(time.replace(":", ""));
-        return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
-    }
-
-    private boolean isOrderNow() {
-        switch (jsonQueue.getBusinessType()) {
-            case PH:
-            case HS:
-                return false;
-            default:
-                return true;
-        }
     }
 
     @Override

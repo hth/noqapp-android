@@ -29,6 +29,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -573,5 +574,13 @@ public class AppUtils extends CommonHelper {
         return groupPosition;
     }
 
+    public static boolean isStoreOpenToday(JsonStore jsonStore) {
+        List<JsonHour> jsonHourList = jsonStore.getJsonHours();
+        JsonHour jsonHour = AppUtils.getJsonHour(jsonHourList);
+        DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
+        String time = df.format(Calendar.getInstance().getTime());
+        int timeData = Integer.parseInt(time.replace(":", ""));
+        return jsonHour.getTokenAvailableFrom() <= timeData && timeData <= jsonHour.getTokenNotAvailableFrom();
+    }
 
 }

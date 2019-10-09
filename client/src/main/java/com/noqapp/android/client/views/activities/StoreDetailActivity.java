@@ -293,7 +293,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
                 bundle.putSerializable("listDataChild", storeCartItems);
                 bundle.putSerializable("jsonQueue", jsonQueue);
-                bundle.putBoolean("isStoreOpen", isStoreOpenToday(jsonStore));
+                bundle.putBoolean("isStoreOpen", AppUtils.isStoreOpenToday(jsonStore));
                 in.putExtras(bundle);
                 startActivity(in);
             } else {
@@ -301,7 +301,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 new CustomToast().showToast(StoreDetailActivity.this, "Please visit store to purchase.");
             }
         });
-        if (isStoreOpenToday(jsonStore)) {
+        if (AppUtils.isStoreOpenToday(jsonStore)) {
             tv_menu.setClickable(true);
             if (isOrderNow()) {
                 tv_menu.setText("Order Now");
@@ -314,15 +314,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             tv_menu.setText("Closed");
         }
         tv_store_timings.setText(Html.fromHtml(new AppUtils().formatWeeklyTimings(this, jsonStore.getJsonHours())));
-    }
-
-    private boolean isStoreOpenToday(JsonStore jsonStore) {
-        List<JsonHour> jsonHourList = jsonStore.getJsonHours();
-        JsonHour jsonHour = AppUtils.getJsonHour(jsonHourList);
-        DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
-        String time = df.format(Calendar.getInstance().getTime());
-        int timeData = Integer.parseInt(time.replace(":", ""));
-        return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
     }
 
     private boolean isOrderNow() {
