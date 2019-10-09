@@ -351,6 +351,8 @@
     <string name="offers">Coupons</string>
     <string name="screen_qconfirm">Confirm Queue</string>
     <string name="notification_setting">Notification</string>
+    <string name="gps_error_msg_final">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
+    <string name="gps_error_msg">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
 
     <string name="discount_error">Discount has already been applied</string>
 </resources>
