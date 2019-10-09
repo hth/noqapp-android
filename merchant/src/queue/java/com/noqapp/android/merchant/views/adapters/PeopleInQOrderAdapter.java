@@ -251,7 +251,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
                 AppUtils.makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
         });
         recordHolder.tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
-        OrderItemAdapter adapter = new OrderItemAdapter(context, jsonPurchaseOrder.getPurchaseOrderProducts(), BaseLaunchActivity.getCurrencySymbol(), null);
+        OrderItemAdapter adapter = new OrderItemAdapter(context, jsonPurchaseOrder.getPurchaseOrderProducts(), BaseLaunchActivity.getCurrencySymbol(), true);
         recordHolder.listview.setAdapter(adapter);
         recordHolder.tv_order_accept.setOnClickListener(v -> peopleInQOrderAdapterClick.orderAcceptClick(position));
 
