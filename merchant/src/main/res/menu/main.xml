@@ -4,41 +4,41 @@
     <item
         android:id="@+id/menu_add"
         android:icon="@drawable/add_token"
-        android:iconTint="@android:color/black"
+        app:iconTint="@android:color/black"
         android:title="@string/add_new" />
 
     <item
         android:id="@+id/menu_edit"
         android:icon="@drawable/edit_new"
-        android:iconTint="@android:color/black"
+        app:iconTint="@android:color/black"
         android:title="Edit Counter Name" />
     <item
         android:id="@+id/menu_appointment"
         android:icon="@drawable/appointment"
-        android:iconTint="@android:color/black"
+        app:iconTint="@android:color/black"
         android:title="Appointments" />
 
     <item
         android:id="@+id/menu_q_history"
         android:icon="@drawable/history"
-        android:iconTint="@android:color/black"
+        app:iconTint="@android:color/black"
         android:title="Queue History" />
 
     <item
         android:id="@+id/menu_followup"
         android:icon="@drawable/follow_up"
-        android:iconTint="@android:color/black"
+        app:iconTint="@android:color/black"
         android:title="Patient Followup" />
     <item
         android:id="@+id/menu_product_list"
         android:icon="@drawable/product_list"
-        android:iconTint="@android:color/black"
+        app:iconTint="@android:color/black"
         android:title="Product List" />
 
     <item
         android:id="@+id/menu_settings"
         android:icon="@drawable/settings"
-        android:iconTint="@android:color/black"
+        app:iconTint="@android:color/black"
         android:title="Settings" />
 
 </menu>
