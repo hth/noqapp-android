@@ -35,7 +35,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.StoreProductMenuAdapter;
-import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
@@ -44,13 +43,9 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class StoreWithMenuActivity extends BaseActivity implements StorePresenter,
         MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
@@ -226,15 +221,15 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
         List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
         StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
-                this, currencySymbol,AppUtils.isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
+                this, currencySymbol, AppUtils.isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
         expandableListView.setAdapter(expandableListAdapter);
 
-        for(int i=0; i < expandableListAdapter.getGroupCount(); i++)
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
             expandableListView.expandGroup(i);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,int  groupPosition, long id) {
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 return true;
             }
         });
@@ -306,7 +301,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
                                 .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice(value.getFinalDiscountedPrice() * 100)
+                                .setProductPrice((int) (value.getFinalDiscountedPrice() * 100))
                                 .setProductQuantity(value.getChildInput())
                                 .setProductName(value.getJsonStoreProduct().getProductName())
                                 .setPackageSize(value.getJsonStoreProduct().getPackageSize())
@@ -362,7 +357,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
     }
 
     @Override
-    public void updateCartOrderInfo(int amountString) {
+    public void updateCartOrderInfo(double amountString) {
         if (amountString > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
             tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString);

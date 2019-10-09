@@ -239,8 +239,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    private int showCartAmount() {
-        int price = 0;
+    private double showCartAmount() {
+        double price = 0;
         for (StoreCartItem value : getOrders().values()) {
             price += value.getChildInput() * value.getFinalDiscountedPrice();
         }
@@ -248,7 +248,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     }
 
     public interface CartOrderUpdate {
-        void updateCartOrderInfo(int amountString);
+        void updateCartOrderInfo(double amountString);
     }
 
     public final class ChildViewHolder {

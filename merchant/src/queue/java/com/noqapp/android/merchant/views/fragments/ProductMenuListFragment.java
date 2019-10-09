@@ -252,7 +252,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
                                 .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice(value.getFinalDiscountedPrice() * 100)
+                                .setProductPrice((int)(value.getFinalDiscountedPrice() * 100))
                                 .setProductQuantity(value.getChildInput())
                                 .setProductName(value.getJsonStoreProduct().getProductName()));
                         price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;

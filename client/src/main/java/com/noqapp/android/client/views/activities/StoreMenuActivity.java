@@ -107,7 +107,7 @@ public class StoreMenuActivity extends BaseActivity implements
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
                                 .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice(value.getFinalDiscountedPrice() * 100)
+                                .setProductPrice((int) (value.getFinalDiscountedPrice() * 100))
                                 .setProductQuantity(value.getChildInput())
                                 .setProductName(value.getJsonStoreProduct().getProductName())
                                 .setPackageSize(value.getJsonStoreProduct().getPackageSize())
@@ -160,7 +160,7 @@ public class StoreMenuActivity extends BaseActivity implements
     }
 
     @Override
-    public void updateCartOrderInfo(int amountString) {
+    public void updateCartOrderInfo(double amountString) {
         if (amountString > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
             tv_place_order.setText("Your cart amount is: " + currencySymbol + " "+amountString);
