@@ -67,8 +67,6 @@ public class JsonStoreProduct implements Serializable {
     @JsonProperty("il")
     private int inventoryLimit;
 
-    private int currentInventoryCount;
-
     @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
 
@@ -178,14 +176,6 @@ public class JsonStoreProduct implements Serializable {
         return this;
     }
 
-    public int getCurrentInventoryCount() {
-        return currentInventoryCount;
-    }
-
-    public void setCurrentInventoryCount(int currentInventoryCount) {
-        this.currentInventoryCount = currentInventoryCount;
-    }
-
     public int getInventoryLimit() {
         return inventoryLimit;
     }
@@ -244,7 +234,6 @@ public class JsonStoreProduct implements Serializable {
                 ", packageSize=" + packageSize +
                 ", inventoryCurrent=" + inventoryCurrent +
                 ", inventoryLimit=" + inventoryLimit +
-                ", currentInventoryCount=" + currentInventoryCount +
                 ", unitOfMeasurement=" + unitOfMeasurement +
                 ", productReference='" + productReference + '\'' +
                 ", active=" + active +

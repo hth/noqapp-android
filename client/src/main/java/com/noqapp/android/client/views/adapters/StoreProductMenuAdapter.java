@@ -124,7 +124,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             switch (businessType){
                 case RS:
                 case FT:
-                    if (jsonStoreProduct.getInventoryCurrent() > 0) {
+                    if (jsonStoreProduct.getInventoryCurrent() < jsonStoreProduct.getInventoryLimit()) {
                         childViewHolder.view_disable.setVisibility(View.GONE);
                         childViewHolder.ll_btns.setVisibility(View.VISIBLE);
                         childViewHolder.tv_sold_out.setVisibility(View.GONE);
