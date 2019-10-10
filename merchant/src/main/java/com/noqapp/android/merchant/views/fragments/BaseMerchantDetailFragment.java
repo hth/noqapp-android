@@ -393,7 +393,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
                 rv_queue_people.setAdapter(peopleInQAdapter);
             } else {
-                peopleInQAdapter.updateDataSet(jsonQueuedPersonArrayList);
+                peopleInQAdapter.updateDataSet(jsonQueuedPersonArrayList,jsonTopic);
             }
             if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);

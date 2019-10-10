@@ -55,12 +55,12 @@ public class DentalAnatomyFragment extends BaseFragment {
     protected List<ToothProcedure> getTopOptionViews() {
         List<ToothProcedure> drawables = new ArrayList<>();
         List<String> options = DentalOptionEnum.asListOfDescription();
-        String[] drawable = new String[7];
-        for (int i = 0; i < 7; i++) {
+        String[] drawable = new String[6];
+        for (int i = 0; i < 6; i++) {
             drawable[i] = "tooth_o_" + (i + 1);
         }
         for (int i = 0; i < options.size(); i++) {
-            int pos = i % 7;
+            int pos = i % 6;
             drawables.add(new ToothProcedure(drawable[pos], options.get(i)));
         }
         return drawables;

@@ -60,7 +60,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     private JsonPaymentPermission jsonPaymentPermission;
     protected CustomProgressBar customProgressBar;
 
-    public void updateDataSet(List<JsonQueuedPerson> dataSet) {
+    public void updateDataSet(List<JsonQueuedPerson> dataSet, JsonTopic jsonTopic) {
+        if (jsonTopic.getServingNumber() > 0) {
+            glowPosition = jsonTopic.getServingNumber() - 1;
+        }
         this.dataSet = dataSet;
         notifyDataSetChanged();
     }
