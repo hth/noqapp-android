@@ -17,7 +17,7 @@ public class StoreCartItem implements Serializable {
     public StoreCartItem(int childInput, JsonStoreProduct jsonStoreProduct) {
         this.childInput = childInput;
         this.jsonStoreProduct = jsonStoreProduct;
-        finalDiscountedPrice =  new ProductUtils().calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
+        finalDiscountedPrice =  ProductUtils.calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
     }
 
     public int getChildInput() {

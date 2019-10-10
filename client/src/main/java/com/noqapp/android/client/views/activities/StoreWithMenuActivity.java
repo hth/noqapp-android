@@ -42,6 +42,7 @@ import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
@@ -363,8 +364,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
     public void updateCartOrderInfo(double amountString) {
         if (amountString > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " +
-                            new BigDecimal(String.valueOf(amountString)).setScale(2, RoundingMode.HALF_UP).doubleValue());
+            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + ProductUtils.roundOff(amountString));
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");
