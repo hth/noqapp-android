@@ -25,6 +25,8 @@ import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.StoreCartItem;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -163,7 +165,8 @@ public class StoreMenuActivity extends BaseActivity implements
     public void updateCartOrderInfo(double amountString) {
         if (amountString > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: " + currencySymbol + " "+amountString);
+            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " +
+                    new BigDecimal(String.valueOf(amountString)).setScale(2, RoundingMode.HALF_UP).doubleValue());
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");
