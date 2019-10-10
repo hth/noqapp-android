@@ -6,12 +6,9 @@ import android.os.SystemClock;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,6 +33,8 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.StoreProductFinalOrderAdapter;
+import com.noqapp.android.client.views.customviews.FixedHeightListView;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -55,8 +54,8 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -69,7 +68,7 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter,
-        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter {
+        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter, StoreProductFinalOrderAdapter.CartOrderUpdate {
     private TextView tv_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -83,7 +82,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private AppCompatRadioButton acrb_home_delivery, acrb_take_away;
     private boolean isProductWithoutPrice = false;
     private JsonUserAddress jsonUserAddress;
-    private FrameLayout frame_coupon;
     private RelativeLayout rl_apply_coupon, rl_coupon_applied;
     private TextView tv_coupon_amount;
     private TextView tv_coupon_name;
@@ -92,6 +90,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private TextView tv_coupon_discount_amt;
     private TextView tv_total_order_amt;
     private TextView tv_due_amt;
+    private TextView tv_final_amount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +101,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         tv_due_amt = findViewById(R.id.tv_due_amt);
         tv_address = findViewById(R.id.tv_address);
+        FixedHeightListView lv_product = findViewById(R.id.lv_product);
 
         acrb_cash = findViewById(R.id.acrb_cash);
         acrb_online = findViewById(R.id.acrb_online);
         acrb_home_delivery = findViewById(R.id.acrb_home_delivery);
         acrb_take_away = findViewById(R.id.acrb_take_away);
 
-        TextView tv_add_address = findViewById(R.id.tv_add_address);
         TextView tv_change_address = findViewById(R.id.tv_change_address);
         tv_change_address.setOnClickListener((View v) -> {
             Intent in = new Intent(OrderActivity.this, AddressBookActivity.class);
@@ -115,15 +115,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         });
         edt_optional = findViewById(R.id.edt_optional);
         tv_place_order = findViewById(R.id.tv_place_order);
-        LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         tv_coupon_amount = findViewById(R.id.tv_coupon_amount);
         tv_coupon_name = findViewById(R.id.tv_coupon_name);
         rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
         rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
-        frame_coupon = findViewById(R.id.frame_coupon);
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
-        // frame_coupon.setVisibility(View.GONE);
+        tv_final_amount = findViewById(R.id.tv_final_amount);
         rl_apply_coupon.setOnClickListener((View v) -> {
             if (null != jsonPurchaseOrder && jsonPurchaseOrder.isDiscountedPurchase()) {
                 new CustomToast().showToast(OrderActivity.this, getString(R.string.discount_error));
@@ -169,18 +167,12 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
         tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_final_amount.setText("Grand Total \n" + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-        for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
-            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
-            TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
-            TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + "  " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
-            ll_order_details.addView(inflatedLayout);
-        }
+        StoreProductFinalOrderAdapter storeProductFinalOrderAdapter = new StoreProductFinalOrderAdapter(
+                this, jsonPurchaseOrder.getPurchaseOrderProducts(), this, currencySymbol);
+        lv_product.setAdapter(storeProductFinalOrderAdapter);
         checkProductWithZeroPrice();
         tv_place_order.setOnClickListener((View v) -> {
             if (NoQueueBaseActivity.getUserProfile().isAccountValidated()) {
@@ -245,13 +237,12 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     private void updateDiscountUI() {
-
         tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_grand_total_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
+        tv_final_amount.setText("Grand Total \n" + currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText("- " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_due_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
-
     }
 
     public void checkProductWithZeroPrice() {
@@ -527,5 +518,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         super.responseErrorPresenter(eej);
         enableDisableOrderButton(true);
+    }
+
+    @Override
+    public void updateCartOrderInfo(List<JsonPurchaseOrderProduct> list, String cartAmount) {
+        jsonPurchaseOrder.setPurchaseOrderProducts(list);
+        jsonPurchaseOrder.setOrderPrice(cartAmount.replace(".", ""));
+        updateDiscountUI();
+
     }
 }

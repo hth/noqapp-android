@@ -1,16 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.common.beans.store.JsonStoreCategory;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.pojos.StoreCartItem;
-
-import com.squareup.picasso.Picasso;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -20,10 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.pojos.StoreCartItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +90,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
             childViewHolder.tv_sold_out = convertView.findViewById(R.id.tv_sold_out);
             childViewHolder.ll_btns = convertView.findViewById(R.id.ll_btns);
+            childViewHolder.tv_temp = convertView.findViewById(R.id.tv_temp);
             childViewHolder.iv_product_image = convertView.findViewById(R.id.iv_product_image);
             childViewHolder.btn_decrease = convertView.findViewById(R.id.btn_decrease);
             childViewHolder.btn_increase = convertView.findViewById(R.id.btn_increase);
@@ -107,7 +105,11 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
-        
+        if (!AppUtils.isRelease()) {
+            childViewHolder.tv_temp.setText("Inventory count " + jsonStoreProduct.getInventoryCurrent() + "\n" +
+                    "Inventory limit " + jsonStoreProduct.getInventoryLimit());
+            childViewHolder.tv_temp.setVisibility(View.VISIBLE);
+        }
         Picasso.get()
                 .load(jsonStoreProduct.getProductImage())
                 .placeholder(ImageUtils.getThumbPlaceholder(context))
@@ -121,7 +123,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_discounted_price.setVisibility(View.INVISIBLE);
         }
         if (isStoreOpen) {
-            switch (businessType){
+            switch (businessType) {
                 case RS:
                 case FT:
                     if (jsonStoreProduct.getInventoryCurrent() > 0) {
@@ -134,11 +136,11 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
                         childViewHolder.tv_sold_out.setVisibility(View.VISIBLE);
                     }
                     break;
-               default:{
-                   childViewHolder.view_disable.setVisibility(View.GONE);
-                   childViewHolder.ll_btns.setVisibility(View.VISIBLE);
-                   childViewHolder.tv_sold_out.setVisibility(View.GONE);
-               }
+                default: {
+                    childViewHolder.view_disable.setVisibility(View.GONE);
+                    childViewHolder.ll_btns.setVisibility(View.VISIBLE);
+                    childViewHolder.tv_sold_out.setVisibility(View.GONE);
+                }
             }
         } else {
             childViewHolder.view_disable.setVisibility(View.VISIBLE);
@@ -219,8 +221,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_group, parent, false);
         }
-       // ExpandableListView mExpandableListView = (ExpandableListView) parent;
-       // mExpandableListView.expandGroup(groupPosition);
+        // ExpandableListView mExpandableListView = (ExpandableListView) parent;
+        // mExpandableListView.expandGroup(groupPosition);
         TextView tv_list_header = convertView.findViewById(R.id.tv_list_header);
         tv_list_header.setTypeface(null, Typeface.BOLD);
         tv_list_header.setText(headerTitle);
@@ -260,6 +262,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         private TextView tv_cat;
         private ImageView iv_product_image;
         private TextView tv_sold_out;
+        private TextView tv_temp;
         private LinearLayout ll_btns;
         private View view_disable;
         private Button btn_decrease;
