@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-
 public class PermissionUtils {
     public static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 100;
 

@@ -59,18 +59,8 @@ public class ShowAlertInformation {
             mAlertDialog.setCanceledOnTouchOutside(true);
             mAlertDialog.setCancelable(true);
         }
-        btn_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtils.openPlayStore(context);
-            }
-        });
+        btn_no.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_yes.setOnClickListener(v -> AppUtils.openPlayStore(context));
         try {
             mAlertDialog.show();
             resizeAlert(mAlertDialog,context);
@@ -100,18 +90,8 @@ public class ShowAlertInformation {
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+        btn_no.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_yes.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
         resizeAlert(mAlertDialog,context);
     }
