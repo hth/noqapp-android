@@ -30,7 +30,7 @@
             android:minWidth="15dp"
             android:minHeight="15dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/tooth_o_1" />
+            android:background="@drawable/tooth_o_left_center" />
 
         <TextView
             android:id="@+id/tv_count"

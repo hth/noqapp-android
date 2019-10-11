@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.model.types.medical.DentalOptionEnum;
-import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.ToothProcedure;
 
 import java.util.ArrayList;
@@ -54,14 +53,26 @@ public class DentalAnatomyFragment extends BaseFragment {
 
     protected List<ToothProcedure> getTopOptionViews() {
         List<ToothProcedure> drawables = new ArrayList<>();
-        List<String> options = DentalOptionEnum.asListOfDescription();
+        List<String> options = new ArrayList<>();
+        options.add("center");
+        options.add("left");
+        options.add("left_center");
+        options.add("left_center_right");
+        options.add("right");
+        options.add("right_center");
+        List<String> optionsLabel = new ArrayList<>();
+        optionsLabel.add("Center");
+        optionsLabel.add("Left");
+        optionsLabel.add("Left-Center");
+        optionsLabel.add("Left-Center-Right");
+        optionsLabel.add("Right");
+        optionsLabel.add("Right-Center");
         String[] drawable = new String[6];
         for (int i = 0; i < 6; i++) {
-            drawable[i] = "tooth_o_" + (i + 1);
+            drawable[i] = "tooth_o_" + options.get(i);
         }
         for (int i = 0; i < options.size(); i++) {
-            int pos = i % 6;
-            drawables.add(new ToothProcedure(drawable[pos], options.get(i)));
+            drawables.add(new ToothProcedure(drawable[i], optionsLabel.get(i)));
         }
         return drawables;
     }

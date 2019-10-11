@@ -26,7 +26,7 @@
         android:layout_marginTop="5dp"
         android:minWidth="15dp"
         android:minHeight="15dp"
-        android:background="@drawable/tooth_o_2" />
+        android:background="@drawable/tooth_o_right_center" />
 
     <ImageView
         android:id="@+id/iv_front"
