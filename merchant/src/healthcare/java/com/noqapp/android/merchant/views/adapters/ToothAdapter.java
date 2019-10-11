@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,12 +64,20 @@ public class ToothAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         ToothInfo item = dataSet.get(position);
         holder.tv_count.setText(String.valueOf(item.getToothNumber()));
-        holder.iv_top.setBackground(ContextCompat.getDrawable(context, AppUtils.getDrawableFromString(item.getToothTopView().getDrawable(),context)));
-        holder.iv_front.setBackground(ContextCompat.getDrawable(context, AppUtils.getDrawableFromString(item.getToothFrontView().getDrawable(),context)));
+        try {
+            holder.iv_top.setBackground(ContextCompat.getDrawable(context, AppUtils.getDrawableFromString(item.getToothTopView().getDrawable(), context)));
+        } catch (Exception e) {
+            Log.e("tooth top history", "Image missing - position" + position);
+        }
+        try {
+            holder.iv_front.setBackground(ContextCompat.getDrawable(context, AppUtils.getDrawableFromString(item.getToothFrontView().getDrawable(), context)));
+        } catch (Exception e) {
+            Log.e("tooth front history", "Image missing - position" + position);
+        }
         if (position == 7 || position == 23) {
             holder.ll_header.setBackgroundResource(R.drawable.vertical_line);
         } else {
-             holder.ll_header.setBackgroundResource(0);
+            holder.ll_header.setBackgroundResource(0);
         }
 
         holder.iv_front.setOnClickListener(v -> {
