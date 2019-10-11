@@ -81,12 +81,14 @@ public class ToothAdapter extends RecyclerView.Adapter {
         }
 
         holder.iv_front.setOnClickListener(v -> {
-            if (isClickEnable)
+            if (isClickEnable) {
                 onToothFrontViewSelected(position, item);
+            }
         });
         holder.iv_top.setOnClickListener(v -> {
-            if (isClickEnable)
+            if (isClickEnable) {
                 onToothTopViewSelected(position, item);
+            }
         });
     }
 
@@ -97,10 +99,11 @@ public class ToothAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position < 16)
+        if (position < 16) {
             return LAYOUT_ONE;
-        else
+        } else {
             return LAYOUT_TWO;
+        }
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
