@@ -68,15 +68,15 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         } else {
             childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_final_order);
         }
-        JsonStoreProduct jsonStoreProduct = storeCartItem.getJsonStoreProduct();
-        childViewHolder.tv_title.setText(jsonStoreProduct.getProductName());
+
+        childViewHolder.tv_title.setText(storeCartItem.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getProductQuantity()));
-        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
+        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct()));
         childViewHolder.tv_total_product_price.setText(currencySymbol + " " + CommonHelper.
                 displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
 
 
-        switch (jsonStoreProduct.getProductType()) {
+        switch (storeCartItem.getProductType()) {
             case NV:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
                 break;
@@ -126,7 +126,7 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         void updateCartOrderInfo(List<JsonPurchaseOrderProduct> list, String cartAmount);
     }
 
-    public final class ChildViewHolder {
+    private final class ChildViewHolder {
         private TextView tv_title;
         private TextView tv_price;
         private TextView tv_total_product_price;
