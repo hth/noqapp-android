@@ -322,8 +322,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                         }
                     }
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        setProgressMessage("Fetching list...");
-                        showProgress();
+                       // setProgressMessage("Fetching list...");
+                        //showProgress();
                         manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
                     } else {
                         ShowAlertInformation.showNetworkDialog(getActivity());
@@ -389,12 +389,12 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
             tv_appointment_count.setText(String.valueOf(jsonQueuePersonList.getAppointmentCountForToday()));
             Collections.sort(jsonQueuedPersonArrayList, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
-            if (null == peopleInQAdapter) {
+           // if (null == peopleInQAdapter) {
                 peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
                 rv_queue_people.setAdapter(peopleInQAdapter);
-            } else {
-                peopleInQAdapter.updateDataSet(jsonQueuedPersonArrayList,jsonTopic);
-            }
+//            } else {
+//                peopleInQAdapter.updateDataSet(jsonQueuedPersonArrayList,jsonTopic);
+//            }
             if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
             }
