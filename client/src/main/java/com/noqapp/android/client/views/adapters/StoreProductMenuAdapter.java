@@ -9,14 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.squareup.picasso.Picasso;
 
@@ -30,15 +32,24 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
     private HashMap<String, StoreCartItem> orders = new HashMap<>();
+    private boolean isStoreOpen = true;
+    private BusinessTypeEnum businessType;
 
-    public StoreProductMenuAdapter(Context context, List<JsonStoreCategory> listDataHeader,
-                                   HashMap<String, List<StoreCartItem>> listDataChild,
-                                   CartOrderUpdate cartOrderUpdate, String currencySymbol) {
+    public StoreProductMenuAdapter(
+            Context context,
+            List<JsonStoreCategory> listDataHeader,
+            HashMap<String, List<StoreCartItem>> listDataChild,
+            CartOrderUpdate cartOrderUpdate,
+            String currencySymbol,
+            boolean isStoreOpen,
+            BusinessTypeEnum businessType) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
         this.cartOrderUpdate = cartOrderUpdate;
         this.currencySymbol = currencySymbol;
+        this.isStoreOpen = isStoreOpen;
+        this.businessType = businessType;
         orders.clear();
     }
 
@@ -47,9 +58,9 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
+    public Object getChild(int groupPosition, int childPosition) {
         return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId())
-                .get(childPosititon);
+                .get(childPosition);
     }
 
     @Override
@@ -58,13 +69,18 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(
+            final int groupPosition,
+            final int childPosition,
+            boolean isLastChild,
+            View convertView,
+            ViewGroup parent
+    ) {
         final ChildViewHolder childViewHolder;
         final StoreCartItem storeCartItem = (StoreCartItem) getChild(groupPosition, childPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_menu_child, parent, false);
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item_menu_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_title = convertView.findViewById(R.id.tv_title);
             childViewHolder.tv_product_details = convertView.findViewById(R.id.tv_product_details);
@@ -72,9 +88,13 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);
             childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
+            childViewHolder.tv_sold_out = convertView.findViewById(R.id.tv_sold_out);
+            childViewHolder.ll_btns = convertView.findViewById(R.id.ll_btns);
+            childViewHolder.tv_temp = convertView.findViewById(R.id.tv_temp);
             childViewHolder.iv_product_image = convertView.findViewById(R.id.iv_product_image);
             childViewHolder.btn_decrease = convertView.findViewById(R.id.btn_decrease);
             childViewHolder.btn_increase = convertView.findViewById(R.id.btn_increase);
+            childViewHolder.view_disable = convertView.findViewById(R.id.view_disable);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_menu_child);
@@ -85,15 +105,47 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
-        String url = TextUtils.isEmpty(jsonStoreProduct.getProductImage()) ? "https://www.uig-hotel-skye.com/images/Food/Food-7.jpg" :
-                jsonStoreProduct.getProductImage();
-        Picasso.get().load(url).into(childViewHolder.iv_product_image);
+        if (!AppUtils.isRelease()) {
+            childViewHolder.tv_temp.setText("Inventory count " + jsonStoreProduct.getInventoryCurrent() + "\n" +
+                    "Inventory limit " + jsonStoreProduct.getInventoryLimit());
+            childViewHolder.tv_temp.setVisibility(View.VISIBLE);
+        }
+        Picasso.get()
+                .load(jsonStoreProduct.getProductImage())
+                .placeholder(ImageUtils.getThumbPlaceholder(context))
+                .error(ImageUtils.getThumbErrorPlaceholder(context))
+                .into(childViewHolder.iv_product_image);
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
         } else {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             childViewHolder.tv_discounted_price.setVisibility(View.INVISIBLE);
+        }
+        if (isStoreOpen) {
+            switch (businessType) {
+                case RS:
+                case FT:
+                    if (jsonStoreProduct.getInventoryCurrent() > 0) {
+                        childViewHolder.view_disable.setVisibility(View.GONE);
+                        childViewHolder.ll_btns.setVisibility(View.VISIBLE);
+                        childViewHolder.tv_sold_out.setVisibility(View.GONE);
+                    } else {
+                        childViewHolder.view_disable.setVisibility(View.VISIBLE);
+                        childViewHolder.ll_btns.setVisibility(View.GONE);
+                        childViewHolder.tv_sold_out.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                default: {
+                    childViewHolder.view_disable.setVisibility(View.GONE);
+                    childViewHolder.ll_btns.setVisibility(View.VISIBLE);
+                    childViewHolder.tv_sold_out.setVisibility(View.GONE);
+                }
+            }
+        } else {
+            childViewHolder.view_disable.setVisibility(View.VISIBLE);
+            childViewHolder.ll_btns.setVisibility(View.GONE);
+            childViewHolder.tv_sold_out.setVisibility(View.GONE);
         }
         switch (jsonStoreProduct.getProductType()) {
             case NV:
@@ -123,7 +175,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.btn_decrease.setOnClickListener((View v) -> {
             String val = childViewHolder.tv_value.getText().toString();
             int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
-            childViewHolder.tv_value.setText("" + number);
+            childViewHolder.tv_value.setText(String.valueOf(number));
             listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                     .get(childPosition).setChildInput(number);
             if (number <= 0) {
@@ -169,8 +221,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_group, parent, false);
         }
-        ExpandableListView mExpandableListView = (ExpandableListView) parent;
-        mExpandableListView.expandGroup(groupPosition);
+        // ExpandableListView mExpandableListView = (ExpandableListView) parent;
+        // mExpandableListView.expandGroup(groupPosition);
         TextView tv_list_header = convertView.findViewById(R.id.tv_list_header);
         tv_list_header.setTypeface(null, Typeface.BOLD);
         tv_list_header.setText(headerTitle);
@@ -189,8 +241,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    private int showCartAmount() {
-        int price = 0;
+    private double showCartAmount() {
+        double price = 0;
         for (StoreCartItem value : getOrders().values()) {
             price += value.getChildInput() * value.getFinalDiscountedPrice();
         }
@@ -198,7 +250,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     }
 
     public interface CartOrderUpdate {
-        void updateCartOrderInfo(int amountString);
+        void updateCartOrderInfo(double amountString);
     }
 
     public final class ChildViewHolder {
@@ -209,6 +261,10 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         private TextView tv_discounted_price;
         private TextView tv_cat;
         private ImageView iv_product_image;
+        private TextView tv_sold_out;
+        private TextView tv_temp;
+        private LinearLayout ll_btns;
+        private View view_disable;
         private Button btn_decrease;
         private Button btn_increase;
     }

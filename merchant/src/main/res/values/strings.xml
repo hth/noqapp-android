@@ -10,7 +10,7 @@
     <string name="error_email_blank">Please enter email id</string>
     <string name="error_email_invalid">Please enter valid email</string>
     <string name="error_pwd_blank">Please enter password</string>
-    <string name="error_login">Invalid Credential</string>
+    <string name="error_login">Invalid Credentials</string>
     <string name="empty_list">You are not assign \n to any queue.</string>
     <string name="networkerror">Network Error</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>
@@ -184,6 +184,7 @@
     <string name="edit_prod">Edit Product</string>
     <string name="product_name">Name</string>
     <string name="product_price">Product price</string>
+    <string name="product_daily_limit">Product daily limit</string>
     <string name="product_desc">Product details</string>
     <string name="product_discount">Product discount</string>
     <string name="store_offline">Go Offline</string>
@@ -258,5 +259,6 @@
     <string name="setting_payment">Changes made here is permanent. Payment changes will reflect immediately.</string>
     <string name="setting_msg">Changes made here is permanent. These changes will reflect immediately.</string>
     <string name="treatment_plan">Treatment Plan</string>
+    <string name="add_new">Create Token</string>
 
 </resources>

@@ -26,7 +26,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.client.views.activities.StoreWithMenuActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -100,7 +100,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
             bizStoreElastic.setBusinessName(jsonPurchaseOrderHistorical.getDisplayName());
             bizStoreElastic.setCodeQR(jsonPurchaseOrderHistorical.getCodeQR());
             bizStoreElastic.setBusinessType(jsonPurchaseOrderHistorical.getBusinessType());
-            Intent intent = new Intent(context, StoreDetailActivity.class);
+            Intent intent = new Intent(context, StoreWithMenuActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("BizStoreElastic", bizStoreElastic);
             intent.putExtras(bundle);

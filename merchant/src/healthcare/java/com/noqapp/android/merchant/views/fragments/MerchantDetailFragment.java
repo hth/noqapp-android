@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -286,5 +289,11 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void updateWholeList() {
         getAllPeopleInQ(jsonTopic);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.menu_product_list).setVisible(false);
     }
 }

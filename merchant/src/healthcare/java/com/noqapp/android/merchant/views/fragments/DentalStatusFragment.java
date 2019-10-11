@@ -27,8 +27,11 @@ public class DentalStatusFragment extends DentalAnatomyFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.frag_dental_status, container, false);
         rcv_tooth = view.findViewById(R.id.rcv_tooth);
@@ -41,7 +44,7 @@ public class DentalStatusFragment extends DentalAnatomyFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ToothProcedure imageFilePathTop = new ToothProcedure(R.drawable.top, DentalOptionEnum.NOR.getDescription());
+        ToothProcedure imageFilePathTop = new ToothProcedure("top", DentalOptionEnum.NOR.getDescription());
         List<ToothProcedure> drawables = getFrontAllViews();
         List<ToothInfo> toothInfos = new ArrayList<>();
         List<String> toothNumbers = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
@@ -60,8 +63,7 @@ public class DentalStatusFragment extends DentalAnatomyFragment {
         rcv_tooth.setAdapter(toothAdapter);
         try {
             JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getArguments().getSerializable("jsonMedicalRecord");
-            if (null != jsonMedicalRecord && !TextUtils.isEmpty(
-                    jsonMedicalRecord.getJsonUserMedicalProfile().getDentalAnatomy())) {
+            if (null != jsonMedicalRecord && !TextUtils.isEmpty(jsonMedicalRecord.getJsonUserMedicalProfile().getDentalAnatomy())) {
                 String temp = jsonMedicalRecord.getJsonUserMedicalProfile().getDentalAnatomy();
                 toothAdapter.updateToothObj(temp);
             }

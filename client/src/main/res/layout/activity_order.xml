@@ -9,93 +9,141 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/layout"
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="0dp">
+
+        <LinearLayout
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/holo_blue_dark"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="bottom"
+                android:text="DELIVERY AT"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_fourteen" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toLeftOf="@+id/tv_change_address"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:focusable="true"
+                    android:hint="@string/add_address"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:textSize="@dimen/text_size_fourteen" />
+
+                <TextView
+                    android:id="@+id/tv_change_address"
+                    style="@style/style_register_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="right"
+                    android:text="CHANGE"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_fourteen" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="10dp">
+            android:layout_above="@+id/ll_btm"
+            android:layout_below="@+id/ll_top">
 
-            <ScrollView
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/tv_place_order"
-                android:layout_alignParentTop="true">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="10dp">
 
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    card_view:cardBackgroundColor="@color/white"
+                    card_view:cardCornerRadius="0dp"
+                    card_view:cardElevation="0dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:id="@+id/ll_order_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="left"
+                            android:text="@string/order_details"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/store_info"
+                            android:textStyle="bold" />
+
+                        <com.noqapp.android.client.views.customviews.FixedHeightListView
+                            android:id="@+id/lv_product"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="5dp"
-                            android:layout_toLeftOf="@+id/tv_change_address"
-                            android:drawableLeft="@drawable/ic_location"
-                            android:gravity="bottom"
-                            android:text="@string/deliver_address"
-                            android:textSize="@dimen/text_size_fourteen" />
-
-                        <TextView
-                            android:id="@+id/tv_change_address"
-                            style="@style/style_register_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:gravity="right"
-                            android:hint="@string/change_address"
-                            android:textSize="@dimen/text_size_fourteen" />
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tv_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@null"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:hint="@string/add_address"
-                        android:textSize="@dimen/text_size_fourteen" />
-
-
-                    <EditText
-                        android:id="@+id/edt_phone"
-                        style="@style/style_register_edt"
-                        android:layout_width="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:hint="@string/mobile_no"
-                        android:inputType="phone"
-                        android:maxLength="12"
-                        android:textSize="@dimen/text_size_fourteen" />
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_payment_mode"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginTop="3dp"
                         android:gravity="left"
                         android:text="@string/payment_mode"
                         android:textSize="@dimen/store_info" />
@@ -127,14 +175,22 @@
                             app:buttonTint="@color/colorAccent" />
 
                     </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_delivery_mode"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="center_vertical"
                         android:gravity="left"
                         android:text="@string/delivery_mode"
                         android:textSize="@dimen/store_info" />
@@ -166,315 +222,299 @@
                             app:buttonTint="@color/colorAccent" />
 
                     </RadioGroup>
+                </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/edt_optional"
-                        style="@style/style_register_edt"
-                        android:layout_width="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:hint="@string/additional"
-                        android:maxLength="64"
-                        android:textSize="@dimen/text_size_fourteen" />
+                <EditText
+                    android:id="@+id/edt_optional"
+                    style="@style/style_register_edt"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/additional"
+                    android:maxLength="64"
+                    android:textSize="@dimen/text_size_fourteen" />
 
-                    <FrameLayout
-                        android:id="@+id/frame_coupon"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#efefef">
+                <FrameLayout
+                    android:id="@+id/frame_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#efefef">
 
-                        <RelativeLayout
-                            android:id="@+id/rl_apply_coupon"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:padding="10dp">
-
-                            <ImageView
-                                android:id="@+id/iv_offer"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="5dp"
-                                android:background="@drawable/offers"
-                                android:padding="5dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@+id/iv_offer"
-                                android:padding="5dp"
-                                android:text="Apply Coupon Code"
-                                android:textColor="@color/btn_color"
-                                android:textSize="@dimen/text_size_sixteen" />
-
-                            <ImageView
-                                android:id="@+id/iv_offer1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:background="@drawable/arrow_right" />
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/rl_coupon_applied"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:padding="10dp"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/iv_check"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="5dp"
-                                android:background="@drawable/offers"
-                                android:padding="5dp" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@+id/iv_check"
-                                android:orientation="vertical"
-                                android:paddingLeft="5dp">
-
-                                <TextView
-                                    android:id="@+id/tv_coupon_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="----- -----"
-                                    android:textColor="#333"
-                                    android:textSize="@dimen/text_size_sixteen"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Coupon applied successfully"
-                                    android:textSize="@dimen/text_size_fourteen" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:orientation="vertical"
-                                android:paddingRight="10dp">
-
-                                <TextView
-                                    android:id="@+id/tv_coupon_amount"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:text="Rs -00"
-                                    android:textSize="@dimen/text_size_sixteen" />
-
-                                <TextView
-                                    android:id="@+id/tv_remove_coupon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:text="Remove"
-                                    android:textColor="@color/btn_color"
-                                    android:textSize="@dimen/text_size_sixteen" />
-
-                            </LinearLayout>
-
-                        </RelativeLayout>
-                    </FrameLayout>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/card_view"
+                    <RelativeLayout
+                        android:id="@+id/rl_apply_coupon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        card_view:cardBackgroundColor="@color/white"
-                        card_view:cardCornerRadius="5dp"
-                        card_view:cardElevation="2dp"
-                        card_view:cardUseCompatPadding="true">
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/iv_offer"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/offers"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/iv_offer"
+                            android:padding="5dp"
+                            android:text="Apply Coupon Code"
+                            android:textColor="@color/btn_color"
+                            android:textSize="@dimen/text_size_sixteen" />
+
+                        <ImageView
+                            android:id="@+id/iv_offer1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/arrow_right" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_coupon_applied"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/iv_check"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/offers"
+                            android:padding="5dp" />
 
                         <LinearLayout
-                            android:id="@+id/ll_order_details"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/iv_check"
                             android:orientation="vertical"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                            android:paddingLeft="5dp">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:id="@+id/tv_coupon_name"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="left"
-                                android:text="@string/order_details"
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/store_info"
+                                android:text="----- -----"
+                                android:textColor="#333"
+                                android:textSize="@dimen/text_size_sixteen"
                                 android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Coupon applied successfully"
+                                android:textSize="@dimen/text_size_fourteen" />
 
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                        <LinearLayout
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="@string/total_amount"
-                            android:textSize="@dimen/store_info" />
-
-                        <TextView
-                            android:id="@+id/tv_total_order_amt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textSize="@dimen/store_info" />
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical"
+                            android:paddingRight="10dp">
+
+                            <TextView
+                                android:id="@+id/tv_coupon_amount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:text="Rs -00"
+                                android:textSize="@dimen/text_size_sixteen" />
+
+                            <TextView
+                                android:id="@+id/tv_remove_coupon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:text="Remove"
+                                android:textColor="@color/btn_color"
+                                android:textSize="@dimen/text_size_sixteen" />
+
+                        </LinearLayout>
+
                     </RelativeLayout>
+                </FrameLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal">
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="@string/total_amount"
+                        android:textSize="@dimen/store_info" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="@string/total_tax"
-                            android:textSize="@dimen/store_info" />
-
-                        <TextView
-                            android:id="@+id/tv_tax_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textSize="@dimen/store_info" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_total_order_amt"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal">
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textSize="@dimen/store_info" />
+                </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="Coupon discount"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/store_info" />
 
-                        <TextView
-                            android:id="@+id/tv_coupon_discount_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:text="- Rs 0"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/store_info" />
-                    </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal">
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="@string/total_tax"
+                        android:textSize="@dimen/store_info" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="Grand Total"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/store_info"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_grand_total_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/store_info" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_tax_amt"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal">
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textSize="@dimen/store_info" />
+                </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="@string/payment_due"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_due_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen" />
-                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="Coupon discount"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/store_info" />
 
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_coupon_discount_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:text="- Rs 0"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/store_info" />
+                </RelativeLayout>
 
-            </ScrollView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="Grand Total"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/store_info"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_grand_total_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/store_info" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="@string/payment_due"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <TextView
+                        android:id="@+id/tv_due_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/ll_btm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#f2f2f2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_final_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="center"
+                android:textColor="#333333"
+                android:textSize="@dimen/text_size_sixteen"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/tv_place_order"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/btn_standard_height"
-                android:layout_alignParentBottom="true"
                 android:layout_margin="10dp"
+                android:layout_weight=".5"
                 android:background="@drawable/btn_bg_enable"
                 android:clickable="true"
                 android:drawableRight="@drawable/order_arrow"
@@ -483,6 +523,7 @@
                 android:text="@string/order_now"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_fourteen" />
-        </RelativeLayout>
-    </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
 </LinearLayout>

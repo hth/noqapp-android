@@ -1,18 +1,15 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
@@ -30,12 +26,10 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.OrderDetailActFloating;
-import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import java.util.List;
 
@@ -46,7 +40,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
     protected String qCodeQR = "";
     private int glowPosition = -1;
     private JsonPaymentPermission jsonPaymentPermission;
-    protected PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
+    public PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
 
     public interface PeopleInQOrderAdapterClick {
         void orderAcceptClick(int position);
@@ -183,10 +177,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         }
         recordHolder.tv_order_data.setOnClickListener(v -> {
             if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-                peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,false);
+                peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, false);
             } else {
                 new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
-                peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,true);
+                peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, true);
             }
         });
 
@@ -256,15 +250,13 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
                 AppUtils.makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
         });
-
+        recordHolder.tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
+        OrderItemAdapter adapter = new OrderItemAdapter(context, jsonPurchaseOrder.getPurchaseOrderProducts(), BaseLaunchActivity.getCurrencySymbol(), true);
+        recordHolder.listview.setAdapter(adapter);
         recordHolder.tv_order_accept.setOnClickListener(v -> peopleInQOrderAdapterClick.orderAcceptClick(position));
 
         if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
-            recordHolder.ll_side.setBackground(ContextCompat.getDrawable(context,R.drawable.cv_border_color));
-            Intent in = new Intent(context, OrderDetailActFloating.class);
-            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-            in.putExtra(IBConstant.KEY_IS_PAYMENT_PARTIAL_ALLOWED, jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.HS);
-            ((Activity) context).startActivity(in);
+            recordHolder.ll_side.setBackground(ContextCompat.getDrawable(context, R.drawable.cv_border_color));
         } else {
             recordHolder.ll_side.setBackground(null);
         }
@@ -288,8 +280,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         TextView tv_order_accept;
         TextView tv_upload_document;
         TextView tv_join_timing;
+        TextView tv_item_count;
         RelativeLayout rl_sequence_new_time;
         LinearLayout ll_side;
+        ListView listview;
         ImageView iv_new;
         CardView cardview;
 
@@ -307,6 +301,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
+            this.tv_item_count = itemView.findViewById(R.id.tv_item_count);
+            this.listview = itemView.findViewById(R.id.listview);
             this.ll_side = itemView.findViewById(R.id.ll_side);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);

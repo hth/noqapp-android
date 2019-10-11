@@ -11,6 +11,9 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -25,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -102,6 +106,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     protected LinearLayout ll_main_section;
     protected TextView tv_appointment_count;
     protected FrameLayout fl_appointment;
+    private ImageView iv_settings;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -110,6 +115,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        setHasOptionsMenu(true);
         Bundle bundle = getArguments();
         if (null != bundle) {
             topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
@@ -148,7 +154,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         tv_skip = itemView.findViewById(R.id.tv_skip);
         iv_product_list = itemView.findViewById(R.id.iv_product_list);
         iv_appointment = itemView.findViewById(R.id.iv_appointment);
-        ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
+        iv_settings = itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                 return;
@@ -182,7 +188,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         });
         iv_view_followup = itemView.findViewById(R.id.iv_view_followup);
         tv_counter_name.setOnClickListener(v -> showCounterEditDialog(context, tv_counter_name, jsonTopic.getCodeQR()));
-        updateUI();
+        updateUI(true);
         return itemView;
     }
 
@@ -205,8 +211,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
         try {
             topicsList = jsonTopics;
-            resetList();
-            updateUI();
+            // resetList();
+            updateUI(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -219,7 +225,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         chronometer.stop();
         chronometer.setBase(SystemClock.elapsedRealtime());
         resetList();
-        updateUI();
+        updateUI(true);
     }
 
     @Override
@@ -245,7 +251,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 //To update merchant list screen
                 mAdapterCallback.onMethodCallback(token);
             }
-            updateUI();
+            updateUI(false);
         }
     }
 
@@ -316,8 +322,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                         }
                     }
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        setProgressMessage("Fetching list...");
-                        showProgress();
+                       // setProgressMessage("Fetching list...");
+                        //showProgress();
                         manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
                     } else {
                         ShowAlertInformation.showNetworkDialog(getActivity());
@@ -383,21 +389,15 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
             tv_appointment_count.setText(String.valueOf(jsonQueuePersonList.getAppointmentCountForToday()));
             Collections.sort(jsonQueuedPersonArrayList, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
-            peopleInQAdapter = new PeopleInQAdapter(
-                    jsonQueuedPersonArrayList,
-                    context,
-                    this,
-                    jsonTopic.getCodeQR(),
-                    jsonTopic.getServingNumber(),
-                    jsonTopic.getQueueStatus(),
-                    jsonTopic.getJsonDataVisibility(),
-                    jsonTopic.getJsonPaymentPermission(),
-                    jsonTopic.getBizCategoryId());
-            rv_queue_people.setAdapter(peopleInQAdapter);
+           // if (null == peopleInQAdapter) {
+                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
+                rv_queue_people.setAdapter(peopleInQAdapter);
+//            } else {
+//                peopleInQAdapter.updateDataSet(jsonQueuedPersonArrayList,jsonTopic);
+//            }
             if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
             }
-
         }
         dismissProgress();
     }
@@ -407,7 +407,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         dismissProgress();
     }
 
-    protected void updateUI() {
+    protected void updateUI(boolean isNewCall) {
         final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
         queueStatusOuter = queueStatus == QueueStatusEnum.N;
         String cName = mAdapterCallback.getNameList().get(jsonTopic.getCodeQR());
@@ -493,7 +493,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         btn_next.setOnClickListener(v -> {
             mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
             if (tv_counter_name.getText().toString().trim().equals("")) {
-                new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                counterNameEmpty();
             } else {
                 chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
@@ -522,7 +522,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
             if (queueStatus != QueueStatusEnum.S && queueStatus != QueueStatusEnum.D) {
                 if (tv_counter_name.getText().toString().trim().equals("")) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                    counterNameEmpty();
                 } else {
                     ShowCustomDialog showDialog = new ShowCustomDialog(context);
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
@@ -573,7 +573,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 new CustomToast().showToast(context, context.getString(R.string.error_done_next));
             } else {
                 if (tv_counter_name.getText().toString().trim().equals("")) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                    counterNameEmpty();
                 } else {
                     if (tv_start.getText().equals(context.getString(R.string.pause))) {
                         ShowCustomDialog showDialog = new ShowCustomDialog(context);
@@ -636,7 +636,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            showProgress();
+            if (isNewCall) // show progressbar only first time
+                showProgress();
             getAllPeopleInQ(jsonTopic);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -702,7 +703,6 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     }
 
 
-
     @Override
     public void userRegistered(JsonProfile jsonProfile) {
         userFound(jsonProfile);
@@ -724,5 +724,53 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(),
                 jsonBusinessCustomer);
+    }
+
+    protected void counterNameEmpty() {
+        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+        tv_counter_name.performClick();
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        if(menu instanceof MenuBuilder){
+            MenuBuilder m = (MenuBuilder) menu;
+            //noinspection RestrictedApi
+            m.setOptionalIconsVisible(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                iv_generate_token.performClick();
+                break;
+            case R.id.menu_edit:
+                tv_counter_name.performClick();
+                break;
+            case R.id.menu_appointment:
+                iv_appointment.performClick();
+                break;
+            case R.id.menu_q_history:
+                iv_queue_history.performClick();
+                break;
+            case R.id.menu_followup:
+                iv_view_followup.performClick();
+                break;
+            case R.id.menu_product_list:
+                iv_product_list.performClick();
+                break;
+            case R.id.menu_settings:
+                iv_settings.performClick();
+                break;
+            default:
+                break;
+        }
+        return true;
+
     }
 }

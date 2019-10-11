@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
 import com.noqapp.android.merchant.views.pojos.ToothProcedure;
@@ -62,21 +64,31 @@ public class ToothAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         ToothInfo item = dataSet.get(position);
         holder.tv_count.setText(String.valueOf(item.getToothNumber()));
-        holder.iv_top.setBackground(ContextCompat.getDrawable(context, item.getToothTopView().getDrawable()));
-        holder.iv_front.setBackground(ContextCompat.getDrawable(context, item.getToothFrontView().getDrawable()));
+        try {
+            holder.iv_top.setBackground(ContextCompat.getDrawable(context, AppUtils.getDrawableFromString(item.getToothTopView().getDrawable(), context)));
+        } catch (Exception e) {
+            Log.e("tooth top history", "Image missing - position" + position);
+        }
+        try {
+            holder.iv_front.setBackground(ContextCompat.getDrawable(context, AppUtils.getDrawableFromString(item.getToothFrontView().getDrawable(), context)));
+        } catch (Exception e) {
+            Log.e("tooth front history", "Image missing - position" + position);
+        }
         if (position == 7 || position == 23) {
             holder.ll_header.setBackgroundResource(R.drawable.vertical_line);
         } else {
-             holder.ll_header.setBackgroundResource(0);
+            holder.ll_header.setBackgroundResource(0);
         }
 
         holder.iv_front.setOnClickListener(v -> {
-            if (isClickEnable)
+            if (isClickEnable) {
                 onToothFrontViewSelected(position, item);
+            }
         });
         holder.iv_top.setOnClickListener(v -> {
-            if (isClickEnable)
+            if (isClickEnable) {
                 onToothTopViewSelected(position, item);
+            }
         });
     }
 
@@ -87,10 +99,11 @@ public class ToothAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position < 16)
+        if (position < 16) {
             return LAYOUT_ONE;
-        else
+        } else {
             return LAYOUT_TWO;
+        }
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -199,8 +212,8 @@ public class ToothAdapter extends RecyclerView.Adapter {
                         for (int j = 0; j < dataSet.size(); j++) {
                             ToothInfo tf = dataSet.get(j);
                             if (tf.getToothNumber() == Integer.parseInt(toothNumber)) {
-                                tf.setToothTopView(new ToothProcedure(Integer.parseInt(toothTopDrawable), toothTopLabel));
-                                tf.setToothFrontView(new ToothProcedure(Integer.parseInt(toothFrontDrawable), toothFrontLabel));
+                                tf.setToothTopView(new ToothProcedure(toothTopDrawable, toothTopLabel));
+                                tf.setToothFrontView(new ToothProcedure(toothFrontDrawable, toothFrontLabel));
                                 tf.setUpdated(true);
                                 dataSet.set(j, tf);
                                 break;

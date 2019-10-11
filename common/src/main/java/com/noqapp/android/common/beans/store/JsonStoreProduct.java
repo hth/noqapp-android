@@ -1,12 +1,11 @@
 package com.noqapp.android.common.beans.store;
 
-import com.noqapp.android.common.model.types.order.ProductTypeEnum;
-import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -60,6 +59,13 @@ public class JsonStoreProduct implements Serializable {
 
     @JsonProperty("ps")
     private int packageSize;
+
+    //Valid for case RS: case FT:
+    @JsonProperty("ic")
+    private int inventoryCurrent;
+
+    @JsonProperty("il")
+    private int inventoryLimit;
 
     @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
@@ -161,6 +167,23 @@ public class JsonStoreProduct implements Serializable {
         return this;
     }
 
+    public int getInventoryCurrent() {
+        return inventoryCurrent;
+    }
+
+    public JsonStoreProduct setInventoryCurrent(int inventoryCurrent) {
+        this.inventoryCurrent = inventoryCurrent;
+        return this;
+    }
+
+    public int getInventoryLimit() {
+        return inventoryLimit;
+    }
+
+    public void setInventoryLimit(int inventoryLimit) {
+        this.inventoryLimit = inventoryLimit;
+    }
+
     public UnitOfMeasurementEnum getUnitOfMeasurement() {
         return unitOfMeasurement;
     }
@@ -204,8 +227,13 @@ public class JsonStoreProduct implements Serializable {
                 ", productPrice=" + productPrice +
                 ", productDiscount=" + productDiscount +
                 ", productInfo='" + productInfo + '\'' +
+                ", productImage='" + productImage + '\'' +
                 ", storeCategoryId='" + storeCategoryId + '\'' +
                 ", productType=" + productType +
+                ", unitValue=" + unitValue +
+                ", packageSize=" + packageSize +
+                ", inventoryCurrent=" + inventoryCurrent +
+                ", inventoryLimit=" + inventoryLimit +
                 ", unitOfMeasurement=" + unitOfMeasurement +
                 ", productReference='" + productReference + '\'' +
                 ", active=" + active +

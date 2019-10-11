@@ -83,7 +83,7 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
-        if (fm.getBackStackEntryCount() == 0) {
+        if (fm.getBackStackEntryCount() == 1) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastPress > 3000) {
                 backPressToast = new CustomToast().getToast(this, getString(R.string.exit_the_app));

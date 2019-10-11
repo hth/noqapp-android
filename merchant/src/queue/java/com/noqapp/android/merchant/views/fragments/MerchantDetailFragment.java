@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -57,7 +59,7 @@ import java.util.List;
 public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
         PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter,
         PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList,
-        HCSMenuActivity.UpdateWholeList,StoreMenuActivity.UpdateWholeList {
+        HCSMenuActivity.UpdateWholeList, StoreMenuActivity.UpdateWholeList {
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
@@ -126,7 +128,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void orderAcceptClick(int position) {
         if (tv_counter_name.getText().toString().trim().equals("")) {
-            new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+            counterNameEmpty();
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
@@ -247,7 +249,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void orderDoneClick(int position) {
         if (tv_counter_name.getText().toString().trim().equals("")) {
-            new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+            counterNameEmpty();
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
@@ -320,7 +322,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 //To update merchant list screen
                 mAdapterCallback.onMethodCallback(token);
             }
-            updateUI();
+            updateUI(false);
         }
     }
 
@@ -331,7 +333,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     }
 
     @Override
-    protected void updateUI() {
+    protected void updateUI(boolean isNewCall) {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             final PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
             purchaseOrderApiCalls.setAcquireOrderPresenter(this);
@@ -419,7 +421,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             btn_next.setOnClickListener(v -> {
                 mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (tv_counter_name.getText().toString().trim().equals("")) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                    counterNameEmpty();
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         showProgress();
@@ -445,7 +447,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     new CustomToast().showToast(context, context.getString(R.string.error_done_next));
                 } else {
                     if (tv_counter_name.getText().toString().trim().equals("")) {
-                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                        counterNameEmpty();
                     } else {
                         if (tv_start.getText().equals(context.getString(R.string.pause))) {
                             ShowCustomDialog showDialog = new ShowCustomDialog(context);
@@ -491,14 +493,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             });
 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                // progressDialog.setVisibility(View.VISIBLE);
-                showProgress();
+                if (isNewCall) // show progressbar only first time
+                    showProgress();
                 getAllPeopleInQ(jsonTopic);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
         } else {
-            super.updateUI();
+            super.updateUI(isNewCall);
         }
     }
 
@@ -534,5 +536,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void updateWholeList() {
         getAllPeopleInQ(jsonTopic);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.menu_appointment).setVisible(false);
+        menu.findItem(R.id.menu_followup).setVisible(false);
     }
 }

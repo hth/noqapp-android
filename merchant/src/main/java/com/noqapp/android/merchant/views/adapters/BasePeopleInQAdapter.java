@@ -37,6 +37,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
 import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -47,7 +48,6 @@ import java.util.List;
 
 public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implements QueuePersonListPresenter {
     private static final String TAG = BasePeopleInQAdapter.class.getSimpleName();
-
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
     private int glowPosition = -1;
@@ -59,6 +59,14 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     private JsonDataVisibility jsonDataVisibility;
     private JsonPaymentPermission jsonPaymentPermission;
     protected CustomProgressBar customProgressBar;
+
+    public void updateDataSet(List<JsonQueuedPerson> dataSet, JsonTopic jsonTopic) {
+        if (jsonTopic.getServingNumber() > 0) {
+            glowPosition = jsonTopic.getServingNumber() - 1;
+        }
+        this.dataSet = dataSet;
+        notifyDataSetChanged();
+    }
 
     // for medical Only
     abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
@@ -159,14 +167,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         }
     }
 
-    protected BasePeopleInQAdapter(
-            List<JsonQueuedPerson> data,
-            Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick,
-            String qCodeQR,
-            JsonDataVisibility jsonDataVisibility,
-            JsonPaymentPermission jsonPaymentPermission
-    ) {
+    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR,
+            JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -180,30 +183,22 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         customProgressBar = new CustomProgressBar(context);
     }
 
-    protected BasePeopleInQAdapter(
-            List<JsonQueuedPerson> data,
-            Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick,
-            String qCodeQR,
-            int glowPosition,
-            QueueStatusEnum queueStatusEnum,
-            JsonDataVisibility jsonDataVisibility,
-            JsonPaymentPermission jsonPaymentPermission,
-            String bizCategoryId
-    ) {
+
+    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
-        this.qCodeQR = qCodeQR;
-        this.glowPosition = glowPosition;
+        this.qCodeQR = jsonTopic.getCodeQR();
+        this.glowPosition = jsonTopic.getServingNumber();
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePersonListPresenter(this);
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
         businessCustomerApiCalls.setQueuePersonListPresenter(this);
-        this.queueStatusEnum = queueStatusEnum;
-        this.jsonDataVisibility = jsonDataVisibility;
-        this.jsonPaymentPermission = jsonPaymentPermission;
-        this.bizCategoryId = bizCategoryId;
+        this.queueStatusEnum =  jsonTopic.getQueueStatus();
+        this.jsonDataVisibility =  jsonTopic.getJsonDataVisibility();
+        this.jsonPaymentPermission = jsonTopic.getJsonPaymentPermission();
+        this.bizCategoryId =     jsonTopic.getBizCategoryId();
         customProgressBar = new CustomProgressBar(context);
     }
 

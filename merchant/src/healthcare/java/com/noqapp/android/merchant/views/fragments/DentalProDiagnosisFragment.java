@@ -42,7 +42,7 @@ public class DentalProDiagnosisFragment extends DentalAnatomyFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ToothProcedure imageFilePathTop = new ToothProcedure(R.drawable.top, DentalOptionEnum.NOR.getDescription());
+        ToothProcedure imageFilePathTop = new ToothProcedure("top", DentalOptionEnum.NOR.getDescription());
         List<ToothProcedure> drawables = getFrontAllViews();
         List<ToothInfo> toothInfos = new ArrayList<>();
         List<String> toothNumbers = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());

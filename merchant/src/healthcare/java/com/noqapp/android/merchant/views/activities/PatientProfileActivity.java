@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -51,8 +50,6 @@ public class PatientProfileActivity extends BaseActivity implements
         PatientProfilePresenter,
         JsonMedicalRecordPresenter,
         MedicalHistoryFilteredFragment.UpdateWorkDone {
-    private long lastPress;
-    private Toast backPressToast;
     public ProgressBar pb_physical;
     private TextView tv_patient_name, tv_address, tv_details;
     private ImageView iv_profile;
@@ -220,7 +217,7 @@ public class PatientProfileActivity extends BaseActivity implements
             mhff.setUpdateWorkDone(PatientProfileActivity.this::updateWorkDone);
             mhff.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
-            
+
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
@@ -356,21 +353,6 @@ public class PatientProfileActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastPress > 3000) {
-            backPressToast = new CustomToast().getToast(this, getString(R.string.exit_medical_screen));
-            backPressToast.show();
-            lastPress = currentTime;
-        } else {
-            if (backPressToast != null) {
-                backPressToast.cancel();
-            }
-            //super.onBackPressed();
-            finish();
-        }
-    }
 
     @Override
     public void updateWorkDone(List<JsonMedicalRecord> jsonMedicalRecords) {
@@ -389,7 +371,7 @@ public class PatientProfileActivity extends BaseActivity implements
             }
 
             if (!TextUtils.isEmpty(jsonMedicalRecord.getNoteForPatient())) {
-                parseDentalDiagnosis(jsonMedicalRecord.getNoteForPatient(),createdDate);
+                parseDentalDiagnosis(jsonMedicalRecord.getNoteForPatient(), createdDate);
             }
 
         }
@@ -398,7 +380,7 @@ public class PatientProfileActivity extends BaseActivity implements
         tv_empty_work_done.setVisibility(toothWorkDoneList.size() > 0 ? View.GONE : View.VISIBLE);
 
         //Dental Treatment data
-        dt_list_view.setAdapter(new WorkDoneAdapter(this, toothDentalTreatmentList,true));
+        dt_list_view.setAdapter(new WorkDoneAdapter(this, toothDentalTreatmentList, true));
         tv_empty_dt.setVisibility(toothDentalTreatmentList.size() > 0 ? View.GONE : View.VISIBLE);
 
         scroll_view.fullScroll(ScrollView.FOCUS_UP);
@@ -432,14 +414,14 @@ public class PatientProfileActivity extends BaseActivity implements
 
     private void parseDentalDiagnosis(String str, String createdDate) {
         try {
-            String[] temp = str.split("\\|",-1);
+            String[] temp = str.split("\\|", -1);
             if (temp.length > 0) {
                 for (String act : temp) {
                     if (act.contains(":")) {
                         String[] strArray = act.split(":");
                         String str1 = strArray[0].trim();
                         String str2 = strArray[1];
-                        toothDentalTreatmentList.add(new ToothWorkDone(str1, str2, "",createdDate));
+                        toothDentalTreatmentList.add(new ToothWorkDone(str1, str2, "", createdDate));
                     }
                 }
             }

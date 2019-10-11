@@ -11,13 +11,13 @@ import java.io.Serializable;
 public class StoreCartItem implements Serializable {
 
     private int childInput;
-    private int finalDiscountedPrice;
+    private double finalDiscountedPrice;
     private JsonStoreProduct jsonStoreProduct;
 
     public StoreCartItem(int childInput, JsonStoreProduct jsonStoreProduct) {
         this.childInput = childInput;
         this.jsonStoreProduct = jsonStoreProduct;
-        finalDiscountedPrice = (int) new ProductUtils().calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
+        finalDiscountedPrice =  ProductUtils.calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
     }
 
     public int getChildInput() {
@@ -38,7 +38,7 @@ public class StoreCartItem implements Serializable {
         return this;
     }
 
-    public int getFinalDiscountedPrice() {
+    public double getFinalDiscountedPrice() {
         return finalDiscountedPrice;
     }
 

@@ -27,6 +27,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
 import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.ChangeUserInQueue;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
@@ -46,29 +47,15 @@ import java.util.Random;
 
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
-    public PeopleInQAdapter(
-            List<JsonQueuedPerson> data,
-            Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick,
-            String qCodeQR,
-            JsonDataVisibility jsonDataVisibility,
-            JsonPaymentPermission jsonPaymentPermission
-    ) {
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR,
+            JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
         super(data, context, peopleInQAdapterClick, qCodeQR, jsonDataVisibility, jsonPaymentPermission);
     }
 
-    public PeopleInQAdapter(
-            List<JsonQueuedPerson> data,
-            Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick,
-            String qCodeQR,
-            int glowPosition,
-            QueueStatusEnum queueStatusEnum,
-            JsonDataVisibility jsonDataVisibility,
-            JsonPaymentPermission jsonPaymentPermission,
-            String bizCategoryId
-    ) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, glowPosition, queueStatusEnum, jsonDataVisibility, jsonPaymentPermission, bizCategoryId);
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
+        super(data, context, peopleInQAdapterClick, jsonTopic);
     }
 
     @Override

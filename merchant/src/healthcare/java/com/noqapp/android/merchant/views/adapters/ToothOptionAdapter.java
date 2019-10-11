@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.pojos.ToothProcedure;
 
 import java.util.List;
@@ -37,7 +38,8 @@ public class ToothOptionAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         MyViewHolder holder = (MyViewHolder) viewHolder;
-        holder.iv_option.setBackground(ContextCompat.getDrawable(context, drawableList.get(position).getDrawable()));
+        holder.iv_option.setBackground(ContextCompat.getDrawable(context,
+                AppUtils.getDrawableFromString(drawableList.get(position).getDrawable(),context)));
         holder.tooth_label.setText(drawableList.get(position).getDrawableLabel());
         holder.iv_option.setOnClickListener(v -> {
             if (null != listener) {

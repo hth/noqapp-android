@@ -168,11 +168,6 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.activities.OrderDetailActFloating"
-            android:excludeFromRecents="true"
-            android:theme="@style/myDialog"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
-        <activity
             android:name="com.noqapp.android.common.views.activities.AppUpdateActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />

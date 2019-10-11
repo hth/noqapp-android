@@ -21,6 +21,7 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.activities.BeforeJoinActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.client.views.activities.StoreWithMenuActivity;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
@@ -54,23 +55,34 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription());
         holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());
         holder.btn_rejoin.setOnClickListener((View v) -> {
+            Intent in;
+            Bundle b = new Bundle();
             switch (jsonQueueHistorical.getBusinessType()) {
                 case DO:
                 case BK:
                     // open hospital/Bank profile
-                    Intent in = new Intent(context, BeforeJoinActivity.class);
+                    in = new Intent(context, BeforeJoinActivity.class);
                     in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                     in.putExtra(IBConstant.KEY_FROM_LIST, true);
                     in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
                     context.startActivity(in);
                     break;
-                default:
+                case HS:
+                case PH: {
                     // open order screen
-                    Intent intent = new Intent(context, StoreDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("BizStoreElastic", null);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
+                    in = new Intent(context, StoreDetailActivity.class);
+                    b.putSerializable("BizStoreElastic", null);
+                    in.putExtras(b);
+                    context.startActivity(in);
+                }
+                break;
+                default: {
+                    // open order screen
+                    in = new Intent(context, StoreWithMenuActivity.class);
+                    b.putSerializable("BizStoreElastic", null);
+                    in.putExtras(b);
+                    context.startActivity(in);
+                }
             }
         });
         holder.iv_details.setOnClickListener((View v) -> {

@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,22 +35,21 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.StoreProductMenuAdapter;
-import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.StoreCartItem;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class StoreWithMenuActivity extends BaseActivity implements StorePresenter,
         MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
@@ -143,7 +144,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 break;
             default:
                 populateStore();
-
         }
     }
 
@@ -176,6 +176,19 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     .into(iv_category_banner);
         else {
             Picasso.get().load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
+        }
+
+        if (AppUtils.isStoreOpenToday(jsonStore)) {
+            tv_place_order.setClickable(true);
+            tv_place_order.setEnabled(true);
+        } else {
+            tv_place_order.setEnabled(false);
+            tv_place_order.setClickable(false);
+            tv_place_order.setText("Closed");
+            tv_place_order.setVisibility(View.VISIBLE);
+            tv_place_order.setTextColor(Color.parseColor("#333333"));
+            tv_place_order.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
+            tv_place_order.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
         String defaultCategory = "Un-Categorized";
         //  {
@@ -211,8 +224,19 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         HashMap<String, List<StoreCartItem>> expandableListDetail = storeCartItems;
 
         List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
-        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail, this, currencySymbol);
+        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
+                this, currencySymbol, AppUtils.isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
         expandableListView.setAdapter(expandableListAdapter);
+
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
+            expandableListView.expandGroup(i);
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return true;
+            }
+        });
 
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
         ArrayList<StoreCartItem> childData = new ArrayList<>();
@@ -242,9 +266,10 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int position = new AppUtils().getFirstVisibleGroup(expandableListView);
-                if(position < menuHeaderAdapter.getItemCount()) {
+                if (position < menuHeaderAdapter.getItemCount()) {
+                    // +1 added due to header
                     rcv_header.smoothScrollToPosition(position + 1);
-                    menuHeaderAdapter.setSelectedPosition(position+1);
+                    menuHeaderAdapter.setSelectedPosition(position + 1);
                     menuHeaderAdapter.notifyDataSetChanged();
                 }
             }
@@ -280,7 +305,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
                                 .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice(value.getFinalDiscountedPrice() * 100)
+                                .setProductPrice((int) (value.getFinalDiscountedPrice() * 100))
                                 .setProductQuantity(value.getChildInput())
                                 .setProductName(value.getJsonStoreProduct().getProductName())
                                 .setPackageSize(value.getJsonStoreProduct().getPackageSize())
@@ -321,51 +346,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 startActivity(loginIntent);
             }
         });
-
-//        tv_menu.setOnClickListener((View v) -> {
-//            if (isOrderNow()) {
-//                Intent in = new Intent(StoreWithMenuActivity.this, StoreMenuActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
-//                bundle.putSerializable("listDataChild", storeCartItems);
-//                bundle.putSerializable("jsonQueue", jsonQueue);
-//                in.putExtras(bundle);
-//                startActivity(in);
-//            } else {
-//                //Do nothing
-//                new CustomToast().showToast(StoreWithMenuActivity.this, "Please visit store to purchase.");
-//            }
-//        });
-//        if (isStoreOpenToday(jsonStore)) {
-//            tv_menu.setClickable(true);
-//            if (isOrderNow()) {
-//                tv_menu.setText("Order Now");
-//            } else {
-//                tv_menu.setText("Visit Store");
-//            }
-//        } else {
-//            tv_menu.setClickable(false);
-//            tv_menu.setText("Closed");
-//        }
-    }
-
-    private boolean isStoreOpenToday(JsonStore jsonStore) {
-        List<JsonHour> jsonHourList = jsonStore.getJsonHours();
-        JsonHour jsonHour = AppUtils.getJsonHour(jsonHourList);
-        DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
-        String time = df.format(Calendar.getInstance().getTime());
-        int timeData = Integer.parseInt(time.replace(":", ""));
-        return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
-    }
-
-    private boolean isOrderNow() {
-        switch (jsonQueue.getBusinessType()) {
-            case PH:
-            case HS:
-                return false;
-            default:
-                return true;
-        }
     }
 
     @Override
@@ -374,17 +354,17 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             expandableListView.setSelectedGroup(pos);
             menuHeaderAdapter.setSelectedPosition(pos);
             menuHeaderAdapter.notifyDataSetChanged();
-            expandableListView.scrollTo(0,-200);
-        }catch (Exception e){
+            expandableListView.scrollTo(0, -200);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void updateCartOrderInfo(int amountString) {
+    public void updateCartOrderInfo(double amountString) {
         if (amountString > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString);
+            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + ProductUtils.roundOff(amountString));
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");

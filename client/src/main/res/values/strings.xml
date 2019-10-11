@@ -342,7 +342,7 @@
     <string name="user_list">Users</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
     <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>
-    <string name="screen_addressbook">Manage address</string>
+    <string name="screen_addressbook">My address</string>
     <string name="delivery_mode_home">Home Delivery</string>
     <string name="delivery_mode_takeaway">Pick up</string>
     <string name="delivery_mode">Delivery mode</string>
@@ -351,6 +351,8 @@
     <string name="offers">Coupons</string>
     <string name="screen_qconfirm">Confirm Queue</string>
     <string name="notification_setting">Notification</string>
+    <string name="gps_error_msg_final">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
+    <string name="gps_error_msg">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
 
     <string name="discount_error">Discount has already been applied</string>
 </resources>

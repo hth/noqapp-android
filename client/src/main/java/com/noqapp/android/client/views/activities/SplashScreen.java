@@ -202,7 +202,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Permission needed")
-                                .setMessage("This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View")
+                                .setMessage(getString(R.string.gps_error_msg))
                                 .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
                                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                                     Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
@@ -215,7 +215,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                         // user selected Don't ask again checkbox show proper msg
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Permission needed")
-                                .setMessage("This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View")
+                                .setMessage(getString(R.string.gps_error_msg_final))
                                 .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
                                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                                     Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);

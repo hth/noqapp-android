@@ -24,7 +24,10 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.StoreCartItem;
+import com.noqapp.android.common.utils.ProductUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +57,8 @@ public class StoreMenuActivity extends BaseActivity implements
         HashMap<String, List<StoreCartItem>> expandableListDetail = (HashMap<String, List<StoreCartItem>>) getIntent().getExtras().getSerializable("listDataChild");
 
         List<JsonStoreCategory> expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
-        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail, this, currencySymbol);
+        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
+                this, currencySymbol,getIntent().getBooleanExtra("isStoreOpen",true), jsonQueue.getBusinessType());
         expandableListView.setAdapter(expandableListAdapter);
 
 
@@ -106,7 +110,7 @@ public class StoreMenuActivity extends BaseActivity implements
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
                                 .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice(value.getFinalDiscountedPrice() * 100)
+                                .setProductPrice((int) (value.getFinalDiscountedPrice() * 100))
                                 .setProductQuantity(value.getChildInput())
                                 .setProductName(value.getJsonStoreProduct().getProductName())
                                 .setPackageSize(value.getJsonStoreProduct().getPackageSize())
@@ -159,10 +163,10 @@ public class StoreMenuActivity extends BaseActivity implements
     }
 
     @Override
-    public void updateCartOrderInfo(int amountString) {
+    public void updateCartOrderInfo(double amountString) {
         if (amountString > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: " + currencySymbol + " "+amountString);
+            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + ProductUtils.roundOff(amountString));
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");
