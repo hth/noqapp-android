@@ -76,6 +76,16 @@
                     android:textSize="@dimen/text_size_twelve" />
 
             </LinearLayout>
+            <TextView
+                android:id="@+id/tv_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_mid"
+                android:paddingLeft="5dp"
+                android:text="status"
+                android:textColor="@android:color/darker_gray"
+                android:visibility="gone"
+                android:textSize="@dimen/text_size_fourteen" />
 
         </RelativeLayout>
 
@@ -102,17 +112,8 @@
                 android:paddingLeft="5dp"
                 android:text="Sold Out"
                 android:textColor="@android:color/darker_gray"
-                android:visibility="gone"
-                android:textSize="@dimen/text_size_sixteen" />
-  <TextView
-                android:id="@+id/tv_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:text="Sold Out"
-                android:textColor="@android:color/darker_gray"
-                android:visibility="gone"
-                android:textSize="@dimen/text_size_fourteen" />
+                android:textSize="@dimen/text_size_sixteen"
+                android:visibility="gone" />
 
 
             <LinearLayout
@@ -160,10 +161,10 @@
     <FrameLayout
         android:id="@+id/view_disable"
         android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:background="#80cccccc"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:visibility="gone"
-        android:layout_height="150dp" />
+        android:visibility="gone" />
 </FrameLayout>
