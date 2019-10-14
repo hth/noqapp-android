@@ -50,4 +50,11 @@
     <dimen name="spinner_text_size">14sp</dimen>
     <dimen name="spinner_height">25dp</dimen>
     <dimen name="top_height">80dp</dimen>
+
+    <dimen name="top_tooth_size">50dp</dimen>
+
+    <dimen name="tooth_text_size">6sp</dimen>
+    <dimen name="front_tooth_width_chart">12dp</dimen>
+    <dimen name="front_tooth_height_chart">30dp</dimen>
+    <dimen name="top_tooth_size_chart">12dp</dimen>
 </resources>

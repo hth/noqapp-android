@@ -28,4 +28,13 @@
 
     <dimen name="spinner_text_size">16sp</dimen>
     <dimen name="spinner_height">30dp</dimen>
+
+    <dimen name="top_tooth_size">40dp</dimen>
+
+
+
+    <dimen name="tooth_text_size">10sp</dimen>
+    <dimen name="front_tooth_width_chart">18dp</dimen>
+    <dimen name="front_tooth_height_chart">45dp</dimen>
+    <dimen name="top_tooth_size_chart">18dp</dimen>
 </resources>

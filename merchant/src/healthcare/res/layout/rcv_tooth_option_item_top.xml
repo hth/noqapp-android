@@ -8,11 +8,9 @@
 
     <ImageView
         android:id="@+id/iv_option"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="20dp"
-        android:minHeight="25dp"
-        android:background="@drawable/tooth_11"
+        android:layout_width="@dimen/top_tooth_size"
+        android:layout_height="@dimen/top_tooth_size"
+        android:background="@drawable/top"
         android:layout_margin="5dp" />
 
     <TextView
