@@ -125,6 +125,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
         new InitPaymentGateway().execute();

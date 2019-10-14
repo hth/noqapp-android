@@ -97,6 +97,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info);
         tv_store_name = findViewById(R.id.tv_store_name);
@@ -117,6 +118,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         view_loader = findViewById(R.id.view_loader);
         expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(false);
+        actionbarBack.setOnClickListener(null);
         tv_mobile.setOnClickListener((View v) -> {
             AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
         });
@@ -152,6 +154,14 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
         rv_categories.setLayoutManager(recyclerViewLayoutManager);
+
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 
     @Override
@@ -195,10 +205,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute,LaunchActivity.getLaunchActivity().longitute);
-            LatLng destination = new LatLng(  GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute, LaunchActivity.getLaunchActivity().longitute);
+            LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
                     GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
-            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source,destination));
+            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener((View v) -> {

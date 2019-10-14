@@ -135,6 +135,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private List<MenuDrawer> menuDrawerItems = new ArrayList<>();
     public static String COUNTRY_CODE = Constants.DEFAULT_COUNTRY_CODE;
     public static String DISTANCE_UNIT = "km";
+    public static boolean isLockMode = true;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
