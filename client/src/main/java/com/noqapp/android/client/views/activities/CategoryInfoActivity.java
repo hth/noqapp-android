@@ -18,6 +18,7 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
@@ -30,6 +31,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -39,6 +41,7 @@ import com.noqapp.android.client.views.adapters.AccreditionAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
+import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
@@ -192,6 +195,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
+            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute,LaunchActivity.getLaunchActivity().longitute);
+            LatLng destination = new LatLng(  GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+                    GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
+            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source,destination));
             tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener((View v) -> {

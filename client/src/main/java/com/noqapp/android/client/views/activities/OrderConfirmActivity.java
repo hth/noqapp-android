@@ -13,6 +13,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
@@ -23,10 +24,12 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -294,6 +297,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         }
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
+        LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute,LaunchActivity.getLaunchActivity().longitute);
+        String geoHash = getIntent().getStringExtra("GeoHash");
+        LatLng destination = new LatLng(  GeoHashUtils.decodeLatitude(geoHash),
+                GeoHashUtils.decodeLongitude(geoHash));
+        replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source,destination));
         checkProductWithZeroPrice();
     }
 

@@ -345,6 +345,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
+            bundle.putString("GeoHash", getIntent().getExtras().getString("GeoHash"));
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
             bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
             bundle.putString(AppUtils.CURRENCY_SYMBOL, currencySymbol);
@@ -495,6 +496,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
+            bundle.putString("GeoHash", getIntent().getExtras().getString("GeoHash"));
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
             bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
             bundle.putString(AppUtils.CURRENCY_SYMBOL, currencySymbol);

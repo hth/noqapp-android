@@ -423,6 +423,8 @@
                 android:textColor="@color/colorAddress"
                 android:textSize="@dimen/text_size_fourteen" />
 
+            <include layout="@layout/layout_map"/>
+
 
             <Button
                 android:id="@+id/btn_cancel_order"

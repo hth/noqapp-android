@@ -26,6 +26,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
@@ -42,11 +43,13 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -252,6 +255,10 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             if (null != jsonTokenAndQueue) {
                 currencySymbol = AppUtils.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
+                LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute,LaunchActivity.getLaunchActivity().longitute);
+                LatLng destination = new LatLng(  GeoHashUtils.decodeLatitude(jsonTokenAndQueue.getGeoHash()),
+                        GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash()));
+                replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source,destination));
             }
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();

@@ -46,6 +46,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Polyline mPolyline;
     private ArrayList<LatLng> mMarkerPoints;
 
+    public static MapFragment getInstance(LatLng source, LatLng destination) {
+        MapFragment mapFragment = new MapFragment();
+        Bundle b = new Bundle();
+        b.putParcelable("source", source);
+        b.putParcelable("destination", destination);
+        mapFragment.setArguments(b);
+        return mapFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,8 +70,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng source = new LatLng(19.0237, 73.0404);
-        LatLng destination = new LatLng(19.1045, 73.0033);
+//        LatLng source = new LatLng(19.0237, 73.0404);
+//        LatLng destination = new LatLng(19.1045, 73.0033);
+        LatLng source = (LatLng) getArguments().get("source");
+        LatLng destination = (LatLng) getArguments().get("destination");
         addAndProcessLocation(source);
         addAndProcessLocation(destination);
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(source, 10);
