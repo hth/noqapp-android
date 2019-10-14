@@ -27,8 +27,11 @@ public class DentalStatusFragment extends DentalAnatomyFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.frag_dental_status, container, false);
         rcv_tooth = view.findViewById(R.id.rcv_tooth);
@@ -60,8 +63,7 @@ public class DentalStatusFragment extends DentalAnatomyFragment {
         rcv_tooth.setAdapter(toothAdapter);
         try {
             JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getArguments().getSerializable("jsonMedicalRecord");
-            if (null != jsonMedicalRecord && !TextUtils.isEmpty(
-                    jsonMedicalRecord.getJsonUserMedicalProfile().getDentalAnatomy())) {
+            if (null != jsonMedicalRecord && !TextUtils.isEmpty(jsonMedicalRecord.getJsonUserMedicalProfile().getDentalAnatomy())) {
                 String temp = jsonMedicalRecord.getJsonUserMedicalProfile().getDentalAnatomy();
                 toothAdapter.updateToothObj(temp);
             }

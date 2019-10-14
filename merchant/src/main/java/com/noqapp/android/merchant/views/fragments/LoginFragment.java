@@ -241,7 +241,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         dismissProgress();
        // AppUtils.authenticationProcessing();
         //On Login screen need not to clear the data
-        ShowAlertInformation.showThemeDialog(getActivity(),"Invalid Credentail","There was an error with your E-Mail/Password combination. Please try again.");
+        ShowAlertInformation.showThemeDialog(getActivity(),"Invalid Credentials","There was an error with your E-Mail/Password combination. Please try again.");
     }
 
     private boolean isValidInput() {

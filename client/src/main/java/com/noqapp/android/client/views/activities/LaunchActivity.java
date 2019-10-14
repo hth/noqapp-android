@@ -986,13 +986,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 showChangeLangDialog();
                 break;
             case R.drawable.contact_us: {
-                if(AppUtils.isRelease()) {
-                    Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
-                    startActivity(in);
-                }else{
-                    Intent in = new Intent(LaunchActivity.this, MapsActivity.class);
-                    startActivity(in);
-                }
+                Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
+                startActivity(in);
                 break;
             }
             case R.drawable.ic_star:

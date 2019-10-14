@@ -10,7 +10,7 @@
     <string name="error_email_blank">Please enter email id</string>
     <string name="error_email_invalid">Please enter valid email</string>
     <string name="error_pwd_blank">Please enter password</string>
-    <string name="error_login">Invalid Credential</string>
+    <string name="error_login">Invalid Credentials</string>
     <string name="empty_list">You are not assign \n to any queue.</string>
     <string name="networkerror">Network Error</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>
