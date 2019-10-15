@@ -498,6 +498,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 bundle.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 bundle.putInt("token", item.getToken());
                 bundle.putInt("currentServing", item.getServingNumber());
+                bundle.putString("GeoHash", item.getGeoHash());
                 bundle.putString(IBConstant.KEY_STORE_NAME, item.getDisplayName());
                 bundle.putString(IBConstant.KEY_STORE_ADDRESS, item.getStoreAddress());
                 bundle.putString(AppUtils.CURRENCY_SYMBOL, AppUtils.getCurrencySymbol(item.getCountryShortName()));
