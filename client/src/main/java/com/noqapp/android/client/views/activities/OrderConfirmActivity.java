@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.gocashfree.cashfreesdk.CFClientInterface;
@@ -43,6 +45,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
@@ -95,6 +98,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         rl_amount_remaining = findViewById(R.id.rl_amount_remaining);
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
+        TextView tv_view_receipt = findViewById(R.id.tv_view_receipt);
+        tv_view_receipt.setOnClickListener(v -> {
+            showReceiptDialog(oldjsonPurchaseOrder.getPurchaseOrderProducts());
+        });
 
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
@@ -297,11 +304,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         }
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
-        LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute,LaunchActivity.getLaunchActivity().longitute);
+        LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute, LaunchActivity.getLaunchActivity().longitute);
         String geoHash = getIntent().getStringExtra("GeoHash");
-        LatLng destination = new LatLng(  GeoHashUtils.decodeLatitude(geoHash),
+        LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(geoHash),
                 GeoHashUtils.decodeLongitude(geoHash));
-        replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source,destination));
+        replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
         checkProductWithZeroPrice();
     }
 
@@ -463,5 +470,76 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
+    }
+
+
+    public void showReceiptDialog(List<JsonPurchaseOrderProduct> productList) {
+        String currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        builder.setTitle(null);
+        View customDialogView = layoutInflater.inflate(R.layout.dialog_receipt_detail, null, false);
+        LinearLayout ll_order_details = customDialogView.findViewById(R.id.ll_order_details);
+        TextView tv_total_order_amt = customDialogView.findViewById(R.id.tv_total_order_amt);
+        TextView tv_tax_amt = customDialogView.findViewById(R.id.tv_tax_amt);
+        TextView tv_due_amt = customDialogView.findViewById(R.id.tv_due_amt);
+        TextView tv_grand_total_amt = customDialogView.findViewById(R.id.tv_grand_total_amt);
+        TextView tv_coupon_discount_amt = customDialogView.findViewById(R.id.tv_coupon_discount_amt);
+        TextView tv_payment_status = customDialogView.findViewById(R.id.tv_payment_status);
+        TextView tv_total_amt_paid = customDialogView.findViewById(R.id.tv_total_amt_paid);
+        TextView tv_total_amt_paid_label = customDialogView.findViewById(R.id.tv_total_amt_paid_label);
+        TextView tv_total_amt_remain = customDialogView.findViewById(R.id.tv_total_amt_remain);
+        RelativeLayout rl_amount_remaining = customDialogView.findViewById(R.id.rl_amount_remaining);
+        tv_tax_amt.setText(currencySymbol + "0.00");
+        if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
+            jsonPurchaseOrder.setOrderPrice("0");
+        }
+        tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+            tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
+        } else {
+            tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+        }
+
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+            rl_amount_remaining.setVisibility(View.GONE);
+            tv_total_amt_paid.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+            tv_total_amt_remain.setText(currencySymbol + "0.00");
+            tv_total_amt_paid_label.setText(getString(R.string.total_amount_paid));
+        } else if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
+            rl_amount_remaining.setVisibility(View.VISIBLE);
+            tv_total_amt_paid.setText(currencySymbol + "" + CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment()));
+            tv_total_amt_remain.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrder.getOrderPrice()).subtract(new BigDecimal(jsonPurchaseOrder.getPartialPayment())).toString()));
+            tv_total_amt_paid_label.setText("Total Amount Paid (In Cash):");
+        } else {
+            tv_total_amt_paid.setText(currencySymbol + "0.00");
+            rl_amount_remaining.setVisibility(View.GONE);
+        }
+        for (int i = 0; i < productList.size(); i++) {
+            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = productList.get(i);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
+            TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
+            TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
+            if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {
+                //added for  Pharmacy order place from merchant side directly
+                findViewById(R.id.ll_amount).setVisibility(View.GONE);
+                tv_total_price.setVisibility(View.GONE);
+            }
+            ll_order_details.addView(inflatedLayout);
+        }
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        TextView tv_close = customDialogView.findViewById(R.id.tv_close);
+        tv_close.setOnClickListener(v -> {
+            mAlertDialog.dismiss();
+        });
+        mAlertDialog.show();
     }
 }
