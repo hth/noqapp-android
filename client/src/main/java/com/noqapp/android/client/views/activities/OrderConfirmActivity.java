@@ -87,6 +87,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);

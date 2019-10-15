@@ -33,6 +33,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String PREKEY_INVITECODE = "invitecode";
     private static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
     private static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
+    private static final String PREKEY_IS_KIOSK_MODE = "isKioskMode";
+    private static final String PREKEY_KIOSK_MODE_CODE_QR = "kioskModeCodeQR";
 
 
     private static final String KEY_SHOW_HELPER = "showHelper";
@@ -102,6 +104,22 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static void setReviewShown(boolean check) {
         sharedPreferences.edit().putBoolean(PREKEY_IS_REVIEW_SHOWN, check).apply();
+    }
+
+    public static boolean isKioskModeEnable() {
+        return sharedPreferences.getBoolean(NoQueueBaseActivity.PREKEY_IS_KIOSK_MODE, false);
+    }
+
+    public static void setKioskModeEnable(boolean check) {
+        sharedPreferences.edit().putBoolean(PREKEY_IS_KIOSK_MODE, check).apply();
+    }
+
+    public static String getKioskModeCodeQR() {
+        return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_KIOSK_MODE_CODE_QR, "");
+    }
+
+    public static void setKioskModeCodeQR(String check) {
+        sharedPreferences.edit().putString(PREKEY_KIOSK_MODE_CODE_QR, check).apply();
     }
 
     public static String getMail() {
@@ -189,17 +207,21 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static void clearPreferences() {
-        // Clear all data except DID , FCM Token, previousUserQID & showHelper
+        // Clear all data except DID , FCM Token, previousUserQID & showHelper && kiosk mode
         String did = sharedPreferences.getString(APIConstant.Key.XR_DID, "");
         String fcmToken = getFCMToken();
         String previousUserQID = getPreviousUserQID();
         boolean showHelper = getShowHelper();
+        boolean isKioskModeEnable = isKioskModeEnable();
+        String  kioskModeCodeQR = getKioskModeCodeQR();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(APIConstant.Key.XR_DID, did);
         editor.putString(FCM_TOKEN, fcmToken);
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
+        editor.putString(PREKEY_KIOSK_MODE_CODE_QR, kioskModeCodeQR);
+        editor.putBoolean(PREKEY_IS_KIOSK_MODE, isKioskModeEnable);
         editor.commit();
         if (null != LaunchActivity.getLaunchActivity()) {
             LaunchActivity.getLaunchActivity().updateDrawerUI();

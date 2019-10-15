@@ -21,6 +21,7 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
         initActionsViews(false);

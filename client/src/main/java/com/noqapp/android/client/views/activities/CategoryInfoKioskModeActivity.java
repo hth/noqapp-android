@@ -36,7 +36,6 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AccreditionAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
@@ -60,7 +59,7 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
 /**
  * Created by chandra on 5/7/17.
  */
-public class CategoryInfoActivity extends BaseActivity implements QueuePresenter,
+public class CategoryInfoKioskModeActivity extends BaseActivity implements QueuePresenter,
         LevelUpQueueAdapter.OnItemClickListener {
 
     //Set cache parameters
@@ -117,41 +116,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rcv_accreditation = findViewById(R.id.rcv_accreditation);
         ll_top_header = findViewById(R.id.ll_top_header);
         view_loader = findViewById(R.id.view_loader);
-        TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-        if (true) // added logic from profile
-            tv_enable_kiosk.setVisibility(View.VISIBLE);
-        else {
-            tv_enable_kiosk.setVisibility(View.GONE);
-        }
-        tv_enable_kiosk.setOnClickListener(v -> {
-            ShowCustomDialog showDialog = new ShowCustomDialog(CategoryInfoActivity.this, true);
-            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                @Override
-                public void btnPositiveClick() {
-                    LaunchActivity.isLockMode = true;
-                    NoQueueBaseActivity.setKioskModeEnable(true);
-                    NoQueueBaseActivity.setKioskModeCodeQR(codeQR);
-                    NoQueueBaseActivity.clearPreferences();
-                    Bundle b = new Bundle();
-                    b.putString(IBConstant.KEY_CODE_QR, codeQR);
-                    b.putBoolean(IBConstant.KEY_FROM_LIST, false);
-                    b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
-                    b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
-                    Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
-                    in.putExtra("bundle", b);
-                    startActivity(in);
-                    finish();
-                }
-
-                @Override
-                public void btnNegativeClick() {
-                    //Do nothing
-                }
-            });
-            showDialog.displayDialog("Kiosk Mode", "Do you really want to enable Kiosk Mode?");
-        });
         expandableListView = findViewById(R.id.expandableListView);
-        initActionsViews(true);
+        initActionsViews(false);
+        actionbarBack.setOnClickListener(null);
         tv_mobile.setOnClickListener((View v) -> {
             AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
         });
@@ -189,6 +156,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rv_categories.setLayoutManager(recyclerViewLayoutManager);
 
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 
     @Override
@@ -240,7 +213,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener((View v) -> {
                 if (null != bizStoreElastic && reviewCount > 0) {
-                    Intent in = new Intent(CategoryInfoActivity.this, AllReviewsActivity.class);
+                    Intent in = new Intent(CategoryInfoKioskModeActivity.this, AllReviewsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(IBConstant.KEY_CODE_QR, codeQR);
                     bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getBusinessName());
@@ -299,7 +272,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             rcv_accreditation.setAdapter(accreditionAdapter);
             if (null != storeServiceImages && storeServiceImages.size() > 0) {
                 iv_category_banner.setOnClickListener((View v) -> {
-                    Intent intent = new Intent(CategoryInfoActivity.this, SliderActivity.class);
+                    Intent intent = new Intent(CategoryInfoKioskModeActivity.this, SliderActivity.class);
                     intent.putExtra("pos", 0);
                     intent.putExtra("imageurls", (ArrayList<String>) bizStoreElastic.getBizServiceImages());
                     startActivity(intent);

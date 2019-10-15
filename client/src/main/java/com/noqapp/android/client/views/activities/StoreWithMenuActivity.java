@@ -78,6 +78,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu);
         initActionsViews(false);

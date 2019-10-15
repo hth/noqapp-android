@@ -14,6 +14,7 @@ import com.noqapp.android.common.model.types.CommunicationModeEnum
 class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        hideSoftKeys(LaunchActivity.isLockMode)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_settings)
         initActionsViews(true)

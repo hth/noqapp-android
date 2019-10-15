@@ -70,6 +70,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         actionbarBack = findViewById(R.id.actionbarBack);

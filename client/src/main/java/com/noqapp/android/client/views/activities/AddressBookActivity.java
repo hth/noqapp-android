@@ -38,8 +38,8 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_addressbook);
         initActionsViews(true);
         actionbarBack.setOnClickListener((View v) -> {

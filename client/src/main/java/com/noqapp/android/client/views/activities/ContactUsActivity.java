@@ -27,6 +27,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
         initActionsViews(false);

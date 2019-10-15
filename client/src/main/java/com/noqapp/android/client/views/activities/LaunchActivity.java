@@ -135,7 +135,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private List<MenuDrawer> menuDrawerItems = new ArrayList<>();
     public static String COUNTRY_CODE = Constants.DEFAULT_COUNTRY_CODE;
     public static String DISTANCE_UNIT = "km";
-    public static boolean isLockMode = true;
+    public static boolean isLockMode = false;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -148,6 +148,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         JodaTimeAndroid.init(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
+        isLockMode = NoQueueBaseActivity.isKioskModeEnable();
         tv_badge = findViewById(R.id.tv_badge);
         tv_location = findViewById(R.id.tv_location);
         ImageView iv_search = findViewById(R.id.iv_search);
@@ -249,6 +250,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if(isLockMode) {
+
+            Bundle b = new Bundle();
+            b.putString(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeCodeQR());
+            b.putBoolean(IBConstant.KEY_FROM_LIST, false);
+            b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
+            b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
+            Intent in = new Intent(LaunchActivity.this, CategoryInfoKioskModeActivity.class);
+            in.putExtra("bundle", b);
+            startActivity(in);
         }
     }
 
