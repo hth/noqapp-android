@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -42,6 +45,7 @@ import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.xw.repo.BubbleSeekBar;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -56,7 +60,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter, ActivityCommunicator, CFClientInterface, CashFreeNotifyPresenter {
+public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter,
+        ActivityCommunicator, CFClientInterface, CashFreeNotifyPresenter {
 
     private PurchaseOrderApiCall purchaseOrderApiCall;
     private TextView tv_total_order_amt;
@@ -78,6 +83,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private boolean isPayClick = false;
     private RelativeLayout rl_amount_remaining;
     private boolean isProductWithoutPrice = false;
+    private BubbleSeekBar bsb_order_status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +104,30 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         rl_amount_remaining = findViewById(R.id.rl_amount_remaining);
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
+        bsb_order_status = findViewById(R.id.bsb_order_status);
+        bsb_order_status.getConfigBuilder().sectionCount(PurchaseOrderStateEnum.HD.size()).build();
+        bsb_order_status.setCustomSectionTextArray(new BubbleSeekBar.CustomSectionTextArray() {
+            @NonNull
+            @Override
+            public SparseArray<String> onCustomize(int sectionCount, @NonNull SparseArray<String> array) {
+                array.clear();
+                int i = 0;
+                for (PurchaseOrderStateEnum value : PurchaseOrderStateEnum.HD) {
+                    array.put(i, value.getFriendlyDescription());
+                }
+                return array;
+            }
+        });
+        bsb_order_status.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
+            @Override
+            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+                int color = ContextCompat.getColor(OrderConfirmActivity.this, R.color.colorAccent);
+                bubbleSeekBar.setSecondTrackColor(color);
+                bubbleSeekBar.setThumbColor(color);
+                bubbleSeekBar.setBubbleColor(color);
+            }
+        });
+
         TextView tv_view_receipt = findViewById(R.id.tv_view_receipt);
         tv_view_receipt.setOnClickListener(v -> {
             showReceiptDialog(oldjsonPurchaseOrder.getPurchaseOrderProducts());
@@ -284,10 +314,26 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 } else {
                     btn_pay_now.setVisibility(View.GONE);
                 }
+                bsb_order_status.setProgress(1);
                 break;
-            case OP:
-            case PR:
-            case RP:
+            case OP: {
+                bsb_order_status.setProgress(2);
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+                btn_cancel_order.setVisibility(View.GONE);
+            }
+            break;
+            case PR: {
+                bsb_order_status.setProgress(3);
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+                btn_cancel_order.setVisibility(View.GONE);
+            }
+            break;
+            case RP: {
+                bsb_order_status.setProgress(4);
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+                btn_cancel_order.setVisibility(View.GONE);
+            }
+            break;
             case RD:
             case OW:
             case LO:
