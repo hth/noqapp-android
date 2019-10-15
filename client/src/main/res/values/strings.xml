@@ -246,7 +246,7 @@
     <string name="deliver_address">Delivery Address</string>
     <string name="add_address">Add address</string>
     <string name="mobile_no">Mobile no</string>
-    <string name="payment_mode">Payment mode</string>
+    <string name="payment_mode">Payment</string>
     <string name="payment_mode_cash">Cash</string>
     <string name="payment_mode_wallet">Wallet</string>
     <string name="payment_mode_cards">Credit/Debit Card</string>
@@ -345,7 +345,7 @@
     <string name="screen_addressbook">My address</string>
     <string name="delivery_mode_home">Home Delivery</string>
     <string name="delivery_mode_takeaway">Pick up</string>
-    <string name="delivery_mode">Delivery mode</string>
+    <string name="delivery_mode">Delivery</string>
     <string name="request_email_otp">Request Email OTP</string>
     <string name="verify_email">Verify Email</string>
     <string name="offers">Coupons</string>
