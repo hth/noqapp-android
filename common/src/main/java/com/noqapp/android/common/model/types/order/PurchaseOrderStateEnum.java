@@ -53,7 +53,7 @@ public enum PurchaseOrderStateEnum {
     //Home Delivery
     public static EnumSet<PurchaseOrderStateEnum> HD = EnumSet.of(PO, OP, PR, RP);
 
-    //To Go /Takeaway Mode (Either one of the choice LO, FD, DA, CO)
+    //To Go /Takeaway Mode (Either one of the choice LO, FD, DA, OD)
     public static EnumSet<PurchaseOrderStateEnum> TO = EnumSet.of(PO, OP, RD, OW, LO, FD, DA, OD);
 
     @Override
