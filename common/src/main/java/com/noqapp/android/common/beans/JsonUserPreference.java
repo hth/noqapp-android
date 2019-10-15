@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.model.types.CommunicationModeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentMethodEnum;
 
 import java.io.Serializable;
 
@@ -36,6 +38,15 @@ public class JsonUserPreference extends AbstractDomain implements Serializable {
     @JsonProperty("fn")
     private CommunicationModeEnum firebaseNotification;
 
+    @JsonProperty("dm")
+    private DeliveryModeEnum deliveryMode;
+
+    @JsonProperty("pm")
+    private PaymentMethodEnum paymentMethod;
+
+    @JsonProperty("uai")
+    private String userAddressId;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -57,6 +68,33 @@ public class JsonUserPreference extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public DeliveryModeEnum getDeliveryMode() {
+        return deliveryMode;
+    }
+
+    public JsonUserPreference setDeliveryMode(DeliveryModeEnum deliveryMode) {
+        this.deliveryMode = deliveryMode;
+        return this;
+    }
+
+    public PaymentMethodEnum getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public JsonUserPreference setPaymentMethod(PaymentMethodEnum paymentMethod) {
+        this.paymentMethod = paymentMethod;
+        return this;
+    }
+
+    public String getUserAddressId() {
+        return userAddressId;
+    }
+
+    public JsonUserPreference setUserAddressId(String userAddressId) {
+        this.userAddressId = userAddressId;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -67,11 +105,9 @@ public class JsonUserPreference extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JsonUserPreference{");
-        sb.append("promotionalSMS=").append(promotionalSMS);
-        sb.append(", firebaseNotification=").append(firebaseNotification);
-        sb.append(", error=").append(error);
-        sb.append('}');
-        return sb.toString();
+        return "JsonUserPreference{" + "promotionalSMS=" + promotionalSMS +
+                ", firebaseNotification=" + firebaseNotification +
+                ", error=" + error +
+                '}';
     }
 }
