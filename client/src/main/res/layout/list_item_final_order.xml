@@ -120,6 +120,16 @@
                 android:layout_gravity="right"
                 android:gravity="right"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/tv_product_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_fourteen"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:visibility="gone"
+                android:textColor="@android:color/black"/>
         </LinearLayout>
     </RelativeLayout>
 
