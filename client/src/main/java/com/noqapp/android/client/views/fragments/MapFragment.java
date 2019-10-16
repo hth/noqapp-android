@@ -1,17 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.graphics.Color;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.DirectionsJsonParser;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,10 +13,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.DirectionsJsonParser;
 
 import org.json.JSONObject;
+
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,8 +37,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
+    private final String TAG = MapFragment.class.getSimpleName();
 
     private GoogleMap mMap;
     private LatLng mOrigin;
@@ -112,7 +114,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         downloadTask.execute(url);
     }
 
-
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
@@ -151,7 +152,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     private class DownloadTask extends AsyncTask<String, Void, String> {
-
         @Override
         protected String doInBackground(String... url) {
             String data = "";
@@ -173,14 +173,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-
         @Override
         protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
-            JSONObject jObject;
             List<List<HashMap<String, String>>> routes = null;
             try {
-                jObject = new JSONObject(jsonData[0]);
+                JSONObject jObject = new JSONObject(jsonData[0]);
                 DirectionsJsonParser parser = new DirectionsJsonParser();
                 routes = parser.parse(jObject);
             } catch (Exception e) {
@@ -191,18 +188,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            ArrayList<LatLng> points = null;
             PolylineOptions lineOptions = null;
             for (int i = 0; i < result.size(); i++) {
-                points = new ArrayList<LatLng>();
+                ArrayList<LatLng> points = new ArrayList<>();
                 lineOptions = new PolylineOptions();
                 List<HashMap<String, String>> path = result.get(i);
                 for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-                    points.add(position);
+                    try {
+                        HashMap<String, String> point = path.get(j);
+                        double lat = Double.parseDouble(Objects.requireNonNull(point.get("lat")));
+                        double lng = Double.parseDouble(Objects.requireNonNull(point.get("lng")));
+                        LatLng position = new LatLng(lat, lng);
+                        points.add(position);
+                    } catch (NullPointerException e) {
+                        Log.e(TAG, "Found null instead of lat lng", e);
+                    }
                 }
 
                 lineOptions.addAll(points);
@@ -216,9 +216,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
                 mPolyline = mMap.addPolyline(lineOptions);
             } else {
-                Toast.makeText(getActivity(), "No route is found", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "No route information found", Toast.LENGTH_LONG).show();
             }
         }
     }
-
 }

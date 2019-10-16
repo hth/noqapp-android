@@ -1,5 +1,7 @@
 package com.noqapp.android.client.utils;
 
+import com.noqapp.android.client.R;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -12,8 +14,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
 
 public class ShowCustomDialog {
     private Context context;
@@ -66,17 +66,21 @@ public class ShowCustomDialog {
         TextView tv_msg = dialog.findViewById(R.id.tv_msg);
         tv_title.setText(title);
         tv_msg.setText(msg);
-        if (isGravityLeft)
+        if (isGravityLeft) {
             tv_msg.setGravity(Gravity.LEFT);
+        }
 
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
-        if (showNegativeBtn)
+        if (showNegativeBtn) {
             btnNegative.setVisibility(View.VISIBLE);
-        if (!TextUtils.isEmpty(btnPositiveText))
+        }
+        if (!TextUtils.isEmpty(btnPositiveText)) {
             btnPositive.setText(btnPositiveText);
-        if (!TextUtils.isEmpty(btnNegativeText))
+        }
+        if (!TextUtils.isEmpty(btnNegativeText)) {
             btnNegative.setText(btnNegativeText);
+        }
         btnPositive.setOnClickListener((View v) -> {
             dialog.dismiss();
             if (null != dialogClickListener) {

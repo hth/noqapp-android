@@ -215,7 +215,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                             //Do nothing
                         }
                     });
-                    showDialog.displayDialog("Kiosk Mode", "Please confirm if you like to launch Kiosk Mode?");
+                    showDialog.displayDialog("Kiosk Mode", "Continue to launch Kiosk Mode?");
                 });
             } else {
                 tv_enable_kiosk.setVisibility(View.GONE);
@@ -341,8 +341,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     /**
      * Populated cache and sorted based on current time.
-     * <p>
-     * //@param jsonQueueList
+     *
+     * @param bizStoreElasticList
      */
     private void populateAndSortedCache(BizStoreElasticList bizStoreElasticList) {
         Map<String, JsonCategory> categoryMap = new LinkedHashMap<>();
@@ -390,6 +390,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         if (null != cacheCategory.getIfPresent(CATEGORY)) {
             categoryMap = cacheCategory.getIfPresent(CATEGORY);
         }
+
         if (null != cacheQueue.getIfPresent(QUEUE)) {
             queueMap = cacheQueue.getIfPresent(QUEUE);
         }
@@ -445,7 +446,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     public void onCategoryItemClick(BizStoreElastic item) {
-        Intent in = null;
+        Intent in;
         Bundle b = new Bundle();
         switch (item.getBusinessType()) {
             case DO:
