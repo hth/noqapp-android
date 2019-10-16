@@ -34,7 +34,7 @@
 
 
     <dimen name="tooth_text_size">10sp</dimen>
-    <dimen name="front_tooth_width_chart">18dp</dimen>
-    <dimen name="front_tooth_height_chart">45dp</dimen>
-    <dimen name="top_tooth_size_chart">18dp</dimen>
+    <dimen name="front_tooth_width_chart">20dp</dimen>
+    <dimen name="front_tooth_height_chart">50dp</dimen>
+    <dimen name="top_tooth_size_chart">20dp</dimen>
 </resources>
