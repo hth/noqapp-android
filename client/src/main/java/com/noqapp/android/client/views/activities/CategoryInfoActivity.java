@@ -1,25 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import static com.google.common.cache.CacheBuilder.newBuilder;
 
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -45,7 +27,28 @@ import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.common.cache.Cache;
+
 import com.squareup.picasso.Picasso;
+
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -54,8 +57,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.google.common.cache.CacheBuilder.newBuilder;
 
 /**
  * Created by chandra on 5/7/17.
@@ -184,7 +185,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             dismissProgress();
 
             TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-            if (null != LaunchActivity.getUserProfile().getBizNameId() && LaunchActivity.getUserProfile().getBizNameId().equals( bizStoreElastic.getBizNameId())) { // added logic from profile
+            if (null != LaunchActivity.getUserProfile()
+                    && null != LaunchActivity.getUserProfile().getBizNameId()
+                    && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
+                // added logic from profile
                 tv_enable_kiosk.setVisibility(View.VISIBLE);
                 tv_enable_kiosk.setOnClickListener(v -> {
                     ShowCustomDialog showDialog = new ShowCustomDialog(CategoryInfoActivity.this, true);
@@ -211,9 +215,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                             //Do nothing
                         }
                     });
-                    showDialog.displayDialog("Kiosk Mode", "Do you really want to enable Kiosk Mode?");
+                    showDialog.displayDialog("Kiosk Mode", "Please confirm if you like to launch Kiosk Mode?");
                 });
-            }else {
+            } else {
                 tv_enable_kiosk.setVisibility(View.GONE);
             }
 
