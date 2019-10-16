@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.adapters;
 
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,16 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
     private List<JsonUserAddress> list;
     private LayoutInflater inflator;
     private Activity context;
-    private RemoveAddress removeAddress;
+    private UpdateAddress updateAddress;
+    private String userAddressId;
 
-    public AddressListAdapter(Activity context, List<JsonUserAddress> list, RemoveAddress removeAddress) {
+    public AddressListAdapter(Activity context, List<JsonUserAddress> list, UpdateAddress updateAddress, String userAddressId) {
         super(context, R.layout.list_item_selected, list);
         this.list = list;
         inflator = context.getLayoutInflater();
         this.context = context;
-        this.removeAddress = removeAddress;
+        this.updateAddress = updateAddress;
+        this.userAddressId = userAddressId;
     }
 
     @Override
@@ -36,6 +39,7 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
             convertView = inflator.inflate(R.layout.list_item_selected, null);
             holder = new ViewHolder();
             holder.title = convertView.findViewById(R.id.title);
+            holder.tv_primary = convertView.findViewById(R.id.tv_primary);
             holder.iv_delete = convertView.findViewById(R.id.iv_delete);
             convertView.setTag(holder);
             convertView.setTag(R.id.title, holder.title);
@@ -44,13 +48,28 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
         }
 
         holder.title.setText(list.get(position).getAddress());
+        if (list.get(position).getId().equals(userAddressId)) {
+            holder.tv_primary.setText("Primary");
+            holder.tv_primary.setTextColor(Color.BLACK);
+        } else {
+            holder.tv_primary.setText("Set Primary");
+            holder.tv_primary.setTextColor(Color.LTGRAY);
+        }
+        holder.tv_primary.setOnClickListener(v -> {
+            if (list.get(position).getId().equals(userAddressId)) {
+                // do nothing
+            } else {
+                if (null != updateAddress)
+                    updateAddress.setPrimaryAddress(list.get(position));
+            }
+        });
         holder.iv_delete.setOnClickListener((View v) -> {
             ShowCustomDialog showDialog = new ShowCustomDialog(context, true);
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick() {
-                    if (null != removeAddress)
-                        removeAddress.removeAddress(list.get(position));
+                    if (null != updateAddress)
+                        updateAddress.removeAddress(list.get(position));
                 }
 
                 @Override
@@ -66,11 +85,14 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
 
     static class ViewHolder {
         private TextView title;
+        private TextView tv_primary;
         private ImageView iv_delete;
     }
 
-    public interface RemoveAddress {
+    public interface UpdateAddress {
         void removeAddress(JsonUserAddress jsonUserAddress);
+
+        void setPrimaryAddress(JsonUserAddress jsonUserAddress);
     }
 
 }

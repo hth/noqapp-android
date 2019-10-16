@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,7 +16,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ClientPreferenceApiCalls;
 import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -26,11 +27,13 @@ import com.noqapp.android.client.views.adapters.AddressListAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.JsonUserAddressList;
+import com.noqapp.android.common.beans.JsonUserPreference;
 
 import java.util.List;
 
 
-public class AddressBookActivity extends BaseActivity implements ProfileAddressPresenter, AddressListAdapter.RemoveAddress {
+public class AddressBookActivity extends BaseActivity implements ProfileAddressPresenter,
+        AddressListAdapter.UpdateAddress, ClientPreferencePresenter {
     private EditText edt_add_address;
     private LinearLayout ll_add_address;
     private ClientProfileApiCall clientProfileApiCall;
@@ -91,17 +94,15 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
         jp.setJsonUserAddresses(addressList);
         LaunchActivity.setUserProfile(jp);
         Log.e("address list: ", addressList.toString());
-        lv_address.setAdapter(new AddressListAdapter(this, jsonUserAddressList.getJsonUserAddresses(), this));
-        lv_address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                JsonUserAddress jsonUserAddress = addressList.get(position);
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("jsonUserAddress", jsonUserAddress);
-                setResult(78, resultIntent);
-                //setResult(Activity.RESULT_OK, resultIntent);
-                finish();
-            }
+        lv_address.setAdapter(new AddressListAdapter(this, jsonUserAddressList.getJsonUserAddresses(),
+                this, jp.getJsonUserPreference().getUserAddressId()));
+        lv_address.setOnItemClickListener((parent, view, position, id) -> {
+            JsonUserAddress jsonUserAddress = addressList.get(position);
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("jsonUserAddress", jsonUserAddress);
+            setResult(78, resultIntent);
+            //setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         });
 
         dismissProgress();
@@ -126,6 +127,39 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
                     jsonUserAddress);
         } else {
             ShowAlertInformation.showNetworkDialog(AddressBookActivity.this);
+        }
+    }
+
+    @Override
+    public void setPrimaryAddress(JsonUserAddress jsonUserAddress) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            showProgress();
+            setProgressMessage("Updating address..");
+            ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();
+            clientProfileApiCall.setClientPreferencePresenter(this);
+            JsonUserPreference jsonUserPreference = LaunchActivity.getUserProfile().getJsonUserPreference();
+            if (null != jsonUserAddress) {
+                jsonUserPreference.setUserAddressId(jsonUserAddress.getId());
+            }
+            clientProfileApiCall.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference);
+        } else {
+            ShowAlertInformation.showNetworkDialog(AddressBookActivity.this);
+        }
+    }
+
+    @Override
+    public void clientPreferencePresenterResponse(JsonUserPreference jsonUserPreference) {
+        if (null != jsonUserPreference) {
+            LaunchActivity.getUserProfile().setJsonUserPreference(jsonUserPreference);
+            JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
+            jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
+            for (int i = 0; i < jsonUserAddressList.getJsonUserAddresses().size(); i++) {
+                if(jsonUserAddressList.getJsonUserAddresses().get(i).getId().equals(jsonUserPreference.getUserAddressId())){
+                    jsonUserAddressList.getJsonUserAddresses().get(i).setId(jsonUserPreference.getUserAddressId());
+                    return;
+                }
+            }
+            profileAddressResponse(jsonUserAddressList);
         }
     }
 }
