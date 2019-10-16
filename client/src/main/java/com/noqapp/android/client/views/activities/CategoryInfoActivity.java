@@ -117,39 +117,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rcv_accreditation = findViewById(R.id.rcv_accreditation);
         ll_top_header = findViewById(R.id.ll_top_header);
         view_loader = findViewById(R.id.view_loader);
-        TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-        if (true) // added logic from profile
-            tv_enable_kiosk.setVisibility(View.VISIBLE);
-        else {
-            tv_enable_kiosk.setVisibility(View.GONE);
-        }
-        tv_enable_kiosk.setOnClickListener(v -> {
-            ShowCustomDialog showDialog = new ShowCustomDialog(CategoryInfoActivity.this, true);
-            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                @Override
-                public void btnPositiveClick() {
-                    LaunchActivity.isLockMode = true;
-                    NoQueueBaseActivity.setKioskModeEnable(true);
-                    NoQueueBaseActivity.setKioskModeCodeQR(codeQR);
-                    NoQueueBaseActivity.clearPreferences();
-                    Bundle b = new Bundle();
-                    b.putString(IBConstant.KEY_CODE_QR, codeQR);
-                    b.putBoolean(IBConstant.KEY_FROM_LIST, false);
-                    b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
-                    b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
-                    Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
-                    in.putExtra("bundle", b);
-                    startActivity(in);
-                    finish();
-                }
-
-                @Override
-                public void btnNegativeClick() {
-                    //Do nothing
-                }
-            });
-            showDialog.displayDialog("Kiosk Mode", "Do you really want to enable Kiosk Mode?");
-        });
         expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(true);
         tv_mobile.setOnClickListener((View v) -> {
@@ -215,6 +182,41 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             populateAndSortedCache(bizStoreElasticList);
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             dismissProgress();
+
+            TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
+            if (LaunchActivity.getUserProfile().getBizNameId().equals( bizStoreElastic.getBizNameId())) { // added logic from profile
+                tv_enable_kiosk.setVisibility(View.VISIBLE);
+                tv_enable_kiosk.setOnClickListener(v -> {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(CategoryInfoActivity.this, true);
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                        @Override
+                        public void btnPositiveClick() {
+                            LaunchActivity.isLockMode = true;
+                            NoQueueBaseActivity.setKioskModeEnable(true);
+                            NoQueueBaseActivity.setKioskModeCodeQR(codeQR);
+                            NoQueueBaseActivity.clearPreferences();
+                            Bundle b = new Bundle();
+                            b.putString(IBConstant.KEY_CODE_QR, codeQR);
+                            b.putBoolean(IBConstant.KEY_FROM_LIST, false);
+                            b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
+                            b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
+                            Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
+                            in.putExtra("bundle", b);
+                            startActivity(in);
+                            finish();
+                        }
+
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
+                        }
+                    });
+                    showDialog.displayDialog("Kiosk Mode", "Do you really want to enable Kiosk Mode?");
+                });
+            }else {
+                tv_enable_kiosk.setVisibility(View.GONE);
+            }
+
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
