@@ -18,10 +18,12 @@ import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ClientPreferenceApiCalls;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
@@ -40,12 +42,14 @@ import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonUserAddress;
+import com.noqapp.android.common.beans.JsonUserPreference;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentMethodEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -68,7 +72,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter,
-        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter, StoreProductFinalOrderAdapter.CartOrderUpdate {
+        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter,
+        StoreProductFinalOrderAdapter.CartOrderUpdate, ClientPreferencePresenter {
     private TextView tv_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -108,6 +113,21 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         acrb_online = findViewById(R.id.acrb_online);
         acrb_home_delivery = findViewById(R.id.acrb_home_delivery);
         acrb_take_away = findViewById(R.id.acrb_take_away);
+        JsonUserPreference jsonUserPreference = LaunchActivity.getUserProfile().getJsonUserPreference();
+        if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
+            acrb_home_delivery.setChecked(true);
+            acrb_take_away.setChecked(false);
+        } else {
+            acrb_home_delivery.setChecked(false);
+            acrb_take_away.setChecked(true);
+        }
+        if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
+            acrb_cash.setChecked(true);
+            acrb_online.setChecked(false);
+        } else {
+            acrb_cash.setChecked(false);
+            acrb_online.setChecked(true);
+        }
 
         TextView tv_change_address = findViewById(R.id.tv_change_address);
         tv_change_address.setOnClickListener((View v) -> {
@@ -354,6 +374,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             in.putExtras(bundle);
             startActivity(in);
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+            callAddressPreference();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
@@ -505,6 +526,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             in.putExtras(bundle);
             startActivity(in);
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+            callAddressPreference();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
@@ -528,6 +550,25 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         jsonPurchaseOrder.setPurchaseOrderProducts(list);
         jsonPurchaseOrder.setOrderPrice(cartAmount.replace(".", ""));
         updateDiscountUI();
+    }
 
+
+    private void callAddressPreference() {
+        ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();
+        clientProfileApiCall.setClientPreferencePresenter(this);
+        JsonUserPreference jsonUserPreference = LaunchActivity.getUserProfile().getJsonUserPreference();
+        jsonUserPreference.setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO);
+        jsonUserPreference.setPaymentMethod(acrb_cash.isChecked() ? PaymentMethodEnum.CA : PaymentMethodEnum.EL);
+        if (null != jsonUserAddress) {
+            jsonUserPreference.setUserAddressId(jsonUserAddress.getId());
+        }
+        clientProfileApiCall.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference);
+    }
+
+    @Override
+    public void clientPreferencePresenterResponse(JsonUserPreference jsonUserPreference) {
+        if (null != jsonUserPreference) {
+            LaunchActivity.getUserProfile().setJsonUserPreference(jsonUserPreference);
+        }
     }
 }

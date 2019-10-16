@@ -105,8 +105,12 @@ public class JsonUserPreference extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonUserPreference{" + "promotionalSMS=" + promotionalSMS +
+        return "JsonUserPreference{" +
+                "promotionalSMS=" + promotionalSMS +
                 ", firebaseNotification=" + firebaseNotification +
+                ", deliveryMode=" + deliveryMode +
+                ", paymentMethod=" + paymentMethod +
+                ", userAddressId='" + userAddressId + '\'' +
                 ", error=" + error +
                 '}';
     }

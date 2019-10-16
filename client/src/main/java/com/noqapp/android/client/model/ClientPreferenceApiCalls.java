@@ -1,13 +1,15 @@
 package com.noqapp.android.client.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.client.model.response.api.ClientPreferenceApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonUserPreference;
 
-import android.util.Log;
-import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,6 +82,36 @@ public class ClientPreferenceApiCalls {
             @Override
             public void onFailure(@NonNull Call<JsonUserPreference> call, @NonNull Throwable t) {
                 Log.e("onFail promotionalSMS", t.getLocalizedMessage(), t);
+                clientPreferencePresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void order(String did, String mail, String auth, JsonUserPreference jsonUserPreference) {
+        clientPreferenceApiUrls.order(did, Constants.DEVICE_TYPE, mail, auth, jsonUserPreference).enqueue(new Callback<JsonUserPreference>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        clientPreferencePresenter.clientPreferencePresenterResponse(response.body());
+                        Log.e("order address", String.valueOf(response.body()));
+                    } else {
+                        Log.d(TAG, "Empty order address");
+                        clientPreferencePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        clientPreferencePresenter.authenticationFailure();
+                    } else {
+                        clientPreferencePresenter.responseErrorPresenter(response.code());
+                        Log.e(TAG, "" + response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonUserPreference> call, @NonNull Throwable t) {
+                Log.e("onFail address", t.getLocalizedMessage(), t);
                 clientPreferencePresenter.responseErrorPresenter(null);
             }
         });
