@@ -4,46 +4,31 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
-import com.noqapp.android.client.model.types.AmenityEnum;
-import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.AccreditionAdapter;
+import com.noqapp.android.client.views.adapters.CategoryGridAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
-import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
-import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
-import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -56,11 +41,8 @@ import java.util.Set;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
-/**
- * Created by chandra on 5/7/17.
- */
 public class CategoryInfoKioskModeActivity extends BaseActivity implements QueuePresenter,
-        LevelUpQueueAdapter.OnItemClickListener {
+        LevelUpQueueAdapter.OnItemClickListener, CategoryGridAdapter.OnItemClickListener {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -73,59 +55,34 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
     private final String QUEUE = "queue";
     private final String CATEGORY = "category";
     private TextView tv_store_name;
-    private TextView tv_address;
-    private TextView tv_mobile;
-    private TextView tv_complete_address;
-    private TextView tv_address_title;
     private TextView tv_rating_review;
     private TextView tv_rating;
     private RecyclerView rv_categories;
-    private RecyclerView rv_thumb_images;
     private ImageView iv_category_banner;
-    private Button btn_join_queues;
-    private RecyclerView rcv_amenities;
-    private RecyclerView rcv_facility;
     private String codeQR;
     private BizStoreElastic bizStoreElastic;
     private float rating = 0;
     private int reviewCount = 0;
     private String title = "";
     private View view_loader;
-    private RecyclerView rcv_accreditation;
     private LinearLayout ll_top_header;
-    private ExpandableListView expandableListView;
+    private CategoryGridAdapter.OnItemClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_info);
+        setContentView(R.layout.activity_category_info_kiosk);
         tv_store_name = findViewById(R.id.tv_store_name);
-        tv_address = findViewById(R.id.tv_address);
-        tv_mobile = findViewById(R.id.tv_mobile);
-        tv_complete_address = findViewById(R.id.tv_complete_address);
-        tv_address_title = findViewById(R.id.tv_address_title);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
         rv_categories = findViewById(R.id.rv_categories);
-        rv_thumb_images = findViewById(R.id.rv_thumb_images);
         iv_category_banner = findViewById(R.id.iv_category_banner);
-        btn_join_queues = findViewById(R.id.btn_join_queues);
-        rcv_amenities = findViewById(R.id.rcv_amenities);
-        rcv_facility = findViewById(R.id.rcv_facility);
-        rcv_accreditation = findViewById(R.id.rcv_accreditation);
         ll_top_header = findViewById(R.id.ll_top_header);
         view_loader = findViewById(R.id.view_loader);
-        expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(false);
         actionbarBack.setOnClickListener(null);
-        tv_mobile.setOnClickListener((View v) -> {
-            AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
-        });
-
-        btn_join_queues.setOnClickListener((View v) -> {
-            joinClick();
-        });
+        listener = this;
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
@@ -152,10 +109,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                 ShowAlertInformation.showNetworkDialog(this);
             }
         }
-        RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
-        rv_categories.setLayoutManager(recyclerViewLayoutManager);
-
-
     }
 
 
@@ -189,63 +142,21 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
-            tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
-            tv_complete_address.setText(bizStoreElastic.getAddress());
-            tv_complete_address.setOnClickListener((View v) -> {
-                AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
-
-            });
-            tv_address_title.setOnClickListener((View v) -> {
-                AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
-            });
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             tv_rating.setText(AppUtils.round(rating) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute, LaunchActivity.getLaunchActivity().longitute);
-            LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
-                    GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
-            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            tv_rating_review.setOnClickListener((View v) -> {
-                if (null != bizStoreElastic && reviewCount > 0) {
-                    Intent in = new Intent(CategoryInfoKioskModeActivity.this, AllReviewsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(IBConstant.KEY_CODE_QR, codeQR);
-                    bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getBusinessName());
-                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, tv_address.getText().toString());
-                    bundle.putBoolean("isLevelUp", true);
-                    in.putExtras(bundle);
-                    startActivity(in);
-                }
-            });
             codeQR = bizStoreElastic.getCodeQR();
 
-            List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
-            List<String> amenities = new ArrayList<>();
-            for (int j = 0; j < amenityEnums.size(); j++) {
-                amenities.add(amenityEnums.get(j).getDescription());
-            }
-            rcv_amenities.setLayoutManager(getFlexBoxLayoutManager());
-            rcv_amenities.setAdapter(new StaggeredGridAdapter(amenities));
-            List<FacilityEnum> facilityEnums = bizStoreElastic.getFacilities();
-            List<String> facilities = new ArrayList<>();
-            for (int j = 0; j < facilityEnums.size(); j++) {
-                facilities.add(facilityEnums.get(j).getDescription());
-            }
-            rcv_facility.setLayoutManager(getFlexBoxLayoutManager());
-            rcv_facility.setAdapter(new StaggeredGridAdapter(facilities));
             Picasso.get()
                     .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
                     .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(iv_category_banner);
-            rv_thumb_images.setHasFixedSize(true);
-            rv_thumb_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             List<String> storeServiceImages = new ArrayList<>();
             // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
@@ -258,18 +169,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                         .into(iv_category_banner);
             }
 
-            ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
-            rv_thumb_images.setAdapter(adapter);
-            rcv_accreditation.setHasFixedSize(true);
-            rcv_accreditation.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-            List<String> accreditationImages = new ArrayList<>();
-            if (bizStoreElastic.getAccreditation().size() > 0) {
-                for (int i = 0; i < bizStoreElastic.getAccreditation().size(); i++) {
-                    accreditationImages.add(bizStoreElastic.getAccreditation().get(i).getFilename());
-                }
-            }
-            AccreditionAdapter accreditionAdapter = new AccreditionAdapter(this, accreditationImages);
-            rcv_accreditation.setAdapter(accreditionAdapter);
             if (null != storeServiceImages && storeServiceImages.size() > 0) {
                 iv_category_banner.setOnClickListener((View v) -> {
                     Intent intent = new Intent(CategoryInfoKioskModeActivity.this, SliderActivity.class);
@@ -280,29 +179,33 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             }
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
-                    btn_join_queues.setText("Find Doctor");
                     tv_toolbar_title.setText("Medical");
                     title = "Select a Doctor";
                     break;
                 case BK:
-                    btn_join_queues.setText("View Services");
                     tv_toolbar_title.setText("Bank");
                     title = "Select a Service";
                     break;
                 case HS:
-                    btn_join_queues.setText("View Services");
                     tv_toolbar_title.setText("Health Service");
                     title = "Select a Service";
                     break;
                 default:
-                    btn_join_queues.setText("Join Queue");
                     tv_toolbar_title.setText("Departments");
                     title = "Select a Queue";
             }
+
+            rv_categories.setLayoutManager(new GridLayoutManager(this, 2));
+            Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
+            CategoryGridAdapter recyclerView_Adapter
+                    = new CategoryGridAdapter(this,
+                    getCategoryThatArePopulated(),
+                    queueMap, listener);
+            rv_categories.setAdapter(recyclerView_Adapter);
+
         } else {
             //TODO(chandra) when its empty do something nice
         }
-        checkForSingleEntry();
         dismissProgress();
     }
 
@@ -367,49 +270,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         return new ArrayList<>(categoryMap.values());
     }
 
-    private void joinClick() {
-        if (null != getCategoryThatArePopulated() && null != cacheQueue.getIfPresent("queue")) {
-            Intent in = new Intent(this, QueueListActivity.class);
-            in.putExtra("list", (Serializable) getCategoryThatArePopulated());
-            in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
-            in.putExtra("title", title);
-            startActivity(in);
-        }
-    }
-
-    private void checkForSingleEntry() {
-        expandableListView.setVisibility(View.GONE);
-        ll_top_header.setVisibility(View.VISIBLE);
-
-        if ((null != getCategoryThatArePopulated() && getCategoryThatArePopulated().size() == 1) &&
-                (null != cacheQueue.getIfPresent("queue") && cacheQueue.getIfPresent("queue").size() == 1)) {
-
-            Map.Entry<String, ArrayList<BizStoreElastic>> entry = cacheQueue.getIfPresent("queue").entrySet().iterator().next();
-            ArrayList<BizStoreElastic> bizStoreElastics = entry.getValue();
-            if (bizStoreElastics.size() == 1) {
-                expandableListView.setVisibility(View.VISIBLE);
-                LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, getCategoryThatArePopulated(),
-                        cacheQueue.getIfPresent("queue"), this, true);
-                expandableListView.setAdapter(expandableListAdapter);
-                btn_join_queues.setVisibility(View.GONE);
-                ll_top_header.setVisibility(View.GONE);
-            } else {
-                // Do nothing
-            }
-        } else {
-            // Do nothing
-        }
-
-    }
-
-    public FlexboxLayoutManager getFlexBoxLayoutManager() {
-        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
-        layoutManager.setFlexDirection(FlexDirection.ROW);
-        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
-        layoutManager.setAlignItems(AlignItems.FLEX_START);
-        return layoutManager;
-    }
-
     @Override
     public void onCategoryItemClick(BizStoreElastic item) {
         Intent in = null;
@@ -442,5 +302,28 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                 startActivity(in);
             }
         }
+    }
+
+    @Override
+    public void onCategoryItemClick(JsonCategory jsonCategory) {
+        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
+        switch (bizStoreElastic.getBusinessType()) {
+            case BK: {
+                Intent in = new Intent(this, BeforeJoinActivity.class);
+                in.putExtra(IBConstant.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
+                in.putExtra(IBConstant.KEY_FROM_LIST, false);
+                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                startActivity(in);
+            }
+            break;
+            default:
+                Intent in = new Intent(this, QueueListActivity.class);
+                in.putExtra("list", (Serializable) getCategoryThatArePopulated());
+                in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
+                in.putExtra("title", title);
+                startActivity(in);
+        }
+
     }
 }
