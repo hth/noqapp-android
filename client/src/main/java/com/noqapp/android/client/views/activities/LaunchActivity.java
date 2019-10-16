@@ -251,8 +251,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 e.printStackTrace();
             }
         }
-        if(isLockMode) {
-
+        if (isLockMode) {
+            clearPreferences();
             Bundle b = new Bundle();
             b.putString(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeCodeQR());
             b.putBoolean(IBConstant.KEY_FROM_LIST, false);
