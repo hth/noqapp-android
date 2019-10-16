@@ -89,6 +89,9 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("up")
     private JsonUserPreference jsonUserPreference;
 
+    @JsonProperty("bn")
+    private String bizNameId;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -250,6 +253,15 @@ public final class JsonProfile implements Serializable {
 
     public JsonProfile setJsonUserPreference(JsonUserPreference jsonUserPreference) {
         this.jsonUserPreference = jsonUserPreference;
+        return this;
+    }
+
+    public String getBizNameId() {
+        return bizNameId;
+    }
+
+    public JsonProfile setBizNameId(String bizNameId) {
+        this.bizNameId = bizNameId;
         return this;
     }
 
