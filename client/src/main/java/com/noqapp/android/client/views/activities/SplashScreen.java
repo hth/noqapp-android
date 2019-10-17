@@ -203,7 +203,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        Log.e("Location found: ", "Location detected: Lat- " + location.getLatitude() + " Long- " + location.getLongitude());
+                        Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
                     }
                 });
     }

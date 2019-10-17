@@ -351,7 +351,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         }
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
-        LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute, LaunchActivity.getLaunchActivity().longitute);
+        LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
         String geoHash = getIntent().getStringExtra("GeoHash");
         LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(geoHash),
                 GeoHashUtils.decodeLongitude(geoHash));

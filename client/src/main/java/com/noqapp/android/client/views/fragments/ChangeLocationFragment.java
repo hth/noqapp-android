@@ -51,8 +51,8 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 log = Constants.DEFAULT_LONGITUDE;
                 city = Constants.DEFAULT_CITY;
             } else {
-                lat = LaunchActivity.getLaunchActivity().latitute;
-                log = LaunchActivity.getLaunchActivity().longitute;
+                lat = LaunchActivity.getLaunchActivity().latitude;
+                log = LaunchActivity.getLaunchActivity().longitude;
                 city = LaunchActivity.getLaunchActivity().cityName;
                 AppUtils.hideKeyBoard(getActivity());
             }
@@ -64,8 +64,8 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 log = Constants.DEFAULT_LONGITUDE;
                 city = Constants.DEFAULT_CITY;
             } else {
-                lat = LaunchActivity.getLaunchActivity().latitute;
-                log = LaunchActivity.getLaunchActivity().longitute;
+                lat = LaunchActivity.getLaunchActivity().latitude;
+                log = LaunchActivity.getLaunchActivity().longitude;
                 city = LaunchActivity.getLaunchActivity().cityName;
                 AppUtils.hideKeyBoard(getActivity());
             }
@@ -109,8 +109,8 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                     }
 //                    if (event.getRawX() <= (10+autoCompleteTextView.getLeft() + autoCompleteTextView.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
 //                        // your action here
-//                        lat = LaunchActivity.getLaunchActivity().latitute;
-//                        log = LaunchActivity.getLaunchActivity().longitute;
+//                        lat = LaunchActivity.getLaunchActivity().latitude;
+//                        log = LaunchActivity.getLaunchActivity().longitude;
 //                        city = LaunchActivity.getLaunchActivity().cityName;
 //                        autoCompleteTextView.setText(city);
 //                        getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));

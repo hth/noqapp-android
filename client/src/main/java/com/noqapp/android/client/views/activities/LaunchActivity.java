@@ -116,14 +116,14 @@ public class LaunchActivity
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static DatabaseHelper dbHandler;
     public static Locale locale;
-    public static SharedPreferences languagepref;
+    public static SharedPreferences languagePref;
     public static String language;
     private static LaunchActivity launchActivity;
     public TextView tv_location;
     public NetworkUtil networkUtil;
     public ActivityCommunicator activityCommunicator;
-    public double latitute = 0;
-    public double longitute = 0;
+    public double latitude = 0;
+    public double longitude = 0;
     public String cityName = "";
     protected ExpandableListView expandable_drawer_listView;
     private TextView tv_badge;
@@ -184,9 +184,9 @@ public class LaunchActivity
         fcmNotificationReceiver = new FcmNotificationReceiver();
         fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
         //Language setup
-        languagepref = PreferenceManager.getDefaultSharedPreferences(this);
-        languagepref.registerOnSharedPreferenceChangeListener(this);
-        language = languagepref.getString("pref_language", "");
+        languagePref = PreferenceManager.getDefaultSharedPreferences(this);
+        languagePref.registerOnSharedPreferenceChangeListener(this);
+        language = languagePref.getString("pref_language", "");
 
         if (!language.equals("")) {
             if (language.equals("hi")) {
@@ -245,9 +245,9 @@ public class LaunchActivity
         }
         if (null != getIntent().getExtras()) {
             try {
-                latitute = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
-                longitute = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
-                getAddress(latitute, longitute);
+                latitude = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
+                longitude = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
+                getAddress(latitude, longitude);
                 //updateLocationUI();
                 tv_location.setText(cityName);
             } catch (Exception e) {
@@ -269,7 +269,7 @@ public class LaunchActivity
 
     public void updateLocationUI() {
         if (null != homeFragment) {
-            homeFragment.updateUIWithNewLocation(latitute, longitute, cityName);
+            homeFragment.updateUIWithNewLocation(latitude, longitude, cityName);
             //tv_location.setText(cityName);
         }
     }
@@ -277,8 +277,8 @@ public class LaunchActivity
     public void updateLocationInfo(double lat, double lng, String city) {
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
         getSupportActionBar().show();
-        latitute = lat;
-        longitute = lng;
+        latitude = lat;
+        longitude = lng;
         cityName = city;
         tv_location.setText(cityName);
         updateLocationUI();
@@ -307,10 +307,10 @@ public class LaunchActivity
                 .config(builder.build())
                 .start(location -> {
                     if (null != location) {
-                        latitute = location.getLatitude();
-                        longitute = location.getLongitude();
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
                         Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                        getAddress(latitute, longitute);
+                        getAddress(latitude, longitude);
                         updateLocationUI();
                     }
                 });
@@ -461,7 +461,7 @@ public class LaunchActivity
     @Override
     protected void onResume() {
         super.onResume();
-        languagepref.registerOnSharedPreferenceChangeListener(this);
+        languagePref.registerOnSharedPreferenceChangeListener(this);
         updateNotificationBadgeCount();
         setUpExpandableList(UserUtils.isLogin());
         updateDrawerUI();
@@ -527,7 +527,7 @@ public class LaunchActivity
 //        if(null != fcmNotificationReceiver)
 //            fcmNotificationReceiver.unregister(this);
         super.onPause();
-        languagepref.unregisterOnSharedPreferenceChangeListener(this);
+        languagePref.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -543,7 +543,7 @@ public class LaunchActivity
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (f instanceof ChangeLocationFragment) {
-            updateLocationInfo(latitute, longitute, cityName);
+            updateLocationInfo(latitude, longitude, cityName);
             return;
         }
         long currentTime = System.currentTimeMillis();

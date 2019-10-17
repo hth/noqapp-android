@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -133,7 +132,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     private CurrentActivityAdapter.OnItemClickListener currentClickListner;
     private StoreInfoAdapter.OnItemClickListener storeListener;
     private String scrollId = "";
-    private double lat, log;
+    private double lat, lng;
     private String city = "";
     private boolean isFirstTimeUpdate = true;
     private static final String SHOWCASE_ID = "screen helper";
@@ -156,7 +155,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             if (isFirstTimeUpdate) {
                 getNearMeInfo(cityName, "" + latitude, "" + longitude);
                 lat = latitude;
-                log = longitude;
+                lng = longitude;
                 city = cityName;
                 isFirstTimeUpdate = false;
                 LaunchActivity.getLaunchActivity().tv_location.setText(city);
@@ -166,7 +165,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 tv_update.setOnClickListener((View v) -> {
                     getNearMeInfo(cityName, "" + latitude, "" + longitude);
                     lat = latitude;
-                    log = longitude;
+                    lng = longitude;
                     city = cityName;
                     LaunchActivity.getLaunchActivity().tv_location.setText(cityName);
                     cv_update_location.setVisibility(View.GONE);
@@ -178,7 +177,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         } else {
             cv_update_location.setVisibility(View.GONE);
         }
-        Log.d("Loc Data: ", "latitude: " + lat + " longitude: " + log + " city: " + city);
+        Log.d("Loc Data: ", "latitude: " + lat + " longitude: " + lng + " city: " + city);
     }
 
     @Override
@@ -284,14 +283,14 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
             lat = Constants.DEFAULT_LATITUDE;
-            log = Constants.DEFAULT_LONGITUDE;
+            lng = Constants.DEFAULT_LONGITUDE;
             city = Constants.DEFAULT_CITY;
-            getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
+            getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
         } else {
-            lat = LaunchActivity.getLaunchActivity().latitute;
-            log = LaunchActivity.getLaunchActivity().longitute;
+            lat = LaunchActivity.getLaunchActivity().latitude;
+            lng = LaunchActivity.getLaunchActivity().longitude;
             city = LaunchActivity.getLaunchActivity().cityName;
-            getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
+            getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
         }
 //        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
@@ -393,8 +392,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             }
         }
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(lat, log)));
-        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, log);
+        Collections.sort(nearMeData, new SortPlaces(new LatLng(lat, lng)));
+        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, lng);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
         scrollId = bizStoreElasticList.getScrollId();
@@ -430,8 +429,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             }
         }
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeHospital, new SortPlaces(new LatLng(lat, log)));
-        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeHospital, getActivity(), storeListener, lat, log);
+        Collections.sort(nearMeHospital, new SortPlaces(new LatLng(lat, lng)));
+        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeHospital, getActivity(), storeListener, lat, lng);
         rv_health_care.setAdapter(storeInfoAdapter);
         Log.v("NearMe Hospital", bizStoreElasticList.toString());
         scrollId = bizStoreElasticList.getScrollId();
@@ -529,7 +528,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         intent.putExtra("list", (Serializable) nearMeData);
         intent.putExtra("scrollId", scrollId);
         intent.putExtra("lat", "" + lat);
-        intent.putExtra("long", "" + log);
+        intent.putExtra("lng", "" + lng);
         intent.putExtra("city", city);
         startActivity(intent);
     }
@@ -551,7 +550,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         intent.putExtra("list", (Serializable) nearMeHospital);
         intent.putExtra("scrollId", scrollId);
         intent.putExtra("lat", "" + lat);
-        intent.putExtra("long", "" + log);
+        intent.putExtra("lng", "" + lng);
         intent.putExtra("city", city);
         startActivity(intent);
     }
@@ -562,16 +561,14 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveCurrentTokenQueue(jsonTokenAndQueueList.getTokenAndQueues());
         jsonSchedules = jsonTokenAndQueueList.getJsonScheduleList().getJsonSchedules();
-        Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
-            public int compare(JsonSchedule o1, JsonSchedule o2) {
-                try {
-                    String two = o2.getScheduleDate() + " " + AppUtils.getTimeFourDigitWithColon(o2.getStartTime());
-                    String one = o1.getScheduleDate() + " " + AppUtils.getTimeFourDigitWithColon(o1.getStartTime());
-                    return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
+        Collections.sort(jsonSchedules, (o1, o2) -> {
+            try {
+                String two = o2.getScheduleDate() + " " + AppUtils.getTimeFourDigitWithColon(o2.getStartTime());
+                String one = o1.getScheduleDate() + " " + AppUtils.getTimeFourDigitWithColon(o1.getStartTime());
+                return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
             }
         });
 
@@ -621,8 +618,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        if (null != eej)
+        if (null != eej) {
             new ErrorResponseHandler().processError(getActivity(), eej);
+        }
         pb_feed.setVisibility(View.GONE);
     }
 
@@ -654,16 +652,14 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void tokenCurrentQueueList(List<JsonTokenAndQueue> currentQueueList) {
         dismissProgress();
-        Log.d(TAG, "Current Queue Count : " + String.valueOf(currentQueueList.size()));
+        Log.d(TAG, "Current Queue Count : " + currentQueueList.size());
         if (null != getActivity() && isAdded()) {
-            Collections.sort(currentQueueList, new Comparator<JsonTokenAndQueue>() {
-                public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
-                    try {
-                        return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreateDate()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return 0;
-                    }
+            Collections.sort(currentQueueList, (o1, o2) -> {
+                try {
+                    return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreateDate()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
                 }
             });
             List<Object> temp = new ArrayList<>();
@@ -677,14 +673,12 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
             CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(temp, getActivity(), currentClickListner);
             rv_current_activity.setAdapter(currentActivityAdapter);
-            tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
+            tv_current_title.setText(getString(R.string.active_queue) + " (" + currentQueueList.size() + ")");
             currentActivityAdapter.notifyDataSetChanged();
 
-            if (null != currentQueueList && currentQueueList.size() > 0)
-                for (JsonTokenAndQueue jtq :
-                        currentQueueList) {
+            if (currentQueueList.size() > 0)
+                for (JsonTokenAndQueue jtq : currentQueueList) {
                     NoQueueMessagingService.subscribeTopics(jtq.getTopic());
-
                 }
         }
     }
@@ -692,7 +686,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void tokenHistoryQueueList(List<JsonTokenAndQueue> historyQueueList) {
         dismissProgress();
-        Log.d(TAG, ":History Queue Count:" + String.valueOf(historyQueueList.size()));
+        Log.d(TAG, ":History Queue Count:" + historyQueueList.size());
     }
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to, String title, String body) {
@@ -762,7 +756,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         Intent in_search = new Intent(getActivity(), SearchActivity.class);
         in_search.putExtra("scrollId", "");
         in_search.putExtra("lat", "" + lat);
-        in_search.putExtra("long", "" + log);
+        in_search.putExtra("lng", "" + lng);
         in_search.putExtra("city", city);
         startActivity(in_search);
     }

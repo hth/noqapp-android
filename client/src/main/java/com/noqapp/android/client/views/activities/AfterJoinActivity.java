@@ -1,32 +1,13 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
-import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
@@ -65,21 +46,41 @@ import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 /**
  * Created by chandra on 5/7/17.
@@ -217,11 +218,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                         } else {
                             switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
                                 case I:
-                                    cancelQueue();
-                                    break;
                                 case E:
-                                    cancelQueue();
-                                    break;
                                 case U:
                                     cancelQueue();
                                     break;
@@ -256,10 +253,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             if (null != jsonTokenAndQueue) {
                 currencySymbol = AppUtils.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
-                LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute,LaunchActivity.getLaunchActivity().longitute);
-                LatLng destination = new LatLng(  GeoHashUtils.decodeLatitude(jsonTokenAndQueue.getGeoHash()),
+                LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
+                LatLng destination = new LatLng(
+                        GeoHashUtils.decodeLatitude(jsonTokenAndQueue.getGeoHash()),
                         GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash()));
-                replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source,destination));
+                replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             }
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();
@@ -314,13 +312,9 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             String time = new AppUtils().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
-            tv_mobile.setOnClickListener((View v) -> {
-                AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString());
-            });
-            tv_address.setOnClickListener((View v) -> {
-                AppUtils.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
-            });
-            gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
+            tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString()));
+            tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString()));
+            gotoPerson = (null != ReviewDB.getValue(codeQR, tokenValue)) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
             tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
@@ -330,7 +324,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
             if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
-                    setProgressMessage("Fetching Queue data..");
+                    setProgressMessage("Fetching Queue data...");
                     showProgress();
                     queueApiAuthenticCall.purchaseOrder(
                             UserUtils.getDeviceId(),

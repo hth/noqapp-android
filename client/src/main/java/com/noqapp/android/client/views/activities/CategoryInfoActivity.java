@@ -238,7 +238,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitute, LaunchActivity.getLaunchActivity().longitute);
+            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
             LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
                     GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
             replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));

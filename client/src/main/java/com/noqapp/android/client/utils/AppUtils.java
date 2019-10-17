@@ -55,7 +55,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -192,18 +191,18 @@ public class AppUtils extends CommonHelper {
             if (language.equals("en")) {
                 LaunchActivity.language = "en_US";
                 LaunchActivity.locale = Locale.ENGLISH;
-                LaunchActivity.languagepref.edit()
+                LaunchActivity.languagePref.edit()
                         .putString("pref_language", "en").apply();
             } else {
                 LaunchActivity.language = "hi";
                 LaunchActivity.locale = new Locale("hi");
-                LaunchActivity.languagepref.edit()
+                LaunchActivity.languagePref.edit()
                         .putString("pref_language", "hi").apply();
             }
         } else {
             LaunchActivity.language = "en_US";
             LaunchActivity.locale = Locale.ENGLISH;
-            LaunchActivity.languagepref.edit()
+            LaunchActivity.languagePref.edit()
                     .putString("pref_language", "en").apply();
         }
     }

@@ -32,14 +32,13 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
             listData = new ArrayList<>();
         String city = getIntent().getStringExtra("city");
         String lat = getIntent().getStringExtra("lat");
-        String longitute = getIntent().getStringExtra("long");
+        String lng = getIntent().getStringExtra("lng");
         rv_merchant_around_you.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        rv_merchant_around_you.setLayoutManager(horizontalLayoutManager);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
-        StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this, Double.parseDouble(lat), Double.parseDouble(longitute));
+        StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this, Double.parseDouble(lat), Double.parseDouble(lng));
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
 
     }

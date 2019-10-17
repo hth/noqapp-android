@@ -69,8 +69,8 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
                 location.setCityName(Constants.DEFAULT_CITY);
                 tv_location_enable.setVisibility(View.VISIBLE);
             } else {
-                location.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().latitute));
-                location.setLongitude(String.valueOf(LaunchActivity.getLaunchActivity().longitute));
+                location.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().latitude));
+                location.setLongitude(String.valueOf(LaunchActivity.getLaunchActivity().longitude));
                 location.setCityName(LaunchActivity.getLaunchActivity().cityName);
                 tv_location_enable.setVisibility(View.GONE);
             }
