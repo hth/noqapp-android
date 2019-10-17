@@ -10,6 +10,7 @@ import org.joda.time.Months;
 import org.joda.time.Years;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -341,6 +343,26 @@ public class CommonHelper {
 
     public static int getDrawableFromString(String val,Context context){
         return context.getResources().getIdentifier(val, "drawable", context.getPackageName());
+    }
+
+
+    /**
+     * Method checks if the app is in background or not
+     */
+    public static boolean isAppIsInBackground(Context context) {
+        boolean isInBackground = true;
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+            if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                for (String activeProcess : processInfo.pkgList) {
+                    if (activeProcess.equals(context.getPackageName())) {
+                        isInBackground = false;
+                    }
+                }
+            }
+        }
+        return isInBackground;
     }
 
 }

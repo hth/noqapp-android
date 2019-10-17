@@ -1,11 +1,9 @@
 package com.noqapp.android.client.network;
 
-import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +13,6 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -40,6 +37,7 @@ import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.MyApplication;
@@ -79,6 +77,7 @@ import static com.noqapp.android.client.utils.Constants.TOKEN;
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private final static String TAG = NoQueueMessagingService.class.getSimpleName();
+
     public NoQueueMessagingService() {
     }
 
@@ -206,7 +205,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     // object = null;
             }
             try {
-                if (!isAppIsInBackground(getApplicationContext())) {
+                if (!AppUtils.isAppIsInBackground(getApplicationContext())) {
                     // app is in foreground, broadcast the push message
                     Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                     pushNotification.putExtra("object", (Serializable) object);
@@ -423,32 +422,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         new CreateBigImageNotification(title, messageBody, imageUrl, isVibrate).execute();
     }
 
-    /**
-     * Method checks if the app is in background or not
-     */
-    private boolean isAppIsInBackground(Context context) {
-        boolean isInBackground = true;
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    for (String activeProcess : processInfo.pkgList) {
-                        if (activeProcess.equals(context.getPackageName())) {
-                            isInBackground = false;
-                        }
-                    }
-                }
-            }
-        } else {
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            ComponentName componentInfo = taskInfo.get(0).topActivity;
-            if (componentInfo.getPackageName().equals(context.getPackageName())) {
-                isInBackground = false;
-            }
-        }
-        return isInBackground;
-    }
 
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
@@ -527,7 +500,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
                 int importance = MyApplication.isNotificationSoundEnable() ?
-                        NotificationManager.IMPORTANCE_HIGH:NotificationManager.IMPORTANCE_LOW;
+                        NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel(
                         channelId, channelName, importance);
                 notificationManager.createNotificationChannel(mChannel);
@@ -544,7 +517,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     .setLights(Color.parseColor("#ffb400"), 50, 10);
             if (MyApplication.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri);
-            }else{
+            } else {
                 mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
             }
             if (bitmap != null) {
@@ -621,7 +594,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
                 int importance = MyApplication.isNotificationSoundEnable() ?
-                        NotificationManager.IMPORTANCE_HIGH:NotificationManager.IMPORTANCE_LOW;
+                        NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel(
                         channelId, channelName, importance);
                 notificationManager.createNotificationChannel(mChannel);
@@ -638,7 +611,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     .setLights(Color.parseColor("#ffb400"), 50, 10);
             if (MyApplication.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri);
-            }else{
+            } else {
                 mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
             }
             if (bitmap != null) {
