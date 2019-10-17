@@ -56,6 +56,9 @@ public class JsonFeed extends AbstractDomain implements Parcelable {
     @JsonProperty("wp")
     private String webProfileId;
 
+    public JsonFeed() {
+    }
+
     protected JsonFeed(Parcel in) {
         title = in.readString();
         content = in.readString();
