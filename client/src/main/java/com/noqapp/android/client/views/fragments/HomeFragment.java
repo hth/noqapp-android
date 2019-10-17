@@ -664,13 +664,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 }
             });
             List<Object> temp = new ArrayList<>();
-            for (int i = 0; i < currentQueueList.size(); i++) {
-                temp.add(currentQueueList.get(i));
-            }
-
-            for (int j = 0; j < jsonSchedules.size(); j++) {
-                temp.add(jsonSchedules.get(j));
-            }
+            temp.addAll(currentQueueList);
+            temp.addAll(jsonSchedules);
 
             CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(temp, getActivity(), currentClickListner);
             rv_current_activity.setAdapter(currentActivityAdapter);
