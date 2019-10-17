@@ -1,49 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.Manifest;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -93,21 +49,64 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
+import android.Manifest;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter,
         AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -162,7 +161,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             Constants.DEFAULT_LONGITUDE = 122.4194;
             Constants.DEFAULT_CITY = "San Francisco";
             Constants.DEFAULT_COUNTRY_CODE = "US";
-            DISTANCE_UNIT = "miles";
+            DISTANCE_UNIT = "mi";
         }
 
         //NoQueueBaseActivity.saveMailAuth("","");
@@ -175,7 +174,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 NoQueueBaseActivity.setDeviceID(getIntent().getStringExtra("deviceId"));
             }
         }
-        Log.v("device id check", getDeviceID());
+        Log.v("Device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
         fcmNotificationReceiver = new FcmNotificationReceiver();
@@ -271,19 +270,19 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
     }
 
-    public void updateLocationInfo(double lat, double log, String city) {
+    public void updateLocationInfo(double lat, double lng, String city) {
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
         getSupportActionBar().show();
         latitute = lat;
-        longitute = log;
+        longitute = lng;
         cityName = city;
         tv_location.setText(cityName);
         updateLocationUI();
     }
 
     private void callLocationManager() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         ) {
             ActivityCompat.requestPermissions(this, new String[]{PermissionUtils.LOCATION_PERMISSION}, PermissionUtils.PERMISSION_REQUEST_LOCATION);
             return;
@@ -306,7 +305,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     if (null != location) {
                         latitute = location.getLatitude();
                         longitute = location.getLongitude();
-                        Log.e("Location found: ", "Location detected: Lat- " + location.getLatitude() + " Long- " + location.getLongitude());
+                        Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
                         getAddress(latitute, longitute);
                         updateLocationUI();
                     }
@@ -1282,7 +1281,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
 
     public boolean isCountryIndia() {
-        return (COUNTRY_CODE.equalsIgnoreCase("India") ||
-                COUNTRY_CODE.equalsIgnoreCase("IN"));
+        return (COUNTRY_CODE.equalsIgnoreCase("India")
+                || COUNTRY_CODE.equalsIgnoreCase("IN"));
     }
 }

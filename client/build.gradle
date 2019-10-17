@@ -427,7 +427,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    implementation 'com.google.android.gms:play-services-vision:18.0.0'
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
@@ -436,7 +436,7 @@ dependencies {
     implementation('com.crashlytics.sdk.android:answers:1.4.7@aar') {
         transitive = true
     }
-    implementation 'com.airbnb.android:lottie:3.0.7'
+    implementation 'com.airbnb.android:lottie:3.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'androidx.multidex:multidex:2.0.1'
