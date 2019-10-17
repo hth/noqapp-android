@@ -91,10 +91,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMarkerPoints.add(point);
         MarkerOptions options = new MarkerOptions();
         options.position(point);
-        /**
-         * For the start location, the color of marker is GREEN and
-         * for the end location, the color of marker is RED.
-         */
+        /* For the start location, the color of marker is GREEN and for the end location, the color of marker is RED. */
         if (mMarkerPoints.size() == 1) {
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         } else if (mMarkerPoints.size() == 2) {
