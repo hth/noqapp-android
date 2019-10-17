@@ -36,12 +36,7 @@ public class FeedActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mToolbar.setNavigationIcon(R.drawable.ic_back_new);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        mToolbar.setNavigationOnClickListener(v -> finish());
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(" ");
 
@@ -49,7 +44,7 @@ public class FeedActivity extends AppCompatActivity {
         ImageView iv_bg = findViewById(R.id.expandedImage);
         TextView tv_details = findViewById(R.id.tv_details);
         TextView tv_title = findViewById(R.id.tv_title);
-        final JsonFeed jsonFeed = (JsonFeed) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
+        final JsonFeed jsonFeed = getIntent().getParcelableExtra(IBConstant.KEY_DATA_OBJECT);
         tv_title.setText(jsonFeed.getTitle());
         RelativeLayout rl_author = findViewById(R.id.rl_author);
         if (TextUtils.isEmpty(jsonFeed.getAuthor())) {
@@ -87,6 +82,7 @@ public class FeedActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_favourite, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

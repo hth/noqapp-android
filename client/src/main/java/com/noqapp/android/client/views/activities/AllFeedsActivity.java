@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +27,7 @@ public class AllFeedsActivity extends BaseActivity implements FeedAdapter.OnItem
         rv_feed.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv_feed.setItemAnimator(new DefaultItemAnimator());
         tv_toolbar_title.setText(getString(R.string.screen_all_feeds));
-        ArrayList<JsonFeed> listData = (ArrayList<JsonFeed>) getIntent().getExtras().getSerializable("list");
+        ArrayList<JsonFeed> listData = getIntent().getExtras().getParcelableArrayList("list");
         if (null == listData)
             listData = new ArrayList<>();
         FeedAdapter feedAdapter = new FeedAdapter(listData, this, this, true);
