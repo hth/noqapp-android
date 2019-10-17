@@ -149,6 +149,7 @@
         <activity
             android:name=".views.activities.CategoryInfoKioskModeActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".views.activities.BeforeJoinActivity"

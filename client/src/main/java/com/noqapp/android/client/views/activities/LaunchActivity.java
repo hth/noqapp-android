@@ -254,6 +254,10 @@ public class LaunchActivity
                 e.printStackTrace();
             }
         }
+        setKioskMode();
+    }
+
+    private void setKioskMode(){
         if (isLockMode) {
             clearPreferences();
             Bundle b = new Bundle();
@@ -355,6 +359,8 @@ public class LaunchActivity
                 }
             }
         }
+        //Toast.makeText(launchActivity, "New Intent called", Toast.LENGTH_SHORT).show();
+        setKioskMode();
     }
 
     @Override
