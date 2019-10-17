@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -160,6 +161,15 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         });
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         initActionsViews(true);
+        iv_home.setOnClickListener((View v) -> {
+            Intent goToA = new Intent(OrderConfirmActivity.this, LaunchActivity.class);
+            if (LaunchActivity.isLockMode) {
+                goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            } else {
+                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            }
+            startActivity(goToA);
+        });
         purchaseOrderApiCall = new PurchaseOrderApiCall(this);
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         tv_store_name.setText(getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));

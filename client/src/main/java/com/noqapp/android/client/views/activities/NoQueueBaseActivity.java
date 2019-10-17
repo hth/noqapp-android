@@ -35,6 +35,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
     private static final String PREKEY_IS_KIOSK_MODE = "isKioskMode";
     private static final String PREKEY_KIOSK_MODE_CODE_QR = "kioskModeCodeQR";
+    private static final String PREKEY_IS_KIOSK_MODE_LEVEL_UP = "kioskModeIsLevelUp";
 
 
     private static final String KEY_SHOW_HELPER = "showHelper";
@@ -112,6 +113,14 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static void setKioskModeEnable(boolean check) {
         sharedPreferences.edit().putBoolean(PREKEY_IS_KIOSK_MODE, check).apply();
+    }
+
+    public static boolean isKioskModeLevelUp() {
+        return sharedPreferences.getBoolean(NoQueueBaseActivity.PREKEY_IS_KIOSK_MODE_LEVEL_UP, false);
+    }
+
+    public static void setKioskModeLevelUp(boolean check) {
+        sharedPreferences.edit().putBoolean(PREKEY_IS_KIOSK_MODE_LEVEL_UP, check).apply();
     }
 
     public static String getKioskModeCodeQR() {
@@ -213,7 +222,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         String previousUserQID = getPreviousUserQID();
         boolean showHelper = getShowHelper();
         boolean isKioskModeEnable = isKioskModeEnable();
-        String  kioskModeCodeQR = getKioskModeCodeQR();
+        boolean isKioskModeLevelUp = isKioskModeLevelUp();
+        String kioskModeCodeQR = getKioskModeCodeQR();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(APIConstant.Key.XR_DID, did);
@@ -222,6 +232,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
         editor.putString(PREKEY_KIOSK_MODE_CODE_QR, kioskModeCodeQR);
         editor.putBoolean(PREKEY_IS_KIOSK_MODE, isKioskModeEnable);
+        editor.putBoolean(PREKEY_IS_KIOSK_MODE_LEVEL_UP, isKioskModeLevelUp);
         editor.commit();
         if (null != LaunchActivity.getLaunchActivity()) {
             LaunchActivity.getLaunchActivity().updateDrawerUI();

@@ -3,9 +3,7 @@ package com.noqapp.android.client.views.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -24,7 +22,6 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.StoreDetailApiCalls;
 import com.noqapp.android.client.presenter.StorePresenter;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.utils.AppUtils;
@@ -32,7 +29,6 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.StoreProductMenuAdapter;
@@ -49,13 +45,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StoreWithMenuActivity extends BaseActivity implements StorePresenter,
+public class StoreWithMenuKioskActivity extends BaseActivity implements StorePresenter,
         MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_store_name, tv_store_address;
-    private BizStoreElastic bizStoreElastic;
-    private TextView tv_rating, tv_rating_review;
+    private TextView tv_store_name;
     private ImageView iv_category_banner;
     private View view_loader;
 
@@ -68,20 +62,16 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
     private View stickyViewSpacer;
     private View frame_collapsible;
     private LinearLayout ll_header;
+    private String codeQR = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_store_with_menu);
+        setContentView(R.layout.act_store_with_menu_kiosk);
         initActionsViews(false);
         tv_store_name = findViewById(R.id.tv_store_name);
-        tv_store_address = findViewById(R.id.tv_store_address);
-        TextView tv_view_more = findViewById(R.id.tv_view_more);
         frame_collapsible = findViewById(R.id.frame_collapsible);
-        //tv_menu = findViewById(R.id.tv_menu);
-        tv_rating_review = findViewById(R.id.tv_rating_review);
-        tv_rating = findViewById(R.id.tv_rating);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         view_loader = findViewById(R.id.view_loader);
         rcv_header = findViewById(R.id.rcv_header);
@@ -94,35 +84,11 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         stickyViewSpacer = listHeader.findViewById(R.id.stickyViewPlaceholder);
         expandableListView.addHeaderView(listHeader);
 
-
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
-
-        tv_view_more.setOnClickListener(v -> {
-            Intent intent1 = new Intent(StoreWithMenuActivity.this, StoreDetailActivity.class);
-            Bundle bundle12 = new Bundle();
-            bundle12.putSerializable("BizStoreElastic", bizStoreElastic);
-            intent1.putExtras(bundle12);
-            startActivity(intent1);
-        });
-
-        tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        tv_rating_review.setOnClickListener(v -> {
-            if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
-                Intent in = new Intent(StoreWithMenuActivity.this, AllReviewsActivity.class);
-                Bundle bundle1 = new Bundle();
-                bundle1.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
-                bundle1.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
-                bundle1.putString(IBConstant.KEY_STORE_ADDRESS, tv_store_address.getText().toString());
-                in.putExtras(bundle1);
-                startActivity(in);
-            }
-        });
-        setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
+        codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
+        setProgressMessage("Loading ...");
         if (NetworkUtils.isConnectingToInternet(this)) {
             showProgress();
-            new StoreDetailApiCalls(this).getStoreDetail(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+            new StoreDetailApiCalls(this).getStoreDetail(UserUtils.getDeviceId(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -145,65 +111,19 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         view_loader.setVisibility(View.GONE);
         jsonQueue = jsonStore.getJsonQueue();
         currencySymbol = AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName());
-        tv_store_address.setText(AppUtils.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_toolbar_title.setText(jsonQueue.getDisplayName());
-        tv_rating.setText(String.valueOf(AppUtils.round(jsonQueue.getRating())));
-        if (tv_rating.getText().toString().equals("0.0")) {
-            tv_rating.setVisibility(View.INVISIBLE);
-        } else {
-            tv_rating.setVisibility(View.VISIBLE);
+        ArrayList<String> storeServiceImages = new ArrayList<>(jsonQueue.getStoreServiceImages());
+        for (int i = 0; i < storeServiceImages.size(); i++) {
+            storeServiceImages.set(i, jsonQueue.getCodeQR() + "/" + storeServiceImages.get(i));
         }
-        if (jsonQueue.getReviewCount() == 0) {
-            tv_rating_review.setText("No Review");
-            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-        } else if (jsonQueue.getReviewCount() == 1) {
-            tv_rating_review.setText("1 Review");
-        } else {
-            tv_rating_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
-        }
-
-        TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-//        if (null != LaunchActivity.getUserProfile()
-//                && null != LaunchActivity.getUserProfile().getBizNameId()
-//                && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
-            // added logic from profile
-            tv_enable_kiosk.setVisibility(View.VISIBLE);
-            tv_enable_kiosk.setOnClickListener(v -> {
-                ShowCustomDialog showDialog = new ShowCustomDialog(StoreWithMenuActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        LaunchActivity.isLockMode = true;
-                        NoQueueBaseActivity.setKioskModeEnable(true);
-                        NoQueueBaseActivity.setKioskModeLevelUp(false);
-                        NoQueueBaseActivity.setKioskModeCodeQR(jsonQueue.getCodeQR());
-                        NoQueueBaseActivity.clearPreferences();
-
-                        Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR,bizStoreElastic.getCodeQR());
-                        startActivity(in);
-                        finish();
-                    }
-
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Kiosk Mode", "Continue to launch Kiosk Mode?");
-            });
-//        } else {
-//            tv_enable_kiosk.setVisibility(View.GONE);
-//        }
-
-        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
+        if (storeServiceImages.size() > 0) {
             Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonQueue.getCodeQR() + "/" + storeServiceImages.get(0)))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
                     .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(iv_category_banner);
-        else {
+        } else {
             Picasso.get().load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
         }
 
@@ -351,7 +271,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                                 .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
-                        Intent intent = new Intent(StoreWithMenuActivity.this, OrderActivity.class);
+                        Intent intent = new Intent(StoreWithMenuKioskActivity.this, OrderActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable(IBConstant.KEY_DATA, jsonPurchaseOrder);
                         bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
@@ -364,18 +284,17 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                         intent.putExtras(bundle);
                         startActivity(intent);
                     } else {
-                        new CustomToast().showToast(StoreWithMenuActivity.this, "Minimum cart amount is " + jsonQueue.getMinimumDeliveryOrder());
+                        new CustomToast().showToast(StoreWithMenuKioskActivity.this, "Minimum cart amount is " + jsonQueue.getMinimumDeliveryOrder());
                     }
                 } else {
-                    ShowAlertInformation.showNetworkDialog(StoreWithMenuActivity.this);
+                    ShowAlertInformation.showNetworkDialog(StoreWithMenuKioskActivity.this);
                 }
             } else {
                 // Navigate to login screen
-                Intent loginIntent = new Intent(StoreWithMenuActivity.this, LoginActivity.class);
+                Intent loginIntent = new Intent(StoreWithMenuKioskActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
             }
         });
-        tv_enable_kiosk.performClick();
     }
 
     @Override
