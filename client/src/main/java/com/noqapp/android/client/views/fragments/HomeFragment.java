@@ -151,7 +151,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
         if (latitude != 0.0 && latitude != Constants.DEFAULT_LATITUDE && Double.compare(lat, latitude) != 0 && !cityName.equals(city)) {
             if (isFirstTimeUpdate) {
-                getNearMeInfo(cityName, "" + latitude, "" + longitude);
+                getNearMeInfo(cityName, String.valueOf(latitude), String.valueOf(longitude));
                 lat = latitude;
                 lng = longitude;
                 city = cityName;
@@ -161,7 +161,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 // LaunchActivity.getLaunchActivity().tv_location.setText(city);
                 cv_update_location.setVisibility(View.VISIBLE);
                 tv_update.setOnClickListener((View v) -> {
-                    getNearMeInfo(cityName, "" + latitude, "" + longitude);
+                    getNearMeInfo(cityName, String.valueOf(latitude), String.valueOf(longitude));
                     lat = latitude;
                     lng = longitude;
                     city = cityName;
@@ -216,7 +216,6 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         rv_feed.setHasFixedSize(true);
         rv_feed.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_feed.setItemAnimator(new DefaultItemAnimator());
-
 
         rv_events.setHasFixedSize(true);
         rv_events.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
