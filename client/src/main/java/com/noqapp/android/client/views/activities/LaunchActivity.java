@@ -59,6 +59,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import org.apache.commons.lang3.StringUtils;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -82,6 +83,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -821,12 +823,33 @@ public class LaunchActivity
     }
 
     public void reCreateDeviceID() {
-        String deviceId = UUID.randomUUID().toString().toUpperCase();
-        Log.d(TAG, "Re-Created deviceId=" + deviceId);
-        NoQueueBaseActivity.setDeviceID(deviceId);
-        DeviceApiCall deviceModel = new DeviceApiCall();
-        deviceModel.setDeviceRegisterPresenter(this);
-        deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
+        if (new NetworkUtil(this).isOnline()) {
+            String deviceId = UUID.randomUUID().toString().toUpperCase();
+            Log.d(TAG, "Re-Created deviceId=" + deviceId);
+            NoQueueBaseActivity.setDeviceID(deviceId);
+            DeviceApiCall deviceModel = new DeviceApiCall();
+            deviceModel.setDeviceRegisterPresenter(this);
+            deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+            tvTitle.setText(getString(R.string.networkerror));
+            tv_msg.setText(getString(R.string.offline));
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                finish();
+            });
+            mAlertDialog.show();
+            Log.w(TAG, "No network found");
+        }
     }
 
     @Override

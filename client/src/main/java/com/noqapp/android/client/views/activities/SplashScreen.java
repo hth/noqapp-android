@@ -1,5 +1,24 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.DeviceApiCall;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.utils.NetworkUtil;
+import com.noqapp.android.common.utils.PermissionUtils;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import com.crashlytics.android.Crashlytics;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,38 +34,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.model.DeviceApiCall;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
-import com.noqapp.android.common.utils.NetworkUtil;
-import com.noqapp.android.common.utils.PermissionUtils;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.UUID;
-
 import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
+
+import java.util.UUID;
 
 ///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
 public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
@@ -99,6 +96,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 finish();
             });
             mAlertDialog.show();
+            Log.w(TAG, "No network found");
         }
     }
 
@@ -124,21 +122,42 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     }
 
     private void sendRegistrationToServer(String refreshToken) {
-        DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion());
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
-        deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
-        if (StringUtils.isBlank(deviceId)) {
-            deviceId = UUID.randomUUID().toString().toUpperCase();
-            Log.d(TAG, "Created deviceId=" + deviceId);
-            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
-            //Call this api only once in life time
-            DeviceApiCall deviceModel = new DeviceApiCall();
-            deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(deviceId, deviceToken);
+        if (new NetworkUtil(this).isOnline()) {
+            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion());
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
+            deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
+            if (StringUtils.isBlank(deviceId)) {
+                deviceId = UUID.randomUUID().toString().toUpperCase();
+                Log.d(TAG, "Created deviceId=" + deviceId);
+                sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
+                //Call this api only once in life time
+                DeviceApiCall deviceModel = new DeviceApiCall();
+                deviceModel.setDeviceRegisterPresenter(this);
+                deviceModel.register(deviceId, deviceToken);
+            } else {
+                Log.e("Launch", "launching from sendRegistrationToServer");
+                Log.d(TAG, "Exist deviceId=" + deviceId);
+                callLaunchScreen();
+            }
         } else {
-            Log.e("Launch", "launching from sendRegistrationToServer");
-            Log.d(TAG, "Exist deviceId=" + deviceId);
-            callLaunchScreen();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+            tvTitle.setText(getString(R.string.networkerror));
+            tv_msg.setText(getString(R.string.offline));
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                finish();
+            });
+            mAlertDialog.show();
+            Log.w(TAG, "No network found");
         }
     }
 
@@ -261,5 +280,4 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             splashScreen.finish();
         }
     }
-
 }
