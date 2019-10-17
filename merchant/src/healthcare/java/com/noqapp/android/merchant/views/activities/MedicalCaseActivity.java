@@ -477,13 +477,11 @@ public class MedicalCaseActivity extends BaseActivity implements
     private void setupViewPager() {
         initLists();
         primaryCheckupFragment = new PrimaryCheckupFragment();
-        Bundle bppf = new Bundle();
-        bppf.putString("qUserId", jsonQueuedPerson.getQueueUserId());
-        bppf.putString("qCodeQR", codeQR);
-
-        //TODO fix typo
-        bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
-        primaryCheckupFragment.setArguments(bppf);
+        Bundle b = new Bundle();
+        b.putString("qUserId", jsonQueuedPerson.getQueueUserId());
+        b.putString("qCodeQR", codeQR);
+        b.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
+        primaryCheckupFragment.setArguments(b);
         symptomsTabFragment = new SymptomsTabFragment();
         examinationTabFragment = new ExaminationTabFragment();
         labTestsFragment = new LabTestsFragment();
