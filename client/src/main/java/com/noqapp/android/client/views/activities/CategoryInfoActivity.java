@@ -407,6 +407,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             in.putExtra("list", (Serializable) getCategoryThatArePopulated());
             in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
             in.putExtra("title", title);
+            in.putExtra("position", 0);
             startActivity(in);
         }
     }

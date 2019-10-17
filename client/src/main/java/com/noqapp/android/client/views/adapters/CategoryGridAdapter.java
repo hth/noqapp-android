@@ -71,7 +71,7 @@ public class CategoryGridAdapter extends RecyclerView.Adapter {
                     .into(Vholder.iv_main);
         }
         Vholder.card_view.setOnClickListener((View v) -> {
-            listener.onCategoryItemClick(jsonCategory);
+            listener.onCategoryItemClick(jsonCategory, position);
         });
     }
 
@@ -81,7 +81,7 @@ public class CategoryGridAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onCategoryItemClick(JsonCategory jsonCategory);
+        void onCategoryItemClick(JsonCategory jsonCategory, int pos);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

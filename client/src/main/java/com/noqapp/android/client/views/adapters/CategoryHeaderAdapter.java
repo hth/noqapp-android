@@ -24,10 +24,11 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter {
     private int selected_pos = 0;
 
     public CategoryHeaderAdapter(Context context, List<JsonCategory> categories,
-                                 OnItemClickListener listener) {
+                                 OnItemClickListener listener, int selected_pos) {
         this.categories = categories;
         this.context = context;
         this.listener = listener;
+        this.selected_pos = selected_pos;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder Vholder, final int position) {
         ViewHolder holder = (ViewHolder) Vholder;
         final JsonCategory jsonCategory = categories.get(position);
-        holder.tv_menu_header.setOnClickListener((View v) -> {
+        holder.ll_header.setOnClickListener((View v) -> {
             listener.onCategoryItemClick(position, jsonCategory);
         });
         holder.tv_menu_header.setText(jsonCategory.getCategoryName());

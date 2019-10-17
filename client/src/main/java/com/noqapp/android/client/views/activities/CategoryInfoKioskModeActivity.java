@@ -1,11 +1,9 @@
 package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -55,17 +53,12 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
     private final String QUEUE = "queue";
     private final String CATEGORY = "category";
     private TextView tv_store_name;
-    private TextView tv_rating_review;
-    private TextView tv_rating;
     private RecyclerView rv_categories;
     private ImageView iv_category_banner;
     private String codeQR;
     private BizStoreElastic bizStoreElastic;
-    private float rating = 0;
-    private int reviewCount = 0;
     private String title = "";
     private View view_loader;
-    private LinearLayout ll_top_header;
     private CategoryGridAdapter.OnItemClickListener listener;
 
     @Override
@@ -74,11 +67,8 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info_kiosk);
         tv_store_name = findViewById(R.id.tv_store_name);
-        tv_rating_review = findViewById(R.id.tv_rating_review);
-        tv_rating = findViewById(R.id.tv_rating);
         rv_categories = findViewById(R.id.rv_categories);
         iv_category_banner = findViewById(R.id.iv_category_banner);
-        ll_top_header = findViewById(R.id.ll_top_header);
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
         actionbarBack.setOnClickListener(null);
@@ -142,14 +132,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
-            tv_rating.setText(AppUtils.round(rating) + " -");
-            if (tv_rating.getText().toString().equals("0.0")) {
-                tv_rating.setVisibility(View.INVISIBLE);
-            } else {
-                tv_rating.setVisibility(View.VISIBLE);
-            }
-            tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
-            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             codeQR = bizStoreElastic.getCodeQR();
 
             Picasso.get()
@@ -157,10 +139,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
                     .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(iv_category_banner);
-            List<String> storeServiceImages = new ArrayList<>();
-            // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
-                storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
                 // load first image default
                 Picasso.get()
                         .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
@@ -169,14 +148,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                         .into(iv_category_banner);
             }
 
-            if (null != storeServiceImages && storeServiceImages.size() > 0) {
-                iv_category_banner.setOnClickListener((View v) -> {
-                    Intent intent = new Intent(CategoryInfoKioskModeActivity.this, SliderActivity.class);
-                    intent.putExtra("pos", 0);
-                    intent.putExtra("imageurls", (ArrayList<String>) bizStoreElastic.getBizServiceImages());
-                    startActivity(intent);
-                });
-            }
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
                     tv_toolbar_title.setText("Medical");
@@ -249,8 +220,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                 }
             }
         }
-        rating = ratingQueue / queueWithRating;
-        reviewCount = ratingCountQueue;
         cacheQueue.put(QUEUE, queueMap);
     }
 
@@ -305,7 +274,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
     }
 
     @Override
-    public void onCategoryItemClick(JsonCategory jsonCategory) {
+    public void onCategoryItemClick(JsonCategory jsonCategory, int pos) {
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
         Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
         switch (bizStoreElastic.getBusinessType()) {
@@ -322,6 +291,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                 in.putExtra("list", (Serializable) getCategoryThatArePopulated());
                 in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
                 in.putExtra("title", title);
+                in.putExtra("position", pos);
                 startActivity(in);
         }
 
