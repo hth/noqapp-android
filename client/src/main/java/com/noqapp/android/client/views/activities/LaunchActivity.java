@@ -108,8 +108,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter,
-        AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity
+        extends NoQueueBaseActivity
+        implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static DatabaseHelper dbHandler;
     public static Locale locale;
@@ -155,7 +156,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
         COUNTRY_CODE = getCountryCode();
-        Log.e("Country Code: ", COUNTRY_CODE);
+        Log.i(TAG, "Country Code: " + COUNTRY_CODE);
+
         if (!isCountryIndia()) {
             Constants.DEFAULT_LATITUDE = 37.7749;
             Constants.DEFAULT_LONGITUDE = 122.4194;
@@ -1250,17 +1252,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         try {
             LocationManager locationManager = (LocationManager) launchActivity.getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null) {
-                Location location = locationManager
-                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location == null) {
-                    location = locationManager
-                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 }
                 Geocoder gcd = new Geocoder(context, Locale.getDefault());
                 List<Address> addresses;
                 try {
-                    addresses = gcd.getFromLocation(location.getLatitude(),
-                            location.getLongitude(), 1);
+                    addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (addresses != null && !addresses.isEmpty()) {
                         return addresses.get(0).getCountryName();
                     } else {
