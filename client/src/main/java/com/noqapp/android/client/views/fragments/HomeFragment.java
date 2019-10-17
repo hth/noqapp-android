@@ -1,28 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
@@ -88,15 +65,36 @@ import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class HomeFragment extends ScannerFragment implements View.OnClickListener,
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
@@ -224,14 +222,17 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         rv_events.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_events.setItemAnimator(new DefaultItemAnimator());
         if (!LaunchActivity.getLaunchActivity().isCountryIndia()) {
-            TextView tv_merchant_title = view.findViewById(R.id.tv_merchant_title);
-            LinearLayout rl_feed = view.findViewById(R.id.rl_feed);
-            LinearLayout rl_health_care = view.findViewById(R.id.rl_health_care);
-            rl_feed.setVisibility(View.GONE);
-            rl_health_care.setVisibility(View.GONE);
-            tv_merchant_title.setText("Merchant Around You");
-        }
+            if (AppUtils.isRelease()) {
+                LinearLayout rl_health_care = view.findViewById(R.id.rl_health_care);
+                rl_health_care.setVisibility(View.GONE);
+            }
 
+            TextView tv_merchant_title = view.findViewById(R.id.tv_merchant_title);
+            tv_merchant_title.setText("Merchant Around You");
+
+            LinearLayout rl_feed = view.findViewById(R.id.rl_feed);
+            rl_feed.setVisibility(View.GONE);
+        }
 
         return view;
     }

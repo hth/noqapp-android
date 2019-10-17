@@ -68,6 +68,5 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
         in.putExtra("medicalProfile", medicalProfile);
         in.putExtra("jsonProfile", jsonProfile);
         startActivity(in);
-
     }
 }

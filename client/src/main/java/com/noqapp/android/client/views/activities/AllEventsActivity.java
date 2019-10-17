@@ -30,8 +30,9 @@ public class AllEventsActivity extends BaseActivity implements EventsAdapter.OnI
         rv_feed.setItemAnimator(new DefaultItemAnimator());
         tv_toolbar_title.setText(getString(R.string.screen_all_events));
         ArrayList<JsonAdvertisement> listData = (ArrayList<JsonAdvertisement>) getIntent().getExtras().getSerializable("list");
-        if (null == listData)
+        if (null == listData) {
             listData = new ArrayList<>();
+        }
         EventsAdapter eventsAdapter = new EventsAdapter(listData, this, true);
         rv_feed.setAdapter(eventsAdapter);
     }
