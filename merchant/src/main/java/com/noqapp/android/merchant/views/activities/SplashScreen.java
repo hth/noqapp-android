@@ -53,15 +53,12 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
         animationView.playAnimation();
         animationView.loop(true);
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                Log.e("newToken", newToken);
-                fcmToken = newToken;
-                Log.d(BaseLaunchActivity.class.getSimpleName(), "FCM Token=" + fcmToken);
-                sendRegistrationToServer(fcmToken);
-            }
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+            String newToken = instanceIdResult.getToken();
+            Log.e("newToken", newToken);
+            fcmToken = newToken;
+            Log.d(BaseLaunchActivity.class.getSimpleName(), "FCM Token=" + fcmToken);
+            sendRegistrationToServer(fcmToken);
         });
 
         if (StringUtils.isBlank(fcmToken) && new NetworkUtil(this).isNotOnline()) {

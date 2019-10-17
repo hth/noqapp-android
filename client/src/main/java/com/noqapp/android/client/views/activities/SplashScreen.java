@@ -15,6 +15,7 @@ import com.noqapp.android.common.utils.PermissionUtils;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.crashlytics.android.Crashlytics;
 
 import org.apache.commons.lang3.StringUtils;
@@ -67,15 +68,12 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         animationView.playAnimation();
         animationView.loop(true);
         callLocationManager();
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashScreen.this, new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                Log.e("newToken", newToken);
-                fcmToken = newToken;
-                Log.d(TAG, "FCM Token=" + fcmToken);
-                sendRegistrationToServer(fcmToken);
-            }
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashScreen.this, instanceIdResult -> {
+            String newToken = instanceIdResult.getToken();
+            Log.e("newToken", newToken);
+            fcmToken = newToken;
+            Log.d(TAG, "FCM Token=" + fcmToken);
+            sendRegistrationToServer(fcmToken);
         });
 
         if (StringUtils.isBlank(fcmToken) && new NetworkUtil(this).isNotOnline()) {
@@ -175,7 +173,10 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, new String[]{PermissionUtils.LOCATION_PERMISSION}, PermissionUtils.PERMISSION_REQUEST_LOCATION);
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{PermissionUtils.LOCATION_PERMISSION},
+                    PermissionUtils.PERMISSION_REQUEST_LOCATION);
             return;
         }
 
