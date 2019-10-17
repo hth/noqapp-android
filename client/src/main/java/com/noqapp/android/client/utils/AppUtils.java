@@ -133,7 +133,7 @@ public class AppUtils extends CommonHelper {
     public static int getTimeIn24HourFormat() {
         // To make sure minute in time 11:06 AM is not represented as 116 but as 1106.
         LocalDateTime localDateTime = LocalDateTime.now();
-        int time = Integer.parseInt(String.valueOf(localDateTime.getHourOfDay()) + String.format(Locale.US, "%02d", localDateTime.getMinuteOfHour()));
+        int time = Integer.parseInt(localDateTime.getHourOfDay() + String.format(Locale.US, "%02d", localDateTime.getMinuteOfHour()));
         Log.i(TAG, "System Time " + time);
         return time;
     }
@@ -191,19 +191,16 @@ public class AppUtils extends CommonHelper {
             if (language.equals("en")) {
                 LaunchActivity.language = "en_US";
                 LaunchActivity.locale = Locale.ENGLISH;
-                LaunchActivity.languagePref.edit()
-                        .putString("pref_language", "en").apply();
+                LaunchActivity.languagePref.edit().putString("pref_language", "en").apply();
             } else {
                 LaunchActivity.language = "hi";
                 LaunchActivity.locale = new Locale("hi");
-                LaunchActivity.languagePref.edit()
-                        .putString("pref_language", "hi").apply();
+                LaunchActivity.languagePref.edit().putString("pref_language", "hi").apply();
             }
         } else {
             LaunchActivity.language = "en_US";
             LaunchActivity.locale = Locale.ENGLISH;
-            LaunchActivity.languagePref.edit()
-                    .putString("pref_language", "en").apply();
+            LaunchActivity.languagePref.edit().putString("pref_language", "en").apply();
         }
     }
 

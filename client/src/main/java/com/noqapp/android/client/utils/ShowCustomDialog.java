@@ -42,7 +42,6 @@ public class ShowCustomDialog {
         return this;
     }
 
-
     public ShowCustomDialog(Context context) {
         this.context = context;
     }

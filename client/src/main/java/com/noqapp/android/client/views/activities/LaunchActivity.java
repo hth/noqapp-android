@@ -1313,9 +1313,7 @@ public class LaunchActivity
         }
     }
 
-
     public boolean isCountryIndia() {
-        return (COUNTRY_CODE.equalsIgnoreCase("India")
-                || COUNTRY_CODE.equalsIgnoreCase("IN"));
+        return (COUNTRY_CODE.equalsIgnoreCase("India") || COUNTRY_CODE.equalsIgnoreCase("IN"));
     }
 }

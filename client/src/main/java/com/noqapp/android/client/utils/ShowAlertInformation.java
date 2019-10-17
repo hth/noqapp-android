@@ -40,7 +40,6 @@ public class ShowAlertInformation {
             }
         });
         showDialog.displayDialog(title, message);
-
     }
 
     public static void showThemeDialog(Context context, String title, String message) {
@@ -48,7 +47,6 @@ public class ShowAlertInformation {
     }
 
     public static void showBarcodeErrorDialog(final Context context) {
-
         ShowCustomDialog showDialog = new ShowCustomDialog(context);
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
@@ -99,7 +97,6 @@ public class ShowAlertInformation {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
         }
-
     }
 
     private static void showThemeDialogWithIcon(Context context, String title, String message, boolean isGravityLeft, int icon) {
@@ -114,8 +111,9 @@ public class ShowAlertInformation {
         iv_icon.setBackground(ContextCompat.getDrawable(context, icon));
         tvtitle.setText(title);
         tv_msg.setText(message);
-        if (isGravityLeft)
+        if (isGravityLeft) {
             tv_msg.setGravity(Gravity.LEFT);
+        }
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -151,9 +149,7 @@ public class ShowAlertInformation {
     }
 
     public void showSnakeBar(View view, String msg) {
-        Snackbar snackbar = Snackbar
-                .make(view, msg, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_LONG);
         snackbar.show();
     }
-
 }
