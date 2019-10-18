@@ -49,7 +49,6 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_store_name;
     private ImageView iv_category_banner;
     private View view_loader;
 
@@ -70,7 +69,6 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu_kiosk);
         initActionsViews(false);
-        tv_store_name = findViewById(R.id.tv_store_name);
         frame_collapsible = findViewById(R.id.frame_collapsible);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         view_loader = findViewById(R.id.view_loader);
@@ -85,6 +83,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         expandableListView.addHeaderView(listHeader);
 
         codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
+        actionbarBack.setVisibility(View.INVISIBLE);
         setProgressMessage("Loading ...");
         if (NetworkUtils.isConnectingToInternet(this)) {
             showProgress();
@@ -111,7 +110,6 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         view_loader.setVisibility(View.GONE);
         jsonQueue = jsonStore.getJsonQueue();
         currencySymbol = AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName());
-        tv_store_name.setText(jsonQueue.getDisplayName());
         tv_toolbar_title.setText(jsonQueue.getDisplayName());
         ArrayList<String> storeServiceImages = new ArrayList<>(jsonQueue.getStoreServiceImages());
         for (int i = 0; i < storeServiceImages.size(); i++) {

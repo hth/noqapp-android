@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,7 +51,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
 
     private final String QUEUE = "queue";
     private final String CATEGORY = "category";
-    private TextView tv_store_name;
     private RecyclerView rv_categories;
     private ImageView iv_category_banner;
     private String codeQR;
@@ -66,12 +64,12 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info_kiosk);
-        tv_store_name = findViewById(R.id.tv_store_name);
         rv_categories = findViewById(R.id.rv_categories);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
-        actionbarBack.setOnClickListener(null);
+        actionbarBack.setVisibility(View.INVISIBLE);
+
         listener = this;
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
@@ -131,7 +129,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             populateAndSortedCache(bizStoreElasticList);
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             dismissProgress();
-            tv_store_name.setText(bizStoreElastic.getBusinessName());
+            tv_toolbar_title.setText(bizStoreElastic.getBusinessName());
             codeQR = bizStoreElastic.getCodeQR();
 
             Picasso.get()
@@ -146,24 +144,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                         .placeholder(ImageUtils.getBannerPlaceholder(this))
                         .error(ImageUtils.getBannerErrorPlaceholder(this))
                         .into(iv_category_banner);
-            }
-
-            switch (bizStoreElastic.getBusinessType()) {
-                case DO:
-                    tv_toolbar_title.setText("Medical");
-                    title = "Select a Doctor";
-                    break;
-                case BK:
-                    tv_toolbar_title.setText("Bank");
-                    title = "Select a Service";
-                    break;
-                case HS:
-                    tv_toolbar_title.setText("Health Service");
-                    title = "Select a Service";
-                    break;
-                default:
-                    tv_toolbar_title.setText("Departments");
-                    title = "Select a Queue";
             }
 
             rv_categories.setLayoutManager(new GridLayoutManager(this, 2));
