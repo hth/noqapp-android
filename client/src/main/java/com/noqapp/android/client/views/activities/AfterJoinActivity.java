@@ -62,7 +62,6 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
@@ -295,6 +294,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                     goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 }
                 startActivity(goToA);
+                finish();
             });
 
             switch (jsonTokenAndQueue.getBusinessType()) {
@@ -656,9 +656,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 rl_discount.setVisibility(View.GONE);
             }
 
-            if (LaunchActivity.isLockMode && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+            if (!getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false) && LaunchActivity.isLockMode) {
                 Handler handler = new Handler();
-
                 handler.postDelayed(new Runnable() {
                     public void run() {
                         try {
@@ -667,11 +666,12 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                             e.printStackTrace();
                         }
                     }
-                }, 100);
+                }, 3000);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         dismissProgress();
     }
 
