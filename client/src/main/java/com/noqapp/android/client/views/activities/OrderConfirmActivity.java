@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -367,6 +368,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 GeoHashUtils.decodeLongitude(geoHash));
         replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
         checkProductWithZeroPrice();
+
+        if (!getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
+            closeKioskScreen();
+        }
     }
 
     @Override
@@ -524,11 +529,27 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             new CustomToast().showToast(this, "Order placed successfully.");
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+            closeKioskScreen();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
     }
 
+    private void closeKioskScreen() {
+        if (LaunchActivity.isLockMode) {
+            Handler handler = new Handler();
+
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    try {
+                        iv_home.performClick();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 3000);
+        }
+    }
 
     public void showReceiptDialog(List<JsonPurchaseOrderProduct> productList) {
         String currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
