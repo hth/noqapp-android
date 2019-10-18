@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
@@ -46,7 +47,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
         ll_data = findViewById(R.id.ll_data);
         initActionsViews(true);
         tv_toolbar_title.setText("Upcoming Visit");
-        String codeQR = getIntent().getStringExtra("qCodeQR");
+        String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         JsonQueuedPerson jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
         Button btn_print_pdf = findViewById(R.id.btn_print_pdf);

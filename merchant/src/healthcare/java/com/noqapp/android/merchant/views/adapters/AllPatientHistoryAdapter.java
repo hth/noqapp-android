@@ -21,6 +21,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileHistoryActivity;
 
@@ -82,7 +83,7 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
         }
         holder.tv_customer_name.setOnClickListener(v -> {
             Intent intent = new Intent(context, PatientProfileHistoryActivity.class);
-            intent.putExtra("qCodeQR", jsonTopic.getCodeQR());
+            intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
             intent.putExtra("data", jsonQueuedPerson);
             intent.putExtra("bizCategoryId", jsonTopic.getBizCategoryId());
             context.startActivity(intent);

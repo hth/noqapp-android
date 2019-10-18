@@ -31,6 +31,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
@@ -60,7 +61,6 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
     private ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
     private ArrayList<ToothWorkDone> toothDentalTreatmentList = new ArrayList<>();
     private ScrollView scroll_view;
-
     private ListView dt_list_view;
     private TextView tv_empty_dt;
 
@@ -70,7 +70,7 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile_history);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        codeQR = getIntent().getStringExtra("qCodeQR");
+        codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
         scroll_view = findViewById(R.id.scroll_view);

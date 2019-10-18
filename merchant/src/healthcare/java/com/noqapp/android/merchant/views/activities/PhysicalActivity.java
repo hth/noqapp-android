@@ -23,6 +23,7 @@ import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
@@ -80,14 +81,14 @@ public class PhysicalActivity extends BaseActivity implements
         tv_toolbar_title.setText(getString(R.string.screen_physical));
         TextView tv_title = findViewById(R.id.tv_title);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        final String codeQR = getIntent().getStringExtra("qCodeQR");
+        final String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         TextView tv_hospital_schedule = findViewById(R.id.tv_hospital_schedule);
         tv_hospital_schedule.setOnClickListener(v -> {
             if (null == jsonQueuedPerson || null == jsonMedicalRecord) {
                 new CustomToast().showToast(PhysicalActivity.this, "Please wait while patient data is loading...");
             } else {
                 Intent intent = new Intent(PhysicalActivity.this, HospitalVisitScheduleActivity.class);
-                intent.putExtra("qCodeQR", codeQR);
+                intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
                 intent.putExtra("jsonMedicalRecord", jsonMedicalRecord);
                 startActivity(intent);

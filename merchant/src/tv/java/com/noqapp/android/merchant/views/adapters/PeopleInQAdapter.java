@@ -16,10 +16,10 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
             List<JsonQueuedPerson> data,
             Context context,
             PeopleInQAdapterClick peopleInQAdapterClick,
-            String qCodeQR,
+            String codeQR,
             JsonDataVisibility jsonDataVisibility,
             JsonPaymentPermission jsonPaymentPermission) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, jsonDataVisibility, jsonPaymentPermission);
+        super(data, context, peopleInQAdapterClick, codeQR, jsonDataVisibility, jsonPaymentPermission);
     }
 
     public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,

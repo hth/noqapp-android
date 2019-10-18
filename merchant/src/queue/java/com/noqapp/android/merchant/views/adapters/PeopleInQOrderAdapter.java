@@ -26,6 +26,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
@@ -37,7 +38,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
 
     private final Context context;
     private List<JsonPurchaseOrder> dataSet;
-    protected String qCodeQR = "";
+    protected String codeQR = "";
     private int glowPosition = -1;
     private JsonPaymentPermission jsonPaymentPermission;
     public PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
@@ -52,22 +53,22 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder, boolean isPaymentNotAllowed);
     }
 
-    public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String qCodeQR,
+    public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String codeQR,
                                  PeopleInQOrderAdapterClick peopleInQOrderAdapterClick,
                                  JsonPaymentPermission jsonPaymentPermission) {
         this.dataSet = data;
         this.context = context;
-        this.qCodeQR = qCodeQR;
+        this.codeQR = codeQR;
         this.peopleInQOrderAdapterClick = peopleInQOrderAdapterClick;
         this.jsonPaymentPermission = jsonPaymentPermission;
     }
 
-    public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String qCodeQR,
+    public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String codeQR,
                                  PeopleInQOrderAdapterClick peopleInQOrderAdapterClick,
                                  int glowPosition, JsonPaymentPermission jsonPaymentPermission) {
         this.dataSet = data;
         this.context = context;
-        this.qCodeQR = qCodeQR;
+        this.codeQR = codeQR;
         this.peopleInQOrderAdapterClick = peopleInQOrderAdapterClick;
         this.glowPosition = glowPosition;
         this.jsonPaymentPermission = jsonPaymentPermission;
@@ -207,7 +208,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         recordHolder.tv_upload_document.setOnClickListener(v -> {
             Intent intent = new Intent(context, DocumentUploadActivity.class);
             intent.putExtra("transactionId", jsonPurchaseOrder.getTransactionId());
-            intent.putExtra("qCodeQR", qCodeQR);
+            intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
             context.startActivity(intent);
         });
         recordHolder.tv_order_cancel.setOnClickListener(v -> {

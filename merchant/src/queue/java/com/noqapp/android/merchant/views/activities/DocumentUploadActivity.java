@@ -40,6 +40,7 @@ import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.PermissionUtils;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -97,7 +98,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
         purchaseOrderApiCalls.setImageUploadPresenter(this);
         transactionId = getIntent().getStringExtra("transactionId");
-        String codeQR = getIntent().getStringExtra("qCodeQR");
+        String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         setProgressMessage("Loading data...");
         rcv_photo = findViewById(R.id.rcv_photo);
         rcv_photo.setLayoutManager(new GridLayoutManager(this, columnCount));

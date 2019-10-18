@@ -44,6 +44,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.FileUtilsPdf;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.PermissionUtils;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -96,7 +97,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         tv_toolbar_title.setText("Upload Documents");
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         recordReferenceId = getIntent().getStringExtra("recordReferenceId");
-        String codeQR = getIntent().getStringExtra("qCodeQR");
+        String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         rcv_photo = findViewById(R.id.rcv_photo);
         rcv_photo.setLayoutManager(new GridLayoutManager(this, columnCount));
         frame_image = findViewById(R.id.frame_image);

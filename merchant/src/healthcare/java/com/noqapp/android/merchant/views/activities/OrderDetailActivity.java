@@ -87,7 +87,7 @@ public class OrderDetailActivity
     public static UpdateWholeList updateWholeList;
     private JsonQueuedPerson jsonQueuedPerson;
     private ManageQueueApiCalls manageQueueApiCalls;
-    private String qCodeQR;
+    private String codeQR;
     private Button btn_refund, btn_pay_now, btn_discount, btn_remove_discount;
     private TextView tv_paid_amount_value, tv_remaining_amount_value;
     private TextView tv_token, tv_q_name, tv_customer_name;
@@ -166,7 +166,7 @@ public class OrderDetailActivity
 
             }
         });
-        qCodeQR = jsonPurchaseOrder.getCodeQR();
+        codeQR = jsonPurchaseOrder.getCodeQR();
         rl_payment = findViewById(R.id.rl_payment);
         btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_refund = findViewById(R.id.btn_refund);
@@ -193,7 +193,7 @@ public class OrderDetailActivity
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
                                 .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
                                 .setCouponId(jsonPurchaseOrder.getCouponId())
-                                .setCodeQR(qCodeQR)
+                                .setCodeQR(codeQR)
                                 .setTransactionId(jsonQueuedPerson.getTransactionId());
 
                         couponApiCalls.remove(BaseLaunchActivity.getDeviceID(),
@@ -245,7 +245,7 @@ public class OrderDetailActivity
 
                         JsonPurchaseOrder jpo = new JsonPurchaseOrder()
                                 .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                                .setCodeQR(qCodeQR)
+                                .setCodeQR(codeQR)
                                 .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
                                 .setToken(jsonQueuedPerson.getToken())
                                 .setTransactionId(jsonQueuedPerson.getTransactionId());
@@ -297,7 +297,7 @@ public class OrderDetailActivity
 
                                 JsonPurchaseOrder jpo = new JsonPurchaseOrder()
                                         .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                                        .setCodeQR(qCodeQR)
+                                        .setCodeQR(codeQR)
                                         .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
                                         .setTransactionId(jsonQueuedPerson.getTransactionId())
                                         .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
@@ -565,7 +565,7 @@ public class OrderDetailActivity
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
                             .setCouponId(jsonCoupon.getCouponId())
-                            .setCodeQR(qCodeQR)
+                            .setCodeQR(codeQR)
                             .setTransactionId(jsonQueuedPerson.getTransactionId());
 
                     couponApiCalls.apply(BaseLaunchActivity.getDeviceID(),

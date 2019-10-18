@@ -33,6 +33,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
@@ -129,7 +130,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         }
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
-        codeQR = getIntent().getStringExtra("qCodeQR");
+        codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         if (!TextUtils.isEmpty(bizCategoryId)) {
@@ -479,7 +480,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         primaryCheckupFragment = new PrimaryCheckupFragment();
         Bundle b = new Bundle();
         b.putString("qUserId", jsonQueuedPerson.getQueueUserId());
-        b.putString("qCodeQR", codeQR);
+        b.putString(IBConstant.KEY_CODE_QR, codeQR);
         b.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
         primaryCheckupFragment.setArguments(b);
         symptomsTabFragment = new SymptomsTabFragment();

@@ -51,7 +51,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
     private int glowPosition = -1;
-    protected String qCodeQR;
+    protected String codeQR;
     protected String bizCategoryId;
     protected ManageQueueApiCalls manageQueueApiCalls;
     protected BusinessCustomerApiCalls businessCustomerApiCalls;
@@ -168,12 +168,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     }
 
     protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR,
-            JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
+                                   PeopleInQAdapterClick peopleInQAdapterClick, String codeQR,
+                                   JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
-        this.qCodeQR = qCodeQR;
+        this.codeQR = codeQR;
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePersonListPresenter(this);
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
@@ -185,20 +185,20 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
 
     protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
+                                   PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
-        this.qCodeQR = jsonTopic.getCodeQR();
+        this.codeQR = jsonTopic.getCodeQR();
         this.glowPosition = jsonTopic.getServingNumber();
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePersonListPresenter(this);
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
         businessCustomerApiCalls.setQueuePersonListPresenter(this);
-        this.queueStatusEnum =  jsonTopic.getQueueStatus();
-        this.jsonDataVisibility =  jsonTopic.getJsonDataVisibility();
+        this.queueStatusEnum = jsonTopic.getQueueStatus();
+        this.jsonDataVisibility = jsonTopic.getJsonDataVisibility();
         this.jsonPaymentPermission = jsonTopic.getJsonPaymentPermission();
-        this.bizCategoryId =     jsonTopic.getBizCategoryId();
+        this.bizCategoryId = jsonTopic.getBizCategoryId();
         customProgressBar = new CustomProgressBar(context);
     }
 
