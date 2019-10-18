@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -29,6 +30,7 @@ import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
@@ -54,8 +56,10 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     private static String fcmToken = "";
     private String APP_PREF = "splashPref";
     private static String deviceId = "";
-    private int REQUEST_PERMISSION_SETTING = 23;
+    private final int REQUEST_PERMISSION_SETTING = 23;
+    public final int GPS_ENABLE_REQUEST = 24;
     private Location location;
+    private GPSTracker gpsTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +71,24 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         animationView.setAnimation("data.json");
         animationView.playAnimation();
         animationView.loop(true);
-        callLocationManager();
+
+        gpsTracker = new GPSTracker(this, null);
+        if (gpsTracker.isLocationEnabled()) {
+            callLocationManager();
+        } else {
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle("Enable GPS")
+                    .setMessage("Gps is disabled, in order to use the application you need to enable GPS of your device")
+                    .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
+                    })
+                    .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
+                        finish();
+                    });
+            dialog.show();
+        }
+
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashScreen.this, instanceIdResult -> {
             String newToken = instanceIdResult.getToken();
             Log.e("newToken", newToken);
@@ -264,10 +285,18 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 //("permissions granted!")
                 callLocationManager();
             }
+        } if (requestCode == GPS_ENABLE_REQUEST) {
+           if(gpsTracker.isLocationEnabled()){
+               callLocationManager();
+           }else{
+               finish();
+           }
         } else {
             finish();
         }
     }
+
+
 
     private void callLaunchScreen() {
         if (!StringUtils.isBlank(deviceId) && null != location) {
@@ -280,7 +309,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             splashScreen.startActivity(i);
             splashScreen.finish();
         }
-        if(null == location){
+        if (null == location) {
             Log.d(TAG, "Location not found");
         }
     }

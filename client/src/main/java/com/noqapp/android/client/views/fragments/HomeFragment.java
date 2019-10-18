@@ -1,5 +1,28 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
@@ -65,36 +88,14 @@ import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class HomeFragment extends ScannerFragment implements View.OnClickListener,
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
@@ -275,7 +276,6 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
             advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
-
 
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());

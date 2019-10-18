@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ import java.util.Locale;
  */
 
 public class GPSTracker implements LocationListener {
-    public final int GPS_ENABLE_REQUEST = 0x1001;
+    public static final int GPS_ENABLE_REQUEST = 0x1001;
     private String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     public final int REQUEST_CODE_PERMISSION = 2;
     // Get Class Name
@@ -206,24 +207,15 @@ public class GPSTracker implements LocationListener {
         }
     }
 
-    /**
-     * Function to show settings alert dialog
-     */
     public void showSettingsAlert() {
-        final androidx.appcompat.app.AlertDialog.Builder dialog = new androidx.appcompat.app.AlertDialog.Builder(mContext);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
         dialog.setTitle("Enable GPS")
                 .setMessage("Gps is disabled, in order to use the application properly you need to enable GPS of your device")
-                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        mContext.startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
-                    }
+                .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    mContext.startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    }
+                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
                 });
         dialog.show();
     }
