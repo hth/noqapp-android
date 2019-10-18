@@ -185,9 +185,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             dismissProgress();
 
             TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-//            if (null != LaunchActivity.getUserProfile()
-//                    && null != LaunchActivity.getUserProfile().getBizNameId()
-//                    && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
+            if (null != LaunchActivity.getUserProfile()
+                    && null != LaunchActivity.getUserProfile().getBizNameId()
+                    && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
                 // added logic from profile
                 tv_enable_kiosk.setVisibility(View.VISIBLE);
                 tv_enable_kiosk.setOnClickListener(v -> {
@@ -218,9 +218,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     });
                     showDialog.displayDialog("Kiosk Mode", "Continue to launch Kiosk Mode?");
                 });
-//            } else {
-//                tv_enable_kiosk.setVisibility(View.GONE);
-//            }
+            } else {
+                tv_enable_kiosk.setVisibility(View.GONE);
+            }
 
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
