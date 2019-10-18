@@ -568,7 +568,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void clientPreferencePresenterResponse(JsonUserPreference jsonUserPreference) {
         if (null != jsonUserPreference) {
-            LaunchActivity.getUserProfile().setJsonUserPreference(jsonUserPreference);
+            JsonProfile jp = LaunchActivity.getUserProfile();
+            jp.setJsonUserPreference(jsonUserPreference);
+            LaunchActivity.setUserProfile(jp);
         }
     }
 }

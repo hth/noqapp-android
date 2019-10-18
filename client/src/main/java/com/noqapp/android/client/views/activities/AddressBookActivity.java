@@ -149,16 +149,19 @@ public class AddressBookActivity
     @Override
     public void clientPreferencePresenterResponse(JsonUserPreference jsonUserPreference) {
         if (null != jsonUserPreference) {
-            LaunchActivity.getUserProfile().setJsonUserPreference(jsonUserPreference);
+            JsonProfile jp = LaunchActivity.getUserProfile();
+            jp.setJsonUserPreference(jsonUserPreference);
+            LaunchActivity.setUserProfile(jp);
             JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
             jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
             for (int i = 0; i < jsonUserAddressList.getJsonUserAddresses().size(); i++) {
                 if (jsonUserAddressList.getJsonUserAddresses().get(i).getId().equals(jsonUserPreference.getUserAddressId())) {
                     jsonUserAddressList.getJsonUserAddresses().get(i).setId(jsonUserPreference.getUserAddressId());
-                    return;
+                    break;
                 }
             }
             profileAddressResponse(jsonUserAddressList);
         }
+        dismissProgress();
     }
 }
