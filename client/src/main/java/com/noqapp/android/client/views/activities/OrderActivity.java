@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -96,6 +98,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private TextView tv_total_order_amt;
     private TextView tv_due_amt;
     private TextView tv_final_amount;
+    private LinearLayout ll_address;
+    private RadioGroup rg_delivery;
 
 
     @Override
@@ -107,8 +111,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         tv_due_amt = findViewById(R.id.tv_due_amt);
         tv_address = findViewById(R.id.tv_address);
+        ll_address = findViewById(R.id.ll_address);
         FixedHeightListView lv_product = findViewById(R.id.lv_product);
-
+        rg_delivery = findViewById(R.id.rg_delivery);
         acrb_cash = findViewById(R.id.acrb_cash);
         acrb_online = findViewById(R.id.acrb_online);
         acrb_home_delivery = findViewById(R.id.acrb_home_delivery);
@@ -117,9 +122,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
             acrb_home_delivery.setChecked(true);
             acrb_take_away.setChecked(false);
+            ll_address.setVisibility(View.VISIBLE);
         } else {
             acrb_home_delivery.setChecked(false);
             acrb_take_away.setChecked(true);
+            ll_address.setVisibility(View.GONE);
         }
         if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
             acrb_cash.setChecked(true);
@@ -128,7 +135,28 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             acrb_cash.setChecked(false);
             acrb_online.setChecked(true);
         }
+        rg_delivery.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
 
+                if (checkedId == R.id.acrb_home_delivery) {
+                    ll_address.setVisibility(View.VISIBLE);
+                } else if (checkedId == R.id.acrb_take_away) {
+                    ll_address.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        if (null != LaunchActivity.getUserProfile() && null != LaunchActivity.getUserProfile().getJsonUserAddresses()) {
+            List<JsonUserAddress> jsonUserAddressList = LaunchActivity.getUserProfile().getJsonUserAddresses();
+            for (int i = 0; i < jsonUserAddressList.size(); i++) {
+                if (jsonUserAddressList.get(i).getId().equals(jsonUserPreference.getUserAddressId())) {
+                    jsonUserAddress = jsonUserAddressList.get(i);
+                    tv_address.setText(jsonUserAddress.getAddress());
+                    break;
+                }
+            }
+        }
         TextView tv_change_address = findViewById(R.id.tv_change_address);
         tv_change_address.setOnClickListener((View v) -> {
             Intent in = new Intent(OrderActivity.this, AddressBookActivity.class);
