@@ -2,11 +2,9 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -101,12 +99,14 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             }
             return false;
         });
+
+
         tv_auto.setOnClickListener((View v) -> {
-                lat = String.valueOf(LaunchActivity.getLaunchActivity().latitude);
-                lng = String.valueOf(LaunchActivity.getLaunchActivity().longitude);
-                city = LaunchActivity.getLaunchActivity().cityName;
-                AppUtils.setAutoCompleteText(autoCompleteTextView, city);
-                AppUtils.hideKeyBoard(SearchActivity.this);
+            lat = String.valueOf(LaunchActivity.getLaunchActivity().latitude);
+            lng = String.valueOf(LaunchActivity.getLaunchActivity().longitude);
+            city = LaunchActivity.getLaunchActivity().cityName;
+            AppUtils.setAutoCompleteText(autoCompleteTextView, city);
+            AppUtils.hideKeyBoard(SearchActivity.this);
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
@@ -130,7 +130,12 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             }
             return false;
         });
-
+        if (LaunchActivity.isLockMode) {
+            tv_auto.setVisibility(View.GONE);
+            autoCompleteTextView.setVisibility(View.GONE);
+            edt_search.setText(getIntent().getStringExtra("searchString"));
+            performSearch();
+        }
         if (AppUtils.isRelease()) {
             Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_SEARCH));
         }

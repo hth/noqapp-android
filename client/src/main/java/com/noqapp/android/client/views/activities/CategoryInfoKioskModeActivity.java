@@ -2,7 +2,10 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -58,7 +61,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
     private String title = "";
     private View view_loader;
     private CategoryGridAdapter.OnItemClickListener listener;
-
+    private EditText edt_search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -69,6 +72,30 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
         actionbarBack.setVisibility(View.INVISIBLE);
+        edt_search = findViewById(R.id.edt_search);
+        edt_search.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_LEFT = 0;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (edt_search.getRight() - edt_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    AppUtils.hideKeyBoard(CategoryInfoKioskModeActivity.this);
+                    edt_search.setText("");
+                    return true;
+                }
+                if (event.getRawX() <= (20 + edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                    performSearch(edt_search.getText().toString());
+                    return true;
+                }
+            }
+            return false;
+        });
+        edt_search.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch(edt_search.getText().toString());
+                return true;
+            }
+            return false;
+        });
 
         listener = this;
         Bundle bundle = getIntent().getBundleExtra("bundle");
@@ -97,6 +124,18 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                 ShowAlertInformation.showNetworkDialog(this);
             }
         }
+    }
+
+    private void performSearch(String searchString) {
+        AppUtils.hideKeyBoard(CategoryInfoKioskModeActivity.this);
+        Intent in_search = new Intent(CategoryInfoKioskModeActivity.this, SearchActivity.class);
+        in_search.putExtra("scrollId", "");
+        in_search.putExtra("lat", "" + LaunchActivity.getLaunchActivity().latitude);
+        in_search.putExtra("lng", "" + LaunchActivity.getLaunchActivity().longitude);
+        in_search.putExtra("city",LaunchActivity.getLaunchActivity().cityName);
+        in_search.putExtra("searchString",searchString);
+        startActivity(in_search);
+        edt_search.setText("");
     }
 
 
