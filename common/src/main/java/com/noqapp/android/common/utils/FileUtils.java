@@ -3,20 +3,18 @@ package com.noqapp.android.common.utils;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-public class FileUtils {
+public class FileUtils extends BaseFileUtils {
 
     @SuppressLint("NewApi")
     public String getFilePath(Context context, Uri uri) {
         String selection = null;
         String[] selectionArgs = null;
-        if (Build.VERSION.SDK_INT >= 19 && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
+        if (DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
             if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -47,46 +45,9 @@ public class FileUtils {
             if (isGooglePhotosUri(uri)) {
                 return uri.getLastPathSegment();
             }
-
-            String[] projection = {MediaStore.Images.Media.DATA};
-            Cursor cursor;
-            try {
-                cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                if (cursor.moveToFirst()) {
-                    return cursor.getString(column_index);
-                }
-            } catch (Exception e) {
-            }
+            return getDataColumn(context, uri, selection, selectionArgs);
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
-        }
-        return null;
-    }
-
-    private static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
-
-    private static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    private static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    private static boolean isGooglePhotosUri(Uri uri) {
-        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
-    }
-
-    private static String getFilePathFromDownload(Context context, Uri uri) {
-        final String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME};
-        try (Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
-                return cursor.getString(index);
-            }
         }
         return null;
     }
