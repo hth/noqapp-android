@@ -1,25 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.model.DeviceApiCall;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
-import com.noqapp.android.common.utils.NetworkUtil;
-import com.noqapp.android.common.utils.PermissionUtils;
-
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -35,16 +15,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.DeviceApiCall;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.utils.NetworkUtil;
+import com.noqapp.android.common.utils.PermissionUtils;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.UUID;
+
 import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
-
-import java.util.UUID;
 
 ///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
 public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
@@ -279,6 +279,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             i.putExtra("longitude", location.getLongitude());
             splashScreen.startActivity(i);
             splashScreen.finish();
+        }
+        if(null == location){
+            Log.d(TAG, "Location not found");
         }
     }
 }
