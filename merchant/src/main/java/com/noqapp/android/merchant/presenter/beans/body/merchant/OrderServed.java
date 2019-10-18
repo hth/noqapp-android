@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
@@ -48,6 +50,9 @@ public class OrderServed implements Serializable {
 
     @JsonProperty("g")
     private String goTo;
+
+    @JsonProperty("cor")
+    private GeoPointOfQ geoPointOfQ;
 
     public String getCodeQR() {
         return codeQR;
@@ -107,5 +112,14 @@ public class OrderServed implements Serializable {
 
     public void setGoTo(String goTo) {
         this.goTo = goTo;
+    }
+
+    public GeoPointOfQ getGeoPointOfQ() {
+        return geoPointOfQ;
+    }
+
+    public OrderServed setGeoPointOfQ(GeoPointOfQ geoPointOfQ) {
+        this.geoPointOfQ = geoPointOfQ;
+        return this;
     }
 }
