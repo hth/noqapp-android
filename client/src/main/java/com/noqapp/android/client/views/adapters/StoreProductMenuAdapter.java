@@ -59,7 +59,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId())
+        return this.listDataChild
+                .get(this.listDataHeader.get(groupPosition).getCategoryId())
                 .get(childPosition);
     }
 

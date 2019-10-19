@@ -257,10 +257,10 @@ public class LaunchActivity
         setKioskMode();
     }
 
-    private void setKioskMode(){
+    private void setKioskMode() {
         if (isLockMode) {
             clearPreferences();
-            if(NoQueueBaseActivity.isKioskModeLevelUp()) {
+            if (NoQueueBaseActivity.isKioskModeLevelUp()) {
                 Bundle b = new Bundle();
                 b.putString(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeCodeQR());
                 b.putBoolean(IBConstant.KEY_FROM_LIST, false);
@@ -269,7 +269,7 @@ public class LaunchActivity
                 Intent in = new Intent(LaunchActivity.this, CategoryInfoKioskModeActivity.class);
                 in.putExtra("bundle", b);
                 startActivity(in);
-            }else{
+            } else {
                 Intent in = new Intent(LaunchActivity.this, StoreWithMenuKioskActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeCodeQR());
                 startActivity(in);
@@ -376,10 +376,9 @@ public class LaunchActivity
             case R.id.actionbarBack:
                 onBackPressed();
                 break;
-            case R.id.tv_location: {
+            case R.id.tv_location:
                 replaceFragmentWithoutBackStack(R.id.frame_layout, new ChangeLocationFragment());
-            }
-            break;
+                break;
             case R.id.iv_search:
                 homeFragment.callSearch();
                 break;
@@ -698,7 +697,7 @@ public class LaunchActivity
             if (AppUtils.isRelease()) {
                 Answers.getInstance()
                         .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                        .putCustomAttribute("Language", "HINDI"));
+                                .putCustomAttribute("Language", "HINDI"));
             }
         });
         ll_english.setOnClickListener((View v) -> {
@@ -707,7 +706,7 @@ public class LaunchActivity
             if (AppUtils.isRelease()) {
                 Answers.getInstance()
                         .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                        .putCustomAttribute("Language", "ENGLISH"));
+                                .putCustomAttribute("Language", "ENGLISH"));
             }
         });
         dialog.show();
