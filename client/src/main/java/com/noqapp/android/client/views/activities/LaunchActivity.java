@@ -674,7 +674,6 @@ public class LaunchActivity
         }
     }
 
-
     public void showChangeLangDialog() {
         final Dialog dialog = new Dialog(launchActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -697,7 +696,8 @@ public class LaunchActivity
             AppUtils.changeLanguage("hi");
             dialog.dismiss();
             if (AppUtils.isRelease()) {
-                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                Answers.getInstance()
+                        .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
                         .putCustomAttribute("Language", "HINDI"));
             }
         });
@@ -705,7 +705,8 @@ public class LaunchActivity
             AppUtils.changeLanguage("en");
             dialog.dismiss();
             if (AppUtils.isRelease()) {
-                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                Answers.getInstance()
+                        .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
                         .putCustomAttribute("Language", "ENGLISH"));
             }
         });

@@ -77,15 +77,13 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             callLocationManager();
         } else {
             final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setTitle("Enable GPS")
-                    .setMessage("Gps is disabled, in order to use the application you need to enable GPS of your device")
+            dialog.setTitle("Enable Location")
+                    .setMessage("Location is disabled, in order to use the application you need to enable location in your device")
                     .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
                         Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
                     })
-                    .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
-                        finish();
-                    });
+                    .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> finish());
             dialog.show();
         }
 
@@ -269,9 +267,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 }
                 break;
         }
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -295,8 +291,6 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             finish();
         }
     }
-
-
 
     private void callLaunchScreen() {
         if (!StringUtils.isBlank(deviceId) && null != location) {

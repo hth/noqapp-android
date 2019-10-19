@@ -31,8 +31,9 @@ import com.noqapp.android.common.presenter.CouponPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
-        AllCouponsAdapter.OnItemClickListener {
+public class AllCouponsFragment
+        extends BaseFragment
+        implements CouponPresenter, AllCouponsAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonCoupon> jsonCoupons = new ArrayList<>();
@@ -44,10 +45,8 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
         rcv_appointments = view.findViewById(R.id.rcv_appointments);
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
-        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
-                RecyclerView.VERTICAL, false));
+        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
-
 
         if (jsonCoupons.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
@@ -76,11 +75,17 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
             }
             String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);
             if (TextUtils.isEmpty(codeQR)) {
-                clientCouponApiCalls.globalCoupon(UserUtils.getDeviceId(),
-                        UserUtils.getEmail(), UserUtils.getAuth(), location);
+                clientCouponApiCalls.globalCoupon(
+                        UserUtils.getDeviceId(),
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        location);
             } else {
-                clientCouponApiCalls.filterCoupon(UserUtils.getDeviceId(),
-                        UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                clientCouponApiCalls.filterCoupon(
+                        UserUtils.getDeviceId(),
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        codeQR);
             }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -112,10 +117,8 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        AllCouponsAdapter offersAdapter = new AllCouponsAdapter(
-                getActivity(), jsonCoupons, this);
+        AllCouponsAdapter offersAdapter = new AllCouponsAdapter(getActivity(), jsonCoupons, this);
         rcv_appointments.setAdapter(offersAdapter);
         dismissProgress();
     }
 }
-
