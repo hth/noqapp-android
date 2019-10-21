@@ -260,13 +260,13 @@ public class LaunchActivity
 
     private void setKioskMode() {
         if (isLockMode) {
-            clearPreferences();
             if (NoQueueBaseActivity.getKioskModeInfo().isLevelUp()) {
                 if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
                     Intent in = new Intent(LaunchActivity.this, FeedbackKioskModeActivity.class);
                     in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 } else {
+                    clearPreferences();
                     Intent in = new Intent(LaunchActivity.this, CategoryInfoKioskModeActivity.class);
                     in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
@@ -277,6 +277,7 @@ public class LaunchActivity
                     in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 } else {
+                    clearPreferences();
                     Intent in = new Intent(LaunchActivity.this, StoreWithMenuKioskActivity.class);
                     in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);

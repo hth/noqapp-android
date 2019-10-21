@@ -203,12 +203,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                             kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
                             kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
                             NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
-                            NoQueueBaseActivity.clearPreferences();
+
                             if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
                                 Intent in = new Intent(CategoryInfoActivity.this, FeedbackKioskModeActivity.class);
                                 in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                                 startActivity(in);
                             } else {
+                                NoQueueBaseActivity.clearPreferences();
                                 Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
                                 in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                                 startActivity(in);

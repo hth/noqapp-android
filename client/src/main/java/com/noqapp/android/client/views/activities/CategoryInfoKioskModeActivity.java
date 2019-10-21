@@ -29,7 +29,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CategoryGridAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -205,8 +204,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         cacheCategory.put(CATEGORY, categoryMap);
 
         Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
-        float ratingQueue = 0;
-        int ratingCountQueue = 0, queueWithRating = 0;
         for (BizStoreElastic bizStoreElastic : bizStoreElasticList.getBizStoreElastics()) {
 
             //Likely hood of blank bizCategoryId
@@ -222,12 +219,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                     ArrayList<BizStoreElastic> jsonQueues = queueMap.get(bizCategoryId);
                     jsonQueues.add(bizStoreElastic);
                     // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
-                }
-
-                if (bizStoreElastic.getReviewCount() != 0) {
-                    ratingQueue += bizStoreElastic.getRating();
-                    ratingCountQueue += bizStoreElastic.getReviewCount();
-                    queueWithRating++;
                 }
             }
         }

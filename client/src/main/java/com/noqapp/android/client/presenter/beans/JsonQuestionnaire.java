@@ -1,12 +1,12 @@
 package com.noqapp.android.client.presenter.beans;
 
-import com.noqapp.android.client.model.types.QuestionTypeEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.client.model.types.QuestionTypeEnum;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -39,6 +39,9 @@ public class JsonQuestionnaire implements Serializable {
     @JsonProperty("qs")
     private Map<Locale, Map<String, QuestionTypeEnum>> questions;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public String getBizNameId() {
         return bizNameId;
     }
@@ -55,5 +58,22 @@ public class JsonQuestionnaire implements Serializable {
     public JsonQuestionnaire setQuestions(Map<Locale, Map<String, QuestionTypeEnum>> questions) {
         this.questions = questions;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonQuestionnaire{" +
+                "bizNameId='" + bizNameId + '\'' +
+                ", questions=" + questions +
+                ", error=" + error +
+                '}';
     }
 }
