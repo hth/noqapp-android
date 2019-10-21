@@ -17,16 +17,23 @@
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_sixteen"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="Select Language"/>
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_categories"
+                android:id="@+id/rv_languages"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/cardview"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
                 android:scrollbars="vertical" />
 
 

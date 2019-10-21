@@ -205,7 +205,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                             NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
 
                             if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
-                                Intent in = new Intent(CategoryInfoActivity.this, FeedbackKioskModeActivity.class);
+                                Intent in = new Intent(CategoryInfoActivity.this, SurveyKioskModeActivity.class);
                                 in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                                 startActivity(in);
                             } else {

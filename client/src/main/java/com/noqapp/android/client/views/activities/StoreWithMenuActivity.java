@@ -185,7 +185,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                         NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
 
                         if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
-                            Intent in = new Intent(StoreWithMenuActivity.this, FeedbackKioskModeActivity.class);
+                            Intent in = new Intent(StoreWithMenuActivity.this, SurveyKioskModeActivity.class);
                             in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                             startActivity(in);
                         } else {

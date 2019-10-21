@@ -262,7 +262,7 @@ public class LaunchActivity
         if (isLockMode) {
             if (NoQueueBaseActivity.getKioskModeInfo().isLevelUp()) {
                 if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
-                    Intent in = new Intent(LaunchActivity.this, FeedbackKioskModeActivity.class);
+                    Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
                     in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 } else {
@@ -273,7 +273,7 @@ public class LaunchActivity
                 }
             } else {
                 if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
-                    Intent in = new Intent(LaunchActivity.this, FeedbackKioskModeActivity.class);
+                    Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
                     in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 } else {
