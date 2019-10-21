@@ -32,10 +32,11 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.ShowCustomDialog;
+import com.noqapp.android.client.utils.ShowKioskModeDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.StoreProductMenuAdapter;
+import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
@@ -164,24 +165,27 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         }
 
         TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-//        if (null != LaunchActivity.getUserProfile()
-//                && null != LaunchActivity.getUserProfile().getBizNameId()
-//                && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
+        if (null != LaunchActivity.getUserProfile()
+                && null != LaunchActivity.getUserProfile().getBizNameId()
+                && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
             // added logic from profile
             tv_enable_kiosk.setVisibility(View.VISIBLE);
             tv_enable_kiosk.setOnClickListener(v -> {
-                ShowCustomDialog showDialog = new ShowCustomDialog(StoreWithMenuActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                ShowKioskModeDialog showKioskModeDialog = new ShowKioskModeDialog(StoreWithMenuActivity.this);
+                showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
                     @Override
-                    public void btnPositiveClick() {
+                    public void btnPositiveClick(boolean isFeedBackScreen) {
                         LaunchActivity.isLockMode = true;
-                        NoQueueBaseActivity.setKioskModeEnable(true);
-                        NoQueueBaseActivity.setKioskModeLevelUp(false);
-                        NoQueueBaseActivity.setKioskModeCodeQR(jsonQueue.getCodeQR());
+                        KioskModeInfo kioskModeInfo = new KioskModeInfo();
+                        kioskModeInfo.setKioskCodeQR(jsonQueue.getCodeQR());
+                        kioskModeInfo.setKioskModeEnable(true);
+                        kioskModeInfo.setLevelUp(false);
+                        kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
+                        NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
                         NoQueueBaseActivity.clearPreferences();
 
                         Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR,bizStoreElastic.getCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                         startActivity(in);
                         finish();
                     }
@@ -191,11 +195,11 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                         //Do nothing
                     }
                 });
-                showDialog.displayDialog("Kiosk Mode", "Continue to launch Kiosk Mode?");
+                showKioskModeDialog.displayDialog();
             });
-//        } else {
-//            tv_enable_kiosk.setVisibility(View.GONE);
-//        }
+        } else {
+            tv_enable_kiosk.setVisibility(View.GONE);
+        }
 
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.get()

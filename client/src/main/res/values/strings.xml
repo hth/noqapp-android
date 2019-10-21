@@ -355,4 +355,6 @@
     <string name="gps_error_msg">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
 
     <string name="discount_error">Discount has already been applied</string>
+    <string name="kiosk_dialog_title">Kiosk Mode</string>
+    <string name="kiosk_dialog_msg">Continue to launch Kiosk Mode?</string>
 </resources>

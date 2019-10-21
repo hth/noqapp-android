@@ -30,6 +30,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
@@ -547,7 +548,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                         e.printStackTrace();
                     }
                 }
-            }, 3000);
+            }, Constants.SCREEN_TIME_OUT);
         }
     }
 

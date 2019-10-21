@@ -62,6 +62,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
     private View view_loader;
     private CategoryGridAdapter.OnItemClickListener listener;
     private EditText edt_search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -132,8 +133,8 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         in_search.putExtra("scrollId", "");
         in_search.putExtra("lat", "" + LaunchActivity.getLaunchActivity().latitude);
         in_search.putExtra("lng", "" + LaunchActivity.getLaunchActivity().longitude);
-        in_search.putExtra("city",LaunchActivity.getLaunchActivity().cityName);
-        in_search.putExtra("searchString",searchString);
+        in_search.putExtra("city", LaunchActivity.getLaunchActivity().cityName);
+        in_search.putExtra("searchString", searchString);
         startActivity(in_search);
         edt_search.setText("");
     }
@@ -184,8 +185,12 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                         .error(ImageUtils.getBannerErrorPlaceholder(this))
                         .into(iv_category_banner);
             }
+            if (AppUtils.isTablet(getApplicationContext())) {
+                rv_categories.setLayoutManager(new GridLayoutManager(this, 5));
+            } else {
+                rv_categories.setLayoutManager(new GridLayoutManager(this, 2));
+            }
 
-            rv_categories.setLayoutManager(new GridLayoutManager(this, 2));
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
             CategoryGridAdapter recyclerView_Adapter
                     = new CategoryGridAdapter(this,

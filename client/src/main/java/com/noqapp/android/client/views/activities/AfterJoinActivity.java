@@ -666,7 +666,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                             e.printStackTrace();
                         }
                     }
-                }, 3000);
+                }, Constants.SCREEN_TIME_OUT);
             }
         } catch (Exception e) {
             e.printStackTrace();

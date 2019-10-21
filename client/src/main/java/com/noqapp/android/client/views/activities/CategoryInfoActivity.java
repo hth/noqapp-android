@@ -1,7 +1,25 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.google.common.cache.CacheBuilder.newBuilder;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -18,37 +36,17 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.ShowCustomDialog;
+import com.noqapp.android.client.utils.ShowKioskModeDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AccreditionAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.MapFragment;
+import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.common.cache.Cache;
-
 import com.squareup.picasso.Picasso;
-
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,6 +55,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.google.common.cache.CacheBuilder.newBuilder;
 
 /**
  * Created by chandra on 5/7/17.
@@ -191,14 +191,17 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 // added logic from profile
                 tv_enable_kiosk.setVisibility(View.VISIBLE);
                 tv_enable_kiosk.setOnClickListener(v -> {
-                    ShowCustomDialog showDialog = new ShowCustomDialog(CategoryInfoActivity.this, true);
-                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    ShowKioskModeDialog showKioskModeDialog = new ShowKioskModeDialog(CategoryInfoActivity.this);
+                    showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
                         @Override
-                        public void btnPositiveClick() {
+                        public void btnPositiveClick(boolean isFeedBackScreen) {
                             LaunchActivity.isLockMode = true;
-                            NoQueueBaseActivity.setKioskModeEnable(true);
-                            NoQueueBaseActivity.setKioskModeLevelUp(true);
-                            NoQueueBaseActivity.setKioskModeCodeQR(codeQR);
+                            KioskModeInfo kioskModeInfo = new KioskModeInfo();
+                            kioskModeInfo.setKioskCodeQR(codeQR);
+                            kioskModeInfo.setKioskModeEnable(true);
+                            kioskModeInfo.setLevelUp(true);
+                            kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
+                            NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
                             NoQueueBaseActivity.clearPreferences();
                             Bundle b = new Bundle();
                             b.putString(IBConstant.KEY_CODE_QR, codeQR);
@@ -216,7 +219,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                             //Do nothing
                         }
                     });
-                    showDialog.displayDialog("Kiosk Mode", "Continue to launch Kiosk Mode?");
+                    showKioskModeDialog.displayDialog();
                 });
             } else {
                 tv_enable_kiosk.setVisibility(View.GONE);

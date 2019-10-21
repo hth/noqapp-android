@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.common.beans.JsonProfile;
 
 import java.util.ArrayList;
@@ -33,10 +35,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String PREKEY_INVITECODE = "invitecode";
     private static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
     private static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
-    private static final String PREKEY_IS_KIOSK_MODE = "isKioskMode";
-    private static final String PREKEY_KIOSK_MODE_CODE_QR = "kioskModeCodeQR";
-    private static final String PREKEY_IS_KIOSK_MODE_LEVEL_UP = "kioskModeIsLevelUp";
-
+    private static final String PREKEY_KIOSK_MODE_INFO = "kioskModeInfo";
 
     private static final String KEY_SHOW_HELPER = "showHelper";
     private static final String KEY_PREVIOUS_USER_QID = "previousUserQID";
@@ -105,30 +104,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static void setReviewShown(boolean check) {
         sharedPreferences.edit().putBoolean(PREKEY_IS_REVIEW_SHOWN, check).apply();
-    }
-
-    public static boolean isKioskModeEnable() {
-        return sharedPreferences.getBoolean(NoQueueBaseActivity.PREKEY_IS_KIOSK_MODE, false);
-    }
-
-    public static void setKioskModeEnable(boolean check) {
-        sharedPreferences.edit().putBoolean(PREKEY_IS_KIOSK_MODE, check).apply();
-    }
-
-    public static boolean isKioskModeLevelUp() {
-        return sharedPreferences.getBoolean(NoQueueBaseActivity.PREKEY_IS_KIOSK_MODE_LEVEL_UP, false);
-    }
-
-    public static void setKioskModeLevelUp(boolean check) {
-        sharedPreferences.edit().putBoolean(PREKEY_IS_KIOSK_MODE_LEVEL_UP, check).apply();
-    }
-
-    public static String getKioskModeCodeQR() {
-        return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_KIOSK_MODE_CODE_QR, "");
-    }
-
-    public static void setKioskModeCodeQR(String check) {
-        sharedPreferences.edit().putString(PREKEY_KIOSK_MODE_CODE_QR, check).apply();
     }
 
     public static String getMail() {
@@ -221,19 +196,15 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         String fcmToken = getFCMToken();
         String previousUserQID = getPreviousUserQID();
         boolean showHelper = getShowHelper();
-        boolean isKioskModeEnable = isKioskModeEnable();
-        boolean isKioskModeLevelUp = isKioskModeLevelUp();
-        String kioskModeCodeQR = getKioskModeCodeQR();
+        KioskModeInfo kioskModeInfo = getKioskModeInfo();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(APIConstant.Key.XR_DID, did);
         editor.putString(FCM_TOKEN, fcmToken);
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
-        editor.putString(PREKEY_KIOSK_MODE_CODE_QR, kioskModeCodeQR);
-        editor.putBoolean(PREKEY_IS_KIOSK_MODE, isKioskModeEnable);
-        editor.putBoolean(PREKEY_IS_KIOSK_MODE_LEVEL_UP, isKioskModeLevelUp);
         editor.commit();
+        setKioskModeInfo(kioskModeInfo);
         if (null != LaunchActivity.getLaunchActivity()) {
             LaunchActivity.getLaunchActivity().updateDrawerUI();
         }
@@ -257,6 +228,22 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         String json = new Gson().toJson(jsonProfile);
         editor.putString(KEY_USER_PROFILE, json);
+        editor.apply();
+    }
+
+    public static KioskModeInfo getKioskModeInfo() {
+        String json = sharedPreferences.getString(PREKEY_KIOSK_MODE_INFO, "");
+        if(TextUtils.isEmpty(json)){
+            return new KioskModeInfo();
+        }else {
+            return new Gson().fromJson(json, KioskModeInfo.class);
+        }
+    }
+
+    public static void setKioskModeInfo(KioskModeInfo kioskModeInfo) {
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        String json = new Gson().toJson(kioskModeInfo);
+        editor.putString(PREKEY_KIOSK_MODE_INFO, json);
         editor.apply();
     }
 

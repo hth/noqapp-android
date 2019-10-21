@@ -16,6 +16,7 @@ public class Constants extends BaseConstants{
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeAfterJoinQActivity = 12;
     public static final int requestCodeNotification = 2;
+    public static final int SCREEN_TIME_OUT = 5000;
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String QRCODE = "qrcode";
     public static final String MESSAGE = "message";
