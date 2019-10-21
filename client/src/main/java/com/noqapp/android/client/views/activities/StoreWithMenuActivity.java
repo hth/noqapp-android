@@ -181,12 +181,19 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                         kioskModeInfo.setKioskModeEnable(true);
                         kioskModeInfo.setLevelUp(false);
                         kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
+                        kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
                         NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
                         NoQueueBaseActivity.clearPreferences();
-
-                        Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
-                        startActivity(in);
+                        
+                        if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                            Intent in = new Intent(StoreWithMenuActivity.this, FeedbackKioskModeActivity.class);
+                            in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                            startActivity(in);
+                        } else {
+                            Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
+                            in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                            startActivity(in);
+                        }
                         finish();
                     }
 

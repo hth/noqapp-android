@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -42,15 +41,15 @@ public class ShowKioskModeDialog {
         dialog.setCanceledOnTouchOutside(true);
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
-        final LinearLayout ll_hindi = dialog.findViewById(R.id.ll_hindi);
-        final LinearLayout ll_english = dialog.findViewById(R.id.ll_english);
+        final LinearLayout ll_store_screen = dialog.findViewById(R.id.ll_store_screen);
+        final LinearLayout ll_feedback_screen = dialog.findViewById(R.id.ll_feedback_screen);
         final RadioButton acrb_store_screen = dialog.findViewById(R.id.acrb_store_screen);
         final RadioButton acrb_feedback_screen = dialog.findViewById(R.id.acrb_feedback_screen);
-        ll_hindi.setOnClickListener((View v) -> {
+        ll_store_screen.setOnClickListener((View v) -> {
             acrb_store_screen.setChecked(true);
             acrb_feedback_screen.setChecked(false);
         });
-        ll_english.setOnClickListener((View v) -> {
+        ll_feedback_screen.setOnClickListener((View v) -> {
             acrb_feedback_screen.setChecked(true);
             acrb_store_screen.setChecked(false);
         });

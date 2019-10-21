@@ -262,18 +262,25 @@ public class LaunchActivity
         if (isLockMode) {
             clearPreferences();
             if (NoQueueBaseActivity.getKioskModeInfo().isLevelUp()) {
-                Bundle b = new Bundle();
-                b.putString(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
-                b.putBoolean(IBConstant.KEY_FROM_LIST, false);
-                b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
-                b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
-                Intent in = new Intent(LaunchActivity.this, CategoryInfoKioskModeActivity.class);
-                in.putExtra("bundle", b);
-                startActivity(in);
+                if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                    Intent in = new Intent(LaunchActivity.this, FeedbackKioskModeActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    startActivity(in);
+                } else {
+                    Intent in = new Intent(LaunchActivity.this, CategoryInfoKioskModeActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    startActivity(in);
+                }
             } else {
-                Intent in = new Intent(LaunchActivity.this, StoreWithMenuKioskActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
-                startActivity(in);
+                if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                    Intent in = new Intent(LaunchActivity.this, FeedbackKioskModeActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    startActivity(in);
+                } else {
+                    Intent in = new Intent(LaunchActivity.this, StoreWithMenuKioskActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    startActivity(in);
+                }
             }
         }
     }

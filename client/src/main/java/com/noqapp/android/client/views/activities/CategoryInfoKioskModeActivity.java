@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -99,28 +100,14 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         });
 
         listener = this;
-        Bundle bundle = getIntent().getBundleExtra("bundle");
-        if (null != bundle) {
-            codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
-            BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
-            if (null != bizStoreElastic) {
-                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK) {
-                    setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
-                } else {
-                    setProgressMessage("Loading ...");
-                }
-            } else {
-                setProgressMessage("Loading ...");
-            }
+        codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
+        setProgressMessage("Loading ...");
+        if (!TextUtils.isEmpty(codeQR)) {
             if (NetworkUtils.isConnectingToInternet(this)) {
                 showProgress();
                 QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
                 queueApiUnAuthenticCall.setQueuePresenter(this);
-                if (bundle.getBoolean(IBConstant.KEY_CALL_CATEGORY, false)) {
-                    queueApiUnAuthenticCall.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
-                } else {
-                    queueApiUnAuthenticCall.getAllQueueState(UserUtils.getDeviceId(), codeQR);
-                }
+                queueApiUnAuthenticCall.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
