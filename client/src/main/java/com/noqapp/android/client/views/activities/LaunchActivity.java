@@ -158,7 +158,7 @@ public class LaunchActivity
         ImageView iv_notification = findViewById(R.id.iv_notification);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
-        COUNTRY_CODE = getCountryCode();
+        COUNTRY_CODE = "IN";
         Log.i(TAG, "Country Code: " + COUNTRY_CODE);
 
         if (!isCountryIndia()) {
@@ -1297,7 +1297,7 @@ public class LaunchActivity
                 try {
                     addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (addresses != null && !addresses.isEmpty()) {
-                        return addresses.get(0).getCountryName();
+                        return addresses.get(0).getCountryCode();
                     } else {
                         return Constants.DEFAULT_COUNTRY_CODE;
                     }
