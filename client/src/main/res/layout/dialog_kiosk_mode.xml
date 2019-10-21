@@ -43,7 +43,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ll_hindi"
+                android:id="@+id/ll_store_screen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
@@ -88,7 +88,7 @@
 
 
             <LinearLayout
-                android:id="@+id/ll_english"
+                android:id="@+id/ll_feedback_screen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
