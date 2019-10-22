@@ -62,7 +62,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             } else if (TextUtils.isEmpty(edt_body.getText().toString())) {
                 edt_body.setError(getString(R.string.error_feedback_blank));
             } else {
-                setProgressMessage("Sending feedback..");
+                setProgressMessage("Sending feedback...");
                 showProgress();
                 new FeedbackApiCall(ContactUsActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                         feedback.setBody(edt_body.getText().toString()).setSubject(edt_subject.getText().toString()));
