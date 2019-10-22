@@ -201,6 +201,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                             kioskModeInfo.setKioskModeEnable(true);
                             kioskModeInfo.setLevelUp(true);
                             kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
+                            kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
                             kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
                             NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
 

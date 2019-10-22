@@ -181,6 +181,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                         kioskModeInfo.setKioskModeEnable(true);
                         kioskModeInfo.setLevelUp(false);
                         kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
+                        kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
                         kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
                         NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
 

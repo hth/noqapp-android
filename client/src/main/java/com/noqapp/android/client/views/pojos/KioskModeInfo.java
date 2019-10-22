@@ -8,6 +8,7 @@ public class KioskModeInfo implements Serializable {
     private boolean isFeedbackScreen;
     private String kioskCodeQR;
     private String bizNameId;
+    private String bizName;
 
     public boolean isKioskModeEnable() {
         return isKioskModeEnable;
@@ -49,6 +50,14 @@ public class KioskModeInfo implements Serializable {
         this.bizNameId = bizNameId;
     }
 
+    public String getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(String bizName) {
+        this.bizName = bizName;
+    }
+
     @Override
     public String toString() {
         return "KioskModeInfo{" +
@@ -57,6 +66,7 @@ public class KioskModeInfo implements Serializable {
                 ", isFeedbackScreen=" + isFeedbackScreen +
                 ", kioskCodeQR='" + kioskCodeQR + '\'' +
                 ", bizNameId='" + bizNameId + '\'' +
+                ", bizName='" + bizName + '\'' +
                 '}';
     }
 }

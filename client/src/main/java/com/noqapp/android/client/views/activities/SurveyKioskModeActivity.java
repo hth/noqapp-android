@@ -39,14 +39,14 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_kiosk);
         rv_languages = findViewById(R.id.rv_languages);
-        if(AppUtils.isTablet(this)) {
+        if (AppUtils.isTablet(this)) {
             rv_languages.setLayoutManager(new GridLayoutManager(this, 2));
-        }else{
+        } else {
             rv_languages.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         }
         initActionsViews(false);
         actionbarBack.setVisibility(View.INVISIBLE);
-        tv_toolbar_title.setText("Feedback Screen");
+        tv_toolbar_title.setText(NoQueueBaseActivity.getKioskModeInfo().getBizName());
         Toast.makeText(this, "You are in feedback screen", Toast.LENGTH_SHORT).show();
         String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         if (!TextUtils.isEmpty(codeQR)) {
@@ -85,8 +85,8 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
 
     @Override
     public void onLanguageSelected(Map<String, QuestionTypeEnum> item) {
-        HashMap <String, QuestionTypeEnum> temp = new HashMap<>(item);
-        Intent in = new Intent(this,SurveyViewPager.class);
+        HashMap<String, QuestionTypeEnum> temp = new HashMap<>(item);
+        Intent in = new Intent(this, SurveyViewPager.class);
         in.putExtra("map", temp);
         startActivity(in);
 
