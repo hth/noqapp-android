@@ -1,27 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
-import com.hbb20.CountryCodePicker;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
@@ -35,7 +13,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.hbb20.CountryCodePicker;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -208,30 +207,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         }
     }
 
-    protected void enableViews(View... views) {
-        for (View v : views) {
-            v.setVisibility(View.VISIBLE);
-        }
-    }
-
-    protected void disableViews(View... views) {
-        for (View v : views) {
-            v.setVisibility(View.GONE);
-        }
-    }
-
-    protected void setErrorNull(EditText... views) {
-        for (EditText v : views) {
-            v.setError(null);
-        }
-    }
-
-    protected void setTextBlank(EditText... views) {
-        for (EditText v : views) {
-            v.setText("");
-        }
-    }
-
     protected void updateUI(int uiState) {
         updateUI(uiState, mAuth.getCurrentUser(), null);
     }
@@ -248,13 +223,13 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         switch (uiState) {
             case STATE_INITIALIZED:
                 // Initialized state, show only the phone number field and start button
-                enableViews(btn_login, edt_phoneNo);
-                disableViews(btn_verify_phone, edt_phone_code);
+                AppUtils.showViews(btn_login, edt_phoneNo);
+                AppUtils.hideViews(btn_verify_phone, edt_phone_code);
                 tv_detail.setText(null);
                 break;
             case STATE_CODE_SENT:
                 // Code sent state, show the verification field, the
-                enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_phone_code);
+                AppUtils.showViews(btn_login, edt_phoneNo, btn_verify_phone, edt_phone_code);
 
                 tv_detail.setText(R.string.status_code_sent);
                 break;
@@ -265,8 +240,8 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 break;
             case STATE_VERIFY_SUCCESS:
                 // Verification has succeeded, proceed to firebase sign in
-                enableViews(edt_phoneNo, btn_verify_phone, edt_phone_code);
-                disableViews(btn_login);
+                AppUtils.showViews(edt_phoneNo, btn_verify_phone, edt_phone_code);
+                AppUtils.hideViews(btn_login);
                 tv_detail.setText(R.string.status_verification_succeeded);
 
                 // Set the verification text based on the credential
@@ -274,8 +249,8 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                     if (!TextUtils.isEmpty(cred.getSmsCode()) && cred.getSmsCode().length() == 6) {
                         edt_phone_code.setText(cred.getSmsCode());
                     } else {
-                        setTextBlank(edt_phone_code);
-                        disableViews(edt_phone_code);
+                        edt_phone_code.setText("");
+                        AppUtils.hideViews(edt_phone_code);
                     }
                 }
                 break;
@@ -308,16 +283,8 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         return isValid;
     }
 
-    private String codeOTP(EditText... views) {
-        StringBuilder builder = new StringBuilder();
-        for (EditText v : views) {
-            builder.append(v.getText().toString());
-        }
-        return builder.toString();
-    }
-
     private void btnVerifyClick() {
-        setErrorNull(edt_phone_code);
+        edt_phone_code.setError(null);
         if (!validateOTP(edt_phone_code)) {
             return;
         }

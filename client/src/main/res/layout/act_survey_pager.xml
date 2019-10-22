@@ -28,6 +28,7 @@
             android:id="@+id/ll_rating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -108,7 +109,7 @@
             android:id="@+id/rg_yes_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="10dp">
 
             <RadioButton
                 android:id="@+id/rb_yes"
@@ -117,15 +118,15 @@
                 android:buttonTint="@color/colorAccent"
                 android:checked="true"
                 android:text="Yes"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <RadioButton
                 android:id="@+id/rb_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/colorAccent"
-                android:text="NO"
-                android:textSize="20sp" />
+                android:text="No"
+                android:textSize="18sp" />
 
         </RadioGroup>
 
@@ -156,7 +157,7 @@
             android:id="@+id/btn_update"
             android:layout_width="match_parent"
             android:layout_height="@dimen/btn_standard_height"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/btn_bg_enable"
             android:clickable="true"
