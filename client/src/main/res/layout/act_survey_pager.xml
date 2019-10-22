@@ -93,11 +93,12 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/btn_pay"
+            android:id="@+id/btn_update"
             android:layout_width="match_parent"
             android:layout_height="@dimen/btn_standard_height"
             android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
+            android:maxWidth="400dp"
             android:background="@drawable/btn_bg_enable"
             android:clickable="true"
             android:fontFamily="sans-serif-medium"

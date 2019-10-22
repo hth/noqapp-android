@@ -34,7 +34,7 @@ public class Survey {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("qr")
+    @JsonProperty("or")
     private int overallRating;
 
     @JsonProperty("dr")

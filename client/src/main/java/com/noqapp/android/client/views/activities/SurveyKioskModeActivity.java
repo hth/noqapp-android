@@ -32,6 +32,7 @@ import java.util.Map;
 public class SurveyKioskModeActivity extends BaseActivity implements SurveyPresenter,
         LanguageGridAdapter.OnItemClickListener {
     private RecyclerView rv_languages;
+    private JsonQuestionnaire jsonQuestionnaire;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
     @Override
     public void surveyResponse(JsonQuestionnaire jsonQuestionnaire) {
         Log.e("survey response", jsonQuestionnaire.toString());
+        this.jsonQuestionnaire = jsonQuestionnaire;
         List<Locale> keys = new ArrayList<>(jsonQuestionnaire.getQuestions().keySet());
         LanguageGridAdapter recyclerView_Adapter = new LanguageGridAdapter(
                 this, keys, jsonQuestionnaire.getQuestions(), this);
@@ -86,7 +88,8 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
     @Override
     public void onLanguageSelected(Map<String, QuestionTypeEnum> item) {
         HashMap<String, QuestionTypeEnum> temp = new HashMap<>(item);
-        Intent in = new Intent(this, SurveyViewPager.class);
+        Intent in = new Intent(this, SurveyActivity.class);
+        in.putExtra("survey", jsonQuestionnaire);
         in.putExtra("map", temp);
         startActivity(in);
 
