@@ -1,13 +1,14 @@
 package com.noqapp.android.client.views.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.AppCompatRatingBar;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SurveyResponseApiCalls;
@@ -25,13 +26,16 @@ import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.HashMap;
 
-public class SurveyActivity extends BaseActivity implements ResponsePresenter {
+public class SurveyActivity extends BaseActivity implements ResponsePresenter, View.OnClickListener {
 
     private HashMap<String, QuestionTypeEnum> temp;
     private EditText edt_text;
-    private AppCompatRatingBar ratingBar;
     private RadioGroup rg_yes_no;
+    private RadioButton rb_yes;
+    private LinearLayout ll_rating;
     private JsonQuestionnaire jsonQuestionnaire;
+    private TextView[] tvs = new TextView[10];
+    private int selectPos = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +46,30 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter {
         tv_toolbar_title.setText("Survey");
         temp = (HashMap<String, QuestionTypeEnum>) getIntent().getSerializableExtra("map");
         jsonQuestionnaire = (JsonQuestionnaire) getIntent().getSerializableExtra("survey");
+        ll_rating = findViewById(R.id.ll_rating);
         TextView tv_q_rating = findViewById(R.id.tv_q_rating);
         TextView tv_q_yes_no = findViewById(R.id.tv_q_yes_no);
         TextView tv_q_edit = findViewById(R.id.tv_q_edit);
         rg_yes_no = findViewById(R.id.rg_yes_no);
+        rb_yes = findViewById(R.id.rb_yes);
         edt_text = findViewById(R.id.edt_text);
-        ratingBar = findViewById(R.id.ratingBar);
-        AppUtils.hideViews(tv_q_rating, tv_q_yes_no, tv_q_edit, rg_yes_no, edt_text, ratingBar);
+        tvs[0] = findViewById(R.id.tv_1);
+        tvs[1] = findViewById(R.id.tv_2);
+        tvs[2] = findViewById(R.id.tv_3);
+        tvs[3] = findViewById(R.id.tv_4);
+        tvs[4] = findViewById(R.id.tv_5);
+        tvs[5] = findViewById(R.id.tv_6);
+        tvs[6] = findViewById(R.id.tv_7);
+        tvs[7] = findViewById(R.id.tv_8);
+        tvs[8] = findViewById(R.id.tv_9);
+        tvs[9] = findViewById(R.id.tv_10);
+        for (int i = 0; i < tvs.length; i++) {
+            tvs[i].setOnClickListener(this::onClick);
+        }
+
+
+
+        AppUtils.hideViews(tv_q_rating, tv_q_yes_no, tv_q_edit, rg_yes_no, edt_text, ll_rating);
         if (null != temp && temp.size() > 0) {
             int i = 0;
             for (HashMap.Entry<String, QuestionTypeEnum> entry : temp.entrySet()) {
@@ -65,7 +86,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter {
                     case M:
                         break;
                     case R:
-                        ratingBar.setVisibility(View.VISIBLE);
+                        ll_rating.setVisibility(View.VISIBLE);
                         tv_q_rating.setVisibility(View.VISIBLE);
                         tv_q_rating.setText(question);
                         break;
@@ -88,10 +109,10 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter {
                 Survey survey = new Survey();
                 survey.setBizNameId(jsonQuestionnaire.getBizNameId());
                 survey.setQuestionnaireId(jsonQuestionnaire.getQuestionnaireId());
-                survey.setBizStoreId(NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                survey.setCodeQR(NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                 survey.setBizStoreId(NoQueueBaseActivity.getUserProfile().getBizStoreIds().get(0));
-                survey.setOverallRating(5);
-                survey.setDetailedResponse(new String[]{"YES", "Please improve UI"});
+                survey.setOverallRating(selectPos);
+                survey.setDetailedResponse(new String[]{rb_yes.isChecked()?"YES":"NO", edt_text.getText().toString()});
                 surveyResponseApiCalls.surveyResponse(UserUtils.getDeviceId(), survey);
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
@@ -105,6 +126,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter {
         if (null != response) {
             if (response.getResponse() == Constants.SUCCESS) {
                 new CustomToast().showToast(this, "survey submitted successfully !!!");
+                finish();
             } else {
                 new CustomToast().showToast(this, "Error while submitting survey");
             }
@@ -117,5 +139,19 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter {
     @Override
     public void responsePresenterError() {
         dismissProgress();
+    }
+
+    @Override
+    public void onClick(View v) {
+        for (int i = 0; i < tvs.length; i++) {
+            tvs[i].setOnClickListener(this::onClick);
+            tvs[i].setTextColor(Color.BLACK);
+            tvs[i].setBackgroundResource(R.drawable.edit_black);
+        }
+        int tag = Integer.parseInt((String)v.getTag());
+        tvs[tag-1].setTextColor(Color.WHITE);
+        tvs[tag-1].setBackgroundResource(R.drawable.btn_bg_enable);
+        selectPos = tag;
+
     }
 }
