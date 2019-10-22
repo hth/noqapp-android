@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,6 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
         final Locale local = localeList.get(position);
         Map<String, QuestionTypeEnum> questionTypeEnumMap = questions.get(local);
         holder.tv_title.setText(local.getDisplayLanguage());
-        holder.tv_title.setTextColor(Color.BLACK);
         holder.iv_main.setBackgroundResource(R.drawable.bg_language);
         holder.card_view.setOnClickListener((View v) -> {
             listener.onLanguageSelected(questionTypeEnumMap);

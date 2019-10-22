@@ -172,7 +172,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
                         .into(iv_category_banner);
             }
             if (AppUtils.isTablet(getApplicationContext())) {
-                rv_categories.setLayoutManager(new GridLayoutManager(this, 5));
+                rv_categories.setLayoutManager(new GridLayoutManager(this, 3));
             } else {
                 rv_categories.setLayoutManager(new GridLayoutManager(this, 2));
             }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
@@ -15,6 +16,7 @@ import com.noqapp.android.client.model.SurveyApiCalls;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
 import com.noqapp.android.client.presenter.SurveyPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -37,7 +39,11 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_kiosk);
         rv_languages = findViewById(R.id.rv_languages);
-        rv_languages.setLayoutManager(new GridLayoutManager(this, 2));
+        if(AppUtils.isTablet(this)) {
+            rv_languages.setLayoutManager(new GridLayoutManager(this, 2));
+        }else{
+            rv_languages.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        }
         initActionsViews(false);
         actionbarBack.setVisibility(View.INVISIBLE);
         tv_toolbar_title.setText("Feedback Screen");

@@ -13,7 +13,6 @@
     <dimen name="seekbar_thumb_height">25dp</dimen>
 
 
-
     <dimen name="message_label">15sp</dimen>
     <dimen name="card_padding">30dp</dimen>
 
@@ -59,4 +58,5 @@
     <dimen name="empty_subtitle_size">16sp</dimen>
     <dimen name="empty_icons">150dp</dimen>
 
+    <dimen name="title_size">20sp</dimen>
 </resources>
