@@ -33,6 +33,9 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonQuestionnaire implements Serializable {
 
+    @JsonProperty("id")
+    private String questionnaireId;
+
     @JsonProperty("bn")
     private String bizNameId;
 
@@ -41,6 +44,15 @@ public class JsonQuestionnaire implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public String getQuestionnaireId() {
+        return questionnaireId;
+    }
+
+    public JsonQuestionnaire setQuestionnaireId(String questionnaireId) {
+        this.questionnaireId = questionnaireId;
+        return this;
+    }
 
     public String getBizNameId() {
         return bizNameId;

@@ -92,6 +92,12 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("bn")
     private String bizNameId;
 
+    @JsonProperty("bss")
+    private List<String> bizStoreIds;
+
+    @JsonProperty("qrs")
+    private List<String> codeQRs;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -262,6 +268,24 @@ public final class JsonProfile implements Serializable {
 
     public JsonProfile setBizNameId(String bizNameId) {
         this.bizNameId = bizNameId;
+        return this;
+    }
+
+    public List<String> getBizStoreIds() {
+        return bizStoreIds;
+    }
+
+    public JsonProfile setBizStoreIds(List<String> bizStoreIds) {
+        this.bizStoreIds = bizStoreIds;
+        return this;
+    }
+
+    public List<String> getCodeQRs() {
+        return codeQRs;
+    }
+
+    public JsonProfile setCodeQRs(List<String> codeQRs) {
+        this.codeQRs = codeQRs;
         return this;
     }
 
