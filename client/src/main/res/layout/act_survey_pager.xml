@@ -7,8 +7,107 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pager"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:id="@+id/tv_q_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:progressBackgroundTint="@color/colorActionbar"
+            android:progressTint="@color/colorAccent"
+            android:secondaryProgressTint="@color/colorActionbar" />
+
+        <TextView
+            android:id="@+id/tv_q_yes_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rg_yes_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
+
+            <RadioButton
+                android:id="@+id/rb_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorAccent"
+                android:checked="true"
+                android:text="Yes"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/rb_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorAccent"
+                android:text="NO"
+                android:textSize="20sp" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tv_q_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/edt_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_orange"
+            android:gravity="top|left"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:minLines="3"
+            android:padding="5dp"
+            android:singleLine="false"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_pay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_standard_height"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/btn_bg_enable"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="Submit"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_sixteen"
+            android:textStyle="normal" />
+
+    </LinearLayout>
 </LinearLayout>

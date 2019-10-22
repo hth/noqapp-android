@@ -1,14 +1,5 @@
 package com.noqapp.android.common.utils;
 
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.customviews.CustomToast;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.Months;
-import org.joda.time.Years;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -20,6 +11,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.Months;
+import org.joda.time.Years;
 
 import java.math.BigDecimal;
 import java.security.SecureRandom;
@@ -326,7 +326,7 @@ public class CommonHelper {
         return sb.toString();
     }
 
-    public static boolean isDateBeforeToday(Context context,String selectedDay) {
+    public static boolean isDateBeforeToday(Context context, String selectedDay) {
         try {
             Date selectedDate = CommonHelper.SDF_DOB_FROM_UI.parse(selectedDay);
             int date_diff = new Date().compareTo(selectedDate);
@@ -342,7 +342,7 @@ public class CommonHelper {
         return true;
     }
 
-    public static int getDrawableFromString(String val,Context context){
+    public static int getDrawableFromString(String val, Context context) {
         return context.getResources().getIdentifier(val, "drawable", context.getPackageName());
     }
 
@@ -370,4 +370,16 @@ public class CommonHelper {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
+
+    public static void showViews(View... views) {
+        for (View v : views) {
+            v.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void hideViews(View... views) {
+        for (View v : views) {
+            v.setVisibility(View.GONE);
+        }
+    }
 }

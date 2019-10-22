@@ -1,22 +1,25 @@
 package com.noqapp.android.client.views.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
-import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.AppCompatRatingBar;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
-import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.client.views.fragments.SurveyFragment;
+import com.noqapp.android.client.utils.AppUtils;
 
 import java.util.HashMap;
 
 public class SurveyViewPager extends BaseActivity {
-    private ViewPager viewPager;
-    private LoadTabs loadTabs;
+
     private HashMap<String, QuestionTypeEnum> temp;
+    private EditText edt_text;
+    private AppCompatRatingBar ratingBar;
+    private RadioGroup rg_yes_no;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,75 +27,43 @@ public class SurveyViewPager extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_survey_pager);
         initActionsViews(false);
-        viewPager = findViewById(R.id.pager);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        temp = (HashMap<String, QuestionTypeEnum>)getIntent().getSerializableExtra("map");
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadTabs = new LoadTabs();
-                loadTabs.execute();
-            }
-        }, 100);
-
-
-    }
-
-
-    private class LoadTabs extends AsyncTask<String, String, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            return null;
-        }
-
-        protected void onPostExecute(String result) {
-            try {
-                setupViewPager();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void setupViewPager() {
-        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        if(null != temp && temp.size() >0){
+        tv_toolbar_title.setText("Survey");
+        temp = (HashMap<String, QuestionTypeEnum>) getIntent().getSerializableExtra("map");
+        TextView tv_q_rating = findViewById(R.id.tv_q_rating);
+        TextView tv_q_yes_no = findViewById(R.id.tv_q_yes_no);
+        TextView tv_q_edit = findViewById(R.id.tv_q_edit);
+        rg_yes_no = findViewById(R.id.rg_yes_no);
+        edt_text = findViewById(R.id.edt_text);
+        ratingBar = findViewById(R.id.ratingBar);
+        AppUtils.hideViews(tv_q_rating, tv_q_yes_no, tv_q_edit, rg_yes_no, edt_text, ratingBar);
+        if (null != temp && temp.size() > 0) {
             int i = 0;
             for (HashMap.Entry<String, QuestionTypeEnum> entry : temp.entrySet()) {
-                String key = entry.getKey();
-                QuestionTypeEnum value = entry.getValue();
-                SurveyFragment surveyFragment = new SurveyFragment();
-                Bundle b = new Bundle();
-                b.putString("question",key);
-                b.putSerializable("q_type",value);
-                surveyFragment.setArguments(b);
-                adapter.addFragment(surveyFragment, "FRAG" + i);
-                i++;
+                String question = entry.getKey();
+                QuestionTypeEnum q_type = entry.getValue();
+                switch (q_type) {
+                    case B:
+                        rg_yes_no.setVisibility(View.VISIBLE);
+                        tv_q_yes_no.setVisibility(View.VISIBLE);
+                        tv_q_yes_no.setText(question);
+                        break;
+                    case S:
+                        break;
+                    case M:
+                        break;
+                    case R:
+                        ratingBar.setVisibility(View.VISIBLE);
+                        tv_q_rating.setVisibility(View.VISIBLE);
+                        tv_q_rating.setText(question);
+                        break;
+                    case T:
+                        edt_text.setVisibility(View.VISIBLE);
+                        tv_q_edit.setVisibility(View.VISIBLE);
+                        tv_q_edit.setText(question);
+                        break;
+                }
+
             }
-
         }
-        viewPager.setOffscreenPageLimit(adapter.getCount());
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(0);
-
     }
-
-
 }
