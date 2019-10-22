@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -300,18 +299,6 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         }
     }
 
-    private void enableViews(View... views) {
-        for (View v : views) {
-            v.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void disableViews(View... views) {
-        for (View v : views) {
-            v.setVisibility(View.GONE);
-        }
-    }
-
 
     public void btnVerifyClick() {
         edt_verification_code.setError(null);
@@ -346,14 +333,13 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         switch (uiState) {
             case STATE_INITIALIZED:
                 // Initialized state, show only the phone number field and start button
-                enableViews(btn_login, edt_phoneNo);
-                disableViews(btn_verify_phone, edt_verification_code);
+                AppUtils.showViews(btn_login, edt_phoneNo);
+                AppUtils.hideViews(btn_verify_phone, edt_verification_code);
                 tv_detail.setText(null);
                 break;
             case STATE_CODE_SENT:
                 // Code sent state, show the verification field, the
-                enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_verification_code);
-
+                AppUtils.showViews(btn_login, edt_phoneNo, btn_verify_phone, edt_verification_code);
                 tv_detail.setText(R.string.status_code_sent);
                 break;
             case STATE_VERIFY_FAILED:
@@ -363,8 +349,8 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 break;
             case STATE_VERIFY_SUCCESS:
                 // Verification has succeeded, proceed to firebase sign in
-                enableViews(edt_phoneNo, btn_verify_phone, edt_verification_code);
-                disableViews(btn_login);
+                AppUtils.showViews(edt_phoneNo, btn_verify_phone, edt_verification_code);
+                AppUtils.hideViews(btn_login);
                 tv_detail.setText(R.string.status_verification_succeeded);
 
                 // Set the verification text based on the credential
@@ -373,7 +359,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                         edt_verification_code.setText(cred.getSmsCode());
                     } else {
                         edt_verification_code.setText(R.string.instant_validation);
-                        disableViews(edt_verification_code);
+                        AppUtils.hideViews(edt_verification_code);
                     }
                 }
                 break;
