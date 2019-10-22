@@ -34,9 +34,6 @@ public class Survey {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty ("did")
-    private String did;
-
     @JsonProperty("qr")
     private int overallRating;
 
@@ -70,15 +67,6 @@ public class Survey {
 
     public Survey setCodeQR(String codeQR) {
         this.codeQR = codeQR;
-        return this;
-    }
-
-    public String getDid() {
-        return did;
-    }
-
-    public Survey setDid(String did) {
-        this.did = did;
         return this;
     }
 
