@@ -34,6 +34,7 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
         LanguageGridAdapter.OnItemClickListener {
     private RecyclerView rv_languages;
     private JsonQuestionnaire jsonQuestionnaire;
+    private LanguageGridAdapter recyclerView_Adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
         actionbarBack.setVisibility(View.INVISIBLE);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         tv_store_name.setText(NoQueueBaseActivity.getKioskModeInfo().getBizName());
-        Toast.makeText(this, "You are in feedback screen", Toast.LENGTH_SHORT).show();
         String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         if (!TextUtils.isEmpty(codeQR)) {
             if (NetworkUtils.isConnectingToInternet(this)) {
@@ -72,6 +72,14 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
     @Override
     public void onResume() {
         super.onResume();
+        if (null != jsonQuestionnaire) {
+            List<Locale> keys = new ArrayList<>(jsonQuestionnaire.getQuestions().keySet());
+            rv_languages.setAdapter(null);
+            recyclerView_Adapter.notifyDataSetChanged();
+            recyclerView_Adapter = new LanguageGridAdapter(
+                    this, keys, jsonQuestionnaire.getQuestions(), this);
+            rv_languages.setAdapter(recyclerView_Adapter);
+        }
     }
 
     @Override
@@ -79,7 +87,7 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
         Log.e("survey response", jsonQuestionnaire.toString());
         this.jsonQuestionnaire = jsonQuestionnaire;
         List<Locale> keys = new ArrayList<>(jsonQuestionnaire.getQuestions().keySet());
-        LanguageGridAdapter recyclerView_Adapter = new LanguageGridAdapter(
+        recyclerView_Adapter = new LanguageGridAdapter(
                 this, keys, jsonQuestionnaire.getQuestions(), this);
         rv_languages.setAdapter(recyclerView_Adapter);
         dismissProgress();
@@ -94,6 +102,5 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
         in.putExtra("survey", jsonQuestionnaire);
         in.putExtra("map", temp);
         startActivity(in);
-
     }
 }

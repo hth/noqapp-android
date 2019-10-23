@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
@@ -35,7 +36,7 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.grid_item_category, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rcv_language_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -45,8 +46,10 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
         final Locale local = localeList.get(position);
         Map<String, QuestionTypeEnum> questionTypeEnumMap = questions.get(local);
         holder.tv_title.setText(local.getDisplayLanguage());
-        holder.iv_main.setBackgroundColor(Color.parseColor("#3b596e"));
         holder.card_view.setOnClickListener((View v) -> {
+            holder.tv_title.setBackground(ContextCompat.getDrawable(context, R.drawable.edit_orange));
+            holder.tv_title.setTextColor(Color.BLACK);
+            //holder.tv_title.setBackgroundColor(Color.WHITE);
             listener.onLanguageSelected(questionTypeEnumMap);
         });
     }

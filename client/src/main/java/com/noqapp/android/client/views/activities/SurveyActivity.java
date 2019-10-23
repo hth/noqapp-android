@@ -101,22 +101,25 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         btn_clear.setOnClickListener(this::onClick);
         Button btn_update = findViewById(R.id.btn_update);
         btn_update.setOnClickListener(v -> {
-            setProgressMessage("Submitting feedback ...");
-            if (NetworkUtils.isConnectingToInternet(this)) {
-                showProgress();
-                SurveyResponseApiCalls surveyResponseApiCalls = new SurveyResponseApiCalls(SurveyActivity.this);
-                Survey survey = new Survey();
-                survey.setBizNameId(jsonQuestionnaire.getBizNameId());
-                survey.setQuestionnaireId(jsonQuestionnaire.getQuestionnaireId());
-                survey.setCodeQR(NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
-                survey.setBizStoreId(NoQueueBaseActivity.getUserProfile().getBizStoreIds().get(0));
-                survey.setOverallRating(selectPos);
-                survey.setDetailedResponse(new String[]{rb_yes.isChecked() ? "1" : "0", edt_text.getText().toString()});
-                surveyResponseApiCalls.surveyResponse(UserUtils.getDeviceId(), survey);
+            if (selectPos < 0) {
+                new CustomToast().showToast(SurveyActivity.this, "Please rate overall rating");
             } else {
-                ShowAlertInformation.showNetworkDialog(this);
+                setProgressMessage("Submitting feedback ...");
+                if (NetworkUtils.isConnectingToInternet(this)) {
+                    showProgress();
+                    SurveyResponseApiCalls surveyResponseApiCalls = new SurveyResponseApiCalls(SurveyActivity.this);
+                    Survey survey = new Survey();
+                    survey.setBizNameId(jsonQuestionnaire.getBizNameId());
+                    survey.setQuestionnaireId(jsonQuestionnaire.getQuestionnaireId());
+                    survey.setCodeQR(NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    survey.setBizStoreId(NoQueueBaseActivity.getUserProfile().getBizStoreIds().get(0));
+                    survey.setOverallRating(selectPos);
+                    survey.setDetailedResponse(new String[]{rb_yes.isChecked() ? "1" : "0", edt_text.getText().toString()});
+                    surveyResponseApiCalls.surveyResponse(UserUtils.getDeviceId(), survey);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(this);
+                }
             }
-
         });
     }
 
