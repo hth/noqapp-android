@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
+import com.noqapp.android.client.presenter.beans.body.Location;
 
 import java.util.List;
 import java.util.Locale;
@@ -43,13 +44,13 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         ViewHolder holder = (ViewHolder) viewHolder;
-        final Locale local = localeList.get(position);
-        Map<String, QuestionTypeEnum> questionTypeEnumMap = questions.get(local);
-        holder.tv_title.setText(local.getDisplayLanguage());
+        final Locale locale = localeList.get(position);
+        Map<String, QuestionTypeEnum> questionTypeEnumMap = questions.get(locale);
+        holder.tv_title.setText(locale.getDisplayLanguage());
         holder.card_view.setOnClickListener((View v) -> {
             holder.tv_title.setBackground(ContextCompat.getDrawable(context, R.drawable.edit_orange));
             holder.tv_title.setTextColor(Color.BLACK);
-            listener.onLanguageSelected(questionTypeEnumMap);
+            listener.onLanguageSelected(questionTypeEnumMap,locale);
         });
     }
 
@@ -59,7 +60,7 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onLanguageSelected(Map<String, QuestionTypeEnum> item);
+        void onLanguageSelected(Map<String, QuestionTypeEnum> item, Locale locale);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

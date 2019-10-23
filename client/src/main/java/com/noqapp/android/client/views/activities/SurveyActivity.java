@@ -20,6 +20,7 @@ import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
 import com.noqapp.android.client.presenter.beans.body.Survey;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.KioskStringConstants;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -32,12 +33,13 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
     private HashMap<String, QuestionTypeEnum> temp;
     private EditText edt_text;
     private RadioGroup rg_yes_no;
-    private RadioButton rb_yes;
+    private RadioButton rb_yes, rb_no;
     private LinearLayout ll_rating;
     private JsonQuestionnaire jsonQuestionnaire;
     private TextView[] tvs = new TextView[10];
     private int selectPos = -1;
     private CardView cv_rating, cv_yes_no, cv_edit;
+    private TextView tv_left, tv_right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +47,12 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_survey);
         initActionsViews(false);
-        tv_toolbar_title.setText("Survey");
+        tv_toolbar_title.setText(KioskStringConstants.SURVEY_TITLE);
         temp = (HashMap<String, QuestionTypeEnum>) getIntent().getSerializableExtra("map");
         jsonQuestionnaire = (JsonQuestionnaire) getIntent().getSerializableExtra("survey");
         ll_rating = findViewById(R.id.ll_rating);
+        tv_left = findViewById(R.id.tv_left);
+        tv_right = findViewById(R.id.tv_right);
         TextView tv_q_rating = findViewById(R.id.tv_q_rating);
         TextView tv_q_yes_no = findViewById(R.id.tv_q_yes_no);
         TextView tv_q_edit = findViewById(R.id.tv_q_edit);
@@ -57,6 +61,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         cv_edit = findViewById(R.id.cv_edit);
         rg_yes_no = findViewById(R.id.rg_yes_no);
         rb_yes = findViewById(R.id.rb_yes);
+        rb_no = findViewById(R.id.rb_no);
         edt_text = findViewById(R.id.edt_text);
         tvs[0] = findViewById(R.id.tv_1);
         tvs[1] = findViewById(R.id.tv_2);
@@ -71,11 +76,13 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         for (TextView tv : tvs) {
             tv.setOnClickListener(this::onClick);
         }
-
+        tv_left.setText(KioskStringConstants.STR_WORST);
+        tv_right.setText(KioskStringConstants.STR_BEST);
+        rb_yes.setText(KioskStringConstants.YES);
+        rb_no.setText(KioskStringConstants.NO);
         AppUtils.hideViews(tv_q_rating, tv_q_yes_no, tv_q_edit, rg_yes_no, edt_text, ll_rating,
                 cv_rating, cv_yes_no, cv_edit);
         if (null != temp && temp.size() > 0) {
-            int i = 0;
             for (HashMap.Entry<String, QuestionTypeEnum> entry : temp.entrySet()) {
                 String question = entry.getKey();
                 QuestionTypeEnum q_type = entry.getValue();
@@ -110,11 +117,13 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         Button btn_clear = findViewById(R.id.btn_clear);
         btn_clear.setOnClickListener(this::onClick);
         Button btn_update = findViewById(R.id.btn_update);
+        btn_clear.setText(KioskStringConstants.RESET);
+        btn_update.setText(KioskStringConstants.SUBMIT);
         btn_update.setOnClickListener(v -> {
             if (selectPos < 0) {
-                new CustomToast().showToast(SurveyActivity.this, "Please rate overall rating");
+                new CustomToast().showToast(SurveyActivity.this, KioskStringConstants.EMPTY_ERROR);
             } else {
-                setProgressMessage("Submitting feedback ...");
+                setProgressMessage(KioskStringConstants.PROGRESS_TITLE);
                 if (NetworkUtils.isConnectingToInternet(this)) {
                     showProgress();
                     SurveyResponseApiCalls surveyResponseApiCalls = new SurveyResponseApiCalls(SurveyActivity.this);
@@ -137,13 +146,13 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
     public void responsePresenterResponse(JsonResponse response) {
         if (null != response) {
             if (response.getResponse() == Constants.SUCCESS) {
-                new CustomToast().showToast(this, "Thank you for your feedback");
+                new CustomToast().showToast(this, KioskStringConstants.SUCCESS_RESPONSE);
                 finish();
             } else {
-                new CustomToast().showToast(this, "Error submitting feedback");
+                new CustomToast().showToast(this, KioskStringConstants.FAILURE_RESPONSE);
             }
         } else {
-            new CustomToast().showToast(this, "Error submitting feedback");
+            new CustomToast().showToast(this, KioskStringConstants.FAILURE_RESPONSE);
         }
         dismissProgress();
     }

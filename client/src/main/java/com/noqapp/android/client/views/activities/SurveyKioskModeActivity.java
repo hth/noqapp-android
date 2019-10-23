@@ -18,10 +18,12 @@ import com.noqapp.android.client.presenter.SurveyPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.KioskStringConstants;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.LanguageGridAdapter;
+import com.noqapp.android.client.views.pojos.KioskModeInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,7 +97,8 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
 
 
     @Override
-    public void onLanguageSelected(Map<String, QuestionTypeEnum> item) {
+    public void onLanguageSelected(Map<String, QuestionTypeEnum> item, Locale locale) {
+        KioskStringConstants.init(locale.getLanguage());
         HashMap<String, QuestionTypeEnum> temp = new HashMap<>(item);
         Intent in = new Intent(this, SurveyActivity.class);
         in.putExtra("survey", jsonQuestionnaire);
