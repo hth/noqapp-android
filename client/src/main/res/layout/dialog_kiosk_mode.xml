@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dialog_bg_language"
+    android:background="@drawable/dialog_bg_kiosk"
     android:orientation="vertical"
     android:outlineProvider="paddedBounds"
     android:padding="20dp">
@@ -138,7 +138,7 @@
         android:layout_margin="10dp"
         android:gravity="center"
         android:text="@string/kiosk_dialog_msg"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 

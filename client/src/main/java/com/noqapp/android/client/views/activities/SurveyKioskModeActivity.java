@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -47,7 +48,8 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
         }
         initActionsViews(false);
         actionbarBack.setVisibility(View.INVISIBLE);
-        tv_toolbar_title.setText(NoQueueBaseActivity.getKioskModeInfo().getBizName());
+        TextView tv_store_name = findViewById(R.id.tv_store_name);
+        tv_store_name.setText(NoQueueBaseActivity.getKioskModeInfo().getBizName());
         Toast.makeText(this, "You are in feedback screen", Toast.LENGTH_SHORT).show();
         String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         if (!TextUtils.isEmpty(codeQR)) {

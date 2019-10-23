@@ -6,25 +6,42 @@
     android:background="#99ffffff"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout" />
+    <include
+        layout="@layout/toolbar_layout"
+        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/off_white">
 
 
         <LinearLayout
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_store_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text=""
+                android:textColor="#333"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Select Language"
+                android:text="Select your preferred language for survey"
                 android:textColor="#333"
                 android:textSize="18sp"
                 android:textStyle="bold" />

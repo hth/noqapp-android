@@ -1,5 +1,15 @@
 package com.noqapp.android.client.views.activities;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SurveyResponseApiCalls;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
@@ -13,16 +23,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
-
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -97,6 +97,8 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
             }
         }
 
+        Button btn_clear = findViewById(R.id.btn_clear);
+        btn_clear.setOnClickListener(this::onClick);
         Button btn_update = findViewById(R.id.btn_update);
         btn_update.setOnClickListener(v -> {
             setProgressMessage("Submitting feedback ...");
@@ -140,14 +142,26 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
 
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.btn_clear) {
+            selectPos = -1;
+            resetRating();
+            edt_text.setText("");
+            rb_yes.setChecked(true);
+
+        } else {
+            resetRating();
+            int tag = Integer.parseInt((String) v.getTag());
+            tvs[tag - 1].setTextColor(Color.WHITE);
+            tvs[tag - 1].setBackgroundResource(R.drawable.btn_bg_enable);
+            selectPos = tag;
+        }
+    }
+
+    private void resetRating() {
         for (TextView tv : tvs) {
             tv.setOnClickListener(this::onClick);
             tv.setTextColor(Color.BLACK);
             tv.setBackgroundResource(R.drawable.edit_black);
         }
-        int tag = Integer.parseInt((String) v.getTag());
-        tvs[tag - 1].setTextColor(Color.WHITE);
-        tvs[tag - 1].setBackgroundResource(R.drawable.btn_bg_enable);
-        selectPos = tag;
     }
 }
