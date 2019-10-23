@@ -20,19 +20,19 @@ public class KioskStringConstants {
         Log.e("language", language);
         if (language.equals("en")) {
             EMPTY_ERROR = "Please rate overall rating";
-            PROGRESS_TITLE = "Submitting feedback ...";
+            PROGRESS_TITLE = "Submitting feedback...";
             SURVEY_TITLE = "Survey";
             SUCCESS_RESPONSE = "Thank you for your feedback";
             FAILURE_RESPONSE = "Error submitting feedback";
-            RESET = "RESET";
+            RESET = "Reset";
             SUBMIT = "Submit";
             STR_WORST = "Not at all\nsatisfied";
             STR_BEST = "Extremely\nSatisfied";
-            YES = "YES";
-            NO = "NO";
+            YES = "Yes";
+            NO = "No";
         } else if (language.equals("es")) {
             EMPTY_ERROR = "Por favor califique la calificación general";
-            PROGRESS_TITLE = "Enviar comentarios ...";
+            PROGRESS_TITLE = "Enviar comentarios...";
             SURVEY_TITLE = "Encuesta";
             SUCCESS_RESPONSE = "Gracias por tus comentarios";
             FAILURE_RESPONSE = "Error al enviar comentarios";
@@ -40,8 +40,8 @@ public class KioskStringConstants {
             SUBMIT = "Enviar";
             STR_WORST = "De ningún modo\nsatisfecho";
             STR_BEST = "Extremadamente\nSatisfecho";
-            YES = "SI";
-            NO = "NO";
+            YES = "Si";
+            NO = "No";
         } else {
             EMPTY_ERROR = "Please rate overall rating";
             PROGRESS_TITLE = "Submitting feedback ...";
@@ -52,8 +52,8 @@ public class KioskStringConstants {
             SUBMIT = "Submit";
             STR_WORST = "Not at all\nsatisfied";
             STR_BEST = "Extremely\nSatisfied";
-            YES = "YES";
-            NO = "NO";
+            YES = "Yes";
+            NO = "No";
         }
     }
 

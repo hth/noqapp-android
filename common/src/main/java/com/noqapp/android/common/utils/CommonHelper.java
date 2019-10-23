@@ -189,8 +189,10 @@ public class CommonHelper {
         if (StringUtils.isNotBlank(town)) {
             address = town;
         }
-        if (StringUtils.isNotBlank(area)) {
+        if (StringUtils.isNotBlank(area) && StringUtils.isNotBlank(address)) {
             address = area + ", " + address;
+        } else if (StringUtils.isNotBlank(area)) {
+            address = area;
         }
         return address;
     }
