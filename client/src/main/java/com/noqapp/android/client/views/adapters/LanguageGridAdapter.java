@@ -49,7 +49,6 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
         holder.card_view.setOnClickListener((View v) -> {
             holder.tv_title.setBackground(ContextCompat.getDrawable(context, R.drawable.edit_orange));
             holder.tv_title.setTextColor(Color.BLACK);
-            //holder.tv_title.setBackgroundColor(Color.WHITE);
             listener.onLanguageSelected(questionTypeEnumMap);
         });
     }
