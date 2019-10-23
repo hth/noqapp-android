@@ -1,15 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SurveyResponseApiCalls;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
@@ -24,10 +14,19 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
 import java.util.HashMap;
 
 public class SurveyActivity extends BaseActivity implements ResponsePresenter, View.OnClickListener {
-
     private HashMap<String, QuestionTypeEnum> temp;
     private EditText edt_text;
     private RadioGroup rg_yes_no;
@@ -63,12 +62,10 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         tvs[7] = findViewById(R.id.tv_8);
         tvs[8] = findViewById(R.id.tv_9);
         tvs[9] = findViewById(R.id.tv_10);
-        for (int i = 0; i < tvs.length; i++) {
-            tvs[i].setOnClickListener(this::onClick);
+        for (TextView tv : tvs) {
+            tv.setOnClickListener(this::onClick);
         }
-
-
-
+        
         AppUtils.hideViews(tv_q_rating, tv_q_yes_no, tv_q_edit, rg_yes_no, edt_text, ll_rating);
         if (null != temp && temp.size() > 0) {
             int i = 0;
@@ -112,7 +109,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                 survey.setCodeQR(NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
                 survey.setBizStoreId(NoQueueBaseActivity.getUserProfile().getBizStoreIds().get(0));
                 survey.setOverallRating(selectPos);
-                survey.setDetailedResponse(new String[]{rb_yes.isChecked()?"YES":"NO", edt_text.getText().toString()});
+                survey.setDetailedResponse(new String[]{rb_yes.isChecked() ? "1" : "0", edt_text.getText().toString()});
                 surveyResponseApiCalls.surveyResponse(UserUtils.getDeviceId(), survey);
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
@@ -125,7 +122,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
     public void responsePresenterResponse(JsonResponse response) {
         if (null != response) {
             if (response.getResponse() == Constants.SUCCESS) {
-                new CustomToast().showToast(this, "survey submitted successfully !!!");
+                new CustomToast().showToast(this, "Thank you for your feedback");
                 finish();
             } else {
                 new CustomToast().showToast(this, "Error while submitting survey");
@@ -143,15 +140,14 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
 
     @Override
     public void onClick(View v) {
-        for (int i = 0; i < tvs.length; i++) {
-            tvs[i].setOnClickListener(this::onClick);
-            tvs[i].setTextColor(Color.BLACK);
-            tvs[i].setBackgroundResource(R.drawable.edit_black);
+        for (TextView tv : tvs) {
+            tv.setOnClickListener(this::onClick);
+            tv.setTextColor(Color.BLACK);
+            tv.setBackgroundResource(R.drawable.edit_black);
         }
-        int tag = Integer.parseInt((String)v.getTag());
-        tvs[tag-1].setTextColor(Color.WHITE);
-        tvs[tag-1].setBackgroundResource(R.drawable.btn_bg_enable);
+        int tag = Integer.parseInt((String) v.getTag());
+        tvs[tag - 1].setTextColor(Color.WHITE);
+        tvs[tag - 1].setBackgroundResource(R.drawable.btn_bg_enable);
         selectPos = tag;
-
     }
 }
