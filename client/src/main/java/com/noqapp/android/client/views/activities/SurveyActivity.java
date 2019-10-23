@@ -65,7 +65,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         for (TextView tv : tvs) {
             tv.setOnClickListener(this::onClick);
         }
-        
+
         AppUtils.hideViews(tv_q_rating, tv_q_yes_no, tv_q_edit, rg_yes_no, edt_text, ll_rating);
         if (null != temp && temp.size() > 0) {
             int i = 0;
@@ -99,7 +99,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
 
         Button btn_update = findViewById(R.id.btn_update);
         btn_update.setOnClickListener(v -> {
-            setProgressMessage("Submitting survey " + "...");
+            setProgressMessage("Submitting feedback ...");
             if (NetworkUtils.isConnectingToInternet(this)) {
                 showProgress();
                 SurveyResponseApiCalls surveyResponseApiCalls = new SurveyResponseApiCalls(SurveyActivity.this);
@@ -125,10 +125,10 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                 new CustomToast().showToast(this, "Thank you for your feedback");
                 finish();
             } else {
-                new CustomToast().showToast(this, "Error while submitting survey");
+                new CustomToast().showToast(this, "Error submitting feedback");
             }
         } else {
-            new CustomToast().showToast(this, "Error while submitting survey");
+            new CustomToast().showToast(this, "Error submitting feedback");
         }
         dismissProgress();
     }
