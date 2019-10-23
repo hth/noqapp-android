@@ -10,6 +10,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SurveyResponseApiCalls;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
@@ -35,12 +37,13 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
     private JsonQuestionnaire jsonQuestionnaire;
     private TextView[] tvs = new TextView[10];
     private int selectPos = -1;
+    private CardView cv_rating, cv_yes_no, cv_edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_survey_pager);
+        setContentView(R.layout.act_survey);
         initActionsViews(false);
         tv_toolbar_title.setText("Survey");
         temp = (HashMap<String, QuestionTypeEnum>) getIntent().getSerializableExtra("map");
@@ -49,6 +52,9 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         TextView tv_q_rating = findViewById(R.id.tv_q_rating);
         TextView tv_q_yes_no = findViewById(R.id.tv_q_yes_no);
         TextView tv_q_edit = findViewById(R.id.tv_q_edit);
+        cv_rating = findViewById(R.id.cv_rating);
+        cv_yes_no = findViewById(R.id.cv_yes_no);
+        cv_edit = findViewById(R.id.cv_edit);
         rg_yes_no = findViewById(R.id.rg_yes_no);
         rb_yes = findViewById(R.id.rb_yes);
         edt_text = findViewById(R.id.edt_text);
@@ -66,7 +72,8 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
             tv.setOnClickListener(this::onClick);
         }
 
-        AppUtils.hideViews(tv_q_rating, tv_q_yes_no, tv_q_edit, rg_yes_no, edt_text, ll_rating);
+        AppUtils.hideViews(tv_q_rating, tv_q_yes_no, tv_q_edit, rg_yes_no, edt_text, ll_rating,
+                cv_rating, cv_yes_no, cv_edit);
         if (null != temp && temp.size() > 0) {
             int i = 0;
             for (HashMap.Entry<String, QuestionTypeEnum> entry : temp.entrySet()) {
@@ -74,6 +81,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                 QuestionTypeEnum q_type = entry.getValue();
                 switch (q_type) {
                     case B:
+                        cv_yes_no.setVisibility(View.VISIBLE);
                         rg_yes_no.setVisibility(View.VISIBLE);
                         tv_q_yes_no.setVisibility(View.VISIBLE);
                         tv_q_yes_no.setText(question);
@@ -83,11 +91,13 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                     case M:
                         break;
                     case R:
+                        cv_rating.setVisibility(View.VISIBLE);
                         ll_rating.setVisibility(View.VISIBLE);
                         tv_q_rating.setVisibility(View.VISIBLE);
                         tv_q_rating.setText(question);
                         break;
                     case T:
+                        cv_edit.setVisibility(View.VISIBLE);
                         edt_text.setVisibility(View.VISIBLE);
                         tv_q_edit.setVisibility(View.VISIBLE);
                         tv_q_edit.setText(question);

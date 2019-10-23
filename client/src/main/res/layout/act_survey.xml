@@ -27,7 +27,7 @@
 
 
                 <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/card_view"
+                    android:id="@+id/cv_rating"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:foreground="?android:attr/selectableItemBackground"
@@ -162,6 +162,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/cv_yes_no"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:foreground="?android:attr/selectableItemBackground"
@@ -213,6 +214,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/cv_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:foreground="?android:attr/selectableItemBackground"
