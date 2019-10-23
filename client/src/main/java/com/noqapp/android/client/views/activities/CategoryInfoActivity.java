@@ -185,9 +185,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             dismissProgress();
 
             TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-            if (null != LaunchActivity.getUserProfile()
+            if (true ||(null != LaunchActivity.getUserProfile()
                     && null != LaunchActivity.getUserProfile().getBizNameId()
-                    && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
+                    && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId()))) {
                 // added logic from profile
                 tv_enable_kiosk.setVisibility(View.VISIBLE);
                 tv_enable_kiosk.setOnClickListener(v -> {

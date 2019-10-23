@@ -20,14 +20,14 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LanguageGridAdapter extends RecyclerView.Adapter {
-
     private final OnItemClickListener listener;
     private List<Locale> localeList;
     private Map<Locale, Map<String, QuestionTypeEnum>> questions;
     private Context context;
 
     public LanguageGridAdapter(Context context, List<Locale> localeList,
-                               Map<Locale, Map<String, QuestionTypeEnum>> questions, OnItemClickListener listener) {
+                               Map<Locale, Map<String, QuestionTypeEnum>> questions,
+                               OnItemClickListener listener) {
         this.localeList = localeList;
         this.questions = questions;
         this.context = context;
@@ -74,6 +74,4 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
             card_view = v.findViewById(R.id.card_view);
         }
     }
-
-
 }

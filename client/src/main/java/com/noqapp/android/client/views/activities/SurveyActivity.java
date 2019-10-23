@@ -163,8 +163,8 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
     private void resetRating() {
         for (TextView tv : tvs) {
             tv.setOnClickListener(this::onClick);
-            tv.setTextColor(Color.BLACK);
-            tv.setBackgroundResource(R.drawable.edit_black);
+            tv.setTextColor(Color.parseColor("#333333"));
+            tv.setBackgroundResource(R.drawable.edit_gray);
         }
     }
 }
