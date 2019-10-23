@@ -18,18 +18,18 @@ public class KioskStringConstants {
 
     public static void init(String language) {
         Log.e("language", language);
-        if (language.equals("en")) {
-            EMPTY_ERROR = "Please rate overall rating";
-            PROGRESS_TITLE = "Submitting feedback...";
-            SURVEY_TITLE = "Survey";
-            SUCCESS_RESPONSE = "Thank you for your feedback";
-            FAILURE_RESPONSE = "Error submitting feedback";
-            RESET = "Reset";
-            SUBMIT = "Submit";
-            STR_WORST = "Not at all\nsatisfied";
-            STR_BEST = "Extremely\nSatisfied";
-            YES = "Yes";
-            NO = "No";
+        if (language.equals("hi")) {
+            EMPTY_ERROR = "कृपया समग्र मूल्यांकन करें";
+            PROGRESS_TITLE = "फ़ीडबैक भेज रहे हैं...";
+            SURVEY_TITLE = "सर्वेक्षण";
+            SUCCESS_RESPONSE = "आपकी प्रतिक्रिया के लिए आपका धन्यवाद";
+            FAILURE_RESPONSE = "प्रतिक्रिया सबमिट करते समय त्रुटि";
+            RESET = "रीसेट करें";
+            SUBMIT = "पूर्ण करें";
+            STR_WORST = "संतुष्ट\nनहीं";
+            STR_BEST = "अत्यंत\nसंतुष्ट";
+            YES = "हाँ";
+            NO = "नहीं";
         } else if (language.equals("es")) {
             EMPTY_ERROR = "Por favor califique la calificación general";
             PROGRESS_TITLE = "Enviar comentarios...";
@@ -60,10 +60,10 @@ public class KioskStringConstants {
 
     public static String getLanguageLabel(String language) {
         Log.e("language", language);
-        if (language.equals("en")) {
-            return "English";
-        } else if (language.equals("es")) {
+        if (language.equals("es")) {
             return "Español";
+        } else if (language.equals("hi")) {
+            return "हिंदी";
         } else {
             return "English";
         }

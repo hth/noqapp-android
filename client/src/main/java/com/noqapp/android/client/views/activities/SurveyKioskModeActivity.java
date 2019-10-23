@@ -23,7 +23,6 @@ import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.LanguageGridAdapter;
-import com.noqapp.android.client.views.pojos.KioskModeInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
