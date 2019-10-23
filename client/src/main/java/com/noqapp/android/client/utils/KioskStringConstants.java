@@ -58,14 +58,14 @@ public class KioskStringConstants {
     }
 
 
-    public static void getLanguageLabel(String language) {
-
+    public static String getLanguageLabel(String language) {
+        Log.e("language", language);
         if (language.equals("en")) {
-
+            return "English";
         } else if (language.equals("es")) {
-
+            return "Español";
         } else {
-            
+            return "English";
         }
     }
 }
