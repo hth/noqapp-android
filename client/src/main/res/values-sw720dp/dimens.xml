@@ -1,3 +1,9 @@
 <resources>
     <dimen name="title_size">26sp</dimen>
+
+    <dimen name="survey_title_size">24sp</dimen>
+    <dimen name="survey_subtitle_size">22sp</dimen>
+    <dimen name="survey_btn_txt_size">20sp</dimen>
+    <dimen name="survey_btn_height">50sp</dimen>
+    <dimen name="survey_rating_txt_size">18sp</dimen>
 </resources>

@@ -59,4 +59,10 @@
     <dimen name="empty_icons">150dp</dimen>
 
     <dimen name="title_size">20sp</dimen>
+
+    <dimen name="survey_title_size">20sp</dimen>
+    <dimen name="survey_subtitle_size">18sp</dimen>
+    <dimen name="survey_btn_txt_size">16sp</dimen>
+    <dimen name="survey_rating_txt_size">14sp</dimen>
+    <dimen name="survey_btn_height">40sp</dimen>
 </resources>
