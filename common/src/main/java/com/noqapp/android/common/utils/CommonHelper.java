@@ -1,5 +1,16 @@
 package com.noqapp.android.common.utils;
 
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.Months;
+import org.joda.time.Years;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -11,15 +22,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
-
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.customviews.CustomToast;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.Months;
-import org.joda.time.Years;
 
 import java.math.BigDecimal;
 import java.security.SecureRandom;
@@ -184,10 +186,10 @@ public class CommonHelper {
 
     public static String getStoreAddress(String town, String area) {
         String address = "";
-        if (!TextUtils.isEmpty(town)) {
+        if (StringUtils.isNotBlank(town)) {
             address = town;
         }
-        if (!TextUtils.isEmpty(area)) {
+        if (StringUtils.isNotBlank(area)) {
             address = area + ", " + address;
         }
         return address;

@@ -56,13 +56,10 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recycler_item_view_all, parent, false);
-
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_view_all, parent, false);
             vh = new MyViewHolder(v);
         } else {
-            View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.progressbar, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.progressbar, parent, false);
             vh = new ProgressViewHolder(v);
         }
         return vh;
@@ -83,8 +80,11 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
                     (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
             holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
-            if (bizStoreElastic.getReviewCount() > 0) {
-                holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
+            if (bizStoreElastic.getReviewCount() == 1) {
+                holder.tv_store_review.setText(bizStoreElastic.getReviewCount() + " Review");
+                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            } else if (bizStoreElastic.getReviewCount() > 1) {
+                holder.tv_store_review.setText(bizStoreElastic.getReviewCount() + " Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             } else {
                 holder.tv_store_review.setText("No Reviews");
