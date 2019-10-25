@@ -158,7 +158,7 @@ public class LaunchActivity
         ImageView iv_notification = findViewById(R.id.iv_notification);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
-        COUNTRY_CODE = "IN";
+        COUNTRY_CODE = getCountryCode();
         Log.i(TAG, "Country Code: " + COUNTRY_CODE);
 
         if (!isCountryIndia()) {

@@ -30,8 +30,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class SurveyKioskModeActivity extends BaseActivity implements SurveyPresenter,
-        LanguageGridAdapter.OnItemClickListener {
+public class SurveyKioskModeActivity
+        extends BaseActivity
+        implements SurveyPresenter, LanguageGridAdapter.OnItemClickListener {
     private RecyclerView rv_languages;
     private JsonQuestionnaire jsonQuestionnaire;
     private LanguageGridAdapter recyclerView_Adapter;
@@ -76,8 +77,7 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
             List<Locale> keys = new ArrayList<>(jsonQuestionnaire.getQuestions().keySet());
             rv_languages.setAdapter(null);
             recyclerView_Adapter.notifyDataSetChanged();
-            recyclerView_Adapter = new LanguageGridAdapter(
-                    this, keys, jsonQuestionnaire.getQuestions(), this);
+            recyclerView_Adapter = new LanguageGridAdapter(this, keys, jsonQuestionnaire.getQuestions(), this);
             rv_languages.setAdapter(recyclerView_Adapter);
         }
     }
@@ -87,8 +87,7 @@ public class SurveyKioskModeActivity extends BaseActivity implements SurveyPrese
         Log.e("survey response", jsonQuestionnaire.toString());
         this.jsonQuestionnaire = jsonQuestionnaire;
         List<Locale> keys = new ArrayList<>(jsonQuestionnaire.getQuestions().keySet());
-        recyclerView_Adapter = new LanguageGridAdapter(
-                this, keys, jsonQuestionnaire.getQuestions(), this);
+        recyclerView_Adapter = new LanguageGridAdapter(this, keys, jsonQuestionnaire.getQuestions(), this);
         rv_languages.setAdapter(recyclerView_Adapter);
         dismissProgress();
         // LaunchActivity.clearPreferences();
