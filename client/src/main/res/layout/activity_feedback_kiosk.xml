@@ -43,7 +43,7 @@
                 android:padding="10dp"
                 android:text="Satisfaction survey"
                 android:textColor="#333"
-                android:textSize="28sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
             <TextView
                 android:layout_width="match_parent"
