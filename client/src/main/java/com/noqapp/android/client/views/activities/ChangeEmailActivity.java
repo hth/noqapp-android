@@ -36,6 +36,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verify);
         tv_header = findViewById(R.id.tv_header);

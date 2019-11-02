@@ -14,12 +14,14 @@ public class NetworkUtil {
 
     public boolean isOnline() {
         NetworkInfo info = getNetworkInfo();
-        return null != info && info.isConnected();
+        if (null == info) {
+            return false;
+        }
+        return info.isConnected();
     }
 
     public boolean isNotOnline() {
-        NetworkInfo info = getNetworkInfo();
-        return null != info && !info.isConnected();
+        return !isOnline();
     }
 
     private NetworkInfo getNetworkInfo() {

@@ -32,37 +32,31 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowKioskModeDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.StoreProductMenuAdapter;
+import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.StoreCartItem;
-import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class StoreWithMenuActivity extends BaseActivity implements StorePresenter,
         MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
-
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
     private TextView tv_store_name, tv_store_address;
     private BizStoreElastic bizStoreElastic;
-
-    private boolean canAddItem = true;
     private TextView tv_rating, tv_rating_review;
-
-    // private Button tv_menu;
     private ImageView iv_category_banner;
     private View view_loader;
 
@@ -73,18 +67,19 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
     private List<Integer> headerPosition = new ArrayList<>();
     private ExpandableListView expandableListView;
     private View stickyViewSpacer;
-    private View heroImageView;
+    private View frame_collapsible;
     private LinearLayout ll_header;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu);
         initActionsViews(false);
         tv_store_name = findViewById(R.id.tv_store_name);
         tv_store_address = findViewById(R.id.tv_store_address);
         TextView tv_view_more = findViewById(R.id.tv_view_more);
-        heroImageView = findViewById(R.id.heroImageView);
+        frame_collapsible = findViewById(R.id.frame_collapsible);
         //tv_menu = findViewById(R.id.tv_menu);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
@@ -168,6 +163,52 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         } else {
             tv_rating_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
         }
+
+        TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
+        if (null != LaunchActivity.getUserProfile()
+                && null != LaunchActivity.getUserProfile().getBizNameId()
+                && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
+            // added logic from profile
+            tv_enable_kiosk.setVisibility(View.VISIBLE);
+            tv_enable_kiosk.setOnClickListener(v -> {
+                ShowKioskModeDialog showKioskModeDialog = new ShowKioskModeDialog(StoreWithMenuActivity.this);
+                showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick(boolean isFeedBackScreen) {
+                        LaunchActivity.isLockMode = true;
+                        KioskModeInfo kioskModeInfo = new KioskModeInfo();
+                        kioskModeInfo.setKioskCodeQR(jsonQueue.getCodeQR());
+                        kioskModeInfo.setKioskModeEnable(true);
+                        kioskModeInfo.setLevelUp(false);
+                        kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
+                        kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
+                        kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
+                        NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
+
+                        if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                            Intent in = new Intent(StoreWithMenuActivity.this, SurveyKioskModeActivity.class);
+                            in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                            startActivity(in);
+                        } else {
+                            NoQueueBaseActivity.clearPreferences();
+                            Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
+                            in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                            startActivity(in);
+                        }
+                        finish();
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showKioskModeDialog.displayDialog();
+            });
+        } else {
+            tv_enable_kiosk.setVisibility(View.GONE);
+        }
+
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.get()
                     .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
@@ -289,7 +330,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     ll_header.setY(Math.max(0, heroTopY + topY));
                     ll_header.setVisibility(View.GONE);
                     /* Set the image to scroll half of the amount that of ListView */
-                    heroImageView.setY(topY * 0.85f);
+                    frame_collapsible.setY(topY * 0.85f);
                 } else {
                     ll_header.setVisibility(View.VISIBLE);
                 }
@@ -346,6 +387,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 startActivity(loginIntent);
             }
         });
+        tv_enable_kiosk.performClick();
     }
 
     @Override

@@ -19,6 +19,7 @@ import java.util.List;
 public class AllUsersProfileActivity extends BaseActivity implements ProfileAdapter.OnItemClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_users_profile);
         initActionsViews(false);
@@ -67,6 +68,5 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
         in.putExtra("medicalProfile", medicalProfile);
         in.putExtra("jsonProfile", jsonProfile);
         startActivity(in);
-
     }
 }

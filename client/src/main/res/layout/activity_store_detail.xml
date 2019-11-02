@@ -267,7 +267,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"
                                 android:layout_marginTop="10dp"
-                                android:text="Delivery Mode"
+                                android:text="Delivery"
                                 android:textColor="@android:color/black"
                                 android:textStyle="bold"
                                 android:textSize="@dimen/store_sub_headers"/>

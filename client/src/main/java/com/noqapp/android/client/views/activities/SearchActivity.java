@@ -2,11 +2,9 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,7 +45,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private String scrollId = "";
     private String city = "";
     private String lat = "";
-    private String longitude = "";
+    private String lng = "";
     private SearchBusinessStoreApiCalls searchBusinessStoreModels;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
@@ -55,6 +53,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         RecyclerView rv_search = findViewById(R.id.rv_search);
@@ -67,81 +66,76 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         searchBusinessStoreModels = new SearchBusinessStoreApiCalls(this);
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
-        longitude = getIntent().getStringExtra("long");
+        lng = getIntent().getStringExtra("lng");
         scrollId = "";
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);
         rv_search.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_search.setLayoutManager(horizontalLayoutManager);
         rv_search.setItemAnimator(new DefaultItemAnimator());
-        searchAdapter = new SearchAdapter(listData, this, this, Double.parseDouble(lat), Double.parseDouble(longitude));
+        searchAdapter = new SearchAdapter(listData, this, this, Double.parseDouble(lat), Double.parseDouble(lng));
         rv_search.setAdapter(searchAdapter);
 
-        edt_search.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_LEFT = 0;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (edt_search.getRight() - edt_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        AppUtils.hideKeyBoard(SearchActivity.this);
-                        edt_search.setText("");
-                        return true;
-                    }
-                    if (event.getRawX() <= (20 + edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                        performSearch();
-                        return true;
-                    }
+        edt_search.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_LEFT = 0;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (edt_search.getRight() - edt_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    AppUtils.hideKeyBoard(SearchActivity.this);
+                    edt_search.setText("");
+                    return true;
                 }
-                return false;
-            }
-        });
-        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (event.getRawX() <= (20 + edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
                     performSearch();
                     return true;
                 }
-                return false;
             }
+            return false;
         });
+        edt_search.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch();
+                return true;
+            }
+            return false;
+        });
+
+
         tv_auto.setOnClickListener((View v) -> {
-                lat = String.valueOf(LaunchActivity.getLaunchActivity().latitute);
-                longitude = String.valueOf(LaunchActivity.getLaunchActivity().longitute);
-                city = LaunchActivity.getLaunchActivity().cityName;
-                AppUtils.setAutoCompleteText(autoCompleteTextView, city);
-                AppUtils.hideKeyBoard(SearchActivity.this);
+            lat = String.valueOf(LaunchActivity.getLaunchActivity().latitude);
+            lng = String.valueOf(LaunchActivity.getLaunchActivity().longitude);
+            city = LaunchActivity.getLaunchActivity().cityName;
+            AppUtils.setAutoCompleteText(autoCompleteTextView, city);
+            AppUtils.hideKeyBoard(SearchActivity.this);
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String city_name = (String) parent.getItemAtPosition(position);
-                LatLng latLng = AppUtils.getLocationFromAddress(SearchActivity.this, city_name);
-                lat = String.valueOf(latLng.latitude);
-                longitude = String.valueOf(latLng.longitude);
-                city = city_name;
-                AppUtils.hideKeyBoard(SearchActivity.this);
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            String city_name = (String) parent.getItemAtPosition(position);
+            LatLng latLng = AppUtils.getLocationFromAddress(SearchActivity.this, city_name);
+            lat = String.valueOf(latLng.latitude);
+            lng = String.valueOf(latLng.longitude);
+            city = city_name;
+            AppUtils.hideKeyBoard(SearchActivity.this);
 
-            }
         });
         autoCompleteTextView.setThreshold(3);
-        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (autoCompleteTextView.getRight() - autoCompleteTextView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        autoCompleteTextView.setText("");
-                        return true;
-                    }
+        autoCompleteTextView.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (autoCompleteTextView.getRight() - autoCompleteTextView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    autoCompleteTextView.setText("");
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
-
+        if (LaunchActivity.isLockMode) {
+            tv_auto.setVisibility(View.GONE);
+            autoCompleteTextView.setVisibility(View.GONE);
+            edt_search.setText(getIntent().getStringExtra("searchString"));
+            performSearch();
+        }
         if (AppUtils.isRelease()) {
             Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_SEARCH));
         }
@@ -154,7 +148,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
                         .setCityName(city)
                         .setLatitude(lat)
-                        .setLongitude(longitude)
+                        .setLongitude(lng)
                         .setQuery(edt_search.getText().toString())
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank

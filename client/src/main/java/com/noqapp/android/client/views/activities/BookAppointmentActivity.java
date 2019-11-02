@@ -70,6 +70,7 @@ public class BookAppointmentActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(true);

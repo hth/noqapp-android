@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
@@ -30,6 +29,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.ChangeUserInQueue;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -48,13 +48,13 @@ import java.util.Random;
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
     public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR,
-            JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, jsonDataVisibility, jsonPaymentPermission);
+                            PeopleInQAdapterClick peopleInQAdapterClick, String codeQR,
+                            JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
+        super(data, context, peopleInQAdapterClick, codeQR, jsonDataVisibility, jsonPaymentPermission);
     }
 
     public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
+                            PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
         super(data, context, peopleInQAdapterClick, jsonTopic);
     }
 
@@ -80,7 +80,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                             customProgressBar.setProgressMessage("Changing patient name...");
                             customProgressBar.showProgress();
                             ChangeUserInQueue changeUserInQueue = new ChangeUserInQueue();
-                            changeUserInQueue.setCodeQR(qCodeQR);
+                            changeUserInQueue.setCodeQR(codeQR);
                             changeUserInQueue.setTokenNumber(jsonQueuedPerson.getToken());
                             changeUserInQueue.setChangeToQueueUserId(jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                             changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
@@ -152,7 +152,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         customProgressBar.showProgress();
                         String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
                         JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
-                        jsonBusinessCustomer.setCodeQR(qCodeQR);
+                        jsonBusinessCustomer.setCodeQR(codeQR);
                         jsonBusinessCustomer.setCustomerPhone(phoneNoWithCode);
                         jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
                         if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
@@ -182,7 +182,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     public void uploadDocument(Context context, JsonQueuedPerson jsonQueuedPerson) {
         Intent intent = new Intent(context, DocumentUploadActivity.class);
         intent.putExtra("recordReferenceId", jsonQueuedPerson.getRecordReferenceId());
-        intent.putExtra("qCodeQR", qCodeQR);
+        intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
         context.startActivity(intent);
     }
 
@@ -191,12 +191,12 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
             if (LaunchActivity.isTablet) {
                 Intent intent = new Intent(context, PhysicalDialogActivity.class);
-                intent.putExtra("qCodeQR", qCodeQR);
+                intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
                 context.startActivity(intent);
             } else {
                 Intent intent = new Intent(context, PhysicalActivity.class);
-                intent.putExtra("qCodeQR", qCodeQR);
+                intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
                 context.startActivity(intent);
                 ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
@@ -229,7 +229,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                             @Override
                             public void btnNegativeClick() {
                                 Intent intent = new Intent(context, PatientProfileActivity.class);
-                                intent.putExtra("qCodeQR", qCodeQR);
+                                intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                                 intent.putExtra("data", jsonQueuedPerson);
                                 intent.putExtra("bizCategoryId", bizCategoryId);
                                 context.startActivity(intent);
@@ -238,7 +238,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         showDialog.displayDialog("Alert", "You have not set your setting preferences. Do you want to set it now?");
                     } else {
                         Intent intent = new Intent(context, PatientProfileActivity.class);
-                        intent.putExtra("qCodeQR", qCodeQR);
+                        intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                         intent.putExtra("data", jsonQueuedPerson);
                         intent.putExtra("bizCategoryId", bizCategoryId);
                         context.startActivity(intent);

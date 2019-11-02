@@ -23,7 +23,6 @@ public class MyApplication extends Application {
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
     public MyApplication() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**

@@ -25,6 +25,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_history_detail);
         initActionsViews(false);

@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/heroImageView"
+        android:id="@+id/frame_collapsible"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:scaleType="fitCenter">
@@ -41,12 +41,30 @@
                     android:textSize="@dimen/text_size_eighteen"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_store_address"
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_fourteen" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_store_address"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/colorAddress"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/tv_enable_kiosk"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <TextView
+                        android:id="@+id/tv_enable_kiosk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:visibility="visible"
+                        android:text="Kiosk Mode"/>
+                </RelativeLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -93,6 +111,7 @@
                             android:textSize="@dimen/text_size_twelve" />
 
                     </RelativeLayout>
+
                 </LinearLayout>
 
             </LinearLayout>

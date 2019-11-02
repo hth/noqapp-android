@@ -58,6 +58,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
         initActionsViews(false);

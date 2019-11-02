@@ -3,6 +3,8 @@ package com.noqapp.android.common.utils;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -10,8 +12,10 @@ import org.joda.time.Months;
 import org.joda.time.Years;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -181,11 +186,13 @@ public class CommonHelper {
 
     public static String getStoreAddress(String town, String area) {
         String address = "";
-        if (!TextUtils.isEmpty(town)) {
+        if (StringUtils.isNotBlank(town)) {
             address = town;
         }
-        if (!TextUtils.isEmpty(area)) {
+        if (StringUtils.isNotBlank(area) && StringUtils.isNotBlank(address)) {
             address = area + ", " + address;
+        } else if (StringUtils.isNotBlank(area)) {
+            address = area;
         }
         return address;
     }
@@ -323,7 +330,7 @@ public class CommonHelper {
         return sb.toString();
     }
 
-    public static boolean isDateBeforeToday(Context context,String selectedDay) {
+    public static boolean isDateBeforeToday(Context context, String selectedDay) {
         try {
             Date selectedDate = CommonHelper.SDF_DOB_FROM_UI.parse(selectedDay);
             int date_diff = new Date().compareTo(selectedDate);
@@ -339,8 +346,44 @@ public class CommonHelper {
         return true;
     }
 
-    public static int getDrawableFromString(String val,Context context){
+    public static int getDrawableFromString(String val, Context context) {
         return context.getResources().getIdentifier(val, "drawable", context.getPackageName());
     }
 
+
+    /**
+     * Method checks if the app is in background or not
+     */
+    public static boolean isAppIsInBackground(Context context) {
+        boolean isInBackground = true;
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+            if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                for (String activeProcess : processInfo.pkgList) {
+                    if (activeProcess.equals(context.getPackageName())) {
+                        isInBackground = false;
+                    }
+                }
+            }
+        }
+        return isInBackground;
+    }
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+
+    public static void showViews(View... views) {
+        for (View v : views) {
+            v.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void hideViews(View... views) {
+        for (View v : views) {
+            v.setVisibility(View.GONE);
+        }
+    }
 }

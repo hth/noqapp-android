@@ -15,8 +15,8 @@ import java.util.List;
 
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, jsonDataVisibility, jsonPaymentPermission);
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String codeQR, JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
+        super(data, context, peopleInQAdapterClick, codeQR, jsonDataVisibility, jsonPaymentPermission);
     }
 
     public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {

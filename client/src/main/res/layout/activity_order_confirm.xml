@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#99ffffff"
     android:orientation="vertical">
 
@@ -142,10 +142,34 @@
                 android:textSize="@dimen/text_size_fourteen"
                 android:textStyle="bold" />
 
+
+
+            <com.xw.repo.BubbleSeekBar
+                android:id="@+id/bsb_order_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:bsb_second_track_color="@color/colorAccent"
+                app:bsb_section_text_position="below_section_mark"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                app:bsb_touch_to_seek="false"/>/>
+
+            <TextView
+                android:id="@+id/tv_view_receipt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="View Receipt"
+                android:textSize="@dimen/text_size_fourteen" />
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:visibility="gone"
                 card_view:cardBackgroundColor="@color/white"
                 card_view:cardCornerRadius="5dp"
                 card_view:cardElevation="2dp"
@@ -422,6 +446,8 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/colorAddress"
                 android:textSize="@dimen/text_size_fourteen" />
+
+            <include layout="@layout/layout_map" />
 
 
             <Button

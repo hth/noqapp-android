@@ -67,6 +67,14 @@
                             android:padding="10dp">
 
                             <TextView
+                                android:id="@+id/tv_enable_kiosk"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:visibility="gone"
+                                android:text="Kiosk Mode"/>
+
+                            <TextView
                                 android:id="@+id/tv_store_name"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginTop="3dp"
@@ -268,6 +276,8 @@
                             android:text="@string/maps_direction"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_fourteen" />
+
+                        <include layout="@layout/layout_map" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView

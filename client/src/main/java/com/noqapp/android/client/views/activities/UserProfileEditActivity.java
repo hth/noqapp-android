@@ -85,6 +85,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit_profile);
 

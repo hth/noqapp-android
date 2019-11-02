@@ -18,6 +18,7 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
@@ -30,15 +31,19 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowKioskModeDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AccreditionAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
+import com.noqapp.android.client.views.fragments.MapFragment;
+import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
@@ -94,6 +99,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info);
         tv_store_name = findViewById(R.id.tv_store_name);
@@ -113,7 +119,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         ll_top_header = findViewById(R.id.ll_top_header);
         view_loader = findViewById(R.id.view_loader);
         expandableListView = findViewById(R.id.expandableListView);
-        initActionsViews(false);
+        initActionsViews(true);
         tv_mobile.setOnClickListener((View v) -> {
             AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
         });
@@ -149,6 +155,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
         rv_categories.setLayoutManager(recyclerViewLayoutManager);
+
+
     }
 
     @Override
@@ -175,6 +183,52 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             populateAndSortedCache(bizStoreElasticList);
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             dismissProgress();
+
+            TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
+            if (null != LaunchActivity.getUserProfile()
+                    && null != LaunchActivity.getUserProfile().getBizNameId()
+                    && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
+                // added logic from profile
+                tv_enable_kiosk.setVisibility(View.VISIBLE);
+                tv_enable_kiosk.setOnClickListener(v -> {
+                    ShowKioskModeDialog showKioskModeDialog = new ShowKioskModeDialog(CategoryInfoActivity.this);
+                    showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
+                        @Override
+                        public void btnPositiveClick(boolean isFeedBackScreen) {
+                            LaunchActivity.isLockMode = true;
+                            KioskModeInfo kioskModeInfo = new KioskModeInfo();
+                            kioskModeInfo.setKioskCodeQR(codeQR);
+                            kioskModeInfo.setKioskModeEnable(true);
+                            kioskModeInfo.setLevelUp(true);
+                            kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
+                            kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
+                            kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
+                            NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
+
+                            if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                                Intent in = new Intent(CategoryInfoActivity.this, SurveyKioskModeActivity.class);
+                                in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                                startActivity(in);
+                            } else {
+                                NoQueueBaseActivity.clearPreferences();
+                                Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
+                                in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                                startActivity(in);
+                            }
+                            finish();
+                        }
+
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
+                        }
+                    });
+                    showKioskModeDialog.displayDialog();
+                });
+            } else {
+                tv_enable_kiosk.setVisibility(View.GONE);
+            }
+
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
@@ -192,6 +246,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
+            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
+            LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+                    GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
+            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener((View v) -> {
@@ -291,8 +349,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     /**
      * Populated cache and sorted based on current time.
-     * <p>
-     * //@param jsonQueueList
+     *
+     * @param bizStoreElasticList
      */
     private void populateAndSortedCache(BizStoreElasticList bizStoreElasticList) {
         Map<String, JsonCategory> categoryMap = new LinkedHashMap<>();
@@ -340,6 +398,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         if (null != cacheCategory.getIfPresent(CATEGORY)) {
             categoryMap = cacheCategory.getIfPresent(CATEGORY);
         }
+
         if (null != cacheQueue.getIfPresent(QUEUE)) {
             queueMap = cacheQueue.getIfPresent(QUEUE);
         }
@@ -356,6 +415,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             in.putExtra("list", (Serializable) getCategoryThatArePopulated());
             in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
             in.putExtra("title", title);
+            in.putExtra("position", 0);
             startActivity(in);
         }
     }
@@ -395,7 +455,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     public void onCategoryItemClick(BizStoreElastic item) {
-        Intent in = null;
+        Intent in;
         Bundle b = new Bundle();
         switch (item.getBusinessType()) {
             case DO:

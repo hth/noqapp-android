@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/frame_collapsible"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="fitCenter">
+
+        <ImageView
+            android:id="@+id/iv_category_banner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+    </FrameLayout>
+
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:childDivider="@android:color/darker_gray"
+        android:clipToPadding="true"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0.5dp"
+        android:groupIndicator="@null"
+        android:paddingBottom="50dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_layout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_header"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:paddingBottom="1dp" />
+
+    </LinearLayout>
+
+    <include layout="@layout/loader_view" />
+
+    <Button
+        android:id="@+id/tv_place_order"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_standard_height"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_bg_enable"
+        android:clickable="true"
+        android:drawableRight="@drawable/order_arrow"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:paddingRight="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_fourteen"
+        android:visibility="gone" />
+</FrameLayout>

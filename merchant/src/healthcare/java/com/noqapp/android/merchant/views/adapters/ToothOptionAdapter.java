@@ -20,18 +20,27 @@ public class ToothOptionAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<ToothProcedure> drawableList;
     private Context context;
+    private boolean isFrontTooth;
 
 
-    public ToothOptionAdapter(List<ToothProcedure> drawableList, OnItemClickListener listener, Context context) {
+    public ToothOptionAdapter(List<ToothProcedure> drawableList, OnItemClickListener listener,
+                              Context context,boolean isFrontTooth) {
         this.drawableList = drawableList;
         this.listener = listener;
         this.context = context;
+        this.isFrontTooth = isFrontTooth;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_tooth_option_item, parent, false);
+        View view;
+        if(isFrontTooth) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.rcv_tooth_option_item, parent, false);
+        }else{
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.rcv_tooth_option_item_top, parent, false);
+        }
         return new MyViewHolder(view);
     }
 

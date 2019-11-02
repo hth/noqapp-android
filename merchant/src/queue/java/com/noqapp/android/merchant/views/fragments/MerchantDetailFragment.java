@@ -79,9 +79,13 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
 
         iv_product_list.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ProductListActivity.class);
-            intent.putExtra("codeQR", jsonTopic.getCodeQR());
-            ((Activity) context).startActivity(intent);
+            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                Intent intent = new Intent(getActivity(), ProductListActivity.class);
+                intent.putExtra("codeQR", jsonTopic.getCodeQR());
+                ((Activity) context).startActivity(intent);
+            }else{
+                ShowAlertInformation.showThemeDialog(context,"Unauthorized access","You are not allowed to use this feature");
+            }
         });
         return view;
     }

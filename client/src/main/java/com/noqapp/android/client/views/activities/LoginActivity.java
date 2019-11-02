@@ -4,12 +4,6 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 5/7/17.
  */
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -23,12 +17,20 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.TextUtils;
+import android.util.Log;
+
 public class LoginActivity extends OTPActivity {
 
     private final String TAG = LoginActivity.class.getSimpleName();
     private long mLastClickTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         activity = this;
         tv_toolbar_title.setText("Login");

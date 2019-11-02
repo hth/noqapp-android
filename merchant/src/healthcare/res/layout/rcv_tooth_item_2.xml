@@ -9,31 +9,27 @@
 
     <TextView
         android:id="@+id/tv_count"
-        android:layout_width="30dp"
+        android:layout_width="@dimen/top_tooth_size_chart"
         android:layout_height="wrap_content"
-        android:background="@drawable/square_border"
         android:gravity="center"
-        android:padding="5dp"
-        android:text="12"
+        android:text="13"
         android:textColor="#333"
-        android:textSize="@dimen/text_size_fourteen"
-        android:textStyle="bold" />
+        android:textSize="@dimen/tooth_text_size"
+        android:textStyle="normal" />
 
     <ImageView
         android:id="@+id/iv_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/top_tooth_size_chart"
+        android:layout_height="@dimen/top_tooth_size_chart"
         android:layout_marginTop="5dp"
-        android:minWidth="15dp"
-        android:minHeight="15dp"
+        android:scaleType="fitCenter"
         android:background="@drawable/tooth_o_right_center" />
 
     <ImageView
         android:id="@+id/iv_front"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="20dp"
-        android:minHeight="25dp"
+        android:layout_width="@dimen/front_tooth_width_chart"
+        android:layout_height="@dimen/front_tooth_height_chart"
+        android:scaleType="fitCenter"
         android:layout_marginTop="5dp"
         android:background="@drawable/tooth_41" />
 

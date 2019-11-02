@@ -30,8 +30,9 @@ import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
-public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.LoginCallBack,
-        RegistrationActivity.RegisterCallBack {
+public class LaunchActivity
+        extends BaseLaunchActivity
+        implements LoginActivity.LoginCallBack, RegistrationActivity.RegisterCallBack {
 
     private TextView tv_badge;
 

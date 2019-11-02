@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,14 +24,13 @@ import androidx.core.app.ActivityCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
@@ -56,8 +56,10 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     private static String fcmToken = "";
     private String APP_PREF = "splashPref";
     private static String deviceId = "";
-    private int REQUEST_PERMISSION_SETTING = 23;
+    private final int REQUEST_PERMISSION_SETTING = 23;
+    public final int GPS_ENABLE_REQUEST = 24;
     private Location location;
+    private GPSTracker gpsTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,16 +71,28 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         animationView.setAnimation("data.json");
         animationView.playAnimation();
         animationView.loop(true);
-        callLocationManager();
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashScreen.this, new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                Log.e("newToken", newToken);
-                fcmToken = newToken;
-                Log.d(TAG, "FCM Token=" + fcmToken);
-                sendRegistrationToServer(fcmToken);
-            }
+
+        gpsTracker = new GPSTracker(this, null);
+        if (gpsTracker.isLocationEnabled()) {
+            callLocationManager();
+        } else {
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle("Enable Location")
+                    .setMessage("Location is disabled, in order to use the application you need to enable location in your device")
+                    .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
+                    })
+                    .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> finish());
+            dialog.show();
+        }
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashScreen.this, instanceIdResult -> {
+            String newToken = instanceIdResult.getToken();
+            Log.e("newToken", newToken);
+            fcmToken = newToken;
+            Log.d(TAG, "FCM Token=" + fcmToken);
+            sendRegistrationToServer(fcmToken);
         });
 
         if (StringUtils.isBlank(fcmToken) && new NetworkUtil(this).isNotOnline()) {
@@ -99,6 +113,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 finish();
             });
             mAlertDialog.show();
+            Log.w(TAG, "No network found");
         }
     }
 
@@ -124,21 +139,42 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     }
 
     private void sendRegistrationToServer(String refreshToken) {
-        DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion());
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
-        deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
-        if (StringUtils.isBlank(deviceId)) {
-            deviceId = UUID.randomUUID().toString().toUpperCase();
-            Log.d(TAG, "Created deviceId=" + deviceId);
-            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
-            //Call this api only once in life time
-            DeviceApiCall deviceModel = new DeviceApiCall();
-            deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(deviceId, deviceToken);
+        if (new NetworkUtil(this).isOnline()) {
+            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion());
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
+            deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
+            if (StringUtils.isBlank(deviceId)) {
+                deviceId = UUID.randomUUID().toString().toUpperCase();
+                Log.d(TAG, "Created deviceId=" + deviceId);
+                sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
+                //Call this api only once in life time
+                DeviceApiCall deviceModel = new DeviceApiCall();
+                deviceModel.setDeviceRegisterPresenter(this);
+                deviceModel.register(deviceId, deviceToken);
+            } else {
+                Log.e("Launch", "launching from sendRegistrationToServer");
+                Log.d(TAG, "Exist deviceId=" + deviceId);
+                callLaunchScreen();
+            }
         } else {
-            Log.e("Launch", "launching from sendRegistrationToServer");
-            Log.d(TAG, "Exist deviceId=" + deviceId);
-            callLaunchScreen();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+            tvTitle.setText(getString(R.string.networkerror));
+            tv_msg.setText(getString(R.string.offline));
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                finish();
+            });
+            mAlertDialog.show();
+            Log.w(TAG, "No network found");
         }
     }
 
@@ -156,7 +192,10 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, new String[]{PermissionUtils.LOCATION_PERMISSION}, PermissionUtils.PERMISSION_REQUEST_LOCATION);
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{PermissionUtils.LOCATION_PERMISSION},
+                    PermissionUtils.PERMISSION_REQUEST_LOCATION);
             return;
         }
 
@@ -183,7 +222,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        Log.e("Location found: ", "Location detected: Lat- " + location.getLatitude() + " Long- " + location.getLongitude());
+                        Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
                     }
                 });
     }
@@ -228,9 +267,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 }
                 break;
         }
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -244,6 +281,12 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 //("permissions granted!")
                 callLocationManager();
             }
+        } if (requestCode == GPS_ENABLE_REQUEST) {
+           if(gpsTracker.isLocationEnabled()){
+               callLocationManager();
+           }else{
+               finish();
+           }
         } else {
             finish();
         }
@@ -260,6 +303,8 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             splashScreen.startActivity(i);
             splashScreen.finish();
         }
+        if (null == location) {
+            Log.d(TAG, "Location not found");
+        }
     }
-
 }

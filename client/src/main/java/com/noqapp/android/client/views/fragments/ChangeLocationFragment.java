@@ -25,7 +25,7 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 
 public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
-    private double lat, log;
+    private double lat, lng;
     private String city = "";
 
     public ChangeLocationFragment() {
@@ -48,24 +48,24 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
         actionbarBack.setOnClickListener((View v) -> {
             if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
                 lat = Constants.DEFAULT_LATITUDE;
-                log = Constants.DEFAULT_LONGITUDE;
+                lng = Constants.DEFAULT_LONGITUDE;
                 city = Constants.DEFAULT_CITY;
             } else {
-                lat = LaunchActivity.getLaunchActivity().latitute;
-                log = LaunchActivity.getLaunchActivity().longitute;
+                lat = LaunchActivity.getLaunchActivity().latitude;
+                lng = LaunchActivity.getLaunchActivity().longitude;
                 city = LaunchActivity.getLaunchActivity().cityName;
                 AppUtils.hideKeyBoard(getActivity());
             }
-            LaunchActivity.getLaunchActivity().updateLocationInfo(lat, log, city);
+            LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city);
         });
         tv_auto.setOnClickListener((View v) -> {
             if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
                 lat = Constants.DEFAULT_LATITUDE;
-                log = Constants.DEFAULT_LONGITUDE;
+                lng = Constants.DEFAULT_LONGITUDE;
                 city = Constants.DEFAULT_CITY;
             } else {
-                lat = LaunchActivity.getLaunchActivity().latitute;
-                log = LaunchActivity.getLaunchActivity().longitute;
+                lat = LaunchActivity.getLaunchActivity().latitude;
+                lng = LaunchActivity.getLaunchActivity().longitude;
                 city = LaunchActivity.getLaunchActivity().cityName;
                 AppUtils.hideKeyBoard(getActivity());
             }
@@ -80,13 +80,12 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                     LatLng latLng = AppUtils.getLocationFromAddress(getActivity(), city_name);
                     if (null != latLng) {
                         lat = latLng.latitude;
-                        log = latLng.longitude;
-                        LaunchActivity.getLaunchActivity().updateLocationInfo(lat, log, city_name);
+                        lng = latLng.longitude;
+                        LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city_name);
                         //finish();
-
                     } else {
                         //lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-                        //  log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
+                        //lng = LaunchActivity.getLaunchActivity().getDefaultLongitude();
                     }
                     city = city_name;
                     AppUtils.hideKeyBoard(getActivity());
@@ -109,11 +108,11 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                     }
 //                    if (event.getRawX() <= (10+autoCompleteTextView.getLeft() + autoCompleteTextView.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
 //                        // your action here
-//                        lat = LaunchActivity.getLaunchActivity().latitute;
-//                        log = LaunchActivity.getLaunchActivity().longitute;
+//                        lat = LaunchActivity.getLaunchActivity().latitude;
+//                        lng = LaunchActivity.getLaunchActivity().longitude;
 //                        city = LaunchActivity.getLaunchActivity().cityName;
 //                        autoCompleteTextView.setText(city);
-//                        getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
+//                        getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
 //                        new AppUtilities().hideKeyBoard(this);
 //                        return true;
 //                    }
@@ -135,7 +134,6 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
 
     @Override
     public void updateLocationUI() {
-        // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Long: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
-
+        // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
     }
 }

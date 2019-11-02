@@ -33,6 +33,7 @@ public class QueueListActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_list);
         initActionsViews(true);
@@ -49,7 +50,8 @@ public class QueueListActivity extends BaseActivity implements
         rcv_header.setHasFixedSize(true);
         rcv_header.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcv_header.setItemAnimator(new DefaultItemAnimator());
-        categoryHeaderAdapter = new CategoryHeaderAdapter(this, categoryMap, this);
+        int pos = getIntent().getIntExtra("position", 0);
+        categoryHeaderAdapter = new CategoryHeaderAdapter(this, categoryMap, this, pos);
         rcv_header.setAdapter(categoryHeaderAdapter);
 
         expandableListView = findViewById(R.id.expandableListView);
@@ -71,6 +73,14 @@ public class QueueListActivity extends BaseActivity implements
 
             }
         });
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
+            expandableListView.expandGroup(i);
+
+        expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
+        if (pos > 0) {
+            rcv_header.scrollToPosition(pos);
+            onCategoryItemClick(pos, null);
+        }
     }
 
     @Override

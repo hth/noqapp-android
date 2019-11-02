@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:paddingRight="20dp"
-    android:background="?android:selectableItemBackground">
+    android:background="?android:selectableItemBackground"
+    android:paddingRight="20dp">
 
     <TextView
         android:id="@+id/title"
@@ -12,12 +12,24 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_margin="5dp"
-        android:layout_toLeftOf="@+id/iv_delete"
+        android:layout_toLeftOf="@+id/tv_primary"
         android:padding="10dp"
         android:text="title"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_size_twelve" />
 
+
+    <TextView
+        android:id="@+id/tv_primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dp"
+        android:layout_toLeftOf="@+id/iv_delete"
+        android:padding="10dp"
+        android:text="Primary"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_twelve" />
 
     <ImageView
         android:id="@+id/iv_delete"
@@ -26,8 +38,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="0dp"
-        android:backgroundTint="@color/colorAccent"
         android:background="@drawable/ic_cancel"
+        android:backgroundTint="@color/colorAccent"
         android:padding="20dp" />
 
 </RelativeLayout>

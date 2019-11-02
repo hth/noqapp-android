@@ -137,15 +137,13 @@ public class ToothAdapter extends RecyclerView.Adapter {
             toothInfo.setUpdated(true);
             dataSet.set(pos, toothInfo);
             notifyDataSetChanged();
-        }, context);
+        }, context,false);
         rcv_tooth.setAdapter(toothAdapter);
 
         mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.setCancelable(false);
         Button btn_yes = dialogView.findViewById(R.id.btn_yes);
-        Button btn_no = dialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(v1 -> mAlertDialog.dismiss());
         btn_yes.setOnClickListener(v12 -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
@@ -166,15 +164,13 @@ public class ToothAdapter extends RecyclerView.Adapter {
             toothInfo.setUpdated(true);
             dataSet.set(pos, toothInfo);
             notifyDataSetChanged();
-        }, context);
+        }, context,true);
         rcv_tooth.setAdapter(toothAdapter);
 
         mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.setCancelable(false);
         Button btn_yes = dialogView.findViewById(R.id.btn_yes);
-        Button btn_no = dialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(v1 -> mAlertDialog.dismiss());
         btn_yes.setOnClickListener(v12 -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }

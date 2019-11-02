@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,10 +20,12 @@ import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ClientPreferenceApiCalls;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
@@ -40,12 +44,14 @@ import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonUserAddress;
+import com.noqapp.android.common.beans.JsonUserPreference;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentMethodEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -68,7 +74,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter,
-        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter, StoreProductFinalOrderAdapter.CartOrderUpdate {
+        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter,
+        StoreProductFinalOrderAdapter.CartOrderUpdate, ClientPreferencePresenter {
     private TextView tv_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -91,23 +98,65 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private TextView tv_total_order_amt;
     private TextView tv_due_amt;
     private TextView tv_final_amount;
+    private LinearLayout ll_address;
+    private RadioGroup rg_delivery;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         tv_due_amt = findViewById(R.id.tv_due_amt);
         tv_address = findViewById(R.id.tv_address);
+        ll_address = findViewById(R.id.ll_address);
         FixedHeightListView lv_product = findViewById(R.id.lv_product);
-
+        rg_delivery = findViewById(R.id.rg_delivery);
         acrb_cash = findViewById(R.id.acrb_cash);
         acrb_online = findViewById(R.id.acrb_online);
         acrb_home_delivery = findViewById(R.id.acrb_home_delivery);
         acrb_take_away = findViewById(R.id.acrb_take_away);
+        JsonUserPreference jsonUserPreference = LaunchActivity.getUserProfile().getJsonUserPreference();
+        if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
+            acrb_home_delivery.setChecked(true);
+            acrb_take_away.setChecked(false);
+            ll_address.setVisibility(View.VISIBLE);
+        } else {
+            acrb_home_delivery.setChecked(false);
+            acrb_take_away.setChecked(true);
+            ll_address.setVisibility(View.GONE);
+        }
+        if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
+            acrb_cash.setChecked(true);
+            acrb_online.setChecked(false);
+        } else {
+            acrb_cash.setChecked(false);
+            acrb_online.setChecked(true);
+        }
+        rg_delivery.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
 
+                if (checkedId == R.id.acrb_home_delivery) {
+                    ll_address.setVisibility(View.VISIBLE);
+                } else if (checkedId == R.id.acrb_take_away) {
+                    ll_address.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        if (null != LaunchActivity.getUserProfile() && null != LaunchActivity.getUserProfile().getJsonUserAddresses()) {
+            List<JsonUserAddress> jsonUserAddressList = LaunchActivity.getUserProfile().getJsonUserAddresses();
+            for (int i = 0; i < jsonUserAddressList.size(); i++) {
+                if (jsonUserAddressList.get(i).getId().equals(jsonUserPreference.getUserAddressId())) {
+                    jsonUserAddress = jsonUserAddressList.get(i);
+                    tv_address.setText(jsonUserAddress.getAddress());
+                    break;
+                }
+            }
+        }
         TextView tv_change_address = findViewById(R.id.tv_change_address);
         tv_change_address.setOnClickListener((View v) -> {
             Intent in = new Intent(OrderActivity.this, AddressBookActivity.class);
@@ -345,6 +394,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
+            bundle.putString("GeoHash", getIntent().getExtras().getString("GeoHash"));
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
             bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
             bundle.putString(AppUtils.CURRENCY_SYMBOL, currencySymbol);
@@ -352,6 +402,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             in.putExtras(bundle);
             startActivity(in);
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+            callAddressPreference();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
@@ -495,6 +546,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
+            bundle.putString("GeoHash", getIntent().getExtras().getString("GeoHash"));
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
             bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
             bundle.putString(AppUtils.CURRENCY_SYMBOL, currencySymbol);
@@ -502,6 +554,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             in.putExtras(bundle);
             startActivity(in);
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+            callAddressPreference();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
@@ -525,6 +578,27 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         jsonPurchaseOrder.setPurchaseOrderProducts(list);
         jsonPurchaseOrder.setOrderPrice(cartAmount.replace(".", ""));
         updateDiscountUI();
+    }
 
+
+    private void callAddressPreference() {
+        ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();
+        clientProfileApiCall.setClientPreferencePresenter(this);
+        JsonUserPreference jsonUserPreference = LaunchActivity.getUserProfile().getJsonUserPreference();
+        jsonUserPreference.setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO);
+        jsonUserPreference.setPaymentMethod(acrb_cash.isChecked() ? PaymentMethodEnum.CA : PaymentMethodEnum.EL);
+        if (null != jsonUserAddress) {
+            jsonUserPreference.setUserAddressId(jsonUserAddress.getId());
+        }
+        clientProfileApiCall.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference);
+    }
+
+    @Override
+    public void clientPreferencePresenterResponse(JsonUserPreference jsonUserPreference) {
+        if (null != jsonUserPreference) {
+            JsonProfile jp = LaunchActivity.getUserProfile();
+            jp.setJsonUserPreference(jsonUserPreference);
+            LaunchActivity.setUserProfile(jp);
+        }
     }
 }

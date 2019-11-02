@@ -13,7 +13,6 @@
     <dimen name="seekbar_thumb_height">25dp</dimen>
 
 
-
     <dimen name="message_label">15sp</dimen>
     <dimen name="card_padding">30dp</dimen>
 
@@ -59,4 +58,13 @@
     <dimen name="empty_subtitle_size">16sp</dimen>
     <dimen name="empty_icons">150dp</dimen>
 
+    <dimen name="title_size">20sp</dimen>
+
+    <dimen name="survey_title_size">18sp</dimen>
+    <dimen name="survey_subtitle_size">14sp</dimen>
+    <dimen name="radio_text_size">16sp</dimen>
+    <dimen name="survey_btn_txt_size">16sp</dimen>
+    <dimen name="survey_rating_txt_size">14sp</dimen>
+    <dimen name="survey_btn_height">40sp</dimen>
+    <dimen name="survey_padding">10sp</dimen>
 </resources>

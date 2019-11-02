@@ -14,8 +14,6 @@ public class SortPlaces implements Comparator<BizStoreElastic> {
 
     @Override
     public int compare(final BizStoreElastic place1, final BizStoreElastic place2) {
-
-
         double lat1 = GeoHashUtils.decodeLatitude(place1.getGeoHash());
         double lon1 = GeoHashUtils.decodeLongitude(place1.getGeoHash());
         double lat2 = GeoHashUtils.decodeLatitude(place2.getGeoHash());

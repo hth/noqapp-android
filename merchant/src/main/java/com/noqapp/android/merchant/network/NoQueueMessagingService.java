@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -35,6 +33,7 @@ import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MyApplication;
@@ -83,7 +82,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
             clearNotifications(this);
-            Log.e("M-Notification: ",remoteMessage.getData().toString());
+            Log.e("M-Notification: ", remoteMessage.getData().toString());
 
             MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(remoteMessage.getData().get(Constants.MESSAGE_ORIGIN));
 
@@ -160,7 +159,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     // object = null;
             }
 
-            if (isAppIsInBackground(getApplicationContext())) {
+            if (AppUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in background, show the notification in notification tray
                 if (null == LaunchActivity.dbHandler) {
                     LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
@@ -214,7 +213,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelName = "Channel Name";
             int importance = MyApplication.isNotificationSoundEnable() ?
-                    NotificationManager.IMPORTANCE_HIGH:NotificationManager.IMPORTANCE_LOW;
+                    NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_LOW;
             NotificationChannel mChannel = new NotificationChannel(
                     channelId, channelName, importance);
             notificationManager.createNotificationChannel(mChannel);
@@ -230,7 +229,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setLights(Color.parseColor("#ffb400"), 50, 10);
         if (MyApplication.isNotificationSoundEnable()) {
             mBuilder.setSound(defaultSoundUri);
-        }else{
+        } else {
             mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
         }
         // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -243,33 +242,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         mBuilder.setContentIntent(resultPendingIntent);
 
         notificationManager.notify(notificationId, mBuilder.build());
-    }
-
-    /**
-     * Method checks if the app is in background or not
-     */
-    private boolean isAppIsInBackground(Context context) {
-        boolean isInBackground = true;
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    for (String activeProcess : processInfo.pkgList) {
-                        if (activeProcess.equals(context.getPackageName())) {
-                            isInBackground = false;
-                        }
-                    }
-                }
-            }
-        } else {
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            ComponentName componentInfo = taskInfo.get(0).topActivity;
-            if (componentInfo.getPackageName().equals(context.getPackageName())) {
-                isInBackground = false;
-            }
-        }
-        return isInBackground;
     }
 
     private int getNotificationIcon() {

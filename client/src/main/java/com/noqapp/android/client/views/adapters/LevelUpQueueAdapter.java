@@ -331,7 +331,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             // ivGroupIndicator.setSelected(isExpanded);
         }
         ExpandableListView mExpandableListView = (ExpandableListView) parent;
-        mExpandableListView.expandGroup(groupPosition);
+      //  mExpandableListView.expandGroup(groupPosition);
         return convertView;
     }
 

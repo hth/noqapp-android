@@ -53,15 +53,12 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
         animationView.playAnimation();
         animationView.loop(true);
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                Log.e("newToken", newToken);
-                fcmToken = newToken;
-                Log.d(BaseLaunchActivity.class.getSimpleName(), "FCM Token=" + fcmToken);
-                sendRegistrationToServer(fcmToken);
-            }
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+            String newToken = instanceIdResult.getToken();
+            Log.e("newToken", newToken);
+            fcmToken = newToken;
+            Log.d(BaseLaunchActivity.class.getSimpleName(), "FCM Token=" + fcmToken);
+            sendRegistrationToServer(fcmToken);
         });
 
         if (StringUtils.isBlank(fcmToken) && new NetworkUtil(this).isNotOnline()) {
@@ -82,29 +79,51 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
                 finish();
             });
             mAlertDialog.show();
+            Log.w(TAG, "No network found");
         }
     }
 
     private void sendRegistrationToServer(String refreshToken) {
-        DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion());
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
-        deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
-        if (StringUtils.isBlank(deviceId)) {
-            deviceId = UUID.randomUUID().toString().toUpperCase();
-            Log.d(TAG, "Created deviceId=" + deviceId);
-            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
-            //Call this api only once in life time
-            DeviceApiCalls deviceApiCalls = new DeviceApiCalls();
-            deviceApiCalls.setDeviceRegisterPresenter(this);
-            deviceApiCalls.register(deviceId, deviceToken);
+        if (new NetworkUtil(this).isOnline()) {
+            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion());
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
+            deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
+            if (StringUtils.isBlank(deviceId)) {
+                deviceId = UUID.randomUUID().toString().toUpperCase();
+                Log.d(TAG, "Created deviceId=" + deviceId);
+                sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
+                //Call this api only once in life time
+                DeviceApiCalls deviceApiCalls = new DeviceApiCalls();
+                deviceApiCalls.setDeviceRegisterPresenter(this);
+                deviceApiCalls.register(deviceId, deviceToken);
+            } else {
+                Log.e("Launch", "launching from sendRegistrationToServer");
+                Log.d(TAG, "Exist deviceId=" + deviceId);
+                Intent i = new Intent(splashScreen, LaunchActivity.class);
+                i.putExtra("fcmToken", fcmToken);
+                i.putExtra("deviceId", deviceId);
+                splashScreen.startActivity(i);
+                splashScreen.finish();
+            }
         } else {
-            Log.e("Launch", "launching from sendRegistrationToServer");
-            Log.d(TAG, "Exist deviceId=" + deviceId);
-            Intent i = new Intent(splashScreen, LaunchActivity.class);
-            i.putExtra("fcmToken", fcmToken);
-            i.putExtra("deviceId", deviceId);
-            splashScreen.startActivity(i);
-            splashScreen.finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+            tvTitle.setText(getString(R.string.networkerror));
+            tv_msg.setText(getString(R.string.offline));
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                finish();
+            });
+            mAlertDialog.show();
+            Log.w(TAG, "No network found");
         }
     }
 

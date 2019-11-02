@@ -1,5 +1,9 @@
 package com.noqapp.android.common.model.types.order;
 
+import com.noqapp.android.common.model.types.CommunicationModeEnum;
+
+import java.util.EnumSet;
+
 /**
  * User: hitender
  * Date: 5/3/18 9:05 AM
@@ -45,6 +49,12 @@ public enum PurchaseOrderStateEnum {
     public String getFriendlyDescription() {
         return friendlyDescription;
     }
+
+    //Home Delivery
+    public static EnumSet<PurchaseOrderStateEnum> HD = EnumSet.of(PO, OP, PR, RP);
+
+    //To Go /Takeaway Mode (Either one of the choice LO, FD, DA, OD)
+    public static EnumSet<PurchaseOrderStateEnum> TO = EnumSet.of(PO, OP, RD, OW, LO, FD, DA, OD);
 
     @Override
     public String toString() {

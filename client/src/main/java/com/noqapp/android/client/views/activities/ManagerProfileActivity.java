@@ -53,6 +53,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_manager_profile);
         initActionsViews(false);

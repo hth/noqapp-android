@@ -74,39 +74,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
 
-            <Button
-                android:id="@+id/btn_no"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:background="@android:color/transparent"
-                android:text="@string/no"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_sixteen"
-                android:visibility="gone" />
 
             <View
                 android:id="@+id/seperator"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color_grey_bg"
-                android:visibility="gone" />
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/color_grey_bg" />
 
             <Button
                 android:id="@+id/btn_yes"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="0.5"
-                android:background="@android:color/transparent"
+                android:background="#efefef"
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/ok"

@@ -31,13 +31,12 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
         initActionsViews(true);
         tv_toolbar_title.setText("Appointment Detail");
-        actionbarBack.setOnClickListener((View v) -> {
-            onBackPressed();
-        });
+        actionbarBack.setOnClickListener((View v) -> onBackPressed());
         try {
             JsonSchedule jsonSchedule = (JsonSchedule) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
             Log.e("data", jsonSchedule.toString());
@@ -55,14 +54,16 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             tv_title.setText(jsonQueueDisplay.getDisplayName());
             tv_address.setText(AppUtils.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
             tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonSchedule.getJsonQueueDisplay().getCountryShortName(), jsonSchedule.getJsonQueueDisplay().getStorePhone()));
-            tv_mobile.setOnClickListener((View v) -> {
-                AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
-            });
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(
+                    jsonSchedule.getJsonQueueDisplay().getCountryShortName(),
+                    jsonSchedule.getJsonQueueDisplay().getStorePhone()));
+
+            tv_mobile.setOnClickListener((View v) ->
+                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));
+
             tv_patient_name.setText(jsonSchedule.getJsonProfile().getName());
-            tv_address.setOnClickListener((View v) -> {
-                AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress());
-            });
+            tv_address.setOnClickListener((View v) ->
+                    AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress()));
 
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
@@ -88,7 +89,11 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             setProgressMessage("Canceling appointment...");
                             showProgress();
-                            appointmentApiCalls.cancelAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                            appointmentApiCalls.cancelAppointment(
+                                    UserUtils.getDeviceId(),
+                                    UserUtils.getEmail(),
+                                    UserUtils.getAuth(),
+                                    jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(AppointmentDetailActivity.this);
                         }

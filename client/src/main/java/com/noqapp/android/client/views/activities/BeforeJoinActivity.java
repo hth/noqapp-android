@@ -60,6 +60,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_join);
         tv_delay_in_time = findViewById(R.id.tv_delay_in_time);

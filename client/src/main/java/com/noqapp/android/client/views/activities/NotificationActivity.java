@@ -19,6 +19,7 @@ import java.util.List;
 public class NotificationActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         initActionsViews(false);

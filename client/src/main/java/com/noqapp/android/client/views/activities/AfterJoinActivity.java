@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
@@ -42,11 +44,13 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -122,6 +126,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
         new InitPaymentGateway().execute();
@@ -213,11 +218,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                         } else {
                             switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
                                 case I:
-                                    cancelQueue();
-                                    break;
                                 case E:
-                                    cancelQueue();
-                                    break;
                                 case U:
                                     cancelQueue();
                                     break;
@@ -252,6 +253,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             if (null != jsonTokenAndQueue) {
                 currencySymbol = AppUtils.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
+                LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
+                LatLng destination = new LatLng(
+                        GeoHashUtils.decodeLatitude(jsonTokenAndQueue.getGeoHash()),
+                        GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash()));
+                replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             }
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();
@@ -282,9 +288,15 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             iv_home.setOnClickListener((View v) -> {
                 LaunchActivity.getLaunchActivity().activityCommunicator = null;
                 Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
-                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if (LaunchActivity.isLockMode) {
+                    goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                } else {
+                    goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                }
                 startActivity(goToA);
+                finish();
             });
+
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
                 case PH:
@@ -306,13 +318,9 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             String time = new AppUtils().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
-            tv_mobile.setOnClickListener((View v) -> {
-                AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString());
-            });
-            tv_address.setOnClickListener((View v) -> {
-                AppUtils.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
-            });
-            gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
+            tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString()));
+            tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString()));
+            gotoPerson = (null != ReviewDB.getValue(codeQR, tokenValue)) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
             tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
@@ -322,7 +330,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
             if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
-                    setProgressMessage("Fetching Queue data..");
+                    setProgressMessage("Fetching Queue data...");
                     showProgress();
                     queueApiAuthenticCall.purchaseOrder(
                             UserUtils.getDeviceId(),
@@ -647,9 +655,23 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 frame_coupon.setVisibility(View.GONE);
                 rl_discount.setVisibility(View.GONE);
             }
+
+            if (!getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false) && LaunchActivity.isLockMode) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        try {
+                            iv_home.performClick();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, Constants.SCREEN_TIME_OUT);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         dismissProgress();
     }
 

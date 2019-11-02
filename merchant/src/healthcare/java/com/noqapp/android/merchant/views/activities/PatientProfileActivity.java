@@ -33,6 +33,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -79,7 +80,7 @@ public class PatientProfileActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        codeQR = getIntent().getStringExtra("qCodeQR");
+        codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         isDental = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.DNT;
 
@@ -109,19 +110,19 @@ public class PatientProfileActivity extends BaseActivity implements
             } else {
                 if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.SPS) {
                     Intent intent = new Intent(PatientProfileActivity.this, NeuroActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                     intent.putExtra("data", jsonQueuedPerson);
                     intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                     startActivity(intent);
                 } else if (MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.NEU) {
                     Intent intent = new Intent(PatientProfileActivity.this, NeuroFullPageActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                     intent.putExtra("data", jsonQueuedPerson);
                     intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                     intent.putExtra("data", jsonQueuedPerson);
                     intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                     intent.putExtra("jsonProfile", jsonProfile);
@@ -137,7 +138,7 @@ public class PatientProfileActivity extends BaseActivity implements
                 new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
             } else {
                 Intent intent = new Intent(PatientProfileActivity.this, HospitalVisitScheduleActivity.class);
-                intent.putExtra("qCodeQR", codeQR);
+                intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
                 intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                 startActivity(intent);
@@ -152,7 +153,7 @@ public class PatientProfileActivity extends BaseActivity implements
                 PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
                 if (permissionHelper.isStoragePermissionAllowed()) {
                     Intent intent = new Intent(PatientProfileActivity.this, DrawActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                     intent.putExtra("data", jsonQueuedPerson);
                     intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                     startActivity(intent);

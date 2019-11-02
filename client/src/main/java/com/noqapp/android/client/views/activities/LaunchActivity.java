@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -24,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -109,19 +111,20 @@ import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 
-public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter,
-        AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity
+        extends NoQueueBaseActivity
+        implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static DatabaseHelper dbHandler;
     public static Locale locale;
-    public static SharedPreferences languagepref;
+    public static SharedPreferences languagePref;
     public static String language;
     private static LaunchActivity launchActivity;
     public TextView tv_location;
     public NetworkUtil networkUtil;
     public ActivityCommunicator activityCommunicator;
-    public double latitute = 0;
-    public double longitute = 0;
+    public double latitude = 0;
+    public double longitude = 0;
     public String cityName = "";
     protected ExpandableListView expandable_drawer_listView;
     private TextView tv_badge;
@@ -135,6 +138,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private List<MenuDrawer> menuDrawerItems = new ArrayList<>();
     public static String COUNTRY_CODE = Constants.DEFAULT_COUNTRY_CODE;
     public static String DISTANCE_UNIT = "km";
+    public static boolean isLockMode = false;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -147,6 +151,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         JodaTimeAndroid.init(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
+        isLockMode = NoQueueBaseActivity.getKioskModeInfo().isKioskModeEnable();
         tv_badge = findViewById(R.id.tv_badge);
         tv_location = findViewById(R.id.tv_location);
         ImageView iv_search = findViewById(R.id.iv_search);
@@ -154,13 +159,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
         COUNTRY_CODE = getCountryCode();
-        Log.e("Country Code: ", COUNTRY_CODE);
-        if(!isCountryIndia()){
+        Log.i(TAG, "Country Code: " + COUNTRY_CODE);
+
+        if (!isCountryIndia()) {
             Constants.DEFAULT_LATITUDE = 37.7749;
             Constants.DEFAULT_LONGITUDE = 122.4194;
             Constants.DEFAULT_CITY = "San Francisco";
             Constants.DEFAULT_COUNTRY_CODE = "US";
-            DISTANCE_UNIT = "miles";
+            DISTANCE_UNIT = "mi";
         }
 
         //NoQueueBaseActivity.saveMailAuth("","");
@@ -173,15 +179,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 NoQueueBaseActivity.setDeviceID(getIntent().getStringExtra("deviceId"));
             }
         }
-        Log.v("device id check", getDeviceID());
+        Log.v("Device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
         fcmNotificationReceiver = new FcmNotificationReceiver();
         fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
         //Language setup
-        languagepref = PreferenceManager.getDefaultSharedPreferences(this);
-        languagepref.registerOnSharedPreferenceChangeListener(this);
-        language = languagepref.getString("pref_language", "");
+        languagePref = PreferenceManager.getDefaultSharedPreferences(this);
+        languagePref.registerOnSharedPreferenceChangeListener(this);
+        language = languagePref.getString("pref_language", "");
 
         if (!language.equals("")) {
             if (language.equals("hi")) {
@@ -240,37 +246,66 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
         if (null != getIntent().getExtras()) {
             try {
-                latitute = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
-                longitute = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
-                getAddress(latitute, longitute);
+                latitude = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
+                longitude = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
+                getAddress(latitude, longitude);
                 //updateLocationUI();
                 tv_location.setText(cityName);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+        setKioskMode();
+    }
+
+    private void setKioskMode() {
+        if (isLockMode) {
+            if (NoQueueBaseActivity.getKioskModeInfo().isLevelUp()) {
+                if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                    Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    startActivity(in);
+                } else {
+                    clearPreferences();
+                    Intent in = new Intent(LaunchActivity.this, CategoryInfoKioskModeActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    startActivity(in);
+                }
+            } else {
+                if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                    Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    startActivity(in);
+                } else {
+                    clearPreferences();
+                    Intent in = new Intent(LaunchActivity.this, StoreWithMenuKioskActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    startActivity(in);
+                }
             }
         }
     }
 
     public void updateLocationUI() {
         if (null != homeFragment) {
-            homeFragment.updateUIWithNewLocation(latitute, longitute, cityName);
+            homeFragment.updateUIWithNewLocation(latitude, longitude, cityName);
             //tv_location.setText(cityName);
         }
     }
 
-    public void updateLocationInfo(double lat, double log, String city) {
+    public void updateLocationInfo(double lat, double lng, String city) {
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
         getSupportActionBar().show();
-        latitute = lat;
-        longitute = log;
+        latitude = lat;
+        longitude = lng;
         cityName = city;
         tv_location.setText(cityName);
         updateLocationUI();
     }
 
     private void callLocationManager() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         ) {
             ActivityCompat.requestPermissions(this, new String[]{PermissionUtils.LOCATION_PERMISSION}, PermissionUtils.PERMISSION_REQUEST_LOCATION);
             return;
@@ -291,10 +326,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 .config(builder.build())
                 .start(location -> {
                     if (null != location) {
-                        latitute = location.getLatitude();
-                        longitute = location.getLongitude();
-                        Log.e("Location found: ", "Location detected: Lat- " + location.getLatitude() + " Long- " + location.getLongitude());
-                        getAddress(latitute, longitute);
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
+                        getAddress(latitude, longitude);
                         updateLocationUI();
                     }
                 });
@@ -339,6 +374,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 }
             }
         }
+        //Toast.makeText(launchActivity, "New Intent called", Toast.LENGTH_SHORT).show();
+        setKioskMode();
     }
 
     @Override
@@ -348,10 +385,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             case R.id.actionbarBack:
                 onBackPressed();
                 break;
-            case R.id.tv_location: {
+            case R.id.tv_location:
                 replaceFragmentWithoutBackStack(R.id.frame_layout, new ChangeLocationFragment());
-            }
-            break;
+                break;
             case R.id.iv_search:
                 homeFragment.callSearch();
                 break;
@@ -445,7 +481,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        languagepref.registerOnSharedPreferenceChangeListener(this);
+        languagePref.registerOnSharedPreferenceChangeListener(this);
         updateNotificationBadgeCount();
         setUpExpandableList(UserUtils.isLogin());
         updateDrawerUI();
@@ -511,7 +547,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 //        if(null != fcmNotificationReceiver)
 //            fcmNotificationReceiver.unregister(this);
         super.onPause();
-        languagepref.unregisterOnSharedPreferenceChangeListener(this);
+        languagePref.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -527,7 +563,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (f instanceof ChangeLocationFragment) {
-            updateLocationInfo(latitute, longitute, cityName);
+            updateLocationInfo(latitude, longitude, cityName);
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -646,7 +682,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
     }
 
-
     public void showChangeLangDialog() {
         final Dialog dialog = new Dialog(launchActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -669,16 +704,18 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             AppUtils.changeLanguage("hi");
             dialog.dismiss();
             if (AppUtils.isRelease()) {
-                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                        .putCustomAttribute("Language", "HINDI"));
+                Answers.getInstance()
+                        .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                                .putCustomAttribute("Language", "HINDI"));
             }
         });
         ll_english.setOnClickListener((View v) -> {
             AppUtils.changeLanguage("en");
             dialog.dismiss();
             if (AppUtils.isRelease()) {
-                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                        .putCustomAttribute("Language", "ENGLISH"));
+                Answers.getInstance()
+                        .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                                .putCustomAttribute("Language", "ENGLISH"));
             }
         });
         dialog.show();
@@ -807,12 +844,33 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     public void reCreateDeviceID() {
-        String deviceId = UUID.randomUUID().toString().toUpperCase();
-        Log.d(TAG, "Re-Created deviceId=" + deviceId);
-        NoQueueBaseActivity.setDeviceID(deviceId);
-        DeviceApiCall deviceModel = new DeviceApiCall();
-        deviceModel.setDeviceRegisterPresenter(this);
-        deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
+        if (new NetworkUtil(this).isOnline()) {
+            String deviceId = UUID.randomUUID().toString().toUpperCase();
+            Log.d(TAG, "Re-Created deviceId=" + deviceId);
+            NoQueueBaseActivity.setDeviceID(deviceId);
+            DeviceApiCall deviceModel = new DeviceApiCall();
+            deviceModel.setDeviceRegisterPresenter(this);
+            deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+            tvTitle.setText(getString(R.string.networkerror));
+            tv_msg.setText(getString(R.string.offline));
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                finish();
+            });
+            mAlertDialog.show();
+            Log.w(TAG, "No network found");
+        }
     }
 
     @Override
@@ -846,7 +904,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // Fill menu items
         menuDrawerItems.clear();
 
-        if(isCountryIndia()) {
+        if (isCountryIndia()) {
             List<MenuDrawer> healthList = new ArrayList<>();
             healthList.add(new MenuDrawer(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
             healthList.add(new MenuDrawer(getString(R.string.medical_history), false, false, R.drawable.medical_history));
@@ -1238,19 +1296,16 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         try {
             LocationManager locationManager = (LocationManager) launchActivity.getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null) {
-                Location location = locationManager
-                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location == null) {
-                    location = locationManager
-                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 }
                 Geocoder gcd = new Geocoder(context, Locale.getDefault());
                 List<Address> addresses;
                 try {
-                    addresses = gcd.getFromLocation(location.getLatitude(),
-                            location.getLongitude(), 1);
+                    addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (addresses != null && !addresses.isEmpty()) {
-                        return addresses.get(0).getCountryName();
+                        return addresses.get(0).getCountryCode();
                     } else {
                         return Constants.DEFAULT_COUNTRY_CODE;
                     }
@@ -1267,9 +1322,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
     }
 
-
-    public boolean isCountryIndia(){
-        return (COUNTRY_CODE.equalsIgnoreCase("India")||
-                COUNTRY_CODE.equalsIgnoreCase("IN"));
+    public boolean isCountryIndia() {
+        return (COUNTRY_CODE.equalsIgnoreCase("India") || COUNTRY_CODE.equalsIgnoreCase("IN"));
     }
 }

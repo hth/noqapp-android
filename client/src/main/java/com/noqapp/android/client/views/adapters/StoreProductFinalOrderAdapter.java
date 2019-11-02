@@ -62,6 +62,7 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
             childViewHolder.tv_total_product_price = convertView.findViewById(R.id.tv_total_product_price);
             childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
+            childViewHolder.tv_product_count = convertView.findViewById(R.id.tv_product_count);
             childViewHolder.btn_decrease = convertView.findViewById(R.id.btn_decrease);
             childViewHolder.btn_increase = convertView.findViewById(R.id.btn_increase);
             convertView.setTag(R.layout.list_item_final_order, childViewHolder);
@@ -71,7 +72,8 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
 
         childViewHolder.tv_title.setText(storeCartItem.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getProductQuantity()));
-        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct()));
+        childViewHolder.tv_product_count.setText(String.valueOf(storeCartItem.getProductQuantity()));
+        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct())+ " x " + storeCartItem.getProductQuantity());
         childViewHolder.tv_total_product_price.setText(currencySymbol + " " + CommonHelper.
                 displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
 
@@ -129,6 +131,7 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
     private final class ChildViewHolder {
         private TextView tv_title;
         private TextView tv_price;
+        private TextView tv_product_count;
         private TextView tv_total_product_price;
         private TextView tv_value;
         private TextView tv_cat;

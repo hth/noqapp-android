@@ -368,6 +368,8 @@
                             android:textColor="#606060"
                             android:textSize="@dimen/text_size_fourteen" />
 
+                        <include layout="@layout/layout_map"/>
+
                     </LinearLayout>
 
 

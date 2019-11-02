@@ -59,7 +59,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId())
+        return this.listDataChild
+                .get(this.listDataHeader.get(groupPosition).getCategoryId())
                 .get(childPosition);
     }
 
@@ -106,8 +107,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
         if (!AppUtils.isRelease()) {
-            childViewHolder.tv_temp.setText("Inventory count " + jsonStoreProduct.getInventoryCurrent() + "\n" +
-                    "Inventory limit " + jsonStoreProduct.getInventoryLimit());
+            childViewHolder.tv_temp.setText("Inventory " + jsonStoreProduct.getInventoryCurrent() + " out of " + jsonStoreProduct.getInventoryLimit());
             childViewHolder.tv_temp.setVisibility(View.VISIBLE);
         }
         Picasso.get()
@@ -157,7 +157,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.btn_increase.setOnClickListener((View v) -> {
             String val = childViewHolder.tv_value.getText().toString();
             int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
-            childViewHolder.tv_value.setText("" + number);
+            childViewHolder.tv_value.setText(String.valueOf(number));
             listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                     .get(childPosition).setChildInput(number);
             if (number <= 0) {
