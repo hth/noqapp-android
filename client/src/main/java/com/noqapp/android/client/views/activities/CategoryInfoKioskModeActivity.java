@@ -128,6 +128,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
 
     @Override
     public void onBackPressed() {
+        return;
     }
 
     @Override

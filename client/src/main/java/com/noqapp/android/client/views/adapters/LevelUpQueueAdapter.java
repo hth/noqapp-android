@@ -88,11 +88,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 if (isSingleEntry) {
                     convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_single_entry_item, parent, false);
                 } else {
-                    if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category1, parent, false);
-                    } else {
-                        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category_store, parent, false);
-                    }
+                    convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category1, parent, false);
                 }
                 childViewHolder = new ChildViewHolder();
                 childViewHolder.tv_name = convertView.findViewById(R.id.tv_name);
@@ -335,7 +331,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             // ivGroupIndicator.setSelected(isExpanded);
         }
         ExpandableListView mExpandableListView = (ExpandableListView) parent;
-        //  mExpandableListView.expandGroup(groupPosition);
+      //  mExpandableListView.expandGroup(groupPosition);
         return convertView;
     }
 
