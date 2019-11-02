@@ -59,6 +59,7 @@
     <string name="error_invalid_email">Please enter valid email</string>
     <string name="error_invalid_date">Please select a valid date</string>
     <string name="error_dob_blank">Please enter date of birth</string>
+    <string name="error_dob_format">Please enter date of birth in yyyy-MM-dd format</string>
 
 
     <!--Error and message-->
