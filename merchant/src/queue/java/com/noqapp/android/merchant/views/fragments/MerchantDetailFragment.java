@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -83,8 +84,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 Intent intent = new Intent(getActivity(), ProductListActivity.class);
                 intent.putExtra("codeQR", jsonTopic.getCodeQR());
                 ((Activity) context).startActivity(intent);
-            }else{
-                ShowAlertInformation.showThemeDialog(context,"Unauthorized access","You are not allowed to use this feature");
+            } else {
+                ShowAlertInformation.showThemeDialog(context, "Unauthorized access", "You are not allowed to use this feature");
             }
         });
         return view;
@@ -547,5 +548,11 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.menu_appointment).setVisible(false);
         menu.findItem(R.id.menu_followup).setVisible(false);
+        MenuItem menuItem = menu.findItem(R.id.menu_add);
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile() && LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+            menuItem.setTitle("Create Order");
+        } else {
+            menuItem.setTitle("Create Token");
+        }
     }
 }
