@@ -120,7 +120,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
     }
 
-
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
@@ -131,8 +130,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             urlConnection.connect();
             iStream = urlConnection.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-            StringBuffer sb = new StringBuffer();
-            String line = "";
+            StringBuilder sb = new StringBuilder();
+            String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
@@ -141,7 +140,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (Exception e) {
             Log.d("Exception on download", e.toString());
         } finally {
-            iStream.close();
+            Objects.requireNonNull(iStream).close();
             urlConnection.disconnect();
         }
         return data;
@@ -169,6 +168,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
         @Override
         protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
@@ -187,7 +187,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             PolylineOptions lineOptions = null;
             for (int i = 0; i < result.size(); i++) {
-                ArrayList<LatLng> points = new ArrayList<>();
+                List<LatLng> points = new ArrayList<>();
                 lineOptions = new PolylineOptions();
                 List<HashMap<String, String>> path = result.get(i);
                 for (int j = 0; j < path.size(); j++) {
