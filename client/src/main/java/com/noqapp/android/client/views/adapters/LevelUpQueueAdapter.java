@@ -88,7 +88,11 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 if (isSingleEntry) {
                     convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_single_entry_item, parent, false);
                 } else {
-                    convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category1, parent, false);
+                    if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category1, parent, false);
+                    } else {
+                        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category_store, parent, false);
+                    }
                 }
                 childViewHolder = new ChildViewHolder();
                 childViewHolder.tv_name = convertView.findViewById(R.id.tv_name);
