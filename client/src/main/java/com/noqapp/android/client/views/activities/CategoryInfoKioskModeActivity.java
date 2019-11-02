@@ -28,7 +28,6 @@ import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CategoryGridAdapter;
-import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -42,7 +41,7 @@ import java.util.Set;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class CategoryInfoKioskModeActivity extends BaseActivity implements QueuePresenter,
-        LevelUpQueueAdapter.OnItemClickListener, CategoryGridAdapter.OnItemClickListener {
+        CategoryGridAdapter.OnItemClickListener {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -239,40 +238,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         Set<String> queueKey = queueMap.keySet();
         categoryKey.retainAll(queueKey);
         return new ArrayList<>(categoryMap.values());
-    }
-
-    @Override
-    public void onCategoryItemClick(BizStoreElastic item) {
-        Intent in = null;
-        Bundle b = new Bundle();
-        switch (item.getBusinessType()) {
-            case DO:
-            case BK:
-                // open hospital profile
-                in = new Intent(this, BeforeJoinActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
-                in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
-                startActivity(in);
-                break;
-            case HS:
-            case PH: {
-                // open order screen
-                in = new Intent(this, StoreDetailActivity.class);
-                b.putSerializable("BizStoreElastic", item);
-                in.putExtras(b);
-                startActivity(in);
-            }
-            break;
-            default: {
-                // open order screen
-                in = new Intent(this, StoreWithMenuActivity.class);
-                b.putSerializable("BizStoreElastic", item);
-                in.putExtras(b);
-                startActivity(in);
-            }
-        }
     }
 
     @Override

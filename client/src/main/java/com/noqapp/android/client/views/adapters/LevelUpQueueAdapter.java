@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -334,8 +333,6 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             //ImageView ivGroupIndicator = convertView.findViewById(R.id.ivGroupIndicator);
             // ivGroupIndicator.setSelected(isExpanded);
         }
-        ExpandableListView mExpandableListView = (ExpandableListView) parent;
-      //  mExpandableListView.expandGroup(groupPosition);
         return convertView;
     }
 
