@@ -1,20 +1,19 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class CouponAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder vholder, final int listPosition) {
-        MyViewHolder holder = (MyViewHolder)vholder;
+        MyViewHolder holder = (MyViewHolder) vholder;
         final JsonCoupon jsonCoupon = jsonCoupons.get(listPosition);
         holder.tv_discount_name.setText(jsonCoupon.getDiscountName());
         holder.tv_discount_description.setText(jsonCoupon.getDiscountDescription());
@@ -45,18 +44,14 @@ public class CouponAdapter extends RecyclerView.Adapter {
         if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
             holder.tv_discount_amount.setText(LaunchActivity.getCurrencySymbol() + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
         } else {
-            holder.tv_discount_amount.setText(String.valueOf(jsonCoupon.getDiscountAmount()) + "% off");
+            holder.tv_discount_amount.setText(jsonCoupon.getDiscountAmount() + "% off");
         }
-        holder.tv_offer_validity.setText("Validity period: "+
-                CommonHelper.formatStringDate(CommonHelper.SDF_YYYY_MM_DD,jsonCoupon.getCouponEndDate()));
+        holder.tv_offer_validity.setText("Validity period: " + CommonHelper.formatStringDate(CommonHelper.SDF_YYYY_MM_DD, jsonCoupon.getCouponEndDate()));
         holder.card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
         holder.tv_apply_coupon.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-        holder.tv_apply_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.discountItemClick(jsonCoupon);
-                }
+        holder.tv_apply_coupon.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.discountItemClick(jsonCoupon);
             }
         });
     }

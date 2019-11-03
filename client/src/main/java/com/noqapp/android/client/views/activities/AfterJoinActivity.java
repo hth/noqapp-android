@@ -134,6 +134,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
         TextView tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
+        ImageView iv_right_bg = findViewById(R.id.iv_right_bg);
+        ImageView iv_left_bg = findViewById(R.id.iv_left_bg);
         tv_mobile = findViewById(R.id.tv_mobile);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_token = findViewById(R.id.tv_token);
@@ -302,10 +304,14 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 case PH:
                     tv_add.setVisibility(View.VISIBLE);
                     tv_name.setVisibility(View.VISIBLE);
+                    iv_left_bg.setVisibility(View.VISIBLE);
+                    iv_right_bg.setVisibility(View.VISIBLE);
                     break;
                 default:
                     tv_add.setVisibility(View.GONE);
                     tv_name.setVisibility(View.GONE);
+                    iv_left_bg.setVisibility(View.GONE);
+                    iv_right_bg.setVisibility(View.GONE);
             }
             if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
                 int hours = jsonTokenAndQueue.getDelayedInMinutes() / 60;

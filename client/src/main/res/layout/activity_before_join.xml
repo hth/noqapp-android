@@ -197,6 +197,7 @@
 
 
                     <ImageView
+                        android:id="@+id/iv_left_bg"
                         android:layout_width="53dp"
                         android:layout_height="50.3dp"
                         android:layout_gravity="center_vertical"
@@ -242,6 +243,7 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/iv_right_bg"
                         android:layout_width="53dp"
                         android:layout_height="50.3dp"
                         android:layout_gravity="center_vertical|right"
@@ -322,6 +324,16 @@
                     android:textColor="@color/theme_color_red"
                     android:textSize="@dimen/text_size_twelve" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/address"
+                    android:textColor="#606060"
+                    android:textSize="@dimen/text_size_twelve" />
 
                 <TextView
                     android:id="@+id/tv_store_name"
@@ -331,7 +343,6 @@
                     android:paddingRight="10dp"
                     android:textColor="@color/colorAddress"
                     android:textSize="@dimen/text_size_sixteen" />
-
 
                 <TextView
                     android:id="@+id/tv_address"

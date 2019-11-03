@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -88,7 +87,11 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 if (isSingleEntry) {
                     convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_single_entry_item, parent, false);
                 } else {
-                    convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category1, parent, false);
+                    if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category1, parent, false);
+                    } else {
+                        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category_store, parent, false);
+                    }
                 }
                 childViewHolder = new ChildViewHolder();
                 childViewHolder.tv_name = convertView.findViewById(R.id.tv_name);
@@ -330,8 +333,6 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             //ImageView ivGroupIndicator = convertView.findViewById(R.id.ivGroupIndicator);
             // ivGroupIndicator.setSelected(isExpanded);
         }
-        ExpandableListView mExpandableListView = (ExpandableListView) parent;
-      //  mExpandableListView.expandGroup(groupPosition);
         return convertView;
     }
 

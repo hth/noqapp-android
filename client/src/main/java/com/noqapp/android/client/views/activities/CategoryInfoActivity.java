@@ -81,7 +81,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private TextView tv_address_title;
     private TextView tv_rating_review;
     private TextView tv_rating;
-    private RecyclerView rv_categories;
     private RecyclerView rv_thumb_images;
     private ImageView iv_category_banner;
     private Button btn_join_queues;
@@ -109,7 +108,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         tv_address_title = findViewById(R.id.tv_address_title);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
-        rv_categories = findViewById(R.id.rv_categories);
+        RecyclerView rv_categories = findViewById(R.id.rv_categories);
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         btn_join_queues = findViewById(R.id.btn_join_queues);
@@ -155,8 +154,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
         rv_categories.setLayoutManager(recyclerViewLayoutManager);
-
-
     }
 
     @Override
@@ -197,7 +194,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                         public void btnPositiveClick(boolean isFeedBackScreen) {
                             LaunchActivity.isLockMode = true;
                             KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                            kioskModeInfo.setKioskCodeQR(codeQR);
+                            kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR());
                             kioskModeInfo.setKioskModeEnable(true);
                             kioskModeInfo.setLevelUp(true);
                             kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
@@ -223,7 +220,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                             //Do nothing
                         }
                     });
-                    showKioskModeDialog.displayDialog();
+                    showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
                 });
             } else {
                 tv_enable_kiosk.setVisibility(View.GONE);
@@ -423,17 +420,18 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private void checkForSingleEntry() {
         expandableListView.setVisibility(View.GONE);
         ll_top_header.setVisibility(View.VISIBLE);
-
-        if ((null != getCategoryThatArePopulated() && getCategoryThatArePopulated().size() == 1) &&
-                (null != cacheQueue.getIfPresent("queue") && cacheQueue.getIfPresent("queue").size() == 1)) {
-
+        List<JsonCategory> jsonCategories = getCategoryThatArePopulated();
+        Map<String, ArrayList<BizStoreElastic>> entryData = cacheQueue.getIfPresent("queue");
+        if ((null != jsonCategories && jsonCategories.size() == 1) && (null != entryData && entryData.size() == 1)) {
             Map.Entry<String, ArrayList<BizStoreElastic>> entry = cacheQueue.getIfPresent("queue").entrySet().iterator().next();
             ArrayList<BizStoreElastic> bizStoreElastics = entry.getValue();
             if (bizStoreElastics.size() == 1) {
                 expandableListView.setVisibility(View.VISIBLE);
-                LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, getCategoryThatArePopulated(),
+                LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, jsonCategories,
                         cacheQueue.getIfPresent("queue"), this, true);
                 expandableListView.setAdapter(expandableListAdapter);
+                for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
+                    expandableListView.expandGroup(i);
                 btn_join_queues.setVisibility(View.GONE);
                 ll_top_header.setVisibility(View.GONE);
             } else {

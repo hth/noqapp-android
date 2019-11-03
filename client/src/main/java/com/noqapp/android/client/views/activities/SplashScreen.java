@@ -70,7 +70,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         LottieAnimationView animationView = findViewById(R.id.animation_view);
         animationView.setAnimation("data.json");
         animationView.playAnimation();
-        animationView.loop(true);
+        animationView.setRepeatCount(10);
 
         gpsTracker = new GPSTracker(this, null);
         if (gpsTracker.isLocationEnabled()) {
@@ -236,9 +236,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                     callLocationManager();
                 } else {
                     //code for deny
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(SplashScreen.this,
-                            Manifest.permission.ACCESS_FINE_LOCATION)) {
-
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(SplashScreen.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Permission needed")
                                 .setMessage(getString(R.string.gps_error_msg))

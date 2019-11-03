@@ -55,6 +55,7 @@
     <string name="error_invalid_email">कृपया वैध ईमेल दर्ज़ करें</string>
     <string name="error_invalid_date">कृपया एक वैध तिथि चुनें</string>
     <string name="error_dob_blank">कृपया जन्म तिथि दर्ज करें</string>
+    <string name="error_dob_format">Please enter date of birth in yyyy-MM-dd format</string>
 
 
     <!--Error and message-->
@@ -306,5 +307,6 @@
     <string name="screen_qconfirm">Confirm Queue</string>
     <string name="discount_error">Discount has already been applied</string>
     <string name="kiosk_dialog_msg">Continue to launch Kiosk Mode?</string>
+    <string name="preference_settings">पसंदीदा समायोजन</string>
 
 </resources>

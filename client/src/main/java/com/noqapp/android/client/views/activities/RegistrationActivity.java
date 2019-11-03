@@ -236,6 +236,13 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             if (TextUtils.isEmpty(errorMsg))
                 errorMsg = getString(R.string.error_dob_blank);
             isValid = false;
+        }else{
+            if(TextUtils.isEmpty(AppUtils.convertDOBToValidFormat(tv_birthday.getText().toString()))){
+                tv_birthday.setError(getString(R.string.error_dob_format));
+                if (TextUtils.isEmpty(errorMsg))
+                    errorMsg = getString(R.string.error_dob_format);
+                isValid = false;
+            }
         }
 
         if (!TextUtils.isEmpty(errorMsg)) {

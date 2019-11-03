@@ -57,7 +57,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     private boolean isJoinNotPossible = false;
     private String joinErrorMsg = "";
     private Button btn_pay_and_joinQueue, btn_joinQueue;
-
+    private ImageView iv_right_bg, iv_left_bg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -68,6 +68,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
         tv_mobile = findViewById(R.id.tv_mobile);
+        iv_right_bg = findViewById(R.id.iv_right_bg);
+        iv_left_bg = findViewById(R.id.iv_left_bg);
         tv_consult_fees = findViewById(R.id.tv_consult_fees);
         tv_cancelation_fees = findViewById(R.id.tv_cancelation_fees);
         tv_serving_no = findViewById(R.id.tv_serving_no);
@@ -232,6 +234,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     tv_add.setVisibility(View.VISIBLE);
                     add_person.setVisibility(View.VISIBLE);
                     sp_name_list.setVisibility(View.VISIBLE);
+                    iv_left_bg.setVisibility(View.VISIBLE);
+                    iv_right_bg.setVisibility(View.VISIBLE);
                     break;
                 default:
                     tv_consult_fees.setVisibility(View.GONE);
@@ -240,6 +244,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     add_person.setVisibility(View.GONE);
                     sp_name_list.setSelection(1);// Q join @ Name of primary
                     sp_name_list.setVisibility(View.GONE);
+                    iv_left_bg.setVisibility(View.GONE);
+                    iv_right_bg.setVisibility(View.GONE);
             }
 
             if (jsonQueue.isEnabledPayment()) {

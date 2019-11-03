@@ -6,7 +6,10 @@
     android:background="@drawable/dialog_bg_kiosk"
     android:orientation="vertical"
     android:outlineProvider="paddedBounds"
-    android:padding="20dp">
+    android:paddingLeft="15dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingRight="15dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -74,9 +77,9 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
+                    android:checked="true"
                     android:clickable="false"
                     android:focusable="false"
-                    android:checked="true"
                     app:buttonTint="@color/theme_color_dark" />
             </LinearLayout>
 
@@ -131,11 +134,25 @@
 
 
     <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="@string/kiosk_dialog_msg"
+        android:textColor="@android:color/black"
+        android:background="@android:color/darker_gray"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+    <TextView
         android:id="@+id/tv_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:gravity="center"
         android:text="@string/kiosk_dialog_msg"
         android:textColor="@android:color/black"
