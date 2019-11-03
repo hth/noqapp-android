@@ -194,7 +194,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                         public void btnPositiveClick(boolean isFeedBackScreen) {
                             LaunchActivity.isLockMode = true;
                             KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                            kioskModeInfo.setKioskCodeQR(codeQR);
+                            kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR());
                             kioskModeInfo.setKioskModeEnable(true);
                             kioskModeInfo.setLevelUp(true);
                             kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
@@ -220,7 +220,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                             //Do nothing
                         }
                     });
-                    showKioskModeDialog.displayDialog();
+                    showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
                 });
             } else {
                 tv_enable_kiosk.setVisibility(View.GONE);

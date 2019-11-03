@@ -177,7 +177,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     public void btnPositiveClick(boolean isFeedBackScreen) {
                         LaunchActivity.isLockMode = true;
                         KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                        kioskModeInfo.setKioskCodeQR(jsonQueue.getCodeQR());
+                        kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR());
                         kioskModeInfo.setKioskModeEnable(true);
                         kioskModeInfo.setLevelUp(false);
                         kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
@@ -203,7 +203,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                         //Do nothing
                     }
                 });
-                showKioskModeDialog.displayDialog();
+                showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
             });
         } else {
             tv_enable_kiosk.setVisibility(View.GONE);
