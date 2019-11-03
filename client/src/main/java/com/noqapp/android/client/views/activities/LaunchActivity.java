@@ -996,9 +996,6 @@ public class LaunchActivity
                 startActivity(in);
                 break;
             }
-            case R.id.nav_transaction:
-                new CustomToast().showToast(launchActivity, "Coming soon... ");
-                break;
             case R.drawable.ic_logout:
                 ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
