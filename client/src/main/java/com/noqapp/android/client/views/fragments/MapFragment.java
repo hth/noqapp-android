@@ -69,8 +69,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         source = (LatLng) getArguments().get("source");
         destination = (LatLng) getArguments().get("destination");
 
-        // CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(source, 10);
-        //mMap.animateCamera(yourLocation);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(true);

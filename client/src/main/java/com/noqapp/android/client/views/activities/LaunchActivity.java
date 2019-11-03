@@ -95,6 +95,9 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
+
+import com.google.android.gms.maps.MapsInitializer;
+
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -149,6 +152,8 @@ public class LaunchActivity
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
         JodaTimeAndroid.init(this);
+        //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
+        MapsInitializer.initialize(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
         isLockMode = NoQueueBaseActivity.getKioskModeInfo().isKioskModeEnable();
