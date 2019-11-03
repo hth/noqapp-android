@@ -278,7 +278,6 @@
                         android:textSize="@dimen/text_size_twelve"
                         android:visibility="gone" />
 
-
                     <LinearLayout
                         android:id="@+id/ll_change_bg"
                         android:layout_width="match_parent"
@@ -358,7 +357,6 @@
                             android:textColor="@color/colorAddress"
                             android:textSize="@dimen/text_size_sixteen" />
 
-
                         <TextView
                             android:id="@+id/tv_address"
                             style="@style/style_join_queue_tv"
@@ -373,7 +371,6 @@
                         <include layout="@layout/layout_map"/>
 
                     </LinearLayout>
-
 
                     <FrameLayout
                         android:id="@+id/frame_coupon"
@@ -494,8 +491,6 @@
 
                         </RelativeLayout>
                     </FrameLayout>
-
-
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/card_amount"
@@ -667,9 +662,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
@@ -678,6 +673,7 @@
                     android:id="@+id/btn_pay"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_standard_height"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="0.0"
                     android:background="@drawable/btn_bg_enable"
@@ -697,6 +693,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_standard_height"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1.0"
                     android:background="@drawable/btn_bg_inactive"
                     android:clickable="true"
