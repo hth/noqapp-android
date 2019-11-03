@@ -1,21 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -26,11 +10,26 @@ import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.utils.Constants;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.crashlytics.android.Crashlytics;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.UUID;
-
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import io.fabric.sdk.android.Fabric;
+
+import java.util.UUID;
 
 public class SplashScreen extends BaseActivity implements DeviceRegisterPresenter {
 
@@ -51,7 +50,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
         LottieAnimationView animationView = findViewById(R.id.animation_view);
         animationView.setAnimation("data.json");
         animationView.playAnimation();
-        animationView.loop(true);
+        animationView.setRepeatCount(10);
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
             String newToken = instanceIdResult.getToken();
