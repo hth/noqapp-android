@@ -27,6 +27,7 @@ import com.google.maps.model.TravelMode;
 import com.noqapp.android.client.R;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -91,7 +92,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private DirectionsResult getDirectionsDetails() {
-        DateTime now = new DateTime();
+        DateTime now = DateTime.now(DateTimeZone.UTC).plusDays(1);
         try {
             return DirectionsApi.newRequest(getGeoContext())
                     .mode(TravelMode.DRIVING)
@@ -124,6 +125,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private String getEndLocationTitle(DirectionsResult results) {
-        return "Time :" + results.routes[overview].legs[overview].duration.humanReadable + " Distance :" + results.routes[overview].legs[overview].distance.humanReadable;
+        return "Time: " + results.routes[overview].legs[overview].duration.humanReadable + " Distance: " + results.routes[overview].legs[overview].distance.humanReadable;
     }
 }
