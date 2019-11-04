@@ -85,7 +85,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void positionCamera(DirectionsResult results, GoogleMap mMap) {
         try {
             DirectionsRoute route = results.routes[overview];
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(route.legs[overview].startLocation.lat, route.legs[overview].startLocation.lng), 12));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(route.legs[overview].endLocation.lat, route.legs[overview].endLocation.lng), 12));
         } catch (ArrayIndexOutOfBoundsException e) {
             e.getLocalizedMessage();
         }
@@ -140,9 +140,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         GeoApiContext geoApiContext = new GeoApiContext();
         return geoApiContext.setQueryRateLimit(3)
                 .setApiKey(getString(R.string.google_maps_key))
-                .setConnectTimeout(1, TimeUnit.SECONDS)
-                .setReadTimeout(1, TimeUnit.SECONDS)
-                .setWriteTimeout(1, TimeUnit.SECONDS);
+                .setConnectTimeout(2, TimeUnit.SECONDS)
+                .setReadTimeout(2, TimeUnit.SECONDS)
+                .setWriteTimeout(2, TimeUnit.SECONDS);
     }
 
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
@@ -158,7 +158,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private String getEndLocationTitle(DirectionsResult results, TravelMode travelMode) {
-        return StringUtils.capitalize(travelMode.toString()) + " Time: " + results.routes[overview].legs[overview].duration.humanReadable + " Distance: " + results.routes[overview].legs[overview].distance.humanReadable;
+        return StringUtils.capitalize(
+                travelMode.toString()) + " Time: " + results.routes[overview].legs[overview].duration.humanReadable
+                + " & Distance: " + results.routes[overview].legs[overview].distance.humanReadable;
     }
 
     private BitmapDescriptor getMarkerIcon(String color) {
