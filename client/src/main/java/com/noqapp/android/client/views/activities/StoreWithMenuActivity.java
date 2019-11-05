@@ -161,7 +161,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         } else if (jsonQueue.getReviewCount() == 1) {
             tv_rating_review.setText("1 Review");
         } else {
-            tv_rating_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
+            tv_rating_review.setText(jsonQueue.getReviewCount() + " Reviews");
         }
 
         TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
