@@ -197,12 +197,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
-            tv_complete_address.setOnClickListener((View v) -> {
-                AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
-            });
-            tv_address_title.setOnClickListener((View v) -> {
-                AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
-            });
+            tv_complete_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString()));
+            tv_address_title.setOnClickListener((View v) -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString()));
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             tv_rating.setText(AppUtils.round(rating) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
@@ -210,11 +206,14 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
-            LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()), GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
-            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
-            tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
-            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            if (reviewCount == 0) {
+                tv_rating_review.setText("No Review");
+                tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            } else if (reviewCount == 1) {
+                tv_rating_review.setText("1 Review");
+            } else {
+                tv_rating_review.setText(reviewCount + " Reviews");
+            }
             tv_rating_review.setOnClickListener((View v) -> {
                 if (null != bizStoreElastic && reviewCount > 0) {
                     Intent in = new Intent(CategoryInfoActivity.this, AllReviewsActivity.class);
@@ -227,6 +226,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     startActivity(in);
                 }
             });
+
+            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
+            LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()), GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
+            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             codeQR = bizStoreElastic.getCodeQR();
 
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
@@ -452,11 +455,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             ArrayList<BizStoreElastic> bizStoreElastics = entry.getValue();
             if (bizStoreElastics.size() == 1) {
                 expandableListView.setVisibility(View.VISIBLE);
-                LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, jsonCategories,
-                        cacheQueue.getIfPresent("queue"), this, true);
+                LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, jsonCategories, cacheQueue.getIfPresent("queue"), this, true);
                 expandableListView.setAdapter(expandableListAdapter);
-                for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
+                for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
                     expandableListView.expandGroup(i);
+                }
                 btn_join_queues.setVisibility(View.GONE);
                 ll_top_header.setVisibility(View.GONE);
             } else {

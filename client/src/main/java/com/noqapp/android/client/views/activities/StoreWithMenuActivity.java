@@ -1,5 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
+import static com.noqapp.android.common.model.types.UserLevelEnum.Q_SUPERVISOR;
+import static com.noqapp.android.common.model.types.UserLevelEnum.S_MANAGER;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,14 +40,18 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.StoreProductMenuAdapter;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -161,51 +168,13 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         } else if (jsonQueue.getReviewCount() == 1) {
             tv_rating_review.setText("1 Review");
         } else {
-            tv_rating_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
+            tv_rating_review.setText(jsonQueue.getReviewCount() + " Reviews");
         }
 
-        TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-        if (null != LaunchActivity.getUserProfile()
-                && null != LaunchActivity.getUserProfile().getBizNameId()
-                && LaunchActivity.getUserProfile().getBizNameId().equals(bizStoreElastic.getBizNameId())) {
-            // added logic from profile
-            tv_enable_kiosk.setVisibility(View.VISIBLE);
-            tv_enable_kiosk.setOnClickListener(v -> {
-                ShowKioskModeDialog showKioskModeDialog = new ShowKioskModeDialog(StoreWithMenuActivity.this);
-                showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick(boolean isFeedBackScreen) {
-                        LaunchActivity.isLockMode = true;
-                        KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                        kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR(bizStoreElastic.getCodeQR()));
-                        kioskModeInfo.setKioskModeEnable(true);
-                        kioskModeInfo.setLevelUp(false);
-                        kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
-                        kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
-                        kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
-                        NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
-
-                        if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
-                            Intent in = new Intent(StoreWithMenuActivity.this, SurveyKioskModeActivity.class);
-                            in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
-                            startActivity(in);
-                        } else {
-                            NoQueueBaseActivity.clearPreferences();
-                            Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
-                            in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
-                            startActivity(in);
-                        }
-                        finish();
-                    }
-
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
-            });
+        if (showKioskMode()) {
+            populateKioskMode();
         } else {
+            TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
             tv_enable_kiosk.setVisibility(View.GONE);
         }
 
@@ -265,19 +234,19 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         HashMap<String, List<StoreCartItem>> expandableListDetail = storeCartItems;
 
         List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
-        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
-                this, currencySymbol, AppUtils.isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
+        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(
+                this,
+                expandableListTitle,
+                expandableListDetail,
+                this,
+                currencySymbol,
+                AppUtils.isStoreOpenToday(jsonStore),
+                jsonQueue.getBusinessType());
         expandableListView.setAdapter(expandableListAdapter);
-
-        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
             expandableListView.expandGroup(i);
-
-        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                return true;
-            }
-        });
+        }
+        expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
 
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
         ArrayList<StoreCartItem> childData = new ArrayList<>();
@@ -387,7 +356,65 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 startActivity(loginIntent);
             }
         });
-        tv_enable_kiosk.performClick();
+    }
+
+    private boolean showKioskMode() {
+        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
+        if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
+            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                return Q_SUPERVISOR == jsonProfile.getUserLevel();
+            } else {
+                /* Only manager has the capacity to turn on kiosk mode. */
+                if (jsonProfile.getCodeQRs().contains(bizStoreElastic.getCodeQR())) {
+                    return S_MANAGER == jsonProfile.getUserLevel();
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Call when confirmed to show the kiosk mode.
+     */
+    private void populateKioskMode() {
+        TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
+        tv_enable_kiosk.setVisibility(View.VISIBLE);
+        tv_enable_kiosk.setOnClickListener(v -> {
+            ShowKioskModeDialog showKioskModeDialog = new ShowKioskModeDialog(StoreWithMenuActivity.this);
+            showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick(boolean isFeedBackScreen) {
+                    LaunchActivity.isLockMode = true;
+                    KioskModeInfo kioskModeInfo = new KioskModeInfo();
+                    kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR(bizStoreElastic.getCodeQR()));
+                    kioskModeInfo.setKioskModeEnable(true);
+                    kioskModeInfo.setLevelUp(false);
+                    kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
+                    kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
+                    kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
+                    NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
+
+                    if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                        Intent in = new Intent(StoreWithMenuActivity.this, SurveyKioskModeActivity.class);
+                        in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                        startActivity(in);
+                    } else {
+                        NoQueueBaseActivity.clearPreferences();
+                        Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
+                        in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                        startActivity(in);
+                    }
+                    finish();
+                }
+
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
+        });
     }
 
     @Override
