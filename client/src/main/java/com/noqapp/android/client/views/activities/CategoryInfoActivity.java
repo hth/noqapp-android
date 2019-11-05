@@ -206,11 +206,14 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
-            LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()), GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
-            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
-            tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
-            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            if (reviewCount == 0) {
+                tv_rating_review.setText("No Review");
+                tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            } else if (reviewCount == 1) {
+                tv_rating_review.setText("1 Review");
+            } else {
+                tv_rating_review.setText(reviewCount + " Reviews");
+            }
             tv_rating_review.setOnClickListener((View v) -> {
                 if (null != bizStoreElastic && reviewCount > 0) {
                     Intent in = new Intent(CategoryInfoActivity.this, AllReviewsActivity.class);
@@ -223,6 +226,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     startActivity(in);
                 }
             });
+
+            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
+            LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()), GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
+            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             codeQR = bizStoreElastic.getCodeQR();
 
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
