@@ -1,5 +1,9 @@
 package com.noqapp.android.client.utils;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.common.beans.JsonProfile;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,17 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.common.beans.JsonProfile;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShowKioskModeDialog {
     private Context context;
     private DialogClickListener dialogClickListener;
-
 
     public interface DialogClickListener {
         void btnPositiveClick(boolean isFeedBackScreen);
@@ -34,7 +32,6 @@ public class ShowKioskModeDialog {
         return this;
     }
 
-
     public ShowKioskModeDialog(Context context) {
         this.context = context;
     }
@@ -46,7 +43,7 @@ public class ShowKioskModeDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(true);
         TextView tv_info = dialog.findViewById(R.id.tv_info);
-        tv_info.setText("You are enabling kiosk as " + userLevel);
+        tv_info.setText("Enabling kiosk as a " + userLevel);
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
         final LinearLayout ll_store_screen = dialog.findViewById(R.id.ll_store_screen);
@@ -77,15 +74,17 @@ public class ShowKioskModeDialog {
         dialog.show();
     }
 
-    public String getAssociatedCodeQR() {
+    //TODO this check is not required as nothing is computed here that is already not available
+    public String getAssociatedCodeQR(String codeQR) {
         JsonProfile jsonProfile = LaunchActivity.getUserProfile();
         if (null == jsonProfile || null == jsonProfile.getBizStoreIds() || null == jsonProfile.getCodeQRs())
             return "";
         else {
             try {
-                int pos = itemPos(jsonProfile.getBizNameId() ,jsonProfile.getBizStoreIds());
+                int pos = itemPos(codeQR, jsonProfile.getCodeQRs());
                 return jsonProfile.getCodeQRs().get(pos);
             } catch (Exception e) {
+                //TODO(chandra) throw error when the code should not reach here as this happens only with proper check. This error will get logged to see the issue
                 e.printStackTrace();
                 return "";
             }
