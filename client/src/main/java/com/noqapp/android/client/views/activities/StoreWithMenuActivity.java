@@ -387,7 +387,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 startActivity(loginIntent);
             }
         });
-        tv_enable_kiosk.performClick();
     }
 
     @Override
