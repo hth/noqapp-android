@@ -387,65 +387,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 startActivity(loginIntent);
             }
         });
-    }
-
-    private boolean showKioskMode() {
-        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
-        if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
-            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                return Q_SUPERVISOR == jsonProfile.getUserLevel();
-            } else {
-                /* Only manager has the capacity to turn on kiosk mode. */
-                if (jsonProfile.getCodeQRs().contains(bizStoreElastic.getCodeQR())) {
-                    return S_MANAGER == jsonProfile.getUserLevel();
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Call when confirmed to show the kiosk mode.
-     */
-    private void populateKioskMode() {
-        TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
-        tv_enable_kiosk.setVisibility(View.VISIBLE);
-        tv_enable_kiosk.setOnClickListener(v -> {
-            ShowKioskModeDialog showKioskModeDialog = new ShowKioskModeDialog(CategoryInfoActivity.this);
-            showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
-                @Override
-                public void btnPositiveClick(boolean isFeedBackScreen) {
-                    LaunchActivity.isLockMode = true;
-                    KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                    kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR(bizStoreElastic.getCodeQR()));
-                    kioskModeInfo.setKioskModeEnable(true);
-                    kioskModeInfo.setLevelUp(true);
-                    kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
-                    kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
-                    kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
-                    NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
-
-                    if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
-                        Intent in = new Intent(CategoryInfoActivity.this, SurveyKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
-                        startActivity(in);
-                    } else {
-                        NoQueueBaseActivity.clearPreferences();
-                        Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
-                        startActivity(in);
-                    }
-                    finish();
-                }
-
-                @Override
-                public void btnNegativeClick() {
-                    //Do nothing
-                }
-            });
-            showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
-        });
+        tv_enable_kiosk.performClick();
     }
 
     @Override
