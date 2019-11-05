@@ -265,19 +265,19 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         HashMap<String, List<StoreCartItem>> expandableListDetail = storeCartItems;
 
         List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
-        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
-                this, currencySymbol, AppUtils.isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
+        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(
+                this,
+                expandableListTitle,
+                expandableListDetail,
+                this,
+                currencySymbol,
+                AppUtils.isStoreOpenToday(jsonStore),
+                jsonQueue.getBusinessType());
         expandableListView.setAdapter(expandableListAdapter);
-
-        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
             expandableListView.expandGroup(i);
-
-        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                return true;
-            }
-        });
+        }
+        expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
 
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
         ArrayList<StoreCartItem> childData = new ArrayList<>();
