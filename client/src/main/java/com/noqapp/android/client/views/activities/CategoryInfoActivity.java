@@ -452,11 +452,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             ArrayList<BizStoreElastic> bizStoreElastics = entry.getValue();
             if (bizStoreElastics.size() == 1) {
                 expandableListView.setVisibility(View.VISIBLE);
-                LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, jsonCategories,
-                        cacheQueue.getIfPresent("queue"), this, true);
+                LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, jsonCategories, cacheQueue.getIfPresent("queue"), this, true);
                 expandableListView.setAdapter(expandableListAdapter);
-                for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
+                for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
                     expandableListView.expandGroup(i);
+                }
                 btn_join_queues.setVisibility(View.GONE);
                 ll_top_header.setVisibility(View.GONE);
             } else {
