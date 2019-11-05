@@ -177,7 +177,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     public void btnPositiveClick(boolean isFeedBackScreen) {
                         LaunchActivity.isLockMode = true;
                         KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                        kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR());
+                        kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR(bizStoreElastic.getCodeQR()));
                         kioskModeInfo.setKioskModeEnable(true);
                         kioskModeInfo.setLevelUp(false);
                         kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());

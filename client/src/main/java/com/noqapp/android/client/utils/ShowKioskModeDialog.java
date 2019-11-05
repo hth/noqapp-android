@@ -74,15 +74,17 @@ public class ShowKioskModeDialog {
         dialog.show();
     }
 
-    public String getAssociatedCodeQR() {
+    //TODO this check is not required as nothing is computed here that is already not available
+    public String getAssociatedCodeQR(String codeQR) {
         JsonProfile jsonProfile = LaunchActivity.getUserProfile();
         if (null == jsonProfile || null == jsonProfile.getBizStoreIds() || null == jsonProfile.getCodeQRs())
             return "";
         else {
             try {
-                int pos = itemPos(jsonProfile.getBizNameId(), jsonProfile.getBizStoreIds());
+                int pos = itemPos(codeQR, jsonProfile.getCodeQRs());
                 return jsonProfile.getCodeQRs().get(pos);
             } catch (Exception e) {
+                //TODO(chandra) throw error when the code should not reach here as this happens only with proper check. This error will get logged to see the issue
                 e.printStackTrace();
                 return "";
             }

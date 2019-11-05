@@ -339,7 +339,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 public void btnPositiveClick(boolean isFeedBackScreen) {
                     LaunchActivity.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                    kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR());
+                    kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR(bizStoreElastic.getCodeQR()));
                     kioskModeInfo.setKioskModeEnable(true);
                     kioskModeInfo.setLevelUp(true);
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
