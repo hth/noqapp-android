@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -92,11 +94,8 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("bn")
     private String bizNameId;
 
-    @JsonProperty("bss")
-    private List<String> bizStoreIds;
-
-    @JsonProperty("qrs")
-    private List<String> codeQRs;
+    @JsonProperty("cbs")
+    private Map<String, String> codeQRAndBizStoreIds = new HashMap<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -271,21 +270,12 @@ public final class JsonProfile implements Serializable {
         return this;
     }
 
-    public List<String> getBizStoreIds() {
-        return bizStoreIds;
+    public Map<String, String> getCodeQRAndBizStoreIds() {
+        return codeQRAndBizStoreIds;
     }
 
-    public JsonProfile setBizStoreIds(List<String> bizStoreIds) {
-        this.bizStoreIds = bizStoreIds;
-        return this;
-    }
-
-    public List<String> getCodeQRs() {
-        return codeQRs;
-    }
-
-    public JsonProfile setCodeQRs(List<String> codeQRs) {
-        this.codeQRs = codeQRs;
+    public JsonProfile setCodeQRAndBizStoreIds(Map<String, String> codeQRAndBizStoreIds) {
+        this.codeQRAndBizStoreIds = codeQRAndBizStoreIds;
         return this;
     }
 
