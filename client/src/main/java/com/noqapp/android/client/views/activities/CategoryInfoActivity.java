@@ -320,7 +320,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 return Q_SUPERVISOR == jsonProfile.getUserLevel();
             } else {
                 /* Only manager has the capacity to turn on kiosk mode. */
-                if (jsonProfile.getCodeQRs().contains(bizStoreElastic.getCodeQR())) {
+                if (jsonProfile.getCodeQRAndBizStoreIds().containsKey(bizStoreElastic.getCodeQR())) {
                     return S_MANAGER == jsonProfile.getUserLevel();
                 }
             }
@@ -342,7 +342,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 public void btnPositiveClick(boolean isFeedBackScreen) {
                     LaunchActivity.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                    kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR(bizStoreElastic.getCodeQR()));
+                    kioskModeInfo.setKioskCodeQR(bizStoreElastic.getCodeQR());
                     kioskModeInfo.setKioskModeEnable(true);
                     kioskModeInfo.setLevelUp(true);
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());

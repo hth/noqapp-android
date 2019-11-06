@@ -1,8 +1,6 @@
 package com.noqapp.android.client.utils;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.common.beans.JsonProfile;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,8 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
-import java.util.List;
 
 public class ShowKioskModeDialog {
     private Context context;
@@ -72,31 +68,5 @@ public class ShowKioskModeDialog {
         });
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-    }
-
-    //TODO this check is not required as nothing is computed here that is already not available
-    public String getAssociatedCodeQR(String codeQR) {
-        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
-        if (null == jsonProfile || null == jsonProfile.getBizStoreIds() || null == jsonProfile.getCodeQRs())
-            return "";
-        else {
-            try {
-                int pos = itemPos(codeQR, jsonProfile.getCodeQRs());
-                return jsonProfile.getCodeQRs().get(pos);
-            } catch (Exception e) {
-                //TODO(chandra) throw error when the code should not reach here as this happens only with proper check. This error will get logged to see the issue
-                e.printStackTrace();
-                return "";
-            }
-
-        }
-    }
-
-    private int itemPos(String value, List<String> temp) {
-        for (int i = 0; i < temp.size(); i++) {
-            if (temp.get(i).equals(value))
-                return i;
-        }
-        return -1;
     }
 }

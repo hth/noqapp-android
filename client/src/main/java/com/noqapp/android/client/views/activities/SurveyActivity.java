@@ -147,7 +147,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                     survey.setBizNameId(jsonQuestionnaire.getBizNameId());
                     survey.setQuestionnaireId(jsonQuestionnaire.getQuestionnaireId());
                     survey.setCodeQR(NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
-                    survey.setBizStoreId(NoQueueBaseActivity.getUserProfile().getBizStoreIds().get(0));
+                    survey.setBizStoreId(NoQueueBaseActivity.getUserProfile().getCodeQRAndBizStoreIds().get(NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR()));
                     survey.setOverallRating(selectPos);
                     survey.setDetailedResponse(getFormData());
                     surveyResponseApiCalls.surveyResponse(UserUtils.getDeviceId(), survey);

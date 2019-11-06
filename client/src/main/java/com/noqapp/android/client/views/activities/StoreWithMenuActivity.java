@@ -365,7 +365,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 return Q_SUPERVISOR == jsonProfile.getUserLevel();
             } else {
                 /* Only manager has the capacity to turn on kiosk mode. */
-                if (jsonProfile.getCodeQRs().contains(bizStoreElastic.getCodeQR())) {
+                if (jsonProfile.getCodeQRAndBizStoreIds().containsKey(bizStoreElastic.getCodeQR())) {
                     return S_MANAGER == jsonProfile.getUserLevel();
                 }
             }
@@ -387,7 +387,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 public void btnPositiveClick(boolean isFeedBackScreen) {
                     LaunchActivity.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
-                    kioskModeInfo.setKioskCodeQR(showKioskModeDialog.getAssociatedCodeQR(bizStoreElastic.getCodeQR()));
+                    kioskModeInfo.setKioskCodeQR(bizStoreElastic.getCodeQR());
                     kioskModeInfo.setKioskModeEnable(true);
                     kioskModeInfo.setLevelUp(false);
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
