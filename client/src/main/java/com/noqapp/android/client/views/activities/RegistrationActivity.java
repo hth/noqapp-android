@@ -58,9 +58,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         setContentView(R.layout.activity_registration);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        actionbarBack.setOnClickListener((View v) -> {
-            finish();
-        });
+        actionbarBack.setOnClickListener((View v) -> finish());
         tv_toolbar_title.setText(getString(R.string.register));
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
@@ -81,10 +79,10 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         edt_phoneNo.setEnabled(false);
 
         onClick(tv_male);
-        String phno = getIntent().getStringExtra("mobile_no");
-        if (!TextUtils.isEmpty(phno)) {
+        String phoneNumber = getIntent().getStringExtra("mobile_no");
+        if (!TextUtils.isEmpty(phoneNumber)) {
             edt_phoneNo.setEnabled(false);
-            edt_phoneNo.setText(phno);
+            edt_phoneNo.setText(phoneNumber);
         }
         edt_pwd.setText(generatePassword());
         edt_confirm_pwd.setText(edt_pwd.getText().toString());
@@ -112,7 +110,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
-            Log.d(TAG, "profile :" + profile.toString());
+            Log.d(TAG, "Profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getPreviousUserQID()) && !NoQueueBaseActivity.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
                 NotificationDB.clearNotificationTable();
@@ -124,9 +122,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
-            if (null != eej) {
-                ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
-            }
+            ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
         }
         dismissProgress();
     }
