@@ -187,7 +187,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             dismissProgress();
 
-            if (showKioskMode()) {
+            if (AppUtils.showKioskMode(bizStoreElastic)) {
                 populateKioskMode();
             } else {
                 TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
@@ -311,22 +311,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
         checkForSingleEntry();
         dismissProgress();
-    }
-
-    private boolean showKioskMode() {
-        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
-        if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
-            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                return Q_SUPERVISOR == jsonProfile.getUserLevel();
-            } else {
-                /* Only manager has the capacity to turn on kiosk mode. */
-                if (jsonProfile.getCodeQRAndBizStoreIds().containsKey(bizStoreElastic.getCodeQR())) {
-                    return S_MANAGER == jsonProfile.getUserLevel();
-                }
-            }
-        }
-
-        return false;
     }
 
     /**

@@ -171,7 +171,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             tv_rating_review.setText(jsonQueue.getReviewCount() + " Reviews");
         }
 
-        if (showKioskMode()) {
+        if (AppUtils.showKioskMode(bizStoreElastic)) {
             populateKioskMode();
         } else {
             TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
@@ -356,22 +356,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 startActivity(loginIntent);
             }
         });
-    }
-
-    private boolean showKioskMode() {
-        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
-        if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
-            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                return Q_SUPERVISOR == jsonProfile.getUserLevel();
-            } else {
-                /* Only manager has the capacity to turn on kiosk mode. */
-                if (jsonProfile.getCodeQRAndBizStoreIds().containsKey(bizStoreElastic.getCodeQR())) {
-                    return S_MANAGER == jsonProfile.getUserLevel();
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
