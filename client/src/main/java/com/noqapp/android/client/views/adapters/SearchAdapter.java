@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -91,13 +90,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
             holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
             holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
-            if (bizStoreElastic.getReviewCount() > 0) {
-                holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
-                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            } else {
-                holder.tv_store_review.setText("No Reviews");
-                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-            }
+            AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), holder.tv_store_review);
             StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
             holder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
             holder.tv_store_review.setOnClickListener((View v) -> {
