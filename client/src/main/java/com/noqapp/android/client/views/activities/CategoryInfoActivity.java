@@ -1,9 +1,24 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.google.common.cache.CacheBuilder.newBuilder;
-import static com.noqapp.android.common.model.types.UserLevelEnum.Q_SUPERVISOR;
-import static com.noqapp.android.common.model.types.UserLevelEnum.S_MANAGER;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -28,33 +43,9 @@ import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
-import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.common.cache.Cache;
-
 import com.squareup.picasso.Picasso;
-
-import org.apache.commons.lang3.StringUtils;
-
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -63,6 +54,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.google.common.cache.CacheBuilder.newBuilder;
 
 /**
  * Created by chandra on 5/7/17.
@@ -206,14 +199,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            if (reviewCount == 0) {
-                tv_rating_review.setText("No Review");
-                tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-            } else if (reviewCount == 1) {
-                tv_rating_review.setText("1 Review");
-            } else {
-                tv_rating_review.setText(reviewCount + " Reviews");
-            }
+
+            AppUtils.setReviewCountText(reviewCount, tv_rating_review);
             tv_rating_review.setOnClickListener((View v) -> {
                 if (null != bizStoreElastic && reviewCount > 0) {
                     Intent in = new Intent(CategoryInfoActivity.this, AllReviewsActivity.class);

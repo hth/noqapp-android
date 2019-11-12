@@ -58,6 +58,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     private String joinErrorMsg = "";
     private Button btn_pay_and_joinQueue, btn_joinQueue;
     private ImageView iv_right_bg, iv_left_bg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -204,16 +205,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            String reviewText;
-            if (jsonQueue.getReviewCount() == 0) {
-                reviewText = "No Review";
-                tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-            } else if (jsonQueue.getReviewCount() == 1) {
-                reviewText = "1 Review";
-            } else {
-                reviewText = String.valueOf(jsonQueue.getReviewCount()) + " Reviews";
-            }
-            tv_rating_review.setText(reviewText);
+            AppUtils.setReviewCountText(jsonQueue.getReviewCount(), tv_rating_review);
             codeQR = jsonQueue.getCodeQR();
             /* Check weather join is possible or not today due to some reason */
             JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, BeforeJoinActivity.this);

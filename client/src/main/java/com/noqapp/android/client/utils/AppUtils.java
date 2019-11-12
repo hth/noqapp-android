@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
@@ -599,4 +601,16 @@ public class AppUtils extends CommonHelper {
         return false;
     }
 
+    public static void setReviewCountText(int reviewCount, TextView tv_rating_review) {
+        if (reviewCount == 0) {
+            tv_rating_review.setText("No Review");
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+        } else if (reviewCount == 1) {
+            tv_rating_review.setText("1 Review");
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | (Paint.UNDERLINE_TEXT_FLAG));
+        } else {
+            tv_rating_review.setText(reviewCount + " Reviews");
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | (Paint.UNDERLINE_TEXT_FLAG));
+        }
+    }
 }
