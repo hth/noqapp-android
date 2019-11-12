@@ -385,6 +385,8 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             });
             showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
         });
+        // Added temporary due to textview click issue 
+        tv_enable_kiosk.performClick();
     }
 
     @Override
