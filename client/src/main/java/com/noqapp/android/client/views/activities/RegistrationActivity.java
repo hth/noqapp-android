@@ -1,21 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -31,6 +15,21 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.core.content.ContextCompat;
 
 import java.util.Random;
 import java.util.TimeZone;
@@ -110,7 +109,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
-            Log.d(TAG, "Profile :" + profile.toString());
+            Log.d(TAG, "Profile: " + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getPreviousUserQID()) && !NoQueueBaseActivity.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
                 NotificationDB.clearNotificationTable();
@@ -232,8 +231,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             if (TextUtils.isEmpty(errorMsg))
                 errorMsg = getString(R.string.error_dob_blank);
             isValid = false;
-        }else{
-            if(TextUtils.isEmpty(AppUtils.convertDOBToValidFormat(tv_birthday.getText().toString()))){
+        } else {
+            if (TextUtils.isEmpty(AppUtils.convertDOBToValidFormat(tv_birthday.getText().toString()))) {
                 tv_birthday.setError(getString(R.string.error_dob_format));
                 if (TextUtils.isEmpty(errorMsg))
                     errorMsg = getString(R.string.error_dob_format);

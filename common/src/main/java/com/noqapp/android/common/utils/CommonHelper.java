@@ -3,6 +3,8 @@ package com.noqapp.android.common.utils;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.joda.time.DateTime;
@@ -55,6 +57,7 @@ public class CommonHelper {
             return SDF_YYYY_MM_DD.format(date);
         } catch (ParseException e) {
             Log.e(TAG, "Failed parsing DOB=" + dob + " reason=" + e.getLocalizedMessage(), e);
+            Crashlytics.log(Log.ERROR, TAG, "Failed parsing DOB " + dob);
             return "";
         }
     }
@@ -214,7 +217,11 @@ public class CommonHelper {
         try {
             if (null != jsonStoreProduct) {
                 Log.e("jsonStoreProduct", jsonStoreProduct.toString());
-                return jsonStoreProduct.getDisplayPrice() + " / " + jsonStoreProduct.getUnitValue() + " " + jsonStoreProduct.getUnitOfMeasurement().getDescription();
+                return jsonStoreProduct.getDisplayPrice()
+                        + " / "
+                        + jsonStoreProduct.getUnitValue()
+                        + " "
+                        + jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getDescription();
             } else {
                 return "";
             }
