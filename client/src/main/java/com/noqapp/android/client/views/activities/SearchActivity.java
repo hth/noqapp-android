@@ -207,7 +207,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         listData.addAll(nearMeData);
         searchAdapter.notifyDataSetChanged();
         if (bizStoreElasticList.getBizStoreElastics().size() == 0) {
-            new ShowAlertInformation().showSnakeBar(ll_search, "Search element not found");
+            new ShowAlertInformation().showSnakeBar(ll_search, "Search result empty");
         }
         dismissProgress();
 
