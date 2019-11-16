@@ -1,8 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.noqapp.android.common.model.types.UserLevelEnum.Q_SUPERVISOR;
-import static com.noqapp.android.common.model.types.UserLevelEnum.S_MANAGER;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,18 +37,14 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.StoreProductMenuAdapter;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
-import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,16 +155,9 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         } else {
             tv_rating.setVisibility(View.VISIBLE);
         }
-        if (jsonQueue.getReviewCount() == 0) {
-            tv_rating_review.setText("No Review");
-            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-        } else if (jsonQueue.getReviewCount() == 1) {
-            tv_rating_review.setText("1 Review");
-        } else {
-            tv_rating_review.setText(jsonQueue.getReviewCount() + " Reviews");
-        }
+        AppUtils.setReviewCountText(jsonQueue.getReviewCount(), tv_rating_review);
 
-        if (showKioskMode()) {
+        if (AppUtils.showKioskMode(bizStoreElastic)) {
             populateKioskMode();
         } else {
             TextView tv_enable_kiosk = findViewById(R.id.tv_enable_kiosk);
@@ -358,22 +344,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         });
     }
 
-    private boolean showKioskMode() {
-        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
-        if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
-            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                return Q_SUPERVISOR == jsonProfile.getUserLevel();
-            } else {
-                /* Only manager has the capacity to turn on kiosk mode. */
-                if (jsonProfile.getCodeQRAndBizStoreIds().containsKey(bizStoreElastic.getCodeQR())) {
-                    return S_MANAGER == jsonProfile.getUserLevel();
-                }
-            }
-        }
-
-        return false;
-    }
-
     /**
      * Call when confirmed to show the kiosk mode.
      */
@@ -415,6 +385,8 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             });
             showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
         });
+        // Added temporary due to textview click issue 
+        tv_enable_kiosk.performClick();
     }
 
     @Override

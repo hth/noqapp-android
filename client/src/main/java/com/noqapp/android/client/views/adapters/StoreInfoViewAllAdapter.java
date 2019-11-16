@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -80,16 +79,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
                     (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
             holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
-            if (bizStoreElastic.getReviewCount() == 1) {
-                holder.tv_store_review.setText(bizStoreElastic.getReviewCount() + " Review");
-                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            } else if (bizStoreElastic.getReviewCount() > 1) {
-                holder.tv_store_review.setText(bizStoreElastic.getReviewCount() + " Reviews");
-                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            } else {
-                holder.tv_store_review.setText("No Reviews");
-                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-            }
+            AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), holder.tv_store_review);
 
             holder.tv_store_review.setOnClickListener((View v) -> {
                 if (bizStoreElastic.getReviewCount() > 0) {

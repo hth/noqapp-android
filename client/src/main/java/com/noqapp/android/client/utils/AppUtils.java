@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
@@ -37,10 +39,12 @@ import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +70,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+
+import static com.noqapp.android.common.model.types.UserLevelEnum.Q_SUPERVISOR;
+import static com.noqapp.android.common.model.types.UserLevelEnum.S_MANAGER;
 
 public class AppUtils extends CommonHelper {
     private static final String TAG = AppUtils.class.getSimpleName();
@@ -579,4 +586,31 @@ public class AppUtils extends CommonHelper {
         return jsonHour.getTokenAvailableFrom() <= timeData && timeData <= jsonHour.getTokenNotAvailableFrom();
     }
 
+    public static boolean showKioskMode(BizStoreElastic bizStoreElastic) {
+        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
+        if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
+            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                return Q_SUPERVISOR == jsonProfile.getUserLevel();
+            } else {
+                /* Only manager has the capacity to turn on kiosk mode. */
+                if (jsonProfile.getCodeQRAndBizStoreIds().containsKey(bizStoreElastic.getCodeQR())) {
+                    return S_MANAGER == jsonProfile.getUserLevel();
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void setReviewCountText(int reviewCount, TextView tv_rating_review) {
+        if (reviewCount == 0) {
+            tv_rating_review.setText("No Review");
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+        } else if (reviewCount == 1) {
+            tv_rating_review.setText("1 Review");
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | (Paint.UNDERLINE_TEXT_FLAG));
+        } else {
+            tv_rating_review.setText(reviewCount + " Reviews");
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | (Paint.UNDERLINE_TEXT_FLAG));
+        }
+    }
 }

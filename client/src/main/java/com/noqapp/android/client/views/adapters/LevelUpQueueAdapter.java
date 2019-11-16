@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -117,16 +116,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_name.setText(bizStoreElastic.getDisplayName());
             childViewHolder.tv_store_rating.setText(String.valueOf(AppUtils.round(bizStoreElastic.getRating())));
             childViewHolder.tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
-            childViewHolder.tv_store_review.setPaintFlags(childViewHolder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            if (bizStoreElastic.getReviewCount() == 0) {
-                childViewHolder.tv_store_review.setText("No Review");
-                childViewHolder.tv_store_review.setPaintFlags(childViewHolder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-            } else if (bizStoreElastic.getReviewCount() == 1) {
-                childViewHolder.tv_store_review.setText("1 Review");
-            } else {
-                childViewHolder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
-            }
-
+            AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), childViewHolder.tv_store_review);
             childViewHolder.tv_store_review.setOnClickListener((View v) -> {
                 if (bizStoreElastic.getReviewCount() > 0) {
                     Intent in = new Intent(context, AllReviewsActivity.class);
