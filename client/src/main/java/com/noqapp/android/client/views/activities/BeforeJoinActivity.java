@@ -33,6 +33,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
@@ -129,6 +130,11 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                         error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
+            }
+            if(jsonQueue.getBusinessType()== BusinessTypeEnum.DO){
+                iv_profile.setVisibility(View.VISIBLE);
+            }else {
+                iv_profile.setVisibility(View.GONE);
             }
             if (bundle.getBooleanExtra(IBConstant.KEY_IS_REJOIN, false)) {
                 btn_joinQueue.setText(getString(R.string.yes));
@@ -258,8 +264,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
 
 
     private void joinQueue(boolean validateView) {
-        btn_joinQueue.setText(getString(R.string.join));
-        btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
         showHideView(true);
         setColor(true);
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
@@ -277,11 +281,16 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
                 }
+            }else{
+                btn_joinQueue.setText(getString(R.string.join));
+                btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
             }
         } else {
             if (jsonQueue.isRemoteJoinAvailable()) {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
                     if (UserUtils.isLogin()) {
+                        btn_joinQueue.setText(getString(R.string.join));
+                        btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
                         if (validateView) {
                             //setColor(false);  skip due to view validation
                         } else {
@@ -293,6 +302,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                             }
                         }
                     } else {
+                        btn_joinQueue.setText("Login");
+                        btn_pay_and_joinQueue.setText("Login");
                         // please login to avail this feature
                         if (validateView) {
                             setColor(false);
@@ -305,9 +316,13 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     }
                 } else {
                     // any user can join
+                    btn_joinQueue.setText(getString(R.string.join));
+                    btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
                     callAfterJoin();
                 }
             } else {
+                btn_joinQueue.setText(getString(R.string.join));
+                btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
                 if (validateView) {
                     setColor(false);
                 }

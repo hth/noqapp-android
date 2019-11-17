@@ -30,6 +30,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -171,12 +172,12 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             case HS:
                 if(LaunchActivity.isLockMode){
                     in = new Intent(this, KioskJoinActivity.class);
+                    in.putExtra(IBConstant.KEY_IS_DO,item.getBusinessType()== BusinessTypeEnum.DO);
                 }else {
                     in = new Intent(this, BeforeJoinActivity.class);
                 }
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
                 startActivity(in);
                 break;
             case PH: {

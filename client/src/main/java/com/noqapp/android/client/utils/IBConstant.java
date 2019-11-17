@@ -23,6 +23,7 @@ public class IBConstant {
     public static final String KEY_CALL_CATEGORY = "CallCategory";
     public static final String KEY_IS_CATEGORY = "isCategoryData";
     public static final String KEY_IS_PDF = "isPdf";
+    public static final String KEY_IS_DO = "isDoctor";
 
 
 

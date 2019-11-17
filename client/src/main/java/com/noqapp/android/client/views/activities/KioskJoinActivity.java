@@ -39,6 +39,7 @@ import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -116,9 +117,8 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         Intent bundle = getIntent();
         if (null != bundle) {
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
-            boolean isCategoryData = bundle.getBooleanExtra(IBConstant.KEY_IS_CATEGORY, true);
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
-            JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable(IBConstant.KEY_DATA_OBJECT);
+            boolean isDoctor = bundle.getBooleanExtra(IBConstant.KEY_IS_DO,false);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
@@ -126,25 +126,28 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            if (isCategoryData) {
-                queueResponse(jsonQueue);
+            if (isDoctor) {
+                iv_profile.setVisibility(View.VISIBLE);
             } else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    setProgressMessage("Loading queue details...");
-                    showProgress();
-                    if (UserUtils.isLogin()) {
-                        QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
-                        queueApiAuthenticCall.setQueuePresenter(this);
-                        queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                    } else {
-                        QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-                        queueApiUnAuthenticCall.setQueuePresenter(this);
-                        queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
-                    }
-                } else {
-                    ShowAlertInformation.showNetworkDialog(this);
-                }
+                iv_profile.setVisibility(View.GONE);
             }
+
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                setProgressMessage("Loading queue details...");
+                showProgress();
+                if (UserUtils.isLogin()) {
+                    QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
+                    queueApiAuthenticCall.setQueuePresenter(this);
+                    queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                } else {
+                    QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
+                    queueApiUnAuthenticCall.setQueuePresenter(this);
+                    queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
+                }
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
+            }
+
         }
     }
 
@@ -228,7 +231,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
 
 
     private void joinQueue(boolean validateView) {
-        btn_joinQueue.setText(getString(R.string.join));
         showHideView(true);
         setColor(true);
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
@@ -240,15 +242,18 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                 // login required
                 if (validateView) {
                     btn_joinQueue.setText("Login");
-                }else {
+                } else {
                     Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
                 }
+            } else {
+                btn_joinQueue.setText(getString(R.string.join));
             }
         } else {
             if (jsonQueue.isRemoteJoinAvailable()) {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
                     if (UserUtils.isLogin()) {
+                        btn_joinQueue.setText(getString(R.string.join));
                         if (validateView) {
                             //setColor(false);  skip due to view validation
                         } else {
@@ -260,6 +265,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                             }
                         }
                     } else {
+                        btn_joinQueue.setText("Login");
                         // please login to avail this feature
                         if (validateView) {
                             setColor(false);
@@ -272,9 +278,11 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                     }
                 } else {
                     // any user can join
+                    btn_joinQueue.setText(getString(R.string.join));
                     callJoinAPI();
                 }
             } else {
+                btn_joinQueue.setText(getString(R.string.join));
                 if (validateView) {
                     setColor(false);
                 }
