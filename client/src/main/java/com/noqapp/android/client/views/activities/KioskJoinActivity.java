@@ -225,6 +225,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
 
 
     private void joinQueue(boolean validateView) {
+
         showHideView(true);
         setColor(true);
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
