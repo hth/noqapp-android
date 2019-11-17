@@ -20,11 +20,11 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp">
+                android:layout_height="@dimen/kiosk_join_top_height">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/kiosk_join_child_height"
                     android:background="@drawable/blue_gradient"
                     android:orientation="horizontal" />
 
@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="@dimen/kiosk_join_child_margin_top"
                     android:layout_marginRight="25dp"
                     android:padding="10dp"
                     card_view:cardBackgroundColor="@android:color/white"
@@ -49,8 +49,8 @@
 
                         <com.noqapp.android.common.customviews.CircularImageView
                             android:id="@+id/iv_profile"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="@dimen/kiosk_join_image_icon_width"
+                            android:layout_height="@dimen/kiosk_join_image_icon_width"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
                             android:elevation="5dp"
@@ -196,10 +196,10 @@
                         android:background="@drawable/stethoscope" />
 
                     <LinearLayout
-                        android:layout_width="96.9dp"
-                        android:layout_height="65.7dp"
+                        android:layout_width="@dimen/block_1_width"
+                        android:layout_height="@dimen/block_1_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="55dp"
+                        android:layout_marginLeft="@dimen/margin_left"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
@@ -212,7 +212,7 @@
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
                             android:textColor="@android:color/black"
-                            android:textSize="28.3sp" />
+                            android:textSize="@dimen/header_1" />
 
                         <TextView
                             android:id="@+id/tv_left"
@@ -220,7 +220,7 @@
                             android:gravity="center"
                             android:text="@string/currently_serving"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/join_section_small_text" />
+                            android:textSize="@dimen/header_2" />
                     </LinearLayout>
 
                 </FrameLayout>
@@ -235,20 +235,20 @@
 
                     <ImageView
                         android:id="@+id/iv_right_bg"
-                        android:layout_width="53dp"
-                        android:layout_height="50.3dp"
+                        android:layout_width="@dimen/block_2_width"
+                        android:layout_height="@dimen/block_2_height"
                         android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="25dp"
                         android:background="@drawable/people" />
 
                     <LinearLayout
-                        android:layout_width="96.9dp"
-                        android:layout_height="65.7dp"
+                        android:layout_width="@dimen/block_1_width"
+                        android:layout_height="@dimen/block_1_height"
                         android:layout_gravity="right"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginRight="55dp"
+                        android:layout_marginRight="@dimen/margin_left"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/grey_gradient_round"
                         android:gravity="center_vertical"
@@ -259,7 +259,7 @@
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
                             android:textColor="#505050"
-                            android:textSize="28.3sp" />
+                            android:textSize="@dimen/header_1" />
 
                         <TextView
                             android:id="@+id/tv_right"
@@ -267,7 +267,7 @@
                             android:gravity="center"
                             android:text="@string/people_in_queue"
                             android:textColor="#505050"
-                            android:textSize="@dimen/join_section_small_text" />
+                            android:textSize="@dimen/header_2" />
                     </LinearLayout>
                 </FrameLayout>
 
@@ -297,7 +297,7 @@
                 <Spinner
                     android:id="@+id/sp_name_list"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="@dimen/sp_height"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
