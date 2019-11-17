@@ -258,6 +258,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
 
 
     private void joinQueue(boolean validateView) {
+        btn_joinQueue.setText(getString(R.string.join));
+        btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
         showHideView(true);
         setColor(true);
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
@@ -267,7 +269,11 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             setColor(false);
             if (joinErrorMsg.startsWith("Please login to join")) {
                 // login required
-                if (!validateView) {
+                if (validateView) {
+                    btn_joinQueue.setText("Login");
+                    btn_pay_and_joinQueue.setText("Login");
+
+                }else{
                     Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
                 }

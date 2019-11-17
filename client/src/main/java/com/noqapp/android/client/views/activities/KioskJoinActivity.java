@@ -228,6 +228,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
 
 
     private void joinQueue(boolean validateView) {
+        btn_joinQueue.setText(getString(R.string.join));
         showHideView(true);
         setColor(true);
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
@@ -237,7 +238,9 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             setColor(false);
             if (joinErrorMsg.startsWith("Please login to join")) {
                 // login required
-                if (!validateView) {
+                if (validateView) {
+                    btn_joinQueue.setText("Login");
+                }else {
                     Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
                 }
