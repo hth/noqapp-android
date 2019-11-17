@@ -1,30 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -39,14 +14,38 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.crashlytics.android.Crashlytics;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.UUID;
-
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
+
+import java.util.UUID;
 
 ///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
 public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
@@ -189,9 +188,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     }
 
     private void callLocationManager() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (hasAccessTo(Manifest.permission.ACCESS_FINE_LOCATION) && hasAccessTo(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             ActivityCompat.requestPermissions(
                     this,
                     new String[]{PermissionUtils.LOCATION_PERMISSION},
@@ -225,6 +222,10 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                         Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
                     }
                 });
+    }
+
+    private boolean hasAccessTo(String permissionType) {
+        return ActivityCompat.checkSelfPermission(this, permissionType) != PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -271,20 +272,20 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PERMISSION_SETTING) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (hasAccessTo(Manifest.permission.ACCESS_FINE_LOCATION) && hasAccessTo(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 //("permissions not granted!")
                 finish();
             } else {
                 //("permissions granted!")
                 callLocationManager();
             }
-        } if (requestCode == GPS_ENABLE_REQUEST) {
-           if(gpsTracker.isLocationEnabled()){
-               callLocationManager();
-           }else{
-               finish();
-           }
+        }
+        if (requestCode == GPS_ENABLE_REQUEST) {
+            if (gpsTracker.isLocationEnabled()) {
+                callLocationManager();
+            } else {
+                finish();
+            }
         } else {
             finish();
         }
