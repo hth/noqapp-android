@@ -83,11 +83,11 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         btn_joinQueue = findViewById(R.id.btn_joinQueue);
         btn_joinQueue.setOnClickListener((View v) -> {
             if (null != jsonQueue)
-                joinQueue();
+                joinQueue(false);
         });
         btn_pay_and_joinQueue.setOnClickListener((View v) -> {
             if (null != jsonQueue)
-                joinQueue();
+                joinQueue(false);
         });
         tv_rating = findViewById(R.id.tv_rating);
         tv_add = findViewById(R.id.tv_add);
@@ -239,7 +239,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     iv_left_bg.setVisibility(View.GONE);
                     iv_right_bg.setVisibility(View.GONE);
             }
-
+            joinQueue(true);
             if (jsonQueue.isEnabledPayment()) {
                 btn_joinQueue.setVisibility(View.GONE);
                 btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
@@ -257,37 +257,54 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     }
 
 
-    private void joinQueue() {
+    private void joinQueue(boolean validateView) {
+        showHideView(true);
+        setColor(true);
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
         if (isJoinNotPossible) {
             new CustomToast().showToast(this, joinErrorMsg);
+            showHideView(false);
+            setColor(false);
             if (joinErrorMsg.startsWith("Please login to join")) {
                 // login required
-                Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
-                startActivity(loginIntent);
+                if (!validateView) {
+                    Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                }
             }
         } else {
             if (jsonQueue.isRemoteJoinAvailable()) {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
                     if (UserUtils.isLogin()) {
-                        if (sp_name_list.getSelectedItemPosition() == 0) {
-                            new CustomToast().showToast(this, getString(R.string.error_patient_name_missing));
-                            sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
+                        if (validateView) {
+                            //setColor(false);  skip due to view validation
                         } else {
-                            callAfterJoin();
+                            if (sp_name_list.getSelectedItemPosition() == 0) {
+                                new CustomToast().showToast(this, getString(R.string.error_patient_name_missing));
+                                sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
+                            } else {
+                                callAfterJoin();
+                            }
                         }
                     } else {
                         // please login to avail this feature
+                        if (validateView) {
+                            setColor(false);
+                        } else {
+                            // Navigate to login screen
+                            Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
+                            startActivity(loginIntent);
+                        }
                         new CustomToast().showToast(BeforeJoinActivity.this, "please login to avail this feature");
-                        // Navigate to login screen
-                        Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
-                        startActivity(loginIntent);
                     }
                 } else {
                     // any user can join
                     callAfterJoin();
                 }
             } else {
+                if (validateView) {
+                    setColor(false);
+                }
                 ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), getString(R.string.error_remote_join_not_available), true);
             }
         }
@@ -345,6 +362,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 isJoinNotPossible = false;
                 joinErrorMsg = "";
             }
+            joinQueue(true);
         }
         if (UserUtils.isLogin()) {
             List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
@@ -356,5 +374,18 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 sp_name_list.setSelection(1);
             }
         }
+    }
+
+    private void setColor(boolean isEnable) {
+        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.btn_bg_enable : R.drawable.btn_bg_inactive));
+        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.btn_bg_enable : R.drawable.btn_bg_inactive));
+        btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
+        btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
+    }
+
+    private void showHideView(boolean isEnable) {
+        add_person.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        sp_name_list.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        tv_add.setVisibility(isEnable ? View.VISIBLE : View.GONE);
     }
 }

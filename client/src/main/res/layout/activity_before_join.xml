@@ -299,7 +299,8 @@
                     android:padding="10dp"
                     android:text="@string/patient_name"
                     android:textColor="#606060"
-                    android:textSize="@dimen/text_size_twelve" />
+                    android:textSize="@dimen/text_size_twelve"
+                    android:visibility="gone"/>
 
                 <Spinner
                     android:id="@+id/sp_name_list"
@@ -308,7 +309,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/sp_background" />
+                    android:background="@drawable/sp_background"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_add"
@@ -322,7 +324,8 @@
                     android:text="@string/add_dependent"
                     android:textAllCaps="true"
                     android:textColor="@color/theme_color_red"
-                    android:textSize="@dimen/text_size_twelve" />
+                    android:textSize="@dimen/text_size_twelve"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -408,14 +411,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/btn_standard_height"
                             android:layout_marginBottom="10dp"
-                            android:background="@drawable/btn_bg_enable"
+                            android:background="@drawable/btn_bg_inactive"
                             android:clickable="true"
                             android:fontFamily="sans-serif-medium"
                             android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:gravity="center"
                             android:text="@string/join"
                             android:textAllCaps="true"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/colorMobile"
                             android:textSize="@dimen/text_size_sixteen"
                             android:textStyle="normal" />
 
@@ -423,14 +426,14 @@
                             android:id="@+id/btn_pay_and_joinQueue"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/btn_standard_height"
-                            android:background="@drawable/btn_bg_enable"
+                            android:background="@drawable/btn_bg_inactive"
                             android:clickable="true"
                             android:fontFamily="sans-serif-medium"
                             android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:gravity="center"
                             android:text="@string/pay_and_join"
                             android:textAllCaps="true"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/colorMobile"
                             android:textSize="@dimen/text_size_sixteen"
                             android:textStyle="normal"
                             android:visibility="gone" />
