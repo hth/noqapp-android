@@ -2,6 +2,7 @@ package com.noqapp.android.common.utils;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -63,5 +64,10 @@ public class CustomCalendar {
             }
         });
         builder.create().show();
+        try {
+            dpDobDate.getTouchables().get(0).performClick();
+        }catch(Exception e){
+            Log.e("date picker","view not created yet");
+        }
     }
 }
