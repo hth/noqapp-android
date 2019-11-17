@@ -329,36 +329,6 @@
                     android:textSize="@dimen/text_size_sixteen"
                     android:visibility="gone" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="@string/address"
-                    android:textColor="#606060"
-                    android:textSize="@dimen/text_size_twelve" />
-
-                <TextView
-                    android:id="@+id/tv_store_name"
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_sixteen" />
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginBottom="5dp"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_fourteen" />
             </LinearLayout>
 
 

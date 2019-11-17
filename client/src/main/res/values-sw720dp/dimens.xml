@@ -11,7 +11,7 @@
     <dimen name="text_size_sixteen">32sp</dimen>
     <dimen name="text_size_fourteen">28sp</dimen>
     <dimen name="text_size_twelve">24sp</dimen>
-    <dimen name="join_section_small_text">20sp</dimen>
+    <dimen name="join_section_small_text">30sp</dimen>
     <dimen name="btn_standard_height">80dp</dimen>
     <dimen name="menu_title_width">300dp</dimen>
     <dimen name="profile_icon_width">100dp</dimen>

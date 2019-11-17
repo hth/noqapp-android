@@ -47,9 +47,6 @@ import java.util.List;
 
 public class KioskJoinActivity extends BaseActivity implements QueuePresenter, TokenPresenter {
     private final String TAG = KioskJoinActivity.class.getSimpleName();
-    private TextView tv_store_name;
-    private TextView tv_queue_name;
-    private TextView tv_address;
     private TextView tv_consult_fees, tv_cancelation_fees;
     private TextView tv_serving_no;
     private TextView tv_people_in_q;
@@ -77,9 +74,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         setContentView(R.layout.activity_kiosk_join);
         tv_timer = findViewById(R.id.tv_timer);
         tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
-        tv_store_name = findViewById(R.id.tv_store_name);
-        tv_queue_name = findViewById(R.id.tv_queue_name);
-        tv_address = findViewById(R.id.tv_address);
         iv_right_bg = findViewById(R.id.iv_right_bg);
         iv_left_bg = findViewById(R.id.iv_left_bg);
         tv_right = findViewById(R.id.tv_right);
@@ -162,9 +156,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         if (null != jsonQueueTemp) {
             Log.d(TAG, "Queue=" + jsonQueueTemp.toString());
             this.jsonQueue = jsonQueueTemp;
-            tv_store_name.setText(jsonQueue.getBusinessName());
-            tv_queue_name.setText(jsonQueue.getDisplayName());
-            tv_address.setText(jsonQueue.getStoreAddress());
             tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
             if (jsonQueue.getDelayedInMinutes() > 0) {
