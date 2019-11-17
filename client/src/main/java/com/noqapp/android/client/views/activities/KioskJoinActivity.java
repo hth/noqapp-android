@@ -67,6 +67,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
     private int time = Constants.SCREEN_TIME_OUT / 1000;
     private CountDownTimer waitTimer = null;
     private TextView tv_queue_name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -243,44 +244,37 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                 btn_joinQueue.setText(getString(R.string.join));
             }
         } else {
-            if (jsonQueue.isRemoteJoinAvailable()) {
-                if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
-                    if (UserUtils.isLogin()) {
-                        btn_joinQueue.setText(getString(R.string.join));
-                        if (validateView) {
-                            //setColor(false);  skip due to view validation
-                        } else {
-                            if (sp_name_list.getSelectedItemPosition() == 0) {
-                                new CustomToast().showToast(this, getString(R.string.error_patient_name_missing));
-                                sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
-                            } else {
-                                callJoinAPI();
-                            }
-                        }
+            if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
+                if (UserUtils.isLogin()) {
+                    btn_joinQueue.setText(getString(R.string.join));
+                    if (validateView) {
+                        //setColor(false);  skip due to view validation
                     } else {
-                        btn_joinQueue.setText(getString(R.string.login_to_join));
-                        // please login to avail this feature
-                        if (validateView) {
-                            setColor(false);
+                        if (sp_name_list.getSelectedItemPosition() == 0) {
+                            new CustomToast().showToast(this, getString(R.string.error_patient_name_missing));
+                            sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
                         } else {
-                            // Navigate to login screen
-                            Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
-                            startActivity(loginIntent);
+                            callJoinAPI();
                         }
-                        new CustomToast().showToast(KioskJoinActivity.this, "Please login to avail this feature");
                     }
                 } else {
-                    // any user can join
-                    btn_joinQueue.setText(getString(R.string.join));
-                    callJoinAPI();
+                    btn_joinQueue.setText(getString(R.string.login_to_join));
+                    // please login to avail this feature
+                    if (validateView) {
+                        setColor(false);
+                    } else {
+                        // Navigate to login screen
+                        Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
+                        startActivity(loginIntent);
+                    }
+                    new CustomToast().showToast(KioskJoinActivity.this, "Please login to avail this feature");
                 }
             } else {
+                // any user can join
                 btn_joinQueue.setText(getString(R.string.join));
-                if (validateView) {
-                    setColor(false);
-                }
-                ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), getString(R.string.error_remote_join_not_available), true);
+                callJoinAPI();
             }
+
         }
     }
 
