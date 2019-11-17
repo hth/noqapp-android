@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,7 +40,6 @@ import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         if (null != bundle) {
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
-            boolean isDoctor = bundle.getBooleanExtra(IBConstant.KEY_IS_DO,false);
+            boolean isDoctor = bundle.getBooleanExtra(IBConstant.KEY_IS_DO, false);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
@@ -335,6 +335,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
     @Override
     protected void onResume() {
         super.onResume();
+        resetDisconnectTimer();
         // Added to re-initialised the value if user is logged in again and comeback to join screen
         if (null != jsonQueue) {
             /* Check weather join is possible or not today due to some reason */
@@ -428,5 +429,43 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                 }
             }
         }, Constants.SCREEN_TIME_OUT);
+    }
+
+
+    private Handler disconnectHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+
+            return true;
+        }
+    });
+
+    private Runnable disconnectCallback = new Runnable() {
+        @Override
+        public void run() {
+            // Perform any required operation on disconnect
+            iv_home.performClick();
+        }
+    };
+
+    public void resetDisconnectTimer() {
+        disconnectHandler.removeCallbacks(disconnectCallback);
+        disconnectHandler.postDelayed(disconnectCallback, Constants.DISCONNECT_TIMEOUT);
+    }
+
+    public void stopDisconnectTimer() {
+        disconnectHandler.removeCallbacks(disconnectCallback);
+    }
+
+    @Override
+    public void onUserInteraction() {
+        resetDisconnectTimer();
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopDisconnectTimer();
     }
 }
