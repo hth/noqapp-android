@@ -589,7 +589,8 @@ public class AppUtils extends CommonHelper {
     public static boolean showKioskMode(BizStoreElastic bizStoreElastic) {
         JsonProfile jsonProfile = LaunchActivity.getUserProfile();
         if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
-            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO||
+                    bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK) {
                 return Q_SUPERVISOR == jsonProfile.getUserLevel();
             } else {
                 /* Only manager has the capacity to turn on kiosk mode. */
