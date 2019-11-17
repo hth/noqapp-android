@@ -28,8 +28,8 @@
 
                 <com.noqapp.android.common.customviews.CircularImageView
                     android:id="@+id/iv_main"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="@dimen/profile_icon_width"
+                    android:layout_height="@dimen/profile_icon_width"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="5dp"
                     android:src="@drawable/empty_review"
