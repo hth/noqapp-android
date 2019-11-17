@@ -41,6 +41,7 @@ import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.common.utils.ShowUploadImageDialog;
@@ -195,17 +196,17 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 break;
 
             case R.id.tv_birthday:
-//                CustomCalendar customCalendar = new CustomCalendar(UserProfileEditActivity.this);
-//                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-//                    @Override
-//                    public void calendarDate(String date) {
-//                        tv_birthday.setText(date);
-//                    }
-//                });
-//                customCalendar.showDobCalendar();
+                CustomCalendar customCalendar = new CustomCalendar(UserProfileEditActivity.this);
+                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+                    @Override
+                    public void calendarDate(String date) {
+                        tv_birthday.setText(date);
+                    }
+                });
+                customCalendar.showDobCalendar();
 
-                Intent in = new Intent(UserProfileEditActivity.this, DatePickerActivity.class);
-                startActivityForResult(in, Constants.RC_DATE_PICKER);
+//                Intent in = new Intent(UserProfileEditActivity.this, DatePickerActivity.class);
+//                startActivityForResult(in, Constants.RC_DATE_PICKER);
                 break;
             case R.id.tv_male:
                 gender = "M";
