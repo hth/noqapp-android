@@ -274,8 +274,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             if (joinErrorMsg.startsWith("Please login to join")) {
                 // login required
                 if (validateView) {
-                    btn_joinQueue.setText("Login");
-                    btn_pay_and_joinQueue.setText("Login");
+                    btn_joinQueue.setText(getString(R.string.login_to_join));
+                    btn_pay_and_joinQueue.setText(getString(R.string.login_to_join));
 
                 }else{
                     Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
@@ -302,8 +302,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                             }
                         }
                     } else {
-                        btn_joinQueue.setText("Login");
-                        btn_pay_and_joinQueue.setText("Login");
+                        btn_joinQueue.setText(getString(R.string.login_to_join));
+                        btn_pay_and_joinQueue.setText(getString(R.string.login_to_join));
                         // please login to avail this feature
                         if (validateView) {
                             setColor(false);

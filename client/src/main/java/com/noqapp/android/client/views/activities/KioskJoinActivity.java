@@ -232,7 +232,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             if (joinErrorMsg.startsWith("Please login to join")) {
                 // login required
                 if (validateView) {
-                    btn_joinQueue.setText("Login to Join");
+                    btn_joinQueue.setText(getString(R.string.login_to_join));
                 } else {
                     Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
@@ -256,7 +256,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                             }
                         }
                     } else {
-                        btn_joinQueue.setText("Login");
+                        btn_joinQueue.setText(getString(R.string.login_to_join));
                         // please login to avail this feature
                         if (validateView) {
                             setColor(false);
