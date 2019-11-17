@@ -66,13 +66,14 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
     private TextView tv_right, tv_left, tv_name;
     private int time = Constants.SCREEN_TIME_OUT / 1000;
     private CountDownTimer waitTimer = null;
-
+    private TextView tv_queue_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kiosk_join);
         tv_timer = findViewById(R.id.tv_timer);
+        tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         iv_right_bg = findViewById(R.id.iv_right_bg);
         iv_left_bg = findViewById(R.id.iv_left_bg);
@@ -156,6 +157,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         if (null != jsonQueueTemp) {
             Log.d(TAG, "Queue=" + jsonQueueTemp.toString());
             this.jsonQueue = jsonQueueTemp;
+            tv_queue_name.setText(jsonQueue.getDisplayName());
             tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
             if (jsonQueue.getDelayedInMinutes() > 0) {

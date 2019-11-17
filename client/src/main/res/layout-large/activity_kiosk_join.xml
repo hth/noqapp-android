@@ -291,7 +291,7 @@
                     android:padding="10dp"
                     android:text="@string/patient_name"
                     android:textColor="#606060"
-                    android:textSize="@dimen/text_size_twelve"
+                    android:textSize="32sp"
                     android:visibility="gone" />
 
                 <Spinner
