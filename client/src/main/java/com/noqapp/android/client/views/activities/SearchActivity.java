@@ -169,7 +169,11 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             case DO:
             case BK:
             case HS:
-                in = new Intent(this, BeforeJoinActivity.class);
+                if(LaunchActivity.isLockMode){
+                    in = new Intent(this, KioskJoinActivity.class);
+                }else {
+                    in = new Intent(this, BeforeJoinActivity.class);
+                }
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);

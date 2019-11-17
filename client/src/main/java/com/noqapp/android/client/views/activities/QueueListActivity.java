@@ -98,7 +98,11 @@ public class QueueListActivity extends BaseActivity implements
             case DO:
             case BK:
                 // open hospital profile
-                in = new Intent(this, BeforeJoinActivity.class);
+                if(LaunchActivity.isLockMode){
+                    in = new Intent(this, KioskJoinActivity.class);
+                }else {
+                    in = new Intent(this, BeforeJoinActivity.class);
+                }
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
