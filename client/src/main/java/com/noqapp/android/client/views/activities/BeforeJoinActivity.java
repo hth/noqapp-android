@@ -121,7 +121,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         Intent bundle = getIntent();
         if (null != bundle) {
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
-            boolean isCategoryData = bundle.getBooleanExtra(IBConstant.KEY_IS_CATEGORY, true);
+            boolean isCategoryData = bundle.getBooleanExtra(IBConstant.KEY_IS_CATEGORY, false);
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
@@ -131,9 +131,10 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            if(jsonQueue.getBusinessType()== BusinessTypeEnum.DO){
+            boolean isDoctor = bundle.getBooleanExtra(IBConstant.KEY_IS_DO, false);
+            if (isDoctor) {
                 iv_profile.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 iv_profile.setVisibility(View.GONE);
             }
             if (bundle.getBooleanExtra(IBConstant.KEY_IS_REJOIN, false)) {

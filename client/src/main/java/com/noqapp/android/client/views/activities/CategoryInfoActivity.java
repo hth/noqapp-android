@@ -459,6 +459,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             case BK:
                 // open hospital profile
                 in = new Intent(this, BeforeJoinActivity.class);
+                in.putExtra(IBConstant.KEY_IS_DO,item.getBusinessType()== BusinessTypeEnum.DO);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
