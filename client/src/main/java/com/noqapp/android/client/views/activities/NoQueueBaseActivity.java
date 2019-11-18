@@ -1,21 +1,21 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.pojos.KioskModeInfo;
+import com.noqapp.android.common.beans.JsonProfile;
+
+import com.google.gson.Gson;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.gson.Gson;
-import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.views.pojos.KioskModeInfo;
-import com.noqapp.android.common.beans.JsonProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +146,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getDeviceID() {
-        return sharedPreferences.getString(APIConstant.Key.XR_DID, "");
+        if (sharedPreferences != null) {
+            return sharedPreferences.getString(APIConstant.Key.XR_DID, "");
+        } else {
+            return "";
+        }
     }
 
     /* Previous QID helps keeps track if new user has logged in. */
