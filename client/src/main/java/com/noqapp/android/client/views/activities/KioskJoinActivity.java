@@ -380,7 +380,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         sp_name_list.setVisibility(View.GONE);
         tv_add.setVisibility(View.GONE);
         btn_joinQueue.setVisibility(View.GONE);
-        new CustomToast().showToast(this, "Token generated successfully. Your token no is- " + token.getToken());
+        new CustomToast().showToast(this, "Token generated successfully. Your token no is: " + token.getToken());
         logoutFromKiosk();
         dismissProgress();
 

@@ -22,6 +22,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.activities.BeforeJoinActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.StoreWithMenuActivity;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                     in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                     in.putExtra(IBConstant.KEY_FROM_LIST, true);
                     in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                    in.putExtra(IBConstant.KEY_IS_DO,jsonQueueHistorical.getBusinessType()== BusinessTypeEnum.DO);
                     context.startActivity(in);
                     break;
                 case HS:

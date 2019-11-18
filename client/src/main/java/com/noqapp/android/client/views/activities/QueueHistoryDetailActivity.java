@@ -14,6 +14,7 @@ import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
@@ -68,6 +69,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                 case BK:
                     // open hospital/Bank profile
                     in = new Intent(QueueHistoryDetailActivity.this, BeforeJoinActivity.class);
+                    in.putExtra(IBConstant.KEY_IS_DO,jsonQueueHistorical.getBusinessType()== BusinessTypeEnum.DO);
                     in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                     in.putExtra(IBConstant.KEY_FROM_LIST, true);
                     in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
