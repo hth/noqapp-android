@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99ffffff"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:text=" "
+            android:textColor="@color/colorActionbar"
+            android:textSize="20sp" />
+
+        <TextView
+            style="@style/style_register_tv"
+            android:text="@string/phone"
+            android:textSize="32sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/ccp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:background="#e2e2e2"
+                android:paddingStart="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_countryPreference="IN,US"
+                app:ccp_defaultLanguage="ENGLISH"
+                app:ccp_defaultNameCode="IN"
+                app:ccp_textSize="32sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_phone"
+                style="@style/style_register_edt"
+                android:layout_width="match_parent"
+                android:hint="@string/login_hint"
+                android:inputType="phone"
+                android:maxLength="15"
+                android:textSize="32sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edt_phone_code"
+            style="@style/style_register_edt"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bottom_line_bg"
+            android:gravity="center_horizontal"
+            android:hint="   OTP   "
+            android:layout_gravity="center_horizontal"
+            android:inputType="number"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:maxLength="6" />
+
+
+        <Button
+            android:id="@+id/btn_verify_phone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_standard_height"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_bg_inactive"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="@string/verify_phone_auth"
+            android:textAllCaps="false"
+            android:textColor="@color/colorMobile"
+            android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_standard_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_bg_inactive"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="@string/login_via_otp"
+            android:textAllCaps="false"
+            android:textColor="@color/colorMobile"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/tv_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="Hello"
+            android:textSize="32sp" />
+    </LinearLayout>
+</LinearLayout>

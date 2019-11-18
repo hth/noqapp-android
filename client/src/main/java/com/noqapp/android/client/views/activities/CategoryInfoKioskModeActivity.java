@@ -242,25 +242,12 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
 
     @Override
     public void onCategoryItemClick(JsonCategory jsonCategory, int pos) {
-        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
-        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
-        switch (bizStoreElastic.getBusinessType()) {
-            case BK: {
-                Intent in = new Intent(this, BeforeJoinActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
-                in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                startActivity(in);
-            }
-            break;
-            default:
-                Intent in = new Intent(this, QueueListActivity.class);
-                in.putExtra("list", (Serializable) getCategoryThatArePopulated());
-                in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
-                in.putExtra("title", title);
-                in.putExtra("position", pos);
-                startActivity(in);
-        }
-
+        Intent in = new Intent(this, QueueListActivity.class);
+        in.putExtra("list", (Serializable) getCategoryThatArePopulated());
+        in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
+        in.putExtra("title", title);
+        in.putExtra("position", pos);
+        startActivity(in);
     }
+
 }

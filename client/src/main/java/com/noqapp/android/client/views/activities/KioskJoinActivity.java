@@ -3,6 +3,9 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,11 +20,14 @@ import androidx.core.content.ContextCompat;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.KioskApiCalls;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.QueuePresenter;
+import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -32,19 +38,16 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
-    private final String TAG = BeforeJoinActivity.class.getSimpleName();
-    private TextView tv_store_name;
-    private TextView tv_queue_name;
-    private TextView tv_address;
-    private TextView tv_mobile, tv_consult_fees, tv_cancelation_fees;
+public class KioskJoinActivity extends BaseActivity implements QueuePresenter, TokenPresenter {
+    private final String TAG = KioskJoinActivity.class.getSimpleName();
+    private TextView tv_consult_fees, tv_cancelation_fees;
     private TextView tv_serving_no;
     private TextView tv_people_in_q;
     private TextView tv_hour_saved;
@@ -52,78 +55,66 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_add, add_person;
     private TextView tv_rating;
     private TextView tv_delay_in_time;
+    private TextView tv_timer;
     private Spinner sp_name_list;
     private String codeQR;
     private JsonQueue jsonQueue;
     private boolean isJoinNotPossible = false;
     private String joinErrorMsg = "";
-    private Button btn_pay_and_joinQueue, btn_joinQueue;
+    private Button btn_joinQueue;
     private ImageView iv_right_bg, iv_left_bg;
+    private TextView tv_right, tv_left, tv_name;
+    private int time = Constants.SCREEN_TIME_OUT / 1000;
+    private CountDownTimer waitTimer = null;
+    private TextView tv_queue_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_before_join);
-        tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
-        tv_store_name = findViewById(R.id.tv_store_name);
+        setContentView(R.layout.activity_kiosk_join);
+        tv_timer = findViewById(R.id.tv_timer);
         tv_queue_name = findViewById(R.id.tv_queue_name);
-        tv_address = findViewById(R.id.tv_address);
-        tv_mobile = findViewById(R.id.tv_mobile);
+        tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         iv_right_bg = findViewById(R.id.iv_right_bg);
         iv_left_bg = findViewById(R.id.iv_left_bg);
+        tv_right = findViewById(R.id.tv_right);
+        tv_left = findViewById(R.id.tv_left);
         tv_consult_fees = findViewById(R.id.tv_consult_fees);
         tv_cancelation_fees = findViewById(R.id.tv_cancelation_fees);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
         tv_hour_saved = findViewById(R.id.tv_hour_saved);
         ImageView iv_profile = findViewById(R.id.iv_profile);
-        TextView tv_skip_msg = findViewById(R.id.tv_skip_msg);
         tv_rating_review = findViewById(R.id.tv_rating_review);
-        btn_pay_and_joinQueue = findViewById(R.id.btn_pay_and_joinQueue);
         btn_joinQueue = findViewById(R.id.btn_joinQueue);
         btn_joinQueue.setOnClickListener((View v) -> {
             if (null != jsonQueue)
                 joinQueue(false);
         });
-        btn_pay_and_joinQueue.setOnClickListener((View v) -> {
-            if (null != jsonQueue)
-                joinQueue(false);
-        });
         tv_rating = findViewById(R.id.tv_rating);
         tv_add = findViewById(R.id.tv_add);
+        tv_name = findViewById(R.id.tv_name);
         add_person = findViewById(R.id.add_person);
         tv_add.setPaintFlags(tv_add.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        Button btn_no = findViewById(R.id.btn_no);
-        btn_no.setOnClickListener((View v) -> {
-            finish();
-        });
         sp_name_list = findViewById(R.id.sp_name_list);
 
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
-        tv_mobile.setOnClickListener((View v) -> {
-            AppUtils.makeCall(BeforeJoinActivity.this, tv_mobile.getText().toString());
-        });
-
-        tv_address.setOnClickListener((View v) -> {
-            AppUtils.openAddressInMap(BeforeJoinActivity.this, tv_address.getText().toString());
-        });
         tv_add.setOnClickListener((View v) -> {
             if (UserUtils.isLogin()) {
-                Intent loginIntent = new Intent(BeforeJoinActivity.this, UserProfileActivity.class);
+                Intent loginIntent = new Intent(KioskJoinActivity.this, UserProfileActivity.class);
                 startActivity(loginIntent);
             } else {
-                new CustomToast().showToast(BeforeJoinActivity.this, "Please login to add dependents");
+                new CustomToast().showToast(KioskJoinActivity.this, "Please login to add dependents");
             }
         });
 
         Intent bundle = getIntent();
         if (null != bundle) {
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
-            boolean isCategoryData = bundle.getBooleanExtra(IBConstant.KEY_IS_CATEGORY, true);
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
-            JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable(IBConstant.KEY_DATA_OBJECT);
+            boolean isDoctor = bundle.getBooleanExtra(IBConstant.KEY_IS_DO, false);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
@@ -131,37 +122,28 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            if(jsonQueue.getBusinessType()== BusinessTypeEnum.DO){
+            if (isDoctor) {
                 iv_profile.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 iv_profile.setVisibility(View.GONE);
             }
-            if (bundle.getBooleanExtra(IBConstant.KEY_IS_REJOIN, false)) {
-                btn_joinQueue.setText(getString(R.string.yes));
-                tv_skip_msg.setVisibility(View.VISIBLE);
-                btn_no.setVisibility(View.VISIBLE);
-            }
 
-            if (isCategoryData) {
-                queueResponse(jsonQueue);
-            } else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    setProgressMessage("Loading queue details...");
-                    showProgress();
-                    if (UserUtils.isLogin()) {
-                        QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
-                        queueApiAuthenticCall.setQueuePresenter(this);
-                        queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-
-                    } else {
-                        QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-                        queueApiUnAuthenticCall.setQueuePresenter(this);
-                        queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
-                    }
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                setProgressMessage("Loading queue details...");
+                showProgress();
+                if (UserUtils.isLogin()) {
+                    QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
+                    queueApiAuthenticCall.setQueuePresenter(this);
+                    queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                 } else {
-                    ShowAlertInformation.showNetworkDialog(this);
+                    QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
+                    queueApiUnAuthenticCall.setQueuePresenter(this);
+                    queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
                 }
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
             }
+
         }
     }
 
@@ -176,10 +158,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         if (null != jsonQueueTemp) {
             Log.d(TAG, "Queue=" + jsonQueueTemp.toString());
             this.jsonQueue = jsonQueueTemp;
-            tv_store_name.setText(jsonQueue.getBusinessName());
             tv_queue_name.setText(jsonQueue.getDisplayName());
-            tv_address.setText(jsonQueue.getStoreAddress());
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
             tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
             if (jsonQueue.getDelayedInMinutes() > 0) {
@@ -194,17 +173,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             String time = new AppUtils().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            tv_rating_review.setOnClickListener((View v) -> {
-                if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
-                    Intent in = new Intent(BeforeJoinActivity.this, AllReviewsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
-                    bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
-                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtils.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
-                    in.putExtras(bundle);
-                    startActivity(in);
-                }
-            });
             tv_rating.setText(String.valueOf(AppUtils.round(jsonQueue.getRating())));
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
@@ -214,7 +182,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             AppUtils.setReviewCountText(jsonQueue.getReviewCount(), tv_rating_review);
             codeQR = jsonQueue.getCodeQR();
             /* Check weather join is possible or not today due to some reason */
-            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, BeforeJoinActivity.this);
+            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, this);
             if (joinQueueState.isJoinNotPossible()) {
                 isJoinNotPossible = joinQueueState.isJoinNotPossible();
                 joinErrorMsg = joinQueueState.getJoinErrorMsg();
@@ -246,13 +214,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     iv_right_bg.setVisibility(View.GONE);
             }
             joinQueue(true);
-            if (jsonQueue.isEnabledPayment()) {
-                btn_joinQueue.setVisibility(View.GONE);
-                btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
-            } else {
-                btn_joinQueue.setVisibility(View.VISIBLE);
-                btn_pay_and_joinQueue.setVisibility(View.GONE);
-            }
         }
         dismissProgress();
     }
@@ -264,6 +225,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
 
 
     private void joinQueue(boolean validateView) {
+
         showHideView(true);
         setColor(true);
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
@@ -275,75 +237,73 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 // login required
                 if (validateView) {
                     btn_joinQueue.setText(getString(R.string.login_to_join));
-                    btn_pay_and_joinQueue.setText(getString(R.string.login_to_join));
-
-                }else{
-                    Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
-                    startActivity(loginIntent);
-                }
-            }else{
-                btn_joinQueue.setText(getString(R.string.join));
-                btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
-            }
-        } else {
-            if (jsonQueue.isRemoteJoinAvailable()) {
-                if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
-                    if (UserUtils.isLogin()) {
-                        btn_joinQueue.setText(getString(R.string.join));
-                        btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
-                        if (validateView) {
-                            //setColor(false);  skip due to view validation
-                        } else {
-                            if (sp_name_list.getSelectedItemPosition() == 0) {
-                                new CustomToast().showToast(this, getString(R.string.error_patient_name_missing));
-                                sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
-                            } else {
-                                callAfterJoin();
-                            }
-                        }
-                    } else {
-                        btn_joinQueue.setText(getString(R.string.login_to_join));
-                        btn_pay_and_joinQueue.setText(getString(R.string.login_to_join));
-                        // please login to avail this feature
-                        if (validateView) {
-                            setColor(false);
-                        } else {
-                            // Navigate to login screen
-                            Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
-                            startActivity(loginIntent);
-                        }
-                        new CustomToast().showToast(BeforeJoinActivity.this, "please login to avail this feature");
-                    }
                 } else {
-                    // any user can join
-                    btn_joinQueue.setText(getString(R.string.join));
-                    btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
-                    callAfterJoin();
+                    Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
                 }
             } else {
                 btn_joinQueue.setText(getString(R.string.join));
-                btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
-                if (validateView) {
-                    setColor(false);
-                }
-                ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), getString(R.string.error_remote_join_not_available), true);
             }
+        } else {
+            if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
+                if (UserUtils.isLogin()) {
+                    btn_joinQueue.setText(getString(R.string.join));
+                    if (validateView) {
+                        //setColor(false);  skip due to view validation
+                    } else {
+                        if (sp_name_list.getSelectedItemPosition() == 0) {
+                            new CustomToast().showToast(this, getString(R.string.error_patient_name_missing));
+                            sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
+                        } else {
+                            callJoinAPI();
+                        }
+                    }
+                } else {
+                    btn_joinQueue.setText(getString(R.string.login_to_join));
+                    // please login to avail this feature
+                    if (validateView) {
+                        setColor(false);
+                    } else {
+                        // Navigate to login screen
+                        Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
+                        startActivity(loginIntent);
+                    }
+                    new CustomToast().showToast(KioskJoinActivity.this, "Please login to avail this feature");
+                }
+            } else {
+                // any user can join
+                btn_joinQueue.setText(getString(R.string.join));
+                callJoinAPI();
+            }
+
         }
     }
 
-    private void callAfterJoin() {
-        if (jsonQueue.isEnabledPayment() && !NoQueueBaseActivity.isEmailVerified()) {
+    private void callJoinAPI() {
+        if (!NoQueueBaseActivity.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else {
-            Intent in = new Intent(this, JoinActivity.class);
-            in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
-            in.putExtra(IBConstant.KEY_FROM_LIST, false);
-            in.putExtra(IBConstant.KEY_IS_PAYMENT_ENABLE, jsonQueue.isEnabledPayment());
-            in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-            in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
-            in.putExtra("qUserId", ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
-            in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
-            startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+            KioskApiCalls kioskApiCalls = new KioskApiCalls();
+            kioskApiCalls.setTokenPresenter(this);
+            JsonProfile jp = NoQueueBaseActivity.getUserProfile();
+            String queueUserId = ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId();
+            tv_name.setText(((JsonProfile) sp_name_list.getSelectedItem()).getName());
+            String qUserId;
+            String guardianId = null;
+            List<JsonProfile> profileList = new ArrayList<>();
+            if (UserUtils.isLogin()) {
+                profileList = NoQueueBaseActivity.getAllProfileList();
+            }
+            JsonProfile jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
+            if (jp.getQueueUserId().equalsIgnoreCase(queueUserId)) {
+                qUserId = jp.getQueueUserId();
+            } else {
+                qUserId = jsonProfile.getQueueUserId();
+                guardianId = jp.getQueueUserId();
+            }
+            JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
+            kioskApiCalls.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+
 
             if (AppUtils.isRelease()) {
                 Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_JOIN_SCREEN)
@@ -372,10 +332,11 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     @Override
     protected void onResume() {
         super.onResume();
+        resetDisconnectTimer();
         // Added to re-initialised the value if user is logged in again and comeback to join screen
         if (null != jsonQueue) {
             /* Check weather join is possible or not today due to some reason */
-            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, BeforeJoinActivity.this);
+            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, KioskJoinActivity.this);
             if (joinQueueState.isJoinNotPossible()) {
                 isJoinNotPossible = joinQueueState.isJoinNotPossible();
                 joinErrorMsg = joinQueueState.getJoinErrorMsg();
@@ -399,14 +360,109 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
 
     private void setColor(boolean isEnable) {
         btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.btn_bg_enable : R.drawable.btn_bg_inactive));
-        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.btn_bg_enable : R.drawable.btn_bg_inactive));
         btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
-        btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
     }
 
     private void showHideView(boolean isEnable) {
         add_person.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         sp_name_list.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         tv_add.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void tokenPresenterResponse(JsonToken token) {
+        Log.d(TAG, token.toString());
+        tv_left.setText(getString(R.string.serving_now));
+        tv_right.setText(getString(R.string.your_token));
+        tv_serving_no.setText(String.valueOf(token.getServingNumber()));
+        tv_people_in_q.setText(String.valueOf(token.getToken()));
+        tv_name.setVisibility(View.VISIBLE);
+        sp_name_list.setVisibility(View.GONE);
+        tv_add.setVisibility(View.GONE);
+        btn_joinQueue.setVisibility(View.GONE);
+        new CustomToast().showToast(this, "Token generated successfully. Your token no is- " + token.getToken());
+        logoutFromKiosk();
+        dismissProgress();
+
+    }
+
+    @Override
+    public void paidTokenPresenterResponse(JsonToken token) {
+        // do nothing
+    }
+
+    @Override
+    public void unPaidTokenPresenterResponse(JsonToken token) {
+        // do nothing
+    }
+
+    private void logoutFromKiosk() {
+
+        tv_timer.setVisibility(View.VISIBLE);
+        tv_timer.setText("You will be logout in " + time + " seconds");
+        waitTimer = new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                tv_timer.setText("You will be logout in " + time + " seconds");
+                time--;
+            }
+
+            public void onFinish() {
+                tv_timer.setText("try again");
+            }
+
+        }.start();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                try {
+                    iv_home.performClick();
+                    if (waitTimer != null) {
+                        waitTimer.cancel();
+                        waitTimer = null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, Constants.SCREEN_TIME_OUT);
+    }
+
+
+    private Handler disconnectHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+
+            return true;
+        }
+    });
+
+    private Runnable disconnectCallback = new Runnable() {
+        @Override
+        public void run() {
+            // Perform any required operation on disconnect
+            iv_home.performClick();
+        }
+    };
+
+    public void resetDisconnectTimer() {
+        disconnectHandler.removeCallbacks(disconnectCallback);
+        disconnectHandler.postDelayed(disconnectCallback, Constants.DISCONNECT_TIMEOUT);
+    }
+
+    public void stopDisconnectTimer() {
+        disconnectHandler.removeCallbacks(disconnectCallback);
+    }
+
+    @Override
+    public void onUserInteraction() {
+        resetDisconnectTimer();
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopDisconnectTimer();
     }
 }

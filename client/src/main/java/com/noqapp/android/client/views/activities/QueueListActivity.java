@@ -17,6 +17,7 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.CategoryHeaderAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,10 +99,14 @@ public class QueueListActivity extends BaseActivity implements
             case DO:
             case BK:
                 // open hospital profile
-                in = new Intent(this, BeforeJoinActivity.class);
+                if(LaunchActivity.isLockMode){
+                    in = new Intent(this, KioskJoinActivity.class);
+                    in.putExtra(IBConstant.KEY_IS_DO,item.getBusinessType()== BusinessTypeEnum.DO);
+                }else {
+                    in = new Intent(this, BeforeJoinActivity.class);
+                }
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
                 in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
                 startActivity(in);
                 break;

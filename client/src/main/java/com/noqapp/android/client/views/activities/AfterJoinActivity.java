@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -660,19 +659,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) || 0 == Integer.parseInt(jsonPurchaseOrder.getOrderPrice())) {
                 frame_coupon.setVisibility(View.GONE);
                 rl_discount.setVisibility(View.GONE);
-            }
-
-            if (!getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false) && LaunchActivity.isLockMode) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        try {
-                            iv_home.performClick();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, Constants.SCREEN_TIME_OUT);
             }
         } catch (Exception e) {
             e.printStackTrace();

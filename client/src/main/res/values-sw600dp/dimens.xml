@@ -1,0 +1,46 @@
+<resources>
+
+
+
+
+
+    <dimen name="btn_standard_height">60dp</dimen>
+    <dimen name="menu_title_width">250dp</dimen>
+    <dimen name="profile_icon_width">75dp</dimen>
+    <dimen name="rating_text_size">18sp</dimen>
+
+
+    <dimen name="title_size">22sp</dimen>
+    <dimen name="survey_title_size">20sp</dimen>
+    <dimen name="survey_subtitle_size">15sp</dimen>
+    <dimen name="radio_text_size">16sp</dimen>
+    <dimen name="survey_btn_txt_size">17sp</dimen>
+    <dimen name="survey_rating_txt_size">15sp</dimen>
+    <dimen name="survey_btn_height">42sp</dimen>
+    <dimen name="survey_padding">12sp</dimen>
+    <dimen name="sp_text_item">24sp</dimen>
+
+
+    <dimen name="join_section_small_text">26sp</dimen>
+    <dimen name="text_size_ten">15sp</dimen>
+    <dimen name="text_size_twelve">18sp</dimen>
+    <dimen name="text_size_fourteen">24sp</dimen>
+    <dimen name="text_size_sixteen">28sp</dimen>
+
+    <dimen name="category_header_height">330dp</dimen>
+    <dimen name="category_header_margin_top">290dp</dimen>
+    <dimen name="kiosk_join_top_height">240dp</dimen>
+    <dimen name="kiosk_join_child_height">120dp</dimen>
+    <dimen name="kiosk_join_child_margin_top">45dp</dimen>
+    <dimen name="kiosk_join_image_icon_width">90dp</dimen>
+    <dimen name="block_1_width">145.3dp</dimen>
+    <dimen name="block_1_height">98.5dp</dimen>
+    <dimen name="block_2_width">79.5dp</dimen>
+    <dimen name="block_2_height">75.5dp</dimen>
+    <dimen name="margin_left">82.5dp</dimen>
+    <dimen name="header_1">42.3sp</dimen>
+    <dimen name="header_2">20sp</dimen>
+    <dimen name="sp_height">60sp</dimen>
+
+
+</resources>
