@@ -226,7 +226,8 @@ public class CommonHelper {
                 return "";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Crashlytics.log(Log.ERROR, TAG, "Failed displaying price jsonStoreProduct " + jsonStoreProduct);
+            Log.e(TAG,"jsonStoreProduct " + e.getLocalizedMessage(), e);
             return "";
         }
     }
