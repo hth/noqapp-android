@@ -92,6 +92,8 @@ public abstract class BaseErrorResponseHandler {
                     case QUEUE_JOIN_PAYMENT_FAILED:
                     case QUEUE_NO_SERVICE_NO_PAY:
 
+                    case SURVEY_NOT_FOUND:
+
                     case TRANSACTION_GATEWAY_DEFAULT:
                     case SERVICE_PAYMENT_NOT_ALLOWED_FOR_THIS_BUSINESS_TYPE:
 
