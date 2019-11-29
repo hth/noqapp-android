@@ -18,6 +18,7 @@ import com.noqapp.android.client.model.SurveyResponseApiCalls;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
+import com.noqapp.android.client.presenter.beans.SurveyQuestion;
 import com.noqapp.android.client.presenter.beans.body.Survey;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -30,9 +31,10 @@ import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SurveyActivity extends BaseActivity implements ResponsePresenter, View.OnClickListener {
-    private HashMap<String, QuestionTypeEnum> temp;
+    private List<SurveyQuestion> temp;
 
 
     private LinearLayout ll_rating;
@@ -51,7 +53,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
         setContentView(R.layout.act_survey);
         initActionsViews(false);
         tv_toolbar_title.setText(KioskStringConstants.SURVEY_TITLE);
-        temp = (HashMap<String, QuestionTypeEnum>) getIntent().getSerializableExtra("map");
+        temp = (List<SurveyQuestion>) getIntent().getSerializableExtra("list");
         jsonQuestionnaire = (JsonQuestionnaire) getIntent().getSerializableExtra("survey");
         ll_items = findViewById(R.id.ll_items);
         ll_rating = findViewById(R.id.ll_rating);
@@ -80,9 +82,9 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
 
         AppUtils.hideViews(tv_q_rating, ll_rating, cv_rating);
         if (null != temp && temp.size() > 0) {
-            for (HashMap.Entry<String, QuestionTypeEnum> entry : temp.entrySet()) {
-                String question = entry.getKey();
-                QuestionTypeEnum q_type = entry.getValue();
+            for (SurveyQuestion entry : temp) {
+                String question = entry.getQuestion();
+                QuestionTypeEnum q_type = entry.getQuestionType();
                 LayoutInflater inflater = LayoutInflater.from(this);
                 View inflatedLayout = inflater.inflate(R.layout.survey_item, null, false);
                 EditText edt_text = inflatedLayout.findViewById(R.id.edt_text);
@@ -125,8 +127,6 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                         viewLists.add(edt_text);
                         break;
                 }
-
-
             }
         }
 

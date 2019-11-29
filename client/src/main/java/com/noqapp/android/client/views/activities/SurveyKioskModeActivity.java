@@ -16,6 +16,7 @@ import com.noqapp.android.client.model.SurveyApiCalls;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
 import com.noqapp.android.client.presenter.SurveyPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
+import com.noqapp.android.client.presenter.beans.SurveyQuestion;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.KioskStringConstants;
@@ -64,7 +65,6 @@ public class SurveyKioskModeActivity
         }
     }
 
-
     @Override
     public void onBackPressed() {
         return;
@@ -93,14 +93,13 @@ public class SurveyKioskModeActivity
         // LaunchActivity.clearPreferences();
     }
 
-
     @Override
-    public void onLanguageSelected(Map<String, QuestionTypeEnum> item, Locale locale) {
+    public void onLanguageSelected(List<SurveyQuestion> item, Locale locale) {
         KioskStringConstants.init(locale.getLanguage());
-        HashMap<String, QuestionTypeEnum> temp = new HashMap<>(item);
+        ArrayList list = new ArrayList<>(item);
         Intent in = new Intent(this, SurveyActivity.class);
         in.putExtra("survey", jsonQuestionnaire);
-        in.putExtra("map", temp);
+        in.putExtra("list", list);
         startActivity(in);
     }
 }

@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.client.model.types.QuestionTypeEnum;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -36,11 +36,14 @@ public class JsonQuestionnaire implements Serializable {
     @JsonProperty("id")
     private String questionnaireId;
 
+    @JsonProperty("ti")
+    private String title;
+
     @JsonProperty("bn")
     private String bizNameId;
 
     @JsonProperty("qs")
-    private Map<Locale, Map<String, QuestionTypeEnum>> questions;
+    private Map<Locale, List<SurveyQuestion>> questions;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -54,6 +57,15 @@ public class JsonQuestionnaire implements Serializable {
         return this;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public JsonQuestionnaire setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
     public String getBizNameId() {
         return bizNameId;
     }
@@ -63,11 +75,11 @@ public class JsonQuestionnaire implements Serializable {
         return this;
     }
 
-    public Map<Locale, Map<String, QuestionTypeEnum>> getQuestions() {
+    public Map<Locale, List<SurveyQuestion>> getQuestions() {
         return questions;
     }
 
-    public JsonQuestionnaire setQuestions(Map<Locale, Map<String, QuestionTypeEnum>> questions) {
+    public JsonQuestionnaire setQuestions(Map<Locale, List<SurveyQuestion>> questions) {
         this.questions = questions;
         return this;
     }
