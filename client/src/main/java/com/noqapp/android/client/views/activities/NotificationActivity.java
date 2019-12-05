@@ -1,18 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
 import com.noqapp.android.common.pojos.DisplayNotification;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 

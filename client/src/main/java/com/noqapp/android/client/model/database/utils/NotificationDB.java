@@ -1,5 +1,12 @@
 package com.noqapp.android.client.model.database.utils;
 
+import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
+
+import com.noqapp.android.client.model.database.DatabaseTable;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.pojos.DisplayNotification;
+import com.noqapp.android.common.utils.CommonHelper;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -7,16 +14,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.common.pojos.DisplayNotification;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
 
 /**
  * Created by chandra on 8/7/17.
@@ -27,7 +27,6 @@ public class NotificationDB {
     public static final String KEY_UNREAD = "0";
     public static final String KEY_NOTIFY = "KY_NOTI";
     private static final String TAG = NotificationDB.class.getSimpleName();
-
 
     public static void insertNotification(String key, String codeQR, String value, String title, String businessType, String imageUrl) {
         ContentValues cv = new ContentValues();

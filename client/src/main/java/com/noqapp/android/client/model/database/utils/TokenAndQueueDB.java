@@ -28,7 +28,7 @@ public class TokenAndQueueDB {
 
     public static void deleteTokenQueue(String codeQR , String token) {
         boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token}) > 0;
-        Log.i(TAG, "Deleted deleteTokenQueue status=" + String.valueOf(resultStatus));
+        Log.i(TAG, "Deleted deleteTokenQueue status=" + resultStatus);
     }
 
     public static List<JsonTokenAndQueue> getCurrentQueueList() {
