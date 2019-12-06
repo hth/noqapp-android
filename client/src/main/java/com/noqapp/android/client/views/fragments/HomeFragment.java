@@ -671,10 +671,11 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             tv_current_title.setText(getString(R.string.active_queue) + " (" + currentQueueList.size() + ")");
             currentActivityAdapter.notifyDataSetChanged();
 
-            if (currentQueueList.size() > 0)
+            if (currentQueueList.size() > 0) {
                 for (JsonTokenAndQueue jtq : currentQueueList) {
                     NoQueueMessagingService.subscribeTopics(jtq.getTopic());
                 }
+            }
         }
     }
 
