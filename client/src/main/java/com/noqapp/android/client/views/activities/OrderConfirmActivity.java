@@ -540,13 +540,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         if (LaunchActivity.isLockMode) {
             Handler handler = new Handler();
 
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    try {
-                        iv_home.performClick();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            handler.postDelayed(() -> {
+                try {
+                    iv_home.performClick();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }, Constants.SCREEN_TIME_OUT);
         }
