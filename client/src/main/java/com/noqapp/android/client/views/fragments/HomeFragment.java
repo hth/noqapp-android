@@ -1,10 +1,12 @@
 package com.noqapp.android.client.views.fragments;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,6 +94,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -144,9 +147,14 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
+    private static TextToSpeech textToSpeech;
 
-    public HomeFragment() {
-
+    public HomeFragment(Context context) {
+        textToSpeech = new TextToSpeech(context, status -> {
+            if (status != TextToSpeech.ERROR) {
+                textToSpeech.setLanguage(Locale.US);
+            }
+        });
     }
 
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
@@ -685,7 +693,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         Log.d(TAG, ":History Queue Count:" + historyQueueList.size());
     }
 
-    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to, String title, String body) {
+    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to, String title, String body, String textToSpeech) {
+        Log.d(TAG, "Speak " + textToSpeech);
+        HomeFragment.textToSpeech.speak(textToSpeech, TextToSpeech.QUEUE_FLUSH, null);
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {

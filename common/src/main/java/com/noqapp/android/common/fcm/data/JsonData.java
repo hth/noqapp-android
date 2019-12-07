@@ -1,6 +1,7 @@
 package com.noqapp.android.common.fcm.data;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -44,6 +45,8 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
     @JsonProperty("imageURL")
     private String imageURL;
 
+    @JsonProperty("textToSpeech")
+    private JsonTextToSpeech jsonTextToSpeech;
 
     public FirebaseMessageTypeEnum getFirebaseMessageType() {
         return firebaseMessageType;
@@ -78,6 +81,15 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
 
     public JsonData setImageURL(String imageURL) {
         this.imageURL = imageURL;
+        return this;
+    }
+
+    public JsonTextToSpeech getJsonTextToSpeech() {
+        return jsonTextToSpeech;
+    }
+
+    public JsonData setJsonTextToSpeech(JsonTextToSpeech jsonTextToSpeech) {
+        this.jsonTextToSpeech = jsonTextToSpeech;
         return this;
     }
 
