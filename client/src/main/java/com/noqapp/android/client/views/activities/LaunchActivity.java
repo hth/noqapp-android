@@ -1108,7 +1108,7 @@ public class LaunchActivity
                 String payload = intent.getStringExtra(Constants.FIREBASE_TYPE);
                 String codeQR = intent.getStringExtra(Constants.CODE_QR);
                 Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
-                JsonData jsonData = (JsonData) intent.getSerializableExtra("object");
+                JsonData jsonData = (JsonData) intent.getSerializableExtra("jsonData");
                 if (jsonData instanceof JsonTopicQueueData) {
                     Log.e("onReceiveJsonTopicQdata", jsonData.toString());
                 } else if (jsonData instanceof JsonClientData) {

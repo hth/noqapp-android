@@ -1,33 +1,12 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.Menu;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.mediarouter.media.MediaRouteSelector;
-import androidx.mediarouter.media.MediaRouter;
-
-import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.CastMediaControlIntent;
-import com.google.android.gms.cast.CastRemoteDisplayLocalService;
-import com.google.android.gms.cast.framework.CastButtonFactory;
-import com.google.android.gms.common.api.Status;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
@@ -48,7 +27,29 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 
+import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.common.api.Status;
+
 import org.apache.commons.lang3.StringUtils;
+
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Menu;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.mediarouter.media.MediaRouteSelector;
+import androidx.mediarouter.media.MediaRouter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,10 +99,10 @@ public class MainActivity
                         String current_serving = intent.getStringExtra(Constants.CURRENT_SERVING);
                         String lastNumber = intent.getStringExtra(Constants.LASTNO);
                         String payload = intent.getStringExtra(Constants.FIREBASE_TYPE);
-                        Object object = intent.getSerializableExtra("object");
+                        JsonData jsonData = (JsonData) intent.getSerializableExtra("jsonData");
 
-                        if (object instanceof JsonTopicQueueData) {
-                            Log.e("onReceiveJsonTopicQdata", ((JsonTopicQueueData) object).toString());
+                        if (jsonData instanceof JsonTopicQueueData) {
+                            Log.e("onReceiveJsonTopicQdata", jsonData.toString());
                             try {
                                 for (int i = 0; i < topics.size(); i++) {
                                     JsonTopic jt = topics.get(i);
@@ -125,12 +126,12 @@ public class MainActivity
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        } else if (object instanceof JsonClientData) {
-                            Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
-                        } else if (object instanceof JsonAlertData) {
-                            Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
-                        } else if (object instanceof JsonTopicOrderData) {
-                            Log.e("onReceiveJsonTopicData", ((JsonTopicOrderData) object).toString());
+                        } else if (jsonData instanceof JsonClientData) {
+                            Log.e("onReceiveJsonClientData", jsonData.toString());
+                        } else if (jsonData instanceof JsonAlertData) {
+                            Log.e("onReceiveJsonAlertData", jsonData.toString());
+                        } else if (jsonData instanceof JsonTopicOrderData) {
+                            Log.e("onReceiveJsonTopicData", jsonData.toString());
                             try {
                                 for (int i = 0; i < topics.size(); i++) {
                                     JsonTopic jt = topics.get(i);
@@ -154,8 +155,8 @@ public class MainActivity
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        } else if (object instanceof JsonClientOrderData) {
-                            Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
+                        } else if (jsonData instanceof JsonClientOrderData) {
+                            Log.e("JsonClientOrderData", jsonData.toString());
                         }
                     }
                     updateTv(topics);
@@ -358,7 +359,7 @@ public class MainActivity
                         ft1.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
                         ft1.commitAllowingStateLoss();
                         currentPage++;
-                    }catch (IndexOutOfBoundsException e){
+                    } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
                         currentPage = 0;
                     }
@@ -416,7 +417,8 @@ public class MainActivity
             clientInQueueApiCalls.toBeServedClients(
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+                    LaunchActivity.getLaunchActivity().getAuth(),
+                    queueDetail);
         }
     }
 
@@ -459,9 +461,8 @@ public class MainActivity
             }
 
             java.util.Date actualTime = calendar3.getTime();
-            if ((actualTime.after(calendar1.getTime()) ||
-                    actualTime.compareTo(calendar1.getTime()) == 0) &&
-                    actualTime.before(calendar2.getTime())) {
+            if ((actualTime.after(calendar1.getTime()) || actualTime.compareTo(calendar1.getTime()) == 0)
+                    && actualTime.before(calendar2.getTime())) {
                 return true;
             } else {
                 return false;

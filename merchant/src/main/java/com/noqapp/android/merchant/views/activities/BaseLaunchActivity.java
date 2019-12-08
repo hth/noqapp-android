@@ -45,6 +45,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
@@ -581,23 +582,23 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                             + "\n" + "payload : " + payload
             );
 
-            Object object = intent.getSerializableExtra("object");
-            if (object instanceof JsonTopicQueueData) {
-                Log.e("onReceiveJsonTopicQdata", ((JsonTopicQueueData) object).toString());
+            JsonData jsonData = (JsonData) intent.getSerializableExtra("jsonData");
+            if (jsonData instanceof JsonTopicQueueData) {
+                Log.e("onReceiveJsonTopicQdata", jsonData.toString());
                 if (fragmentCommunicator != null) {
                     fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
                 }
-            } else if (object instanceof JsonClientData) {
-                Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
-            } else if (object instanceof JsonAlertData) {
-                Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
-            } else if (object instanceof JsonTopicOrderData) {
-                Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
-                if (fragmentCommunicator != null) {
+            } else if (jsonData instanceof JsonClientData) {
+                Log.e("onReceiveJsonClientData", jsonData.toString());
+            } else if (jsonData instanceof JsonAlertData) {
+                Log.e("onReceiveJsonAlertData", jsonData.toString());
+            } else if (jsonData instanceof JsonTopicOrderData) {
+                Log.e("onReceiveJsonTopicOdata", jsonData.toString());
+                if (null != fragmentCommunicator) {
                     fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
                 }
-            } else if (object instanceof JsonClientOrderData) {
-                Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
+            } else if (jsonData instanceof JsonClientOrderData) {
+                Log.e("JsonClientOrderData", jsonData.toString());
             }
         }
     }
