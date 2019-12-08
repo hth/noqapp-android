@@ -34,10 +34,12 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonData;
 import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
 import com.noqapp.android.common.fcm.data.JsonTopicAppointmentData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
@@ -212,7 +214,7 @@ public class LaunchActivity
         fl_notification.setVisibility(View.VISIBLE);
         iv_search.setVisibility(View.VISIBLE);
         //initProgress();
-        homeFragment = new HomeFragment();
+        homeFragment = new HomeFragment(getApplicationContext());
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
 
 
@@ -447,17 +449,17 @@ public class LaunchActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_STORAGE) {
             try {
-                //both remaining permission allowed
+                /* both remaining permission allowed */
                 if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                     AppUtils.shareTheApp(launchActivity);
                 }
-                //one remaining permission allowed
+                /* one remaining permission allowed */
                 else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     AppUtils.shareTheApp(launchActivity);
                 }
-                //No permission allowed
+                /* No permission allowed */
                 else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    //Do nothing
+                    /* Do nothing */
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -465,12 +467,12 @@ public class LaunchActivity
         }
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_LOCATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission was granted.
+                /* Permission was granted. */
                 if (ContextCompat.checkSelfPermission(this, PermissionUtils.LOCATION_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
                     callLocationManager();
                 }
             } else {
-                // Permission denied, Disable the functionality that depends on this permission.
+                /* Permission denied, Disable the functionality that depends on this permission. */
                 new CustomToast().showToast(this, "permission denied");
             }
             return;
@@ -489,23 +491,22 @@ public class LaunchActivity
         setUpExpandableList(UserUtils.isLogin());
         updateDrawerUI();
 
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
+        /* Register new push message receiver by doing this, the activity will be notified each time a new message arrives. */
         if (null != fcmNotificationReceiver) {
             fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
         }
 
-        // clear the notification area when the app is opened
+        /* Clear the notification area when the app is opened */
         NoQueueMessagingService.clearNotifications(getApplicationContext());
 
         ReviewData reviewData = ReviewDB.getPendingReview();
-        // shown only one time if the review is canceled
+        /* Shown only one time if the review is canceled */
         if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown() && !NoQueueBaseActivity.getShowHelper()) {
             callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
         }
 
         ReviewData reviewDataSkip = ReviewDB.getSkippedQueue();
-        // shown only one time if it is skipped
+        /* Shown only one time if it is skipped */
         if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
             ReviewDB.deleteReview(reviewData.getCodeQR(), reviewData.getToken());
             new CustomToast().showToast(launchActivity, "You were skipped");
@@ -602,7 +603,7 @@ public class LaunchActivity
             Log.v("Review screen call: ", jtk.toString());
             ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
             if (jsonTokenAndQueueArrayList.size() == 1) {
-                //un subscribe the topic
+                /* Un-subscribe the topic. */
                 NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
             }
         } else {
@@ -616,9 +617,9 @@ public class LaunchActivity
             ContentValues cv = new ContentValues();
             cv.put(DatabaseTable.Review.KEY_SKIP, -1);
             ReviewDB.updateReviewRecord(codeQR, token, cv);
-            // update
+            /* update */
         } else {
-            //insert
+            /* insert */
             ContentValues cv = new ContentValues();
             cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
@@ -630,7 +631,7 @@ public class LaunchActivity
             ReviewDB.insert(cv);
         }
         new CustomToast().showToast(launchActivity, "You were skipped");
-        // Clear all activity from stack then launch skip(Join) Screen
+        /* Clear all activity from stack then launch skip(Join) Screen */
         Intent in1 = new Intent(this, LaunchActivity.class);
         in1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in1);
@@ -729,40 +730,46 @@ public class LaunchActivity
         AppUtils.authenticationProcessing(this);
     }
 
-    private void updateNotification(Object object, String codeQR) {
+    private void updateNotification(JsonData jsonData, String codeQR) {
         String go_to = "";
         String messageOrigin = "";
         String current_serving = "";
         String title = "";
         String body = "";
+        List<JsonTextToSpeech> jsonTextToSpeeches = null;
         PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
-        if (object instanceof JsonTopicQueueData) {
-            current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
-            go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
-            messageOrigin = ((JsonTopicQueueData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
-            title = ((JsonTopicQueueData) object).getTitle();
-            body = ((JsonTopicQueueData) object).getBody();
-        } else if (object instanceof JsonTopicOrderData) {
-            current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
-            go_to = ((JsonTopicOrderData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
-            messageOrigin = ((JsonTopicOrderData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
-            purchaseOrderStateEnum = ((JsonTopicOrderData) object).getPurchaseOrderState();
-            title = ((JsonTopicOrderData) object).getTitle();
-            body = ((JsonTopicOrderData) object).getBody();
+        if (jsonData instanceof JsonTopicQueueData) {
+            JsonTopicQueueData jsonTopicQueueData = (JsonTopicQueueData) jsonData;
+            current_serving = String.valueOf(jsonTopicQueueData.getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
+            go_to = jsonTopicQueueData.getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
+            messageOrigin = jsonTopicQueueData.getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
+            title = jsonData.getTitle();
+            body = jsonData.getBody();
+            jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
+        } else if (jsonData instanceof JsonTopicOrderData) {
+            JsonTopicOrderData jsonTopicOrderData = (JsonTopicOrderData) jsonData;
+            current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
+            go_to = jsonTopicOrderData.getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
+            messageOrigin = jsonTopicOrderData.getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
+            purchaseOrderStateEnum = jsonTopicOrderData.getPurchaseOrderState();
+            title = jsonData.getTitle();
+            body = jsonData.getBody();
+            jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
         }
+
         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
         for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
             JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
             if (null != jtk) {
-                //update DB & after join screen
+                /* update DB & after join screen */
                 if (Integer.parseInt(current_serving) < jtk.getServingNumber()) {
-                    // Do nothing - In Case of getting service no less than what the object have
+                    /* Do nothing - In Case of getting service no less than what the object have */
                 } else {
                     jtk.setServingNumber(Integer.parseInt(current_serving));
                     TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                 }
 
-                if (object instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
+                if (jsonData instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
                     jtk.setPurchaseOrderState(purchaseOrderStateEnum);
                 }
                 /*
@@ -776,9 +783,9 @@ public class LaunchActivity
                         ContentValues cv = new ContentValues();
                         cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
                         ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
-                        // update
+                        /* update */
                     } else {
-                        //insert
+                        /* insert */
                         ContentValues cv = new ContentValues();
                         cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                         cv.put(DatabaseTable.Review.CODE_QR, codeQR);
@@ -792,7 +799,7 @@ public class LaunchActivity
                 }
 
                 if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
-                    //un subscribe the topic
+                    /* Un-subscribe the topic */
                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                 }
 
@@ -809,11 +816,11 @@ public class LaunchActivity
                                 Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
                                 startActivity(blinker);
                             } else {
-                                //Blinker already shown
+                                /* Blinker already shown */
                             }
-                            // update
+                            /* update */
                         } else {
-                            //insert
+                            /* insert */
                             ContentValues cv = new ContentValues();
                             cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
@@ -829,14 +836,14 @@ public class LaunchActivity
                     }
                 }
                 try {
-                    // In case of order update the order status
-                    if (object instanceof JsonTopicOrderData) {
+                    /* In case of order update the order status */
+                    if (jsonData instanceof JsonTopicOrderData) {
                         if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
-                            jtk.setPurchaseOrderState(((JsonTopicOrderData) object).getPurchaseOrderState());
+                            jtk.setPurchaseOrderState(((JsonTopicOrderData) jsonData).getPurchaseOrderState());
                             TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
                         }
                     }
-                    homeFragment.updateListFromNotification(jtk, go_to, title, body);
+                    homeFragment.updateListFromNotification(jtk, go_to, title, body, jsonTextToSpeeches);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -883,13 +890,13 @@ public class LaunchActivity
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        //dismissProgress(); no progress bar silent call here
+        /* dismissProgress(); no progress bar silent call here */
         new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-        //dismissProgress(); no progress bar silent call here
+        /* dismissProgress(); no progress bar silent call here */
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
@@ -904,7 +911,7 @@ public class LaunchActivity
     }
 
     private void setUpExpandableList(boolean isLogin) {
-        // Fill menu items
+        /* Fill menu items */
         menuDrawerItems.clear();
 
         if (isCountryIndia()) {
@@ -1098,52 +1105,59 @@ public class LaunchActivity
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                 // new push notification is received
-                String payload = intent.getStringExtra(Constants.Firebase_Type);
-                String codeQR = intent.getStringExtra(Constants.CodeQR);
+                String payload = intent.getStringExtra(Constants.FIREBASE_TYPE);
+                String codeQR = intent.getStringExtra(Constants.CODE_QR);
                 Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
-                Object object = intent.getSerializableExtra("object");
-                if (object instanceof JsonTopicQueueData) {
-                    Log.e("onReceiveJsonTopicQdata", ((JsonTopicQueueData) object).toString());
-                } else if (object instanceof JsonClientData) {
-                    Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
-                } else if (object instanceof JsonAlertData) {
-                    Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
-                } else if (object instanceof JsonTopicOrderData) {
-                    Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
-                } else if (object instanceof JsonClientTokenAndQueueData) {
-                    Log.e("JsonClientTokenAndQData", ((JsonClientTokenAndQueueData) object).toString());
-                } else if (object instanceof JsonClientOrderData) {
-                    Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
-                } else if (object instanceof JsonTopicAppointmentData) {
-                    Log.e("JsonTopicAppointData", ((JsonTopicAppointmentData) object).toString());
+                JsonData jsonData = (JsonData) intent.getSerializableExtra("object");
+                if (jsonData instanceof JsonTopicQueueData) {
+                    Log.e("onReceiveJsonTopicQdata", jsonData.toString());
+                } else if (jsonData instanceof JsonClientData) {
+                    Log.e("onReceiveJsonClientData", jsonData.toString());
+                } else if (jsonData instanceof JsonAlertData) {
+                    Log.e("onReceiveJsonAlertData", jsonData.toString());
+                } else if (jsonData instanceof JsonTopicOrderData) {
+                    Log.e("onReceiveJsonTopicOdata", jsonData.toString());
+                } else if (jsonData instanceof JsonClientTokenAndQueueData) {
+                    Log.e("JsonClientTokenAndQData", jsonData.toString());
+                } else if (jsonData instanceof JsonClientOrderData) {
+                    Log.e("JsonClientOrderData", jsonData.toString());
+                } else if (jsonData instanceof JsonTopicAppointmentData) {
+                    Log.e("JsonTopicAppointData", jsonData.toString());
                     NotificationDB.insertNotification(
                             NotificationDB.KEY_NOTIFY,
-                            "", ((JsonTopicAppointmentData) object).getBody(),
-                            ((JsonTopicAppointmentData) object).getTitle(), BusinessTypeEnum.PA.getName(), ((JsonTopicAppointmentData) object).getImageURL());
-                } else if (object instanceof JsonMedicalFollowUp) {
-                    Log.e("JsonMedicalFollowUp", ((JsonMedicalFollowUp) object).toString());
+                            "",
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            jsonData.getImageURL());
+                } else if (jsonData instanceof JsonMedicalFollowUp) {
+                    Log.e("JsonMedicalFollowUp", jsonData.toString());
                     NotificationDB.insertNotification(
                             NotificationDB.KEY_NOTIFY,
-                            ((JsonMedicalFollowUp) object).getCodeQR(), ((JsonMedicalFollowUp) object).getBody(),
-                            ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName(), ((JsonMedicalFollowUp) object).getImageURL());
+                            ((JsonMedicalFollowUp) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            jsonData.getImageURL());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    if (object instanceof JsonAlertData) {
+                    if (jsonData instanceof JsonAlertData) {
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
-                                ((JsonAlertData) object).getCodeQR(),
-                                ((JsonAlertData) object).getBody(),
-                                ((JsonAlertData) object).getTitle(),
-                                ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() :
-                                        ((JsonAlertData) object).getBusinessType().getName(), ((JsonAlertData) object).getImageURL());
+                                ((JsonAlertData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                ((JsonAlertData) jsonData).getBusinessType() == null
+                                        ? BusinessTypeEnum.PA.getName()
+                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle(), ((JsonAlertData) object).getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
-                    } else if (object instanceof JsonClientData) {
-                        String token = String.valueOf(((JsonClientData) object).getToken());
-                        String qid = ((JsonClientData) object).getQueueUserId();
-                        if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                    } else if (jsonData instanceof JsonClientData) {
+                        String token = String.valueOf(((JsonClientData) jsonData).getToken());
+                        String qid = ((JsonClientData) jsonData).getQueueUserId();
+                        if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             /*
                              * Save codeQR of review & show the review screen on app
                              * resume if there is any record in Review DB for queue review key
@@ -1153,9 +1167,9 @@ public class LaunchActivity
                                 ContentValues cv = new ContentValues();
                                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
                                 ReviewDB.updateReviewRecord(codeQR, token, cv);
-                                // update
+                                /* update */
                             } else {
-                                //insert
+                                /* insert */
                                 ContentValues cv = new ContentValues();
                                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
                                 cv.put(DatabaseTable.Review.CODE_QR, codeQR);
@@ -1167,19 +1181,19 @@ public class LaunchActivity
                                 ReviewDB.insert(cv);
                             }
                             callReviewActivity(codeQR, token);
-                            // this code is added to close the join & after join screen if the request is processed
+                            /* this code is added to close the join & after join screen if the request is processed */
                             if (activityCommunicator != null) {
                                 activityCommunicator.requestProcessed(codeQR, token);
                             }
-                        } else if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                        } else if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                             if (null != reviewData) {
                                 ContentValues cv = new ContentValues();
                                 cv.put(DatabaseTable.Review.KEY_SKIP, 1);
                                 ReviewDB.updateReviewRecord(codeQR, token, cv);
-                                // update
+                                /* update */
                             } else {
-                                //insert
+                                /* insert */
                                 ContentValues cv = new ContentValues();
                                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                 cv.put(DatabaseTable.Review.CODE_QR, codeQR);
@@ -1192,10 +1206,10 @@ public class LaunchActivity
                             }
                             callSkipScreen(codeQR, token, qid);
                         }
-                    } else if (object instanceof JsonClientOrderData) {
-                        String token = String.valueOf(((JsonClientOrderData) object).getOrderNumber());
-                        String qid = ((JsonClientOrderData) object).getQueueUserId();
-                        if (((JsonClientOrderData) object).getPurchaseOrderState().getName().equalsIgnoreCase(PurchaseOrderStateEnum.OD.getName())) {
+                    } else if (jsonData instanceof JsonClientOrderData) {
+                        String token = String.valueOf(((JsonClientOrderData) jsonData).getOrderNumber());
+                        String qid = ((JsonClientOrderData) jsonData).getQueueUserId();
+                        if (((JsonClientOrderData) jsonData).getPurchaseOrderState().getName().equalsIgnoreCase(PurchaseOrderStateEnum.OD.getName())) {
                             /*
                              * Save codeQR of review & show the review screen on app
                              * resume if there is any record in Review DB for queue review key
@@ -1205,9 +1219,9 @@ public class LaunchActivity
                                 ContentValues cv = new ContentValues();
                                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
                                 ReviewDB.updateReviewRecord(codeQR, token, cv);
-                                // update
+                                /* update */
                             } else {
-                                //insert
+                                /* insert */
                                 ContentValues cv = new ContentValues();
                                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
                                 cv.put(DatabaseTable.Review.CODE_QR, codeQR);
@@ -1219,47 +1233,54 @@ public class LaunchActivity
                                 ReviewDB.insert(cv);
                             }
                             callReviewActivity(codeQR, token);
-                            // this code is added to close the join & after join screen if the request is processed
-                            // Update the order screen/ Join Screen if open
+                            /*
+                             * this code is added to close the join & after join screen if the request is processed
+                             * Update the order screen/ Join Screen if open
+                             */
                             if (activityCommunicator != null) {
                                 activityCommunicator.requestProcessed(codeQR, token);
                             }
                         }
-                    } else if (object instanceof JsonTopicOrderData) {
-                        updateNotification(object, codeQR);
-                    } else if (object instanceof JsonTopicQueueData) {
-                        updateNotification(object, codeQR);
-                    } else if (object instanceof JsonClientTokenAndQueueData) {
-                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
+                    } else if (jsonData instanceof JsonTopicOrderData) {
+                        updateNotification(jsonData, codeQR);
+                    } else if (jsonData instanceof JsonTopicQueueData) {
+                        updateNotification(jsonData, codeQR);
+                    } else if (jsonData instanceof JsonClientTokenAndQueueData) {
+                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) jsonData).getTokenAndQueues();
                         if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
                             TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
                         }
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
-                                ((JsonClientTokenAndQueueData) object).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
-                                ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName(), ((JsonClientTokenAndQueueData) object).getImageURL());
+                                ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                BusinessTypeEnum.PA.getName(),
+                                jsonData.getImageURL());
 
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                             NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
                         }
                         updateNotificationBadgeCount();
-                        if (null != homeFragment)
+                        if (null != homeFragment) {
                             homeFragment.fetchCurrentAndHistoryList();
+                        }
                     }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                    if (object instanceof JsonAlertData) {
+                    if (jsonData instanceof JsonAlertData) {
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
-                                ((JsonAlertData) object).getCodeQR(),
-                                ((JsonAlertData) object).getBody(),
-                                ((JsonAlertData) object).getTitle(),
-                                ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() :
-                                        ((JsonAlertData) object).getBusinessType().getName(), ((JsonAlertData) object).getImageURL());
-                        //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle(), ((JsonAlertData) object).getBody());
+                                ((JsonAlertData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                ((JsonAlertData) jsonData).getBusinessType() == null
+                                        ? BusinessTypeEnum.PA.getName()
+                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
+                        /* Show some meaningful msg to the end user */
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
                     } else {
-                        updateNotification(object, codeQR);
+                        updateNotification(jsonData, codeQR);
                     }
                 } else {
                     new CustomToast().showToast(launchActivity, "UnSupported Notification reached: " + payload);

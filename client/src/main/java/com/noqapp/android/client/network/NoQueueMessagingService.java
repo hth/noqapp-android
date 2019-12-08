@@ -1,32 +1,11 @@
 package com.noqapp.android.client.network;
 
-import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
+import static com.noqapp.android.client.utils.Constants.CODE_QR;
+import static com.noqapp.android.client.utils.Constants.FIREBASE_TYPE;
+import static com.noqapp.android.client.utils.Constants.ISREVIEW;
+import static com.noqapp.android.client.utils.Constants.QRCODE;
+import static com.noqapp.android.client.utils.Constants.TOKEN;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
@@ -45,18 +24,48 @@ import com.noqapp.android.client.views.receivers.AlarmReceiver;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonData;
 import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
 import com.noqapp.android.common.fcm.data.JsonTopicAppointmentData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.json.JSONObject;
+
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.text.TextUtils;
+import android.util.Log;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -66,16 +75,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.noqapp.android.client.utils.Constants.CodeQR;
-import static com.noqapp.android.client.utils.Constants.Firebase_Type;
-import static com.noqapp.android.client.utils.Constants.ISREVIEW;
-import static com.noqapp.android.client.utils.Constants.QRCODE;
-import static com.noqapp.android.client.utils.Constants.TOKEN;
-
 public class NoQueueMessagingService extends FirebaseMessagingService {
-
     private final static String TAG = NoQueueMessagingService.class.getSimpleName();
 
     public NoQueueMessagingService() {
@@ -114,70 +117,77 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         }
         clearNotifications(this);
         // Check if message contains a notification payload.
-        if (remoteMessage.getData() != null) {
-            String title = remoteMessage.getData().get("title");
-            String body = remoteMessage.getData().get("body");
-            String imageUrl = remoteMessage.getData().get("imageURL");
+
+        Map<String, String> mappedData = remoteMessage.getData();
+        if (!mappedData.isEmpty()) {
+            String title = mappedData.get("title");
+            String body = mappedData.get("body");
+            String imageUrl = mappedData.get("imageURL");
             MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(remoteMessage.getData().get(Constants.MESSAGE_ORIGIN));
 
-            Object object = null;
+            ObjectMapper mapper = new ObjectMapper();
+
+            JsonData jsonData = null;
             switch (messageOrigin) {
                 case QA:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicAppointmentData.class);
-                        Log.e("FCM", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicAppointmentData.class);
+                        Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case Q:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicQueueData.class);
-                        Log.e("FCM", object.toString());
+                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                        //TODO(hth) Temp code. Removed as parsing issue.
+                        mappedData.remove("textToSpeeches");
+
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicQueueData.class);
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+                        Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case CQO:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        JsonClientTokenAndQueueData jsonClientTokenAndQueueData = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientTokenAndQueueData.class);
+                        JsonClientTokenAndQueueData jsonClientTokenAndQueueData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientTokenAndQueueData.class);
+
                         JsonTokenAndQueueList jsonTokenAndQueueList = new JsonTokenAndQueueList();
-                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(remoteMessage.getData().get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {
-                        }));
+                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(mappedData.get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {}));
                         jsonClientTokenAndQueueData.setTokenAndQueues(jsonTokenAndQueueList.getTokenAndQueues());
-                        object = jsonClientTokenAndQueueData;
-                        Log.e("FCM", object.toString());
+                        jsonData = jsonClientTokenAndQueueData;
+                        Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(LaunchActivity.getLaunchActivity(), "Parsing exception", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case QR:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
-                        Log.e("FCM Queue Review", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientData.class);
+                        Log.e("FCM Queue Review", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case OR:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientOrderData.class);
-                        Log.e("FCM Order Review", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientOrderData.class);
+                        Log.e("FCM Order Review", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case O:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicOrderData.class);
-                        Log.e("FCM order ", object.toString());
+                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                        //TODO(hth) Temp code. Removed as parsing issue.
+                        mappedData.remove("textToSpeeches");
+
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicOrderData.class);
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+                        Log.e("FCM order ", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -185,18 +195,16 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 case A:
                 case D:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonAlertData.class);
-                        Log.e("FCM Review store", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonAlertData.class);
+                        Log.e("FCM Review store", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case MF:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonMedicalFollowUp.class);
-                        Log.e("FCM Medical Followup", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonMedicalFollowUp.class);
+                        Log.e("FCM Medical Followup", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -208,15 +216,15 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 if (!AppUtils.isAppIsInBackground(getApplicationContext())) {
                     // app is in foreground, broadcast the push message
                     Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                    pushNotification.putExtra("object", (Serializable) object);
-                    pushNotification.putExtra(Firebase_Type, remoteMessage.getData().get(Firebase_Type));
-                    pushNotification.putExtra(CodeQR, remoteMessage.getData().get(CodeQR));
+                    pushNotification.putExtra("object", (Serializable) jsonData);
+                    pushNotification.putExtra(FIREBASE_TYPE, mappedData.get(FIREBASE_TYPE));
+                    pushNotification.putExtra(CODE_QR, mappedData.get(CODE_QR));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
                 } else {
                     // app is in background, show the notification in notification tray
                     //save data to database
-                    String payload = remoteMessage.getData().get(Firebase_Type);
-                    String codeQR = remoteMessage.getData().get(CodeQR);
+                    String payload = mappedData.get(FIREBASE_TYPE);
+                    String codeQR = mappedData.get(CODE_QR);
 
                     if (null == LaunchActivity.dbHandler) {
                         LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
@@ -227,7 +235,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                      */
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         if (StringUtils.isNotBlank(codeQR)) {
-                            String current_serving = remoteMessage.getData().get(Constants.CurrentlyServing);
+                            String current_serving = mappedData.get(Constants.CurrentlyServing);
                             if (null != current_serving) {
                                 ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                                 for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
@@ -248,21 +256,23 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     }
                                 }
                             }
-                            if (object instanceof JsonAlertData) {
-                                Log.e("IN JsonAlertData", ((JsonAlertData) object).toString());
+                            if (jsonData instanceof JsonAlertData) {
+                                Log.e("IN JsonAlertData", jsonData.toString());
                                 NotificationDB.insertNotification(
                                         NotificationDB.KEY_NOTIFY,
-                                        ((JsonAlertData) object).getCodeQR(),
+                                        ((JsonAlertData) jsonData).getCodeQR(),
                                         body,
                                         title,
-                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName(), imageUrl);
+                                        ((JsonAlertData) jsonData).getBusinessType() == null
+                                                ? BusinessTypeEnum.PA.getName()
+                                                : ((JsonAlertData) jsonData).getBusinessType().getName(), imageUrl);
 
                                 sendNotification(title, body, false, imageUrl);
-                            } else if (object instanceof JsonClientData) {
-                                Log.e("IN JsonClientData", ((JsonClientData) object).toString());
-                                String token = String.valueOf(((JsonClientData) object).getToken());
-                                String qid = ((JsonClientData) object).getQueueUserId();
-                                if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                            } else if (jsonData instanceof JsonClientData) {
+                                Log.e("IN JsonClientData", jsonData.toString());
+                                String token = String.valueOf(((JsonClientData) jsonData).getToken());
+                                String qid = ((JsonClientData) jsonData).getQueueUserId();
+                                if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                                     /*
                                      * Save codeQR of review & show the review screen on app
                                      * resume if there is any record in Review DB for queue review key
@@ -286,7 +296,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ReviewDB.insert(cv);
                                     }
                                     sendNotification(title, body, codeQR, true, token, imageUrl);//pass codeQR to open review screen
-                                } else if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                                } else if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                                     ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                                     if (null != reviewData) {
                                         ContentValues cv = new ContentValues();
@@ -307,52 +317,57 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     }
                                     sendNotification(title, body, codeQR, false, token, imageUrl);//pass codeQR to open skip screen
                                 }
-                            } else if (object instanceof JsonClientTokenAndQueueData) {
-                                List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
+                            } else if (jsonData instanceof JsonClientTokenAndQueueData) {
+                                List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) jsonData).getTokenAndQueues();
                                 if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
                                     TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
                                 }
                                 NotificationDB.insertNotification(
                                         NotificationDB.KEY_NOTIFY,
-                                        ((JsonClientTokenAndQueueData) object).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
-                                        ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName(), imageUrl);
+                                        ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
+                                        jsonData.getBody(),
+                                        jsonData.getTitle(),
+                                        BusinessTypeEnum.PA.getName(),
+                                        imageUrl);
 
                                 for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                                     NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
                                 }
                                 sendNotification(title, body, false, imageUrl);
-                            } else if (object instanceof JsonMedicalFollowUp) {
+                            } else if (jsonData instanceof JsonMedicalFollowUp) {
                                 Log.e("Alert set:", "data is :" + title + " ---- " + body);
                                 sendNotification(title, body, true, imageUrl);
-                                setAlarm((JsonMedicalFollowUp) object);
+                                setAlarm((JsonMedicalFollowUp) jsonData);
                             } else {
                                 sendNotification(title, body, false, imageUrl);
                             }
                         } else {
                             sendNotification(title, body, false, imageUrl);
                             // add notification to DB
-                            if (object instanceof JsonAlertData) {
-                                Log.e("IN JsonAlertData", ((JsonAlertData) object).toString());
+                            if (jsonData instanceof JsonAlertData) {
+                                Log.e("IN JsonAlertData", jsonData.toString());
                                 NotificationDB.insertNotification(
                                         NotificationDB.KEY_NOTIFY,
-                                        ((JsonAlertData) object).getCodeQR(),
+                                        ((JsonAlertData) jsonData).getCodeQR(),
                                         body,
                                         title,
-                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName(), imageUrl);
+                                        ((JsonAlertData) jsonData).getBusinessType() == null
+                                                ? BusinessTypeEnum.PA.getName()
+                                                : ((JsonAlertData) jsonData).getBusinessType().getName(), imageUrl);
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        String go_to = "";
-                        String current_serving = "";
-                        if (object instanceof JsonTopicQueueData) {
-                            Log.e("IN JsonTopicQueueData", ((JsonTopicQueueData) object).toString());
-                            current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());
-                            go_to = ((JsonTopicQueueData) object).getGoTo();
+                        String goTo = "";
+                        String currentServing = "";
+                        if (jsonData instanceof JsonTopicQueueData) {
+                            Log.e("IN JsonTopicQueueData", jsonData.toString());
+                            currentServing = String.valueOf(((JsonTopicQueueData) jsonData).getCurrentlyServing());
+                            goTo = ((JsonTopicQueueData) jsonData).getGoTo();
                         }
-                        if (object instanceof JsonTopicOrderData) {
-                            Log.e("IN JsonTopicOrderData", ((JsonTopicOrderData) object).toString());
-                            current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());
-                            go_to = ((JsonTopicOrderData) object).getGoTo();
+                        if (jsonData instanceof JsonTopicOrderData) {
+                            Log.e("IN JsonTopicOrderData", jsonData.toString());
+                            currentServing = String.valueOf(((JsonTopicOrderData) jsonData).getCurrentlyServing());
+                            goTo = ((JsonTopicOrderData) jsonData).getGoTo();
                         }
                         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                         for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
@@ -362,49 +377,55 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                  * Save codeQR of goto & show it in after join screen on app
                                  * Review DB for review key && current serving == token no.
                                  */
-                                if (Integer.parseInt(current_serving) == jtk.getToken()) {
-                                    ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                                if (Integer.parseInt(currentServing) == jtk.getToken()) {
+                                    ReviewData reviewData = ReviewDB.getValue(codeQR, currentServing);
                                     if (null != reviewData) {
                                         ContentValues cv = new ContentValues();
-                                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
-                                        ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, goTo);
+                                        ReviewDB.updateReviewRecord(codeQR, currentServing, cv);
                                         // update
                                     } else {
                                         //insert
                                         ContentValues cv = new ContentValues();
                                         cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                         cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                                        cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                                        cv.put(DatabaseTable.Review.TOKEN, currentServing);
                                         cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
                                         cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                                         cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, goTo);
                                         ReviewDB.insert(cv);
                                     }
                                 }
                                 //update DB & after join screen
-                                jtk.setServingNumber(Integer.parseInt(current_serving));
+                                jtk.setServingNumber(Integer.parseInt(currentServing));
                                 if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
                                     //un-subscribe from the topic
                                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                                 }
-                                TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                                TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, String.valueOf(jtk.getToken()));
                                 sendNotification(title, body, true, imageUrl); // pass null to show only notification with no action
                             }
                         }
                     }
-                    if (object instanceof JsonMedicalFollowUp) {
-                        Log.e("JsonMedicalFollowUp", ((JsonMedicalFollowUp) object).toString());
+                    if (jsonData instanceof JsonMedicalFollowUp) {
+                        Log.e("JsonMedicalFollowUp", jsonData.toString());
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
-                                ((JsonMedicalFollowUp) object).getCodeQR(), ((JsonMedicalFollowUp) object).getBody(),
-                                ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName(), imageUrl);
-                    } else if (object instanceof JsonTopicAppointmentData) {
-                        Log.e("JsonTopicAppointData", ((JsonTopicAppointmentData) object).toString());
+                                ((JsonMedicalFollowUp) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                BusinessTypeEnum.PA.getName(),
+                                imageUrl);
+                    } else if (jsonData instanceof JsonTopicAppointmentData) {
+                        Log.e("JsonTopicAppointData", jsonData.toString());
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
-                                "", ((JsonTopicAppointmentData) object).getBody(),
-                                ((JsonTopicAppointmentData) object).getTitle(), BusinessTypeEnum.PA.getName(), ((JsonTopicAppointmentData) object).getImageURL());
+                                "",
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                BusinessTypeEnum.PA.getName(),
+                                jsonData.getImageURL());
                     }
                 }
             } catch (Exception e) {
@@ -422,7 +443,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         new CreateBigImageNotification(title, messageBody, imageUrl, isVibrate).execute();
     }
 
-
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.mipmap.notification_icon : R.mipmap.launcher;
@@ -438,7 +458,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             Date endDate = CommonHelper.stringToDate(jsonMedicalFollowUp.getFollowUpDay());
             long duration = endDate.getTime() - startDate.getTime();
             long diffInDays = TimeUnit.MILLISECONDS.toDays(duration);
-            Log.e("difference in day : ", String.valueOf(diffInDays));
+            Log.e("Difference in day: ", String.valueOf(diffInDays));
 
             Calendar c = Calendar.getInstance();
             c.setTime(startDate);
@@ -473,9 +493,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
         @Override
         protected Bitmap doInBackground(String... params) {
-            if (TextUtils.isEmpty(imageUrl))
+            if (TextUtils.isEmpty(imageUrl)) {
                 return null;
-            Bitmap bitmap = null;
+            }
+
+            Bitmap bitmap;
             try {
                 URL url = new URL(imageUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -499,10 +521,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
-                int importance = MyApplication.isNotificationSoundEnable() ?
-                        NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_LOW;
-                NotificationChannel mChannel = new NotificationChannel(
-                        channelId, channelName, importance);
+                int importance = MyApplication.isNotificationSoundEnable()
+                        ? NotificationManager.IMPORTANCE_HIGH
+                        : NotificationManager.IMPORTANCE_LOW;
+                NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
                 notificationManager.createNotificationChannel(mChannel);
             }
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -544,7 +566,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
 
     private class CreateBigImageNotificationWithReview extends AsyncTask<String, Void, Bitmap> {
-        private String imageUrl = "";
+        private String imageUrl;
         private String title, messageBody, codeQR, token;
         private boolean isReview;
 
@@ -559,9 +581,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
         @Override
         protected Bitmap doInBackground(String... params) {
-            if (TextUtils.isEmpty(imageUrl))
+            if (TextUtils.isEmpty(imageUrl)) {
                 return null;
-            Bitmap bitmap = null;
+            }
+
+            Bitmap bitmap;
             try {
                 URL url = new URL(imageUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -593,10 +617,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             String channelId = "channel-01";
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
-                int importance = MyApplication.isNotificationSoundEnable() ?
-                        NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_LOW;
-                NotificationChannel mChannel = new NotificationChannel(
-                        channelId, channelName, importance);
+                int importance = MyApplication.isNotificationSoundEnable()
+                        ? NotificationManager.IMPORTANCE_HIGH
+                        : NotificationManager.IMPORTANCE_LOW;
+                NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
                 notificationManager.createNotificationChannel(mChannel);
             }
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
