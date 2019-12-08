@@ -21,6 +21,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity {
+    private NoQueueMessagingService noQueueMessagingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,9 @@ public class LaunchActivity extends BaseLaunchActivity {
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         launchActivity = this;
-        Log.v("device id check", getDeviceID());
+        Log.v("Device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
+        noQueueMessagingService = new NoQueueMessagingService(this);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
         toolbar = findViewById(R.id.toolbar);
