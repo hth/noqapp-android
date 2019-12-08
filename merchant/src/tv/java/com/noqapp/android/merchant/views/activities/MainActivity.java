@@ -97,7 +97,7 @@ public class MainActivity
                         String status = intent.getStringExtra(Constants.STATUS);
                         String current_serving = intent.getStringExtra(Constants.CURRENT_SERVING);
                         String lastNumber = intent.getStringExtra(Constants.LASTNO);
-                        String payload = intent.getStringExtra(Constants.Firebase_Type);
+                        String payload = intent.getStringExtra(Constants.FIREBASE_TYPE);
                         Object object = intent.getSerializableExtra("object");
 
                         if (object instanceof JsonTopicQueueData) {

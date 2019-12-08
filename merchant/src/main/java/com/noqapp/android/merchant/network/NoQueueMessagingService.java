@@ -77,12 +77,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         if (!mappedData.isEmpty()) {
             Log.d(TAG, "Message data payload: " + mappedData);
             Log.d(TAG, "Message data payload: CodeQR " + mappedData.get(Constants.CODE_QR));
-            Log.d(TAG, "Message data payload: Firebase_Type " + mappedData.get(Constants.Firebase_Type));
+            Log.d(TAG, "Message data payload: FIREBASE_TYPE " + mappedData.get(Constants.FIREBASE_TYPE));
 
-            Log.d(TAG, "Message data payload: QueueStatus " + mappedData.get(Constants.QueueStatus));
-            Log.d(TAG, "Message data payload: CurrentlyServing " + mappedData.get(Constants.CurrentlyServing));
-            Log.d(TAG, "Message data payload: LastNumber " + mappedData.get(Constants.LastNumber));
-            Log.d(TAG, "Message data payload: GoTo_Counter " + mappedData.get(Constants.GoTo_Counter));
+            Log.d(TAG, "Message data payload: QUEUE_STATUS " + mappedData.get(Constants.QUEUE_STATUS));
+            Log.d(TAG, "Message data payload: CURRENTLY_SERVING " + mappedData.get(Constants.CURRENTLY_SERVING));
+            Log.d(TAG, "Message data payload: LAST_NUMBER " + mappedData.get(Constants.LAST_NUMBER));
+            Log.d(TAG, "Message data payload: GOTO_COUNTER " + mappedData.get(Constants.GOTO_COUNTER));
             String title = mappedData.get("title");
             String body = mappedData.get("body");
             clearNotifications(this);
@@ -172,23 +172,23 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 if (null == LaunchActivity.dbHandler) {
                     LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                 }
-                if (mappedData.get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 sendNotification(title, body, remoteMessage);
             } else {
                 // app is in foreground, broadcast the push message
                 // add notification to DB
-                if (mappedData.get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra(Constants.MESSAGE, body);
                 pushNotification.putExtra(Constants.QRCODE, mappedData.get(Constants.CODE_QR));
-                pushNotification.putExtra(Constants.STATUS, mappedData.get(Constants.QueueStatus));
-                pushNotification.putExtra(Constants.CURRENT_SERVING, mappedData.get(Constants.CurrentlyServing));
-                pushNotification.putExtra(Constants.LASTNO, mappedData.get(Constants.LastNumber));
-                pushNotification.putExtra(Constants.Firebase_Type, mappedData.get(Constants.Firebase_Type));
+                pushNotification.putExtra(Constants.STATUS, mappedData.get(Constants.QUEUE_STATUS));
+                pushNotification.putExtra(Constants.CURRENT_SERVING, mappedData.get(Constants.CURRENTLY_SERVING));
+                pushNotification.putExtra(Constants.LASTNO, mappedData.get(Constants.LAST_NUMBER));
+                pushNotification.putExtra(Constants.FIREBASE_TYPE, mappedData.get(Constants.FIREBASE_TYPE));
                 pushNotification.putExtra("object", (Serializable) jsonData);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             }
@@ -204,10 +204,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         if (null != remoteMessage) {
             notificationIntent.putExtra(Constants.MESSAGE, messageBody);
             notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CODE_QR));
-            notificationIntent.putExtra(Constants.STATUS, remoteMessage.getData().get(Constants.QueueStatus));
-            notificationIntent.putExtra(Constants.CURRENT_SERVING, remoteMessage.getData().get(Constants.CurrentlyServing));
-            notificationIntent.putExtra(Constants.LASTNO, remoteMessage.getData().get(Constants.LastNumber));
-            notificationIntent.putExtra(Constants.Firebase_Type, remoteMessage.getData().get(Constants.Firebase_Type));
+            notificationIntent.putExtra(Constants.STATUS, remoteMessage.getData().get(Constants.QUEUE_STATUS));
+            notificationIntent.putExtra(Constants.CURRENT_SERVING, remoteMessage.getData().get(Constants.CURRENTLY_SERVING));
+            notificationIntent.putExtra(Constants.LASTNO, remoteMessage.getData().get(Constants.LAST_NUMBER));
+            notificationIntent.putExtra(Constants.FIREBASE_TYPE, remoteMessage.getData().get(Constants.FIREBASE_TYPE));
             if (null != LaunchActivity.getLaunchActivity()) {
                 LaunchActivity.getLaunchActivity().updateListByNotification(notificationIntent);
             }

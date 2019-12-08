@@ -24,7 +24,7 @@ public class Constants extends BaseConstants{
     public static final String STATUS = "status";
     public static final String ISREVIEW = "isreview";
     public static final String FIREBASE_TYPE = "f";
-    public static final String CurrentlyServing = "cs";
+    public static final String CURRENTLY_SERVING = "cs";
     public static final String CODE_QR = "qr";
     public static final String TOKEN = "t";
     public static final String QID = "qid";
