@@ -215,7 +215,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 if (!AppUtils.isAppIsInBackground(getApplicationContext())) {
                     // app is in foreground, broadcast the push message
                     Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                    pushNotification.putExtra("object", (Serializable) jsonData);
+                    pushNotification.putExtra("jsonData", (Serializable) jsonData);
                     pushNotification.putExtra(FIREBASE_TYPE, mappedData.get(FIREBASE_TYPE));
                     pushNotification.putExtra(CODE_QR, mappedData.get(CODE_QR));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);

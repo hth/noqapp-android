@@ -189,7 +189,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra(Constants.CURRENT_SERVING, mappedData.get(Constants.CURRENTLY_SERVING));
                 pushNotification.putExtra(Constants.LASTNO, mappedData.get(Constants.LAST_NUMBER));
                 pushNotification.putExtra(Constants.FIREBASE_TYPE, mappedData.get(Constants.FIREBASE_TYPE));
-                pushNotification.putExtra("object", (Serializable) jsonData);
+                pushNotification.putExtra("jsonData", jsonData);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             }
         }
