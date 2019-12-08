@@ -126,7 +126,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(remoteMessage.getData().get(Constants.MESSAGE_ORIGIN));
 
             ObjectMapper mapper = new ObjectMapper();
-
             JsonData jsonData = null;
             switch (messageOrigin) {
                 case QA:

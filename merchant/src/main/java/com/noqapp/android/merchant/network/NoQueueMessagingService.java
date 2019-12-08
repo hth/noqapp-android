@@ -18,16 +18,19 @@ import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonData;
 import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
 import com.noqapp.android.common.fcm.data.JsonTopicAppointmentData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.merchant.R;
@@ -88,22 +91,26 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
             MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(mappedData.get(Constants.MESSAGE_ORIGIN));
 
-            Object object = null;
+            ObjectMapper mapper = new ObjectMapper();
+            JsonData jsonData = null;
             switch (messageOrigin) {
                 case QA:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicAppointmentData.class);
-                        Log.e("FCM", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicAppointmentData.class);
+                        Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case Q:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicQueueData.class);
-                        Log.e("FCM", object.toString());
+                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                        //TODO(hth) Temp code. Removed as parsing issue.
+                        mappedData.remove("textToSpeeches");
+
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicQueueData.class);
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+                        Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -113,27 +120,29 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     break;
                 case QR:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientData.class);
-                        Log.e("FCM Queue Review", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientData.class);
+                        Log.e("FCM Queue Review", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case OR:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientOrderData.class);
-                        Log.e("FCM Order Review", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientOrderData.class);
+                        Log.e("FCM Order Review", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case O:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicOrderData.class);
-                        Log.e("FCM order ", object.toString());
+                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                        //TODO(hth) Temp code. Removed as parsing issue.
+                        mappedData.remove("textToSpeeches");
+
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicOrderData.class);
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+                        Log.e("FCM order ", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -141,18 +150,16 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 case A:
                 case D:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(mappedData).toString(), JsonAlertData.class);
-                        Log.e("FCM Review store", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonAlertData.class);
+                        Log.e("FCM Review store", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case MF:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(mappedData).toString(), JsonMedicalFollowUp.class);
-                        Log.e("FCM Medical Followup", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonMedicalFollowUp.class);
+                        Log.e("FCM Medical Followup", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -183,7 +190,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra(Constants.CURRENT_SERVING, mappedData.get(Constants.CurrentlyServing));
                 pushNotification.putExtra(Constants.LASTNO, mappedData.get(Constants.LastNumber));
                 pushNotification.putExtra(Constants.Firebase_Type, mappedData.get(Constants.Firebase_Type));
-                pushNotification.putExtra("object", (Serializable) object);
+                pushNotification.putExtra("object", (Serializable) jsonData);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             }
         }
