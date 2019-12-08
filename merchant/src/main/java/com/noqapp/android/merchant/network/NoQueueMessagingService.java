@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.network;
 
-import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -77,7 +76,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (!mappedData.isEmpty()) {
             Log.d(TAG, "Message data payload: " + mappedData);
-            Log.d(TAG, "Message data payload: CodeQR " + mappedData.get(Constants.CodeQR));
+            Log.d(TAG, "Message data payload: CodeQR " + mappedData.get(Constants.CODE_QR));
             Log.d(TAG, "Message data payload: Firebase_Type " + mappedData.get(Constants.Firebase_Type));
 
             Log.d(TAG, "Message data payload: QueueStatus " + mappedData.get(Constants.QueueStatus));
@@ -174,18 +173,18 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                 }
                 if (mappedData.get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CodeQR), body, title);
+                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 sendNotification(title, body, remoteMessage);
             } else {
                 // app is in foreground, broadcast the push message
                 // add notification to DB
                 if (mappedData.get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CodeQR), body, title);
+                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra(Constants.MESSAGE, body);
-                pushNotification.putExtra(Constants.QRCODE, mappedData.get(Constants.CodeQR));
+                pushNotification.putExtra(Constants.QRCODE, mappedData.get(Constants.CODE_QR));
                 pushNotification.putExtra(Constants.STATUS, mappedData.get(Constants.QueueStatus));
                 pushNotification.putExtra(Constants.CURRENT_SERVING, mappedData.get(Constants.CurrentlyServing));
                 pushNotification.putExtra(Constants.LASTNO, mappedData.get(Constants.LastNumber));
@@ -204,7 +203,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.launcher);
         if (null != remoteMessage) {
             notificationIntent.putExtra(Constants.MESSAGE, messageBody);
-            notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CodeQR));
+            notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CODE_QR));
             notificationIntent.putExtra(Constants.STATUS, remoteMessage.getData().get(Constants.QueueStatus));
             notificationIntent.putExtra(Constants.CURRENT_SERVING, remoteMessage.getData().get(Constants.CurrentlyServing));
             notificationIntent.putExtra(Constants.LASTNO, remoteMessage.getData().get(Constants.LastNumber));
