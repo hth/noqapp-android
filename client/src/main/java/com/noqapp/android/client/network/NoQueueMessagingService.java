@@ -139,12 +139,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     break;
                 case Q:
                     try {
-                        JsonTextToSpeech jsonTextToSpeech = mapper.readValue(mappedData.get("textToSpeech"), JsonTextToSpeech.class);
+                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
                         //TODO(hth) Temp code. Removed as parsing issue.
-                        mappedData.remove("textToSpeech");
+                        mappedData.remove("textToSpeeches");
 
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicQueueData.class);
-                        jsonData.setJsonTextToSpeech(jsonTextToSpeech);
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
                         Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -181,12 +181,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     break;
                 case O:
                     try {
-                        JsonTextToSpeech jsonTextToSpeech = mapper.readValue(mappedData.get("textToSpeech"), JsonTextToSpeech.class);
+                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
                         //TODO(hth) Temp code. Removed as parsing issue.
-                        mappedData.remove("textToSpeech");
+                        mappedData.remove("textToSpeeches");
 
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicOrderData.class);
-                        jsonData.setJsonTextToSpeech(jsonTextToSpeech);
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
                         Log.e("FCM order ", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();

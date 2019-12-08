@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User: hitender
@@ -45,8 +46,8 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
     @JsonProperty("imageURL")
     private String imageURL;
 
-    @JsonProperty("textToSpeech")
-    private JsonTextToSpeech jsonTextToSpeech;
+    @JsonProperty("textToSpeeches")
+    private List<JsonTextToSpeech> jsonTextToSpeeches;
 
     public FirebaseMessageTypeEnum getFirebaseMessageType() {
         return firebaseMessageType;
@@ -84,12 +85,12 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public JsonTextToSpeech getJsonTextToSpeech() {
-        return jsonTextToSpeech;
+    public List<JsonTextToSpeech> getJsonTextToSpeeches() {
+        return jsonTextToSpeeches;
     }
 
-    public JsonData setJsonTextToSpeech(JsonTextToSpeech jsonTextToSpeech) {
-        this.jsonTextToSpeech = jsonTextToSpeech;
+    public JsonData setJsonTextToSpeeches(List<JsonTextToSpeech> jsonTextToSpeeches) {
+        this.jsonTextToSpeeches = jsonTextToSpeeches;
         return this;
     }
 

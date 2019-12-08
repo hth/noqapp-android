@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonVoiceInput {
-
     @JsonProperty("languageCode")
     private String languageCode;
 

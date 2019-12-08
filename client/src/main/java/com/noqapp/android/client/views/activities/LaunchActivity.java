@@ -39,6 +39,7 @@ import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
 import com.noqapp.android.common.fcm.data.JsonTopicAppointmentData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
@@ -735,7 +736,7 @@ public class LaunchActivity
         String current_serving = "";
         String title = "";
         String body = "";
-        String textToSpeech = "";
+        List<JsonTextToSpeech> jsonTextToSpeeches = null;
         PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
         if (jsonData instanceof JsonTopicQueueData) {
             JsonTopicQueueData jsonTopicQueueData = (JsonTopicQueueData) jsonData;
@@ -744,7 +745,7 @@ public class LaunchActivity
             messageOrigin = jsonTopicQueueData.getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
             title = jsonData.getTitle();
             body = jsonData.getBody();
-            textToSpeech = jsonData.getJsonTextToSpeech().getJsonTextInput().getText();
+            jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
         } else if (jsonData instanceof JsonTopicOrderData) {
             JsonTopicOrderData jsonTopicOrderData = (JsonTopicOrderData) jsonData;
             current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
@@ -753,7 +754,7 @@ public class LaunchActivity
             purchaseOrderStateEnum = jsonTopicOrderData.getPurchaseOrderState();
             title = jsonData.getTitle();
             body = jsonData.getBody();
-            textToSpeech = jsonData.getJsonTextToSpeech().getJsonTextInput().getText();
+            jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
         }
 
         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
@@ -842,7 +843,7 @@ public class LaunchActivity
                             TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
                         }
                     }
-                    homeFragment.updateListFromNotification(jtk, go_to, title, body, textToSpeech);
+                    homeFragment.updateListFromNotification(jtk, go_to, title, body, jsonTextToSpeeches);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
