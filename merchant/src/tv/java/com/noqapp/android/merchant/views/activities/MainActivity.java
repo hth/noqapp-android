@@ -176,10 +176,12 @@ public class MainActivity
             AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
             advertisementApiCalls.setAdvertisementPresenter(this);
             advertisementApiCalls.setProfessionalProfilesPresenter(this);
-            advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId(),
+            advertisementApiCalls.getAllAdvertisements(
+                    UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
-            advertisementApiCalls.professionalProfiles(UserUtils.getDeviceId(),
+            advertisementApiCalls.professionalProfiles(
+                    UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
         }
@@ -193,8 +195,7 @@ public class MainActivity
                 startCastService(castDevice);
             }
         }
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter(Constants.PUSH_NOTIFICATION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
     @Override

@@ -1,24 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RatingBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
@@ -38,6 +19,25 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -81,21 +81,18 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         rb_5 = findViewById(R.id.rb_5);
 
         rg_save_time = findViewById(R.id.rg_save_time);
-        rg_save_time.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                for (int i = 0; i < rg_save_time.getChildCount(); i++) {
-                    View o = rg_save_time.getChildAt(i);
-                    if (o instanceof RadioButton) {
-                        o.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_unselect));
-                        ((RadioButton) o).setTextColor(Color.BLACK);
-                    }
+        rg_save_time.setOnCheckedChangeListener((group, checkedId) -> {
+            for (int i = 0; i < rg_save_time.getChildCount(); i++) {
+                View o = rg_save_time.getChildAt(i);
+                if (o instanceof RadioButton) {
+                    o.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_unselect));
+                    ((RadioButton) o).setTextColor(Color.BLACK);
                 }
-                RadioButton rb = findViewById(checkedId);
-                rb.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_select));
-                rb.setTextColor(Color.WHITE);
-                tv_hr_saved.setText(getSeekbarLabel(Integer.parseInt(rb.getTag().toString())));
             }
+            RadioButton rb = findViewById(checkedId);
+            rb.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_select));
+            rb.setTextColor(Color.WHITE);
+            tv_hr_saved.setText(getSeekbarLabel(Integer.parseInt(rb.getTag().toString())));
         });
         rb_4.setChecked(true);
         final Bundle extras = getIntent().getExtras();
@@ -137,64 +134,57 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             //Do nothing as of now
         }
         //actionbarBack.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener((View v) -> {
-                onBackPressed();
-        });
+        actionbarBack.setOnClickListener((View v) -> onBackPressed());
         ratingBar.setRating(4.0f);
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                tv_rating_value.setText(rating + "");
-            }
-        });
+        ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> tv_rating_value.setText(rating + ""));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener((View v) -> {
-                if (ratingBar.getRating() == 0) {
-                    Toast.makeText(ReviewActivity.this, getString(R.string.error_rateservice), Toast.LENGTH_LONG).show();
-                }
+            if (ratingBar.getRating() == 0) {
+                Toast.makeText(ReviewActivity.this, getString(R.string.error_rateservice), Toast.LENGTH_LONG).show();
+            }
 //                else if (seekBar.getProgress() / 20 == 0) {
 //                    Toast.makeText(ReviewActivity.this, getString(R.string.error_timesaved), Toast.LENGTH_LONG).show();
 //                }
-                else {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        /* New instance of progressbar because it is a new activity. */
-                        setProgressCancel(true);
-                        setProgressMessage("Submitting review...");
-                        showProgress();
-                        if (UserUtils.isLogin()) {
-                            if (jtk.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-                                OrderReview orderReview = new OrderReview();
-                                orderReview.setCodeQR(jtk.getCodeQR());
-                                orderReview.setToken(jtk.getToken());
-                                orderReview.setRatingCount(Math.round(ratingBar.getRating()));
-                                orderReview.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
-                                new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
-                            } else {
-                                QueueReview rr = new QueueReview()
-                                        .setCodeQR(jtk.getCodeQR())
-                                        .setToken(jtk.getToken())
-                                        .setHoursSaved(selectedRadio) // update according select radio
-                                        .setRatingCount(Math.round(ratingBar.getRating()))
-                                        .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
-                                        .setQueueUserId(jtk.getQueueUserId());
-                                new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
-                            }
+            else {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    /* New instance of progressbar because it is a new activity. */
+                    setProgressCancel(true);
+                    setProgressMessage("Submitting review...");
+                    showProgress();
+                    if (UserUtils.isLogin()) {
+                        if (jtk.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+                            OrderReview orderReview = new OrderReview();
+                            orderReview.setCodeQR(jtk.getCodeQR());
+                            orderReview.setToken(jtk.getToken());
+                            orderReview.setRatingCount(Math.round(ratingBar.getRating()));
+                            orderReview.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+                            new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
                         } else {
                             QueueReview rr = new QueueReview()
                                     .setCodeQR(jtk.getCodeQR())
                                     .setToken(jtk.getToken())
                                     .setHoursSaved(selectedRadio) // update according select radio
                                     .setRatingCount(Math.round(ratingBar.getRating()))
-                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
-
-                            ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
-                            reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);
-                            reviewApiUnAuthenticCall.queue(UserUtils.getDeviceId(), rr);
+                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
+                                    .setQueueUserId(jtk.getQueueUserId());
+                            new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
                         }
                     } else {
-                        ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
+                        QueueReview rr = new QueueReview()
+                                .setCodeQR(jtk.getCodeQR())
+                                .setToken(jtk.getToken())
+                                .setHoursSaved(selectedRadio) // update according select radio
+                                .setRatingCount(Math.round(ratingBar.getRating()))
+                                .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+
+                        ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
+                        reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);
+                        reviewApiUnAuthenticCall.queue(UserUtils.getDeviceId(), rr);
                     }
+                } else {
+                    ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
                 }
+            }
         });
     }
 
