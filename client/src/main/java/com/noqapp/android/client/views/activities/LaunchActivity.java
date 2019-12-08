@@ -740,7 +740,7 @@ public class LaunchActivity
         PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
         if (jsonData instanceof JsonTopicQueueData) {
             JsonTopicQueueData jsonTopicQueueData = (JsonTopicQueueData) jsonData;
-            current_serving = String.valueOf(jsonTopicQueueData.getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
+            current_serving = String.valueOf(jsonTopicQueueData.getCurrentlyServing());//intent.getStringExtra(Constants.CURRENTLY_SERVING);
             go_to = jsonTopicQueueData.getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
             messageOrigin = jsonTopicQueueData.getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
             title = jsonData.getTitle();
@@ -748,7 +748,7 @@ public class LaunchActivity
             jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
         } else if (jsonData instanceof JsonTopicOrderData) {
             JsonTopicOrderData jsonTopicOrderData = (JsonTopicOrderData) jsonData;
-            current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
+            current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());//intent.getStringExtra(Constants.CURRENTLY_SERVING);
             go_to = jsonTopicOrderData.getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
             messageOrigin = jsonTopicOrderData.getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
             purchaseOrderStateEnum = jsonTopicOrderData.getPurchaseOrderState();

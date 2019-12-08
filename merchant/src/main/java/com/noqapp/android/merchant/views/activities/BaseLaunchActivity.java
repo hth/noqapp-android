@@ -572,7 +572,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             String status = intent.getStringExtra(Constants.STATUS);
             String current_serving = intent.getStringExtra(Constants.CURRENT_SERVING);
             String lastno = intent.getStringExtra(Constants.LASTNO);
-            String payload = intent.getStringExtra(Constants.Firebase_Type);
+            String payload = intent.getStringExtra(Constants.FIREBASE_TYPE);
             Log.v("Notify msg background",
                     "Push notification: " + message + "\n" + "qrcode : " + qrcode
                             + "\n" + "status : " + status

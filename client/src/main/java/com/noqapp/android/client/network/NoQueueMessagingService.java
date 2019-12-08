@@ -234,7 +234,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                      */
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         if (StringUtils.isNotBlank(codeQR)) {
-                            String current_serving = mappedData.get(Constants.CurrentlyServing);
+                            String current_serving = mappedData.get(Constants.CURRENTLY_SERVING);
                             if (null != current_serving) {
                                 ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                                 for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
