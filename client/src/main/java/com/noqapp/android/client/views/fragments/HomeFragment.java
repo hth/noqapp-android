@@ -696,10 +696,11 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
             for (JsonTextToSpeech jsonTextToSpeech : jsonTextToSpeeches) {
                 if (jsonTextToSpeech.getJsonVoiceInput().getLanguageCode().startsWith("en")) {
-                    HomeFragment.textToSpeech.setLanguage(new Locale(jsonTextToSpeech.getJsonVoiceInput().getLanguageCode()));
+                    Voice v = new Voice(jsonTextToSpeech.getJsonVoiceInput().getName(), new Locale(jsonTextToSpeech.getJsonVoiceInput().getLanguageCode()), 400, 200, true, null);
+                    HomeFragment.textToSpeech.setVoice(v);
                     HomeFragment.textToSpeech.speak(
                             jsonTextToSpeech.getJsonTextInput().getText(),
-                            TextToSpeech.QUEUE_ADD,
+                            TextToSpeech.QUEUE_FLUSH,
                             null);
                 }
             }
