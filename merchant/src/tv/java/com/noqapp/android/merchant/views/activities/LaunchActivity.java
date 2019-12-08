@@ -56,14 +56,10 @@ public class LaunchActivity extends BaseLaunchActivity {
             deviceApiCalls.isSupportedAppVersion(UserUtils.getDeviceId());
         }
         tv_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.tv, 0);
-        tv_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(LaunchActivity.this, MainActivity.class);
-                startActivity(in);
-            }
+        tv_name.setOnClickListener(v -> {
+            Intent in = new Intent(LaunchActivity.this, MainActivity.class);
+            startActivity(in);
         });
-
     }
 
     @Override
