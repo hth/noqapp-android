@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.network;
 
-import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -18,16 +17,19 @@ import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonData;
 import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
 import com.noqapp.android.common.fcm.data.JsonTopicAppointmentData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.merchant.R;
@@ -42,6 +44,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
@@ -69,39 +72,44 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
+        Map<String, String> mappedData = remoteMessage.getData();
         // Check if message contains a notification payload.
-        if (remoteMessage.getData() != null) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            Log.d(TAG, "Message data payload: CodeQR " + remoteMessage.getData().get(Constants.CodeQR));
-            Log.d(TAG, "Message data payload: Firebase_Type " + remoteMessage.getData().get(Constants.Firebase_Type));
+        if (!mappedData.isEmpty()) {
+            Log.d(TAG, "Message data payload: " + mappedData);
+            Log.d(TAG, "Message data payload: CodeQR " + mappedData.get(Constants.CODE_QR));
+            Log.d(TAG, "Message data payload: Firebase_Type " + mappedData.get(Constants.Firebase_Type));
 
-            Log.d(TAG, "Message data payload: QueueStatus " + remoteMessage.getData().get(Constants.QueueStatus));
-            Log.d(TAG, "Message data payload: CurrentlyServing " + remoteMessage.getData().get(Constants.CurrentlyServing));
-            Log.d(TAG, "Message data payload: LastNumber " + remoteMessage.getData().get(Constants.LastNumber));
-            Log.d(TAG, "Message data payload: GoTo_Counter " + remoteMessage.getData().get(Constants.GoTo_Counter));
-            String title = remoteMessage.getData().get("title");
-            String body = remoteMessage.getData().get("body");
+            Log.d(TAG, "Message data payload: QueueStatus " + mappedData.get(Constants.QueueStatus));
+            Log.d(TAG, "Message data payload: CurrentlyServing " + mappedData.get(Constants.CurrentlyServing));
+            Log.d(TAG, "Message data payload: LastNumber " + mappedData.get(Constants.LastNumber));
+            Log.d(TAG, "Message data payload: GoTo_Counter " + mappedData.get(Constants.GoTo_Counter));
+            String title = mappedData.get("title");
+            String body = mappedData.get("body");
             clearNotifications(this);
-            Log.e("M-Notification: ", remoteMessage.getData().toString());
+            Log.e("M-Notification: ", mappedData.toString());
 
-            MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(remoteMessage.getData().get(Constants.MESSAGE_ORIGIN));
+            MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(mappedData.get(Constants.MESSAGE_ORIGIN));
 
-            Object object = null;
+            ObjectMapper mapper = new ObjectMapper();
+            JsonData jsonData = null;
             switch (messageOrigin) {
                 case QA:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicAppointmentData.class);
-                        Log.e("FCM", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicAppointmentData.class);
+                        Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case Q:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicQueueData.class);
-                        Log.e("FCM", object.toString());
+                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                        //TODO(hth) Temp code. Removed as parsing issue.
+                        mappedData.remove("textToSpeeches");
+
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicQueueData.class);
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+                        Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -111,27 +119,29 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     break;
                 case QR:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
-                        Log.e("FCM Queue Review", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientData.class);
+                        Log.e("FCM Queue Review", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case OR:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientOrderData.class);
-                        Log.e("FCM Order Review", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientOrderData.class);
+                        Log.e("FCM Order Review", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case O:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicOrderData.class);
-                        Log.e("FCM order ", object.toString());
+                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                        //TODO(hth) Temp code. Removed as parsing issue.
+                        mappedData.remove("textToSpeeches");
+
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicOrderData.class);
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+                        Log.e("FCM order ", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -139,18 +149,16 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 case A:
                 case D:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonAlertData.class);
-                        Log.e("FCM Review store", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonAlertData.class);
+                        Log.e("FCM Review store", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case MF:
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonMedicalFollowUp.class);
-                        Log.e("FCM Medical Followup", object.toString());
+                        jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonMedicalFollowUp.class);
+                        Log.e("FCM Medical Followup", jsonData.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -164,24 +172,24 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 if (null == LaunchActivity.dbHandler) {
                     LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                 }
-                if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
+                if (mappedData.get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 sendNotification(title, body, remoteMessage);
             } else {
                 // app is in foreground, broadcast the push message
                 // add notification to DB
-                if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
+                if (mappedData.get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra(Constants.MESSAGE, body);
-                pushNotification.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CodeQR));
-                pushNotification.putExtra(Constants.STATUS, remoteMessage.getData().get(Constants.QueueStatus));
-                pushNotification.putExtra(Constants.CURRENT_SERVING, remoteMessage.getData().get(Constants.CurrentlyServing));
-                pushNotification.putExtra(Constants.LASTNO, remoteMessage.getData().get(Constants.LastNumber));
-                pushNotification.putExtra(Constants.Firebase_Type, remoteMessage.getData().get(Constants.Firebase_Type));
-                pushNotification.putExtra("object", (Serializable) object);
+                pushNotification.putExtra(Constants.QRCODE, mappedData.get(Constants.CODE_QR));
+                pushNotification.putExtra(Constants.STATUS, mappedData.get(Constants.QueueStatus));
+                pushNotification.putExtra(Constants.CURRENT_SERVING, mappedData.get(Constants.CurrentlyServing));
+                pushNotification.putExtra(Constants.LASTNO, mappedData.get(Constants.LastNumber));
+                pushNotification.putExtra(Constants.Firebase_Type, mappedData.get(Constants.Firebase_Type));
+                pushNotification.putExtra("object", (Serializable) jsonData);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             }
         }
@@ -195,13 +203,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.launcher);
         if (null != remoteMessage) {
             notificationIntent.putExtra(Constants.MESSAGE, messageBody);
-            notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CodeQR));
+            notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CODE_QR));
             notificationIntent.putExtra(Constants.STATUS, remoteMessage.getData().get(Constants.QueueStatus));
             notificationIntent.putExtra(Constants.CURRENT_SERVING, remoteMessage.getData().get(Constants.CurrentlyServing));
             notificationIntent.putExtra(Constants.LASTNO, remoteMessage.getData().get(Constants.LastNumber));
             notificationIntent.putExtra(Constants.Firebase_Type, remoteMessage.getData().get(Constants.Firebase_Type));
-            if (null != LaunchActivity.getLaunchActivity())
+            if (null != LaunchActivity.getLaunchActivity()) {
                 LaunchActivity.getLaunchActivity().updateListByNotification(notificationIntent);
+            }
         }
 
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -212,10 +221,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         String channelId = "channel-01";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelName = "Channel Name";
-            int importance = MyApplication.isNotificationSoundEnable() ?
-                    NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel mChannel = new NotificationChannel(
-                    channelId, channelName, importance);
+            int importance = MyApplication.isNotificationSoundEnable()
+                    ? NotificationManager.IMPORTANCE_HIGH
+                    : NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
             notificationManager.createNotificationChannel(mChannel);
         }
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -235,10 +244,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
         stackBuilder.addNextIntent(notificationIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-                Constants.requestCodeNotification,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(Constants.requestCodeNotification, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
 
         notificationManager.notify(notificationId, mBuilder.build());

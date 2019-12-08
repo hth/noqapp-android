@@ -115,27 +115,18 @@ public class MerchantDetailFragment extends BaseFragment implements QueuePersonL
         jsonTopic = topicsList.get(pos);
         resetList();
         updateUI();
-
     }
-
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         if (null != jsonQueuePersonList) {
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
-            Collections.sort(
-                    jsonQueuedPersonArrayList,
-                    new Comparator<JsonQueuedPerson>() {
-                        public int compare(JsonQueuedPerson lhs, JsonQueuedPerson rhs) {
-                            return Integer.compare(lhs.getToken(), rhs.getToken());
-                        }
-                    }
-            );
+            Collections.sort(jsonQueuedPersonArrayList, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
             peopleInQAdapter = new ShowPersonInQAdapter(jsonQueuedPersonArrayList, context, jsonTopic.getServingNumber(), jsonTopic.getQueueStatus());
             rv_queue_people.setAdapter(peopleInQAdapter);
-            if (jsonTopic.getServingNumber() > 0)
+            if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
-
+            }
         }
         dismissProgress();
     }
@@ -147,7 +138,6 @@ public class MerchantDetailFragment extends BaseFragment implements QueuePersonL
 
 
     protected void updateUI() {
-
         final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
         queueStatusOuter = queueStatus == QueueStatusEnum.N;
         tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
@@ -173,6 +163,4 @@ public class MerchantDetailFragment extends BaseFragment implements QueuePersonL
         manageQueueApiCalls.setQueuePersonListPresenter(this);
         manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
     }
-
-
 }

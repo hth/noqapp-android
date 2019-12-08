@@ -29,7 +29,7 @@ public class Constants extends BaseConstants {
     public static final String LastNumber = "ln";
     public static final String CurrentlyServing = "cs";
     public static final String QueueStatus = "q";
-    public static final String CodeQR = "qr";
+    public static final String CODE_QR = "qr";
     public static final int RESULT_SETTING = 123;
     public static final int RESULT_ACQUIRE = 124;
     public static final String CLEAR_DATA = "clearData";

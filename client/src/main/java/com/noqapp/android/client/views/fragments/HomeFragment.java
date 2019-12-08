@@ -689,7 +689,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void tokenHistoryQueueList(List<JsonTokenAndQueue> historyQueueList) {
         dismissProgress();
-        Log.d(TAG, ":History Queue Count:" + historyQueueList.size());
+        Log.d(TAG, "History Queue Count: " + historyQueueList.size());
     }
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to, String title, String body, List<JsonTextToSpeech> jsonTextToSpeeches) {
