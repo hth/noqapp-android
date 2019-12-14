@@ -178,7 +178,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 default:
                     // object = null;
             }
-            TextToSpeechHelper textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
             if (AppUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in background, show the notification in notification tray
                 if (null == LaunchActivity.dbHandler) {
@@ -194,6 +193,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
+                if (getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
+                    if (null != jsonData && null != jsonData.getJsonTextToSpeeches()) {
+                        new TextToSpeechHelper(getApplicationContext()).makeAnnouncement(jsonData.getJsonTextToSpeeches());
+                    }
+                }
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra(Constants.MESSAGE, body);
                 pushNotification.putExtra(Constants.QRCODE, mappedData.get(Constants.CODE_QR));
@@ -203,12 +207,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra(Constants.FIREBASE_TYPE, mappedData.get(Constants.FIREBASE_TYPE));
                 pushNotification.putExtra("jsonData", jsonData);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-
-                if (getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
-                    if (null != jsonData && null != jsonData.getJsonTextToSpeeches()) {
-                        textToSpeechHelper.makeAnnouncement(jsonData.getJsonTextToSpeeches());
-                    }
-                }
             }
         }
 
