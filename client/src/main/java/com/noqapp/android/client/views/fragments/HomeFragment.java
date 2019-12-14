@@ -1,5 +1,29 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
@@ -65,43 +89,16 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+import com.noqapp.android.common.utils.TextToSpeechHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class HomeFragment extends ScannerFragment implements View.OnClickListener,
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
@@ -150,10 +147,14 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
-    private static TextToSpeech textToSpeech;
+    private TextToSpeechHelper textToSpeechHelper;
+
+    public HomeFragment() {
+        // default constructor required
+    }
 
     public HomeFragment(Context context) {
-        textToSpeech = new TextToSpeech(context, null, "com.google.android.tts");
+        textToSpeechHelper = new TextToSpeechHelper(context);
     }
 
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
@@ -693,29 +694,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     }
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to, String title, String body, List<JsonTextToSpeech> jsonTextToSpeeches) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            for (JsonTextToSpeech jsonTextToSpeech : jsonTextToSpeeches) {
-                if (jsonTextToSpeech.getJsonVoiceInput().getLanguageCode().startsWith("en")) {
-                    Voice v = new Voice(jsonTextToSpeech.getJsonVoiceInput().getName(), new Locale(jsonTextToSpeech.getJsonVoiceInput().getLanguageCode()), 400, 200, true, null);
-                    HomeFragment.textToSpeech.setVoice(v);
-                    HomeFragment.textToSpeech.speak(
-                            jsonTextToSpeech.getJsonTextInput().getText(),
-                            TextToSpeech.QUEUE_FLUSH,
-                            null);
-                }
-            }
-        } else {
-            for (JsonTextToSpeech jsonTextToSpeech : jsonTextToSpeeches) {
-                Voice v = new Voice(jsonTextToSpeech.getJsonVoiceInput().getName(), new Locale(jsonTextToSpeech.getJsonVoiceInput().getLanguageCode()), 400, 200, true, null);
-                HomeFragment.textToSpeech.setVoice(v);
-                HomeFragment.textToSpeech.speak(
-                        jsonTextToSpeech.getJsonTextInput().getText(),
-                        TextToSpeech.QUEUE_ADD,
-                        null,
-                        UUID.randomUUID().toString());
-            }
+        if (LaunchActivity.isMsgAnnouncementEnable()) {
+            textToSpeechHelper.makeAnnouncement(jsonTextToSpeeches);
         }
-
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {

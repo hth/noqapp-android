@@ -74,11 +74,11 @@ public class DetailFragment extends Fragment {
         TextView tv_marquee = view.findViewById(R.id.tv_marquee);
         MarqueeSharedPreference.init(getContext().getApplicationContext());
         List<String>marqueeList = MarqueeSharedPreference.getMarquee();
-        String str = "";
+        StringBuilder str = new StringBuilder();
         for (int i = 0; i < marqueeList.size(); i++) {
-            str += getString(R.string.bullet) + " " + marqueeList.get(i) + " \t";
+            str.append( getString(R.string.bullet) + " " + marqueeList.get(i) + " \t");
         }
-        tv_marquee.setText(str);
+        tv_marquee.setText(str.toString());
         tv_marquee.setMarqueeRepeatLimit(-1);
         tv_marquee.setSelected(true);
         return view;
