@@ -36,7 +36,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
     private static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
     private static final String PREKEY_KIOSK_MODE_INFO = "kioskModeInfo";
-
+    private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
     private static final String KEY_SHOW_HELPER = "showHelper";
     private static final String KEY_PREVIOUS_USER_QID = "previousUserQID";
     private static final String KEY_USER_PROFILE = "userProfile";
@@ -233,9 +233,9 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static KioskModeInfo getKioskModeInfo() {
         String json = sharedPreferences.getString(PREKEY_KIOSK_MODE_INFO, "");
-        if(TextUtils.isEmpty(json)){
+        if (TextUtils.isEmpty(json)) {
             return new KioskModeInfo();
-        }else {
+        } else {
             return new Gson().fromJson(json, KioskModeInfo.class);
         }
     }
@@ -256,6 +256,16 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static boolean getShowHelper() {
         // Show only first time in the app lifecycle
         return sharedPreferences.getBoolean(KEY_SHOW_HELPER, true);
+    }
+
+    public static void setMsgAnnouncmentEnable(boolean isMsgAnnounce) {
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        editor.putBoolean(PREKEY_IS_MSG_ANNOUNCE, isMsgAnnounce);
+        editor.apply();
+    }
+
+    public static boolean isMsgAnnouncementEnable() {
+        return sharedPreferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
     }
 
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {

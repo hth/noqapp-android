@@ -449,8 +449,8 @@ dependencies {
     implementation 'net.danlew:android.joda:2.10.3'
     implementation 'com.google.guava:guava:28.1-jre'
     implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-auth:19.1.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
         transitive = true
@@ -464,7 +464,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.apache.commons:commons-compress:1.19'
     implementation 'com.github.RobertApikyan:SegmentedControl:1.2.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:17.1.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:18.0.0'
     implementation 'info.hoang8f:android-segmented:1.0.6'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
     implementation 'com.google.android:flexbox:1.1.1'

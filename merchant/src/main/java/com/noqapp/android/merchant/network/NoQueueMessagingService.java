@@ -1,5 +1,26 @@
 package com.noqapp.android.merchant.network;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
@@ -11,6 +32,7 @@ import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.common.utils.TextToSpeechHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
@@ -19,50 +41,15 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MyApplication;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
-
 import org.apache.commons.lang3.StringUtils;
-
 import org.json.JSONObject;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
-import android.util.Log;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private final static String TAG = NoQueueMessagingService.class.getSimpleName();
-    private static TextToSpeech textToSpeech;
-
-    public NoQueueMessagingService() {}
-
-    public NoQueueMessagingService(Context context) {
-        textToSpeech = new TextToSpeech(context, null, "com.google.android.tts");
-    }
 
     @Override
     public void onNewToken(String s) {
@@ -116,7 +103,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     try {
                         List<JsonTextToSpeech> jsonTextToSpeeches = null;
                         if (StringUtils.isNotBlank(mappedData.get("textToSpeeches"))) {
-                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {
+                            });
                         }
                         //TODO(hth) Temp code. Removed as parsing issue.
                         mappedData.remove("textToSpeeches");
@@ -154,7 +142,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     try {
                         List<JsonTextToSpeech> jsonTextToSpeeches = null;
                         if (StringUtils.isNotBlank(mappedData.get("textToSpeeches"))) {
-                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {
+                            });
                         }
                         //TODO(hth) Temp code. Removed as parsing issue.
                         mappedData.remove("textToSpeeches");
@@ -189,7 +178,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 default:
                     // object = null;
             }
-
             if (AppUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in background, show the notification in notification tray
                 if (null == LaunchActivity.dbHandler) {
@@ -205,6 +193,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
+                if (getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
+                    if (null != jsonData && null != jsonData.getJsonTextToSpeeches()) {
+                        new TextToSpeechHelper(getApplicationContext()).makeAnnouncement(jsonData.getJsonTextToSpeeches());
+                    }
+                }
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra(Constants.MESSAGE, body);
                 pushNotification.putExtra(Constants.QRCODE, mappedData.get(Constants.CODE_QR));
@@ -214,39 +207,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra(Constants.FIREBASE_TYPE, mappedData.get(Constants.FIREBASE_TYPE));
                 pushNotification.putExtra("jsonData", jsonData);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-                if (jsonData.getJsonTextToSpeeches() != null) {
-                    makeAnnouncement(jsonData.getJsonTextToSpeeches());
-                }
             }
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-    }
-
-    private void makeAnnouncement(List<JsonTextToSpeech> jsonTextToSpeeches) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            for (JsonTextToSpeech jsonTextToSpeech : jsonTextToSpeeches) {
-                if (jsonTextToSpeech.getJsonVoiceInput().getLanguageCode().startsWith("en")) {
-                    Voice v = new Voice(jsonTextToSpeech.getJsonVoiceInput().getName(), new Locale(jsonTextToSpeech.getJsonVoiceInput().getLanguageCode()), 400, 200, true, null);
-                    NoQueueMessagingService.textToSpeech.setVoice(v);
-                    NoQueueMessagingService.textToSpeech.speak(
-                            jsonTextToSpeech.getJsonTextInput().getText(),
-                            TextToSpeech.QUEUE_FLUSH,
-                            null);
-                }
-            }
-        } else {
-            for (JsonTextToSpeech jsonTextToSpeech : jsonTextToSpeeches) {
-                Voice v = new Voice(jsonTextToSpeech.getJsonVoiceInput().getName(), new Locale(jsonTextToSpeech.getJsonVoiceInput().getLanguageCode()), 400, 200, true, null);
-                NoQueueMessagingService.textToSpeech.setVoice(v);
-                NoQueueMessagingService.textToSpeech.speak(
-                        jsonTextToSpeech.getJsonTextInput().getText(),
-                        TextToSpeech.QUEUE_ADD,
-                        null,
-                        UUID.randomUUID().toString());
-            }
-        }
     }
 
     private void sendNotification(String title, String messageBody, RemoteMessage remoteMessage) {

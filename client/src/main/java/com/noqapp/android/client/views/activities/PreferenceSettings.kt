@@ -35,6 +35,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         val cv_address: CardView = findViewById(R.id.cv_address)
         val sc_sound: SwitchCompat = findViewById(R.id.sc_sound)
         val sc_sms: SwitchCompat = findViewById(R.id.sc_sms)
+        val sc_msg_announce: SwitchCompat = findViewById(R.id.sc_msg_announce)
         val tv_home_delivery: TextView = findViewById(R.id.tv_home_delivery)
         val tv_take_away: TextView = findViewById(R.id.tv_take_away)
         val tv_cash: TextView = findViewById(R.id.tv_cash)
@@ -88,7 +89,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             }
             clientPreferenceApiCalls.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
         }
-
+        sc_msg_announce.isChecked = LaunchActivity.isMsgAnnouncementEnable()
 
         val jsonUserPreference: JsonUserPreference? = LaunchActivity.getUserProfile().jsonUserPreference
         if (null == jsonUserPreference) {
@@ -133,6 +134,17 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             }
             //showProgress()
             clientPreferenceApiCalls.notificationSound(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
+        }
+
+        sc_msg_announce.setOnCheckedChangeListener { buttonView, isChecked ->
+            LaunchActivity.setMsgAnnouncmentEnable(isChecked)
+            if (isChecked) {
+                // The switch is enabled/checked
+                CustomToast().showToast(this@PreferenceSettings, "Message Announcement Enabled")
+            } else {
+                // The switch is disabled
+                CustomToast().showToast(this@PreferenceSettings, "Message Announcement Disabled")
+            }
         }
     }
 

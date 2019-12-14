@@ -13,7 +13,6 @@ import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -21,7 +20,6 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity {
-    private NoQueueMessagingService noQueueMessagingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +31,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         launchActivity = this;
         Log.v("Device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
-        noQueueMessagingService = new NoQueueMessagingService(this);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
         toolbar = findViewById(R.id.toolbar);
