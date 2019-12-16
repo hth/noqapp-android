@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -8,190 +9,196 @@
     android:outlineProvider="paddedBounds"
     android:paddingLeft="15dp"
     android:paddingTop="20dp"
-    android:paddingBottom="20dp"
-    android:paddingRight="15dp">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="4dp">
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="15dp"
-            android:text="@string/kiosk_dialog_title"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_sixteen" />
-
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="4dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/ll_store_screen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:minHeight="@dimen/cell_size"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/screen_padding"
-                android:paddingRight="@dimen/screen_padding">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/hindi"
-                    android:visibility="invisible" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.75"
-                    android:gravity="center_vertical"
-                    android:text="Join Service Queue"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_fourteen" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/acrb_store_screen"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:checked="true"
-                    android:clickable="false"
-                    android:focusable="false"
-                    app:buttonTint="@color/theme_color_dark" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/color_separator" />
-
-
-            <LinearLayout
-                android:id="@+id/ll_feedback_screen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:minHeight="@dimen/cell_size"
-                android:orientation="horizontal"
-
-                android:paddingLeft="@dimen/screen_padding"
-                android:paddingRight="@dimen/screen_padding">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/english"
-                    android:visibility="invisible" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.75"
-                    android:gravity="center_vertical"
-                    android:text="Provide Feedback"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_fourteen" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/acrb_feedback_screen"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="false"
-                    android:focusable="false"
-                    app:buttonTint="@color/theme_color_dark" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-
-    <TextView
-        android:id="@+id/tv_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:gravity="center"
-        android:text="@string/kiosk_dialog_msg"
-        android:textColor="@android:color/black"
-        android:background="#80FFFFFF"
-        android:textSize="12sp"
-        android:textStyle="normal" />
-
-    <TextView
-        android:id="@+id/tv_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:text="@string/kiosk_dialog_msg"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    android:paddingRight="15dp"
+    android:paddingBottom="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnPositive"
-            android:layout_width="0dp"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/edit_orange"
-            android:padding="0dp"
-            android:text="OK"
-            android:textColor="#333333"
-            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="4dp">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="@string/kiosk_dialog_title"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_sixteen" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_store_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:minHeight="@dimen/cell_size"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/screen_padding"
+                    android:paddingRight="@dimen/screen_padding">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/hindi"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.75"
+                        android:gravity="center_vertical"
+                        android:text="Join Service Queue"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/acrb_store_screen"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:checked="true"
+                        android:clickable="false"
+                        android:focusable="false"
+                        app:buttonTint="@color/theme_color_dark" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_separator" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_feedback_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:minHeight="@dimen/cell_size"
+                    android:orientation="horizontal"
+
+                    android:paddingLeft="@dimen/screen_padding"
+                    android:paddingRight="@dimen/screen_padding">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/english"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.75"
+                        android:gravity="center_vertical"
+                        android:text="Provide Feedback"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/acrb_feedback_screen"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:clickable="false"
+                        android:focusable="false"
+                        app:buttonTint="@color/theme_color_dark" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="#80FFFFFF"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/kiosk_dialog_msg"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="@string/kiosk_dialog_msg"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnNegative"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/edit_orange"
-            android:padding="0dp"
-            android:text="CANCEL"
-            android:textColor="#333333"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnPositive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_orange"
+                android:padding="0dp"
+                android:text="OK"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnNegative"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_orange"
+                android:padding="0dp"
+                android:text="CANCEL"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
