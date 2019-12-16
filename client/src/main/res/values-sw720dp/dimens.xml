@@ -32,4 +32,6 @@
     <dimen name="header_1">56.6sp</dimen>
     <dimen name="header_2">30sp</dimen>
     <dimen name="sp_height">80sp</dimen>
+
+    <dimen name="text_size_phone">32sp</dimen>
 </resources>

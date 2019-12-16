@@ -27,7 +27,7 @@
         <TextView
             style="@style/style_register_tv"
             android:text="@string/phone"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_size_phone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 app:ccp_countryPreference="IN,US"
                 app:ccp_defaultLanguage="ENGLISH"
                 app:ccp_defaultNameCode="IN"
-                app:ccp_textSize="14sp" />
+                app:ccp_textSize="@dimen/text_size_phone" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edt_phone"
@@ -69,7 +69,7 @@
             android:hint="   OTP   "
             android:layout_gravity="center_horizontal"
             android:inputType="number"
-            android:textSize="28sp"
+            android:textSize="@dimen/text_size_sixteen"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
