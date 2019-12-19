@@ -35,7 +35,7 @@ repositories {
 }
 
 jacoco {
-    toolVersion = '0.8.0'
+    toolVersion = '0.8.5'
 }
 
 tasks.withType(Test) {
@@ -425,8 +425,8 @@ dependencies {
     implementation 'net.danlew:android.joda:2.10.3'
     implementation 'com.google.guava:guava:28.1-jre'
     implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-auth:19.2.0'
-    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
