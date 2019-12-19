@@ -111,7 +111,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
-    private static final String FCM_TOKEN = "fcmToken";
+    static final String TOKEN_FCM = "tokenFCM";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
     protected long lastPress;
@@ -153,8 +153,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         language = languagepref.getString("pref_language", "");
 
         if (null != getIntent().getExtras()) {
-            if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
-                setFCMToken(getIntent().getStringExtra("fcmToken"));
+            if (!TextUtils.isEmpty(getIntent().getStringExtra(BaseLaunchActivity.TOKEN_FCM))) {
+                setTokenFCM(getIntent().getStringExtra(BaseLaunchActivity.TOKEN_FCM));
             }
             if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
                 setDeviceID(getIntent().getStringExtra("deviceId"));
@@ -491,12 +491,12 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         sharedpreferences.edit().putBoolean(KEY_IS_ACCESS_GRANT, isAccessGrant).apply();
     }
 
-    public static String getFCMToken() {
-        return sharedpreferences.getString(FCM_TOKEN, "");
+    public static String getTokenFCM() {
+        return sharedpreferences.getString(TOKEN_FCM, "");
     }
 
-    public static void setFCMToken(String fcmtoken) {
-        sharedpreferences.edit().putString(FCM_TOKEN, fcmtoken).apply();
+    public static void setTokenFCM(String tokenFCM) {
+        sharedpreferences.edit().putString(TOKEN_FCM, tokenFCM).apply();
     }
 
     public void setUserInformation(String userName, String userId, String email, String auth, boolean isLogin) {
@@ -810,10 +810,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public static void clearPreferences() {
         // Clear all data except DID & FCM Token
         String did = getDeviceID();
-        String fcmToken = getFCMToken();
+        String tokenFCM = getTokenFCM();
         sharedpreferences.edit().clear().apply();
         setDeviceID(did);
-        setFCMToken(fcmToken);
+        setTokenFCM(tokenFCM);
     }
 
     public void callPreference() {

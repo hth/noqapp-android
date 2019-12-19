@@ -52,7 +52,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
 
     static SplashScreen splashScreen;
     private String TAG = SplashScreen.class.getSimpleName();
-    private static String fcmToken = "";
+    private static String tokenFCM = "";
     private String APP_PREF = "splashPref";
     private static String deviceId = "";
     private final int REQUEST_PERMISSION_SETTING = 23;
@@ -87,14 +87,12 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         }
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashScreen.this, instanceIdResult -> {
-            String newToken = instanceIdResult.getToken();
-            Log.e("newToken", newToken);
-            fcmToken = newToken;
-            Log.d(TAG, "FCM Token=" + fcmToken);
-            sendRegistrationToServer(fcmToken);
+            tokenFCM = instanceIdResult.getToken();
+            Log.d(TAG, "New FCM Token=" + tokenFCM);
+            sendRegistrationToServer(tokenFCM);
         });
 
-        if (StringUtils.isBlank(fcmToken) && new NetworkUtil(this).isNotOnline()) {
+        if (StringUtils.isBlank(tokenFCM) && new NetworkUtil(this).isNotOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
             builder.setTitle(null);
@@ -295,7 +293,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         if (!StringUtils.isBlank(deviceId) && null != location) {
             Intent i = new Intent(splashScreen, LaunchActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            i.putExtra("fcmToken", fcmToken);
+            i.putExtra(LaunchActivity.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
             i.putExtra("latitude", location.getLatitude());
             i.putExtra("longitude", location.getLongitude());

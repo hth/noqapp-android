@@ -41,7 +41,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String KEY_PREVIOUS_USER_QID = "previousUserQID";
     private static final String KEY_USER_PROFILE = "userProfile";
     /* Secured Shared Preference. */
-    private static final String FCM_TOKEN = "fcmToken";
+    static final String TOKEN_FCM = "tokenFCM";
     public static NoQueueBaseActivity noQueueBaseActivity;
 
     public static SharedPreferences getSharedPreferences() {
@@ -54,12 +54,12 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.edit();
     }
 
-    public static String getFCMToken() {
-        return sharedPreferences.getString(FCM_TOKEN, "");
+    public static String getTokenFCM() {
+        return sharedPreferences.getString(TOKEN_FCM, "");
     }
 
-    public static void setFCMToken(String fcmtoken) {
-        sharedPreferences.edit().putString(FCM_TOKEN, fcmtoken).apply();
+    public static void setTokenFCM(String tokenFCM) {
+        sharedPreferences.edit().putString(TOKEN_FCM, tokenFCM).apply();
     }
 
     public static String getUserName() {
@@ -193,14 +193,14 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static void clearPreferences() {
         // Clear all data except DID , FCM Token, previousUserQID & showHelper && kiosk mode
         String did = sharedPreferences.getString(APIConstant.Key.XR_DID, "");
-        String fcmToken = getFCMToken();
+        String tokenFCM = getTokenFCM();
         String previousUserQID = getPreviousUserQID();
         boolean showHelper = getShowHelper();
         KioskModeInfo kioskModeInfo = getKioskModeInfo();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(APIConstant.Key.XR_DID, did);
-        editor.putString(FCM_TOKEN, fcmToken);
+        editor.putString(TOKEN_FCM, tokenFCM);
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
         editor.commit();

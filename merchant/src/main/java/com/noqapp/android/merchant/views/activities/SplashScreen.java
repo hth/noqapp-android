@@ -34,7 +34,7 @@ import java.util.UUID;
 public class SplashScreen extends BaseActivity implements DeviceRegisterPresenter {
 
     static SplashScreen splashScreen;
-    private static String fcmToken = "";
+    private static String tokenFCM = "";
     private String APP_PREF = "splashPref";
     private static String deviceId = "";
     private String TAG = SplashScreen.class.getSimpleName();
@@ -53,14 +53,12 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
         animationView.setRepeatCount(10);
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
-            String newToken = instanceIdResult.getToken();
-            Log.e("newToken", newToken);
-            fcmToken = newToken;
-            Log.d(BaseLaunchActivity.class.getSimpleName(), "FCM Token=" + fcmToken);
-            sendRegistrationToServer(fcmToken);
+            tokenFCM = instanceIdResult.getToken();
+            Log.d(BaseLaunchActivity.class.getSimpleName(), "New FCM Token=" + tokenFCM);
+            sendRegistrationToServer(tokenFCM);
         });
 
-        if (StringUtils.isBlank(fcmToken) && new NetworkUtil(this).isNotOnline()) {
+        if (StringUtils.isBlank(tokenFCM) && new NetworkUtil(this).isNotOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
             builder.setTitle(null);
@@ -99,7 +97,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
                 Log.e("Launch", "launching from sendRegistrationToServer");
                 Log.d(TAG, "Exist deviceId=" + deviceId);
                 Intent i = new Intent(splashScreen, LaunchActivity.class);
-                i.putExtra("fcmToken", fcmToken);
+                i.putExtra(LaunchActivity.TOKEN_FCM, tokenFCM);
                 i.putExtra("deviceId", deviceId);
                 splashScreen.startActivity(i);
                 splashScreen.finish();
@@ -139,7 +137,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Launch", "launching from deviceRegisterResponse");
             Intent i = new Intent(splashScreen, LaunchActivity.class);
-            i.putExtra("fcmToken", fcmToken);
+            i.putExtra(LaunchActivity.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
             splashScreen.startActivity(i);
             splashScreen.finish();

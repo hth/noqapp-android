@@ -314,7 +314,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             }
         }
         try {
-            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getFCMToken());
+            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getTokenFCM());
             // tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
