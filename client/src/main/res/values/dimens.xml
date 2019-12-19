@@ -86,5 +86,8 @@
     <dimen name="sp_height">40sp</dimen>
 
 
+    <dimen name="text_size_phone">16sp</dimen>
+
+
 
 </resources>

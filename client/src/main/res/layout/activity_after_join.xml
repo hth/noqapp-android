@@ -167,10 +167,11 @@
                         android:textSize="@dimen/text_size_twelve"
                         android:visibility="gone" />
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="0dp"
                         android:orientation="horizontal"
                         android:weightSum="1">
 
@@ -181,22 +182,24 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
+
                             <ImageView
                                 android:id="@+id/iv_left_bg"
                                 android:layout_width="53dp"
                                 android:layout_height="50.3dp"
-                                android:layout_gravity="left|center_vertical"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="25dp"
+                                android:layout_marginRight="10dp"
                                 android:background="@drawable/stethoscope" />
 
                             <LinearLayout
-                                android:layout_width="96.9dp"
-                                android:layout_height="65.7dp"
-                                android:layout_gravity="center_vertical|left"
-                                android:layout_marginLeft="50dp"
-                                android:layout_marginTop="5dp"
+                                android:layout_width="@dimen/block_1_width"
+                                android:layout_height="@dimen/block_1_height"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="@dimen/margin_left"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginBottom="5dp"
+                                android:layout_marginBottom="10dp"
                                 android:background="@drawable/blue_gradient_round"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
@@ -206,14 +209,15 @@
                                     style="@style/style_join_queue_tv"
                                     android:gravity="center"
                                     android:textColor="#505050"
-                                    android:textSize="28.3sp" />
+                                    android:textSize="@dimen/header_1" />
 
                                 <TextView
+                                    android:id="@+id/tv_left"
                                     style="@style/style_join_queue_tv"
                                     android:gravity="center"
                                     android:text="@string/serving_now"
                                     android:textColor="#505050"
-                                    android:textSize="@dimen/join_section_small_text" />
+                                    android:textSize="@dimen/header_2" />
                             </LinearLayout>
 
                         </FrameLayout>
@@ -228,20 +232,21 @@
 
                             <ImageView
                                 android:id="@+id/iv_right_bg"
-                                android:layout_width="53dp"
-                                android:layout_height="50.3dp"
+                                android:layout_width="@dimen/block_2_width"
+                                android:layout_height="@dimen/block_2_height"
                                 android:layout_gravity="center_vertical|right"
+                                android:layout_marginLeft="10dp"
                                 android:layout_marginRight="25dp"
                                 android:background="@drawable/medicine" />
 
                             <LinearLayout
-                                android:layout_width="96.9dp"
-                                android:layout_height="65.7dp"
-                                android:layout_gravity="center_vertical|right"
+                                android:layout_width="@dimen/block_1_width"
+                                android:layout_height="@dimen/block_1_height"
+                                android:layout_gravity="right"
                                 android:layout_marginLeft="10dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginRight="50dp"
-                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="@dimen/margin_left"
+                                android:layout_marginBottom="10dp"
                                 android:background="@drawable/orange_gradient"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
@@ -251,20 +256,20 @@
                                     style="@style/style_join_queue_tv"
                                     android:gravity="center"
                                     android:textColor="@android:color/white"
-                                    android:textSize="28.3sp" />
+                                    android:textSize="@dimen/header_1" />
 
                                 <TextView
+                                    android:id="@+id/tv_right"
                                     style="@style/style_join_queue_tv"
                                     android:gravity="center"
                                     android:text="@string/your_token"
                                     android:textColor="@android:color/white"
-                                    android:textSize="@dimen/join_section_small_text" />
+                                    android:textSize="@dimen/header_2" />
                             </LinearLayout>
                         </FrameLayout>
 
 
                     </LinearLayout>
-
 
                     <TextView
                         android:id="@+id/tv_estimated_time"
@@ -368,7 +373,7 @@
                             android:textColor="#606060"
                             android:textSize="@dimen/text_size_fourteen" />
 
-                        <include layout="@layout/layout_map"/>
+                        <include layout="@layout/layout_map" />
 
                     </LinearLayout>
 
@@ -376,8 +381,8 @@
                         android:id="@+id/frame_coupon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:background="#efefef">
+                        android:background="#efefef"
+                        android:visibility="gone">
 
                         <RelativeLayout
                             android:id="@+id/rl_apply_coupon"
@@ -523,9 +528,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"
                                 android:orientation="vertical"
-                                android:paddingTop="5dp"
                                 android:paddingLeft="10dp"
-                                android:paddingRight="10dp"/>
+                                android:paddingTop="5dp"
+                                android:paddingRight="10dp" />
 
 
                             <RelativeLayout

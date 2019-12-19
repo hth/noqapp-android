@@ -116,7 +116,8 @@ import java.util.UUID;
 
 public class LaunchActivity
         extends NoQueueBaseActivity
-        implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+        implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static DatabaseHelper dbHandler;
     public static Locale locale;

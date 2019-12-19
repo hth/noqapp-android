@@ -18,5 +18,5 @@
           android:minWidth="100dp"
           android:maxWidth="250dp"
           android:background="@drawable/bg_unselect"
-          android:textAppearance="?android:attr/textAppearanceSmall"
+          android:textSize="@dimen/text_size_twelve"
           android:textColor="@color/segment_text_color"/>
