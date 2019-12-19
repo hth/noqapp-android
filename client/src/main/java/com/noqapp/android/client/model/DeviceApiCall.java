@@ -1,9 +1,5 @@
 package com.noqapp.android.client.model;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.open.DeviceApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -15,6 +11,8 @@ import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 
+import android.util.Log;
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,7 +56,7 @@ public class DeviceApiCall {
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d(TAG, "Registered device " + String.valueOf(response.body()));
+                        Log.d(TAG, "Registered device " + response.body());
                         deviceRegisterPresenter.deviceRegisterResponse(response.body());
                         deviceRegistered = response.body();
                     } else {
@@ -95,7 +93,7 @@ public class DeviceApiCall {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
-                    Log.d("response body issupport", response.body().toString());
+                    Log.d("response body isSupport", response.body().toString());
                     if (null != response.body() && null == response.body().getError()) {
                         appBlacklistPresenter.appBlacklistResponse(response.body());
                         jsonLatestAppVersion = response.body();

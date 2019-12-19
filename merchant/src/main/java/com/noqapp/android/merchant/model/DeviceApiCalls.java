@@ -55,7 +55,7 @@ public class DeviceApiCalls {
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d(TAG, "Registered device " + String.valueOf(response.body()));
+                        Log.d(TAG, "Registered device " + response.body());
                         deviceRegisterPresenter.deviceRegisterResponse(response.body());
                     } else {
                         Log.e(TAG, "Empty body");
