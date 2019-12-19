@@ -28,7 +28,7 @@ import android.os.Build;
 public class DeviceToken {
 
     @JsonProperty("tk")
-    private String fcmToken;
+    private String tokenFCM;
 
     @JsonProperty("mo")
     private String model;
@@ -39,8 +39,8 @@ public class DeviceToken {
     @JsonProperty("av")
     private String appVersion;
 
-    public DeviceToken(String fcmToken, String appVersion) {
-        this.fcmToken = fcmToken;
+    public DeviceToken(String tokenFCM, String appVersion) {
+        this.tokenFCM = tokenFCM;
         this.model = Build.MODEL;
         this.osVersion = Build.VERSION.RELEASE;
         this.appVersion = appVersion;

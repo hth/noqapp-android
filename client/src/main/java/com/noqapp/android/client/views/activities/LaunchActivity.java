@@ -177,8 +177,8 @@ public class LaunchActivity
 
         //NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
-            if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
-                NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
+            if (!TextUtils.isEmpty(getIntent().getStringExtra(NoQueueBaseActivity.TOKEN_FCM))) {
+                NoQueueBaseActivity.setTokenFCM(getIntent().getStringExtra(NoQueueBaseActivity.TOKEN_FCM));
             }
 
             if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
@@ -861,7 +861,7 @@ public class LaunchActivity
             NoQueueBaseActivity.setDeviceID(deviceId);
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
+            deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getTokenFCM(), Constants.appVersion()));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
