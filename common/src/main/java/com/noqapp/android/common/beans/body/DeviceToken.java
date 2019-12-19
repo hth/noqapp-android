@@ -39,10 +39,22 @@ public class DeviceToken {
     @JsonProperty("av")
     private String appVersion;
 
+    @JsonProperty("ip")
+    private String ipAddress;
+
+    @JsonProperty("lng")
+    private String longitude;
+
+    @JsonProperty("lat")
+    private String latitude;
+
     public DeviceToken(String tokenFCM, String appVersion) {
         this.tokenFCM = tokenFCM;
         this.model = Build.MODEL;
         this.osVersion = Build.VERSION.RELEASE;
         this.appVersion = appVersion;
+        this.ipAddress = null;
+        this.longitude = null;
+        this.latitude = null;
     }
 }
