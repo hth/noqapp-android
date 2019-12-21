@@ -330,7 +330,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion());
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(),getLocation());
             queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
             //Call the current queue
@@ -339,7 +339,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
             //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion());
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(),getLocation());
             queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
         }
         if (isProgressFirstTime) {
@@ -898,5 +898,12 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private android.location.Location getLocation(){
+        android.location.Location location = new android.location.Location("");
+        location.setLatitude(lat);
+        location.setLongitude(lng);
+        return location;
     }
 }
