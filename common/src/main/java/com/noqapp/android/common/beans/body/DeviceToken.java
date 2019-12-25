@@ -51,13 +51,6 @@ public class DeviceToken {
     @JsonProperty("lat")
     private String latitude;
 
-    @Deprecated
-    public DeviceToken(String tokenFCM, String appVersion) {
-        this.tokenFCM = tokenFCM;
-        this.model = Build.MODEL;
-        this.osVersion = Build.VERSION.RELEASE;
-        this.appVersion = appVersion;
-    }
 
     public DeviceToken(String tokenFCM, String appVersion, Location location) {
         this.tokenFCM = tokenFCM;

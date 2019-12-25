@@ -419,4 +419,11 @@ public class CommonHelper {
         } // for now eat exceptions
         return "";
     }
+
+    public static android.location.Location getLocation(double lat, double lng){
+        android.location.Location location = new android.location.Location("");
+        location.setLatitude(lat);
+        location.setLongitude(lng);
+        return location;
+    }
 }
