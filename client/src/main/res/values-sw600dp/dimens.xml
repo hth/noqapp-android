@@ -58,4 +58,6 @@
 
     <dimen name="recent_q_width">190dp</dimen>
     <dimen name="recent_q_height">202dp</dimen>
+    <dimen name="btn_height">30dp</dimen>
+    <dimen name="menu_item_height">175dp</dimen>
 </resources>
