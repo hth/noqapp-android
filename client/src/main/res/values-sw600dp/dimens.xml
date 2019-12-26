@@ -43,5 +43,19 @@
     <dimen name="sp_height">60sp</dimen>
 
     <dimen name="text_size_phone">24sp</dimen>
+    <dimen name="action_bar_height">68dp</dimen>
+    <dimen name="toolbar_text_size">28sp</dimen>
 
+    <dimen name="change_bg_padding">10dp</dimen>
+    <dimen name="top_frame_height">150dp</dimen>
+    <dimen name="child_frame_height">75dp</dimen>
+    <dimen name="child_frame_padding">25dp</dimen>
+    <dimen name="profile_pic_height">90dp</dimen>
+    <dimen name="action_bar_icon_size">40dp</dimen>
+    <dimen name="thumbnail_height">60dp</dimen>
+    <dimen name="current_q_width">286dp</dimen>
+    <dimen name="current_q_height">115</dimen>
+
+    <dimen name="recent_q_width">190dp</dimen>
+    <dimen name="recent_q_height">202dp</dimen>
 </resources>

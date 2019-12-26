@@ -3,7 +3,7 @@
                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                    android:id="@+id/toolbar"
                                    android:layout_width="match_parent"
-                                   android:layout_height="58dp"
+                                   android:layout_height="@dimen/action_bar_height"
                                    android:background="#fefefe"
                                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                                    app:contentInsetStartWithNavigation="0dp"
@@ -33,7 +33,7 @@
                 android:gravity="center_vertical"
                 android:text="Mumbai"
                 android:textColor="#000000"
-                android:textSize="14sp"
+                android:textSize="@dimen/toolbar_text_size"
                 android:textStyle="bold"/>
 
         <RelativeLayout
@@ -89,8 +89,8 @@
 
             <ImageView
                     android:id="@+id/iv_home"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/action_bar_icon_size"
+                    android:layout_height="@dimen/action_bar_icon_size"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="right"
