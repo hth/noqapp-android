@@ -23,4 +23,9 @@ public class BaseConstants {
     public static final String MESSAGE_ORIGIN = "mo";
 
     public static final int ACTIVITY_RESULT_BACK = 23;
+
+    public static double DEFAULT_LATITUDE = 19.0760;
+    public static double DEFAULT_LONGITUDE = 72.8777;
+    public static String DEFAULT_CITY = "Mumbai";
+    public static String DEFAULT_COUNTRY_CODE = "IN";
 }

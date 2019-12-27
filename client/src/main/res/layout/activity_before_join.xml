@@ -20,11 +20,11 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp">
+                android:layout_height="@dimen/top_frame_height">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/child_frame_height"
                     android:background="@drawable/blue_gradient"
                     android:orientation="horizontal" />
 
@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="@dimen/child_frame_padding"
                     android:layout_marginRight="25dp"
                     android:padding="10dp"
                     card_view:cardBackgroundColor="@android:color/white"
@@ -49,8 +49,8 @@
 
                         <com.noqapp.android.common.customviews.CircularImageView
                             android:id="@+id/iv_profile"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="@dimen/profile_pic_height"
+                            android:layout_height="@dimen/profile_pic_height"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
                             android:elevation="5dp"
@@ -197,8 +197,8 @@
 
                     <ImageView
                         android:id="@+id/iv_left_bg"
-                        android:layout_width="53dp"
-                        android:layout_height="50.3dp"
+                        android:layout_width="@dimen/block_2_width"
+                        android:layout_height="@dimen/block_2_height"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="25dp"
                         android:layout_marginRight="10dp"

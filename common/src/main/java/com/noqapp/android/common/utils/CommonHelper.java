@@ -1,18 +1,5 @@
 package com.noqapp.android.common.utils;
 
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.customviews.CustomToast;
-
-import com.crashlytics.android.Crashlytics;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.Months;
-import org.joda.time.Years;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -25,13 +12,27 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 
+import com.crashlytics.android.Crashlytics;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.Months;
+import org.joda.time.Years;
+
 import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
@@ -227,7 +228,7 @@ public class CommonHelper {
             }
         } catch (Exception e) {
             Crashlytics.log(Log.ERROR, TAG, "Failed displaying price jsonStoreProduct " + jsonStoreProduct);
-            Log.e(TAG,"jsonStoreProduct " + e.getLocalizedMessage(), e);
+            Log.e(TAG, "jsonStoreProduct " + e.getLocalizedMessage(), e);
             return "";
         }
     }
@@ -393,5 +394,36 @@ public class CommonHelper {
         for (View v : views) {
             v.setVisibility(View.GONE);
         }
+    }
+
+
+    public static String getIPAddress() {
+        try {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface intf : interfaces) {
+                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+                for (InetAddress addr : addrs) {
+                    if (!addr.isLoopbackAddress()) {
+                        String sAddr = addr.getHostAddress();
+                        boolean isIPv4 = sAddr.indexOf(':') < 0;
+                        if (isIPv4) {
+                            return sAddr;
+                        } else {
+                            int delim = sAddr.indexOf('%'); // drop ip6 zone suffix
+                            return delim < 0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase();
+                        }
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        } // for now eat exceptions
+        return "";
+    }
+
+    public static android.location.Location getLocation(double lat, double lng){
+        android.location.Location location = new android.location.Location("");
+        location.setLatitude(lat);
+        location.setLongitude(lng);
+        return location;
     }
 }

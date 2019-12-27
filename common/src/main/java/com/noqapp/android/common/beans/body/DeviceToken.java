@@ -1,11 +1,14 @@
 package com.noqapp.android.common.beans.body;
 
+import android.location.Location;
+import android.os.Build;
+import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import android.os.Build;
+import com.noqapp.android.common.utils.CommonHelper;
 
 /**
  * User: hitender
@@ -48,13 +51,17 @@ public class DeviceToken {
     @JsonProperty("lat")
     private String latitude;
 
-    public DeviceToken(String tokenFCM, String appVersion) {
+
+    public DeviceToken(String tokenFCM, String appVersion, Location location) {
         this.tokenFCM = tokenFCM;
         this.model = Build.MODEL;
         this.osVersion = Build.VERSION.RELEASE;
         this.appVersion = appVersion;
-        this.ipAddress = null;
-        this.longitude = null;
-        this.latitude = null;
+        this.ipAddress = CommonHelper.getIPAddress();
+        if (null != location) {
+            this.longitude = String.valueOf(location.getLongitude());
+            this.latitude = String.valueOf(location.getLatitude());
+            Log.e("Location Device token", location.toString());
+        }
     }
 }

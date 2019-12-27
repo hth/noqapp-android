@@ -12,7 +12,7 @@
     <dimen name="text_size_fourteen">32sp</dimen>
     <dimen name="text_size_twelve">28sp</dimen>
     <dimen name="join_section_small_text">32sp</dimen>
-    <dimen name="btn_standard_height">120dp</dimen>
+    <dimen name="btn_standard_height">100dp</dimen>
     <dimen name="menu_title_width">300dp</dimen>
     <dimen name="profile_icon_width">100dp</dimen>
     <dimen name="sp_text_item">40sp</dimen>
@@ -24,8 +24,8 @@
     <dimen name="kiosk_join_child_height">180dp</dimen>
     <dimen name="kiosk_join_child_margin_top">90dp</dimen>
     <dimen name="kiosk_join_image_icon_width">120dp</dimen>
-    <dimen name="block_1_width">193.8dp</dimen>
-    <dimen name="block_1_height">131.4dp</dimen>
+    <dimen name="block_1_width">213.8dp</dimen>
+    <dimen name="block_1_height">151.4dp</dimen>
     <dimen name="block_2_width">106dp</dimen>
     <dimen name="block_2_height">100.6dp</dimen>
     <dimen name="margin_left">110dp</dimen>
@@ -34,4 +34,21 @@
     <dimen name="sp_height">80sp</dimen>
 
     <dimen name="text_size_phone">32sp</dimen>
+    <dimen name="action_bar_height">78dp</dimen>
+    <dimen name="toolbar_text_size">40sp</dimen>
+
+    <dimen name="change_bg_padding">15dp</dimen>
+    <dimen name="top_frame_height">200dp</dimen>
+    <dimen name="child_frame_height">100dp</dimen>
+    <dimen name="child_frame_padding">35dp</dimen>
+    <dimen name="profile_pic_height">120dp</dimen>
+    <dimen name="action_bar_icon_size">45dp</dimen>
+    <dimen name="thumbnail_height">70dp</dimen>
+    <dimen name="current_q_width">337dp</dimen>
+    <dimen name="current_q_height">140</dimen>
+
+    <dimen name="recent_q_width">215dp</dimen>
+    <dimen name="recent_q_height">226dp</dimen>
+    <dimen name="btn_height">35dp</dimen>
+    <dimen name="menu_item_height">195dp</dimen>
 </resources>

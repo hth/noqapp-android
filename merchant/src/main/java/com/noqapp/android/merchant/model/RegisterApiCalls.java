@@ -45,7 +45,9 @@ public final class RegisterApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response register", String.valueOf(response.body()));
-                        profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                        profilePresenter.profileResponse(
+                                response.body(),
+                                response.headers().get(APIConstant.Key.XR_MAIL),
                                 response.headers().get(APIConstant.Key.XR_AUTH));
                     } else {
                         Log.e(TAG, "error register" + response.body().getError());
@@ -78,7 +80,9 @@ public final class RegisterApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response login", String.valueOf(response.body()));
-                        profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                        profilePresenter.profileResponse(
+                                response.body(),
+                                response.headers().get(APIConstant.Key.XR_MAIL),
                                 response.headers().get(APIConstant.Key.XR_AUTH));
                     } else {
                         Log.e(TAG, "Error login" + response.body().getError());

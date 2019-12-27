@@ -48,6 +48,7 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
@@ -861,7 +862,8 @@ public class LaunchActivity
             NoQueueBaseActivity.setDeviceID(deviceId);
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getTokenFCM(), Constants.appVersion()));
+            deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getTokenFCM(),
+                    Constants.appVersion(), CommonHelper.getLocation(latitude,longitude)));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);

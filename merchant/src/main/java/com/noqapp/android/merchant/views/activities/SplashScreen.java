@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
@@ -82,7 +83,8 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
 
     private void sendRegistrationToServer(String refreshToken) {
         if (new NetworkUtil(this).isOnline()) {
-            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion());
+            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(),
+                    CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
             SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
             deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
             if (StringUtils.isBlank(deviceId)) {
