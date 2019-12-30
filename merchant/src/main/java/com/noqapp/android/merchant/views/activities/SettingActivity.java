@@ -817,6 +817,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                         case 2:
                             storeSetting.setAppointmentState(AppointmentStateEnum.S);
                             break;
+                        case 3:
+                            storeSetting.setAppointmentState(AppointmentStateEnum.F);
+                            break;
                     }
 
                     storeSettingApiCalls.appointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
