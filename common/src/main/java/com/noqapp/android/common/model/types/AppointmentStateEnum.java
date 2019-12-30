@@ -8,16 +8,21 @@ import java.util.List;
  * Date: 2019-07-19 17:03
  */
 public enum AppointmentStateEnum {
-    O("O", "Off"),
-    A("A", "Appointment"),
-    S("S", "Slot");
+    O("O", "Off", "No Appointment"),
+    A("A", "Traditional Appointments", "Appointment"),
+    S("S", "Walk-in Appointments", "Slots"),
+
+    /* Mixture of Walk-ins and traditional appointments. To be implemented. */
+    F("F", "Flex Appointments", "Flex");
 
     private final String description;
     private final String name;
+    private final String additionalDescription;
 
-    AppointmentStateEnum(String name, String description) {
+    AppointmentStateEnum(String name, String description, String additionalDescription) {
         this.name = name;
         this.description = description;
+        this.additionalDescription = additionalDescription;
     }
 
     public String getName() {
@@ -28,6 +33,9 @@ public enum AppointmentStateEnum {
         return description;
     }
 
+    public String getAdditionalDescription() {
+        return additionalDescription;
+    }
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
