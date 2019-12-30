@@ -73,7 +73,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     private EditText edt_follow_up_in_days, edt_discounted_followup_price, edt_limited_followup_days;
     private EditText edt_appointment_accepting_week, edt_appointment_duration;
 
-
     private SegmentedControl sc_prevent_join, sc_today_closed, sc_day_closed, sc_store_offline,
             sc_enable_appointment;
 
@@ -128,7 +127,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             iv_appointment_setting = findViewById(R.id.iv_appointment_setting);
             ll_appointment_setting = findViewById(R.id.ll_appointment_setting);
 
-
             iv_today_settings.setOnClickListener(this);
             iv_token_timing.setOnClickListener(this);
             iv_store_closing.setOnClickListener(this);
@@ -143,7 +141,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             iv_payment_setting.performClick();
             iv_appointment_setting.performClick();
         }
-
 
         sc_day_closed = findViewById(R.id.sc_day_closed);
         sc_today_closed = findViewById(R.id.sc_today_closed);
@@ -169,8 +166,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         cv_appointment = findViewById(R.id.cv_appointment);
         codeQR = getIntent().getStringExtra("codeQR");
 
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile() && BusinessTypeEnum.DO ==
-                BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile() &&
+                BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()
+        ) {
             ll_follow_up.setVisibility(View.VISIBLE);
             cv_payment.setVisibility(View.VISIBLE);
             isFollowUpAllow = true;
@@ -180,9 +178,10 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             isFollowUpAllow = false;
         }
 
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile() && (BusinessTypeEnum.DO ==
-                BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() || BusinessTypeEnum.HS ==
-                BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())) {
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile() &&
+                (BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() ||
+                        BusinessTypeEnum.HS == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())
+        ) {
             cv_appointment.setVisibility(View.VISIBLE);
         } else {
             cv_appointment.setVisibility(View.GONE);
@@ -277,7 +276,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             tv_token_not_available.setEnabled(false);
         }
 
-
         Button btn_update_deduction = findViewById(R.id.btn_update_deduction);
         Button btn_update_time = findViewById(R.id.btn_update_time);
         Button btn_update_delay = findViewById(R.id.btn_update_delay);
@@ -312,6 +310,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
             }
         });
+
         btn_update_scheduling.setOnClickListener(view -> {
             if (TextUtils.isEmpty(tv_scheduling_from.getText().toString()) || TextUtils.isEmpty(tv_scheduling_ending.getText().toString())) {
                 new CustomToast().showToast(SettingActivity.this, "Both scheduling dates are required");
@@ -525,6 +524,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     break;
                 case S:
                     sc_enable_appointment.setSelectedSegment(2);
+                    break;
+                case F:
+                    sc_enable_appointment.setSelectedSegment(3);
                     break;
             }
             ll_payment.setVisibility(storeSetting.isEnabledPayment() ? View.VISIBLE : View.GONE);
