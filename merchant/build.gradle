@@ -407,6 +407,7 @@ android {
             resValue "string", "content_provider", "com.noqapp.android.merchant.tv.fileprovider"
             buildConfigField "String", "APP_FLAVOR", "\"NQMT\""
         }
+
         inventory {
             dimension "version"
             applicationId "com.noqapp.android.merchant.inventory"
