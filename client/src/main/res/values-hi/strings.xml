@@ -136,7 +136,7 @@
     <string name="authentication_fail_msg">Please login again.</string>
     <string name="barcode_error">Queue not found</string>
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
-    <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2019 \u00a9 NoQueue &#174; Inc</string>
+    <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue &#174; Inc</string>
     <string name="alert">सावधान</string>
     <string name="estimated_time">You will be serviced: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
