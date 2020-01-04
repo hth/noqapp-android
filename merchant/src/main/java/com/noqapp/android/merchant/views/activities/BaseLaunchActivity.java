@@ -111,6 +111,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
+    private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
     static final String TOKEN_FCM = "tokenFCM";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
@@ -457,6 +458,14 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     public void setUserLevel(String userLevel) {
         sharedpreferences.edit().putString(KEY_USER_LEVEL, userLevel).apply();
+    }
+
+    public static void setMsgAnnouncmentEnable(boolean isMsgAnnounce) {
+        sharedpreferences.edit().putBoolean(PREKEY_IS_MSG_ANNOUNCE, isMsgAnnounce).apply();
+    }
+
+    public static boolean isMsgAnnouncementEnable() {
+        return sharedpreferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
     }
 
     public String getUSerID() {
