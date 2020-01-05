@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -89,7 +88,6 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.TextToSpeechHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -147,14 +145,10 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
-    private TextToSpeechHelper textToSpeechHelper;
+
 
     public HomeFragment() {
         // default constructor required
-    }
-
-    public HomeFragment(Context context) {
-        textToSpeechHelper = new TextToSpeechHelper(context);
     }
 
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
@@ -330,7 +324,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(),CommonHelper.getLocation(lat,lng));
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(), CommonHelper.getLocation(lat, lng));
             queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
             //Call the current queue
@@ -339,7 +333,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
             //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(),CommonHelper.getLocation(lat,lng));
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(), CommonHelper.getLocation(lat, lng));
             queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
         }
         if (isProgressFirstTime) {
@@ -693,9 +687,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         Log.d(TAG, "History Queue Count: " + historyQueueList.size());
     }
 
-    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to, String title, String body, List<JsonTextToSpeech> jsonTextToSpeeches) {
+    public void updateListFromNotification(JsonTokenAndQueue jq, List<JsonTextToSpeech> jsonTextToSpeeches, String msgId) {
         if (LaunchActivity.isMsgAnnouncementEnable()) {
-            textToSpeechHelper.makeAnnouncement(jsonTextToSpeeches);
+            LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
         }
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
