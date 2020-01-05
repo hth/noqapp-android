@@ -16,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.google.android.gms.maps.model.LatLng;
@@ -187,8 +185,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 purchaseOrderApiCall.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
                 if (AppUtils.isRelease()) {
                     if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
-                        Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_PLACE_ORDER)
-                                .putCustomAttribute("Order Id", jsonPurchaseOrder.getTransactionId()));
+                        Bundle params = new Bundle();
+                        params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
+                        LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_PLACE_ORDER, params);
                     }
                 }
             } else {
@@ -244,8 +243,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
             if (AppUtils.isRelease()) {
                 if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
-                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_ORDER)
-                            .putCustomAttribute("Order Id", jsonPurchaseOrder.getTransactionId()));
+                    Bundle params = new Bundle();
+                    params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
+                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_CANCEL_ORDER, params);
                 }
             }
         } else {

@@ -20,9 +20,6 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -126,8 +123,9 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
                 }
                 if (AppUtils.isRelease()) {
-                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_REVIEW_SCREEN)
-                            .putCustomAttribute("Business Type", jtk.getBusinessType().getName()));
+                    Bundle params = new Bundle();
+                    params.putString("Business_Type", jtk.getBusinessType().getName());
+                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_REVIEW_SCREEN, params);
                 }
             }
         } else {

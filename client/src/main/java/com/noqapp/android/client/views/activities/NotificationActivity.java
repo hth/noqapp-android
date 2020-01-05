@@ -7,9 +7,6 @@ import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
 import com.noqapp.android.common.pojos.DisplayNotification;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -38,7 +35,7 @@ public class NotificationActivity extends BaseActivity {
             rl_empty.setVisibility(View.GONE);
         }
         if (AppUtils.isRelease()) {
-            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_NOTIFICATION_SCREEN));
+            FabricEvents.logContentEvent(FabricEvents.EVENT_NOTIFICATION_SCREEN);
         }
     }
 

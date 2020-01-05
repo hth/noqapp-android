@@ -1,5 +1,52 @@
 package com.noqapp.android.client.views.activities;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.common.cache.Cache;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -51,69 +98,24 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
+import com.noqapp.android.common.utils.TextToSpeechHelper;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
-
-import com.google.android.gms.maps.MapsInitializer;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import io.fabric.sdk.android.Fabric;
-import io.nlopez.smartlocation.SmartLocation;
-import io.nlopez.smartlocation.location.config.LocationAccuracy;
-import io.nlopez.smartlocation.location.config.LocationParams;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.location.config.LocationAccuracy;
+import io.nlopez.smartlocation.location.config.LocationParams;
+
+import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class LaunchActivity
         extends NoQueueBaseActivity
@@ -144,7 +146,15 @@ public class LaunchActivity
     public static String COUNTRY_CODE = Constants.DEFAULT_COUNTRY_CODE;
     public static String DISTANCE_UNIT = "km";
     public static boolean isLockMode = false;
+    private TextToSpeechHelper textToSpeechHelper;
+    private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
+    private final String MSG_IDS = "messageIds";
 
+    public FirebaseAnalytics getFireBaseAnalytics() {
+        return fireBaseAnalytics;
+    }
+
+    private FirebaseAnalytics fireBaseAnalytics;
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -152,7 +162,7 @@ public class LaunchActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Answers());
+        fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
         JodaTimeAndroid.init(this);
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
@@ -167,7 +177,7 @@ public class LaunchActivity
         launchActivity = this;
         COUNTRY_CODE = getCountryCode();
         Log.i(TAG, "Country Code: " + COUNTRY_CODE);
-
+        textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
         if (!isCountryIndia()) {
             Constants.DEFAULT_LATITUDE = 37.7749;
             Constants.DEFAULT_LONGITUDE = 122.4194;
@@ -216,7 +226,7 @@ public class LaunchActivity
         fl_notification.setVisibility(View.VISIBLE);
         iv_search.setVisibility(View.VISIBLE);
         //initProgress();
-        homeFragment = new HomeFragment(getApplicationContext());
+        homeFragment = new HomeFragment();
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
 
 
@@ -710,18 +720,18 @@ public class LaunchActivity
             AppUtils.changeLanguage("hi");
             dialog.dismiss();
             if (AppUtils.isRelease()) {
-                Answers.getInstance()
-                        .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                                .putCustomAttribute("Language", "HINDI"));
+                Bundle params = new Bundle();
+                params.putString("Language", "HINDI");
+                fireBaseAnalytics.logEvent(FabricEvents.EVENT_CHANGE_LANGUAGE, params);
             }
         });
         ll_english.setOnClickListener((View v) -> {
             AppUtils.changeLanguage("en");
             dialog.dismiss();
             if (AppUtils.isRelease()) {
-                Answers.getInstance()
-                        .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                                .putCustomAttribute("Language", "ENGLISH"));
+                Bundle params = new Bundle();
+                params.putString("Language", "ENGLISH");
+                fireBaseAnalytics.logEvent(FabricEvents.EVENT_CHANGE_LANGUAGE, params);
             }
         });
         dialog.show();
@@ -736,27 +746,24 @@ public class LaunchActivity
         String go_to = "";
         String messageOrigin = "";
         String current_serving = "";
-        String title = "";
-        String body = "";
         List<JsonTextToSpeech> jsonTextToSpeeches = null;
+        String msgId = "";
         PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
         if (jsonData instanceof JsonTopicQueueData) {
             JsonTopicQueueData jsonTopicQueueData = (JsonTopicQueueData) jsonData;
-            current_serving = String.valueOf(jsonTopicQueueData.getCurrentlyServing());//intent.getStringExtra(Constants.CURRENTLY_SERVING);
-            go_to = jsonTopicQueueData.getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
-            messageOrigin = jsonTopicQueueData.getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
-            title = jsonData.getTitle();
-            body = jsonData.getBody();
+            current_serving = String.valueOf(jsonTopicQueueData.getCurrentlyServing());
+            go_to = jsonTopicQueueData.getGoTo();
+            messageOrigin = jsonTopicQueueData.getMessageOrigin().name();
             jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
+            msgId = jsonTopicQueueData.getMessageId();
         } else if (jsonData instanceof JsonTopicOrderData) {
             JsonTopicOrderData jsonTopicOrderData = (JsonTopicOrderData) jsonData;
-            current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());//intent.getStringExtra(Constants.CURRENTLY_SERVING);
-            go_to = jsonTopicOrderData.getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
-            messageOrigin = jsonTopicOrderData.getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
+            current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());
+            go_to = jsonTopicOrderData.getGoTo();
+            messageOrigin = jsonTopicOrderData.getMessageOrigin().name();
             purchaseOrderStateEnum = jsonTopicOrderData.getPurchaseOrderState();
-            title = jsonData.getTitle();
-            body = jsonData.getBody();
             jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
+            msgId = jsonTopicOrderData.getMessageId();
         }
 
         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
@@ -845,7 +852,7 @@ public class LaunchActivity
                             TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
                         }
                     }
-                    homeFragment.updateListFromNotification(jtk, go_to, title, body, jsonTextToSpeeches);
+                    homeFragment.updateListFromNotification(jtk, jsonTextToSpeeches, msgId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -863,7 +870,7 @@ public class LaunchActivity
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getTokenFCM(),
-                    Constants.appVersion(), CommonHelper.getLocation(latitude,longitude)));
+                    Constants.appVersion(), CommonHelper.getLocation(latitude, longitude)));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -1348,5 +1355,20 @@ public class LaunchActivity
 
     public boolean isCountryIndia() {
         return (COUNTRY_CODE.equalsIgnoreCase("India") || COUNTRY_CODE.equalsIgnoreCase("IN"));
+    }
+
+    public void makeAnnouncement(List<JsonTextToSpeech> jsonTextToSpeeches, String msgId) {
+        if (null == cacheMsgIds.getIfPresent(MSG_IDS)) {
+            cacheMsgIds.put(MSG_IDS, new ArrayList<>());
+        }
+        ArrayList<String> msgIds = cacheMsgIds.getIfPresent(MSG_IDS);
+        if (null == msgIds) {
+            msgIds = new ArrayList<>();
+        }
+        if (!TextUtils.isEmpty(msgId) && !msgIds.contains(msgId)) {
+            msgIds.add(msgId);
+            cacheMsgIds.put(MSG_IDS, msgIds);
+            textToSpeechHelper.makeAnnouncement(jsonTextToSpeeches);
+        }
     }
 }

@@ -54,10 +54,11 @@
     <dimen name="action_bar_icon_size">40dp</dimen>
     <dimen name="thumbnail_height">60dp</dimen>
     <dimen name="current_q_width">286dp</dimen>
-    <dimen name="current_q_height">115</dimen>
+    <dimen name="current_q_height">115dp</dimen>
 
     <dimen name="recent_q_width">190dp</dimen>
     <dimen name="recent_q_height">202dp</dimen>
     <dimen name="btn_height">30dp</dimen>
     <dimen name="menu_item_height">175dp</dimen>
+    <dimen name="country_code_width">140dp</dimen>
 </resources>

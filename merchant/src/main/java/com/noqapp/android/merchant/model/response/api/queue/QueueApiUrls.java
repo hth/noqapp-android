@@ -243,9 +243,6 @@ public interface QueueApiUrls {
             JsonQueuedPerson jsonQueuedPerson
     );
 
-
-
-
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401

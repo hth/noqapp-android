@@ -12,10 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.InviteEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -77,9 +76,9 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 
-                Answers.getInstance().logInvite(new InviteEvent()
-                        .putMethod("Invite")
-                        .putCustomAttribute("Code", selectedText));
+                Bundle params = new Bundle();
+                params.putString("Code", selectedText);
+                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_INVITE, params);
             } catch (ActivityNotFoundException e) {
                 new CustomToast().showToast(getActivity(), getString(R.string.app_missing));
             }

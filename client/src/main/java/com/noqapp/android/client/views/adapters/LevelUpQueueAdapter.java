@@ -26,6 +26,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
+import com.noqapp.android.client.views.activities.LoginActivity;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -265,6 +266,8 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     context.startActivity(in);
                 } else {
                     new CustomToast().showToast(context, "Please login to book an appointment");
+                    Intent loginIntent = new Intent(context, LoginActivity.class);
+                    context.startActivity(loginIntent);
                 }
             });
             childViewHolder.iv_main.setOnClickListener((View v) -> {

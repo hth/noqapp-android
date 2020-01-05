@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FeedbackApiCall;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
@@ -71,7 +69,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
         });
 
         if (AppUtils.isRelease()) {
-            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CONTACT_US_SCREEN));
+            FabricEvents.logContentEvent(FabricEvents.EVENT_CONTACT_US_SCREEN);
         }
     }
 

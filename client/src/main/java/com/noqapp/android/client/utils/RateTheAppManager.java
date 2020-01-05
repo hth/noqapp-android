@@ -11,9 +11,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 
 public class RateTheAppManager {
@@ -54,7 +51,7 @@ public class RateTheAppManager {
     private void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
 
         if (AppUtils.isRelease()) {
-            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_RATE_APP));
+            FabricEvents.logContentEvent(FabricEvents.EVENT_RATE_APP);
         }
         final Dialog dialog = new Dialog(mContext);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

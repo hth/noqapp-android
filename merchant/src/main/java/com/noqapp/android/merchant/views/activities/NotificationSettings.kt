@@ -1,11 +1,14 @@
 package com.noqapp.android.merchant.views.activities
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.widget.SwitchCompat
+import androidx.cardview.widget.CardView
 import com.noqapp.android.common.beans.JsonProfile
 import com.noqapp.android.common.beans.JsonUserPreference
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.model.types.CommunicationModeEnum
+import com.noqapp.android.common.utils.TextToSpeechHelper
 import com.noqapp.android.merchant.R
 import com.noqapp.android.merchant.model.MerchantPreferenceApiCalls
 import com.noqapp.android.merchant.utils.UserUtils
@@ -24,7 +27,8 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
         setProgressMessage("Updating settings...")
         val sc_sound: SwitchCompat = findViewById(R.id.sc_sound)
         val sc_sms: SwitchCompat = findViewById(R.id.sc_sms)
-
+        val sc_msg_announce: SwitchCompat = findViewById(R.id.sc_msg_announce)
+        val cv_msg_announce: CardView = findViewById(R.id.cv_msg_announce)
         val jsonUserPreference: JsonUserPreference? = BaseLaunchActivity.getLaunchActivity().getUserProfile().jsonUserPreference
         if (null == jsonUserPreference) {
             sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
@@ -33,7 +37,22 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
             sc_sms.isChecked = jsonUserPreference.promotionalSMS == CommunicationModeEnum.R
             sc_sound.isChecked = jsonUserPreference.firebaseNotification == CommunicationModeEnum.R
         }
-
+        if (packageName.equals("com.noqapp.android.merchant.tv", ignoreCase = true)) {
+            sc_msg_announce.isChecked = LaunchActivity.isMsgAnnouncementEnable()
+            cv_msg_announce.visibility = View.VISIBLE
+            sc_msg_announce.setOnCheckedChangeListener { buttonView, isChecked ->
+                LaunchActivity.setMsgAnnouncmentEnable(isChecked)
+                if (isChecked) {
+                    // The switch is enabled/checked
+                    CustomToast().showToast(this@NotificationSettings, "Message Announcement Enabled")
+                } else {
+                    // The switch is disabled
+                    CustomToast().showToast(this@NotificationSettings, "Message Announcement Disabled")
+                }
+            }
+        }else{
+            cv_msg_announce.visibility = View.GONE
+        }
         sc_sms.setOnCheckedChangeListener { buttonView, isChecked ->
             MyApplication.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
@@ -59,6 +78,7 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
             //showProgress()
             clientPreferenceApiCalls.notificationSound(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
+
     }
 
     override fun merchantPreferencePresenterResponse(jsonUserPreference: JsonUserPreference?) {

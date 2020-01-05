@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -89,7 +88,6 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.TextToSpeechHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -147,14 +145,10 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
-    private TextToSpeechHelper textToSpeechHelper;
+
 
     public HomeFragment() {
         // default constructor required
-    }
-
-    public HomeFragment(Context context) {
-        textToSpeechHelper = new TextToSpeechHelper(context);
     }
 
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
@@ -286,7 +280,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             pb_events.setVisibility(View.VISIBLE);
 
         } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
+            if (isAdded())
+                ShowAlertInformation.showNetworkDialog(getActivity());
         }
 
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
@@ -330,7 +325,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(),CommonHelper.getLocation(lat,lng));
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(), CommonHelper.getLocation(lat, lng));
             queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
             //Call the current queue
@@ -339,7 +334,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
             //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(),CommonHelper.getLocation(lat,lng));
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(), CommonHelper.getLocation(lat, lng));
             queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
         }
         if (isProgressFirstTime) {
@@ -387,7 +382,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             searchBusinessStoreApiCalls.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
             searchBusinessStoreApiCalls.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
+            if (isAdded())
+                ShowAlertInformation.showNetworkDialog(getActivity());
         }
     }
 
@@ -620,14 +616,16 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
+        if (isAdded())
+            new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
         pb_feed.setVisibility(View.GONE);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         if (null != eej) {
-            new ErrorResponseHandler().processError(getActivity(), eej);
+            if (isAdded())
+                new ErrorResponseHandler().processError(getActivity(), eej);
         }
         pb_feed.setVisibility(View.GONE);
     }
@@ -693,20 +691,17 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         Log.d(TAG, "History Queue Count: " + historyQueueList.size());
     }
 
-    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to, String title, String body, List<JsonTextToSpeech> jsonTextToSpeeches) {
-        if (LaunchActivity.isMsgAnnouncementEnable()) {
-            textToSpeechHelper.makeAnnouncement(jsonTextToSpeeches);
-        }
+    public void updateListFromNotification(JsonTokenAndQueue jq, List<JsonTextToSpeech> jsonTextToSpeeches, String msgId) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {
             boolean showBuzzer;
             ReviewData reviewData = ReviewDB.getValue(jq.getCodeQR(), "" + jq.getToken());
             if (null != reviewData) {
-                if (!reviewData.getIsBuzzerShow().equals("1")) {
-                    showBuzzer = true;
-                } else {
+                if (reviewData.getIsBuzzerShow().equals("1")) {
                     showBuzzer = false;
+                } else {
+                    showBuzzer = true;
                 }
                 // update
             } else {
@@ -729,6 +724,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                     ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                     Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                     startActivity(blinker);
+                    if (LaunchActivity.isMsgAnnouncementEnable()) {
+                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
+                    }
                 } else {
                     switch (jq.getPurchaseOrderState()) {
                         case RP:
@@ -738,6 +736,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                             ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                             startActivity(blinker);
+                            if (LaunchActivity.isMsgAnnouncementEnable()) {
+                                LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
+                            }
                             break;
                         case CO:
                             //  ShowAlertInformation.showInfoDisplayDialog(getActivity(), title , body);

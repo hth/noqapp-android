@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -24,6 +23,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -68,6 +68,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         lng = getIntent().getStringExtra("lng");
+        initDefaultLatLng();
         scrollId = "";
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);
         rv_search.setHasFixedSize(true);
@@ -118,6 +119,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             lng = String.valueOf(latLng.longitude);
             city = city_name;
             AppUtils.hideKeyBoard(SearchActivity.this);
+            initDefaultLatLng();
 
         });
         autoCompleteTextView.setThreshold(3);
@@ -138,7 +140,17 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             performSearch();
         }
         if (AppUtils.isRelease()) {
-            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_SEARCH));
+            Bundle params = new Bundle();
+            params.putString(FirebaseAnalytics.Param.SEARCH_TERM, FabricEvents.EVENT_SEARCH);
+            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_SEARCH, params);
+        }
+    }
+
+    private void initDefaultLatLng() {
+        if(null == lat || lng == null){
+            lat = String.valueOf(Constants.DEFAULT_LATITUDE);
+            lng = String.valueOf(Constants.DEFAULT_LONGITUDE);
+            city = Constants.DEFAULT_CITY;
         }
     }
 

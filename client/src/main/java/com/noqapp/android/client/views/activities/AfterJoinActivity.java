@@ -22,8 +22,6 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.google.android.gms.maps.model.LatLng;
@@ -400,7 +398,9 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             if (AppUtils.isRelease()) {
                 try {
                     String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
-                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_QUEUE).putCustomAttribute("Queue Name", displayName));
+                    Bundle params = new Bundle();
+                    params.putString("Queue_Name", displayName);
+                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_CANCEL_QUEUE, params);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

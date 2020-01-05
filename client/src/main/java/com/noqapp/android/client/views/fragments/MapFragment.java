@@ -121,6 +121,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+    }
+
+
     private DirectionsResult getDirectionsDetails(TravelMode travelMode) {
         DateTime now = DateTime.now(DateTimeZone.UTC).plusDays(1);
         try {
