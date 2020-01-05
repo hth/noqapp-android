@@ -688,9 +688,6 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     }
 
     public void updateListFromNotification(JsonTokenAndQueue jq, List<JsonTextToSpeech> jsonTextToSpeeches, String msgId) {
-        if (LaunchActivity.isMsgAnnouncementEnable()) {
-            LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
-        }
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {
@@ -723,6 +720,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                     ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                     Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                     startActivity(blinker);
+                    if (LaunchActivity.isMsgAnnouncementEnable()) {
+                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
+                    }
                 } else {
                     switch (jq.getPurchaseOrderState()) {
                         case RP:
@@ -732,6 +732,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                             ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                             startActivity(blinker);
+                            if (LaunchActivity.isMsgAnnouncementEnable()) {
+                                LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
+                            }
                             break;
                         case CO:
                             //  ShowAlertInformation.showInfoDisplayDialog(getActivity(), title , body);
