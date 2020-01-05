@@ -23,6 +23,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -67,6 +68,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         lng = getIntent().getStringExtra("lng");
+        initDefaultLatLng();
         scrollId = "";
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);
         rv_search.setHasFixedSize(true);
@@ -117,6 +119,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             lng = String.valueOf(latLng.longitude);
             city = city_name;
             AppUtils.hideKeyBoard(SearchActivity.this);
+            initDefaultLatLng();
 
         });
         autoCompleteTextView.setThreshold(3);
@@ -140,6 +143,14 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             Bundle params = new Bundle();
             params.putString(FirebaseAnalytics.Param.SEARCH_TERM, FabricEvents.EVENT_SEARCH);
             LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_SEARCH, params);
+        }
+    }
+
+    private void initDefaultLatLng() {
+        if(null == lat || lng == null){
+            lat = String.valueOf(Constants.DEFAULT_LATITUDE);
+            lng = String.valueOf(Constants.DEFAULT_LONGITUDE);
+            city = Constants.DEFAULT_CITY;
         }
     }
 
