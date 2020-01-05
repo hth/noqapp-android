@@ -280,7 +280,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             pb_events.setVisibility(View.VISIBLE);
 
         } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
+            if (isAdded())
+                ShowAlertInformation.showNetworkDialog(getActivity());
         }
 
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
@@ -615,14 +616,16 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
+        if (isAdded())
+            new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
         pb_feed.setVisibility(View.GONE);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         if (null != eej) {
-            new ErrorResponseHandler().processError(getActivity(), eej);
+            if (isAdded())
+                new ErrorResponseHandler().processError(getActivity(), eej);
         }
         pb_feed.setVisibility(View.GONE);
     }
