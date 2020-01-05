@@ -39,7 +39,7 @@ class DeviceApiCallITest extends ITest {
     @Test
     void register_Fail() {
         String did = UUID.randomUUID().toString();
-        DeviceToken deviceToken = new DeviceToken(did, Constants.appVersion());
+        DeviceToken deviceToken = new DeviceToken(did, Constants.appVersion(), null);
         this.deviceApiCall.register(did, deviceToken);
         await().atMost(1, MINUTES).pollInterval(10, SECONDS).until(awaitUntilResponseFromServer());
         assertEquals(MOBILE_JSON, MobileSystemErrorCodeEnum.valueOf(deviceApiCall.getErrorEncounteredJson().getSystemError()));
