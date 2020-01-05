@@ -353,50 +353,47 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
             return;
         }
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //stuff that updates ui
-                try {
-                    for (int i = 0; i < topics.size(); i++) {
-                        JsonTopic jt = topics.get(i);
-                        if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
+        getActivity().runOnUiThread(() -> {
+            //stuff that updates ui
+            try {
+                for (int i = 0; i < topics.size(); i++) {
+                    JsonTopic jt = topics.get(i);
+                    if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
 
-                            if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
-                                if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)) {
-                                    jt.setToken(Integer.parseInt(lastNumber));
-                                    jt.setServingNumber(Integer.parseInt(current_serving));
-                                } else {
-                                    if (Integer.parseInt(lastNumber) >= jt.getToken()) {
-                                        jt.setToken(Integer.parseInt(lastNumber));
-                                    }
-                                }
-                                /* Update only from merchant msg. */
-                                jt.setQueueStatus(QueueStatusEnum.valueOf(status));
+                        if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
+                            if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)) {
+                                jt.setToken(Integer.parseInt(lastNumber));
+                                jt.setServingNumber(Integer.parseInt(current_serving));
                             } else {
                                 if (Integer.parseInt(lastNumber) >= jt.getToken()) {
                                     jt.setToken(Integer.parseInt(lastNumber));
                                 }
                             }
-                            //jt.setToken(Integer.parseInt(lastno));
-                            topics.set(i, jt);
-                            adapter.notifyDataSetChanged();
-                            temp_adapter = null;
-                            if (null != getActivity()) {
-                                temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
-                                auto_complete_search.setAdapter(temp_adapter);
+                            /* Update only from merchant msg. */
+                            jt.setQueueStatus(QueueStatusEnum.valueOf(status));
+                        } else {
+                            if (Integer.parseInt(lastNumber) >= jt.getToken()) {
+                                jt.setToken(Integer.parseInt(lastNumber));
                             }
-                            if (null != merchantDetailFragment) {
-                                merchantDetailFragment.updateListData(topics);
-                            }
-                            LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
-                            updateSnackbarTxt();
-                            break;
                         }
+                        //jt.setToken(Integer.parseInt(lastno));
+                        topics.set(i, jt);
+                        adapter.notifyDataSetChanged();
+                        temp_adapter = null;
+                        if (null != getActivity()) {
+                            temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
+                            auto_complete_search.setAdapter(temp_adapter);
+                        }
+                        if (null != merchantDetailFragment) {
+                            merchantDetailFragment.updateListData(topics);
+                        }
+                        LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
+                        updateSnackbarTxt();
+                        break;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -490,7 +487,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
             adapter.notifyDataSetChanged();
         try {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            if (merchantDetailFragment != null) {
+            if (null != merchantDetailFragment) {
                 transaction.remove(merchantDetailFragment);
                 transaction.commit();
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -500,7 +497,6 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public class CustomComparator implements Comparator<JsonTopic> {

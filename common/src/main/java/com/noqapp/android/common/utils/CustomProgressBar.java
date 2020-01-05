@@ -32,7 +32,6 @@ public class CustomProgressBar {
         dialog = builder.create();
     }
 
-
     public void dismissProgress() {
         try {
             if (null != dialog && dialog.isShowing())
