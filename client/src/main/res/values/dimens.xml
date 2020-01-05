@@ -105,5 +105,6 @@
     <dimen name="recent_q_height">175dp</dimen>
 
     <dimen name="menu_item_height">150dp</dimen>
+    <dimen name="country_code_width">100dp</dimen>
 
 </resources>
