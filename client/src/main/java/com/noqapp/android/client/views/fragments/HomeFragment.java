@@ -381,7 +381,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             searchBusinessStoreApiCalls.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
             searchBusinessStoreApiCalls.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
+            if (isAdded())
+                ShowAlertInformation.showNetworkDialog(getActivity());
         }
     }
 
@@ -694,10 +695,10 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             boolean showBuzzer;
             ReviewData reviewData = ReviewDB.getValue(jq.getCodeQR(), "" + jq.getToken());
             if (null != reviewData) {
-                if (!reviewData.getIsBuzzerShow().equals("1")) {
-                    showBuzzer = true;
-                } else {
+                if (reviewData.getIsBuzzerShow().equals("1")) {
                     showBuzzer = false;
+                } else {
+                    showBuzzer = true;
                 }
                 // update
             } else {
