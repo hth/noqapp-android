@@ -19,8 +19,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
@@ -334,7 +332,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         DependentApiCall dependentModel = new DependentApiCall(this);
                         dependentModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
                         if (AppUtils.isRelease()) {
-                            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_DEPENDENT_ADDED));
+                            FabricEvents.logContentEvent(FabricEvents.EVENT_DEPENDENT_ADDED);
                         }
                     }
                 } else {

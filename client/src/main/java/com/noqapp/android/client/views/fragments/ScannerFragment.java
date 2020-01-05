@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -101,8 +101,10 @@ public abstract class ScannerFragment extends NoQueueBaseFragment {
                                 boolean isCategoryData = contents.endsWith("b.htm");
                                 barcodeResult(codeQR[3], isCategoryData);
 
-                                Answers.getInstance().logCustom(new CustomEvent("Scan")
-                                        .putCustomAttribute("codeQR", codeQR[3]));
+                                Bundle params = new Bundle();
+                                params.putString("codeQR", codeQR[3]);
+                                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_SCAN_CODEQR_SCREEN, params);
+
                             } catch (Exception e) {
                                 Log.e(TAG, "Failed parsing codeQR reason=" + e.getLocalizedMessage(), e);
                             }

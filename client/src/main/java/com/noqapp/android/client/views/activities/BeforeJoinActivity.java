@@ -19,8 +19,6 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
@@ -346,8 +344,9 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
             if (AppUtils.isRelease()) {
-                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_JOIN_SCREEN)
-                        .putCustomAttribute("Queue Name", jsonQueue.getDisplayName()));
+                Bundle params = new Bundle();
+                params.putString("Queue_Name", jsonQueue.getDisplayName());
+                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_JOIN_SCREEN, params);
             }
         }
     }

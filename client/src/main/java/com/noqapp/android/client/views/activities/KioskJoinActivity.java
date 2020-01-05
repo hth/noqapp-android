@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.KioskApiCalls;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
@@ -306,8 +304,9 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
 
 
             if (AppUtils.isRelease()) {
-                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_JOIN_SCREEN)
-                        .putCustomAttribute("Queue Name", jsonQueue.getDisplayName()));
+                Bundle params = new Bundle();
+                params.putString("Queue_Name", jsonQueue.getDisplayName());
+                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_JOIN_KIOSK_SCREEN, params);
             }
         }
     }

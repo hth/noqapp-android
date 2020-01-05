@@ -14,9 +14,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.utils.AppUtils;
@@ -69,10 +68,11 @@ public class FeedActivity extends AppCompatActivity {
         }
 
         if (AppUtils.isRelease()) {
-            Answers.getInstance().logContentView(new ContentViewEvent()
-                    .putContentName(jsonFeed.getTitle())
-                    .putContentType(jsonFeed.getContentType())
-                    .putContentId(FabricEvents.EVENT_FEED));
+            Bundle params = new Bundle();
+            params.putString(FirebaseAnalytics.Param.CONTENT, jsonFeed.getTitle());
+            params.putString(FirebaseAnalytics.Param.ITEM_ID, jsonFeed.getContentId());
+            params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, jsonFeed.getContentType());
+            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_FEED, params);
         }
     }
 

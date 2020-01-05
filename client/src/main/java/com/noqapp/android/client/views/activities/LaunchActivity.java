@@ -44,10 +44,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.common.cache.Cache;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -112,7 +111,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
@@ -152,6 +150,11 @@ public class LaunchActivity
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
 
+    public FirebaseAnalytics getFireBaseAnalytics() {
+        return fireBaseAnalytics;
+    }
+
+    private FirebaseAnalytics fireBaseAnalytics;
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -159,7 +162,7 @@ public class LaunchActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Answers());
+        fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
         JodaTimeAndroid.init(this);
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
@@ -717,18 +720,18 @@ public class LaunchActivity
             AppUtils.changeLanguage("hi");
             dialog.dismiss();
             if (AppUtils.isRelease()) {
-                Answers.getInstance()
-                        .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                                .putCustomAttribute("Language", "HINDI"));
+                Bundle params = new Bundle();
+                params.putString("Language", "HINDI");
+                fireBaseAnalytics.logEvent(FabricEvents.EVENT_CHANGE_LANGUAGE, params);
             }
         });
         ll_english.setOnClickListener((View v) -> {
             AppUtils.changeLanguage("en");
             dialog.dismiss();
             if (AppUtils.isRelease()) {
-                Answers.getInstance()
-                        .logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                                .putCustomAttribute("Language", "ENGLISH"));
+                Bundle params = new Bundle();
+                params.putString("Language", "ENGLISH");
+                fireBaseAnalytics.logEvent(FabricEvents.EVENT_CHANGE_LANGUAGE, params);
             }
         });
         dialog.show();

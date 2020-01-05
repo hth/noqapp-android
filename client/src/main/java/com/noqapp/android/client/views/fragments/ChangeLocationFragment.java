@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
@@ -121,7 +119,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
             }
         });
         if (AppUtils.isRelease()) {
-            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LOCATION));
+            FabricEvents.logContentEvent(FabricEvents.EVENT_CHANGE_LOCATION);
         }
         return view;
     }

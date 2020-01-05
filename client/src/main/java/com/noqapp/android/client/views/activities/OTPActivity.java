@@ -16,12 +16,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -32,6 +31,7 @@ import com.hbb20.CountryCodePicker;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -307,9 +307,10 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 countryCode = ccp.getSelectedCountryCodeWithPlus();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
-                Answers.getInstance().logLogin(new LoginEvent()
-                        .putMethod("Phone")
-                        .putSuccess(true));
+                Bundle params = new Bundle();
+                params.putBoolean("Phone", true);
+                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_LOGIN_SCREEN, params);
+
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
