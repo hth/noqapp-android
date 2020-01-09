@@ -1,21 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -32,7 +16,23 @@ import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.apache.commons.lang3.StringUtils;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -115,8 +115,10 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             String city_name = (String) parent.getItemAtPosition(position);
             LatLng latLng = AppUtils.getLocationFromAddress(SearchActivity.this, city_name);
-            lat = String.valueOf(latLng.latitude);
-            lng = String.valueOf(latLng.longitude);
+            if (null != latLng) {
+                lat = String.valueOf(latLng.latitude);
+                lng = String.valueOf(latLng.longitude);
+            }
             city = city_name;
             AppUtils.hideKeyBoard(SearchActivity.this);
             initDefaultLatLng();
@@ -147,7 +149,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     private void initDefaultLatLng() {
-        if(null == lat || lng == null){
+        if (null == lat || lng == null) {
             lat = String.valueOf(Constants.DEFAULT_LATITUDE);
             lng = String.valueOf(Constants.DEFAULT_LONGITUDE);
             city = Constants.DEFAULT_CITY;
