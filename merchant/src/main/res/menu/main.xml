@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_add"
-        android:icon="@drawable/add_token"
         android:title="@string/add_new"
+        android:icon="@drawable/menu_add_token"
         app:iconTint="@android:color/black" />
 
     <item
@@ -20,24 +20,24 @@
 
     <item
         android:id="@+id/menu_q_history"
-        android:icon="@drawable/history"
+        android:icon="@drawable/menu_history"
         android:title="Queue History"
         app:iconTint="@android:color/black" />
 
     <item
         android:id="@+id/menu_followup"
         android:icon="@drawable/follow_up"
-        android:title="Patient Followup"
+        android:title="  Patient Followup"
         app:iconTint="@android:color/black" />
     <item
         android:id="@+id/menu_product_list"
-        android:icon="@drawable/product_list"
+        android:icon="@drawable/menu_prod_list"
         android:title="Product List"
         app:iconTint="@android:color/black" />
 
     <item
         android:id="@+id/menu_settings"
-        android:icon="@drawable/settings"
+        android:icon="@drawable/menu_settings"
         android:title="Settings"
         app:iconTint="@android:color/black" />
 
