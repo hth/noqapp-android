@@ -102,7 +102,7 @@
                             android:layout_weight="1"
                             android:checked="true"
                             android:text="Mobile No"
-                            android:textSize="@dimen/text_size_twelve"
+                            android:textSize="@dimen/text_size_fourteen"
                             app:buttonTint="@color/radio_button_color" />
 
                         <androidx.appcompat.widget.AppCompatRadioButton
@@ -113,7 +113,7 @@
                             android:layout_weight="1"
                             android:checked="false"
                             android:text="Customer ID"
-                            android:textSize="@dimen/text_size_twelve"
+                            android:textSize="@dimen/text_size_fourteen"
                             app:buttonTint="@color/radio_button_color" />
                     </RadioGroup>
 
@@ -151,7 +151,7 @@
                             android:maxLines="1"
                             android:minLines="1"
                             android:padding="10dp"
-                            android:textSize="@dimen/text_size_twelve" />
+                            android:textSize="@dimen/text_size_fourteen" />
                     </LinearLayout>
 
                     <EditText
@@ -165,7 +165,7 @@
                         android:maxLines="1"
                         android:minLines="1"
                         android:padding="10dp"
-                        android:textSize="@dimen/text_size_twelve"
+                        android:textSize="@dimen/text_size_fourteen"
                         android:visibility="gone" />
 
                     <TextView
@@ -178,7 +178,7 @@
                         android:layout_marginBottom="5dp"
                         android:text="Select patient name for test"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve"
+                        android:textSize="@dimen/text_size_fourteen"
                         android:visibility="gone" />
 
 
@@ -212,7 +212,7 @@
                             android:text="@string/create_token"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_twelve"
+                            android:textSize="@dimen/text_size_fourteen"
                             android:visibility="gone" />
 
                         <Button
@@ -226,7 +226,7 @@
                             android:text="@string/create_token"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_twelve" />
+                            android:textSize="@dimen/text_size_fourteen" />
 
 
                     </FrameLayout>
