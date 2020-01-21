@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -49,21 +48,15 @@ public class ShowUploadImageDialog {
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
 
-        btnPositive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                if (null != dialogClickListener)
-                    dialogClickListener.btnPositiveClick();
-            }
+        btnPositive.setOnClickListener(v -> {
+            dialog.dismiss();
+            if (null != dialogClickListener)
+                dialogClickListener.btnPositiveClick();
         });
-        btnNegative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                if (null != dialogClickListener)
-                    dialogClickListener.btnNegativeClick();
-            }
+        btnNegative.setOnClickListener(v -> {
+            dialog.dismiss();
+            if (null != dialogClickListener)
+                dialogClickListener.btnNegativeClick();
         });
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

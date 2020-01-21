@@ -4,41 +4,41 @@
     <item
         android:id="@+id/menu_add"
         android:icon="@drawable/add_token"
-        app:iconTint="@android:color/black"
-        android:title="@string/add_new" />
+        android:title="@string/add_new"
+        app:iconTint="@android:color/black" />
 
     <item
         android:id="@+id/menu_edit"
-        android:icon="@drawable/edit_new"
-        app:iconTint="@android:color/black"
-        android:title="Edit Counter Name" />
+        android:icon="@drawable/edit_menu"
+        android:title="Edit Counter Name"
+        app:iconTint="@android:color/black" />
     <item
         android:id="@+id/menu_appointment"
         android:icon="@drawable/appointment"
-        app:iconTint="@android:color/black"
-        android:title="Appointments" />
+        android:title="Appointments"
+        app:iconTint="@android:color/black" />
 
     <item
         android:id="@+id/menu_q_history"
         android:icon="@drawable/history"
-        app:iconTint="@android:color/black"
-        android:title="Queue History" />
+        android:title="Queue History"
+        app:iconTint="@android:color/black" />
 
     <item
         android:id="@+id/menu_followup"
         android:icon="@drawable/follow_up"
-        app:iconTint="@android:color/black"
-        android:title="Patient Followup" />
+        android:title="Patient Followup"
+        app:iconTint="@android:color/black" />
     <item
         android:id="@+id/menu_product_list"
         android:icon="@drawable/product_list"
-        app:iconTint="@android:color/black"
-        android:title="Product List" />
+        android:title="Product List"
+        app:iconTint="@android:color/black" />
 
     <item
         android:id="@+id/menu_settings"
         android:icon="@drawable/settings"
-        app:iconTint="@android:color/black"
-        android:title="Settings" />
+        android:title="Settings"
+        app:iconTint="@android:color/black" />
 
 </menu>
