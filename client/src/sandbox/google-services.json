@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-noa1fge49sipmpaeulrbp80gkvu7usd0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.client",
+            "certificate_hash": "a36fc23dddcb4c249146d89d760b967bbe340e49"
+          }
+        },
+        {
           "client_id": "742452513487-ohmnnmsq23im1sb3d9o7utklel2e58r8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -60,7 +68,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "742452513487-k76d5rmg39dq9uoptti054qqa1rbnftu.apps.googleusercontent.com",
+              "client_id": "742452513487-e7jq2hn2d8u75b9bhpd6nu11jqpfkit1.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -82,6 +90,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "742452513487-275hql3a5b3tq103dg43v3qvdpojdoeu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant",
+            "certificate_hash": "a36fc23dddcb4c249146d89d760b967bbe340e49"
+          }
+        },
         {
           "client_id": "742452513487-3hs79gljbq5sj1a27jc9an0ick9i2ksl.apps.googleusercontent.com",
           "client_type": 1,
@@ -128,7 +144,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "742452513487-k76d5rmg39dq9uoptti054qqa1rbnftu.apps.googleusercontent.com",
+              "client_id": "742452513487-e7jq2hn2d8u75b9bhpd6nu11jqpfkit1.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -150,6 +166,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "742452513487-a836qibfvt8t7aqgc3er6fpoq2v23f55.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.healthcare",
+            "certificate_hash": "a36fc23dddcb4c249146d89d760b967bbe340e49"
+          }
+        },
         {
           "client_id": "742452513487-pgrkbmh6cl1plm9m46qtn0jllhiifddg.apps.googleusercontent.com",
           "client_type": 1,
@@ -196,7 +220,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "742452513487-k76d5rmg39dq9uoptti054qqa1rbnftu.apps.googleusercontent.com",
+              "client_id": "742452513487-e7jq2hn2d8u75b9bhpd6nu11jqpfkit1.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -218,6 +242,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "742452513487-vrmreffeakmhm2ifc2n69q5b3ckao66j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.inventory",
+            "certificate_hash": "a36fc23dddcb4c249146d89d760b967bbe340e49"
+          }
+        },
         {
           "client_id": "742452513487-s0pkhkrkrihkp4s8k07n3hp96g07dkuc.apps.googleusercontent.com",
           "client_type": 1,
@@ -256,7 +288,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "742452513487-k76d5rmg39dq9uoptti054qqa1rbnftu.apps.googleusercontent.com",
+              "client_id": "742452513487-e7jq2hn2d8u75b9bhpd6nu11jqpfkit1.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -278,6 +310,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "742452513487-inc7ptjs86g92vd91nm2aacsg1ueere9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.tv",
+            "certificate_hash": "a36fc23dddcb4c249146d89d760b967bbe340e49"
+          }
+        },
         {
           "client_id": "742452513487-uds8pel3puqguatiqvd4k57sqrh4987i.apps.googleusercontent.com",
           "client_type": 1,
@@ -316,7 +356,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "742452513487-k76d5rmg39dq9uoptti054qqa1rbnftu.apps.googleusercontent.com",
+              "client_id": "742452513487-e7jq2hn2d8u75b9bhpd6nu11jqpfkit1.apps.googleusercontent.com",
               "client_type": 3
             },
             {
