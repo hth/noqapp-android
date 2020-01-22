@@ -50,7 +50,7 @@ dependencies {
     })
     androidTestImplementation 'org.mockito:mockito-android:3.1.0'
 
-    testImplementation 'org.mockito:mockito-core:3.1.0'
+    testImplementation 'org.mockito:mockito-core:3.2.4'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
 
@@ -66,6 +66,7 @@ dependencies {
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.5.2'
     testImplementation 'org.awaitility:awaitility:4.0.1'
 }
+
 repositories {
     mavenCentral()
 }

@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="25dp"
-              android:minHeight="300dp"
-              android:background="@drawable/dialog_bg"
-              android:outlineProvider="paddedBounds"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp"
+    android:background="@drawable/dialog_bg"
+    android:minHeight="300dp"
+    android:orientation="vertical"
+    android:outlineProvider="paddedBounds">
 
 
     <ImageView
-            android:id="@+id/iv_banner"
-            android:layout_width="60dp"
-            android:layout_margin="30dp"
-            android:background="@drawable/abc"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="60dp"/>
+        android:id="@+id/iv_banner"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="30dp"
+        android:background="@drawable/abc" />
 
     <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Title"
-            android:textStyle="bold"
-            android:textColor="#333333"
-            android:textSize="20sp"/>
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Title"
+        android:textColor="#333333"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
-            android:id="@+id/tv_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:text="Message"
-            android:textSize="16sp"/>
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="Message"
+        android:textSize="16sp" />
 
     <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnPositive"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg"
+            android:padding="10dp"
+            android:text="OK"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <Button
-                android:id="@+id/btnPositive"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/btn_bg"
-                android:text="OK"
-                android:padding="10dp"
-                android:layout_marginRight="5dp"
-                android:textSize="14sp"
-                android:textColor="#333333"
-                android:textStyle="bold"/>
-
-        <Button
-                android:id="@+id/btnNegative"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/btn_bg"
-                android:text="CANCEL"
-                android:padding="10dp"
-                android:layout_marginLeft="5dp"
-                android:textSize="14sp"
-                android:textColor="#333333"
-                android:textStyle="bold"/>
+            android:id="@+id/btnNegative"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg"
+            android:padding="10dp"
+            android:text="CANCEL"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 

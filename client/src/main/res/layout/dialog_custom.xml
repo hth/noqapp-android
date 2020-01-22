@@ -68,9 +68,9 @@
             android:padding="10dp"
             android:text="CANCEL"
             android:textColor="#333333"
-            android:visibility="gone"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
     </LinearLayout>
 
 

@@ -36,7 +36,7 @@ public class AppointmentApiCalls {
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d(TAG, "showSchedule fetch " + String.valueOf(response.body()));
+                        Log.d(TAG, "showSchedule fetch " + response.body());
                         appointmentPresenter.appointmentResponse(response.body());
                     } else {
                         Log.e(TAG, "Failed to fetch scheduleForMonth");
@@ -65,7 +65,7 @@ public class AppointmentApiCalls {
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d(TAG, "scheduleForDay fetch " + String.valueOf(response.body()));
+                        Log.d(TAG, "scheduleForDay fetch " + response.body());
                         appointmentPresenter.appointmentResponse(response.body());
                     } else {
                         Log.e(TAG, "Failed to fetch scheduleForDay");
@@ -95,7 +95,7 @@ public class AppointmentApiCalls {
                 public void onResponse(@NonNull Call<JsonSchedule> call, @NonNull Response<JsonSchedule> response) {
                     if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                         if (null != response.body() && null == response.body().getError()) {
-                            Log.d(TAG, "bookAppointment fetch " + String.valueOf(response.body()));
+                            Log.d(TAG, "bookAppointment fetch " + response.body());
                             appointmentPresenter.appointmentBookingResponse(response.body());
                         } else {
                             Log.e(TAG, "Failed to bookAppointment");
@@ -127,7 +127,7 @@ public class AppointmentApiCalls {
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d(TAG, "cancelAppointment fetch " + String.valueOf(response.body()));
+                        Log.d(TAG, "cancelAppointment fetch " + response.body());
                         appointmentPresenter.appointmentCancelResponse(response.body());
                     } else {
                         Log.e(TAG, "Failed to cancelAppointment");
@@ -157,7 +157,7 @@ public class AppointmentApiCalls {
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d(TAG, "allAppointments fetch " + String.valueOf(response.body()));
+                        Log.d(TAG, "allAppointments fetch " + response.body());
                         appointmentPresenter.appointmentResponse(response.body());
                     } else {
                         Log.e(TAG, "Failed to fetch allAppointments");
@@ -187,7 +187,7 @@ public class AppointmentApiCalls {
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d(TAG, "allPastAppointments fetch " + String.valueOf(response.body()));
+                        Log.d(TAG, "allPastAppointments fetch " + response.body());
                         appointmentPresenter.appointmentResponse(response.body());
                     } else {
                         Log.e(TAG, "Failed to fetch allPastAppointments");
