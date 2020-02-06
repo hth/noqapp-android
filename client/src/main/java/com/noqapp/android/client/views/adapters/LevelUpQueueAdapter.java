@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -242,7 +243,8 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             // for safety null check added for walking state
             if (null == bizStoreElastic.getWalkInState() || bizStoreElastic.getWalkInState() == WalkInStateEnum.E) {
-                childViewHolder.tv_join.setVisibility(View.VISIBLE);
+                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context,R.drawable.btn_bg_enable));
+                childViewHolder.tv_join.setTextColor(Color.WHITE);
                 childViewHolder.tv_join.setOnClickListener((View v) -> {
                     if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
                         listener.onCategoryItemClick(bizStoreElastic);
@@ -251,7 +253,11 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     }
                 });
             } else {
-                childViewHolder.tv_join.setVisibility(View.GONE);
+                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context,R.drawable.btn_bg_inactive));
+                childViewHolder.tv_join.setTextColor(Color.BLACK);
+                childViewHolder.tv_join.setOnClickListener((View v) -> {
+                    new CustomToast().showToast(context, "Currently "+bizStoreElastic.getDisplayName()+" is not supporting walking.");
+                });
             }
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                 switch (bizStoreElastic.getAppointmentState()) {
