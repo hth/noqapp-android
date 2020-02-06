@@ -243,7 +243,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             // for safety null check added for walking state
             if (null == bizStoreElastic.getWalkInState() || bizStoreElastic.getWalkInState() == WalkInStateEnum.E) {
-                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context,R.drawable.btn_bg_enable));
+                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
                 childViewHolder.tv_join.setTextColor(Color.WHITE);
                 childViewHolder.tv_join.setOnClickListener((View v) -> {
                     if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
@@ -253,10 +253,10 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     }
                 });
             } else {
-                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context,R.drawable.btn_bg_inactive));
+                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_inactive));
                 childViewHolder.tv_join.setTextColor(Color.BLACK);
                 childViewHolder.tv_join.setOnClickListener((View v) -> {
-                    new CustomToast().showToast(context, "Currently "+bizStoreElastic.getDisplayName()+" is not supporting walking.");
+                    new CustomToast().showToast(context, bizStoreElastic.getDisplayName() + " is not accepting walk-ins.");
                 });
             }
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
