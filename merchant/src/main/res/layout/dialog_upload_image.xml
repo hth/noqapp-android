@@ -3,9 +3,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="25dp"
+    android:layout_margin="@dimen/upload_image_margin"
     android:background="@drawable/dialog_bg"
-    android:minHeight="400dp"
+    android:minHeight="@dimen/upload_image_dialog_min_height"
+    android:maxHeight="@dimen/upload_image_dialog_max_height"
     android:orientation="vertical"
     android:outlineProvider="paddedBounds">
 
@@ -21,10 +22,15 @@
 
     <ImageView
         android:id="@+id/iv_banner"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:minHeight="@dimen/upload_image_min_size"
+        android:maxHeight="@dimen/upload_image_max_size"
+        android:minWidth="@dimen/upload_image_min_size"
+        android:maxWidth="@dimen/upload_image_max_size"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="30dp" />
+        android:layout_margin="@dimen/upload_image_margin" />
 
 
     <LinearLayout

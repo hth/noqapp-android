@@ -1,5 +1,10 @@
 <resources>
 
+    <dimen name="upload_image_dialog_min_height">300dp</dimen>
+    <dimen name="upload_image_dialog_max_height">450dp</dimen>
+    <dimen name="upload_image_min_size">250dp</dimen>
+    <dimen name="upload_image_max_size">300dp</dimen>
+    <dimen name="upload_image_margin">20dp</dimen>
     <dimen name="list_item_margin">10dp</dimen>
     <dimen name="pager_btn_margin">20dp</dimen>
     <dimen name="left_right_icon">36dp</dimen>
