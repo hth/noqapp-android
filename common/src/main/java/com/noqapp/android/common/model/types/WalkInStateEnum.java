@@ -1,8 +1,8 @@
 package com.noqapp.android.common.model.types;
 
 public enum WalkInStateEnum {
-    E("E", "Enable"),
-    D("D", "Disable");
+    E("E", "Enabled"),
+    D("D", "Disabled");
 
     private final String name;
     private final String description;
