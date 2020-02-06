@@ -7,7 +7,8 @@
     <dimen name="play_btn_size">40dp</dimen>
     <dimen name="cell_size">60dp</dimen>
     <dimen name="screen_padding">20dp</dimen>
-    <dimen name="tab_screen_padding">350dp</dimen>
+    <dimen name="tab_screen_padding_lr">250dp</dimen>
+    <dimen name="tab_screen_padding_tb">100dp</dimen>
     <dimen name="edit_icon_size">36dp</dimen>
     <dimen name="mhd_header_size">14sp</dimen>
     <dimen name="mhd_sub_header_size">14dp</dimen>
