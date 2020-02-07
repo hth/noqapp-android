@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -30,6 +31,7 @@ import com.noqapp.android.client.views.activities.LoginActivity;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.WalkInStateEnum;
 import com.noqapp.android.common.utils.Formatter;
 
 import java.util.ArrayList;
@@ -239,13 +241,24 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_consult_fees_header.setVisibility(View.VISIBLE);
             }
             childViewHolder.tv_store_special.setText(bizStoreElastic.getFamousFor());
-            childViewHolder.tv_join.setOnClickListener((View v) -> {
-                if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
-                    listener.onCategoryItemClick(bizStoreElastic);
-                } else {
-                    new CustomToast().showToast(context, "Please visit store to avail the service.");
-                }
-            });
+            // for safety null check added for walking state
+            if (null == bizStoreElastic.getWalkInState() || bizStoreElastic.getWalkInState() == WalkInStateEnum.E) {
+                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
+                childViewHolder.tv_join.setTextColor(Color.WHITE);
+                childViewHolder.tv_join.setOnClickListener((View v) -> {
+                    if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
+                        listener.onCategoryItemClick(bizStoreElastic);
+                    } else {
+                        new CustomToast().showToast(context, "Please visit store to avail the service.");
+                    }
+                });
+            } else {
+                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_inactive));
+                childViewHolder.tv_join.setTextColor(Color.BLACK);
+                childViewHolder.tv_join.setOnClickListener((View v) -> {
+                    new CustomToast().showToast(context, bizStoreElastic.getDisplayName() + " is not accepting walk-ins.");
+                });
+            }
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                 switch (bizStoreElastic.getAppointmentState()) {
                     case O:

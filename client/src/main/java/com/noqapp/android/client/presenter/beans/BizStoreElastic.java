@@ -13,6 +13,7 @@ import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.WalkInStateEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -138,6 +139,9 @@ public class BizStoreElastic implements Serializable {
 
     @JsonProperty("PP")
     private int productPrice;
+
+    @JsonProperty("WS")
+    private WalkInStateEnum walkInState;
 
     @JsonProperty("PS")
     private AppointmentStateEnum appointmentState;
@@ -457,6 +461,14 @@ public class BizStoreElastic implements Serializable {
     public BizStoreElastic setProductPrice(int productPrice) {
         this.productPrice = productPrice;
         return this;
+    }
+
+    public WalkInStateEnum getWalkInState() {
+        return walkInState;
+    }
+
+    public void setWalkInState(WalkInStateEnum walkInState) {
+        this.walkInState = walkInState;
     }
 
     public AppointmentStateEnum getAppointmentState() {

@@ -49,8 +49,9 @@ import java.util.List;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
-public class BookAppointmentActivity extends BaseActivity implements
-        AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter {
+public class BookAppointmentActivity
+        extends BaseActivity
+        implements AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter {
     private Spinner sp_name_list;
     private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
@@ -89,6 +90,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                     isAppointmentBooking = true;
                     break;
                 case S:
+                case F:
                     isAppointmentBooking = false;
                     break;
             }
@@ -149,13 +151,11 @@ public class BookAppointmentActivity extends BaseActivity implements
         });
         horizontalCalendarView.refresh();
 
-
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
         profileList.add(0, new JsonProfile().setName("Select Patient"));
         DependentAdapter adapter = new DependentAdapter(this, profileList);
         sp_name_list.setAdapter(adapter);
-
 
         btn_book_appointment.setOnClickListener(v -> {
             sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
@@ -179,8 +179,12 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate))
                                     .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                             // appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
-                            showConfirmationDialog(BookAppointmentActivity.this, ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
-                                    AppUtils.dateFormatAsYYYY_MM_DD(selectedDate), appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(), jsonSchedule);
+                            showConfirmationDialog(
+                                    BookAppointmentActivity.this,
+                                    ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
+                                    AppUtils.dateFormatAsYYYY_MM_DD(selectedDate),
+                                    appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(),
+                                    jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -201,8 +205,12 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                             //appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
 
-                            showConfirmationDialog(BookAppointmentActivity.this, ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
-                                    AppUtils.dateFormatAsYYYY_MM_DD(selectedDate), "", jsonSchedule);
+                            showConfirmationDialog(
+                                    BookAppointmentActivity.this,
+                                    ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
+                                    AppUtils.dateFormatAsYYYY_MM_DD(selectedDate),
+                                    "",
+                                    jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -358,22 +366,28 @@ public class BookAppointmentActivity extends BaseActivity implements
         tv_slot_count.setVisibility(View.GONE);
         tv_slot_count_empty.setVisibility(View.GONE);
         ll_sector.setVisibility(View.GONE);
-        appointmentSlotAdapter = new AppointmentSlotAdapter(new ArrayList<AppointmentSlot>(), this, this);
+        appointmentSlotAdapter = new AppointmentSlotAdapter(new ArrayList<>(), this, this);
         rv_available_date.setAdapter(appointmentSlotAdapter);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();
             appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
                     UserUtils.getEmail(),
-                    UserUtils.getAuth(), day, bizStoreElastic.getCodeQR());
+                    UserUtils.getAuth(),
+                    day,
+                    bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
     }
 
-
-    public void showConfirmationDialog(Context context, String patientName, String bookingDate,
-                                       String bookingSlot, JsonSchedule jsonSchedule) {
+    public void showConfirmationDialog(
+        Context context,
+        String patientName,
+        String bookingDate,
+        String bookingSlot,
+        JsonSchedule jsonSchedule
+    ) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
