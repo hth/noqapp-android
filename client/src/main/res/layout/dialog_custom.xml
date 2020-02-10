@@ -24,7 +24,7 @@
         android:layout_gravity="center_horizontal"
         android:text="Title"
         android:textColor="#333333"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
