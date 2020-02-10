@@ -57,6 +57,7 @@
                             android:scaleType="centerCrop" />
 
                         <LinearLayout
+                            android:id="@+id/ll_side"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@+id/iv_profile"
@@ -137,8 +138,8 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/iv_profile"
-                            android:layout_marginTop="10dp"
+                            android:layout_below="@+id/ll_side"
+                            android:layout_marginTop="0dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp">
@@ -183,7 +184,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
