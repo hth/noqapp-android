@@ -112,6 +112,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_PROFILE = "userProfile";
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
     private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
+    private static final String PREKEY_IS_TV_SPLIT_VIEW = "tvSplitView";
     static final String TOKEN_FCM = "tokenFCM";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
@@ -466,6 +467,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     public static boolean isMsgAnnouncementEnable() {
         return sharedpreferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
+    }
+    public static void setTvSplitViewEnable(boolean isMsgAnnounce) {
+        sharedpreferences.edit().putBoolean(PREKEY_IS_TV_SPLIT_VIEW, isMsgAnnounce).apply();
+    }
+
+    public static boolean isTvSplitViewEnable() {
+        return sharedpreferences.getBoolean(PREKEY_IS_TV_SPLIT_VIEW, true);
     }
 
     public String getUSerID() {

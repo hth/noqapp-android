@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class DetailFragment extends Fragment {
     private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_info1;
     private ImageView image, image1;
     private LinearLayout ll_list, ll_no_list;
+    private FrameLayout fl_left;
     public static DetailFragment newInstance(TopicAndQueueTV ad) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
@@ -71,6 +73,7 @@ public class DetailFragment extends Fragment {
         tv_info1 = view.findViewById(R.id.tv_info1);
         ll_list = view.findViewById(R.id.ll_list);
         ll_no_list = view.findViewById(R.id.ll_no_list);
+        fl_left = view.findViewById(R.id.fl_left);
         TextView tv_marquee = view.findViewById(R.id.tv_marquee);
         MarqueeSharedPreference.init(getContext().getApplicationContext());
         List<String>marqueeList = MarqueeSharedPreference.getMarquee();
@@ -81,6 +84,17 @@ public class DetailFragment extends Fragment {
         tv_marquee.setText(str.toString());
         tv_marquee.setMarqueeRepeatLimit(-1);
         tv_marquee.setSelected(true);
+        if (LaunchActivity.isTvSplitViewEnable()) {
+            LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.65f);
+            LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.35f);
+            fl_left.setLayoutParams(lp1);
+            ll_no_list.setLayoutParams(lp0);
+        }else{
+            LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
+            LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
+            fl_left.setLayoutParams(lp1);
+            ll_no_list.setLayoutParams(lp0);
+        }
         return view;
     }
 

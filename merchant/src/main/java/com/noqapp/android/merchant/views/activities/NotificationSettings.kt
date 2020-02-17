@@ -29,6 +29,8 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
         val sc_sms: SwitchCompat = findViewById(R.id.sc_sms)
         val sc_msg_announce: SwitchCompat = findViewById(R.id.sc_msg_announce)
         val cv_msg_announce: CardView = findViewById(R.id.cv_msg_announce)
+        val sc_tv_split_view: SwitchCompat = findViewById(R.id.sc_tv_split_view)
+        val cv_tv_split_view: CardView = findViewById(R.id.cv_tv_split_view)
         val jsonUserPreference: JsonUserPreference? = BaseLaunchActivity.getLaunchActivity().getUserProfile().jsonUserPreference
         if (null == jsonUserPreference) {
             sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
@@ -39,7 +41,9 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
         }
         if (packageName.equals("com.noqapp.android.merchant.tv", ignoreCase = true)) {
             sc_msg_announce.isChecked = LaunchActivity.isMsgAnnouncementEnable()
+            sc_tv_split_view.isChecked = LaunchActivity.isTvSplitViewEnable()
             cv_msg_announce.visibility = View.VISIBLE
+            cv_tv_split_view.visibility = View.VISIBLE
             sc_msg_announce.setOnCheckedChangeListener { buttonView, isChecked ->
                 LaunchActivity.setMsgAnnouncmentEnable(isChecked)
                 if (isChecked) {
@@ -50,8 +54,19 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
                     CustomToast().showToast(this@NotificationSettings, "Message Announcement Disabled")
                 }
             }
+            sc_tv_split_view.setOnCheckedChangeListener { buttonView, isChecked ->
+                LaunchActivity.setTvSplitViewEnable(isChecked)
+                if (isChecked) {
+                    // The switch is enabled/checked
+                    CustomToast().showToast(this@NotificationSettings, "Tv Split View Enabled")
+                } else {
+                    // The switch is disabled
+                    CustomToast().showToast(this@NotificationSettings, "Tv Split View Disabled")
+                }
+            }
         }else{
             cv_msg_announce.visibility = View.GONE
+            cv_tv_split_view.visibility = View.GONE
         }
         sc_sms.setOnCheckedChangeListener { buttonView, isChecked ->
             MyApplication.setNotificationReceiveEnable(isChecked)
