@@ -1,5 +1,21 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -16,23 +32,7 @@ import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import org.apache.commons.lang3.StringUtils;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -139,7 +139,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             tv_auto.setVisibility(View.GONE);
             autoCompleteTextView.setVisibility(View.GONE);
             edt_search.setText(getIntent().getStringExtra("searchString"));
-            performSearch();
+            performBizSearch();
         }
         if (AppUtils.isRelease()) {
             Bundle params = new Bundle();
@@ -175,6 +175,27 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         AppUtils.hideKeyBoard(SearchActivity.this);
     }
 
+    private void performBizSearch() {
+        if (StringUtils.isNotBlank(edt_search.getText().toString())) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                showProgress();
+                SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
+                        .setCityName(city)
+                        .setLatitude(lat)
+                        .setLongitude(lng)
+                        .setQuery(edt_search.getText().toString())
+                        .setSearchBizId(getIntent().getStringExtra("searchBizId"))
+                        .setFilters("")
+                        .setScrollId(""); //Scroll id - fresh search pass blank
+                searchBusinessStoreModels.searchBizItem(UserUtils.getDeviceId(), searchStoreQuery);
+            } else {
+                ShowAlertInformation.showNetworkDialog(SearchActivity.this);
+            }
+        }
+        AppUtils.hideKeyBoard(SearchActivity.this);
+    }
+
+
     @Override
     public void onStoreItemClick(BizStoreElastic item) {
         Intent in = null;
@@ -184,12 +205,12 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             case DO:
             case BK:
             case HS:
-                if(LaunchActivity.isLockMode){
+                if (LaunchActivity.isLockMode) {
                     in = new Intent(this, KioskJoinActivity.class);
-                }else {
+                } else {
                     in = new Intent(this, BeforeJoinActivity.class);
                 }
-                in.putExtra(IBConstant.KEY_IS_DO,item.getBusinessType()== BusinessTypeEnum.DO);
+                in.putExtra(IBConstant.KEY_IS_DO, item.getBusinessType() == BusinessTypeEnum.DO);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 startActivity(in);

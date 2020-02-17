@@ -120,6 +120,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         in_search.putExtra("lng", "" + LaunchActivity.getLaunchActivity().longitude);
         in_search.putExtra("city", LaunchActivity.getLaunchActivity().cityName);
         in_search.putExtra("searchString", searchString);
+        in_search.putExtra("searchBizId",bizStoreElastic.getBizCategoryId());
         startActivity(in_search);
         edt_search.setText("");
     }

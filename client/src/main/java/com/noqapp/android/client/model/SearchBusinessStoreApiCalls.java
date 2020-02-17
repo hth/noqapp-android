@@ -137,4 +137,34 @@ public class SearchBusinessStoreApiCalls {
         });
     }
 
+
+    public void searchBizItem(String did, SearchStoreQuery searchStoreQuery) {
+        searchBusinessStoreApiUrls.searchBizItem(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+            @Override
+            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response search", String.valueOf(response.body()));
+                        searchBusinessStorePresenter.nearMeResponse(response.body());
+                        bizStoreElasticList = response.body();
+                    } else {
+                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        searchBusinessStorePresenter.authenticationFailure();
+                    } else {
+                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+                responseReceived = true;
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
+                Log.e("onFailure search", t.getLocalizedMessage(), t);
+                searchBusinessStorePresenter.nearMeError();
+            }
+        });
+    }
 }
