@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight=".7"
-                    android:text="Tv Split View"
+                    android:text="TV Split View"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_fourteen" />
 

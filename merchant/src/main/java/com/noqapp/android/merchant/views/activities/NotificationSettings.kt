@@ -58,10 +58,10 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
                 LaunchActivity.setTvSplitViewEnable(isChecked)
                 if (isChecked) {
                     // The switch is enabled/checked
-                    CustomToast().showToast(this@NotificationSettings, "Tv Split View Enabled")
+                    CustomToast().showToast(this@NotificationSettings, "TV Split View Enabled")
                 } else {
                     // The switch is disabled
-                    CustomToast().showToast(this@NotificationSettings, "Tv Split View Disabled")
+                    CustomToast().showToast(this@NotificationSettings, "TV Split View Disabled")
                 }
             }
         }else{
