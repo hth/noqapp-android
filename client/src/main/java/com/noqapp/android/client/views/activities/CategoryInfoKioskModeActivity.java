@@ -70,7 +70,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         rv_categories = findViewById(R.id.rv_categories);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         view_loader = findViewById(R.id.view_loader);
-        initActionsViews(false);
+        initActionsViews(true);
         actionbarBack.setVisibility(View.INVISIBLE);
         edt_search = findViewById(R.id.edt_search);
         edt_search.setOnTouchListener((v, event) -> {
@@ -96,7 +96,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             }
             return false;
         });
-
         listener = this;
         codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         setProgressMessage("Loading ...");
