@@ -135,8 +135,8 @@ public class QueueApiUnAuthenticCall {
         });
     }
 
-    public void getAllQueueStateLevelUp(String did, String qrCode) {
-        tokenQueueApiUrls.getAllQueueStateLevelUp(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
+    public void getAllQueueStateLevelUp(String did, String codeQR) {
+        tokenQueueApiUrls.getAllQueueStateLevelUp(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
