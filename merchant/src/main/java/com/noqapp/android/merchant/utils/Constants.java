@@ -17,6 +17,7 @@ public class Constants extends BaseConstants {
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final String DEVICE_TYPE = DeviceTypeEnum.A.getName();
     public static final int requestCodeNotification = 2;
+    
     // broadcast receiver intent filters
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String QRCODE = "qrcode";
@@ -34,6 +35,7 @@ public class Constants extends BaseConstants {
     public static final int RESULT_ACQUIRE = 124;
     public static final String CLEAR_DATA = "clearData";
     public static final String CUSTOMER_ACQUIRE = "acquire_customer";
+
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
     public static final int SERVER_RESPONSE_CODE_SUCCESS = 200;
@@ -49,8 +51,6 @@ public class Constants extends BaseConstants {
     public static final String DENTAL_PROCEDURE = "DENTAL_PROCEDURE";
 
     public static final int MAX_IMAGE_UPLOAD_LIMIT = 25;
-
-
 
     /**
      * Computes App version.

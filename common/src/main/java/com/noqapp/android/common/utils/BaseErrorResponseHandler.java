@@ -131,9 +131,6 @@ public abstract class BaseErrorResponseHandler {
     protected void processFailureResponseCode(int errorCode) {
         Log.e("Error code received: ", String.valueOf(errorCode));
         switch (errorCode) {
-            case 500:
-                msg = "Something went wrong. Engineers are looking into this.";
-                break;
             case 400:
                 msg = "Bad request received";
                 break;
@@ -152,6 +149,7 @@ public abstract class BaseErrorResponseHandler {
             case 414:
                 msg = "Failed to understand URL";
                 break;
+            case 500:
             default:
                 msg = "Something went wrong. Engineers are looking into this.";
         }

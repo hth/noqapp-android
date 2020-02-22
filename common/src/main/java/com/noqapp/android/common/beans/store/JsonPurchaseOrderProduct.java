@@ -152,7 +152,11 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
     }
 
     public JsonStoreProduct getJsonStoreProduct() {
-        return new JsonStoreProduct().setProductPrice(productPrice).setUnitValue(unitValue).
-                setUnitOfMeasurement(unitOfMeasurement).setPackageSize(packageSize).setProductType(productType);
+        return new JsonStoreProduct()
+                .setProductPrice(productPrice)
+                .setUnitValue(unitValue)
+                .setUnitOfMeasurement(unitOfMeasurement)
+                .setPackageSize(packageSize)
+                .setProductType(productType);
     }
 }
