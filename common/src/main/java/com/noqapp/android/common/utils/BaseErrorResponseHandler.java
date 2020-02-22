@@ -91,6 +91,7 @@ public abstract class BaseErrorResponseHandler {
                     case QUEUE_JOIN_FAILED_PAYMENT_CALL_REQUEST:
                     case QUEUE_JOIN_PAYMENT_FAILED:
                     case QUEUE_NO_SERVICE_NO_PAY:
+                    case QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME:
 
                     case SURVEY_NOT_FOUND:
 
