@@ -53,7 +53,7 @@ public class StoreDetailApiCalls {
         storeDetailApiUrls.getStoreDetail(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonStore>() {
             @Override
             public void onResponse(@NonNull Call<JsonStore> call, @NonNull Response<JsonStore> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("jsonStore response", String.valueOf(response.body()));
                         storePresenter.storeResponse(response.body());

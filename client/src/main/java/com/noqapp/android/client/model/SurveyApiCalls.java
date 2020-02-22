@@ -33,7 +33,7 @@ public class SurveyApiCalls {
         surveyApiUrls.survey(mail, auth).enqueue(new Callback<JsonQuestionnaire>() {
             @Override
             public void onResponse(@NonNull Call<JsonQuestionnaire> call, @NonNull Response<JsonQuestionnaire> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response survey", String.valueOf(response.body()));
                         surveyPresenter.surveyResponse(response.body());

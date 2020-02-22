@@ -36,7 +36,7 @@ public class BaseMasterLabApiCalls {
         masterLabApiUrls.file(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body()) {
                         Log.d("fetchFile", String.valueOf(response.body()));
                         try {

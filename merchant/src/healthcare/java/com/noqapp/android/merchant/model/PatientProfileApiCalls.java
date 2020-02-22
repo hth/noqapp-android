@@ -38,7 +38,7 @@ public class PatientProfileApiCalls {
         medicalUserProfileApiUrls.fetch(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("medical profile fetch", String.valueOf(response.body()));
                         patientProfilePresenter.patientProfileResponse(response.body());

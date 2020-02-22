@@ -36,7 +36,7 @@ public class UserMedicalProfileApiCalls {
         userMedicalProfileApiUrls.updateUserMedicalProfile(mail, auth, medicalProfile).enqueue(new Callback<JsonMedicalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalProfile> call, @NonNull Response<JsonMedicalProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp history", String.valueOf(response.body()));
                         medicalRecordProfilePresenter.medicalRecordProfileResponse(response.body());
@@ -64,7 +64,7 @@ public class UserMedicalProfileApiCalls {
         userMedicalProfileApiUrls.profile(mail, auth, medicalProfile).enqueue(new Callback<JsonMedicalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalProfile> call, @NonNull Response<JsonMedicalProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp history", String.valueOf(response.body()));
                         medicalRecordProfilePresenter.medicalRecordProfileResponse(response.body());
@@ -92,7 +92,7 @@ public class UserMedicalProfileApiCalls {
         userMedicalProfileApiUrls.hospitalVisitSchedule(mail, auth, medicalProfile).enqueue(new Callback<JsonHospitalVisitScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonHospitalVisitScheduleList> call, @NonNull Response<JsonHospitalVisitScheduleList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp hospitalVSchedule", String.valueOf(response.body()));
                         hospitalVisitSchedulePresenter.hospitalVisitScheduleResponse(response.body());

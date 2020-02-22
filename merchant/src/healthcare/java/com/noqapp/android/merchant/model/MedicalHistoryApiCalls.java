@@ -383,7 +383,7 @@ public class MedicalHistoryApiCalls {
         medicalRecordApiUrls.hospitalVisitSchedule(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonHospitalVisitScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonHospitalVisitScheduleList> call, @NonNull Response<JsonHospitalVisitScheduleList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp hospitalVSchedule", String.valueOf(response.body()));
                         hospitalVisitSchedulePresenter.hospitalVisitScheduleResponse(response.body());
@@ -411,7 +411,7 @@ public class MedicalHistoryApiCalls {
         medicalRecordApiUrls.modifyVisitingFor(did, Constants.DEVICE_TYPE, mail, auth, hospitalVisitFor).enqueue(new Callback<JsonHospitalVisitSchedule>() {
             @Override
             public void onResponse(@NonNull Call<JsonHospitalVisitSchedule> call, @NonNull Response<JsonHospitalVisitSchedule> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp hospitalVSchedule", String.valueOf(response.body()));
                         hospitalVisitSchedulePresenter.hospitalVisitScheduleResponse(response.body());

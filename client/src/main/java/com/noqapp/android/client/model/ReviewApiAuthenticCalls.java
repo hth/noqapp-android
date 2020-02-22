@@ -38,7 +38,7 @@ public class ReviewApiAuthenticCalls {
         reviewApiUrls.queue(did, Constants.DEVICE_TYPE, mail, auth, queueReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response queue Review", String.valueOf(response.body()));
                         reviewPresenter.reviewResponse(response.body());
@@ -67,7 +67,7 @@ public class ReviewApiAuthenticCalls {
         reviewApiUrls.order(did, Constants.DEVICE_TYPE, mail, auth, orderReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response orderReview", String.valueOf(response.body()));
                         reviewPresenter.reviewResponse(response.body());

@@ -50,7 +50,7 @@ public class ReviewApiUnAuthenticCall {
         reviewApiUrls.queue(did, DEVICE_TYPE, queueReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response Review", String.valueOf(response.body()));
                         reviewPresenter.reviewResponse(response.body());
@@ -80,7 +80,7 @@ public class ReviewApiUnAuthenticCall {
         reviewApiUrls.review(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonReviewList>() {
             @Override
             public void onResponse(@NonNull Call<JsonReviewList> call, @NonNull Response<JsonReviewList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response all Review", String.valueOf(response.body()));
                         allReviewPresenter.allReviewResponse(response.body());
@@ -109,7 +109,7 @@ public class ReviewApiUnAuthenticCall {
         reviewApiUrls.reviewsLevelUp(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonReviewList>() {
             @Override
             public void onResponse(@NonNull Call<JsonReviewList> call, @NonNull Response<JsonReviewList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp: all reviewLevelUp", String.valueOf(response.body()));
                         allReviewPresenter.allReviewResponse(response.body());

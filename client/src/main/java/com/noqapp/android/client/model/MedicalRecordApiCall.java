@@ -30,7 +30,7 @@ public class MedicalRecordApiCall {
         medicalRecordApiUrls.history(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp history", String.valueOf(response.body()));
                         medicalRecordPresenter.medicalRecordResponse(response.body());

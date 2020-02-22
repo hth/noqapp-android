@@ -31,7 +31,7 @@ public class ReviewApiUnAuthenticCalls {
         reviewApiUrls.review(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonReviewList>() {
             @Override
             public void onResponse(@NonNull Call<JsonReviewList> call, @NonNull Response<JsonReviewList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response all Review", String.valueOf(response.body()));
                         allReviewPresenter.allReviewResponse(response.body());

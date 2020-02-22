@@ -39,7 +39,7 @@ public class OrderQueueHistoryApiCall {
         historicalApiUrls.orders(mail, auth).enqueue(new Callback<JsonPurchaseOrderHistoricalList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderHistoricalList> call, @NonNull Response<JsonPurchaseOrderHistoricalList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response orders history", String.valueOf(response.body()));
                         orderHistoryPresenter.orderHistoryResponse(response.body());
@@ -68,7 +68,7 @@ public class OrderQueueHistoryApiCall {
         historicalApiUrls.queues(mail, auth).enqueue(new Callback<JsonQueueHistoricalList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueueHistoricalList> call, @NonNull Response<JsonQueueHistoricalList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response queues history", String.valueOf(response.body()));
                         queueHistoryPresenter.queueHistoryResponse(response.body());

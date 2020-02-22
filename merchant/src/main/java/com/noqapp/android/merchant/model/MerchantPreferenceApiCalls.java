@@ -31,7 +31,7 @@ public class MerchantPreferenceApiCalls {
         merchantPreferenceApiUrls.notificationSound(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         merchantPreferencePresenter.merchantPreferencePresenterResponse(response.body());
                         Log.d("notificationSound", String.valueOf(response.body()));
@@ -61,7 +61,7 @@ public class MerchantPreferenceApiCalls {
         merchantPreferenceApiUrls.promotionalSMS(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         merchantPreferencePresenter.merchantPreferencePresenterResponse(response.body());
                         Log.d("promotionalSMS", String.valueOf(response.body()));
