@@ -138,8 +138,8 @@ public class SearchBusinessStoreApiCalls {
     }
 
 
-    public void searchBizItem(String did, SearchStoreQuery searchStoreQuery) {
-        searchBusinessStoreApiUrls.searchBizItem(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+    public void kiosk(String did, SearchStoreQuery searchStoreQuery) {
+        searchBusinessStoreApiUrls.kiosk(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

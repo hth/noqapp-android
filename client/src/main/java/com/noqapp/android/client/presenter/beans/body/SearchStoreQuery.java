@@ -44,8 +44,8 @@ public class SearchStoreQuery {
     @JsonProperty("filters")
     private String filters;
 
-    @JsonProperty("XYZ")
-    private String searchBizId;
+    @JsonProperty("qr")
+    private String codeQR;
 
     public String getQuery() {
         return query;
@@ -101,12 +101,12 @@ public class SearchStoreQuery {
         return this;
     }
 
-    public String getSearchBizId() {
-        return searchBizId;
+    public String getCodeQR() {
+        return codeQR;
     }
 
-    public SearchStoreQuery setSearchBizId(String searchBizId) {
-        this.searchBizId = searchBizId;
+    public SearchStoreQuery setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 
@@ -119,7 +119,7 @@ public class SearchStoreQuery {
         sb.append(", longitude='").append(longitude).append('\'');
         sb.append(", scrollId='").append(scrollId).append('\'');
         sb.append(", filters='").append(filters).append('\'');
-        sb.append(", searchBizId='").append(searchBizId).append('\'');
+        sb.append(", codeQR='").append(codeQR).append('\'');
         sb.append('}');
         return sb.toString();
     }

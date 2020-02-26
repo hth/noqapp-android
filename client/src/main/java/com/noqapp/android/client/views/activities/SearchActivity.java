@@ -139,7 +139,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             tv_auto.setVisibility(View.GONE);
             autoCompleteTextView.setVisibility(View.GONE);
             edt_search.setText(getIntent().getStringExtra("searchString"));
-            performBizSearch();
+            performKioskSearch();
         }
         if (AppUtils.isRelease()) {
             Bundle params = new Bundle();
@@ -175,7 +175,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         AppUtils.hideKeyBoard(SearchActivity.this);
     }
 
-    private void performBizSearch() {
+    private void performKioskSearch() {
         if (StringUtils.isNotBlank(edt_search.getText().toString())) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
@@ -184,10 +184,10 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                         .setLatitude(lat)
                         .setLongitude(lng)
                         .setQuery(edt_search.getText().toString())
-                        .setSearchBizId(getIntent().getStringExtra("searchBizId"))
+                        .setCodeQR(getIntent().getStringExtra("codeQR"))
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
-                searchBusinessStoreModels.searchBizItem(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreModels.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
             }
@@ -198,7 +198,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     @Override
     public void onStoreItemClick(BizStoreElastic item) {
-        Intent in = null;
+        Intent in;
         Bundle b = new Bundle();
         switch (item.getBusinessType()) {
             //Level up
