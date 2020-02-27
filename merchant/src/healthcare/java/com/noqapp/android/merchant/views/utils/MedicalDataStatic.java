@@ -108,12 +108,11 @@ public class MedicalDataStatic {
     }
 
     public static class Pediatrician {
-
         public static ArrayList<DataObj> getDiagnosis() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
             dataObjs.add(new DataObj("MALARIA FEVER", "", false));
             dataObjs.add(new DataObj("DENGUE FEVER", "", false));
-            dataObjs.add(new DataObj("THYPHOID FEVER ( ENTERIC FEVER )", "", false));
+            dataObjs.add(new DataObj("THYPHOID FEVER (ENTERIC FEVER)", "", false));
             dataObjs.add(new DataObj("VIRAL FEVER", "", false));
             dataObjs.add(new DataObj("URINARY TRACT INFECTION", "", false));
             dataObjs.add(new DataObj("FEBRILE CONVULSION", "", false));
@@ -384,7 +383,7 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("LUMBAR PAIN", "", false));
             dataObjs.add(new DataObj("SCAPULAR PAIN", "", false));
             dataObjs.add(new DataObj("CERVICAL PAIN", "", false));
-            dataObjs.add(new DataObj("PAIN ALL OVER JOINTS ( MULTIPLE )", "", false));
+            dataObjs.add(new DataObj("PAIN ALL OVER JOINTS (MULTIPLE)", "", false));
             dataObjs.add(new DataObj("DIFFICULTY IN WALKING", "", false));
             dataObjs.add(new DataObj("DIFFICULTY IN SITTING", "", false));
             dataObjs.add(new DataObj("DIFFICULTY IN LYING DOWN", "", false));
@@ -548,7 +547,7 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("ACUTE ON CHRONIC KIDNEY DISEASE", "", false));
             dataObjs.add(new DataObj("RIGHT URETERIC COLIC", "", false));
             dataObjs.add(new DataObj("LEFT URETERIC COLIC", "", false));
-            dataObjs.add(new DataObj("THYPHOID FEVER ( ENTERIC FEVER )", "", false));
+            dataObjs.add(new DataObj("THYPHOID FEVER (ENTERIC FEVER)", "", false));
             dataObjs.add(new DataObj("RIGHT RENAL COLIC", "", false));
             dataObjs.add(new DataObj("LEFT RENAL COLIC", "", false));
             dataObjs.add(new DataObj("VASICAL CALCULOUS", "", false));
@@ -624,7 +623,7 @@ public class MedicalDataStatic {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
             dataObjs.add(new DataObj("COLD", "", false));
             dataObjs.add(new DataObj("COUGH WITH EXPECTORATION", "", false));
-            dataObjs.add(new DataObj("DIFFICULTY IN BREATHING ( DYSPONEA )", "", false));
+            dataObjs.add(new DataObj("DIFFICULTY IN BREATHING (DYSPONEA)", "", false));
             dataObjs.add(new DataObj("CHEST PAIN", "", false));
             dataObjs.add(new DataObj("CHEST PAIN RADIATING TO SHOULDER JOINT", "", false));
             dataObjs.add(new DataObj("UNEASINESS", "", false));
@@ -634,15 +633,15 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("PAIN IN ABDOMEN", "", false));
             dataObjs.add(new DataObj("BURNING MICTURATION", "", false));
             dataObjs.add(new DataObj("FREQUENCY OF MICTURATION INCREASED", "", false));
-            dataObjs.add(new DataObj("HAEMAPTOSIS  ( BLOOD IN SPUTUM )", "", false));
-            dataObjs.add(new DataObj("HAEMATURIA ( BLOOD IN URINE )", "", false));
-            dataObjs.add(new DataObj("HAEMATEMESIS ( BLOOD IN VOMIT )", "", false));
+            dataObjs.add(new DataObj("HAEMAPTOSIS  (BLOOD IN SPUTUM)", "", false));
+            dataObjs.add(new DataObj("HAEMATURIA (BLOOD IN URINE)", "", false));
+            dataObjs.add(new DataObj("HAEMATEMESIS (BLOOD IN VOMIT)", "", false));
             dataObjs.add(new DataObj("SLURRED SPEECH", "", false));
             dataObjs.add(new DataObj("TINGLING SENSATION & WEAKNESS IN RIGHT UPPER & LOWER LIMB", "", false));
             dataObjs.add(new DataObj("TINGLING SENSATION & WEAKNESS IN LEFT UPPER & LOWER LIMB", "", false));
             dataObjs.add(new DataObj("DEVIATION OF ANGLE OF MOUTH", "", false));
             dataObjs.add(new DataObj("GENERALISED WEAKNESS", "", false));
-            dataObjs.add(new DataObj("WEAKNESS IN ALL FOUR LIMB ( QUADRIPLEGIA )", "", false));
+            dataObjs.add(new DataObj("WEAKNESS IN ALL FOUR LIMB (QUADRIPLEGIA)", "", false));
             dataObjs.add(new DataObj("PAIN IN ABDOMEN LEFT LOIN TO GROIN REGION ", "", false));
             dataObjs.add(new DataObj("PAIN IN ABDOMEN RIGHT LOIN TO GROIN REGION ", "", false));
             dataObjs.add(new DataObj("REDNESS IN MOUTH", "", false));
@@ -651,14 +650,14 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("BLEEDING FROM ANAL REGION WHILE PASSING MOTION", "", false));
             dataObjs.add(new DataObj("PAIN IN EPIGASTRIC REGION ", "", false));
             dataObjs.add(new DataObj("BURNING SENSATION IN EPIGASTRIC REGION ", "", false));
-            dataObjs.add(new DataObj("SWELLING ALL OVER BODY ( GENERALISED ANASARCA )", "", false));
-            dataObjs.add(new DataObj("SWELLING OVER BOTH LOVER LIMB ( PEDAL ODEMA )", "", false));
+            dataObjs.add(new DataObj("SWELLING ALL OVER BODY (GENERALISED ANASARCA)", "", false));
+            dataObjs.add(new DataObj("SWELLING OVER BOTH LOVER LIMB (PEDAL ODEMA)", "", false));
             dataObjs.add(new DataObj("FEVER WITH CHILLS ", "", false));
             dataObjs.add(new DataObj("ITCHING ALL OVER BODY ", "", false));
             dataObjs.add(new DataObj("REDNESS ALL OVER BODY", "", false));
-            dataObjs.add(new DataObj("NOCTURIA ( BED WETTING AT NIGHT )", "", false));
+            dataObjs.add(new DataObj("NOCTURIA (BED WETTING AT NIGHT)", "", false));
             dataObjs.add(new DataObj("HEADACHE", "", false));
-            dataObjs.add(new DataObj("BODYACHE ( MYALGIA )", "", false));
+            dataObjs.add(new DataObj("BODYACHE (MYALGIA)", "", false));
             dataObjs.add(new DataObj("DRY COUGH ", "", false));
             dataObjs.add(new DataObj("DROWSY", "", false));
             dataObjs.add(new DataObj("UNCONSCIOUS", "", false));
@@ -675,7 +674,7 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("LOSS OF APPETITE", "", false));
             dataObjs.add(new DataObj("WEIGHT LOSS", "", false));
             dataObjs.add(new DataObj("WEIGHT GAIN", "", false));
-            dataObjs.add(new DataObj("YELLOWISH DISCOLOURATION OF SKIN & SCLERA ( HYPERBILIRUBINEMIA ) ", "", false));
+            dataObjs.add(new DataObj("YELLOWISH DISCOLOURATION OF SKIN & SCLERA (HYPERBILIRUBINEMIA) ", "", false));
             dataObjs.add(new DataObj("PALLOR", "", false));
             dataObjs.add(new DataObj("SORE THROAT", "", false));
             return dataObjs;
