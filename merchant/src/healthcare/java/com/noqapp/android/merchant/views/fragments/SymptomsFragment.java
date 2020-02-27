@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -31,14 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class SymptomsFragment extends BaseFragment implements
         StaggeredGridSymptomAdapter.StaggeredClick, AutoCompleteAdapterNew.SearchByPos {
 
-    private RecyclerView rcv_gynac, rcv_obstretics, rcv_symptom_select;
-    private StaggeredGridSymptomAdapter symptomsAdapter, obstreticsAdapter, symptomSelectedAdapter;
+    private RecyclerView rcv_gynac, rca_obstetrics, rcv_symptom_select;
+    private StaggeredGridSymptomAdapter symptomsAdapter, obstetricsAdapter, symptomSelectedAdapter;
     private DataObj dataObj;
     private List<String> duration_data;
     private String no_of_days;
@@ -53,7 +50,7 @@ public class SymptomsFragment extends BaseFragment implements
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_symptoms, container, false);
         rcv_gynac = v.findViewById(R.id.rcv_gynac);
-        rcv_obstretics = v.findViewById(R.id.rcv_obstretics);
+        rca_obstetrics = v.findViewById(R.id.rcv_obstetrics);
         rcv_symptom_select = v.findViewById(R.id.rcv_symptom_select);
         view_med = v.findViewById(R.id.view_med);
         tv_obes = v.findViewById(R.id.tv_obes);
@@ -79,10 +76,9 @@ public class SymptomsFragment extends BaseFragment implements
         symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), this, false);
         rcv_gynac.setAdapter(symptomsAdapter);
 
-
-        rcv_obstretics.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-        obstreticsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList(), this, false);
-        rcv_obstretics.setAdapter(obstreticsAdapter);
+        rca_obstetrics.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+        obstetricsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList(), this, false);
+        rca_obstetrics.setAdapter(obstetricsAdapter);
 
         rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
         symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
@@ -112,20 +108,17 @@ public class SymptomsFragment extends BaseFragment implements
 
     private void AddItemDialog(final Context mContext) {
         ShowAddDialog showDialog = new ShowAddDialog(mContext);
-        showDialog.setDialogClickListener(new ShowAddDialog.DialogClickListener() {
-            @Override
-            public void btnDoneClick(String str) {
-                ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList();
-                temp.add(new DataObj(str, false).setNewlyAdded(true));
-                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
+        showDialog.setDialogClickListener(str -> {
+            ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList();
+            temp.add(new DataObj(str, false).setNewlyAdded(true));
+            MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
 
-                rcv_gynac.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-                symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), SymptomsFragment.this, false);
-                rcv_gynac.setAdapter(symptomsAdapter);
-                new CustomToast().showToast(getActivity(), "'" + str + "' added successfully to list");
-                MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSymptomsList().add(new DataObj(str, false));
-                MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-            }
+            rcv_gynac.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+            symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), SymptomsFragment.this, false);
+            rcv_gynac.setAdapter(symptomsAdapter);
+            new CustomToast().showToast(getActivity(), "'" + str + "' added successfully to list");
+            MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSymptomsList().add(new DataObj(str, false));
+            MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
         });
         showDialog.displayDialog("Add Symptoms");
     }
@@ -133,9 +126,7 @@ public class SymptomsFragment extends BaseFragment implements
     public void saveData() {
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSymptoms(symptomSelectedAdapter.getSelectedData());
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSymptomsObject(symptomSelectedAdapter.getSelectedSymptomData());
-
     }
-
 
     @Override
     public void staggeredClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
@@ -155,14 +146,12 @@ public class SymptomsFragment extends BaseFragment implements
             TextView tv_done = dialogView.findViewById(R.id.tv_done);
             SegmentedControl sc_duration = dialogView.findViewById(R.id.sc_duration);
             sc_duration.addSegments(duration_data);
-            sc_duration.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-                @Override
-                public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                    if (isSelected) {
-                        no_of_days = duration_data.get(segmentViewHolder.getAbsolutePosition());
-                        tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
-                        if (null != dataObj)
-                            dataObj.setNoOfDays(no_of_days);
+            sc_duration.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
+                if (isSelected) {
+                    no_of_days = duration_data.get(segmentViewHolder.getAbsolutePosition());
+                    tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
+                    if (null != dataObj) {
+                        dataObj.setNoOfDays(no_of_days);
                     }
                 }
             });
@@ -233,8 +222,9 @@ public class SymptomsFragment extends BaseFragment implements
 
     private boolean isItemExist(String name) {
         for (int i = 0; i < selectedSymptomsList.size(); i++) {
-            if (selectedSymptomsList.get(i).getShortName().equals(name))
+            if (selectedSymptomsList.get(i).getShortName().equals(name)) {
                 return true;
+            }
         }
         return false;
     }
