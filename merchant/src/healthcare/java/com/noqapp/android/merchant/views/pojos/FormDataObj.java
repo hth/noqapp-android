@@ -15,7 +15,7 @@ public class FormDataObj {
     private ArrayList<DataObj> medicineList = new ArrayList<>();
     private ArrayList<String> instructionList = new ArrayList<>();
     private ArrayList<DataObj> provisionalDiagnosisList = new ArrayList<>();
-    private ArrayList<DataObj> obstreticsList = new ArrayList<>();
+    private ArrayList<DataObj> obstetricsList = new ArrayList<>();
     private ArrayList<DataObj> dentalProcedureList = new ArrayList<>();
 
     public ArrayList<DataObj> getProvisionalDiagnosisList() {
@@ -108,8 +108,8 @@ public class FormDataObj {
         return this;
     }
 
-    public ArrayList<DataObj> getObstreticsList() {
-        return obstreticsList;
+    public ArrayList<DataObj> getObstetricsList() {
+        return obstetricsList;
     }
 
     public ArrayList<DataObj> getSpecList() {
@@ -121,8 +121,8 @@ public class FormDataObj {
         return this;
     }
 
-    public FormDataObj setObstreticsList(ArrayList<DataObj> obstreticsList) {
-        this.obstreticsList = obstreticsList;
+    public FormDataObj setObstetricsList(ArrayList<DataObj> obstetricsList) {
+        this.obstetricsList = obstetricsList;
         return this;
     }
 

@@ -77,7 +77,7 @@ public class SymptomsFragment extends BaseFragment implements
         rcv_gynac.setAdapter(symptomsAdapter);
 
         rca_obstetrics.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-        obstetricsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList(), this, false);
+        obstetricsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstetricsList(), this, false);
         rca_obstetrics.setAdapter(obstetricsAdapter);
 
         rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
@@ -85,7 +85,7 @@ public class SymptomsFragment extends BaseFragment implements
         rcv_symptom_select.setAdapter(symptomSelectedAdapter);
         try {
             ArrayList<DataObj> dataObjArrayList = new ArrayList<>();
-            dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
+            dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstetricsList());
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
             setupAutoComplete(dataObjArrayList);
             if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() && null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain()) {
