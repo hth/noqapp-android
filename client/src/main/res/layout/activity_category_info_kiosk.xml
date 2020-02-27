@@ -31,22 +31,22 @@
                     android:orientation="vertical"
                     android:weightSum="1">
 
-<!--                    <FrameLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="@dimen/category_header_height"-->
-<!--                        android:layout_alignParentTop="true">-->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/category_header_height"
+                        android:layout_alignParentTop="true">
 
-<!--                        <ImageView-->
-<!--                            android:id="@+id/iv_category_banner"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="@dimen/category_header_height"-->
-<!--                            android:scaleType="fitXY" />-->
+                        <ImageView
+                            android:id="@+id/iv_category_banner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/category_header_height"
+                            android:scaleType="fitXY" />
 
-<!--                        <View-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="@dimen/category_header_height"-->
-<!--                            android:background="@drawable/image_foreground" />-->
-<!--                    </FrameLayout>-->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/category_header_height"
+                            android:background="@drawable/image_foreground" />
+                    </FrameLayout>
 
 
                     <androidx.cardview.widget.CardView
