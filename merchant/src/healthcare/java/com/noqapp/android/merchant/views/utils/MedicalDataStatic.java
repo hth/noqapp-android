@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class MedicalDataStatic {
 
     public static class Gynae {
-
         public static ArrayList<DataObj> getSymptoms() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
             dataObjs.add(new DataObj("DISCHARGE FROM VAGINA", "PV DISCHARGE", "", false));
@@ -92,7 +91,7 @@ public class MedicalDataStatic {
             return getDiagnosis();
         }
 
-        public static ArrayList<DataObj> getObstretics() {
+        public static ArrayList<DataObj> getObstetrics() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
             dataObjs.add(new DataObj("PAIN IN ABDOMEN", "PAIN IN ABDOMEN", "", false));
             dataObjs.add(new DataObj("PER VAGINAL BLEEDING", "PV BLEED", "", false));
@@ -106,7 +105,6 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("GESTATIONAL DIABETES", "GESTATIONAL DIABETES", "", false));
             return dataObjs;
         }
-
     }
 
     public static class Pediatrician {
@@ -312,7 +310,6 @@ public class MedicalDataStatic {
     }
 
     public static class Ortho {
-
         public static ArrayList<DataObj> getDiagnosis() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
             dataObjs.add(new DataObj("FRACTURE RIGHT CLAVICLE", "", false));
@@ -502,7 +499,6 @@ public class MedicalDataStatic {
     }
 
     public static class Physician {
-
         public static ArrayList<DataObj> getDiagnosis() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
             dataObjs.add(new DataObj("ACUTE FEBRILE ILLNESS", "", false));
@@ -686,7 +682,6 @@ public class MedicalDataStatic {
         }
     }
 
-
     public static ArrayList<DataObj> getSymptomsOnCategoryType(String bizCategoryId) {
         ArrayList<DataObj> tempList = new ArrayList<>();
         PreferenceObjects preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
@@ -717,7 +712,6 @@ public class MedicalDataStatic {
         return tempList;
     }
 
-
     public static ArrayList<String> convertDataObjListAsStringList(ArrayList<DataObj> tempList) {
         ArrayList<String> dataObjs = new ArrayList<>();
         for (int i = 0; i < tempList.size(); i++) {
@@ -733,7 +727,4 @@ public class MedicalDataStatic {
         }
         return dataObjs;
     }
-
 }
-
-

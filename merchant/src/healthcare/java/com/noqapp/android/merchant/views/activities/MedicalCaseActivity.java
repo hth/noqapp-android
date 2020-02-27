@@ -337,7 +337,7 @@ public class MedicalCaseActivity extends BaseActivity implements
 
 
                 formDataObj.getObstetricsList().clear();
-                formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+                formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstetrics());
 
 
                 formDataObj.getDiagnosisList().clear();
@@ -356,7 +356,7 @@ public class MedicalCaseActivity extends BaseActivity implements
                 formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
                 formDataObj.getObstetricsList().clear();
-                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstetrics());
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Pediatrician.getDiagnosis());
@@ -373,7 +373,7 @@ public class MedicalCaseActivity extends BaseActivity implements
                 formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
                 formDataObj.getObstetricsList().clear();
-                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstetrics());
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Ortho.getDiagnosis());
@@ -390,7 +390,7 @@ public class MedicalCaseActivity extends BaseActivity implements
                 formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
                 formDataObj.getObstetricsList().clear();
-                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstetrics());
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Surgeon.getDiagnosis());
@@ -407,7 +407,7 @@ public class MedicalCaseActivity extends BaseActivity implements
                 formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
                 formDataObj.getObstetricsList().clear();
-                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstetrics());
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Dental.getDiagnosis());
@@ -424,7 +424,7 @@ public class MedicalCaseActivity extends BaseActivity implements
                 formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
                 formDataObj.getObstetricsList().clear();
-                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+                // formDataObj.getObstetricsList().addAll(MedicalDataStatic.Gynae.getObstetrics());
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Physician.getDiagnosis());
