@@ -70,7 +70,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         rv_categories = findViewById(R.id.rv_categories);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         view_loader = findViewById(R.id.view_loader);
-        initActionsViews(false);
+        initActionsViews(true);
         actionbarBack.setVisibility(View.INVISIBLE);
         edt_search = findViewById(R.id.edt_search);
         edt_search.setOnTouchListener((v, event) -> {
@@ -96,7 +96,6 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             }
             return false;
         });
-
         listener = this;
         codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         setProgressMessage("Loading ...");
@@ -120,6 +119,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         in_search.putExtra("lng", "" + LaunchActivity.getLaunchActivity().longitude);
         in_search.putExtra("city", LaunchActivity.getLaunchActivity().cityName);
         in_search.putExtra("searchString", searchString);
+        in_search.putExtra("codeQR", bizStoreElastic.getCodeQR());
         startActivity(in_search);
         edt_search.setText("");
     }
@@ -157,19 +157,19 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             tv_toolbar_title.setText(bizStoreElastic.getBusinessName());
             codeQR = bizStoreElastic.getCodeQR();
 
-            Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getBannerPlaceholder(this))
-                    .error(ImageUtils.getBannerErrorPlaceholder(this))
-                    .into(iv_category_banner);
-            if (bizStoreElastic.getBizServiceImages().size() > 0) {
-                // load first image default
-                Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
-                        .placeholder(ImageUtils.getBannerPlaceholder(this))
-                        .error(ImageUtils.getBannerErrorPlaceholder(this))
-                        .into(iv_category_banner);
-            }
+//            Picasso.get()
+//                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+//                    .placeholder(ImageUtils.getBannerPlaceholder(this))
+//                    .error(ImageUtils.getBannerErrorPlaceholder(this))
+//                    .into(iv_category_banner);
+//            if (bizStoreElastic.getBizServiceImages().size() > 0) {
+//                // load first image default
+//                Picasso.get()
+//                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
+//                        .placeholder(ImageUtils.getBannerPlaceholder(this))
+//                        .error(ImageUtils.getBannerErrorPlaceholder(this))
+//                        .into(iv_category_banner);
+//            }
             if (AppUtils.isTablet(getApplicationContext())) {
                 rv_categories.setLayoutManager(new GridLayoutManager(this, 3));
             } else {
@@ -177,12 +177,12 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             }
 
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
-            CategoryGridAdapter recyclerView_Adapter
-                    = new CategoryGridAdapter(this,
+            CategoryGridAdapter recyclerView_Adapter = new CategoryGridAdapter(
+                    this,
                     getCategoryThatArePopulated(),
-                    queueMap, listener);
+                    queueMap,
+                    listener);
             rv_categories.setAdapter(recyclerView_Adapter);
-
         } else {
             //TODO(chandra) when its empty do something nice
         }

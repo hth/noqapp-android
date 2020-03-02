@@ -35,7 +35,7 @@ public class FeedApiCall {
         feedApiUrls.activeFeed(did, DEVICE_TYPE).enqueue(new Callback<JsonFeedList>() {
             @Override
             public void onResponse(@NonNull Call<JsonFeedList> call, @NonNull Response<JsonFeedList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response activeFeed", String.valueOf(response.body()));
                         feedPresenter.allActiveFeedResponse(response.body());

@@ -59,7 +59,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.fetch(mail, auth).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response fetchProfile", String.valueOf(response.body()));
                         profilePresenter.profileResponse(response.body(), mail, auth);
@@ -88,7 +88,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Update profile", String.valueOf(response.body()));
                         profilePresenter.profileResponse(response.body(), mail, auth);
@@ -117,7 +117,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.migrate(mail, auth, migratePhone).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response migrate", String.valueOf(response.body()));
                         profilePresenter.profileResponse(
@@ -149,7 +149,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.address(mail, auth).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("getProfileAllAddress", String.valueOf(response.body()));
                         profileAddressPresenter.profileAddressResponse(response.body());
@@ -179,7 +179,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.addressAdd(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp: addProfileAddress", String.valueOf(response.body()));
                         profileAddressPresenter.profileAddressResponse(response.body());
@@ -208,7 +208,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.addressDelete(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp:addressDelete", String.valueOf(response.body()));
                         profileAddressPresenter.profileAddressResponse(response.body());
@@ -237,7 +237,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response uploadImage", String.valueOf(response.body()));
                         imageUploadPresenter.imageUploadResponse(response.body());
@@ -266,7 +266,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.remove(did, Constants.DEVICE_TYPE, mail, auth, updateProfile).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response uploadImage", String.valueOf(response.body()));
                         imageUploadPresenter.imageRemoveResponse(response.body());
@@ -295,7 +295,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.changeMail(mail, auth, migrateMail).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("changeMail response", String.valueOf(response.body()));
                         migrateEmailPresenter.migrateEmailResponse(response.body());
@@ -324,7 +324,7 @@ public class ClientProfileApiCall {
         clientProfileApiUrls.migrateMail(mail, auth, changeMailOTP).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response migrateMail", String.valueOf(response.body()));
                         profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),

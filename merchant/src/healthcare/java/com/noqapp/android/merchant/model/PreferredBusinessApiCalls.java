@@ -48,7 +48,7 @@ public class PreferredBusinessApiCalls {
         preferredStoreApiUrls.getAllPreferredStores(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonPreferredBusinessBucket>() {
             @Override
             public void onResponse(@NonNull Call<JsonPreferredBusinessBucket> call, @NonNull Response<JsonPreferredBusinessBucket> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("getAllPreferredStores", String.valueOf(response.body()));
                         preferredBusinessPresenter.preferredBusinessResponse(response.body());
@@ -77,7 +77,7 @@ public class PreferredBusinessApiCalls {
         preferredStoreApiUrls.file(did, Constants.DEVICE_TYPE, mail, auth, codeQR, bizStoreId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body()) {
                         Log.d("fetchFile", String.valueOf(response.body()));
                         try {

@@ -91,6 +91,7 @@ public abstract class BaseErrorResponseHandler {
                     case QUEUE_JOIN_FAILED_PAYMENT_CALL_REQUEST:
                     case QUEUE_JOIN_PAYMENT_FAILED:
                     case QUEUE_NO_SERVICE_NO_PAY:
+                    case QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME:
 
                     case SURVEY_NOT_FOUND:
 
@@ -130,9 +131,6 @@ public abstract class BaseErrorResponseHandler {
     protected void processFailureResponseCode(int errorCode) {
         Log.e("Error code received: ", String.valueOf(errorCode));
         switch (errorCode) {
-            case 500:
-                msg = "Something went wrong. Engineers are looking into this.";
-                break;
             case 400:
                 msg = "Bad request received";
                 break;
@@ -151,6 +149,7 @@ public abstract class BaseErrorResponseHandler {
             case 414:
                 msg = "Failed to understand URL";
                 break;
+            case 500:
             default:
                 msg = "Something went wrong. Engineers are looking into this.";
         }

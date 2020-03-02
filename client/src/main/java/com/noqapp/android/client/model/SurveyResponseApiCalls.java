@@ -34,7 +34,7 @@ public class SurveyResponseApiCalls {
         surveyResponseApiUrls.surveyResponse(did, Constants.DEVICE_TYPE, survey).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response surveyResponse", String.valueOf(response.body()));
                         responsePresenter.responsePresenterResponse(response.body());

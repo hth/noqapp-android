@@ -49,7 +49,7 @@ public class SearchBusinessStoreApiCalls {
         searchBusinessStoreApiUrls.otherMerchant(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response NearMe", String.valueOf(response.body()));
                         searchBusinessStorePresenter.nearMeResponse(response.body());
@@ -83,7 +83,7 @@ public class SearchBusinessStoreApiCalls {
         searchBusinessStoreApiUrls.healthCare(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response NearMeHospital", String.valueOf(response.body()));
                         searchBusinessStorePresenter.nearMeHospitalResponse(response.body());
@@ -111,7 +111,7 @@ public class SearchBusinessStoreApiCalls {
         searchBusinessStoreApiUrls.search(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response search", String.valueOf(response.body()));
                         searchBusinessStorePresenter.nearMeResponse(response.body());
@@ -137,4 +137,34 @@ public class SearchBusinessStoreApiCalls {
         });
     }
 
+
+    public void kiosk(String did, SearchStoreQuery searchStoreQuery) {
+        searchBusinessStoreApiUrls.kiosk(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+            @Override
+            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response search", String.valueOf(response.body()));
+                        searchBusinessStorePresenter.nearMeResponse(response.body());
+                        bizStoreElasticList = response.body();
+                    } else {
+                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        searchBusinessStorePresenter.authenticationFailure();
+                    } else {
+                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+                responseReceived = true;
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
+                Log.e("onFailure search", t.getLocalizedMessage(), t);
+                searchBusinessStorePresenter.nearMeError();
+            }
+        });
+    }
 }

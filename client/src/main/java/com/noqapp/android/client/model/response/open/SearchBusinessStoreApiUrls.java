@@ -34,6 +34,23 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
+    @POST("open/search/kiosk.json")
+    Call<BizStoreElasticList> kiosk(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Body
+            SearchStoreQuery searchStoreQuery
+    );
+
+
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("open/search/healthCare.json")
     Call<BizStoreElasticList> healthCare(
             @Header("X-R-DID")

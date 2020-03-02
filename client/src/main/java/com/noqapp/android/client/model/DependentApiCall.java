@@ -36,7 +36,7 @@ public class DependentApiCall {
         dependentApiUrls.add(did, Constants.DEVICE_TYPE, mail, auth, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("addDependency", String.valueOf(response.body()));
                         dependencyPresenter.dependencyResponse(response.body());

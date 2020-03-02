@@ -75,7 +75,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private final String LOOP_TIME = "9";
     private final String SERVER_LOOP_TIME = "5";
     private final int MILLI_SECONDS = 1000;
-    private final int SECONDS = 60;
+    private final int SECONDS = LaunchActivity.getTvRefreshTime()*60;
     private final int MINUTE = SECONDS * MILLI_SECONDS;
     private boolean callAdvertisement = true;
     private boolean callFirstTime = true;
@@ -245,7 +245,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1,
                 tv_info1, tv_category, tv_category1,tv_experience;
         ;
-        private LinearLayout ll_list, ll_no_list;
+        private LinearLayout ll_list, ll_no_list,ll_left;
         private Context context;
 
 
@@ -274,8 +274,20 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             tv_experience = findViewById(R.id.tv_experience);
             ll_list = findViewById(R.id.ll_list);
             ll_no_list = findViewById(R.id.ll_no_list);
+            ll_left = findViewById(R.id.ll_left);
             no_of_q = topicAndQueueTVList.size();
             scrolltext = findViewById(R.id.scrolltext);
+            if (LaunchActivity.isTvSplitViewEnable()) {
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.65f);
+                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.35f);
+                ll_left.setLayoutParams(lp1);
+                ll_no_list.setLayoutParams(lp0);
+            }else{
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
+                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
+                ll_left.setLayoutParams(lp1);
+                ll_no_list.setLayoutParams(lp0);
+            }
             updateDetail();
         }
 

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.customviews.TouchImageView;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -31,8 +32,11 @@ public class ImageViewerActivity extends AppCompatActivity {
 
         if (null != getIntent().getStringExtra(IBConstant.KEY_URL)) {
             url = getIntent().getStringExtra(IBConstant.KEY_URL);
+            Picasso.get().load(url).into(im_slider);
+        } else {
+            new CustomToast().showToast(this, "Image url is missing");
         }
-        Picasso.get().load(url).into(im_slider);
+
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener((View v) -> {
             finish();

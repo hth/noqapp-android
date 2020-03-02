@@ -29,7 +29,7 @@ public class M_MerchantProfileApiCalls extends MerchantProfileApiCalls {
         merchantProfileApiUrls.intellisense(did, Constants.DEVICE_TYPE, mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response intellisense", String.valueOf(response.body()));
                         intellisensePresenter.intellisenseResponse(response.body());

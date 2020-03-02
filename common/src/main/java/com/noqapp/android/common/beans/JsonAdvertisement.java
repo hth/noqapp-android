@@ -155,7 +155,7 @@ public class JsonAdvertisement extends AbstractDomain implements Serializable {
 
     @JsonIgnore
     public String createAdvertisementImageURL() {
-        if (!imageUrls.isEmpty()) {
+        if (null != imageUrls && !imageUrls.isEmpty()) {
             return advertisementId + "/" + imageUrls.get(0);
         }
 

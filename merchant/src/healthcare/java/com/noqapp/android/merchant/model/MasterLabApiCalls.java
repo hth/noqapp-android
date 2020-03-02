@@ -30,7 +30,7 @@ public class MasterLabApiCalls extends BaseMasterLabApiCalls {
         masterLabApiUrls.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("medical profile fetch", String.valueOf(response.body()));
                         masterLabPresenter.masterLabUploadResponse(response.body());
@@ -59,7 +59,7 @@ public class MasterLabApiCalls extends BaseMasterLabApiCalls {
         masterLabApiUrls.flag(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("data flagged", String.valueOf(response.body()));
                         masterLabPresenter.masterLabUploadResponse(response.body());

@@ -13,7 +13,7 @@ public class BaseConstants {
     public static final int RC_DATE_PICKER= 11;
 
     //error codes
-    public static final int SERVER_RESPONSE_CODE_SUCESS = 200;
+    public static final int SERVER_RESPONSE_CODE_SUCCESS = 200;
     public static final int INVALID_CREDENTIAL = 401;
 
     public static int SUCCESS = 1;

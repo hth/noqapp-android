@@ -73,7 +73,7 @@ public class QueueApiUnAuthenticCall {
         tokenQueueApiUrls.getQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (response.body() != null && null == response.body().getError()) {
                         Log.d("Response getQueueState", String.valueOf(response.body()));
                         queuePresenter.queueResponse(response.body());
@@ -109,7 +109,7 @@ public class QueueApiUnAuthenticCall {
         tokenQueueApiUrls.getAllQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp: getAllQueueState", String.valueOf(response.body()));
                         queuePresenter.queueResponse(response.body());
@@ -135,11 +135,11 @@ public class QueueApiUnAuthenticCall {
         });
     }
 
-    public void getAllQueueStateLevelUp(String did, String qrCode) {
-        tokenQueueApiUrls.getAllQueueStateLevelUp(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
+    public void getAllQueueStateLevelUp(String did, String codeQR) {
+        tokenQueueApiUrls.getAllQueueStateLevelUp(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("getAllQueueStateLevelUp", String.valueOf(response.body()));
                         queuePresenter.queueResponse(response.body());
@@ -175,7 +175,7 @@ public class QueueApiUnAuthenticCall {
         tokenQueueApiUrls.getAllJoinedQueue(did, Constants.DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (response.body() != null && response.body().getError() == null) {
                         Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
                         Log.d("Response joinqueuevalue", response.body().getTokenAndQueues().toString());
@@ -211,7 +211,7 @@ public class QueueApiUnAuthenticCall {
         tokenQueueApiUrls.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (response.body() != null && response.body().getError() == null) {
                         Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
                         tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues(), response.body().isSinceBeginning());
@@ -246,7 +246,7 @@ public class QueueApiUnAuthenticCall {
         tokenQueueApiUrls.joinQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (response.body() != null && response.body().getError() == null) {
                         Log.d("Response", response.body().toString());
                         tokenPresenter.tokenPresenterResponse(response.body());
@@ -281,7 +281,7 @@ public class QueueApiUnAuthenticCall {
         tokenQueueApiUrls.abortQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response abortQueue", String.valueOf(response.body()));
                         responsePresenter.responsePresenterResponse(response.body());

@@ -54,7 +54,7 @@ public class DeviceApiCall {
         deviceApiUrls.register(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "Registered device " + response.body());
                         deviceRegisterPresenter.deviceRegisterResponse(response.body());
@@ -92,7 +92,7 @@ public class DeviceApiCall {
         deviceApiUrls.isSupportedAppVersion(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     Log.d("response body isSupport", response.body().toString());
                     if (null != response.body() && null == response.body().getError()) {
                         appBlacklistPresenter.appBlacklistResponse(response.body());

@@ -45,7 +45,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/category_header_height"
-                            android:background="@drawable/image_foreground" />
+                            android:background="@android:color/white" />
                     </FrameLayout>
 
 
@@ -54,7 +54,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="@dimen/category_header_margin_top"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:padding="10dp"
                         card_view:cardBackgroundColor="@android:color/white"
@@ -86,7 +86,7 @@
                         android:id="@+id/rv_categories"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
                         android:layout_below="@+id/cardview"
                         android:scrollbars="vertical" />
 

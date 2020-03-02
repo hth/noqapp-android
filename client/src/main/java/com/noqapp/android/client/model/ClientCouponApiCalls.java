@@ -41,7 +41,7 @@ public class ClientCouponApiCalls {
         clientCouponApiUrls.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth,location).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         couponPresenter.couponResponse(response.body());
                         Log.d("globalCoupon", String.valueOf(response.body()));
@@ -71,7 +71,7 @@ public class ClientCouponApiCalls {
         clientCouponApiUrls.availableCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         couponPresenter.couponResponse(response.body());
                         Log.d("availableCoupon", String.valueOf(response.body()));
@@ -101,7 +101,7 @@ public class ClientCouponApiCalls {
         clientCouponApiUrls.filterCoupon(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         couponPresenter.couponResponse(response.body());
                         Log.d("filterCoupon", String.valueOf(response.body()));
@@ -131,7 +131,7 @@ public class ClientCouponApiCalls {
         clientCouponApiUrls.apply(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         couponApplyRemovePresenter.couponApplyResponse(response.body());
                         Log.d("availableCoupon", String.valueOf(response.body()));
@@ -161,7 +161,7 @@ public class ClientCouponApiCalls {
         clientCouponApiUrls.remove(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         couponApplyRemovePresenter.couponRemoveResponse(response.body());
                         Log.d("removeCoupon", String.valueOf(response.body()));

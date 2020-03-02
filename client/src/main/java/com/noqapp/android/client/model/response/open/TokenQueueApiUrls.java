@@ -129,6 +129,9 @@ public interface TokenQueueApiUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     *
+     * QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME will never happen in open api
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME}
      */
     @POST("open/token/abort/{codeQR}.json")
     Call<JsonResponse> abortQueue(

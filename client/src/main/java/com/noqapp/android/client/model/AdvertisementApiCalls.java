@@ -33,7 +33,7 @@ public class AdvertisementApiCalls {
         advertisementMobileApiUrls.getAllAdvertisements(did, Constants.DEVICE_TYPE).enqueue(new Callback<JsonAdvertisementList>() {
             @Override
             public void onResponse(@NonNull Call<JsonAdvertisementList> call, @NonNull Response<JsonAdvertisementList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         advertisementPresenter.advertisementResponse(response.body());
                         Log.d("getAllAdvertisements", String.valueOf(response.body()));
@@ -64,7 +64,7 @@ public class AdvertisementApiCalls {
         advertisementMobileApiUrls.getAdvertisementsByLocation(did, Constants.DEVICE_TYPE, location).enqueue(new Callback<JsonAdvertisementList>() {
             @Override
             public void onResponse(@NonNull Call<JsonAdvertisementList> call, @NonNull Response<JsonAdvertisementList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         advertisementPresenter.advertisementResponse(response.body());
                         Log.d("getAllAdvertisements", String.valueOf(response.body()));

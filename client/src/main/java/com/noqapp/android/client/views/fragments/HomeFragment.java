@@ -824,7 +824,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         switch (item.getAdvertisementViewerType()) {
             case JBA: {
                 Intent in = new Intent(getActivity(), ImageViewerActivity.class);
-                in.putExtra(IBConstant.KEY_URL, AppUtils.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL()));
+                in.putExtra(IBConstant.KEY_URL, item.createAdvertisementImageURL().isEmpty() ? null : AppUtils.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL()));
                 startActivity(in);
                 break;
             }

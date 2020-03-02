@@ -38,7 +38,7 @@ public class ProfessionalProfileApiCall {
         professionalProfileApiUrls.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("QueueManagerProfile", String.valueOf(response.body()));
                         queueManagerPresenter.queueManagerResponse(response.body());

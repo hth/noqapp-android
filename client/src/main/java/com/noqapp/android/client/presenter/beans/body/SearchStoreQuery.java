@@ -44,6 +44,9 @@ public class SearchStoreQuery {
     @JsonProperty("filters")
     private String filters;
 
+    @JsonProperty("qr")
+    private String codeQR;
+
     public String getQuery() {
         return query;
     }
@@ -98,15 +101,25 @@ public class SearchStoreQuery {
         return this;
     }
 
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public SearchStoreQuery setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SearchStoreQuery{");
+        final StringBuffer sb = new StringBuffer("SearchStoreQuery{");
         sb.append("query='").append(query).append('\'');
         sb.append(", cityName='").append(cityName).append('\'');
         sb.append(", latitude='").append(latitude).append('\'');
         sb.append(", longitude='").append(longitude).append('\'');
         sb.append(", scrollId='").append(scrollId).append('\'');
         sb.append(", filters='").append(filters).append('\'');
+        sb.append(", codeQR='").append(codeQR).append('\'');
         sb.append('}');
         return sb.toString();
     }

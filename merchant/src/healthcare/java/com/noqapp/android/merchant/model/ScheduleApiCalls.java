@@ -34,7 +34,7 @@ public class ScheduleApiCalls {
         scheduleApiUrls.scheduleForMonth(did, Constants.DEVICE_TYPE, mail, auth, month, codeQR).enqueue(new Callback<JsonScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, String.valueOf(response.body()));
                         appointmentPresenter.appointmentResponse(response.body());
@@ -63,7 +63,7 @@ public class ScheduleApiCalls {
         scheduleApiUrls.scheduleForDay(did, Constants.DEVICE_TYPE, mail, auth, day, codeQR).enqueue(new Callback<JsonScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "scheduleForDay fetch " + String.valueOf(response.body()));
                         appointmentPresenter.appointmentResponse(response.body());
@@ -92,7 +92,7 @@ public class ScheduleApiCalls {
         scheduleApiUrls.scheduleAction(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonSchedule>() {
             @Override
             public void onResponse(@NonNull Call<JsonSchedule> call, @NonNull Response<JsonSchedule> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "scheduleAction fetch " + String.valueOf(response.body()));
                         appointmentPresenter.appointmentAcceptRejectResponse(response.body());
@@ -121,7 +121,7 @@ public class ScheduleApiCalls {
         scheduleApiUrls.bookSchedule(did, Constants.DEVICE_TYPE, mail, auth, bookSchedule).enqueue(new Callback<JsonSchedule>() {
             @Override
             public void onResponse(@NonNull Call<JsonSchedule> call, @NonNull Response<JsonSchedule> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "bookSchedule fetch " + String.valueOf(response.body()));
                         appointmentPresenter.appointmentBookingResponse(response.body());

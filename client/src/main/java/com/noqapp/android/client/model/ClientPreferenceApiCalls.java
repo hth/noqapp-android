@@ -31,7 +31,7 @@ public class ClientPreferenceApiCalls {
         clientPreferenceApiUrls.notificationSound(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         clientPreferencePresenter.clientPreferencePresenterResponse(response.body());
                         Log.d("notificationSound", String.valueOf(response.body()));
@@ -61,7 +61,7 @@ public class ClientPreferenceApiCalls {
         clientPreferenceApiUrls.promotionalSMS(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         clientPreferencePresenter.clientPreferencePresenterResponse(response.body());
                         Log.d("promotionalSMS", String.valueOf(response.body()));
@@ -91,7 +91,7 @@ public class ClientPreferenceApiCalls {
         clientPreferenceApiUrls.order(did, Constants.DEVICE_TYPE, mail, auth, jsonUserPreference).enqueue(new Callback<JsonUserPreference>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         clientPreferencePresenter.clientPreferencePresenterResponse(response.body());
                         Log.e("order address", String.valueOf(response.body()));
