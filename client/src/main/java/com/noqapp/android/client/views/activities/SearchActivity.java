@@ -96,7 +96,11 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         });
         edt_search.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                performSearch();
+                if (LaunchActivity.isLockMode) {
+                    performKioskSearch();
+                } else {
+                    performSearch();
+                }
                 return true;
             }
             return false;
