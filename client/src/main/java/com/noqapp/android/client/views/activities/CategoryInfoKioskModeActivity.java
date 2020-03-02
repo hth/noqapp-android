@@ -157,19 +157,19 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
             tv_toolbar_title.setText(bizStoreElastic.getBusinessName());
             codeQR = bizStoreElastic.getCodeQR();
 
-            Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getBannerPlaceholder(this))
-                    .error(ImageUtils.getBannerErrorPlaceholder(this))
-                    .into(iv_category_banner);
-            if (bizStoreElastic.getBizServiceImages().size() > 0) {
-                // load first image default
-                Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
-                        .placeholder(ImageUtils.getBannerPlaceholder(this))
-                        .error(ImageUtils.getBannerErrorPlaceholder(this))
-                        .into(iv_category_banner);
-            }
+//            Picasso.get()
+//                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+//                    .placeholder(ImageUtils.getBannerPlaceholder(this))
+//                    .error(ImageUtils.getBannerErrorPlaceholder(this))
+//                    .into(iv_category_banner);
+//            if (bizStoreElastic.getBizServiceImages().size() > 0) {
+//                // load first image default
+//                Picasso.get()
+//                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
+//                        .placeholder(ImageUtils.getBannerPlaceholder(this))
+//                        .error(ImageUtils.getBannerErrorPlaceholder(this))
+//                        .into(iv_category_banner);
+//            }
             if (AppUtils.isTablet(getApplicationContext())) {
                 rv_categories.setLayoutManager(new GridLayoutManager(this, 3));
             } else {
