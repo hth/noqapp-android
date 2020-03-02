@@ -71,7 +71,7 @@ public class MainActivity
     private int currentPage = 0;
     private Timer timer;
     private final long DELAY_MS = 1000;//delay in milliseconds before task is to be executed
-    private final long PERIOD_MS = 5 * 1000;
+    private final long PERIOD_MS = LaunchActivity.getTvRefreshTime() * 1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     protected BroadcastReceiver broadcastReceiver;
     private JsonAdvertisementList jsonAdvertisementList;

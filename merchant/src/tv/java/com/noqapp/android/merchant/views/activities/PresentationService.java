@@ -75,7 +75,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private final String LOOP_TIME = "9";
     private final String SERVER_LOOP_TIME = "5";
     private final int MILLI_SECONDS = 1000;
-    private final int SECONDS = 60;
+    private final int SECONDS = LaunchActivity.getTvRefreshTime()*60;
     private final int MINUTE = SECONDS * MILLI_SECONDS;
     private boolean callAdvertisement = true;
     private boolean callFirstTime = true;

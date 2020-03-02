@@ -113,6 +113,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
     private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
     private static final String PREKEY_IS_TV_SPLIT_VIEW = "tvSplitView";
+    private static final String PREKEY_TV_REFRESH_TIME = "tvRefreshTime";
     static final String TOKEN_FCM = "tokenFCM";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
@@ -468,12 +469,20 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public static boolean isMsgAnnouncementEnable() {
         return sharedpreferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
     }
-    public static void setTvSplitViewEnable(boolean isMsgAnnounce) {
-        sharedpreferences.edit().putBoolean(PREKEY_IS_TV_SPLIT_VIEW, isMsgAnnounce).apply();
+    public static void setTvSplitViewEnable(boolean isTvSplitView) {
+        sharedpreferences.edit().putBoolean(PREKEY_IS_TV_SPLIT_VIEW, isTvSplitView).apply();
     }
 
     public static boolean isTvSplitViewEnable() {
         return sharedpreferences.getBoolean(PREKEY_IS_TV_SPLIT_VIEW, true);
+    }
+
+    public static void setTvRefreshTime(int refreshTime) {
+        sharedpreferences.edit().putInt(PREKEY_TV_REFRESH_TIME, refreshTime).apply();
+    }
+
+    public static int getTvRefreshTime() {
+        return sharedpreferences.getInt(PREKEY_TV_REFRESH_TIME, 5);
     }
 
     public String getUSerID() {

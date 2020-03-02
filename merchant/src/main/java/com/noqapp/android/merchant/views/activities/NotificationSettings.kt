@@ -2,13 +2,14 @@ package com.noqapp.android.merchant.views.activities
 
 import android.os.Bundle
 import android.view.View
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.noqapp.android.common.beans.JsonProfile
 import com.noqapp.android.common.beans.JsonUserPreference
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.model.types.CommunicationModeEnum
-import com.noqapp.android.common.utils.TextToSpeechHelper
 import com.noqapp.android.merchant.R
 import com.noqapp.android.merchant.model.MerchantPreferenceApiCalls
 import com.noqapp.android.merchant.utils.UserUtils
@@ -31,6 +32,14 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
         val cv_msg_announce: CardView = findViewById(R.id.cv_msg_announce)
         val sc_tv_split_view: SwitchCompat = findViewById(R.id.sc_tv_split_view)
         val cv_tv_split_view: CardView = findViewById(R.id.cv_tv_split_view)
+        val cv_tv_refresh_time: CardView = findViewById(R.id.cv_tv_refresh_time)
+
+        val rg_time: RadioGroup = findViewById(R.id.rg_time)
+        val rb_3: RadioButton = findViewById(R.id.rb_3)
+        val rb_5: RadioButton = findViewById(R.id.rb_5)
+        val rb_7: RadioButton = findViewById(R.id.rb_7)
+        val rb_10: RadioButton = findViewById(R.id.rb_10)
+
         val jsonUserPreference: JsonUserPreference? = BaseLaunchActivity.getLaunchActivity().getUserProfile().jsonUserPreference
         if (null == jsonUserPreference) {
             sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
@@ -44,6 +53,14 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
             sc_tv_split_view.isChecked = LaunchActivity.isTvSplitViewEnable()
             cv_msg_announce.visibility = View.VISIBLE
             cv_tv_split_view.visibility = View.VISIBLE
+            cv_tv_refresh_time.visibility = View.VISIBLE
+
+            when(LaunchActivity.getTvRefreshTime()) {
+                3 -> {rb_3.isChecked = true}
+                5-> {rb_5.isChecked = true}
+                7 -> {rb_7.isChecked = true}
+                10 -> {rb_10.isChecked = true}
+            }
             sc_msg_announce.setOnCheckedChangeListener { buttonView, isChecked ->
                 LaunchActivity.setMsgAnnouncmentEnable(isChecked)
                 if (isChecked) {
@@ -64,9 +81,21 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
                     CustomToast().showToast(this@NotificationSettings, "TV Split View Disabled")
                 }
             }
+
+            rg_time.setOnCheckedChangeListener { group, checkedId ->
+                val rb = findViewById<View>(checkedId) as RadioButton
+                when(rb.id) {
+                    R.id.rb_3 -> {LaunchActivity.setTvRefreshTime(3)}
+                    R.id.rb_5 -> {LaunchActivity.setTvRefreshTime(5)}
+                    R.id.rb_7 -> {LaunchActivity.setTvRefreshTime(7)}
+                    R.id.rb_10 -> {LaunchActivity.setTvRefreshTime(10)}
+                }
+                CustomToast().showToast(this@NotificationSettings, "TV refresh time set to : "+rb.text)
+            }
         }else{
             cv_msg_announce.visibility = View.GONE
             cv_tv_split_view.visibility = View.GONE
+            cv_tv_refresh_time.visibility = View.GONE
         }
         sc_sms.setOnCheckedChangeListener { buttonView, isChecked ->
             MyApplication.setNotificationReceiveEnable(isChecked)
