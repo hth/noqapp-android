@@ -39,7 +39,7 @@ public class CheckAssetApiCalls {
         checkAssetApiUrls.bizName(did, Constants.DEVICE_TYPE, mail, auth, checkAsset).enqueue(new Callback<CheckAsset>() {
             @Override
             public void onResponse(@NonNull Call<CheckAsset> call, @NonNull Response<CheckAsset> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, String.valueOf(response.body()));
                         bizNamePresenter.bizNameResponse(response.body());
@@ -68,7 +68,7 @@ public class CheckAssetApiCalls {
         checkAssetApiUrls.floors(did, Constants.DEVICE_TYPE, mail, auth, checkAsset).enqueue(new Callback<JsonCheckAssetList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCheckAssetList> call, @NonNull Response<JsonCheckAssetList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, String.valueOf(response.body()));
                         checkAssetPresenter.jsonCheckAssetListResponse(response.body());
@@ -97,7 +97,7 @@ public class CheckAssetApiCalls {
         checkAssetApiUrls.rooms(did, Constants.DEVICE_TYPE, mail, auth, checkAsset).enqueue(new Callback<JsonCheckAssetList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCheckAssetList> call, @NonNull Response<JsonCheckAssetList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, String.valueOf(response.body()));
                         checkAssetPresenter.jsonCheckAssetListResponse(response.body());
@@ -126,7 +126,7 @@ public class CheckAssetApiCalls {
         checkAssetApiUrls.assetsInRoom(did, Constants.DEVICE_TYPE, mail, auth, checkAsset).enqueue(new Callback<JsonCheckAssetList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCheckAssetList> call, @NonNull Response<JsonCheckAssetList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, String.valueOf(response.body()));
                         checkAssetPresenter.jsonCheckAssetListResponse(response.body());
