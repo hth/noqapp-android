@@ -461,7 +461,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.apache.commons:commons-compress:1.19'
     implementation 'com.github.RobertApikyan:SegmentedControl:1.2.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:18.0.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:18.1.0'
     implementation 'info.hoang8f:android-segmented:1.0.6'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
     implementation 'com.google.android:flexbox:1.1.1'
