@@ -279,7 +279,7 @@
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="10dp"
-                android:text="NoQApp"
+                android:text="NoQueue"
                 android:textColor="#fff"
                 android:textSize="42sp"
                 android:textStyle="bold" />
