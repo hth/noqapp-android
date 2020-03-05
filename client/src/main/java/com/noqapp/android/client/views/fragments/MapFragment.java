@@ -1,7 +1,15 @@
 package com.noqapp.android.client.views.fragments;
 
-import com.google.maps.GaeRequestHandler;
-import com.noqapp.android.client.R;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,24 +27,12 @@ import com.google.maps.android.PolyUtil;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.TravelMode;
+import com.noqapp.android.client.R;
 
 import org.apache.commons.lang3.StringUtils;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -145,13 +141,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private GeoApiContext getGeoContext() {
-        return new GeoApiContext.Builder(
-                new GaeRequestHandler.Builder()
-                        .connectTimeout(2, TimeUnit.SECONDS)
-                        .readTimeout(2, TimeUnit.SECONDS)
-                        .writeTimeout(2, TimeUnit.SECONDS))
-                .apiKey(getString(R.string.google_maps_key))
-                .build();
+        GeoApiContext geoApiContext = new GeoApiContext();
+        return geoApiContext.setQueryRateLimit(3)
+                .setApiKey(getString(R.string.google_maps_key))
+                .setConnectTimeout(2, TimeUnit.SECONDS)
+                .setReadTimeout(2, TimeUnit.SECONDS)
+                .setWriteTimeout(2, TimeUnit.SECONDS);
     }
 
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
