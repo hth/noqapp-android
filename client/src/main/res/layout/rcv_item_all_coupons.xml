@@ -53,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="Get Flat Rs. 50 off on first booking via NoQueue"
+                        android:text="@string/booking_offer"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_fourteen" />
 
