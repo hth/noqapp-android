@@ -41,7 +41,10 @@ import com.noqapp.android.merchant.views.adapters.WorkDoneAdapter;
 import com.noqapp.android.merchant.views.fragments.DentalStatusFragment;
 import com.noqapp.android.merchant.views.fragments.MedicalHistoryFilteredFragment;
 import com.noqapp.android.merchant.views.fragments.MedicalHistoryFragment;
+import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.pojos.ToothWorkDone;
+import com.noqapp.android.merchant.views.utils.BlankPdfGenerator;
+import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -104,6 +107,27 @@ public class PatientProfileActivity extends BaseActivity implements
 
         pb_physical = findViewById(R.id.pb_physical);
         TextView tv_start_diagnosis = findViewById(R.id.tv_start_diagnosis);
+        TextView tv_print_report = findViewById(R.id.tv_print_report);
+
+        tv_print_report.setOnClickListener(v -> {
+            if (null == jsonProfile || null == jsonMedicalRecordTemp) {
+                new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");
+            } else {
+                PermissionHelper permissionHelper = new PermissionHelper(this);
+                if (permissionHelper.isStoragePermissionAllowed()) {
+                    CaseHistory caseHistory = new CaseHistory();
+                    caseHistory.setName(jsonProfile.getName());
+                    caseHistory.setAddress(jsonProfile.getAddress());
+                    caseHistory.setAge(AppUtils.calculateAge(jsonProfile.getBirthday()));
+                    caseHistory.setGender(jsonProfile.getGender().name());
+                    BlankPdfGenerator pdfGenerator = new BlankPdfGenerator(this);
+                    pdfGenerator.createPdf(caseHistory, isDental, jsonMedicalRecordTemp);
+                } else {
+                    permissionHelper.requestStoragePermission();
+                }
+            }
+        });
+
         tv_start_diagnosis.setOnClickListener(v -> {
             if (null == jsonProfile || null == jsonMedicalRecordTemp) {
                 new CustomToast().showToast(PatientProfileActivity.this, "Please wait while patient data is loading...");

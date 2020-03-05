@@ -645,8 +645,24 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Medical History"
+                android:layout_toLeftOf="@+id/tv_print_report"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_print_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/tv_start_diagnosis"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/button_drawable_white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Print Report"
+                android:textColor="#31b7bd"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
