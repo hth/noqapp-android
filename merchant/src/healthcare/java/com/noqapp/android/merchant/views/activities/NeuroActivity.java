@@ -13,6 +13,7 @@ import android.widget.TimePicker;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -71,17 +72,17 @@ public class NeuroActivity extends BaseActivity {
 
         tv_date = findViewById(R.id.tv_date);
         tv_date.setOnClickListener(v -> {
-//            CustomCalendar customCalendar = new CustomCalendar(NeuroActivity.this,true);
-//            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-//                @Override
-//                public void calendarDate(String date) {
-//                    tv_date.setText(date);
-//                }
-//            });
-//            customCalendar.showDobCalendar();
+            CustomCalendar customCalendar = new CustomCalendar(NeuroActivity.this,true);
+            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+                @Override
+                public void calendarDate(String date) {
+                    tv_date.setText(date);
+                }
+            });
+            customCalendar.showDobCalendar();
 
-            Intent in = new Intent(NeuroActivity.this, DatePickerActivity.class);
-            startActivityForResult(in, Constants.RC_DATE_PICKER);
+//            Intent in = new Intent(NeuroActivity.this, DatePickerActivity.class);
+//            startActivityForResult(in, Constants.RC_DATE_PICKER);
         });
 
 
