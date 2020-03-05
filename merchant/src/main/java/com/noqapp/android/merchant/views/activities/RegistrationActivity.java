@@ -19,6 +19,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.RegisterApiCalls;
@@ -148,17 +149,17 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     public void onClick(View v) {
         if (v == tv_birthday) {
             AppUtils.hideKeyBoard(this);
-//            CustomCalendar customCalendar = new CustomCalendar(RegistrationActivity.this);
-//            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-//                @Override
-//                public void calendarDate(String date) {
-//                    tv_birthday.setText(date);
-//                }
-//            });
-//            customCalendar.showDobCalendar();
+            CustomCalendar customCalendar = new CustomCalendar(RegistrationActivity.this);
+            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+                @Override
+                public void calendarDate(String date) {
+                    tv_birthday.setText(date);
+                }
+            });
+            customCalendar.showDobCalendar();
 
-            Intent in = new Intent(RegistrationActivity.this, DatePickerActivity.class);
-            startActivityForResult(in, Constants.RC_DATE_PICKER);
+//            Intent in = new Intent(RegistrationActivity.this, DatePickerActivity.class);
+//            startActivityForResult(in, Constants.RC_DATE_PICKER);
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);

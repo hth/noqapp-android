@@ -16,6 +16,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
@@ -102,16 +103,16 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         int id = v.getId();
         switch (id) {
             case R.id.edt_birthday:
-//                CustomCalendar customCalendar = new CustomCalendar(getActivity());
-//                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-//                    @Override
-//                    public void calendarDate(String date) {
-//                        edt_birthday.setText(date);
-//                    }
-//                });
-//                customCalendar.showDobCalendar();
-                Intent in = new Intent(getActivity(), DatePickerActivity.class);
-                startActivityForResult(in, Constants.RC_DATE_PICKER);
+                CustomCalendar customCalendar = new CustomCalendar(getActivity());
+                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+                    @Override
+                    public void calendarDate(String date) {
+                        edt_birthday.setText(date);
+                    }
+                });
+                customCalendar.showDobCalendar();
+//                Intent in = new Intent(getActivity(), DatePickerActivity.class);
+//                startActivityForResult(in, Constants.RC_DATE_PICKER);
 
                 break;
             case R.id.btn_update:

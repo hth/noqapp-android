@@ -88,7 +88,11 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                     return true;
                 }
                 if (event.getRawX() <= (20 + edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                    performSearch();
+                    if (LaunchActivity.isLockMode) {
+                        performKioskSearch();
+                    } else {
+                        performSearch();
+                    }
                     return true;
                 }
             }
