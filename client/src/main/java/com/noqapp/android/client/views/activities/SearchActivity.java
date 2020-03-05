@@ -88,11 +88,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                     return true;
                 }
                 if (event.getRawX() <= (20 + edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                    if (LaunchActivity.isLockMode) {
-                        performKioskSearch();
-                    } else {
-                        performSearch();
-                    }
+                   applySearch();
                     return true;
                 }
             }
@@ -100,11 +96,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         });
         edt_search.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                if (LaunchActivity.isLockMode) {
-                    performKioskSearch();
-                } else {
-                    performSearch();
-                }
+                applySearch();
                 return true;
             }
             return false;
@@ -274,5 +266,14 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     @Override
     public void nearMeHospitalError() {
         dismissProgress();
+    }
+
+
+    private void applySearch(){
+        if (LaunchActivity.isLockMode) {
+            performKioskSearch();
+        } else {
+            performSearch();
+        }
     }
 }
