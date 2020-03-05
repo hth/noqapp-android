@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.google.maps.GaeRequestHandler;
 import com.noqapp.android.client.R;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -35,6 +36,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -143,12 +145,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private GeoApiContext getGeoContext() {
-        GeoApiContext geoApiContext = new GeoApiContext();
-        return geoApiContext.setQueryRateLimit(3)
-                .setApiKey(getString(R.string.google_maps_key))
-                .setConnectTimeout(2, TimeUnit.SECONDS)
-                .setReadTimeout(2, TimeUnit.SECONDS)
-                .setWriteTimeout(2, TimeUnit.SECONDS);
+        return new GeoApiContext.Builder(
+                new GaeRequestHandler.Builder()
+                        .connectTimeout(2, TimeUnit.SECONDS)
+                        .readTimeout(2, TimeUnit.SECONDS)
+                        .writeTimeout(2, TimeUnit.SECONDS))
+                .apiKey(getString(R.string.google_maps_key))
+                .build();
     }
 
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
