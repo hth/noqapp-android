@@ -11,4 +11,5 @@
     <string name="empty_visiting_subtitle">There are no hospital visit scheduled</string>
     <string name="cat_picker_title_custom">Select Date</string>
     <string name="pdf_author">NoQueue HealthCare</string>
+    <string name="noqueue">NoQueue</string>
 </resources>

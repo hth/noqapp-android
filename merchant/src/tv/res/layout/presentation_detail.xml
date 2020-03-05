@@ -279,7 +279,7 @@
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="10dp"
-                android:text="NoQueue"
+                android:text="@string/noqueue"
                 android:textColor="#fff"
                 android:textSize="42sp"
                 android:textStyle="bold" />

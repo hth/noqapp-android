@@ -360,4 +360,5 @@
     <string name="kiosk_dialog_title">Kiosk Mode</string>
     <string name="kiosk_dialog_msg">Continue to launch Kiosk Mode?</string>
     <string name="preference_settings">Preference Settings</string>
+    <string name="booking_offer">Get Flat Rs. 50 off on first booking via NoQueue</string>
 </resources>
