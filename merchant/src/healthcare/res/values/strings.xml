@@ -34,11 +34,11 @@
     <string name="mds_follow_up">Follow-up:</string>
     <string name="mds_instruction">Instruction/Plan to patient:</string>
 
-    <string name="pe_oxygen">Oxygen </string>
-    <string name="pe_temperature">Temp (F) </string>
-    <string name="pe_weight">Weight (kg) </string>
-    <string name="pe_bp">B.P (mmHg) </string>
-    <string name="pe_respiratory">Respiratory </string>
+    <string name="pe_oxygen">Oxygen</string>
+    <string name="pe_temperature">Temp (F)</string>
+    <string name="pe_weight">Weight (kg)</string>
+    <string name="pe_bp">BP (mmHg)</string>
+    <string name="pe_respiratory">Respiratory</string>
     <string name="pe_pulse">Pulse (BPM)</string>
     <string name="pe_height">Height (cm)</string>
 
