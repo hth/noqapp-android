@@ -200,7 +200,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     if (bizStoreElastic.getBusinessType() != null) {
                         switch (bizStoreElastic.getBusinessType()) {
                             case DO:
-                                childViewHolder.tv_status.setText("Open now. Book your appointment for today.");
+                                childViewHolder.tv_status.setText("Open now. For today's appointment click on Walk-In.");
                                 break;
                             default:
                                 childViewHolder.tv_status.setText("Open now. Join the queue.");
