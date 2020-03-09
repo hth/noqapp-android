@@ -35,6 +35,7 @@ import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
@@ -221,8 +222,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
     private void setAppointmentSlots(JsonHour jsonHour, ArrayList<String> filledTimes) {
-        if (new AppUtils().checkStoreClosedWithTime(jsonHour)
-                || new AppUtils().checkStoreClosedWithAppointmentTime(jsonHour)) {
+        if (new AppUtils().checkStoreClosedWithTime(jsonHour) || new AppUtils().checkStoreClosedWithAppointmentTime(jsonHour)) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
             tv_empty_slots.setVisibility(View.GONE);
@@ -260,7 +260,16 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
         int dayOfWeek = AppUtils.getDayOfWeek(selectedDate);
         JsonHour storeHourElastic = getStoreHourElastic(jsonHours, dayOfWeek);
-        setAppointmentSlots(storeHourElastic, filledTimes);
+        if (null != jsonScheduleList.getAppointmentState() && AppointmentStateEnum.O == jsonScheduleList.getAppointmentState()) {
+            /* When schedule closed for a specific duration. */
+            JsonHour notAcceptingAppointment = new JsonHour()
+                    .setDayClosed(true)
+                    .setAppointmentStartHour(0)
+                    .setAppointmentEndHour(0);
+            setAppointmentSlots(notAcceptingAppointment, filledTimes);
+        } else {
+            setAppointmentSlots(storeHourElastic, filledTimes);
+        }
         dismissProgress();
     }
 
