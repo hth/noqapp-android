@@ -44,6 +44,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.common.cache.Cache;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -743,90 +744,56 @@ public class LaunchActivity
     }
 
     private void updateNotification(JsonData jsonData, String codeQR) {
-        String go_to = "";
-        String messageOrigin = "";
-        String current_serving = "";
-        List<JsonTextToSpeech> jsonTextToSpeeches = null;
-        String msgId = "";
-        PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
-        if (jsonData instanceof JsonTopicQueueData) {
-            JsonTopicQueueData jsonTopicQueueData = (JsonTopicQueueData) jsonData;
-            current_serving = String.valueOf(jsonTopicQueueData.getCurrentlyServing());
-            go_to = jsonTopicQueueData.getGoTo();
-            messageOrigin = jsonTopicQueueData.getMessageOrigin().name();
-            jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
-            msgId = jsonTopicQueueData.getMessageId();
-        } else if (jsonData instanceof JsonTopicOrderData) {
-            JsonTopicOrderData jsonTopicOrderData = (JsonTopicOrderData) jsonData;
-            current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());
-            go_to = jsonTopicOrderData.getGoTo();
-            messageOrigin = jsonTopicOrderData.getMessageOrigin().name();
-            purchaseOrderStateEnum = jsonTopicOrderData.getPurchaseOrderState();
-            jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
-            msgId = jsonTopicOrderData.getMessageId();
-        }
+        try {
+            String go_to = "";
+            String messageOrigin = "";
+            String current_serving = "";
+            List<JsonTextToSpeech> jsonTextToSpeeches = null;
+            String msgId = "";
+            PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
+            if (jsonData instanceof JsonTopicQueueData) {
+                JsonTopicQueueData jsonTopicQueueData = (JsonTopicQueueData) jsonData;
+                current_serving = String.valueOf(jsonTopicQueueData.getCurrentlyServing());
+                go_to = jsonTopicQueueData.getGoTo();
+                messageOrigin = jsonTopicQueueData.getMessageOrigin().name();
+                jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
+                msgId = jsonTopicQueueData.getMessageId();
+            } else if (jsonData instanceof JsonTopicOrderData) {
+                JsonTopicOrderData jsonTopicOrderData = (JsonTopicOrderData) jsonData;
+                current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());
+                go_to = jsonTopicOrderData.getGoTo();
+                messageOrigin = jsonTopicOrderData.getMessageOrigin().name();
+                purchaseOrderStateEnum = jsonTopicOrderData.getPurchaseOrderState();
+                jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
+                msgId = jsonTopicOrderData.getMessageId();
+            }
 
-        ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
-        for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
-            JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
-            if (null != jtk) {
-                /* update DB & after join screen */
-                if (Integer.parseInt(current_serving) < jtk.getServingNumber()) {
-                    /* Do nothing - In Case of getting service no less than what the object have */
-                } else {
-                    jtk.setServingNumber(Integer.parseInt(current_serving));
-                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                }
-
-                if (jsonData instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
-                    jtk.setPurchaseOrderState(purchaseOrderStateEnum);
-                }
-                /*
-                 * Save codeQR of goto & show it in after join screen on app
-                 * Review DB for review key && current serving == token no.
-                 */
-                if (Integer.parseInt(current_serving) == jtk.getToken()) {
-                    // if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-                    ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
-                    if (null != reviewData) {
-                        ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
-                        ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
-                        /* update */
+            ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+            for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
+                JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
+                if (null != jtk) {
+                    /* update DB & after join screen */
+                    if (Integer.parseInt(current_serving) < jtk.getServingNumber()) {
+                        /* Do nothing - In Case of getting service no less than what the object have */
                     } else {
-                        /* insert */
-                        ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
-                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                        cv.put(DatabaseTable.Review.TOKEN, current_serving);
-                        cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
-                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
-                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
-                        ReviewDB.insert(cv);
+                        jtk.setServingNumber(Integer.parseInt(current_serving));
+                        TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                     }
-                }
 
-                if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
-                    /* Un-subscribe the topic */
-                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-                }
-
-                if (activityCommunicator != null) {
-                    boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
-
-                    if (isUpdated) {
+                    if (jsonData instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
+                        jtk.setPurchaseOrderState(purchaseOrderStateEnum);
+                    }
+                    /*
+                     * Save codeQR of goto & show it in after join screen on app
+                     * Review DB for review key && current serving == token no.
+                     */
+                    if (Integer.parseInt(current_serving) == jtk.getToken()) {
+                        // if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
                         ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
                         if (null != reviewData) {
-                            if (!reviewData.getIsBuzzerShow().equals("1")) {
-                                ContentValues cv = new ContentValues();
-                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
-                                ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
-                                Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
-                                startActivity(blinker);
-                            } else {
-                                /* Blinker already shown */
-                            }
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                            ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
                             /* update */
                         } else {
                             /* insert */
@@ -835,30 +802,70 @@ public class LaunchActivity
                             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                             cv.put(DatabaseTable.Review.TOKEN, current_serving);
                             cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
-                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                             cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                            cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
                             ReviewDB.insert(cv);
-                            Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
-                            startActivity(blinker);
                         }
                     }
-                }
-                try {
-                    /* In case of order update the order status */
-                    if (jsonData instanceof JsonTopicOrderData) {
-                        if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
-                            jtk.setPurchaseOrderState(((JsonTopicOrderData) jsonData).getPurchaseOrderState());
-                            TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
+
+                    if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
+                        /* Un-subscribe the topic */
+                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                    }
+
+                    if (activityCommunicator != null) {
+                        boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+
+                        if (isUpdated) {
+                            ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                            if (null != reviewData) {
+                                if (!reviewData.getIsBuzzerShow().equals("1")) {
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                                    ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                                    Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
+                                    startActivity(blinker);
+                                } else {
+                                    /* Blinker already shown */
+                                }
+                                /* update */
+                            } else {
+                                /* insert */
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                                cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                                cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
+                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                                ReviewDB.insert(cv);
+                                Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
+                                startActivity(blinker);
+                            }
                         }
                     }
-                    homeFragment.updateListFromNotification(jtk, jsonTextToSpeeches, msgId);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    try {
+                        /* In case of order update the order status */
+                        if (jsonData instanceof JsonTopicOrderData) {
+                            if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
+                                jtk.setPurchaseOrderState(((JsonTopicOrderData) jsonData).getPurchaseOrderState());
+                                TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
+                            }
+                        }
+                        homeFragment.updateListFromNotification(jtk, jsonTextToSpeeches, msgId);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw e;
+                    }
+                } else {
+                    Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
                 }
-            } else {
-                Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
             }
+        } catch (Exception e) {
+            Crashlytics.log(1, TAG, "Failed on update notification");
+            Log.e(TAG, "Failed on update notification " + e.getLocalizedMessage());
         }
     }
 
