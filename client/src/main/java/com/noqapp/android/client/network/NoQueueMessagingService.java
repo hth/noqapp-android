@@ -140,12 +140,19 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     break;
                 case Q:
                     try {
-                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
-                        //TODO(hth) Temp code. Removed as parsing issue.
-                        mappedData.remove("textToSpeeches");
+                        List<JsonTextToSpeech> jsonTextToSpeeches = null;
+                        boolean containsTextToSpeeches = mappedData.containsKey("textToSpeeches");
+                        if (containsTextToSpeeches) {
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                            //TODO(hth) Temp code. Removed as parsing issue.
+                            mappedData.remove("textToSpeeches");
+                        }
 
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicQueueData.class);
-                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+
+                        if (null != jsonTextToSpeeches) {
+                            jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+                        }
                         Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
                         Crashlytics.log(1, TAG, "Failed to read message");
@@ -186,12 +193,19 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     break;
                 case O:
                     try {
-                        List<JsonTextToSpeech> jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
-                        //TODO(hth) Temp code. Removed as parsing issue.
-                        mappedData.remove("textToSpeeches");
+                        List<JsonTextToSpeech> jsonTextToSpeeches = null;
+                        boolean containsTextToSpeeches = mappedData.containsKey("textToSpeeches");
+                        if (containsTextToSpeeches) {
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                            //TODO(hth) Temp code. Removed as parsing issue.
+                            mappedData.remove("textToSpeeches");
+                        }
 
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicOrderData.class);
-                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+
+                        if (null != jsonTextToSpeeches) {
+                            jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
+                        }
                         Log.e("FCM order ", jsonData.toString());
                     } catch (Exception e) {
                         Crashlytics.log(1, TAG, "Failed to read message");
