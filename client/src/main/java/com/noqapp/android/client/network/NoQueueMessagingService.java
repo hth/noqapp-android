@@ -6,6 +6,7 @@ import static com.noqapp.android.client.utils.Constants.ISREVIEW;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
 import static com.noqapp.android.client.utils.Constants.TOKEN;
 
+import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
@@ -133,6 +134,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicAppointmentData.class);
                         Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
+                        Crashlytics.log(1, TAG, "Failed to read message");
                         e.printStackTrace();
                     }
                     break;
@@ -146,6 +148,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
                         Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
+                        Crashlytics.log(1, TAG, "Failed to read message");
                         e.printStackTrace();
                     }
                     break;
@@ -159,6 +162,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = jsonClientTokenAndQueueData;
                         Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
+                        Crashlytics.log(1, TAG, "Failed to read message");
                         e.printStackTrace();
                     }
                     break;
@@ -167,6 +171,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientData.class);
                         Log.e("FCM Queue Review", jsonData.toString());
                     } catch (Exception e) {
+                        Crashlytics.log(1, TAG, "Failed to read message");
                         e.printStackTrace();
                     }
                     break;
@@ -175,6 +180,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientOrderData.class);
                         Log.e("FCM Order Review", jsonData.toString());
                     } catch (Exception e) {
+                        Crashlytics.log(1, TAG, "Failed to read message");
                         e.printStackTrace();
                     }
                     break;
@@ -188,6 +194,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
                         Log.e("FCM order ", jsonData.toString());
                     } catch (Exception e) {
+                        Crashlytics.log(1, TAG, "Failed to read message");
                         e.printStackTrace();
                     }
                     break;
@@ -197,6 +204,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonAlertData.class);
                         Log.e("FCM Review store", jsonData.toString());
                     } catch (Exception e) {
+                        Crashlytics.log(1, TAG, "Failed to read message");
                         e.printStackTrace();
                     }
                     break;
@@ -205,6 +213,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonMedicalFollowUp.class);
                         Log.e("FCM Medical Followup", jsonData.toString());
                     } catch (Exception e) {
+                        Crashlytics.log(1, TAG, "Failed to read message");
                         e.printStackTrace();
                     }
                     break;
@@ -474,6 +483,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
             Log.e("Alarm set", "Done Alarm");
         } catch (Exception e) {
+            Crashlytics.log(1, TAG, "Failed to set alarm");
             e.printStackTrace();
         }
     }
@@ -547,8 +557,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         //.setSummaryText(message)
                         .bigLargeIcon(null));
             }
-            if (isVibrate)
+            if (isVibrate) {
                 mBuilder.setVibrate(new long[]{500, 500});
+            }
+
             Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
             notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
