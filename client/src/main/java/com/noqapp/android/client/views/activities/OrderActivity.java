@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.core.content.ContextCompat;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -163,6 +165,18 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             startActivityForResult(in, 78);
         });
         edt_optional = findViewById(R.id.edt_optional);
+        edt_optional.setOnTouchListener((view, event) -> {
+
+            if (view.getId() == R.id.edt_optional) {
+                view.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_UP:
+                        view.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+            }
+            return false;
+        });
         tv_place_order = findViewById(R.id.tv_place_order);
         tv_coupon_amount = findViewById(R.id.tv_coupon_amount);
         tv_coupon_name = findViewById(R.id.tv_coupon_name);
@@ -497,9 +511,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         dismissProgress();
     }
 
-    private void enableDisableOrderButton(boolean enable) {
-        tv_place_order.setEnabled(enable);
-        tv_place_order.setClickable(enable);
+    private void enableDisableOrderButton(boolean isEnable) {
+        tv_place_order.setEnabled(isEnable);
+        tv_place_order.setClickable(isEnable);
+        tv_place_order.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.btn_bg_enable : R.drawable.btn_bg_inactive));
+        tv_place_order.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
     }
 
     private void triggerOnlinePayment() {

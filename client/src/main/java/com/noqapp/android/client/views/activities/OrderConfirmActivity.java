@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -129,7 +130,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 bubbleSeekBar.setBubbleColor(color);
             }
         });
-
+        bsb_order_status.setOnTouchListener((view, motionEvent) -> true);
         TextView tv_view_receipt = findViewById(R.id.tv_view_receipt);
         tv_view_receipt.setOnClickListener(v -> {
             showReceiptDialog(oldjsonPurchaseOrder.getPurchaseOrderProducts());
@@ -363,6 +364,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         }
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
+
+        //TODO   Revert After Corona crisis
+        tv_estimated_time.setVisibility(View.INVISIBLE);
+        //
         LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
         String geoHash = getIntent().getStringExtra("GeoHash");
         LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(geoHash),

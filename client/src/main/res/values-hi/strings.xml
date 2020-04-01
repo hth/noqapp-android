@@ -265,7 +265,7 @@
     <string name="empty_review">No one has reviewed. Be the first to review.</string>
     <string name="rejoin">Rejoin</string>
     <string name="reorder">Reorder</string>
-    <string name="additional">Specify delivery/order instruction, If any</string>
+    <string name="additional">Add product in comment if not available. Specify delivery/order instruction, If any</string>
     <string name="error_name_exist">A profile with this name already added</string>
     <string name="order">ORDER</string>
     <string name="activate">Activate</string>

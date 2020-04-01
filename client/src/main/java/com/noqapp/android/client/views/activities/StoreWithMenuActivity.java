@@ -216,14 +216,40 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             jsonStoreCategories.add(new JsonStoreCategory().setCategoryName(defaultCategory).setCategoryId(defaultCategory));
         }
 
-        List<JsonStoreCategory> headerList = jsonStoreCategories;
+        List<JsonStoreCategory> tempHeaderList = jsonStoreCategories;
         HashMap<String, List<StoreCartItem>> expandableListDetail = storeCartItems;
 
-        List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
+        ArrayList<Integer> removeEmptyData = new ArrayList<>();
+        int headerTracker = 0;
+        for (int i = 0; i < tempHeaderList.size(); i++) {
+            if (expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size() > 0) {
+                headerPosition.add(headerTracker);
+                headerTracker += expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size();
+
+            } else
+                removeEmptyData.add(i);
+        }
+        // Remove the categories which having zero items
+        for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
+            tempHeaderList.remove((int) removeEmptyData.get(j));
+        }
+
+        // fill the category items on basis of header which having items
+        HashMap<String, List<StoreCartItem>> tempListDetails = new HashMap<>();
+        for (int i = 0; i < tempHeaderList.size() ; i++) {
+            tempListDetails.put(tempHeaderList.get(i).getCategoryId(), expandableListDetail.get(tempHeaderList.get(i).getCategoryId()));
+        }
+        rcv_header.setHasFixedSize(true);
+        rcv_header.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        rcv_header.setItemAnimator(new DefaultItemAnimator());
+
+        menuHeaderAdapter = new MenuHeaderAdapter(tempHeaderList, this, this);
+        rcv_header.setAdapter(menuHeaderAdapter);
+
         StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(
                 this,
-                expandableListTitle,
-                expandableListDetail,
+                tempHeaderList,
+                tempListDetails,
                 this,
                 currencySymbol,
                 AppUtils.isStoreOpenToday(jsonStore),
@@ -233,29 +259,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             expandableListView.expandGroup(i);
         }
         expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
-
-        ArrayList<Integer> removeEmptyData = new ArrayList<>();
-        ArrayList<StoreCartItem> childData = new ArrayList<>();
-        int headerTracker = 0;
-        for (int i = 0; i < headerList.size(); i++) {
-            if (expandableListDetail.get(headerList.get(i).getCategoryId()).size() > 0) {
-                childData.addAll(expandableListDetail.get(headerList.get(i).getCategoryId()));
-                headerPosition.add(headerTracker);
-                headerTracker += expandableListDetail.get(headerList.get(i).getCategoryId()).size();
-
-            } else
-                removeEmptyData.add(i);
-        }
-        // Remove the categories which having zero items
-        for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
-            headerList.remove((int) removeEmptyData.get(j));
-        }
-        rcv_header.setHasFixedSize(true);
-        rcv_header.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        rcv_header.setItemAnimator(new DefaultItemAnimator());
-
-        menuHeaderAdapter = new MenuHeaderAdapter(headerList, this, this);
-        rcv_header.setAdapter(menuHeaderAdapter);
 
         expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
