@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.core.content.ContextCompat;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -510,9 +511,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         dismissProgress();
     }
 
-    private void enableDisableOrderButton(boolean enable) {
-        tv_place_order.setEnabled(enable);
-        tv_place_order.setClickable(enable);
+    private void enableDisableOrderButton(boolean isEnable) {
+        tv_place_order.setEnabled(isEnable);
+        tv_place_order.setClickable(isEnable);
+        tv_place_order.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.btn_bg_enable : R.drawable.btn_bg_inactive));
+        tv_place_order.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
     }
 
     private void triggerOnlinePayment() {
