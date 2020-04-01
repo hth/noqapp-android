@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -163,6 +164,18 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             startActivityForResult(in, 78);
         });
         edt_optional = findViewById(R.id.edt_optional);
+        edt_optional.setOnTouchListener((view, event) -> {
+
+            if (view.getId() == R.id.edt_optional) {
+                view.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_UP:
+                        view.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+            }
+            return false;
+        });
         tv_place_order = findViewById(R.id.tv_place_order);
         tv_coupon_amount = findViewById(R.id.tv_coupon_amount);
         tv_coupon_name = findViewById(R.id.tv_coupon_name);

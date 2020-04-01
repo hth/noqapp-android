@@ -229,11 +229,18 @@
                     android:id="@+id/edt_optional"
                     style="@style/style_register_edt"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:hint="@string/additional"
-                    android:maxLength="64"
+                    android:inputType="textMultiLine"
+                    android:gravity="top"
+                    android:lines="3"
+                    android:maxLength="256"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
                     android:textSize="@dimen/text_size_fourteen" />
 
                 <FrameLayout
