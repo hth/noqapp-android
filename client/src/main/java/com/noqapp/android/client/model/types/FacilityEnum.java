@@ -23,6 +23,7 @@ public enum FacilityEnum {
     AH("AH", "Health Checkup Plans"),
     SO("SO", "Sunday OPD"),
     DEL("DEL", "Delivery"),
+    PIK("PIK", "Pick Up"),
     FRS("FRS", "Fresh Food");
 
     private final String description;
