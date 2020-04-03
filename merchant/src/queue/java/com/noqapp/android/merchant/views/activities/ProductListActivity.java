@@ -95,7 +95,7 @@ public class ProductListActivity extends BaseActivity implements
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
             final HashMap<String, List<StoreCartItem>> listDataChild = new HashMap<>();
             for (int l = 0; l < jsonStoreCategories.size(); l++) {
-                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<StoreCartItem>());
+                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<>());
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
                 if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
@@ -103,7 +103,7 @@ public class ProductListActivity extends BaseActivity implements
                 } else {
                     //TODO(hth) when product without category else it will drop
                     if (null == listDataChild.get(defaultCategory)) {
-                        listDataChild.put(defaultCategory, new ArrayList<StoreCartItem>());
+                        listDataChild.put(defaultCategory, new ArrayList<>());
                     }
                     listDataChild.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                 }

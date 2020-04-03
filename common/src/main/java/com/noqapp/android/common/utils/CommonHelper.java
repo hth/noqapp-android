@@ -437,7 +437,7 @@ public class CommonHelper {
         return location;
     }
 
-    public static JsonStoreCategory getSystemCategory(String categoryId){
+    public static JsonStoreCategory getSystemCategory(String categoryId) {
         String description = GroceryEnum.findByName(categoryId);
         return new JsonStoreCategory().setCategoryId(categoryId).setCategoryName(description);
     }
