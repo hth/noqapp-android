@@ -13,8 +13,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.GroceryEnum;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -220,7 +222,7 @@ public class CommonHelper {
                 Log.e("jsonStoreProduct", jsonStoreProduct.toString());
                 return jsonStoreProduct.getDisplayPrice()
                         + " / "
-                        + jsonStoreProduct.getUnitValue()
+                        + jsonStoreProduct.getUnitValue()/100
                         + " "
                         + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getDescription());
             } else {
@@ -425,5 +427,10 @@ public class CommonHelper {
         location.setLatitude(lat);
         location.setLongitude(lng);
         return location;
+    }
+
+    public static JsonStoreCategory getSystemCategory(String categoryID){
+            String description = GroceryEnum.findByName(categoryID);
+            return new JsonStoreCategory().setCategoryId(categoryID).setCategoryName(description);
     }
 }

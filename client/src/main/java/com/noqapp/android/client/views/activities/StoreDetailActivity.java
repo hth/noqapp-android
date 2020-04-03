@@ -29,6 +29,7 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
+import com.noqapp.android.common.utils.CommonHelper;
 import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
@@ -270,7 +271,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         for (int k = 0; k < jsonStoreProducts.size(); k++) {
             if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
                 if (jsonStoreProducts.get(k).isActive()) {
-                    storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        if(storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())){
+                            storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        }else{
+                            jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
+                            storeCartItems.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
+                            storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        }
                 }
             } else {
                 //TODO(hth) when product without category else it will drop
