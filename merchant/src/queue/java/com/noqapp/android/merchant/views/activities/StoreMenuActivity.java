@@ -44,8 +44,6 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         return orders;
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setScreenOrientation();
