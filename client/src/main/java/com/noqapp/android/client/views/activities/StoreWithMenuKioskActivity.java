@@ -37,6 +37,7 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ProductUtils;
@@ -142,6 +143,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         //  {
         //TODO @Chandra Optimize the loop
         final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
+        jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(BusinessTypeEnum.GS));
 
         ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
         final HashMap<String, List<StoreCartItem>> storeCartItems = new HashMap<>();

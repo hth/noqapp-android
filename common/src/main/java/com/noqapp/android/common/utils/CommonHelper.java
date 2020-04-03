@@ -16,6 +16,7 @@ import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.GroceryEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -439,5 +440,21 @@ public class CommonHelper {
     public static JsonStoreCategory getSystemCategory(String categoryId){
         String description = GroceryEnum.findByName(categoryId);
         return new JsonStoreCategory().setCategoryId(categoryId).setCategoryName(description);
+    }
+
+    public static List<JsonStoreCategory> populateWithAllCategories(BusinessTypeEnum businessType) {
+        List<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
+        switch (businessType) {
+            case GS:
+                GroceryEnum[] values = GroceryEnum.values();
+                for (GroceryEnum groceryEnum : values) {
+                    jsonStoreCategories.add(new JsonStoreCategory().setCategoryId(groceryEnum.getName()).setCategoryName(groceryEnum.getDescription()));
+                }
+                return jsonStoreCategories;
+            default:
+                Crashlytics.log(Log.ERROR, TAG, "Failed get categories for businessType " + businessType);
+                Log.e(TAG, "Reached un-supported condition" + businessType);
+                return jsonStoreCategories;
+        }
     }
 }

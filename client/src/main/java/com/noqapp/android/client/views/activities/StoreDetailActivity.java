@@ -20,6 +20,7 @@ import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
@@ -263,6 +264,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         //  {
         //TODO @Chandra Optimize the loop
         final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
+        jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(BusinessTypeEnum.GS));
 
         ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
         final HashMap<String, List<StoreCartItem>> storeCartItems = new HashMap<>();
