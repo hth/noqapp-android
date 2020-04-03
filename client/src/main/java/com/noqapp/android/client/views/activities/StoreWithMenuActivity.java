@@ -200,9 +200,9 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         for (int k = 0; k < jsonStoreProducts.size(); k++) {
             if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
                 if (jsonStoreProducts.get(k).isActive()) {
-                    if(storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())){
+                    if (storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
                         storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
-                    }else{
+                    } else {
                         jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
                         storeCartItems.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
                         storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
@@ -243,7 +243,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
         // fill the category items on basis of header which having items
         HashMap<String, List<StoreCartItem>> tempListDetails = new HashMap<>();
-        for (int i = 0; i < tempHeaderList.size() ; i++) {
+        for (int i = 0; i < tempHeaderList.size(); i++) {
             tempListDetails.put(tempHeaderList.get(i).getCategoryId(), expandableListDetail.get(tempHeaderList.get(i).getCategoryId()));
         }
         rcv_header.setHasFixedSize(true);

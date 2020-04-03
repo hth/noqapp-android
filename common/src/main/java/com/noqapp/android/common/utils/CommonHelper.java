@@ -26,6 +26,7 @@ import org.joda.time.Months;
 import org.joda.time.Years;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.security.SecureRandom;
@@ -146,6 +147,7 @@ public class CommonHelper {
                 age = years + "+ years";
             }
         } catch (Exception e) {
+            Crashlytics.log(Log.ERROR, TAG, "Failed calculate age " + dob);
             e.printStackTrace();
         }
         return age;
@@ -156,6 +158,7 @@ public class CommonHelper {
             Locale localeTemp = new Locale("", countryCode);
             return Currency.getInstance(localeTemp).getSymbol(localeTemp);
         } catch (Exception e) {
+            Crashlytics.log(Log.ERROR, TAG, "Failed get currency from country code " + countryCode);
             e.printStackTrace();
             return "";
         }
@@ -169,6 +172,7 @@ public class CommonHelper {
             try {
                 formattedDate = simpleDateFormat.format(new SimpleDateFormat(ISO8601_FMT, Locale.getDefault()).parse(date));
             } catch (ParseException e) {
+                Crashlytics.log(Log.ERROR, TAG, "Failed parse date " + date);
                 e.printStackTrace();
             }
             return formattedDate;
@@ -179,6 +183,7 @@ public class CommonHelper {
         try {
             return new SimpleDateFormat(CommonHelper.ISO8601_FMT, Locale.getDefault()).parse(date);
         } catch (ParseException e) {
+            Crashlytics.log(Log.ERROR, TAG, "Failed parse date " + date);
             e.printStackTrace();
         }
         return new Date();
@@ -219,10 +224,10 @@ public class CommonHelper {
     public static String getPriceWithUnits(JsonStoreProduct jsonStoreProduct) {
         try {
             if (null != jsonStoreProduct) {
-                Log.e("jsonStoreProduct", jsonStoreProduct.toString());
+                Log.d("jsonStoreProduct", jsonStoreProduct.toString());
                 return jsonStoreProduct.getDisplayPrice()
                         + " / "
-                        + jsonStoreProduct.getUnitValue()/100
+                        + new BigDecimal(jsonStoreProduct.getUnitValue()).divide(new BigDecimal(100), MathContext.DECIMAL64)
                         + " "
                         + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getDescription());
             } else {
@@ -274,9 +279,8 @@ public class CommonHelper {
         String str = String.valueOf(time);
         String input = String.format("%4s", str).replace(' ', '0');
         int index = 1;
-        String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-        //  Log.e("Check string----- ", input + "----------- " + outPut);
-        return outPut;
+        //  Log.e("Check string----- ", input + "----------- " + input.substring(0, index + 1) + ":" + input.substring(index + 1));
+        return input.substring(0, index + 1) + ":" + input.substring(index + 1);
     }
 
     public static ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
@@ -316,6 +320,7 @@ public class CommonHelper {
                     }
                 }
             } catch (Exception e) {
+                Crashlytics.log(Log.ERROR, TAG, "Failed time slot " + slotMinute + ":" + strFromTime + ":" + strToTime);
                 e.printStackTrace();
             }
             return timeSlot;
@@ -326,6 +331,7 @@ public class CommonHelper {
         try {
             return input.contains(":") ? Integer.parseInt(input.replace(":", "")) : Integer.parseInt(input);
         } catch (Exception e) {
+            Crashlytics.log(Log.ERROR, TAG, "Failed removeColon " + input);
             e.printStackTrace();
             return 0;
         }
@@ -352,6 +358,7 @@ public class CommonHelper {
                 return false;
             }
         } catch (Exception e) {
+            Crashlytics.log(Log.ERROR, TAG, "Failed isDateBeforeToday " + selectedDay);
             e.printStackTrace();
         }
         return true;
@@ -429,8 +436,8 @@ public class CommonHelper {
         return location;
     }
 
-    public static JsonStoreCategory getSystemCategory(String categoryID){
-            String description = GroceryEnum.findByName(categoryID);
-            return new JsonStoreCategory().setCategoryId(categoryID).setCategoryName(description);
+    public static JsonStoreCategory getSystemCategory(String categoryId){
+        String description = GroceryEnum.findByName(categoryId);
+        return new JsonStoreCategory().setCategoryId(categoryId).setCategoryName(description);
     }
 }

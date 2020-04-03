@@ -106,13 +106,11 @@ public enum GroceryEnum {
         return name;
     }
 
-
-    public static String findByName(String name){
-        for(GroceryEnum groceryEnum : values()){
-            if( groceryEnum.getName().equals(name)){
-                return groceryEnum.getDescription();
-            }
+    public static String findByName(String name) {
+        try {
+            return GroceryEnum.valueOf(name).description;
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 }
