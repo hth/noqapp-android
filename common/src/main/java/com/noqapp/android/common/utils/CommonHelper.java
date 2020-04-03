@@ -220,7 +220,7 @@ public class CommonHelper {
                 Log.e("jsonStoreProduct", jsonStoreProduct.toString());
                 return jsonStoreProduct.getDisplayPrice()
                         + " / "
-                        + jsonStoreProduct.getUnitValue()
+                        + jsonStoreProduct.getUnitValue()/100
                         + " "
                         + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getDescription());
             } else {
