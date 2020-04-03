@@ -38,6 +38,7 @@ import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.StoreCartItem;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
 
@@ -150,7 +151,13 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         for (int k = 0; k < jsonStoreProducts.size(); k++) {
             if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
                 if (jsonStoreProducts.get(k).isActive()) {
-                    storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    if(storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())){
+                        storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    }else{
+                        jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
+                        storeCartItems.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
+                        storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    }
                 }
             } else {
                 //TODO(hth) when product without category else it will drop
