@@ -156,6 +156,7 @@ public class LaunchActivity
     }
 
     private FirebaseAnalytics fireBaseAnalytics;
+
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -177,7 +178,7 @@ public class LaunchActivity
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
         COUNTRY_CODE = getCountryCode();
-        Log.i(TAG, "Country Code: " + COUNTRY_CODE);
+        Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
         if (!isCountryIndia()) {
             Constants.DEFAULT_LATITUDE = 37.7749;
@@ -864,7 +865,7 @@ public class LaunchActivity
                 }
             }
         } catch (Exception e) {
-            Crashlytics.log(1, TAG, "Failed on update notification");
+            Crashlytics.log(Log.ERROR, TAG, "Failed on update notification");
             Log.e(TAG, "Failed on update notification " + e.getLocalizedMessage());
         }
     }

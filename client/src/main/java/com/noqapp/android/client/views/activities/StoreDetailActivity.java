@@ -43,6 +43,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -271,13 +272,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         for (int k = 0; k < jsonStoreProducts.size(); k++) {
             if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
                 if (jsonStoreProducts.get(k).isActive()) {
-                        if(storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())){
-                            storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
-                        }else{
-                            jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
-                            storeCartItems.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
-                            storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
-                        }
+                    if (storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
+                        storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    } else {
+                        jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
+                        storeCartItems.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
+                        storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    }
                 }
             } else {
                 //TODO(hth) when product without category else it will drop

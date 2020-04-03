@@ -283,7 +283,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     }
                 } catch (Exception e) {
                     Log.e("Failed getting image ", e.getLocalizedMessage(), e);
-                    Crashlytics.log(1, TAG, "Failed to find and upload profile image");
+                    Crashlytics.log(Log.ERROR, TAG, "Failed to find and upload profile image");
                 }
             }
         } else if (requestCode == Constants.RC_DATE_PICKER && resultCode == Activity.RESULT_OK) {
