@@ -1,5 +1,6 @@
 package com.noqapp.android.common.model.types.order;
 
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +15,17 @@ public enum ProductTypeEnum {
     VE("VE", "Vegetarian Food"),
     NV("NV", "Non-Vegetarian Food"),
     EL("EL", "Electronic"),
-    PH("PH", "Pharmacy");
+    PH("PH", "Pharmacy"),
+    HS("HS", "Health Care Services");
+
+    public static EnumSet<ProductTypeEnum> PHARMACY = EnumSet.of(PH);
+    public static ProductTypeEnum[] PHARMACY_VALUES = {PH};
+    public static EnumSet<ProductTypeEnum> HEALTH_CARE = EnumSet.of(HS);
+    public static ProductTypeEnum[] HEALTH_CARE_VALUES = {HS};
+    public static EnumSet<ProductTypeEnum> GROCERY = EnumSet.of(GE, OR, FR, GM);
+    public static ProductTypeEnum[] GROCERY_VALUES = {GE, OR, FR, GM};
+    public static EnumSet<ProductTypeEnum> RESTURANT = EnumSet.of(VE, NV);
+    public static ProductTypeEnum[] RESTURANT_VALUES = {VE, NV};
 
     private final String name;
     private final String description;
@@ -35,6 +46,14 @@ public enum ProductTypeEnum {
     @Override
     public String toString() {
         return description;
+    }
+
+    public static List<String> asListOfDescription(ProductTypeEnum[] productTypeEnums) {
+        List<String> a = new LinkedList<>();
+        for(ProductTypeEnum productTypeEnum : productTypeEnums) {
+            a.add(productTypeEnum.description);
+        }
+        return a;
     }
 
     public static List<String> asListOfDescription() {

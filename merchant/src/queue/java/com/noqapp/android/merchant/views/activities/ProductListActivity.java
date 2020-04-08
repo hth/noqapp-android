@@ -118,19 +118,19 @@ public class ProductListActivity extends BaseActivity implements
             TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
             ArrayList<Integer> removeEmptyData = new ArrayList<>();
             for (int i = 0; i < jsonStoreCategories.size(); i++) {
-                if (listDataChild.get(jsonStoreCategories.get(i).getCategoryId()).size() > 0)
+                if (listDataChild.get(jsonStoreCategories.get(i).getCategoryId()).size() > 0) {
                     adapter.addFragment(new FragmentDummy(listDataChild.get(jsonStoreCategories.get(i).getCategoryId()), this), "FRAG" + i);
-                else
+                } else {
                     removeEmptyData.add(i);
+                }
             }
             // Remove the categories which having zero items
             for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
                 jsonStoreCategories.remove((int) removeEmptyData.get(j));
             }
             rcv_header.setHasFixedSize(true);
-            LinearLayoutManager horizontalLayoutManagaer
-                    = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            rcv_header.setLayoutManager(horizontalLayoutManagaer);
+            LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            rcv_header.setLayoutManager(horizontalLayoutManager);
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
             if (jsonStoreCategories.size() > 0) {
@@ -238,7 +238,16 @@ public class ProductListActivity extends BaseActivity implements
         final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
         final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
 
-        List<String> prodTypes = ProductTypeEnum.asListOfDescription();
+        List<String> prodTypes;
+        switch (businessType) {
+            case GS:
+                prodTypes = ProductTypeEnum.asListOfDescription(ProductTypeEnum.GROCERY_VALUES);
+                break;
+            case RS:
+                prodTypes = ProductTypeEnum.asListOfDescription(ProductTypeEnum.RESTURANT_VALUES);;
+                break;
+        }
+
         prodTypes.add(0, "Select product type");
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
         prodUnits.add(0, "Select product unit");
