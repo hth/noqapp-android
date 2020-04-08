@@ -95,7 +95,7 @@ public class ProductMenuFragment extends BaseFragment implements StoreProductPre
             jsonStoreCategories.clear();
             gridData.clear();
             jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-            jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(BusinessTypeEnum.GS));
+            jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
 
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
             final HashMap<String, List<StoreCartItem>> listDataChild = new HashMap<>();

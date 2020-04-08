@@ -90,7 +90,7 @@ public class ProductListActivity extends BaseActivity implements
             String defaultCategory = "Un-Categorized";
             jsonStoreCategories.clear();
             jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-            jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(BusinessTypeEnum.GS));
+            jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
 
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
             final HashMap<String, List<StoreCartItem>> listDataChild = new HashMap<>();
@@ -99,7 +99,13 @@ public class ProductListActivity extends BaseActivity implements
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
                 if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
-                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    if (listDataChild.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
+                        listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    } else {
+                        jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
+                        listDataChild.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
+                        listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    }
                 } else {
                     //TODO(hth) when product without category else it will drop
                     if (null == listDataChild.get(defaultCategory)) {
@@ -238,23 +244,14 @@ public class ProductListActivity extends BaseActivity implements
         final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
         final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
 
-        List<String> prodTypes;
-        switch (businessType) {
-            case GS:
-                prodTypes = ProductTypeEnum.asListOfDescription(ProductTypeEnum.GROCERY_VALUES);
-                break;
-            case RS:
-                prodTypes = ProductTypeEnum.asListOfDescription(ProductTypeEnum.RESTURANT_VALUES);;
-                break;
-        }
-
+        List<String> prodTypes = ProductTypeEnum.populateWithProductType(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType());
         prodTypes.add(0, "Select product type");
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
         prodUnits.add(0, "Select product unit");
 
         ArrayList<JsonStoreCategory> tempJsonStoreCategories = new ArrayList<>();
         tempJsonStoreCategories.addAll(jsonStoreCategories);
-        tempJsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(BusinessTypeEnum.GS));
+        tempJsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
         List<String> categories = new ArrayList<>();
         for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
             categories.add(tempJsonStoreCategories.get(i).getCategoryName());

@@ -1,5 +1,10 @@
 package com.noqapp.android.common.model.types.order;
 
+import android.util.Log;
+
+import com.crashlytics.android.Crashlytics;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +22,7 @@ public enum ProductTypeEnum {
     EL("EL", "Electronic"),
     PH("PH", "Pharmacy"),
     HS("HS", "Health Care Services");
+    private static final String TAG = ProductTypeEnum.class.getSimpleName();
 
     public static EnumSet<ProductTypeEnum> PHARMACY = EnumSet.of(PH);
     public static ProductTypeEnum[] PHARMACY_VALUES = {PH};
@@ -71,5 +77,19 @@ public enum ProductTypeEnum {
             }
         }
         return ProductTypeEnum.GE;
+    }
+
+
+    public static List<String> populateWithProductType(BusinessTypeEnum businessType) {
+        switch (businessType) {
+            case GS:
+                return ProductTypeEnum.asListOfDescription(ProductTypeEnum.GROCERY_VALUES);
+            case RS:
+                return ProductTypeEnum.asListOfDescription(ProductTypeEnum.RESTURANT_VALUES);
+            default:
+                Crashlytics.log(Log.ERROR, TAG, "Failed get productTypeEnum for businessType " + businessType);
+                Log.e(TAG, "Reached un-supported condition" + businessType);
+                return ProductTypeEnum.asListOfDescription();
+        }
     }
 }

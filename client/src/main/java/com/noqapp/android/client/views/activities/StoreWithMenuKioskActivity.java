@@ -143,7 +143,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         //  {
         //TODO @Chandra Optimize the loop
         final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-        jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(BusinessTypeEnum.GS));
+        jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(jsonQueue.getBusinessType()));
 
         ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
         final HashMap<String, List<StoreCartItem>> storeCartItems = new HashMap<>();
