@@ -86,6 +86,10 @@ public enum ProductTypeEnum {
                 return ProductTypeEnum.asListOfDescription(ProductTypeEnum.GROCERY_VALUES);
             case RS:
                 return ProductTypeEnum.asListOfDescription(ProductTypeEnum.RESTURANT_VALUES);
+            case PH:
+                return ProductTypeEnum.asListOfDescription(ProductTypeEnum.PHARMACY_VALUES);
+            case HS:
+                return ProductTypeEnum.asListOfDescription(ProductTypeEnum.HEALTH_CARE_VALUES);
             default:
                 Crashlytics.log(Log.ERROR, TAG, "Failed get productTypeEnum for businessType " + businessType);
                 Log.e(TAG, "Reached un-supported condition" + businessType);
