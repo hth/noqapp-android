@@ -205,9 +205,12 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     if (storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
                         storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                     } else {
-                        jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
-                        storeCartItems.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
-                        storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        if (null == storeCartItems.get(defaultCategory)) {
+                            storeCartItems.put(defaultCategory, new ArrayList<>());
+                        }
+                        if (jsonStoreProducts.get(k).isActive()) {
+                            storeCartItems.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        }
                     }
                 }
             } else {

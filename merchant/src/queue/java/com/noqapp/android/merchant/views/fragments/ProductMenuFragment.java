@@ -104,7 +104,14 @@ public class ProductMenuFragment extends BaseFragment implements StoreProductPre
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
                 if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
-                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    if (listDataChild.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
+                        listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    } else {
+                        if (null == listDataChild.get(defaultCategory)) {
+                            listDataChild.put(defaultCategory, new ArrayList<>());
+                        }
+                        listDataChild.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    }
                 } else {
                     if (null == listDataChild.get(defaultCategory)) {
                         listDataChild.put(defaultCategory, new ArrayList<>());

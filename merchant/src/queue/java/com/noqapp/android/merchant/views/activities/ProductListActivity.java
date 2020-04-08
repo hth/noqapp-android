@@ -102,9 +102,10 @@ public class ProductListActivity extends BaseActivity implements
                     if (listDataChild.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
                         listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                     } else {
-                        jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
-                        listDataChild.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
-                        listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        if (null == listDataChild.get(defaultCategory)) {
+                            listDataChild.put(defaultCategory, new ArrayList<>());
+                        }
+                        listDataChild.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                     }
                 } else {
                     //TODO(hth) when product without category else it will drop
