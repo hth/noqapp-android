@@ -51,7 +51,7 @@
     <string name="invitecode">निमंत्रण कोड</string>
     <string name="btnregister">पंजीकरण जारी रखें</string>
     <string name="error_name_blank">कृपया नाम दर्ज करें</string>
-    <string name="error_name_length">Name length should be at least 4 or higher</string>
+    <string name="error_name_length">Name length should be at least 3 or higher</string>
     <string name="error_invalid_email">कृपया वैध ईमेल दर्ज़ करें</string>
     <string name="error_invalid_date">कृपया एक वैध तिथि चुनें</string>
     <string name="error_dob_blank">कृपया जन्म तिथि दर्ज करें</string>

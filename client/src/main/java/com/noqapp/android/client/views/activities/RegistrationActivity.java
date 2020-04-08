@@ -209,10 +209,11 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             errorMsg = getString(R.string.error_name_blank);
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Name.getText().toString()) && edt_Name.getText().toString().length() < 4) {
+        if (!TextUtils.isEmpty(edt_Name.getText().toString()) && edt_Name.getText().toString().length() < 3) {
             edt_Name.setError(getString(R.string.error_name_length));
-            if (TextUtils.isEmpty(errorMsg))
+            if (TextUtils.isEmpty(errorMsg)) {
                 errorMsg = getString(R.string.error_name_length);
+            }
             isValid = false;
         }
         if (TextUtils.isEmpty(edt_Mail.getText().toString())) {
@@ -222,21 +223,24 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         } else {
             if (!CommonHelper.isValidEmail(edt_Mail.getText().toString())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
-                if (TextUtils.isEmpty(errorMsg))
+                if (TextUtils.isEmpty(errorMsg)) {
                     errorMsg = getString(R.string.error_invalid_email);
+                }
                 isValid = false;
             }
         }
         if (TextUtils.isEmpty(tv_birthday.getText().toString())) {
             tv_birthday.setError(getString(R.string.error_dob_blank));
-            if (TextUtils.isEmpty(errorMsg))
+            if (TextUtils.isEmpty(errorMsg)) {
                 errorMsg = getString(R.string.error_dob_blank);
+            }
             isValid = false;
         } else {
             if (TextUtils.isEmpty(AppUtils.convertDOBToValidFormat(tv_birthday.getText().toString()))) {
                 tv_birthday.setError(getString(R.string.error_dob_format));
-                if (TextUtils.isEmpty(errorMsg))
+                if (TextUtils.isEmpty(errorMsg)) {
                     errorMsg = getString(R.string.error_dob_format);
+                }
                 isValid = false;
             }
         }
