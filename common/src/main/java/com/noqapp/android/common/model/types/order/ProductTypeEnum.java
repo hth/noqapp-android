@@ -56,7 +56,7 @@ public enum ProductTypeEnum {
 
     public static List<String> asListOfDescription(ProductTypeEnum[] productTypeEnums) {
         List<String> a = new LinkedList<>();
-        for(ProductTypeEnum productTypeEnum : productTypeEnums) {
+        for (ProductTypeEnum productTypeEnum : productTypeEnums) {
             a.add(productTypeEnum.description);
         }
         return a;
@@ -64,15 +64,15 @@ public enum ProductTypeEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for(ProductTypeEnum productTypeEnum : ProductTypeEnum.values()) {
+        for (ProductTypeEnum productTypeEnum : ProductTypeEnum.values()) {
             a.add(productTypeEnum.description);
         }
         return a;
     }
 
-    public static ProductTypeEnum getEnum(String description){
-        for(ProductTypeEnum productTypeEnum : ProductTypeEnum.values()) {
-            if(description.equals(productTypeEnum.description)) {
+    public static ProductTypeEnum getEnum(String description) {
+        for (ProductTypeEnum productTypeEnum : ProductTypeEnum.values()) {
+            if (description.equals(productTypeEnum.description)) {
                 return productTypeEnum;
             }
         }
