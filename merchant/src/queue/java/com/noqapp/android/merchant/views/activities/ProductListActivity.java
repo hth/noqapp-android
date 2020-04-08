@@ -90,7 +90,7 @@ public class ProductListActivity extends BaseActivity implements
             String defaultCategory = "Un-Categorized";
             jsonStoreCategories.clear();
             jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-            jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(BusinessTypeEnum.GS));
+            jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
 
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
             final HashMap<String, List<StoreCartItem>> listDataChild = new HashMap<>();
@@ -99,7 +99,14 @@ public class ProductListActivity extends BaseActivity implements
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
                 if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
-                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    if (listDataChild.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
+                        listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    } else {
+                        if (null == listDataChild.get(defaultCategory)) {
+                            listDataChild.put(defaultCategory, new ArrayList<>());
+                        }
+                        listDataChild.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    }
                 } else {
                     //TODO(hth) when product without category else it will drop
                     if (null == listDataChild.get(defaultCategory)) {
@@ -118,19 +125,19 @@ public class ProductListActivity extends BaseActivity implements
             TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
             ArrayList<Integer> removeEmptyData = new ArrayList<>();
             for (int i = 0; i < jsonStoreCategories.size(); i++) {
-                if (listDataChild.get(jsonStoreCategories.get(i).getCategoryId()).size() > 0)
+                if (listDataChild.get(jsonStoreCategories.get(i).getCategoryId()).size() > 0) {
                     adapter.addFragment(new FragmentDummy(listDataChild.get(jsonStoreCategories.get(i).getCategoryId()), this), "FRAG" + i);
-                else
+                } else {
                     removeEmptyData.add(i);
+                }
             }
             // Remove the categories which having zero items
             for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
                 jsonStoreCategories.remove((int) removeEmptyData.get(j));
             }
             rcv_header.setHasFixedSize(true);
-            LinearLayoutManager horizontalLayoutManagaer
-                    = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            rcv_header.setLayoutManager(horizontalLayoutManagaer);
+            LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            rcv_header.setLayoutManager(horizontalLayoutManager);
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
             if (jsonStoreCategories.size() > 0) {
@@ -238,14 +245,17 @@ public class ProductListActivity extends BaseActivity implements
         final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
         final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
 
-        List<String> prodTypes = ProductTypeEnum.asListOfDescription();
+        List<String> prodTypes = ProductTypeEnum.populateWithProductType(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType());
         prodTypes.add(0, "Select product type");
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
         prodUnits.add(0, "Select product unit");
 
+        ArrayList<JsonStoreCategory> tempJsonStoreCategories = new ArrayList<>();
+        tempJsonStoreCategories.addAll(jsonStoreCategories);
+        tempJsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
         List<String> categories = new ArrayList<>();
-        for (int i = 0; i < jsonStoreCategories.size(); i++) {
-            categories.add(jsonStoreCategories.get(i).getCategoryName());
+        for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
+            categories.add(tempJsonStoreCategories.get(i).getCategoryName());
         }
         categories.add(0, "Select product category");
         sp_category_type.setAdapter(new EnumAdapter(this, categories));
@@ -259,8 +269,8 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
             edt_prod_limit.setText(String.valueOf(jsonStoreProduct.getInventoryLimit()));
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
-            edt_prod_unit_value.setText(String.valueOf(jsonStoreProduct.getUnitValue()));
-            sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId()));
+            edt_prod_unit_value.setText(String.valueOf(CommonHelper.divideByHundred(jsonStoreProduct.getUnitValue())));
+            sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), tempJsonStoreCategories));
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
             sp_product_type.setSelection(getItemPosition(prodTypes, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {
@@ -297,9 +307,9 @@ public class ProductListActivity extends BaseActivity implements
                     jsonStoreProduct.setProductDiscount((int) (Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
                     jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
                     jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
-                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
+                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString(),tempJsonStoreCategories));
                     jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
-                    jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()));
+                    jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString())* 100);
                     jsonStoreProduct.setInventoryLimit(Integer.parseInt(edt_prod_limit.getText().toString()));
                     menuItemUpdate(jsonStoreProduct, actionTypeEnum);
                     mAlertDialog.dismiss();
@@ -352,18 +362,18 @@ public class ProductListActivity extends BaseActivity implements
         return isValid;
     }
 
-    private String getCategoryID(String category) {
-        for (int i = 0; i < jsonStoreCategories.size(); i++) {
-            if (category.equals(jsonStoreCategories.get(i).getCategoryName())) {
-                return jsonStoreCategories.get(i).getCategoryId();
+    private String getCategoryID(String category, ArrayList<JsonStoreCategory> tempJsonStoreCategories) {
+        for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
+            if (category.equals(tempJsonStoreCategories.get(i).getCategoryName())) {
+                return tempJsonStoreCategories.get(i).getCategoryId();
             }
         }
         return "";
     }
 
-    private int getCategoryItemPosition(String category) {
-        for (int i = 0; i < jsonStoreCategories.size(); i++) {
-            if (category.equals(jsonStoreCategories.get(i).getCategoryId())) {
+    private int getCategoryItemPosition(String category, ArrayList<JsonStoreCategory> tempJsonStoreCategories) {
+        for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
+            if (category.equals(tempJsonStoreCategories.get(i).getCategoryId())) {
                 return i + 1;
             }
         }

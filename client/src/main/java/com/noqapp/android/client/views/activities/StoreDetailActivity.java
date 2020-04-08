@@ -264,7 +264,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         //  {
         //TODO @Chandra Optimize the loop
         final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-        jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(BusinessTypeEnum.GS));
+        jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(jsonQueue.getBusinessType()));
 
         ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
         final HashMap<String, List<StoreCartItem>> storeCartItems = new HashMap<>();
@@ -277,9 +277,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                     if (storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
                         storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                     } else {
-                        jsonStoreCategories.add(CommonHelper.getSystemCategory(jsonStoreProducts.get(k).getStoreCategoryId()));
-                        storeCartItems.put(jsonStoreProducts.get(k).getStoreCategoryId(), new ArrayList<>());
-                        storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        if (null == storeCartItems.get(defaultCategory)) {
+                            storeCartItems.put(defaultCategory, new ArrayList<>());
+                        }
+                        if (jsonStoreProducts.get(k).isActive()) {
+                            storeCartItems.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        }
                     }
                 }
             } else {
