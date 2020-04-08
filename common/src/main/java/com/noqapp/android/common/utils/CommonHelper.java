@@ -228,7 +228,7 @@ public class CommonHelper {
                 Log.d("jsonStoreProduct", jsonStoreProduct.toString());
                 return jsonStoreProduct.getDisplayPrice()
                         + " / "
-                        + new BigDecimal(jsonStoreProduct.getUnitValue()).divide(new BigDecimal(100), MathContext.DECIMAL64)
+                        + divideByHundred(jsonStoreProduct.getUnitValue())
                         + " "
                         + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getDescription());
             } else {
@@ -239,6 +239,10 @@ public class CommonHelper {
             Log.e(TAG, "jsonStoreProduct " + e.getLocalizedMessage(), e);
             return "";
         }
+    }
+
+    public static BigDecimal divideByHundred(int value){
+        return new BigDecimal(value).divide(new BigDecimal(100), MathContext.DECIMAL64);
     }
 
     public static double round(float value) {

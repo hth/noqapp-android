@@ -259,7 +259,7 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
             edt_prod_limit.setText(String.valueOf(jsonStoreProduct.getInventoryLimit()));
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
-            edt_prod_unit_value.setText(String.valueOf(jsonStoreProduct.getUnitValue()));
+            edt_prod_unit_value.setText(String.valueOf(CommonHelper.divideByHundred(jsonStoreProduct.getUnitValue())));
             sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId()));
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
             sp_product_type.setSelection(getItemPosition(prodTypes, jsonStoreProduct.getProductType().getDescription()));
@@ -299,7 +299,7 @@ public class ProductListActivity extends BaseActivity implements
                     jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
                     jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
                     jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
-                    jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()));
+                    jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString())* 100);
                     jsonStoreProduct.setInventoryLimit(Integer.parseInt(edt_prod_limit.getText().toString()));
                     menuItemUpdate(jsonStoreProduct, actionTypeEnum);
                     mAlertDialog.dismiss();
