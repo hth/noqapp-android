@@ -227,7 +227,12 @@ public class ProductListActivity extends BaseActivity implements
     @Override
     public void addOrEditProduct(final JsonStoreProduct temp, final ActionTypeEnum actionTypeEnum) {
         final JsonStoreProduct jsonStoreProduct = null != temp ? temp : new JsonStoreProduct();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder;
+        if (LaunchActivity.isTablet) {
+            builder = new AlertDialog.Builder(this);
+        } else {
+            builder = new AlertDialog.Builder(this, R.style.FullScreenDialogTheme);
+        }
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_edit_prod_list, null, false);
