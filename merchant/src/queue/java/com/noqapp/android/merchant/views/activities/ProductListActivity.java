@@ -182,7 +182,6 @@ public class ProductListActivity extends BaseActivity implements
             }
             expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
             expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
                     int position = new AppUtils().getFirstVisibleGroup(expandableListView);
@@ -197,12 +196,12 @@ public class ProductListActivity extends BaseActivity implements
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 }
             });
+
             if (jsonStoreCategories.size() > 0) {
                 tv_name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 tv_name.setText("Add Product");
                 tv_name.setOnClickListener(v -> addOrEditProduct(null, ActionTypeEnum.ADD));
             }
-
         }
     }
 
@@ -302,7 +301,6 @@ public class ProductListActivity extends BaseActivity implements
         Collections.sort(prodUnits);
         prodUnits.add(0, "Measurement");
         final ArrayList<JsonStoreCategory> categoryList = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-        categoryList.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
         // sort the list alphabetically
         Collections.sort(categoryList, (JsonStoreCategory jsc1, JsonStoreCategory jsc2) -> jsc1.getCategoryName().compareTo(jsc2.getCategoryName()));
         List<String> categories = new ArrayList<>();
