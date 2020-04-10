@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
@@ -460,5 +461,12 @@ public class CommonHelper {
                 Log.e(TAG, "Reached un-supported condition" + businessType);
                 return jsonStoreCategories;
         }
+    }
+
+    public int getFirstVisibleGroup(ExpandableListView expandableListView) {
+        int firstVis = expandableListView.getFirstVisiblePosition();
+        long packedPosition = expandableListView.getExpandableListPosition(firstVis);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
+        return groupPosition;
     }
 }

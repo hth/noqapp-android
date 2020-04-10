@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 
+import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -118,6 +120,7 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
             in.putExtra(IBConstant.KEY_IS_PAYMENT_PARTIAL_ALLOWED, jsonTopic.getBusinessType() == BusinessTypeEnum.HS);
             startActivity(in);
         } catch (Exception e) {
+            Crashlytics.log(Log.ERROR, "StoreMenuActivity", e.getLocalizedMessage());
             e.printStackTrace();
         }
     }

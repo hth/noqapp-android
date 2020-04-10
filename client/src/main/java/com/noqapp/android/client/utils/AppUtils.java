@@ -18,7 +18,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -570,12 +569,6 @@ public class AppUtils extends CommonHelper {
         return Color.parseColor(colors[rnd]);
     }
 
-    public int getFirstVisibleGroup(ExpandableListView expandableListView) {
-        int firstVis = expandableListView.getFirstVisiblePosition();
-        long packedPosition = expandableListView.getExpandableListPosition(firstVis);
-        int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
-        return groupPosition;
-    }
 
     public static boolean isStoreOpenToday(JsonStore jsonStore) {
         List<JsonHour> jsonHourList = jsonStore.getJsonHours();

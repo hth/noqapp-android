@@ -6,7 +6,9 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -16,7 +18,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -24,7 +25,6 @@ import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
@@ -37,9 +37,7 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.EnumAdapter;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
-import com.noqapp.android.merchant.views.adapters.StoreMenuAdapter;
-import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.merchant.views.fragments.FragmentDummy;
+import com.noqapp.android.merchant.views.adapters.StoreProductMenuAdapter;
 import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
 import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
@@ -51,14 +49,15 @@ import java.util.List;
 
 public class ProductListActivity extends BaseActivity implements
         StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener,
-        StoreMenuAdapter.MenuItemUpdate {
+        StoreProductMenuAdapter.MenuItemUpdate {
 
     private RecyclerView rcv_header;
-    private MenuHeaderAdapter menuAdapter;
-    private ViewPager viewPager;
+    private MenuHeaderAdapter menuHeaderAdapter;
     private TextView tv_name;
     private String codeQR = "";
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
+    private ExpandableListView expandableListView;
+    private List<Integer> headerPosition = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +69,7 @@ public class ProductListActivity extends BaseActivity implements
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_name = findViewById(R.id.tv_name);
+        expandableListView = findViewById(R.id.expandableListView);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(v -> finish());
@@ -94,88 +94,116 @@ public class ProductListActivity extends BaseActivity implements
             jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
 
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
-            final HashMap<String, List<StoreCartItem>> listDataChild = new HashMap<>();
+            final HashMap<String, List<StoreCartItem>> storeCartItems = new HashMap<>();
             for (int l = 0; l < jsonStoreCategories.size(); l++) {
-                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<>());
+                storeCartItems.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<>());
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
                 if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
-                    if (listDataChild.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
-                        listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
-                    } else {
-                        if (null == listDataChild.get(defaultCategory)) {
-                            listDataChild.put(defaultCategory, new ArrayList<>());
+                    if (jsonStoreProducts.get(k).isActive()) {
+                        if (storeCartItems.containsKey(jsonStoreProducts.get(k).getStoreCategoryId())) {
+                            storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                        } else {
+                            if (null == storeCartItems.get(defaultCategory)) {
+                                storeCartItems.put(defaultCategory, new ArrayList<>());
+                            }
+                            if (jsonStoreProducts.get(k).isActive()) {
+                                storeCartItems.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                            }
                         }
-                        listDataChild.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                     }
                 } else {
                     //TODO(hth) when product without category else it will drop
-                    if (null == listDataChild.get(defaultCategory)) {
-                        listDataChild.put(defaultCategory, new ArrayList<>());
+                    if (null == storeCartItems.get(defaultCategory)) {
+                        storeCartItems.put(defaultCategory, new ArrayList<>());
                     }
-                    listDataChild.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    if (jsonStoreProducts.get(k).isActive()) {
+                        storeCartItems.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
+                    }
                 }
             }
 
-            if (null != listDataChild.get(defaultCategory)) {
+            if (null != storeCartItems.get(defaultCategory)) {
                 jsonStoreCategories.add(new JsonStoreCategory().setCategoryName(defaultCategory).setCategoryId(defaultCategory));
             }
 
-            rcv_header = findViewById(R.id.rcv_header);
-            viewPager = findViewById(R.id.pager);
-            TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
+            List<JsonStoreCategory> tempHeaderList = jsonStoreCategories;
+            HashMap<String, List<StoreCartItem>> expandableListDetail = storeCartItems;
+
             ArrayList<Integer> removeEmptyData = new ArrayList<>();
-            for (int i = 0; i < jsonStoreCategories.size(); i++) {
-                if (listDataChild.get(jsonStoreCategories.get(i).getCategoryId()).size() > 0) {
-                    adapter.addFragment(new FragmentDummy(listDataChild.get(jsonStoreCategories.get(i).getCategoryId()), this), "FRAG" + i);
-                } else {
+            int headerTracker = 0;
+            for (int i = 0; i < tempHeaderList.size(); i++) {
+                if (expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size() > 0) {
+                    headerPosition.add(headerTracker);
+                    headerTracker += expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size();
+
+                } else
                     removeEmptyData.add(i);
-                }
             }
             // Remove the categories which having zero items
             for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
-                jsonStoreCategories.remove((int) removeEmptyData.get(j));
+                tempHeaderList.remove((int) removeEmptyData.get(j));
             }
+
+            // fill the category items on basis of header which having items
+            HashMap<String, List<StoreCartItem>> tempListDetails = new HashMap<>();
+            for (int i = 0; i < tempHeaderList.size(); i++) {
+                tempListDetails.put(tempHeaderList.get(i).getCategoryId(), expandableListDetail.get(tempHeaderList.get(i).getCategoryId()));
+            }
+            rcv_header = findViewById(R.id.rcv_header);
             rcv_header.setHasFixedSize(true);
-            LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            rcv_header.setLayoutManager(horizontalLayoutManager);
+            rcv_header.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
+            menuHeaderAdapter = new MenuHeaderAdapter(tempHeaderList, this, this);
+            rcv_header.setAdapter(menuHeaderAdapter);
+            menuHeaderAdapter.notifyDataSetChanged();
+
+            StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(
+                    this,
+                    tempHeaderList,
+                    tempListDetails,
+                    this);
+            expandableListView.setAdapter(expandableListAdapter);
+            for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
+                expandableListView.expandGroup(i);
+            }
+            expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
+            expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    int position = new AppUtils().getFirstVisibleGroup(expandableListView);
+                    if (position < menuHeaderAdapter.getItemCount()) {
+                        rcv_header.smoothScrollToPosition(position);
+                        menuHeaderAdapter.setSelectedPosition(position);
+                        menuHeaderAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                }
+            });
             if (jsonStoreCategories.size() > 0) {
                 tv_name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 tv_name.setText("Add Product");
                 tv_name.setOnClickListener(v -> addOrEditProduct(null, ActionTypeEnum.ADD));
             }
-            menuAdapter = new MenuHeaderAdapter(jsonStoreCategories, this, this);
-            rcv_header.setAdapter(menuAdapter);
-            menuAdapter.notifyDataSetChanged();
-            viewPager.setAdapter(null);
-            viewPager.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    rcv_header.smoothScrollToPosition(position);
-                    menuAdapter.setSelected_pos(position);
-                    menuAdapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
         }
     }
 
     @Override
     public void menuHeaderClick(int pos) {
-        viewPager.setCurrentItem(pos);
+        try {
+            expandableListView.setSelectedGroup(pos);
+            menuHeaderAdapter.setSelectedPosition(pos);
+            menuHeaderAdapter.notifyDataSetChanged();
+            // expandableListView.scrollTo(0, -200);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -247,7 +275,7 @@ public class ProductListActivity extends BaseActivity implements
         final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
 
         List<String> prodTypes = ProductTypeEnum.populateWithProductType(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType());
-       // sort the list alphabetically
+        // sort the list alphabetically
         Collections.sort(prodTypes);
         prodTypes.add(0, "Select product type");
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
@@ -259,7 +287,7 @@ public class ProductListActivity extends BaseActivity implements
         tempJsonStoreCategories.addAll(jsonStoreCategories);
         tempJsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
         // sort the list alphabetically
-        Collections.sort(tempJsonStoreCategories, (JsonStoreCategory jsc1, JsonStoreCategory jsc2) -> jsc1.getCategoryName().compareTo(jsc2.getCategoryName()) );
+        Collections.sort(tempJsonStoreCategories, (JsonStoreCategory jsc1, JsonStoreCategory jsc2) -> jsc1.getCategoryName().compareTo(jsc2.getCategoryName()));
         List<String> categories = new ArrayList<>();
         for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
             categories.add(tempJsonStoreCategories.get(i).getCategoryName());
@@ -314,9 +342,9 @@ public class ProductListActivity extends BaseActivity implements
                     jsonStoreProduct.setProductDiscount((int) (Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
                     jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
                     jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
-                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString(),tempJsonStoreCategories));
+                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString(), tempJsonStoreCategories));
                     jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
-                    jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString())* 100);
+                    jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()) * 100);
                     jsonStoreProduct.setInventoryLimit(Integer.parseInt(edt_prod_limit.getText().toString()));
                     menuItemUpdate(jsonStoreProduct, actionTypeEnum);
                     mAlertDialog.dismiss();

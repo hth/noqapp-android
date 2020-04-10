@@ -152,7 +152,7 @@ public class ProductMenuFragment extends BaseFragment implements StoreProductPre
     @Override
     public void menuHeaderClick(int pos) {
         rcv_header.smoothScrollToPosition(pos);
-        menuAdapter.setSelected_pos(pos);
+        menuAdapter.setSelectedPosition(pos);
         menuAdapter.notifyDataSetChanged();
         if (jsonStoreCategories.size() > 0) {
             if (null != storeMenuGridAdapter) {
