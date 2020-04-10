@@ -2,11 +2,15 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -60,9 +64,9 @@ public class ProductListActivity extends BaseActivity implements
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
     private ExpandableListView expandableListView;
     private List<Integer> headerPosition = new ArrayList<>();
- //  private ArrayList<JsonStoreCategory> categoryList = new ArrayList<>();
-    private  int sc_product_type_index =-1;
+    private int sc_product_type_index = -1;
     private JsonStore jsonStore = null;
+    private boolean isViewHidden = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +163,7 @@ public class ProductListActivity extends BaseActivity implements
                 // add  the count in category for header list
                 int itemSize = expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size();
                 JsonStoreCategory jsc = new JsonStoreCategory().setCategoryId(tempHeaderList.get(i).getCategoryId())
-                        .setCategoryName(tempHeaderList.get(i).getCategoryName()+" ("+itemSize+") ");
+                        .setCategoryName(tempHeaderList.get(i).getCategoryName() + " (" + itemSize + ") ");
                 finalHeaderList.add(jsc);
             }
             rcv_header = findViewById(R.id.rcv_header);
@@ -249,13 +253,22 @@ public class ProductListActivity extends BaseActivity implements
         TextView tv_offline_title = customDialogView.findViewById(R.id.tv_offline_title);
         final TextView tv_online = customDialogView.findViewById(R.id.tv_online);
         final TextView tv_offline = customDialogView.findViewById(R.id.tv_offline);
-        Button btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
+        Button btn_add_update = customDialogView.findViewById(R.id.btn_add_update);
+        Button btn_view = customDialogView.findViewById(R.id.btn_view);
+        View productview = customDialogView.findViewById(R.id.productview);
+        isViewHidden = true;
+        btn_view.setOnClickListener(v -> {
+            isViewHidden = !isViewHidden;
+            btn_view.setText(isViewHidden ? "View Display" : "View Hide");
+            productview.setVisibility(isViewHidden ? View.GONE : View.VISIBLE);
+        });
+
         if (actionTypeEnum == ActionTypeEnum.ADD) {
             tv_toolbar_title.setText("Add Product");
             tv_online.setVisibility(View.GONE);
             tv_offline.setVisibility(View.GONE);
             tv_offline_title.setVisibility(View.GONE);
-            btn_create_token.setText("Add");
+            btn_add_update.setText("Add");
         }
 
         tv_online.setOnClickListener(v -> {
@@ -281,6 +294,16 @@ public class ProductListActivity extends BaseActivity implements
             // mAlertDialog.dismiss();
 
         });
+
+        TextView tv_category = customDialogView.findViewById(R.id.tv_category);
+        TextView tv_name = customDialogView.findViewById(R.id.tv_name);
+        TextView tv_price = customDialogView.findViewById(R.id.tv_price);
+        TextView tv_inventory = customDialogView.findViewById(R.id.tv_inventory);
+        TextView tv_package_size = customDialogView.findViewById(R.id.tv_package_size);
+        TextView tv_discount = customDialogView.findViewById(R.id.tv_discount);
+        TextView tv_description = customDialogView.findViewById(R.id.tv_description);
+        TextView tv_product_type = customDialogView.findViewById(R.id.tv_product_type);
+        ///
         final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
         final TextInputEditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
@@ -291,6 +314,40 @@ public class ProductListActivity extends BaseActivity implements
         final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
         final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
         final SegmentedControl sc_product_type = customDialogView.findViewById(R.id.sc_product_type);
+        edt_prod_name.addTextChangedListener(new CustomTextWatcher(tv_name, "Name"));
+        edt_prod_description.addTextChangedListener(new CustomTextWatcher(tv_description, "Description"));
+        edt_prod_price.addTextChangedListener(new CustomTextWatcher(tv_price, "Price"));
+        edt_prod_pack_size.addTextChangedListener(new CustomTextWatcher(tv_package_size, "Package size"));
+        edt_prod_discount.addTextChangedListener(new CustomTextWatcher(tv_discount, "Discount"));
+        edt_prod_limit.addTextChangedListener(new CustomTextWatcher(tv_inventory, "Inventory"));
+
+        formatText(tv_category, "Category", "");
+        formatText(tv_product_type, "Product Type", "");
+        formatText(tv_name, "Name", "");
+        formatText(tv_description, "Description", "");
+        formatText(tv_price, "Price", "");
+        formatText(tv_package_size, "Package size", "");
+        formatText(tv_discount, "Discount", "");
+        formatText(tv_inventory, "Inventory", "");
+
+        sp_category_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if (position == 0) {
+                    formatText(tv_category, "Category", "");
+                } else {
+                    formatText(tv_category, "Category", sp_category_type.getSelectedItem().toString());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         sc_product_type_index = -1;
         List<String> prodTypesSegment = ProductTypeEnum.populateWithProductType(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType());
         // sort the list alphabetically
@@ -315,10 +372,12 @@ public class ProductListActivity extends BaseActivity implements
         sc_product_type.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
             if (isSelected) {
                 sc_product_type_index = segmentViewHolder.getAbsolutePosition();
+                formatText(tv_product_type, "Product Type", prodTypesSegment.get(sc_product_type_index));
             }
             if (isReselected) {
                 sc_product_type_index = -1;
                 sc_product_type.clearSelection();
+                formatText(tv_product_type, "Product Type", "");
             }
         });
         if (null != temp) {
@@ -350,7 +409,7 @@ public class ProductListActivity extends BaseActivity implements
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        btn_create_token.setOnClickListener(v -> {
+        btn_add_update.setOnClickListener(v -> {
             if (sp_category_type.getSelectedItemPosition() == 0) {
                 new CustomToast().showToast(ProductListActivity.this, "Please select product category");
             } else if (sc_product_type_index == -1) {
@@ -445,5 +504,31 @@ public class ProductListActivity extends BaseActivity implements
             }
         }
         return 0;
+    }
+
+    private class CustomTextWatcher implements TextWatcher {
+        private TextView view;
+        private String prefix = "";
+
+        private CustomTextWatcher(TextView view, String prefix) {
+            this.view = view;
+            this.prefix = prefix;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            String text = editable.toString();
+            formatText(view, prefix, text);
+        }
+    }
+
+    private void formatText(TextView tv, String title, String value) {
+        String text = "<b>" + title + "</b>:  " + value;
+        tv.setText(Html.fromHtml(text));
     }
 }

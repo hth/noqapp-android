@@ -36,7 +36,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btn_create_token"
+        android:id="@+id/btn_add_update"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_below="@+id/ll_top"
@@ -47,16 +47,43 @@
         android:text="@string/update"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size_sixteen" />
+        android:textSize="@dimen/text_size_fourteen" />
+
+    <Button
+        android:id="@+id/btn_view"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ll_top"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@drawable/button_drawable_red"
+        android:text="View Display"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_fourteen" />
+
+    <include
+        android:id="@+id/productview"
+        layout="@layout/edit_product_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_add_update"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_create_token"
+        android:layout_below="@+id/productview"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="0dp"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
 
 
         <LinearLayout
@@ -280,8 +307,8 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_prod_description"
