@@ -45,6 +45,7 @@ import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
 import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -246,13 +247,19 @@ public class ProductListActivity extends BaseActivity implements
         final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
 
         List<String> prodTypes = ProductTypeEnum.populateWithProductType(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType());
+       // sort the list alphabetically
+        Collections.sort(prodTypes);
         prodTypes.add(0, "Select product type");
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
+        // sort the list alphabetically
+        Collections.sort(prodUnits);
         prodUnits.add(0, "Select product unit");
 
         ArrayList<JsonStoreCategory> tempJsonStoreCategories = new ArrayList<>();
         tempJsonStoreCategories.addAll(jsonStoreCategories);
         tempJsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
+        // sort the list alphabetically
+        Collections.sort(tempJsonStoreCategories, (JsonStoreCategory jsc1, JsonStoreCategory jsc2) -> jsc1.getCategoryName().compareTo(jsc2.getCategoryName()) );
         List<String> categories = new ArrayList<>();
         for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
             categories.add(tempJsonStoreCategories.get(i).getCategoryName());

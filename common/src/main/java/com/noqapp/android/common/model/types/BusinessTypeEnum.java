@@ -9,33 +9,35 @@ import java.io.Serializable;
  * Created by hitender on 1/2/18.
  */
 public enum BusinessTypeEnum implements Serializable {
-    RS("RS", "Restaurant", O),
-    FT("FT", "Food Truck", O),
-    BA("BA", "Bar", O),
-    ST("ST", "Store", O),
-    SM("SM", "Shopping Mall", Q),
-    MT("MT", "Movie Theater", Q),
-    SC("SC", "School", Q),
-    GS("GS", "Grocery Store", O),
-    CF("CF", "Cafe", O),
-    DO("DO", "Hospital/Doctor", Q),
-    HS("HS", "Health Care Services", O),    //Users cannot directly order these, as these have to be prescribed
-    PH("PH", "Pharmacy", O),                //Users cannot directly order these, as these have to be prescribed
-    PW("PW", "Place of Worship", Q),
-    MU("MU", "Museum", Q),
-    TA("TA", "Tourist Attraction", Q),
-    NC("NC", "Night Club", Q),
-    BK("BK", "Bank", Q),
-    PA("PA", "Park", Q);
+    RS("RS", "Restaurant", O, "Store"),
+    FT("FT", "Food Truck", O, "Store"),
+    BA("BA", "Bar", O, "Store"),
+    ST("ST", "Store", O, "Store"),
+    SM("SM", "Shopping Mall", Q, "Queue"),
+    MT("MT", "Movie Theater", Q, "Queue"),
+    SC("SC", "School", Q, "Queue"),
+    GS("GS", "Grocery Store", O, "Store"),
+    CF("CF", "Cafe", O, "Store"),
+    DO("DO", "Hospital/Doctor", Q, "Queue"),
+    HS("HS", "Health Care Services", O, "Store"),
+    PH("PH", "Pharmacy", O, "Store"),                //Users cannot directly order these, as these have to be prescribed
+    PW("PW", "Place of Worship", Q, "Queue"),
+    MU("MU", "Museum", Q, "Queue"),
+    TA("TA", "Tourist Attraction", Q, "Queue"),
+    NC("NC", "Night Club", Q, "Queue"),
+    BK("BK", "Bank", Q, "Queue"),
+    PA("PA", "Park", Q, "Queue");
 
     private final String description;
     private final String name;
     private final QueueOrderTypeEnum queueOrderType;
+    private final String classifierTitle;
 
-    BusinessTypeEnum(String name, String description, QueueOrderTypeEnum queueOrderType) {
+    BusinessTypeEnum(String name, String description, QueueOrderTypeEnum queueOrderType, String classifierTitle) {
         this.name = name;
         this.description = description;
         this.queueOrderType = queueOrderType;
+        this.classifierTitle = classifierTitle;
     }
 
     public String getName() {
@@ -48,6 +50,10 @@ public enum BusinessTypeEnum implements Serializable {
 
     public QueueOrderTypeEnum getQueueOrderType() {
         return queueOrderType;
+    }
+
+    public String getClassifierTitle() {
+        return classifierTitle;
     }
 
     @Override
