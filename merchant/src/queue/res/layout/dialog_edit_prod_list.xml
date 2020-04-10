@@ -35,21 +35,35 @@
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/btn_create_token"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ll_top"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/button_drawable_red"
+        android:text="@string/update"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_sixteen" />
+
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_top"
+        android:layout_below="@+id/btn_create_token"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="10dp"
-        android:padding="20dp">
+        android:layout_marginTop="0dp"
+        android:padding="10dp">
 
 
         <LinearLayout
             android:id="@+id/ll_center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -93,31 +107,13 @@
 
             </LinearLayout>
 
-            <Spinner
-                android:id="@+id/sp_category_type"
-                android:layout_width="@dimen/edit_field_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/sp_background"
-                android:padding="3dp" />
-
-            <Spinner
-                android:id="@+id/sp_product_type"
-                android:layout_width="@dimen/edit_field_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/sp_background"
-                android:padding="3dp" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_prod_name"
-                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_width="@dimen/edit_field_width_p"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/edt_roun_rect"
@@ -129,51 +125,167 @@
                     android:textSize="@dimen/text_size_fourteen" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:weightSum="1">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_prod_price"
-                    android:layout_width="@dimen/edit_field_width"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight=".5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_prod_price"
+                        android:layout_width="@dimen/edit_field_width_p"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/edt_roun_rect"
+                        android:hint="@string/product_price"
+                        android:inputType="numberDecimal"
+                        android:maxLength="7"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight=".5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_prod_discount"
+                        android:layout_width="@dimen/edit_field_width_p"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/edt_roun_rect"
+                        android:hint="@string/product_discount"
+                        android:inputType="numberDecimal"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/sp_category_type"
+                android:layout_width="@dimen/edit_field_width_p"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/sp_background"
+                android:padding="3dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_prod_unit_value"
+                        android:layout_width="@dimen/edit_field_width_p"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/edt_roun_rect"
+                        android:hint="@string/product_unit_value"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/btn_height"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/sp_unit"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_roun_rect"
-                    android:hint="@string/product_price"
-                    android:inputType="numberDecimal"
-                    android:maxLength="7"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_fourteen" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="1"
+                    android:background="@drawable/sp_background"
+                    android:padding="3dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_prod_pack_size"
+                        android:layout_width="@dimen/edit_field_width_p"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/edt_roun_rect"
+                        android:hint="@string/product_pack_size"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/btn_height"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Select product type"
+                android:textColor="#333" />
+
+            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/sc_product_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+
+                segmentedcontrol:columnCount="2"
+                segmentedcontrol:distributeEvenly="false"
+                segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:radius="6dp"
+                segmentedcontrol:radiusForEverySegment="false"
+                segmentedcontrol:segmentHorizontalMargin="0dp"
+                segmentedcontrol:segmentVerticalMargin="0dp"
+                segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                segmentedcontrol:strokeWidth="1dp"
+                segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                segmentedcontrol:textVerticalPadding="5dp"
+                segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_prod_limit"
-                    android:layout_width="@dimen/edit_field_width"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_roun_rect"
-                    android:hint="@string/product_daily_limit"
-                    android:inputType="numberDecimal"
-                    android:maxLength="7"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_fourteen" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_prod_description"
-                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_width="@dimen/edit_field_width_p"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/edt_roun_rect"
@@ -190,90 +302,21 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_prod_discount"
-                    android:layout_width="@dimen/edit_field_width"
+                    android:id="@+id/edt_prod_limit"
+                    android:layout_width="@dimen/edit_field_width_p"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/edt_roun_rect"
-                    android:hint="@string/product_discount"
+                    android:hint="@string/product_daily_limit"
                     android:inputType="numberDecimal"
-                    android:maxLength="5"
+                    android:maxLength="7"
                     android:maxLines="1"
                     android:minLines="1"
                     android:padding="10dp"
                     android:textSize="@dimen/text_size_fourteen" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/sp_unit"
-                android:layout_width="@dimen/edit_field_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/sp_background"
-                android:padding="3dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="2dp"
-                    android:layout_weight="1">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_prod_unit_value"
-                        android:layout_width="@dimen/edit_field_width"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/edt_roun_rect"
-                        android:hint="@string/product_unit_value"
-                        android:inputType="numberSigned"
-                        android:maxLength="5"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:textSize="@dimen/text_size_fourteen" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="2dp"
-                    android:layout_weight="1">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_prod_pack_size"
-                        android:layout_width="@dimen/edit_field_width"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/edt_roun_rect"
-                        android:hint="@string/product_pack_size"
-                        android:inputType="numberSigned"
-                        android:maxLength="5"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:textSize="@dimen/text_size_fourteen" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_create_token"
-                android:layout_width="@dimen/edit_field_width"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/button_drawable_red"
-                android:text="@string/update"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_sixteen" />
         </LinearLayout>
 
 

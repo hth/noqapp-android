@@ -47,6 +47,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+
 public class ProductListActivity extends BaseActivity implements
         StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener,
         StoreProductMenuAdapter.MenuItemUpdate {
@@ -58,6 +60,9 @@ public class ProductListActivity extends BaseActivity implements
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
     private ExpandableListView expandableListView;
     private List<Integer> headerPosition = new ArrayList<>();
+ //  private ArrayList<JsonStoreCategory> categoryList = new ArrayList<>();
+    private  int sc_product_type_index =-1;
+    private JsonStore jsonStore = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +93,11 @@ public class ProductListActivity extends BaseActivity implements
     public void storeProductResponse(JsonStore jsonStore) {
         dismissProgress();
         if (null != jsonStore) {
+            this.jsonStore = jsonStore;
             String defaultCategory = "Un-Categorized";
             jsonStoreCategories.clear();
             jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
             jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
-
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
             final HashMap<String, List<StoreCartItem>> storeCartItems = new HashMap<>();
             for (int l = 0; l < jsonStoreCategories.size(); l++) {
@@ -127,7 +132,8 @@ public class ProductListActivity extends BaseActivity implements
                 jsonStoreCategories.add(new JsonStoreCategory().setCategoryName(defaultCategory).setCategoryId(defaultCategory));
             }
 
-            List<JsonStoreCategory> tempHeaderList = jsonStoreCategories;
+            List<JsonStoreCategory> tempHeaderList = new ArrayList<>();
+            tempHeaderList.addAll(jsonStoreCategories);
             HashMap<String, List<StoreCartItem>> expandableListDetail = storeCartItems;
 
             ArrayList<Integer> removeEmptyData = new ArrayList<>();
@@ -147,25 +153,27 @@ public class ProductListActivity extends BaseActivity implements
 
             // fill the category items on basis of header which having items
             HashMap<String, List<StoreCartItem>> tempListDetails = new HashMap<>();
+            List<JsonStoreCategory> finalHeaderList = new ArrayList<>();
             for (int i = 0; i < tempHeaderList.size(); i++) {
                 tempListDetails.put(tempHeaderList.get(i).getCategoryId(), expandableListDetail.get(tempHeaderList.get(i).getCategoryId()));
-
                 // add  the count in category for header list
                 int itemSize = expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size();
-                tempHeaderList.set(i, tempHeaderList.get(i).setCategoryName(tempHeaderList.get(i).getCategoryName()+" ("+itemSize+") "));
+                JsonStoreCategory jsc = new JsonStoreCategory().setCategoryId(tempHeaderList.get(i).getCategoryId())
+                        .setCategoryName(tempHeaderList.get(i).getCategoryName()+" ("+itemSize+") ");
+                finalHeaderList.add(jsc);
             }
             rcv_header = findViewById(R.id.rcv_header);
             rcv_header.setHasFixedSize(true);
             rcv_header.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
-            menuHeaderAdapter = new MenuHeaderAdapter(tempHeaderList, this, this);
+            menuHeaderAdapter = new MenuHeaderAdapter(finalHeaderList, this, this);
             rcv_header.setAdapter(menuHeaderAdapter);
             menuHeaderAdapter.notifyDataSetChanged();
 
             StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(
                     this,
-                    tempHeaderList,
+                    finalHeaderList,
                     tempListDetails,
                     this);
             expandableListView.setAdapter(expandableListAdapter);
@@ -242,11 +250,13 @@ public class ProductListActivity extends BaseActivity implements
         TextView tv_offline_title = customDialogView.findViewById(R.id.tv_offline_title);
         final TextView tv_online = customDialogView.findViewById(R.id.tv_online);
         final TextView tv_offline = customDialogView.findViewById(R.id.tv_offline);
+        Button btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         if (actionTypeEnum == ActionTypeEnum.ADD) {
             tv_toolbar_title.setText("Add Product");
             tv_online.setVisibility(View.GONE);
             tv_offline.setVisibility(View.GONE);
             tv_offline_title.setVisibility(View.GONE);
+            btn_create_token.setText("Add");
         }
 
         tv_online.setOnClickListener(v -> {
@@ -273,7 +283,6 @@ public class ProductListActivity extends BaseActivity implements
 
         });
         final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
-        final Spinner sp_product_type = customDialogView.findViewById(R.id.sp_product_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
         final TextInputEditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
         final TextInputEditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
@@ -282,30 +291,38 @@ public class ProductListActivity extends BaseActivity implements
         final TextInputEditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
         final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
         final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
-
-        List<String> prodTypes = ProductTypeEnum.populateWithProductType(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType());
+        final SegmentedControl sc_product_type = customDialogView.findViewById(R.id.sc_product_type);
+        sc_product_type_index = -1;
+        List<String> prodTypesSegment = ProductTypeEnum.populateWithProductType(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType());
         // sort the list alphabetically
-        Collections.sort(prodTypes);
-        prodTypes.add(0, "Select product type");
+        Collections.sort(prodTypesSegment);
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
+
         // sort the list alphabetically
         Collections.sort(prodUnits);
-        prodUnits.add(0, "Select product unit");
-
-        ArrayList<JsonStoreCategory> tempJsonStoreCategories = new ArrayList<>();
-        tempJsonStoreCategories.addAll(jsonStoreCategories);
-        tempJsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
+        prodUnits.add(0, "Measurement");
+        final ArrayList<JsonStoreCategory> categoryList = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
+        categoryList.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
         // sort the list alphabetically
-        Collections.sort(tempJsonStoreCategories, (JsonStoreCategory jsc1, JsonStoreCategory jsc2) -> jsc1.getCategoryName().compareTo(jsc2.getCategoryName()));
+        Collections.sort(categoryList, (JsonStoreCategory jsc1, JsonStoreCategory jsc2) -> jsc1.getCategoryName().compareTo(jsc2.getCategoryName()));
         List<String> categories = new ArrayList<>();
-        for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
-            categories.add(tempJsonStoreCategories.get(i).getCategoryName());
+        for (int i = 0; i < categoryList.size(); i++) {
+            categories.add(categoryList.get(i).getCategoryName());
         }
         categories.add(0, "Select product category");
         sp_category_type.setAdapter(new EnumAdapter(this, categories));
-        sp_product_type.setAdapter(new EnumAdapter(this, prodTypes));
         sp_unit.setAdapter(new EnumAdapter(this, prodUnits));
+        sc_product_type.addSegments(prodTypesSegment);
 
+        sc_product_type.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
+            if (isSelected) {
+                sc_product_type_index = segmentViewHolder.getAbsolutePosition();
+            }
+            if (isReselected) {
+                sc_product_type_index = -1;
+                sc_product_type.clearSelection();
+            }
+        });
         if (null != temp) {
             edt_prod_name.setText(jsonStoreProduct.getProductName());
             edt_prod_price.setText(jsonStoreProduct.getDisplayPrice());
@@ -314,9 +331,9 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_limit.setText(String.valueOf(jsonStoreProduct.getInventoryLimit()));
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
             edt_prod_unit_value.setText(String.valueOf(CommonHelper.divideByHundred(jsonStoreProduct.getUnitValue())));
-            sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), tempJsonStoreCategories));
+            sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList));
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
-            sp_product_type.setSelection(getItemPosition(prodTypes, jsonStoreProduct.getProductType().getDescription()));
+            sc_product_type.setSelectedSegment(getItemPosition(prodTypesSegment, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {
                 tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_online.setBackgroundResource(R.drawable.button_drawable_red_square);
@@ -335,23 +352,22 @@ public class ProductListActivity extends BaseActivity implements
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         btn_create_token.setOnClickListener(v -> {
             if (sp_category_type.getSelectedItemPosition() == 0) {
                 new CustomToast().showToast(ProductListActivity.this, "Please select product category");
-            } else if (sp_product_type.getSelectedItemPosition() == 0) {
+            } else if (sc_product_type_index == -1) {
                 new CustomToast().showToast(ProductListActivity.this, "Please select product type");
             } else if (sp_unit.getSelectedItemPosition() == 0) {
                 new CustomToast().showToast(ProductListActivity.this, "Please select product unit");
             } else {
-                if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount, edt_prod_unit_value, edt_prod_pack_size)) {
+                if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount, edt_prod_unit_value, edt_prod_pack_size, edt_prod_limit)) {
                     jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
                     jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
                     jsonStoreProduct.setProductPrice((int) (Float.parseFloat(edt_prod_price.getText().toString()) * 100));
                     jsonStoreProduct.setProductDiscount((int) (Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
-                    jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
+                    jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(prodTypesSegment.get(sc_product_type_index)));
                     jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
-                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString(), tempJsonStoreCategories));
+                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString(), categoryList));
                     jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
                     jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()) * 100);
                     jsonStoreProduct.setInventoryLimit(Integer.parseInt(edt_prod_limit.getText().toString()));
