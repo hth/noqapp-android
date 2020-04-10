@@ -17,11 +17,13 @@ import androidx.core.content.ContextCompat;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 
@@ -29,11 +31,13 @@ public class StoreMenuAdapter extends BaseAdapter {
     private Context context;
     private List<StoreCartItem> menuItemsList;
     private MenuItemUpdate menuItemUpdate;
+    private boolean isRestaurant;
 
     public StoreMenuAdapter(Context context, List<StoreCartItem> menuItemsList, MenuItemUpdate menuItemUpdate) {
         this.context = context;
         this.menuItemsList = menuItemsList;
         this.menuItemUpdate = menuItemUpdate;
+        isRestaurant = LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS;
     }
 
     public int getCount() {
@@ -88,11 +92,13 @@ public class StoreMenuAdapter extends BaseAdapter {
         }
         switch (jsonStoreProduct.getProductType()) {
             case NV:
-                childViewHolder.tv_cat.setBackgroundResource(R.drawable.button_drawable_red);
+                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
                 break;
             default:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
         }
+        
+        childViewHolder.tv_cat.setVisibility(isRestaurant ? View.VISIBLE : View.INVISIBLE);
         childViewHolder.iv_delete.setOnClickListener(v -> {
             ShowCustomDialog showDialog = new ShowCustomDialog(context);
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
