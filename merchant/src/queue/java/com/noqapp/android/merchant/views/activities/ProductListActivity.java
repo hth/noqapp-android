@@ -149,6 +149,10 @@ public class ProductListActivity extends BaseActivity implements
             HashMap<String, List<StoreCartItem>> tempListDetails = new HashMap<>();
             for (int i = 0; i < tempHeaderList.size(); i++) {
                 tempListDetails.put(tempHeaderList.get(i).getCategoryId(), expandableListDetail.get(tempHeaderList.get(i).getCategoryId()));
+
+                // add  the count in category for header list
+                int itemSize = expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size();
+                tempHeaderList.set(i, tempHeaderList.get(i).setCategoryName(tempHeaderList.get(i).getCategoryName()+" ("+itemSize+") "));
             }
             rcv_header = findViewById(R.id.rcv_header);
             rcv_header.setHasFixedSize(true);
