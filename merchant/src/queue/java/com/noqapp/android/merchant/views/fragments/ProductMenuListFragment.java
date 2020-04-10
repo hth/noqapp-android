@@ -261,6 +261,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                             .setCodeQR(codeQR)
                             .setQueueUserId(jsonProfile.getQueueUserId())
                             .setOrderPrice(String.valueOf(price));
+                    jsonPurchaseOrder.setCustomerName(jsonProfile.getName());
                     jsonPurchaseOrder.setPurchaseOrderProducts(ll);
                     jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
                     jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.TO);
