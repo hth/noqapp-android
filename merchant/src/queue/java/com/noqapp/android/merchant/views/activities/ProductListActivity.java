@@ -11,11 +11,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -49,11 +52,11 @@ import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class ProductListActivity extends BaseActivity implements
         StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener,
@@ -71,6 +74,9 @@ public class ProductListActivity extends BaseActivity implements
     private boolean isViewHidden = true;
     private int selectionPos = -1;
     private String selectedCategory = "";
+    private Map<String, Integer> mapIndex;
+    View updateview = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setScreenOrientation();
@@ -361,11 +367,11 @@ public class ProductListActivity extends BaseActivity implements
             categories.add(categoryList.get(i).getCategoryName());
         }
         tv_category_type.setOnClickListener(v -> {
-            if(selectionPos != -1){
+            if (selectionPos != -1) {
                 selectCategoryDialog(categories, tv_category_type, selectionPos);
-            }else if(null != temp){
-                selectCategoryDialog(categories,tv_category_type ,getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList));
-            }else {
+            } else if (null != temp) {
+                selectCategoryDialog(categories, tv_category_type, getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList));
+            } else {
                 selectCategoryDialog(categories, tv_category_type, -1);
             }
         });
@@ -569,7 +575,7 @@ public class ProductListActivity extends BaseActivity implements
     }
 
 
-    private void selectCategoryDialog(List<String> category_data, TextView textView, int autoSelect) {
+    private void selectCategoryDialog(List<String> categories, TextView textView, int autoSelect) {
         selectionPos = -1;
         selectedCategory = "";
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -577,37 +583,76 @@ public class ProductListActivity extends BaseActivity implements
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.select_category, null, false);
         TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-        SegmentedControl sc_category = customDialogView.findViewById(R.id.sc_category);
-
-        sc_category.addSegments(category_data);
-        sc_category.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+        ListView listView = customDialogView.findViewById(R.id.listView);
+        listView.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, categories));
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    selectionPos = segmentViewHolder.getAbsolutePosition();
-                    textView.setText(category_data.get(selectionPos));
-                }
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (updateview != null)
+                    updateview.setBackgroundColor(Color.TRANSPARENT);
+                updateview = view;
+
+                view.setBackgroundColor(Color.CYAN);
+                //String s = listView.getItemAtPosition(i).toString();
+                selectionPos = i;
+                textView.setText(categories.get(selectionPos));
             }
         });
-        if(-1 != autoSelect)
-            sc_category.setSelectedSegment(autoSelect);
+        initIndexList(categories);
+        displayIndex(customDialogView, listView);
+        if (-1 != autoSelect){
+            listView.clearFocus();
+            listView.post(new Runnable() {
+                @Override
+                public void run() {
+                    listView.setSelection(autoSelect);
+                }
+            });
+        }
         tvtitle.setText("Select Category");
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         ImageView iv_close = customDialogView.findViewById(R.id.iv_close);
-        Button btn_add = customDialogView.findViewById(R.id.btn_add);
+        Button btn_done = customDialogView.findViewById(R.id.btn_done);
         iv_close.setOnClickListener(v -> mAlertDialog.dismiss());
-        btn_add.setOnClickListener(v -> {
-
+        btn_done.setOnClickListener(v -> {
             if (selectionPos == -1) {
                 new CustomToast().showToast(this, "please select a category");
             } else {
-                selectedCategory = category_data.get(selectionPos);
+                selectedCategory = categories.get(selectionPos);
                 mAlertDialog.dismiss();
             }
         });
         mAlertDialog.show();
+    }
+
+    private void initIndexList(List<String> categories) {
+        mapIndex = new LinkedHashMap<String, Integer>();
+        for (int i = 0; i < categories.size(); i++) {
+            String category = categories.get(i);
+            String index = category.substring(0, 1);
+            if (mapIndex.get(index) == null)
+                mapIndex.put(index, i);
+        }
+    }
+
+    private void displayIndex(View view, ListView listView) {
+        LinearLayout indexLayout = view.findViewById(R.id.side_index);
+        TextView textView;
+        List<String> indexList = new ArrayList<String>(mapIndex.keySet());
+        for (String index : indexList) {
+            textView = (TextView) getLayoutInflater().inflate(
+                    R.layout.side_index_item, null);
+            textView.setText(index);
+            textView.setOnClickListener(v -> {
+                TextView selectedIndex = (TextView) v;
+                listView.setSelection(mapIndex.get(selectedIndex.getText()));
+            });
+            indexLayout.addView(textView);
+        }
     }
 }
