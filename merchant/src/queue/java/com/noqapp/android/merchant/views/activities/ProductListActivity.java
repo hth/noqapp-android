@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
@@ -297,24 +296,24 @@ public class ProductListActivity extends BaseActivity implements
         ///
         final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
-        final TextInputEditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
-        final TextInputEditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
-        final TextInputEditText edt_prod_limit = customDialogView.findViewById(R.id.edt_prod_limit);
-        final TextInputEditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
-        final TextInputEditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
-        final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
-        final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
+        final EditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
+        final EditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
+        final EditText edt_prod_limit = customDialogView.findViewById(R.id.edt_prod_limit);
+        final EditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
+        final EditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
+        final EditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
+        final EditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
         final SegmentedControl sc_product_type = customDialogView.findViewById(R.id.sc_product_type);
         edt_prod_name.addTextChangedListener(new CustomTextWatcher(tv_name, "Name", true, edt_prod_name));
         edt_prod_description.addTextChangedListener(new CustomTextWatcher(tv_description, "Description"));
         edt_prod_price.addTextChangedListener(new CustomTextWatcher(tv_price, LaunchActivity.getCurrencySymbol() + " Price", true));
-        edt_prod_unit_value.addTextChangedListener(new CustomTextWatcher(tv_unit, "Unit"));
+        edt_prod_unit_value.addTextChangedListener(new CustomTextWatcher(tv_unit, "Quantity"));
 
         formatText(tv_name, "Name", "");
         formatText(tv_description, "Description", "");
         formatText(tv_price, LaunchActivity.getCurrencySymbol() + " Price ", "");
-        formatText(tv_unit, "Unit", "");
-        formatText(tv_measure, "Measurement", "");
+        formatText(tv_unit, "Quantity", "");
+        formatText(tv_measure, "Unit", "");
 
         if (actionTypeEnum == ActionTypeEnum.ADD) {
             tv_toolbar_title.setText("Add Product");
@@ -333,11 +332,7 @@ public class ProductListActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
-                if (position == 0) {
-                    formatText(tv_measure, "Measurement", "");
-                } else {
-                    formatText(tv_measure, "Measurement", sp_unit.getSelectedItem().toString());
-                }
+                formatText(tv_measure, "Unit", sp_unit.getSelectedItem().toString());
             }
 
             @Override
@@ -354,7 +349,6 @@ public class ProductListActivity extends BaseActivity implements
 
         // sort the list alphabetically
         Collections.sort(prodUnits);
-        prodUnits.add(0, "Measurement");
         final ArrayList<JsonStoreCategory> categoryList = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
         // sort the list alphabetically
         Collections.sort(categoryList, (JsonStoreCategory jsc1, JsonStoreCategory jsc2) -> jsc1.getCategoryName().compareTo(jsc2.getCategoryName()));
@@ -362,7 +356,6 @@ public class ProductListActivity extends BaseActivity implements
         for (int i = 0; i < categoryList.size(); i++) {
             categories.add(categoryList.get(i).getCategoryName());
         }
-        categories.add(0, "Select product category");
         sp_category_type.setAdapter(new EnumAdapter(this, categories));
         sp_unit.setAdapter(new EnumAdapter(this, prodUnits));
         sc_product_type.addSegments(prodTypesSegment);
@@ -406,12 +399,8 @@ public class ProductListActivity extends BaseActivity implements
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         btn_add_update.setOnClickListener(v -> {
-            if (sp_category_type.getSelectedItemPosition() == 0) {
-                new CustomToast().showToast(ProductListActivity.this, "Please select product category");
-            } else if (sc_product_type_index == -1) {
+            if (sc_product_type_index == -1) {
                 new CustomToast().showToast(ProductListActivity.this, "Please select product type");
-            } else if (sp_unit.getSelectedItemPosition() == 0) {
-                new CustomToast().showToast(ProductListActivity.this, "Please select product unit");
             } else {
                 if (validate(edt_prod_name, edt_prod_price, edt_prod_unit_value, edt_prod_pack_size)) {
                     jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
@@ -454,14 +443,14 @@ public class ProductListActivity extends BaseActivity implements
     }
 
 
-    private boolean validate(TextInputEditText... views) {
+    private boolean validate(EditText... views) {
         boolean isValid = true;
-        for (TextInputEditText v : views) {
+        for (EditText v : views) {
             v.setError(null);
         }
         AppUtils.hideKeyBoard(this);
         String errorMsg = "";
-        for (TextInputEditText v : views) {
+        for (EditText v : views) {
             if (TextUtils.isEmpty(v.getText().toString())) {
                 v.setError(getString(R.string.error_field_required));
                 if (isValid) {
@@ -513,6 +502,7 @@ public class ProductListActivity extends BaseActivity implements
             this.view = view;
             this.prefix = prefix;
         }
+
         private CustomTextWatcher(TextView view, String prefix, boolean isCurrency) {
             this.view = view;
             this.prefix = prefix;
@@ -534,8 +524,8 @@ public class ProductListActivity extends BaseActivity implements
 
         public void afterTextChanged(Editable editable) {
             String text = isCap ? CommonHelper.capitalizeEachWordFirstLetter(editable.toString()) : editable.toString();
-            if(isCurrency)
-                text = LaunchActivity.getCurrencySymbol() + " "+text;
+            if (isCurrency)
+                text = LaunchActivity.getCurrencySymbol() + " " + text;
             formatText(view, prefix, text);
             if (editable.length() != 0 && isCap) {
                 sourceTextView.removeTextChangedListener(this);

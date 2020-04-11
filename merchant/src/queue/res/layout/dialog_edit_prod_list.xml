@@ -57,9 +57,9 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/button_drawable_red"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:background="@drawable/button_drawable_red"
         android:text="View Display"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
@@ -71,9 +71,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_add_update"
-        android:visibility="gone"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -90,7 +91,7 @@
             android:id="@+id/ll_center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:layout_marginBottom="20dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -99,6 +100,7 @@
                 android:id="@+id/tv_offline_title"
                 style="@style/style_register_tv"
                 android:layout_width="match_parent"
+                android:paddingTop="10dp"
                 android:text="@string/store_offline" />
 
             <LinearLayout
@@ -134,23 +136,25 @@
 
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_name" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_prod_name"
-                    android:layout_width="@dimen/edit_field_width_p"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_roun_rect"
-                    android:hint="@string/product_name"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_fourteen" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/edt_prod_name"
+                android:layout_width="@dimen/edit_field_width_p"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edt_roun_rect"
+                android:inputType="text"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_fourteen" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -158,48 +162,66 @@
                 android:layout_marginBottom="10dp"
                 android:weightSum="1">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
-                    android:layout_weight=".5">
+                    android:layout_weight=".5"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_price" />
+
+                    <EditText
                         android:id="@+id/edt_prod_price"
                         android:layout_width="@dimen/edit_field_width_p"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/edt_roun_rect"
-                        android:hint="@string/product_price"
                         android:inputType="numberDecimal"
                         android:maxLength="7"
                         android:maxLines="1"
                         android:minLines="1"
                         android:padding="10dp"
                         android:textSize="@dimen/text_size_fourteen" />
-                </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
-                    android:layout_weight=".5">
+                    android:layout_weight=".5"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_discount" />
+
+                    <EditText
                         android:id="@+id/edt_prod_discount"
                         android:layout_width="@dimen/edit_field_width_p"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/edt_roun_rect"
-                        android:hint="@string/product_discount"
                         android:inputType="numberDecimal"
                         android:maxLength="5"
                         android:maxLines="1"
                         android:minLines="1"
                         android:padding="10dp"
                         android:textSize="@dimen/text_size_fourteen" />
-                </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_category" />
 
             <Spinner
                 android:id="@+id/sp_category_type"
@@ -216,19 +238,25 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="2dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_unit_value" />
+
+                    <EditText
                         android:id="@+id/edt_prod_unit_value"
                         android:layout_width="@dimen/edit_field_width_p"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/edt_roun_rect"
-                        android:hint="@string/product_unit_value"
                         android:inputType="numberSigned"
                         android:maxLength="5"
                         android:maxLines="1"
@@ -236,27 +264,46 @@
                         android:minLines="1"
                         android:padding="10dp"
                         android:textSize="@dimen/text_size_fourteen" />
-                </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
-                <Spinner
-                    android:id="@+id/sp_unit"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sp_background"
-                    android:padding="3dp" />
+                    android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_unit" />
+
+                    <Spinner
+                        android:id="@+id/sp_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/sp_background"
+                        android:padding="3dp"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="2dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_pack_size" />
+
+                    <EditText
                         android:id="@+id/edt_prod_pack_size"
                         android:layout_width="@dimen/edit_field_width_p"
                         android:layout_height="wrap_content"
@@ -270,7 +317,7 @@
                         android:minLines="1"
                         android:padding="10dp"
                         android:textSize="@dimen/text_size_fourteen" />
-                </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -279,15 +326,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="Select product type"
-                android:textColor="#333" />
+                android:text="Select product type" />
 
             <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/sc_product_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
-
                 segmentedcontrol:columnCount="2"
                 segmentedcontrol:distributeEvenly="false"
                 segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
@@ -305,43 +350,45 @@
                 segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
                 segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_desc" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_prod_description"
-                    android:layout_width="@dimen/edit_field_width_p"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_roun_rect"
-                    android:hint="@string/product_desc"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_fourteen" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/edt_prod_description"
+                android:layout_width="@dimen/edit_field_width_p"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edt_roun_rect"
+                android:inputType="text"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_fourteen" />
 
-            <com.google.android.material.textfield.TextInputLayout
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_daily_limit" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_prod_limit"
-                    android:layout_width="@dimen/edit_field_width_p"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_roun_rect"
-                    android:hint="@string/product_daily_limit"
-                    android:inputType="numberDecimal"
-                    android:maxLength="7"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_fourteen" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/edt_prod_limit"
+                android:layout_width="@dimen/edit_field_width_p"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edt_roun_rect"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_fourteen" />
 
 
         </LinearLayout>
