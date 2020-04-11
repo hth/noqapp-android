@@ -179,7 +179,6 @@
                         android:id="@+id/edt_prod_price"
                         android:layout_width="@dimen/edit_field_width_p"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:background="@drawable/edt_roun_rect"
                         android:inputType="numberDecimal"
                         android:maxLength="7"
@@ -206,7 +205,6 @@
                         android:id="@+id/edt_prod_discount"
                         android:layout_width="@dimen/edit_field_width_p"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:background="@drawable/edt_roun_rect"
                         android:inputType="numberDecimal"
                         android:maxLength="5"
@@ -287,7 +285,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/sp_background"
-                        android:padding="3dp"/>
+                        android:padding="3dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -326,7 +324,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="Select product type" />
+                android:text="@string/product_type" />
 
             <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/sc_product_type"
@@ -353,7 +351,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
                 android:text="@string/product_desc" />
 
@@ -373,7 +371,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginBottom="5dp"
                 android:text="@string/product_daily_limit" />
 
