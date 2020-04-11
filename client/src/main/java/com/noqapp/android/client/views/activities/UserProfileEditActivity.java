@@ -44,6 +44,7 @@ import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.common.utils.ShowUploadImageDialog;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
+import com.noqapp.android.common.views.activities.helper.CapitalizeEachWordFirstLetterTextWatcher;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
@@ -94,6 +95,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         btn_update = findViewById(R.id.btn_update);
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
+        edt_Name.addTextChangedListener(new CapitalizeEachWordFirstLetterTextWatcher(edt_Name));
         edt_Mail = findViewById(R.id.edt_email);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
