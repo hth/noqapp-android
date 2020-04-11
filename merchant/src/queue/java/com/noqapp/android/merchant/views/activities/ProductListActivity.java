@@ -388,6 +388,7 @@ public class ProductListActivity extends BaseActivity implements
             }
         });
         if (null != temp) {
+            selectionPos = -1;
             edt_prod_name.setText(jsonStoreProduct.getProductName());
             edt_prod_price.setText(jsonStoreProduct.getDisplayPrice());
             edt_prod_description.setText(jsonStoreProduct.getProductInfo());
@@ -447,6 +448,7 @@ public class ProductListActivity extends BaseActivity implements
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             new CustomToast().showToast(this, "Action perform successfully");
+            selectionPos = -1;
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
                 StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
@@ -580,36 +582,20 @@ public class ProductListActivity extends BaseActivity implements
         selectedCategory = "";
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
-        builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.select_category, null, false);
         TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
         ListView listView = customDialogView.findViewById(R.id.listView);
         listView.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, categories));
+                android.R.layout.simple_list_item_single_choice, categories));
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (updateview != null)
-                    updateview.setBackgroundColor(Color.TRANSPARENT);
-                updateview = view;
-
-                view.setBackgroundColor(Color.CYAN);
-                //String s = listView.getItemAtPosition(i).toString();
-                selectionPos = i;
-                textView.setText(categories.get(selectionPos));
-            }
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            selectionPos = i;
+            textView.setText(categories.get(selectionPos));
         });
         initIndexList(categories);
         displayIndex(customDialogView, listView);
-        if (-1 != autoSelect){
-            listView.clearFocus();
-            listView.post(new Runnable() {
-                @Override
-                public void run() {
-                    listView.setSelection(autoSelect);
-                }
-            });
+        if (-1 != autoSelect) {
+            listView.setItemChecked(autoSelect, true);
         }
         tvtitle.setText("Select Category");
         builder.setView(customDialogView);
