@@ -105,7 +105,7 @@
     <string name="exit_app">Press back again to exit</string>
     <string name="app_missing">No app to share invitation</string>
     <string name="select_country">Select Country</string>
-    <!--Stop waiting in queues. Use my invite code '%@' to download and register with NoQApp. We both earn Remote Joins. To learn more, go to www.noqapp.com/about. \n\nIf you own a store or restaurant or provide services and would like to increase customer satisfaction become NoQApp Merchant. Learn more go to page www.noqapp.com/about.-->
+    <!--Stop waiting in queues. Use my invite code '%@' to download and register with NoQueue. We both earn Remote Joins. To learn more, go to www.noqapp.com/about. \n\nIf you own a store or restaurant or provide services and would like to increase customer satisfaction become NoQueue Merchant. Learn more go to page www.noqapp.com/about.-->
 
     <!--Me Screen-->
     <string name="logout">Logout</string>
@@ -145,7 +145,7 @@
     <string name="authentication_fail_msg">Please login again.</string>
     <string name="barcode_error">Queue not found</string>
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
-    <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue &#174; Inc</string>
+    <string name="copy_right">NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
     <string name="alert">Alert</string>
     <string name="estimated_time">You will be serviced: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
@@ -162,10 +162,10 @@
 
     <string name="btn_playstore">Open Play Store</string>
     <string name="playstore_update_title">Newer App Version Available</string>
-    <string name="playstore_update_msg">New version of NoQApp is available on play store. Please update your app to latest version.\n</string>
+    <string name="playstore_update_msg">New version of NoQueue is available on play store. Please update your app to latest version.\n</string>
 
     <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
-    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission. The application will now exit.</string>
 
 
     <string name="msg_default_status">Place NoQueue QR Code inside the viewfinder rectangle to scan it.</string>
