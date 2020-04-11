@@ -21,6 +21,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.GroceryEnum;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -468,5 +469,12 @@ public class CommonHelper {
         long packedPosition = expandableListView.getExpandableListPosition(firstVis);
         int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
         return groupPosition;
+    }
+
+    /**
+     * Method to make the first letter CAP of each word of given string
+     * */
+    public static String capitalizeEachWordFirstLetter(String input){
+        return WordUtils.capitalizeFully(input);
     }
 }

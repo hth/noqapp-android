@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -259,17 +260,9 @@ public class ProductListActivity extends BaseActivity implements
         isViewHidden = true;
         btn_view.setOnClickListener(v -> {
             isViewHidden = !isViewHidden;
-            btn_view.setText(isViewHidden ? "View Display" : "View Hide");
+            btn_view.setText(isViewHidden ? "Show client preview" : "Hide client preview");
             productview.setVisibility(isViewHidden ? View.GONE : View.VISIBLE);
         });
-
-        if (actionTypeEnum == ActionTypeEnum.ADD) {
-            tv_toolbar_title.setText("Add Product");
-            tv_online.setVisibility(View.GONE);
-            tv_offline.setVisibility(View.GONE);
-            tv_offline_title.setVisibility(View.GONE);
-            btn_add_update.setText("Add");
-        }
 
         tv_online.setOnClickListener(v -> {
             tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
@@ -314,7 +307,7 @@ public class ProductListActivity extends BaseActivity implements
         final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
         final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
         final SegmentedControl sc_product_type = customDialogView.findViewById(R.id.sc_product_type);
-        edt_prod_name.addTextChangedListener(new CustomTextWatcher(tv_name, "Name"));
+        edt_prod_name.addTextChangedListener(new CustomTextWatcher(tv_name, "Name", true, edt_prod_name));
         edt_prod_description.addTextChangedListener(new CustomTextWatcher(tv_description, "Description"));
         edt_prod_price.addTextChangedListener(new CustomTextWatcher(tv_price, "Price"));
         edt_prod_pack_size.addTextChangedListener(new CustomTextWatcher(tv_package_size, "Package size"));
@@ -329,6 +322,18 @@ public class ProductListActivity extends BaseActivity implements
         formatText(tv_package_size, "Package size", "");
         formatText(tv_discount, "Discount", "");
         formatText(tv_inventory, "Inventory", "");
+
+        if (actionTypeEnum == ActionTypeEnum.ADD) {
+            tv_toolbar_title.setText("Add Product");
+            tv_online.setVisibility(View.GONE);
+            tv_offline.setVisibility(View.GONE);
+            tv_offline_title.setVisibility(View.GONE);
+            btn_add_update.setText("Add");
+            edt_prod_discount.setText("0");
+            edt_prod_limit.setText("0");
+            edt_prod_unit_value.setText("1");
+            edt_prod_pack_size.setText("1");
+        }
 
         sp_category_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -417,17 +422,17 @@ public class ProductListActivity extends BaseActivity implements
             } else if (sp_unit.getSelectedItemPosition() == 0) {
                 new CustomToast().showToast(ProductListActivity.this, "Please select product unit");
             } else {
-                if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount, edt_prod_unit_value, edt_prod_pack_size, edt_prod_limit)) {
+                if (validate(edt_prod_name, edt_prod_price, edt_prod_unit_value, edt_prod_pack_size)) {
                     jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
                     jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
                     jsonStoreProduct.setProductPrice((int) (Float.parseFloat(edt_prod_price.getText().toString()) * 100));
-                    jsonStoreProduct.setProductDiscount((int) (Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
+                    jsonStoreProduct.setProductDiscount((int) (convertStringToFloat(edt_prod_discount.getText().toString()) * 100));
                     jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(prodTypesSegment.get(sc_product_type_index)));
                     jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
                     jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString(), categoryList));
-                    jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
-                    jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()) * 100);
-                    jsonStoreProduct.setInventoryLimit(Integer.parseInt(edt_prod_limit.getText().toString()));
+                    jsonStoreProduct.setPackageSize(convertStringToInt(edt_prod_pack_size.getText().toString()));
+                    jsonStoreProduct.setUnitValue(convertStringToInt(edt_prod_unit_value.getText().toString()) * 100);
+                    jsonStoreProduct.setInventoryLimit(convertStringToInt(edt_prod_limit.getText().toString()));
                     menuItemUpdate(jsonStoreProduct, actionTypeEnum);
                     mAlertDialog.dismiss();
                 }
@@ -508,11 +513,20 @@ public class ProductListActivity extends BaseActivity implements
 
     private class CustomTextWatcher implements TextWatcher {
         private TextView view;
+        private EditText sourceTextView;
         private String prefix = "";
+        private boolean isCap;
 
         private CustomTextWatcher(TextView view, String prefix) {
             this.view = view;
             this.prefix = prefix;
+        }
+
+        private CustomTextWatcher(TextView view, String prefix, boolean isCap, EditText sourceTextView) {
+            this.view = view;
+            this.prefix = prefix;
+            this.isCap = isCap;
+            this.sourceTextView = sourceTextView;
         }
 
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
@@ -522,13 +536,35 @@ public class ProductListActivity extends BaseActivity implements
         }
 
         public void afterTextChanged(Editable editable) {
-            String text = editable.toString();
+            String text = isCap ? CommonHelper.capitalizeEachWordFirstLetter(editable.toString()) : editable.toString();
             formatText(view, prefix, text);
+            if (editable.length() != 0 && isCap) {
+                sourceTextView.removeTextChangedListener(this);
+                sourceTextView.setText(CommonHelper.capitalizeEachWordFirstLetter(editable.toString()));
+                sourceTextView.setSelection(sourceTextView.getText().length());
+                sourceTextView.addTextChangedListener(this);
+            }
         }
     }
 
     private void formatText(TextView tv, String title, String value) {
         String text = "<b>" + title + "</b>:  " + value;
         tv.setText(Html.fromHtml(text));
+    }
+
+    private int convertStringToInt(String input){
+        if(TextUtils.isEmpty(input)){
+            return 1;
+        }else{
+            return Integer.parseInt(input);
+        }
+    }
+
+    private Float convertStringToFloat(String input){
+        if(TextUtils.isEmpty(input)){
+            return 0f;
+        }else{
+            return Float.parseFloat(input);
+        }
     }
 }
