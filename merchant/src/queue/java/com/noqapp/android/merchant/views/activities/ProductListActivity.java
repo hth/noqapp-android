@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -288,14 +287,13 @@ public class ProductListActivity extends BaseActivity implements
 
         });
 
-        TextView tv_category = customDialogView.findViewById(R.id.tv_category);
         TextView tv_name = customDialogView.findViewById(R.id.tv_name);
         TextView tv_price = customDialogView.findViewById(R.id.tv_price);
-        TextView tv_inventory = customDialogView.findViewById(R.id.tv_inventory);
-        TextView tv_package_size = customDialogView.findViewById(R.id.tv_package_size);
-        TextView tv_discount = customDialogView.findViewById(R.id.tv_discount);
+        TextView tv_discounted_price = customDialogView.findViewById(R.id.tv_discounted_price);
         TextView tv_description = customDialogView.findViewById(R.id.tv_description);
-        TextView tv_product_type = customDialogView.findViewById(R.id.tv_product_type);
+        TextView tv_unit = customDialogView.findViewById(R.id.tv_unit);
+        TextView tv_measure = customDialogView.findViewById(R.id.tv_measure);
+
         ///
         final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
@@ -309,19 +307,14 @@ public class ProductListActivity extends BaseActivity implements
         final SegmentedControl sc_product_type = customDialogView.findViewById(R.id.sc_product_type);
         edt_prod_name.addTextChangedListener(new CustomTextWatcher(tv_name, "Name", true, edt_prod_name));
         edt_prod_description.addTextChangedListener(new CustomTextWatcher(tv_description, "Description"));
-        edt_prod_price.addTextChangedListener(new CustomTextWatcher(tv_price, "Price"));
-        edt_prod_pack_size.addTextChangedListener(new CustomTextWatcher(tv_package_size, "Package size"));
-        edt_prod_discount.addTextChangedListener(new CustomTextWatcher(tv_discount, "Discount"));
-        edt_prod_limit.addTextChangedListener(new CustomTextWatcher(tv_inventory, "Inventory"));
+        edt_prod_price.addTextChangedListener(new CustomTextWatcher(tv_price, LaunchActivity.getCurrencySymbol() + " Price", true));
+        edt_prod_unit_value.addTextChangedListener(new CustomTextWatcher(tv_unit, "Unit"));
 
-        formatText(tv_category, "Category", "");
-        formatText(tv_product_type, "Product Type", "");
         formatText(tv_name, "Name", "");
         formatText(tv_description, "Description", "");
-        formatText(tv_price, "Price", "");
-        formatText(tv_package_size, "Package size", "");
-        formatText(tv_discount, "Discount", "");
-        formatText(tv_inventory, "Inventory", "");
+        formatText(tv_price, LaunchActivity.getCurrencySymbol() + " Price ", "");
+        formatText(tv_unit, "Unit", "");
+        formatText(tv_measure, "Measurement", "");
 
         if (actionTypeEnum == ActionTypeEnum.ADD) {
             tv_toolbar_title.setText("Add Product");
@@ -335,15 +328,15 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_pack_size.setText("1");
         }
 
-        sp_category_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sp_unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
                 if (position == 0) {
-                    formatText(tv_category, "Category", "");
+                    formatText(tv_measure, "Measurement", "");
                 } else {
-                    formatText(tv_category, "Category", sp_category_type.getSelectedItem().toString());
+                    formatText(tv_measure, "Measurement", sp_unit.getSelectedItem().toString());
                 }
             }
 
@@ -377,12 +370,10 @@ public class ProductListActivity extends BaseActivity implements
         sc_product_type.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
             if (isSelected) {
                 sc_product_type_index = segmentViewHolder.getAbsolutePosition();
-                formatText(tv_product_type, "Product Type", prodTypesSegment.get(sc_product_type_index));
             }
             if (isReselected) {
                 sc_product_type_index = -1;
                 sc_product_type.clearSelection();
-                formatText(tv_product_type, "Product Type", "");
             }
         });
         if (null != temp) {
@@ -516,10 +507,16 @@ public class ProductListActivity extends BaseActivity implements
         private EditText sourceTextView;
         private String prefix = "";
         private boolean isCap;
+        private boolean isCurrency;
 
         private CustomTextWatcher(TextView view, String prefix) {
             this.view = view;
             this.prefix = prefix;
+        }
+        private CustomTextWatcher(TextView view, String prefix, boolean isCurrency) {
+            this.view = view;
+            this.prefix = prefix;
+            this.isCurrency = isCurrency;
         }
 
         private CustomTextWatcher(TextView view, String prefix, boolean isCap, EditText sourceTextView) {
@@ -537,6 +534,8 @@ public class ProductListActivity extends BaseActivity implements
 
         public void afterTextChanged(Editable editable) {
             String text = isCap ? CommonHelper.capitalizeEachWordFirstLetter(editable.toString()) : editable.toString();
+            if(isCurrency)
+                text = LaunchActivity.getCurrencySymbol() + " "+text;
             formatText(view, prefix, text);
             if (editable.length() != 0 && isCap) {
                 sourceTextView.removeTextChangedListener(this);
@@ -548,22 +547,21 @@ public class ProductListActivity extends BaseActivity implements
     }
 
     private void formatText(TextView tv, String title, String value) {
-        String text = "<b>" + title + "</b>:  " + value;
-        tv.setText(Html.fromHtml(text));
+        tv.setText(TextUtils.isEmpty(value) ? title : value);
     }
 
-    private int convertStringToInt(String input){
-        if(TextUtils.isEmpty(input)){
+    private int convertStringToInt(String input) {
+        if (TextUtils.isEmpty(input)) {
             return 1;
-        }else{
+        } else {
             return Integer.parseInt(input);
         }
     }
 
-    private Float convertStringToFloat(String input){
-        if(TextUtils.isEmpty(input)){
+    private Float convertStringToFloat(String input) {
+        if (TextUtils.isEmpty(input)) {
             return 0f;
-        }else{
+        } else {
             return Float.parseFloat(input);
         }
     }
