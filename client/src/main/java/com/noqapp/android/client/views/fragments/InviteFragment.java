@@ -49,7 +49,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
         Bundle bundle = getArguments();
         if (null != bundle) {
             String title = bundle.getString("title", "Invite Friends");
-            String details = bundle.getString("details", "As a user of NoQApp, you can invite your friends and family.");
+            String details = bundle.getString("details", "As a user of NoQueue, you can invite your friends and family.");
             String invite_code = bundle.getString("invite_code", "");
 
             tv_title.setText(title);

@@ -6,6 +6,7 @@
     <dimen name="profile_image_padding">15sp</dimen>
     <dimen name="token_banner_image_height">125sp</dimen>
     <dimen name="edit_field_width">300dp</dimen>
+    <dimen name="edit_field_width_p">400dp</dimen>
     <dimen name="text_size_medication">12sp</dimen>
     <dimen name="swith_padding">20dp</dimen>
     <dimen name="value_text_size">28sp</dimen>

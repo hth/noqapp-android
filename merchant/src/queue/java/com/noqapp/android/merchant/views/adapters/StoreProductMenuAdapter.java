@@ -1,19 +1,19 @@
 package com.noqapp.android.merchant.views.adapters;
 
-
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
@@ -25,40 +25,60 @@ import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class StoreMenuAdapter extends BaseAdapter {
+public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private List<StoreCartItem> menuItemsList;
+    private List<JsonStoreCategory> listDataHeader;
+    private HashMap<String, List<StoreCartItem>> listDataChild;
+    private HashMap<String, StoreCartItem> orders = new HashMap<>();
     private MenuItemUpdate menuItemUpdate;
     private boolean isRestaurant;
 
-    public StoreMenuAdapter(Context context, List<StoreCartItem> menuItemsList, MenuItemUpdate menuItemUpdate) {
+    public StoreProductMenuAdapter(
+            Context context,
+            List<JsonStoreCategory> listDataHeader,
+            HashMap<String, List<StoreCartItem>> listDataChild
+            , MenuItemUpdate menuItemUpdate) {
         this.context = context;
-        this.menuItemsList = menuItemsList;
+        this.listDataHeader = listDataHeader;
+        this.listDataChild = listDataChild;
         this.menuItemUpdate = menuItemUpdate;
         isRestaurant = LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS;
+        orders.clear();
     }
 
-    public int getCount() {
-        return this.menuItemsList.size();
+    public HashMap<String, StoreCartItem> getOrders() {
+        return orders;
     }
 
-    public Object getItem(int n) {
-        return null;
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        return this.listDataChild
+                .get(this.listDataHeader.get(groupPosition).getCategoryId())
+                .get(childPosition);
     }
 
-    public long getItemId(int n) {
-        return 0;
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
     }
 
-    public View getView(final int position, View convertView, ViewGroup viewGroup) {
+    @Override
+    public View getChildView(
+            final int groupPosition,
+            final int childPosition,
+            boolean isLastChild,
+            View convertView,
+            ViewGroup parent
+    ) {
         final ChildViewHolder childViewHolder;
-        final StoreCartItem storeCartItem = menuItemsList.get(position);
+        final StoreCartItem storeCartItem = (StoreCartItem) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_menu_child, viewGroup, false);
+            convertView = infalInflater.inflate(R.layout.list_item_menu_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
             childViewHolder.tv_child_title_details = convertView.findViewById(R.id.tv_child_title_details);
@@ -97,7 +117,7 @@ public class StoreMenuAdapter extends BaseAdapter {
             default:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
         }
-        
+
         childViewHolder.tv_cat.setVisibility(isRestaurant ? View.VISIBLE : View.INVISIBLE);
         childViewHolder.iv_delete.setOnClickListener(v -> {
             ShowCustomDialog showDialog = new ShowCustomDialog(context);
@@ -107,6 +127,7 @@ public class StoreMenuAdapter extends BaseAdapter {
                     new CustomToast().showToast(context, "Deleted from Menu Item List");
                     menuItemUpdate.menuItemUpdate(jsonStoreProduct, ActionTypeEnum.REMOVE);
                 }
+
                 @Override
                 public void btnNegativeClick() {
                     //Do nothing
@@ -121,7 +142,55 @@ public class StoreMenuAdapter extends BaseAdapter {
         } else {
             childViewHolder.rl_menu_child.setBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
         }
+
         return convertView;
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId()).size();
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        return this.listDataHeader.get(groupPosition);
+    }
+
+    @Override
+    public int getGroupCount() {
+        return this.listDataHeader.size();
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        String headerTitle = ((JsonStoreCategory) getGroup(groupPosition)).getCategoryName();
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.list_item_menu_group, parent, false);
+        }
+        // ExpandableListView mExpandableListView = (ExpandableListView) parent;
+        // mExpandableListView.expandGroup(groupPosition);
+        TextView tv_list_header = convertView.findViewById(R.id.tv_list_header);
+        tv_list_header.setTypeface(null, Typeface.BOLD);
+        tv_list_header.setText(headerTitle);
+        //ImageView ivGroupIndicator = convertView.findViewById(R.id.ivGroupIndicator);
+        // ivGroupIndicator.setSelected(isExpanded);
+        return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
     }
 
     private double calculateDiscountPrice(String displayPrice, String discountAmount) {
@@ -149,5 +218,4 @@ public class StoreMenuAdapter extends BaseAdapter {
         void addOrEditProduct(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum);
 
     }
-
 }

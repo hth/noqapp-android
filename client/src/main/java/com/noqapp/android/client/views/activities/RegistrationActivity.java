@@ -16,6 +16,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
+import com.noqapp.android.common.views.activities.helper.CapitalizeEachWordFirstLetterTextWatcher;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -62,6 +63,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         tv_toolbar_title.setText(getString(R.string.register));
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
+        edt_Name.addTextChangedListener(new CapitalizeEachWordFirstLetterTextWatcher(edt_Name));
         edt_Mail = findViewById(R.id.edt_email);
         tv_birthday = findViewById(R.id.tv_birthday);
         edt_pwd = findViewById(R.id.edt_pwd);

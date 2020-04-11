@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
@@ -20,6 +21,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.GroceryEnum;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -460,5 +462,19 @@ public class CommonHelper {
                 Log.e(TAG, "Reached un-supported condition" + businessType);
                 return jsonStoreCategories;
         }
+    }
+
+    public int getFirstVisibleGroup(ExpandableListView expandableListView) {
+        int firstVis = expandableListView.getFirstVisiblePosition();
+        long packedPosition = expandableListView.getExpandableListPosition(firstVis);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
+        return groupPosition;
+    }
+
+    /**
+     * Method to make the first letter CAP of each word of given string
+     * */
+    public static String capitalizeEachWordFirstLetter(String input){
+        return WordUtils.capitalizeFully(input);
     }
 }

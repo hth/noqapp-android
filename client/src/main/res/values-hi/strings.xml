@@ -136,7 +136,7 @@
     <string name="authentication_fail_msg">Please login again.</string>
     <string name="barcode_error">Queue not found</string>
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
-    <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue &#174; Inc</string>
+    <string name="copy_right">NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
     <string name="alert">सावधान</string>
     <string name="estimated_time">You will be serviced: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
@@ -145,7 +145,7 @@
 
     <string name="btn_playstore">Open Play Store</string>
     <string name="playstore_update_title">Newer App Version Available</string>
-    <string name="playstore_update_msg">New version of NoQApp is available on play store. Please update your app to latest version.\n</string>
+    <string name="playstore_update_msg">New version of NoQueue is available on play store. Please update your app to latest version.\n</string>
     <string name="notification_alert">You don\'t have any notifications.</string>
     <string name="home">होम</string>
     <string name="share">शेयर/साझा करें</string>

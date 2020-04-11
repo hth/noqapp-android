@@ -133,7 +133,7 @@ android {
         }
 
         ext.versionName = manifestVersionName()
-        println "Building NoQueue NoQApp for " +
+        println "Building NoQueue for " +
                 "environment: $env " +
                 "app-version: $versionName " +
                 "apkName ends with : $apkName"
