@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -51,6 +52,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class ProductListActivity extends BaseActivity implements
         StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener,
@@ -66,7 +69,8 @@ public class ProductListActivity extends BaseActivity implements
     private int sc_product_type_index = -1;
     private JsonStore jsonStore = null;
     private boolean isViewHidden = true;
-
+    private int selectionPos = -1;
+    private String selectedCategory = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setScreenOrientation();
@@ -294,7 +298,7 @@ public class ProductListActivity extends BaseActivity implements
         TextView tv_measure = customDialogView.findViewById(R.id.tv_measure);
 
         ///
-        final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
+        final TextView tv_category_type = customDialogView.findViewById(R.id.tv_category_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
         final EditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
         final EditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
@@ -356,7 +360,15 @@ public class ProductListActivity extends BaseActivity implements
         for (int i = 0; i < categoryList.size(); i++) {
             categories.add(categoryList.get(i).getCategoryName());
         }
-        sp_category_type.setAdapter(new EnumAdapter(this, categories));
+        tv_category_type.setOnClickListener(v -> {
+            if(selectionPos != -1){
+                selectCategoryDialog(categories, tv_category_type, selectionPos);
+            }else if(null != temp){
+                selectCategoryDialog(categories,tv_category_type ,getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList));
+            }else {
+                selectCategoryDialog(categories, tv_category_type, -1);
+            }
+        });
         sp_unit.setAdapter(new EnumAdapter(this, prodUnits));
         sc_product_type.addSegments(prodTypesSegment);
 
@@ -377,7 +389,7 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_limit.setText(String.valueOf(jsonStoreProduct.getInventoryLimit()));
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
             edt_prod_unit_value.setText(String.valueOf(CommonHelper.divideByHundred(jsonStoreProduct.getUnitValue())));
-            sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList));
+            tv_category_type.setText(categories.get(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList)));
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
             sc_product_type.setSelectedSegment(getItemPosition(prodTypesSegment, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {
@@ -409,7 +421,7 @@ public class ProductListActivity extends BaseActivity implements
                     jsonStoreProduct.setProductDiscount((int) (convertStringToFloat(edt_prod_discount.getText().toString()) * 100));
                     jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(prodTypesSegment.get(sc_product_type_index)));
                     jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
-                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString(), categoryList));
+                    jsonStoreProduct.setStoreCategoryId(getCategoryID(categories.get(selectionPos), categoryList));
                     jsonStoreProduct.setPackageSize(convertStringToInt(edt_prod_pack_size.getText().toString()));
                     jsonStoreProduct.setUnitValue(convertStringToInt(edt_prod_unit_value.getText().toString()) * 100);
                     jsonStoreProduct.setInventoryLimit(convertStringToInt(edt_prod_limit.getText().toString()));
@@ -476,7 +488,7 @@ public class ProductListActivity extends BaseActivity implements
     private int getCategoryItemPosition(String category, ArrayList<JsonStoreCategory> tempJsonStoreCategories) {
         for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
             if (category.equals(tempJsonStoreCategories.get(i).getCategoryId())) {
-                return i + 1;
+                return i;
             }
         }
         return 0;
@@ -554,5 +566,48 @@ public class ProductListActivity extends BaseActivity implements
         } else {
             return Float.parseFloat(input);
         }
+    }
+
+
+    private void selectCategoryDialog(List<String> category_data, TextView textView, int autoSelect) {
+        selectionPos = -1;
+        selectedCategory = "";
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.select_category, null, false);
+        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+        SegmentedControl sc_category = customDialogView.findViewById(R.id.sc_category);
+
+        sc_category.addSegments(category_data);
+        sc_category.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    selectionPos = segmentViewHolder.getAbsolutePosition();
+                    textView.setText(category_data.get(selectionPos));
+                }
+            }
+        });
+        if(-1 != autoSelect)
+            sc_category.setSelectedSegment(autoSelect);
+        tvtitle.setText("Select Category");
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        ImageView iv_close = customDialogView.findViewById(R.id.iv_close);
+        Button btn_add = customDialogView.findViewById(R.id.btn_add);
+        iv_close.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_add.setOnClickListener(v -> {
+
+            if (selectionPos == -1) {
+                new CustomToast().showToast(this, "please select a category");
+            } else {
+                selectedCategory = category_data.get(selectionPos);
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
     }
 }
