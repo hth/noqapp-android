@@ -8,13 +8,17 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,7 +27,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
@@ -49,7 +52,9 @@ import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
@@ -67,6 +72,10 @@ public class ProductListActivity extends BaseActivity implements
     private int sc_product_type_index = -1;
     private JsonStore jsonStore = null;
     private boolean isViewHidden = true;
+    private int selectionPos = -1;
+    private String selectedCategory = "";
+    private Map<String, Integer> mapIndex;
+    View updateview = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,26 +304,26 @@ public class ProductListActivity extends BaseActivity implements
         TextView tv_measure = customDialogView.findViewById(R.id.tv_measure);
 
         ///
-        final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
+        final TextView tv_category_type = customDialogView.findViewById(R.id.tv_category_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
-        final TextInputEditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
-        final TextInputEditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
-        final TextInputEditText edt_prod_limit = customDialogView.findViewById(R.id.edt_prod_limit);
-        final TextInputEditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
-        final TextInputEditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
-        final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
-        final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
+        final EditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
+        final EditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
+        final EditText edt_prod_limit = customDialogView.findViewById(R.id.edt_prod_limit);
+        final EditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
+        final EditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
+        final EditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
+        final EditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
         final SegmentedControl sc_product_type = customDialogView.findViewById(R.id.sc_product_type);
         edt_prod_name.addTextChangedListener(new CustomTextWatcher(tv_name, "Name", true, edt_prod_name));
         edt_prod_description.addTextChangedListener(new CustomTextWatcher(tv_description, "Description"));
         edt_prod_price.addTextChangedListener(new CustomTextWatcher(tv_price, LaunchActivity.getCurrencySymbol() + " Price", true));
-        edt_prod_unit_value.addTextChangedListener(new CustomTextWatcher(tv_unit, "Unit"));
+        edt_prod_unit_value.addTextChangedListener(new CustomTextWatcher(tv_unit, "Quantity"));
 
         formatText(tv_name, "Name", "");
         formatText(tv_description, "Description", "");
         formatText(tv_price, LaunchActivity.getCurrencySymbol() + " Price ", "");
-        formatText(tv_unit, "Unit", "");
-        formatText(tv_measure, "Measurement", "");
+        formatText(tv_unit, "Quantity", "");
+        formatText(tv_measure, "Unit", "");
 
         if (actionTypeEnum == ActionTypeEnum.ADD) {
             tv_toolbar_title.setText("Add Product");
@@ -333,11 +342,7 @@ public class ProductListActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
-                if (position == 0) {
-                    formatText(tv_measure, "Measurement", "");
-                } else {
-                    formatText(tv_measure, "Measurement", sp_unit.getSelectedItem().toString());
-                }
+                formatText(tv_measure, "Unit", sp_unit.getSelectedItem().toString());
             }
 
             @Override
@@ -354,7 +359,6 @@ public class ProductListActivity extends BaseActivity implements
 
         // sort the list alphabetically
         Collections.sort(prodUnits);
-        prodUnits.add(0, "Measurement");
         final ArrayList<JsonStoreCategory> categoryList = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
         // sort the list alphabetically
         Collections.sort(categoryList, (JsonStoreCategory jsc1, JsonStoreCategory jsc2) -> jsc1.getCategoryName().compareTo(jsc2.getCategoryName()));
@@ -362,8 +366,15 @@ public class ProductListActivity extends BaseActivity implements
         for (int i = 0; i < categoryList.size(); i++) {
             categories.add(categoryList.get(i).getCategoryName());
         }
-        categories.add(0, "Select product category");
-        sp_category_type.setAdapter(new EnumAdapter(this, categories));
+        tv_category_type.setOnClickListener(v -> {
+            if (selectionPos != -1) {
+                selectCategoryDialog(categories, tv_category_type, selectionPos);
+            } else if (null != temp) {
+                selectCategoryDialog(categories, tv_category_type, getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList));
+            } else {
+                selectCategoryDialog(categories, tv_category_type, -1);
+            }
+        });
         sp_unit.setAdapter(new EnumAdapter(this, prodUnits));
         sc_product_type.addSegments(prodTypesSegment);
 
@@ -377,6 +388,7 @@ public class ProductListActivity extends BaseActivity implements
             }
         });
         if (null != temp) {
+            selectionPos = -1;
             edt_prod_name.setText(jsonStoreProduct.getProductName());
             edt_prod_price.setText(jsonStoreProduct.getDisplayPrice());
             edt_prod_description.setText(jsonStoreProduct.getProductInfo());
@@ -384,7 +396,7 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_limit.setText(String.valueOf(jsonStoreProduct.getInventoryLimit()));
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
             edt_prod_unit_value.setText(String.valueOf(CommonHelper.divideByHundred(jsonStoreProduct.getUnitValue())));
-            sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList));
+            tv_category_type.setText(categories.get(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList)));
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
             sc_product_type.setSelectedSegment(getItemPosition(prodTypesSegment, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {
@@ -406,12 +418,8 @@ public class ProductListActivity extends BaseActivity implements
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         btn_add_update.setOnClickListener(v -> {
-            if (sp_category_type.getSelectedItemPosition() == 0) {
-                new CustomToast().showToast(ProductListActivity.this, "Please select product category");
-            } else if (sc_product_type_index == -1) {
+            if (sc_product_type_index == -1) {
                 new CustomToast().showToast(ProductListActivity.this, "Please select product type");
-            } else if (sp_unit.getSelectedItemPosition() == 0) {
-                new CustomToast().showToast(ProductListActivity.this, "Please select product unit");
             } else {
                 if (validate(edt_prod_name, edt_prod_price, edt_prod_unit_value, edt_prod_pack_size)) {
                     jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
@@ -420,7 +428,7 @@ public class ProductListActivity extends BaseActivity implements
                     jsonStoreProduct.setProductDiscount((int) (convertStringToFloat(edt_prod_discount.getText().toString()) * 100));
                     jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(prodTypesSegment.get(sc_product_type_index)));
                     jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
-                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString(), categoryList));
+                    jsonStoreProduct.setStoreCategoryId(getCategoryID(categories.get(selectionPos), categoryList));
                     jsonStoreProduct.setPackageSize(convertStringToInt(edt_prod_pack_size.getText().toString()));
                     jsonStoreProduct.setUnitValue(convertStringToInt(edt_prod_unit_value.getText().toString()) * 100);
                     jsonStoreProduct.setInventoryLimit(convertStringToInt(edt_prod_limit.getText().toString()));
@@ -440,6 +448,7 @@ public class ProductListActivity extends BaseActivity implements
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             new CustomToast().showToast(this, "Action perform successfully");
+            selectionPos = -1;
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
                 StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
@@ -454,14 +463,14 @@ public class ProductListActivity extends BaseActivity implements
     }
 
 
-    private boolean validate(TextInputEditText... views) {
+    private boolean validate(EditText... views) {
         boolean isValid = true;
-        for (TextInputEditText v : views) {
+        for (EditText v : views) {
             v.setError(null);
         }
         AppUtils.hideKeyBoard(this);
         String errorMsg = "";
-        for (TextInputEditText v : views) {
+        for (EditText v : views) {
             if (TextUtils.isEmpty(v.getText().toString())) {
                 v.setError(getString(R.string.error_field_required));
                 if (isValid) {
@@ -487,7 +496,7 @@ public class ProductListActivity extends BaseActivity implements
     private int getCategoryItemPosition(String category, ArrayList<JsonStoreCategory> tempJsonStoreCategories) {
         for (int i = 0; i < tempJsonStoreCategories.size(); i++) {
             if (category.equals(tempJsonStoreCategories.get(i).getCategoryId())) {
-                return i + 1;
+                return i;
             }
         }
         return 0;
@@ -513,6 +522,7 @@ public class ProductListActivity extends BaseActivity implements
             this.view = view;
             this.prefix = prefix;
         }
+
         private CustomTextWatcher(TextView view, String prefix, boolean isCurrency) {
             this.view = view;
             this.prefix = prefix;
@@ -534,8 +544,8 @@ public class ProductListActivity extends BaseActivity implements
 
         public void afterTextChanged(Editable editable) {
             String text = isCap ? CommonHelper.capitalizeEachWordFirstLetter(editable.toString()) : editable.toString();
-            if(isCurrency)
-                text = LaunchActivity.getCurrencySymbol() + " "+text;
+            if (isCurrency)
+                text = LaunchActivity.getCurrencySymbol() + " " + text;
             formatText(view, prefix, text);
             if (editable.length() != 0 && isCap) {
                 sourceTextView.removeTextChangedListener(this);
@@ -563,6 +573,72 @@ public class ProductListActivity extends BaseActivity implements
             return 0f;
         } else {
             return Float.parseFloat(input);
+        }
+    }
+
+
+    private void selectCategoryDialog(List<String> categories, TextView textView, int autoSelect) {
+        selectionPos = -1;
+        selectedCategory = "";
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View customDialogView = inflater.inflate(R.layout.select_category, null, false);
+        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+        ListView listView = customDialogView.findViewById(R.id.listView);
+        listView.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_single_choice, categories));
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            selectionPos = i;
+            textView.setText(categories.get(selectionPos));
+        });
+        initIndexList(categories);
+        displayIndex(customDialogView, listView);
+        if (-1 != autoSelect) {
+            listView.setItemChecked(autoSelect, true);
+        }
+        tvtitle.setText("Select Category");
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        ImageView iv_close = customDialogView.findViewById(R.id.iv_close);
+        Button btn_done = customDialogView.findViewById(R.id.btn_done);
+        iv_close.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_done.setOnClickListener(v -> {
+            if (selectionPos == -1) {
+                new CustomToast().showToast(this, "please select a category");
+            } else {
+                selectedCategory = categories.get(selectionPos);
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
+    }
+
+    private void initIndexList(List<String> categories) {
+        mapIndex = new LinkedHashMap<String, Integer>();
+        for (int i = 0; i < categories.size(); i++) {
+            String category = categories.get(i);
+            String index = category.substring(0, 1);
+            if (mapIndex.get(index) == null)
+                mapIndex.put(index, i);
+        }
+    }
+
+    private void displayIndex(View view, ListView listView) {
+        LinearLayout indexLayout = view.findViewById(R.id.side_index);
+        TextView textView;
+        List<String> indexList = new ArrayList<String>(mapIndex.keySet());
+        for (String index : indexList) {
+            textView = (TextView) getLayoutInflater().inflate(
+                    R.layout.side_index_item, null);
+            textView.setText(index);
+            textView.setOnClickListener(v -> {
+                TextView selectedIndex = (TextView) v;
+                listView.setSelection(mapIndex.get(selectedIndex.getText()));
+            });
+            indexLayout.addView(textView);
         }
     }
 }

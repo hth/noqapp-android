@@ -13,7 +13,7 @@
 
 
     <color name="segment_bg_color">#ffffff</color>
-    <color name="segment_bg_color_select">#CD334E</color>
+    <color name="segment_bg_color_select">#909090</color>
     <color name="segment_text_color">@android:color/black</color>
     <color name="segment_text_color_select">@android:color/white</color>
     <color name="rating_select">@color/colorPrimaryDark</color>
@@ -22,4 +22,5 @@
     <color name="toast_background">@color/color_indigo_toast</color>
     <color name="download_circle_bg">@color/colorAccent</color>
     <color name="pressed_color">#dc7083</color>
+    <color name="color_header">#909090</color>
 </resources>

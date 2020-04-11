@@ -182,16 +182,19 @@
     <string name="screen_product_list">Products List</string>
 
     <string name="edit_prod">Edit Product</string>
-    <string name="product_name">Name</string>
-    <string name="product_price">Product price</string>
+    <string name="product_name">Name <font color='red'>\u002A</font></string>
+    <string name="product_price">Product price <font color='red'>\u002A</font></string>
     <string name="product_daily_limit">Inventory</string>
     <string name="product_desc">Description</string>
     <string name="product_discount">Product discount</string>
+    <string name="product_category">Product category <font color='red'>\u002A</font></string>
+    <string name="product_type">Product type <font color='red'>\u002A</font></string>
+    <string name="product_unit">Unit <font color='red'>\u002A</font></string>
     <string name="store_offline">Go Offline</string>
     <string name="store_on">Online</string>
     <string name="store_offline_1">Offline</string>
-    <string name="product_pack_size">Pack size</string>
-    <string name="product_unit_value">Unit</string>
+    <string name="product_pack_size">Package size <font color='red'>\u002A</font></string>
+    <string name="product_unit_value">Quantity <font color='red'>\u002A</font></string>
     <string name="submit">Submit</string>
     <string name="screen_followup">Patient Follow-up List</string>
     <string name="select_form">Select Form Type</string>
