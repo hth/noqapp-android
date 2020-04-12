@@ -75,7 +75,6 @@ public class ProductListActivity extends BaseActivity implements
     private int selectionPos = -1;
     private String selectedCategory = "";
     private Map<String, Integer> mapIndex;
-    View updateview = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -401,12 +400,12 @@ public class ProductListActivity extends BaseActivity implements
             sc_product_type.setSelectedSegment(getItemPosition(prodTypesSegment, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {
                 tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_online.setBackgroundResource(R.drawable.button_drawable_red_square);
+                tv_online.setBackgroundResource(R.drawable.bg_nogradient_square);
                 tv_online.setText("Online");
                 tv_online.setTextColor(Color.WHITE);
                 tv_offline.setTextColor(Color.BLACK);
             } else {
-                tv_offline.setBackgroundResource(R.drawable.button_drawable_red_square);
+                tv_offline.setBackgroundResource(R.drawable.bg_nogradient_square);
                 tv_online.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_online.setTextColor(Color.BLACK);
                 tv_offline.setTextColor(Color.WHITE);

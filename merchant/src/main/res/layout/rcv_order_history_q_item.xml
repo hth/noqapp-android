@@ -108,7 +108,7 @@
                     android:id="@+id/tv_order_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_drawable_red"
+                    android:background="@drawable/bg_gradient_round"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
                     android:gravity="center"

@@ -91,7 +91,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonPurchaseOrder.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonPurchaseOrder.getCustomerName());
         // recordHolder.iv_new.setVisibility(jsonPurchaseOrder.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
         // if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
-        recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
+        recordHolder.rl_sequence_new_time.setBackgroundColor(ContextCompat.getColor(context, R.color.q_order_top_border));
         recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
         recordHolder.tv_join_timing.setTextColor(Color.WHITE);
 //        } else {
@@ -111,7 +111,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             switch (jsonPurchaseOrder.getPaymentStatus()) {
                 case PA:
                     recordHolder.tv_order_data.setText("Paid");
-                    recordHolder.tv_order_data.setBackgroundResource(R.drawable.bg_nogradient_round);
+                    recordHolder.tv_order_data.setBackgroundResource(R.drawable.bg_gradient_round);
                     if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                         recordHolder.tv_order_data.setBackgroundResource(R.drawable.grey_background);
                         recordHolder.tv_order_data.setText("Refund Due");

@@ -46,11 +46,11 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.tv_menu_header.setText(dataSet.get(listPosition).getCategoryName());
         if (selected_pos == listPosition) {
+            holder.ll_header.setBackgroundColor(Color.BLACK);
+            holder.tv_menu_header.setTextColor(Color.BLACK);
+        } else {
             holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.color_action_bar));
             holder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
-        } else {
-            holder.ll_header.setBackgroundColor(Color.WHITE);
-            holder.tv_menu_header.setTextColor(Color.BLACK);
         }
         holder.tv_menu_header.setOnClickListener(v -> listener.menuHeaderClick(listPosition));
     }
