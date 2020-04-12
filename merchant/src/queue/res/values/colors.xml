@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#CD334E</color>
-    <color name="colorPrimaryDark">#b82d46</color>
-    <color name="colorAccent">#CD334E</color>
-    <color name="color_action_bar">#CD334E</color>
+    <color name="colorPrimary">#aab2bd</color>
+    <color name="colorPrimaryDark">#656d78</color>
+    <color name="colorAccent">#aab2bd</color>
+    <color name="color_action_bar">#aab2bd</color>
     <color name="color_indigo_toast">#6e329b</color>
 
     <color name="btn_txt_color">#fff</color>
-    <color name="radio_button_color">#CD334E</color>
-
-    <color name="switch_tack_color">#db96a2</color>
+    <color name="radio_button_color">#4a89dc</color>
+    <color name="switch_tack_color">#cc5d9cec</color>
 
 
     <color name="segment_bg_color">#ffffff</color>
@@ -21,6 +20,16 @@
 
     <color name="toast_background">@color/color_indigo_toast</color>
     <color name="download_circle_bg">@color/colorAccent</color>
-    <color name="pressed_color">#dc7083</color>
+    <color name="pressed_color">#ccd1d9</color>
     <color name="color_header">#909090</color>
+
+    <color name="btn_start_color">#5d9cec</color>
+    <color name="btn_end_color">#4a89dc</color>
+
+    <color name="product_grid_color">#e07e3d</color>
+
+
+    <!--    color related to order q items-->
+    <color name="q_order_btn_unpaid">#4a89dc</color>
+    <color name="q_order_top_border">#e07e3d</color>
 </resources>
