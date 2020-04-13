@@ -24,4 +24,7 @@
     <color name="rating_unselect">#f89678</color>
     <color name="review_color">#a1a1a1</color>
     <color name="top_round_color">#f2f2f2</color>
+
+    <color name="q_order_btn_unpaid">#b85050</color>
+
 </resources>
