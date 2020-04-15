@@ -475,11 +475,21 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             }
             break;
             default: {
-                // open order screen
-                in = new Intent(getActivity(), StoreWithMenuActivity.class);
-                b.putSerializable("BizStoreElastic", item);
-                in.putExtras(b);
-                startActivity(in);
+                // @TODO Modification done due to corona crisis, Re-check all the functionality
+                //   proper testing required
+                if(item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q){
+                    in = new Intent(getActivity(), BeforeJoinActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                    in.putExtra(IBConstant.KEY_FROM_LIST, false);
+                    in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                    startActivity(in);
+                }else{
+                    // open order screen
+                    in = new Intent(getActivity(), StoreWithMenuActivity.class);
+                    b.putSerializable("BizStoreElastic", item);
+                    in.putExtras(b);
+                    startActivity(in);
+                }
             }
         }
     }

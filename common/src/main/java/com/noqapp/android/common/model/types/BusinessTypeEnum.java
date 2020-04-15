@@ -16,7 +16,7 @@ public enum BusinessTypeEnum implements Serializable {
     SM("SM", "Shopping Mall", Q, "Queue"),
     MT("MT", "Movie Theater", Q, "Queue"),
     SC("SC", "School", Q, "Queue"),
-    GS("GS", "Grocery Store", O, "Store"),
+    GS("GS", "Grocery Store", Q, "Queue"),
     CF("CF", "Cafe", O, "Store"),
     DO("DO", "Hospital/Doctor", Q, "Queue"),
     HS("HS", "Health Care Services", O, "Store"),
