@@ -60,6 +60,7 @@ import com.noqapp.android.client.views.activities.AllEventsActivity;
 import com.noqapp.android.client.views.activities.AllFeedsActivity;
 import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
 import com.noqapp.android.client.views.activities.BeforeJoinActivity;
+import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.EventsDetailActivity;
@@ -478,10 +479,12 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 // @TODO Modification done due to corona crisis, Re-check all the functionality
                 //   proper testing required
                 if(item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q){
-                    in = new Intent(getActivity(), BeforeJoinActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
-                    in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                    in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                    in = new Intent(getActivity(), BeforeJoinOrderQueueActivity.class);
+                    b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                    b.putBoolean(IBConstant.KEY_FROM_LIST, false);
+                    b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
+                    b.putSerializable("BizStoreElastic", item);
+                    in.putExtras(b);
                     startActivity(in);
                 }else{
                     // open order screen
