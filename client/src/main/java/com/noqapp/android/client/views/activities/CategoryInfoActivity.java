@@ -442,7 +442,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     }
 
-    public FlexboxLayoutManager getFlexBoxLayoutManager() {
+    private FlexboxLayoutManager getFlexBoxLayoutManager() {
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);

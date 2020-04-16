@@ -141,7 +141,7 @@
                     android:minLines="1"
                     android:paddingRight="5dp"
                     android:text="SSD Hospital Kopairkhairane"
-                    android:textSize="24sp" />
+                    android:textSize="@dimen/text_size_fourteen" />
 
                 <TextView
                     android:id="@+id/tv_consult_fees"
