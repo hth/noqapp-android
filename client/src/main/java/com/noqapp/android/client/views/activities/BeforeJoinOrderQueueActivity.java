@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -31,13 +30,9 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.DependentAdapter;
-import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueuePresenter {
     private final String TAG = BeforeJoinOrderQueueActivity.class.getSimpleName();
