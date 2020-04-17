@@ -10,14 +10,20 @@ import java.io.Serializable;
  */
 public enum BusinessTypeEnum implements Serializable {
     RS("RS", "Restaurant", O, "Store"),
+    RSQ("RSQ", "Restaurant (Queue Only)", Q, "Store"),
     FT("FT", "Food Truck", O, "Store"),
+    FTQ("FT", "Food Truck (Queue Only)", Q, "Store"),
     BA("BA", "Bar", O, "Store"),
-    ST("ST", "Store", O, "Store"),
+    BAQ("BA", "Bar (Queue Only)", Q, "Store"),
+    ST("ST", "Generic Store", O, "Store"),
+    STQ("STQ", "Generic Store (Queue Online)", Q, "Store"),
     SM("SM", "Shopping Mall", Q, "Queue"),
     MT("MT", "Movie Theater", Q, "Queue"),
     SC("SC", "School", Q, "Queue"),
-    GS("GS", "Grocery Store", Q, "Store"),
+    GS("GS", "Grocery Store", O, "Store"),
+    GSQ("GSQ", "Grocery Store (Queue Only)", Q, "Store"),
     CF("CF", "Cafe", O, "Store"),
+    CFQ("CFQ", "Cafe (Queue Online)", Q, "Store"),
     DO("DO", "Hospital/Doctor", Q, "Queue"),
     HS("HS", "Health Care Services", O, "Store"),
     PH("PH", "Pharmacy", O, "Store"),                //Users cannot directly order these, as these have to be prescribed
