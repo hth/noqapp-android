@@ -140,7 +140,7 @@
     <string name="alert">सावधान</string>
     <string name="estimated_time">You will be serviced: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
-    <string name="error_join">QJoin</string>
+    <string name="error_join">Remote Queue Not Enabled</string>
     <string name="login_hint">देश के कोड के बिना फोन नंबर दर्ज करें। </string>
 
     <string name="btn_playstore">Open Play Store</string>

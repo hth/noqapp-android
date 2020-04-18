@@ -269,7 +269,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     dismissProgress();
                 }
             } else {
-                new CustomToast().showToast(OrderActivity.this, "Please add email id to your profile, if not added & verify it");
+                new CustomToast().showToast(OrderActivity.this, "Please verify email address. Go to profile to verify.");
             }
         });
     }

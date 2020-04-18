@@ -224,7 +224,7 @@ public class UserAdditionalInfoFragment extends BaseFragment implements Merchant
         MerchantProfileApiCalls merchantProfileApiCalls = new MerchantProfileApiCalls();
         merchantProfileApiCalls.setMerchantProfessionalPresenter(this);
         if (jsonProfessionalProfilePersonal.getLicenses().size() == 0 && jsonProfessionalProfilePersonal.getEducation().size() == 0) {
-            new CustomToast().showToast(getActivity(), "Please add one record in education or License");
+            new CustomToast().showToast(getActivity(), "Please add education or License");
         } else {
             showProgress();
             jsonProfessionalProfilePersonal.setAboutMe(edt_about_me.getText().toString());

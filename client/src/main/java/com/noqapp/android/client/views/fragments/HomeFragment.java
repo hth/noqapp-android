@@ -86,6 +86,7 @@ import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
+import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
@@ -485,7 +486,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             case STQ:
                 //@TODO Modification done due to corona crisis, Re-check all the functionality
                 //proper testing required
-                if (bizStoreElastic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+                if (BusinessSupportEnum.OQ == bizStoreElastic.getBusinessType().getBusinessSupport()) {
                     in = new Intent(getActivity(), BeforeJoinOrderQueueActivity.class);
                     b.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                     b.putBoolean(IBConstant.KEY_FROM_LIST, false);

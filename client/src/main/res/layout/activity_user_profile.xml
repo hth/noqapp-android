@@ -365,5 +365,5 @@
             android:background="@color/button_color"
             android:layout_alignParentBottom="true"
             android:visibility="gone"
-            android:text="Please verify your E-mail"/>
+            android:text="Please verify email address. Go to profile to verify."/>
 </RelativeLayout>

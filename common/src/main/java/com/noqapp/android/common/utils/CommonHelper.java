@@ -451,6 +451,12 @@ public class CommonHelper {
     public static List<JsonStoreCategory> populateWithAllCategories(BusinessTypeEnum businessType) {
         List<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
         switch (businessType) {
+            case RS:
+            case FT:
+            case BA:
+            case ST:
+            case CF:
+                return jsonStoreCategories;
             case GS:
                 GroceryEnum[] values = GroceryEnum.values();
                 for (GroceryEnum groceryEnum : values) {
