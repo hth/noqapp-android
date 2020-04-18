@@ -18,7 +18,7 @@
     <string name="screen_upcoming_appointment">My Appointments</string>
 
     <string name="action_settings">Settings</string>
-    <string name="join">Confirm Queue</string>
+    <string name="join">Join Queue</string>
     <string name="login_to_join">Login to Join</string>
     <string name="cancel">Cancel</string>
     <string name="ratetheapp">Rate the app</string>
@@ -351,7 +351,7 @@
     <string name="request_email_otp">Request Email OTP</string>
     <string name="verify_email">Verify Email</string>
     <string name="offers">Coupons</string>
-    <string name="screen_qconfirm">Confirm Queue</string>
+    <string name="screen_qconfirm">Join Queue</string>
     <string name="notification_setting">Notification</string>
     <string name="gps_error_msg_final">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
     <string name="gps_error_msg">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
