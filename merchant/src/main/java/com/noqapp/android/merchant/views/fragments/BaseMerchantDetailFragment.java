@@ -142,8 +142,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         rv_queue_people = itemView.findViewById(R.id.rv_queue_people);
         tv_counter_name = itemView.findViewById(R.id.tv_counter_name);
         rv_queue_people.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        rv_queue_people.setLayoutManager(horizontalLayoutManager);
+        rv_queue_people.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         rv_queue_people.setItemAnimator(new DefaultItemAnimator());
         btn_skip = itemView.findViewById(R.id.btn_skip);
         btn_next = itemView.findViewById(R.id.btn_next);

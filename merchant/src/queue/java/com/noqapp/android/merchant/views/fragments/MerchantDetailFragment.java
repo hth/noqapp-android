@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -89,6 +90,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 ShowAlertInformation.showThemeDialog(context, "Unauthorized access", "You are not allowed to use this feature");
             }
         });
+        if (!LaunchActivity.isTablet)
+            rv_queue_people.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         return view;
     }
 
