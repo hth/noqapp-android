@@ -3,6 +3,8 @@
 
     <color name="colorActionbar">#FFFFFF</color>
     <color name="colorMobile">#d2475f</color>
+    <color name="actionbar_text_color">@android:color/white</color>
+    <color name="actionbar_image_color">@android:color/white</color>
     <color name="color_grey_bg">#f5f5f5</color>
     <color name="color_separator">#EAEAEA</color>
     <color name="color_total_val">#403648</color>

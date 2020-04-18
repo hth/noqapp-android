@@ -19,7 +19,9 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/cross"
+            android:src="@drawable/cross"
+            android:tint="@color/actionbar_image_color"
+            android:tintMode="@color/actionbar_image_color"
             android:padding="10dp" />
 
 
@@ -29,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/edit_prod"
-            android:textColor="@android:color/white"
+            android:textColor="@color/actionbar_text_color"
             android:textSize="18sp"
             android:textStyle="bold" />
 

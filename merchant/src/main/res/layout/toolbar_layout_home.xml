@@ -14,7 +14,9 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/back"
+        android:src="@drawable/back"
+        android:tint="@color/actionbar_image_color"
+        android:tintMode="@color/actionbar_image_color"
         android:padding="10dp" />
 
     <TextView
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_toLeftOf="@+id/iv_home"
-        android:textColor="@android:color/white"
+        android:textColor="@color/actionbar_text_color"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -35,8 +37,9 @@
         android:layout_centerVertical="true"
         android:layout_gravity="right"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/ic_home"
-        android:backgroundTint="@android:color/white"
+        android:src="@drawable/ic_home"
+        android:tint="@color/actionbar_image_color"
+        android:tintMode="@color/actionbar_image_color"
         android:clipToPadding="false"
         android:focusable="true"
         android:visibility="invisible" />

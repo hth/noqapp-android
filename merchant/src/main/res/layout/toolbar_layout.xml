@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   android:id="@+id/toolbar"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="58dp"
-                                   android:background="@drawable/bg_gradient_square"
-                                   app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:background="@drawable/bg_gradient_square"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <ImageView
-            android:id="@+id/actionbarBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/back"
-            android:padding="10dp"/>
+        android:id="@+id/actionbarBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/back"
+        android:tint="@color/actionbar_image_color"
+        android:tintMode="@color/actionbar_image_color"
+        android:padding="10dp" />
 
     <TextView
-            android:id="@+id/tv_toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+        android:id="@+id/tv_toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/actionbar_text_color"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:orientation="horizontal">
 
 
         <FrameLayout
@@ -42,42 +44,44 @@
                 android:layout_marginRight="10dp"
                 android:clipToPadding="false"
                 android:focusable="true"
-                android:visibility="invisible">
+                android:visibility="visible">
 
             <ImageView
-                    android:id="@+id/iv_notification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/ic_notification"
-                    android:padding="12dp"/>
+                android:id="@+id/iv_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/ic_notification"
+                android:backgroundTint="@color/actionbar_image_color"
+                android:backgroundTintMode="@color/actionbar_image_color"
+                android:padding="12dp" />
 
             <TextView
-                    android:id="@+id/tv_badge"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="bottom|right"
-                    android:background="@drawable/badge_bg"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="0"
-                    android:textColor="@android:color/white"
-                    android:textSize="10sp"/>
+                android:id="@+id/tv_badge"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="bottom|right"
+                android:background="@drawable/badge_bg"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
 
         </FrameLayout>
 
 
         <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:maxLength="2"
-                android:text=""
-                android:layout_gravity="center_vertical"
-                android:textColor="@android:color/white"
-                android:drawablePadding="5dp"
-                android:textSize="@dimen/text_size_sixteen"/>
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:drawablePadding="5dp"
+            android:maxLength="2"
+            android:text=""
+            android:textColor="@color/actionbar_text_color"
+            android:textSize="@dimen/text_size_sixteen" />
 
 
     </LinearLayout>
