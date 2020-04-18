@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
@@ -60,6 +61,7 @@ import com.noqapp.android.client.views.activities.AllEventsActivity;
 import com.noqapp.android.client.views.activities.AllFeedsActivity;
 import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
 import com.noqapp.android.client.views.activities.BeforeJoinActivity;
+import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.EventsDetailActivity;
@@ -84,6 +86,7 @@ import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
+import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
@@ -235,7 +238,6 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             LinearLayout rl_feed = view.findViewById(R.id.rl_feed);
             rl_feed.setVisibility(View.GONE);
         }
-
         return view;
     }
 
@@ -280,8 +282,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             pb_events.setVisibility(View.VISIBLE);
 
         } else {
-            if (isAdded())
+            if (isAdded()) {
                 ShowAlertInformation.showNetworkDialog(getActivity());
+            }
         }
 
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
@@ -312,6 +315,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getTokenFCM());
             // tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
+            Crashlytics.log(Log.ERROR, TAG, "On Resume " + e.getLocalizedMessage());
             e.printStackTrace();
         }
     }
@@ -382,8 +386,9 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             searchBusinessStoreApiCalls.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
             searchBusinessStoreApiCalls.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {
-            if (isAdded())
+            if (isAdded()) {
                 ShowAlertInformation.showNetworkDialog(getActivity());
+            }
         }
     }
 
@@ -428,7 +433,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     public void nearMeHospitalResponse(BizStoreElasticList bizStoreElasticList) {
         nearMeHospital = new ArrayList<>();
         for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() == BusinessTypeEnum.DO) {
+            if (BusinessTypeEnum.DO == bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType()) {
                 nearMeHospital.add(bizStoreElasticList.getBizStoreElastics().get(i));
             }
         }
@@ -448,39 +453,58 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     }
 
     @Override
-    public void onStoreItemClick(BizStoreElastic item) {
+    public void onStoreItemClick(BizStoreElastic bizStoreElastic) {
         Intent in;
         Bundle b = new Bundle();
-        switch (item.getBusinessType()) {
+        switch (bizStoreElastic.getBusinessType()) {
             //Level up
             case DO:
             case BK:
             case HS:
                 // open hospital/Bank profile
-                b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                b.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                 b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
                 b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
                 b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
-                b.putSerializable("BizStoreElastic", item);
+                b.putSerializable("BizStoreElastic", bizStoreElastic);
                 in = new Intent(getActivity(), CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
                 startActivity(in);
                 break;
-            case PH: {
+            case PH:
                 // open order screen
                 in = new Intent(getActivity(), StoreDetailActivity.class);
-                b.putSerializable("BizStoreElastic", item);
+                b.putSerializable("BizStoreElastic", bizStoreElastic);
                 in.putExtras(b);
                 startActivity(in);
-            }
-            break;
-            default: {
+                break;
+            case RSQ:
+            case GSQ:
+            case BAQ:
+            case CFQ:
+            case FTQ:
+            case STQ:
+                //@TODO Modification done due to corona crisis, Re-check all the functionality
+                //proper testing required
+                if (BusinessSupportEnum.OQ == bizStoreElastic.getBusinessType().getBusinessSupport()) {
+                    in = new Intent(getActivity(), BeforeJoinOrderQueueActivity.class);
+                    b.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                    b.putBoolean(IBConstant.KEY_FROM_LIST, false);
+                    b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
+                    b.putSerializable("BizStoreElastic", bizStoreElastic);
+                    in.putExtras(b);
+                    startActivity(in);
+                } else {
+                    Log.d(TAG, "Reached un-supported condition");
+                    Crashlytics.log(Log.ERROR, TAG, "Reached un-supported condition " + bizStoreElastic.getBusinessType());
+                }
+                break;
+            default:
                 // open order screen
                 in = new Intent(getActivity(), StoreWithMenuActivity.class);
-                b.putSerializable("BizStoreElastic", item);
+                b.putSerializable("BizStoreElastic", bizStoreElastic);
                 in.putExtras(b);
                 startActivity(in);
-            }
         }
     }
 
@@ -571,6 +595,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 String one = o1.getScheduleDate() + " " + AppUtils.getTimeFourDigitWithColon(o1.getStartTime());
                 return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two));
             } catch (Exception e) {
+                Crashlytics.log(Log.ERROR, TAG, "Failed on currentQueueResponse " + e.getLocalizedMessage());
                 e.printStackTrace();
                 return 0;
             }
@@ -616,16 +641,18 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        if (isAdded())
+        if (isAdded()) {
             new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
+        }
         pb_feed.setVisibility(View.GONE);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         if (null != eej) {
-            if (isAdded())
+            if (isAdded()) {
                 new ErrorResponseHandler().processError(getActivity(), eej);
+            }
         }
         pb_feed.setVisibility(View.GONE);
     }
@@ -897,6 +924,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             );
             sequence.start();
         } catch (Exception e) {
+            Crashlytics.log(Log.ERROR, TAG, "Failed to present showcase sequence " + e.getLocalizedMessage());
             e.printStackTrace();
         }
     }

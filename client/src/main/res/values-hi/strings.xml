@@ -15,7 +15,7 @@
     <string name="screen_view_all">समग्र अवलोकन</string>
     <string name="title_activity_contact_us">हमें संपर्क करें</string>
     <string name="action_settings">सेटिंग्स और पसंद</string>
-    <string name="join">Confirm Queue</string>
+    <string name="join">Join Queue</string>
     <string name="cancel">रद्द करें</string>
     <string name="ratetheapp">एप्लिकेशन का मूल्यांकन करें</string>
     <string name="legal">वैधानिक</string>
@@ -140,7 +140,7 @@
     <string name="alert">सावधान</string>
     <string name="estimated_time">You will be serviced: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
-    <string name="error_join">QJoin</string>
+    <string name="error_join">Remote Queue Not Enabled</string>
     <string name="login_hint">देश के कोड के बिना फोन नंबर दर्ज करें। </string>
 
     <string name="btn_playstore">Open Play Store</string>
@@ -304,7 +304,7 @@
     <string name="delivery_mode">Delivery</string>
     <string name="request_email_otp">Request Email OTP</string>
     <string name="verify_email">Verify Email</string>
-    <string name="screen_qconfirm">Confirm Queue</string>
+    <string name="screen_qconfirm">Join Queue</string>
     <string name="discount_error">Discount has already been applied</string>
     <string name="kiosk_dialog_msg">Continue to launch Kiosk Mode?</string>
     <string name="preference_settings">पसंदीदा समायोजन</string>
