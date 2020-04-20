@@ -202,6 +202,10 @@ public class JsonStoreProduct implements Serializable {
         return this;
     }
 
+    public String getDisplayUnitValue() {
+        return new BigDecimal(unitValue).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
+    }
+
     public String getDisplayPrice() {
         return new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
     }

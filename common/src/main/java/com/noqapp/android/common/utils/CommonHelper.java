@@ -227,10 +227,10 @@ public class CommonHelper {
     public static String getPriceWithUnits(JsonStoreProduct jsonStoreProduct) {
         try {
             if (null != jsonStoreProduct) {
-                Log.d("jsonStoreProduct", jsonStoreProduct.toString());
+                Log.d(TAG, jsonStoreProduct.toString());
                 return jsonStoreProduct.getDisplayPrice()
                         + " / "
-                        + divideByHundred(jsonStoreProduct.getUnitValue())
+                        + jsonStoreProduct.getDisplayUnitValue()
                         + " "
                         + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getDescription());
             } else {
@@ -241,10 +241,6 @@ public class CommonHelper {
             Log.e(TAG, "jsonStoreProduct " + e.getLocalizedMessage(), e);
             return "";
         }
-    }
-
-    public static BigDecimal divideByHundred(int value){
-        return new BigDecimal(value).divide(new BigDecimal(100), MathContext.DECIMAL64);
     }
 
     public static double round(float value) {
