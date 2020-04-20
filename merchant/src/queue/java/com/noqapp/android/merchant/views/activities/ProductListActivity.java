@@ -394,7 +394,7 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
             edt_prod_limit.setText(String.valueOf(jsonStoreProduct.getInventoryLimit()));
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
-            edt_prod_unit_value.setText(String.valueOf(CommonHelper.divideByHundred(jsonStoreProduct.getUnitValue())));
+            edt_prod_unit_value.setText(String.valueOf(jsonStoreProduct.getDisplayUnitValue()));
             tv_category_type.setText(categories.get(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList)));
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
             sc_product_type.setSelectedSegment(getItemPosition(prodTypesSegment, jsonStoreProduct.getProductType().getDescription()));
