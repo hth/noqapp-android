@@ -1,93 +1,119 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_gradient_square">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_square">
 
-    <androidx.cardview.widget.CardView
-                                       xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                       android:id="@+id/cardview"
-                                       android:layout_width="450dp"
-                                       android:layout_height="wrap_content"
-                                       android:layout_gravity="center"
-                                       android:padding="50dp"
-                                       card_view:cardBackgroundColor="@android:color/white"
-                                       card_view:cardCornerRadius="10dp"
-                                       card_view:cardElevation="2dp"
-                                       card_view:cardUseCompatPadding="true">
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardview"
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="50dp"
+        card_view:cardBackgroundColor="@android:color/white"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="2dp"
+        card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:descendantFocusability="beforeDescendants"
-                android:focusableInTouchMode="true"
-                android:padding="50dp"
-                >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:padding="50dp">
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@android:color/white"
-                    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@android:color/white"
+                android:orientation="vertical">
 
                 <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/complete_black_label"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/complete_black_label" />
 
                 <AutoCompleteTextView
-                        android:id="@+id/actv_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/square_white_bg_drawable"
-                        android:hint="@string/prompt_email"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:textColor="@android:color/black"
-                        android:textColorHint="@color/color_login_hint"
-                        android:textSize="@dimen/text_size_fourteen"/>
+                    android:id="@+id/actv_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/square_white_bg_drawable"
+                    android:hint="@string/prompt_email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/color_login_hint"
+                    android:textSize="@dimen/text_size_fourteen" />
 
                 <EditText
-                        android:id="@+id/edt_pwd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/square_white_bg_drawable"
-                        android:hint="@string/prompt_pwd"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:textColor="@android:color/black"
-                        android:textColorHint="@color/color_login_hint"
-                        android:textSize="@dimen/text_size_fourteen"/>
+                    android:id="@+id/edt_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/square_white_bg_drawable"
+                    android:hint="@string/prompt_pwd"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/color_login_hint"
+                    android:textSize="@dimen/text_size_fourteen" />
 
                 <Button
-                        android:id="@+id/btn_login"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginBottom="30dp"
-                        android:background="@drawable/bg_gradient_round"
-                        android:text="@string/sign_in"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_fourteen"/>
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_gradient_round"
+                    android:text="@string/sign_in"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_fourteen" />
 
+                <RelativeLayout
+                    android:id="@+id/rl_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_login"
+                    android:layout_marginBottom="30dp">
+
+                    <TextView
+                        android:id="@+id/tv_forget_pwd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/forget_pwd"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+
+                    <TextView
+                        android:id="@+id/tv_become_merchant"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/become_merchant"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+
+                </RelativeLayout>
 
                 <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/btn_login"
-                        android:gravity="center"
-                        android:text="@string/copy_right"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_link"
+                    android:gravity="center"
+                    android:text="@string/copy_right"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_twelve" />
 
             </LinearLayout>
 

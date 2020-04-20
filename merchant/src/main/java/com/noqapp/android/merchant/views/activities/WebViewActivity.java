@@ -41,8 +41,7 @@ public class WebViewActivity extends BaseActivity {
         setScreenOrientation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(false);
         webView = findViewById(R.id.webView);
         if (null != getIntent().getStringExtra("url")) {
             url = getIntent().getStringExtra("url");
@@ -84,7 +83,6 @@ public class WebViewActivity extends BaseActivity {
             }
 
         });
-        actionbarBack.setOnClickListener(v -> finish());
     }
 
     private void webViewGoBack() {

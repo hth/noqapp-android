@@ -7,4 +7,5 @@ public class IBConstant {
     public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_OBJECT_LIST = "objectList";
     public static final String KEY_OBJECT = "object";
+    public static final String KEY_URL = "url";
 }
