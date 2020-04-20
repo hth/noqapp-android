@@ -100,19 +100,17 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
         });
     }
 
-
-    public int showCartAmount() {
-        int price = 0;
+    public BigDecimal showCartAmount() {
+        BigDecimal price = new BigDecimal(0);
         for (StoreCartItem value : storeMenuActivity.getOrders().values()) {
-            price += value.getChildInput() * value.getFinalDiscountedPrice();
+            price = price.add(new BigDecimal(value.getChildInput()).multiply(value.getFinalDiscountedPrice()));
         }
         return price;
     }
 
     public interface CartOrderUpdate {
-        void updateCartOrderInfo(int amountString);
+        void updateCartOrderInfo(BigDecimal amountString);
     }
-
 
     @Override
     public int getItemCount() {

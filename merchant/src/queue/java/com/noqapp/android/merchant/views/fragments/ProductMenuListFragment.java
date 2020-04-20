@@ -106,8 +106,8 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
     }
 
     @Override
-    public void updateCartOrderInfo(int amountString) {
-        if (amountString > 0) {
+    public void updateCartOrderInfo(BigDecimal amountString) {
+        if (amountString.compareTo(new BigDecimal(0)) > 0) {
             btn_place_order.setVisibility(View.VISIBLE);
             btn_place_order.setText("Your cart amount is: " + amountString);
         } else {
@@ -251,10 +251,10 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
                                 .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice((int)(value.getFinalDiscountedPrice() * 100))
+                                .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
                                 .setProductQuantity(value.getChildInput())
                                 .setProductName(value.getJsonStoreProduct().getProductName()));
-                        price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
+                        price += value.getChildInput() * value.getFinalDiscountedPrice().movePointRight(2).intValue();
                     }
                     JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                             .setCodeQR(codeQR)
