@@ -52,6 +52,7 @@ import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,8 +88,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         rcv_order_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_order_list.setItemAnimator(new DefaultItemAnimator());
         rcv_order_list.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        storeMenuOrderAdapter = new StoreMenuOrderAdapter(childData, storeMenuActivity,
-                this, LaunchActivity.getCurrencySymbol());
+        storeMenuOrderAdapter = new StoreMenuOrderAdapter(childData, storeMenuActivity, this, LaunchActivity.getCurrencySymbol());
         rcv_order_list.setAdapter(storeMenuOrderAdapter);
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
@@ -100,15 +100,14 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         return view;
     }
 
-
     public ProductMenuListFragment(List<StoreCartItem> childData, StoreMenuActivity storeMenuActivity) {
         this.childData = childData;
         this.storeMenuActivity = storeMenuActivity;
     }
 
     @Override
-    public void updateCartOrderInfo(int amountString) {
-        if (amountString > 0) {
+    public void updateCartOrderInfo(BigDecimal amountString) {
+        if (amountString.compareTo(new BigDecimal(0)) > 0) {
             btn_place_order.setVisibility(View.VISIBLE);
             btn_place_order.setText("Your cart amount is: " + amountString);
         } else {
@@ -252,10 +251,10 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
                                 .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice((int)(value.getFinalDiscountedPrice() * 100))
+                                .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
                                 .setProductQuantity(value.getChildInput())
                                 .setProductName(value.getJsonStoreProduct().getProductName()));
-                        price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
+                        price += value.getChildInput() * value.getFinalDiscountedPrice().movePointRight(2).intValue();
                     }
                     JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                             .setCodeQR(codeQR)
@@ -269,8 +268,9 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                     jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
                     jsonPurchaseOrder.setAdditionalNote("");
                     purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                    if(null != mAlertDialog && mAlertDialog.isShowing())
+                    if (null != mAlertDialog && mAlertDialog.isShowing()) {
                         mAlertDialog.dismiss();
+                    }
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }

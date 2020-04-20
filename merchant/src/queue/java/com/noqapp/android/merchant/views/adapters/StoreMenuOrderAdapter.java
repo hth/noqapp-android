@@ -17,6 +17,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
@@ -85,35 +86,31 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
         recordHolder.btn_decrease.setOnClickListener(v -> {
             String val = recordHolder.tv_value.getText().toString();
             int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
-            recordHolder.tv_value.setText("" + number);
-            menuItemsList
-                    .get(position).setChildInput(number);
+            recordHolder.tv_value.setText(String.valueOf(number));
+            menuItemsList.get(position).setChildInput(number);
             if (number <= 0) {
                 storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
                 setMenuItemsList(storeMenuActivity.getCartList());
             } else {
-                storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
-                        .get(position));
+                storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList.get(position));
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
             }
             notifyDataSetChanged();
         });
     }
 
-
-    public int showCartAmount() {
-        int price = 0;
+    public BigDecimal showCartAmount() {
+        BigDecimal price = new BigDecimal(0);
         for (StoreCartItem value : storeMenuActivity.getOrders().values()) {
-            price += value.getChildInput() * value.getFinalDiscountedPrice();
+            price = price.add(new BigDecimal(value.getChildInput()).multiply(value.getFinalDiscountedPrice()));
         }
         return price;
     }
 
     public interface CartOrderUpdate {
-        void updateCartOrderInfo(int amountString);
+        void updateCartOrderInfo(BigDecimal amountString);
     }
-
 
     @Override
     public int getItemCount() {
