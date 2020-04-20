@@ -48,6 +48,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -316,14 +317,14 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
                                 .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice((int) (value.getFinalDiscountedPrice() * 100))
+                                .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
                                 .setProductQuantity(value.getChildInput())
                                 .setProductName(value.getJsonStoreProduct().getProductName())
                                 .setPackageSize(value.getJsonStoreProduct().getPackageSize())
                                 .setUnitValue(value.getJsonStoreProduct().getUnitValue())
                                 .setUnitOfMeasurement(value.getJsonStoreProduct().getUnitOfMeasurement())
                                 .setProductType(value.getJsonStoreProduct().getProductType()));
-                        price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
+                        price += value.getChildInput() * value.getFinalDiscountedPrice().movePointRight(2).intValue();
                     }
                     if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
                         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
@@ -417,10 +418,10 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
     }
 
     @Override
-    public void updateCartOrderInfo(double amountString) {
-        if (amountString > 0) {
+    public void updateCartOrderInfo(BigDecimal amountString) {
+        if (amountString.compareTo(new BigDecimal(0)) > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + ProductUtils.roundOff(amountString));
+            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString.toString());
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");

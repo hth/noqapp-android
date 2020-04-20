@@ -20,6 +20,7 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -411,7 +412,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
                 if (TextUtils.isEmpty(partialPayment)) {
                     return CommonHelper.displayPrice(orderPrice);
                 } else {
-                    return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(orderPrice) - Double.parseDouble(partialPayment)));
+                    return CommonHelper.displayPrice(new BigDecimal(orderPrice).subtract(new BigDecimal(partialPayment)).toString());
                 }
         }
     }
@@ -431,7 +432,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         if (0 == storeDiscount) {
             return CommonHelper.displayPrice(orderPrice);
         } else {
-            return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(orderPrice) + Double.parseDouble(String.valueOf(storeDiscount))));
+            return CommonHelper.displayPrice(new BigDecimal(orderPrice).add(new BigDecimal(storeDiscount)).toString());
         }
     }
 
@@ -439,7 +440,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         if (0 == storeDiscount) {
             return CommonHelper.displayPrice(orderPrice);
         } else {
-            return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(orderPrice) - Double.parseDouble(String.valueOf(storeDiscount))));
+            return CommonHelper.displayPrice(new BigDecimal(orderPrice).subtract(new BigDecimal(storeDiscount)).toString());
         }
     }
 

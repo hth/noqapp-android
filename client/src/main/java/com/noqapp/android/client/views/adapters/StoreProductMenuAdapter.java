@@ -22,6 +22,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -241,16 +242,16 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    private double showCartAmount() {
-        double price = 0;
+    private BigDecimal showCartAmount() {
+        BigDecimal price = new BigDecimal(0);
         for (StoreCartItem value : getOrders().values()) {
-            price += value.getChildInput() * value.getFinalDiscountedPrice();
+            price = price.add(new BigDecimal(value.getChildInput()).multiply(value.getFinalDiscountedPrice()));
         }
         return price;
     }
 
     public interface CartOrderUpdate {
-        void updateCartOrderInfo(double amountString);
+        void updateCartOrderInfo(BigDecimal amountString);
     }
 
     public final class ChildViewHolder {

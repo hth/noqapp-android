@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.utils.ProductUtils;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by chandra on 3/28/18.
@@ -11,13 +12,13 @@ import java.io.Serializable;
 public class StoreCartItem implements Serializable {
 
     private int childInput;
-    private double finalDiscountedPrice;
+    private BigDecimal finalDiscountedPrice;
     private JsonStoreProduct jsonStoreProduct;
 
     public StoreCartItem(int childInput, JsonStoreProduct jsonStoreProduct) {
         this.childInput = childInput;
         this.jsonStoreProduct = jsonStoreProduct;
-        finalDiscountedPrice =  ProductUtils.calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
+        this.finalDiscountedPrice =  ProductUtils.calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
     }
 
     public int getChildInput() {
@@ -38,13 +39,8 @@ public class StoreCartItem implements Serializable {
         return this;
     }
 
-    public double getFinalDiscountedPrice() {
+    public BigDecimal getFinalDiscountedPrice() {
         return finalDiscountedPrice;
-    }
-
-    public StoreCartItem setFinalDiscountedPrice(int finalDiscountedPrice) {
-        this.finalDiscountedPrice = finalDiscountedPrice;
-        return this;
     }
 
     @Override

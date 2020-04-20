@@ -212,8 +212,7 @@ public class CommonHelper {
     }
 
     public static String displayPrice(String number) {
-        BigDecimal bd = new BigDecimal(number).scaleByPowerOfTen(-2);
-        return bd.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
+        return new BigDecimal(number).movePointLeft(2).toString();
     }
 
     public static String displayPrice(int number) {
