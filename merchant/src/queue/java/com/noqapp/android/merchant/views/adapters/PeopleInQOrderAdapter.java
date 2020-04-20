@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -184,7 +185,17 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
                 peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, true);
             }
         });
-
+        if(!LaunchActivity.isTablet) {
+            recordHolder.tv_item_count.setPaintFlags(recordHolder.tv_item_count.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            recordHolder.tv_item_count.setOnClickListener(v -> {
+                if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+                    peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, false);
+                } else {
+                    new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
+                    peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, true);
+                }
+            });
+        }
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RP ||
                 jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RD) {
             recordHolder.tv_order_done.setVisibility(View.VISIBLE);

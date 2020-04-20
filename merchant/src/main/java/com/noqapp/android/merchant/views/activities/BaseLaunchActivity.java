@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -197,6 +198,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             public void onDrawerOpened(View drawerView) {
             }
         };
+        mDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.actionbar_image_color));
+        toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.actionbar_image_color), PorterDuff.Mode.SRC_ATOP);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         actionbarBack.setOnClickListener(v -> onBackPressed());

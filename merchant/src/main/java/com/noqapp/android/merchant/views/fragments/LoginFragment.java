@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -27,10 +29,13 @@ import com.noqapp.android.merchant.model.LoginApiCalls;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.WebViewActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
@@ -49,6 +54,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
     private LoginApiCalls loginApiCalls;
     private MerchantProfileApiCalls merchantProfileModel;
     private View view;
+    private TextView tv_forget_pwd, tv_become_merchant;
 
     public LoginFragment() {
         super();
@@ -60,6 +66,28 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         view = inflater.inflate(R.layout.frag_login, container, false);
         btn_login = view.findViewById(R.id.btn_login);
         actv_email = view.findViewById(R.id.actv_email);
+        tv_forget_pwd = view.findViewById(R.id.tv_forget_pwd);
+        tv_forget_pwd.setOnClickListener(v -> {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                Intent in = new Intent(getActivity(), WebViewActivity.class);
+                in.putExtra(IBConstant.KEY_URL, Constants.URL_FORGET_PWD);
+                in.putExtra("title", "Forgot Password");
+                startActivity(in);
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
+            }
+        });
+        tv_become_merchant = view.findViewById(R.id.tv_become_merchant);
+        tv_become_merchant.setOnClickListener(v -> {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                Intent in = new Intent(getActivity(), WebViewActivity.class);
+                in.putExtra(IBConstant.KEY_URL, Constants.URL_MERCHANT_REGISTER);
+                in.putExtra("title", "Become Merchant");
+                startActivity(in);
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
+            }
+        });
         edt_pwd = view.findViewById(R.id.edt_pwd);
         userList = LaunchActivity.getLaunchActivity().getUserList();
         loginApiCalls = new LoginApiCalls(this);

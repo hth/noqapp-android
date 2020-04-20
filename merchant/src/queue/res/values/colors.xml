@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#AAB2BD</color>
-    <color name="colorPrimaryDark">#656d78</color>
-    <color name="colorAccent">#AAB2BD</color>
-    <color name="color_action_bar">#AAB2BD</color>
+    <color name="colorPrimary">#E6E9ED</color>
+    <color name="colorPrimaryDark">#656D78</color>
+    <color name="colorAccent">#E6E9ED</color>
+    <color name="color_action_bar">#E6E9ED</color>
     <color name="color_indigo_toast">#6E329B</color>
-
+    <color name="actionbar_text_color">#333333</color>
+    <color name="actionbar_image_color">#333333</color>
     <color name="btn_txt_color">#FFF</color>
     <color name="radio_button_color">#4A89DC</color>
     <color name="switch_tack_color">#5D9CEC</color>
-
 
     <color name="segment_bg_color">#FFFFFF</color>
     <color name="segment_bg_color_select">#909090</color>
