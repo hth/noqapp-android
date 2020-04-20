@@ -52,6 +52,7 @@ import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,8 +88,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         rcv_order_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_order_list.setItemAnimator(new DefaultItemAnimator());
         rcv_order_list.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        storeMenuOrderAdapter = new StoreMenuOrderAdapter(childData, storeMenuActivity,
-                this, LaunchActivity.getCurrencySymbol());
+        storeMenuOrderAdapter = new StoreMenuOrderAdapter(childData, storeMenuActivity, this, LaunchActivity.getCurrencySymbol());
         rcv_order_list.setAdapter(storeMenuOrderAdapter);
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
@@ -99,7 +99,6 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         btn_place_order.setOnClickListener(v -> showCreateTokenDialogWithMobile(getActivity(), codeQR));
         return view;
     }
-
 
     public ProductMenuListFragment(List<StoreCartItem> childData, StoreMenuActivity storeMenuActivity) {
         this.childData = childData;
@@ -269,8 +268,9 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                     jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
                     jsonPurchaseOrder.setAdditionalNote("");
                     purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                    if(null != mAlertDialog && mAlertDialog.isShowing())
+                    if (null != mAlertDialog && mAlertDialog.isShowing()) {
                         mAlertDialog.dismiss();
+                    }
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }
