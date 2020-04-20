@@ -143,8 +143,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         btn_pay_now.setOnClickListener((View v) -> {
             if (null != jsonPurchaseOrder && (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB || jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO)) {
                 if (isProductWithoutPrice) {
-                    new CustomToast().showToast(OrderConfirmActivity.this, "Merchant have not set the price of the product." +
-                            "Hence payment cann't be proceed");
+                    new CustomToast().showToast(
+                            OrderConfirmActivity.this,
+                            "Merchant have not set the price of the product. Hence payment cannot be proceed");
                 } else {
                     if (NoQueueBaseActivity.isEmailVerified()) {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -155,7 +156,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             isPayClick = true;
                         }
                     } else {
-                        new CustomToast().showToast(OrderConfirmActivity.this, "To pay, email is mandatory. In your profile add and verify email");
+                        new CustomToast().showToast(
+                                OrderConfirmActivity.this,
+                                "To pay, email is mandatory. In your profile add and verify email");
                     }
                 }
             }
@@ -181,7 +184,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
-                setProgressMessage("Fetching order details in progress..");
+                setProgressMessage("Fetching order details in progress...");
                 int token = getIntent().getExtras().getInt("token");
                 purchaseOrderApiCall.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
                 if (AppUtils.isRelease()) {
@@ -239,7 +242,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private void cancelOrder() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             showProgress();
-            setProgressMessage("Order cancel in progress..");
+            setProgressMessage("Order cancel in progress...");
             purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
 
             if (AppUtils.isRelease()) {

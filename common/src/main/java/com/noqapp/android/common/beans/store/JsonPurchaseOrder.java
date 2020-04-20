@@ -428,16 +428,17 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     }
 
     public String computeFinalAmountWithDiscount() {
-        if(0 == storeDiscount) {
+        if (0 == storeDiscount) {
             return CommonHelper.displayPrice(orderPrice);
-        }else{
+        } else {
             return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(orderPrice) + Double.parseDouble(String.valueOf(storeDiscount))));
         }
     }
+
     public String computeFinalAmountWithDiscountOffline() {
-        if(0 == storeDiscount) {
+        if (0 == storeDiscount) {
             return CommonHelper.displayPrice(orderPrice);
-        }else{
+        } else {
             return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(orderPrice) - Double.parseDouble(String.valueOf(storeDiscount))));
         }
     }
