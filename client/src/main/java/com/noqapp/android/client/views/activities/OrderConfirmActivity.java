@@ -109,17 +109,13 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         bsb_order_status = findViewById(R.id.bsb_order_status);
         bsb_order_status.getConfigBuilder().sectionCount(PurchaseOrderStateEnum.HD.size()).build();
-        bsb_order_status.setCustomSectionTextArray(new BubbleSeekBar.CustomSectionTextArray() {
-            @NonNull
-            @Override
-            public SparseArray<String> onCustomize(int sectionCount, @NonNull SparseArray<String> array) {
-                array.clear();
-                int i = 0;
-                for (PurchaseOrderStateEnum value : PurchaseOrderStateEnum.HD) {
-                    array.put(i, value.getFriendlyDescription());
-                }
-                return array;
+        bsb_order_status.setCustomSectionTextArray((sectionCount, array) -> {
+            array.clear();
+            int i = 0;
+            for (PurchaseOrderStateEnum value : PurchaseOrderStateEnum.HD) {
+                array.put(i, value.getFriendlyDescription());
             }
+            return array;
         });
         bsb_order_status.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
             @Override
