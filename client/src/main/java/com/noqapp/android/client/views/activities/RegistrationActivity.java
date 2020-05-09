@@ -44,6 +44,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     private TextView tv_birthday;
     private EditText edt_pwd;
     private EditText edt_confirm_pwd;
+    private EditText edt_inviteCode;
     private TextView tv_male;
     private TextView tv_female;
     private TextView tv_transgender;
@@ -68,6 +69,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         tv_birthday = findViewById(R.id.tv_birthday);
         edt_pwd = findViewById(R.id.edt_pwd);
         edt_confirm_pwd = findViewById(R.id.edt_confirm_pwd);
+        edt_inviteCode = findViewById(R.id.edt_inviteCode);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
         tv_transgender = findViewById(R.id.tv_transgender);
@@ -270,7 +272,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         registration.setGender(gender);
         registration.setTimeZoneId(tz.getID());
         registration.setCountryShortName(getIntent().getStringExtra("countryShortName"));
-        registration.setInviteCode("");
+        registration.setInviteCode(edt_inviteCode.getText().toString());
         new RegisterApiCall(this).register(UserUtils.getDeviceId(), registration);
     }
 
