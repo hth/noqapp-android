@@ -137,8 +137,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static boolean isEmailVerified() {
         return getUserProfile().isAccountValidated();
-
-
     }
 
     public static String getAuth() {
