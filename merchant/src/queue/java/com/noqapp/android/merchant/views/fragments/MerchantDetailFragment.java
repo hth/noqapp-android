@@ -21,6 +21,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
@@ -33,7 +34,6 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.OrderServed;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
@@ -553,7 +553,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         menu.findItem(R.id.menu_appointment).setVisible(false);
         menu.findItem(R.id.menu_followup).setVisible(false);
         MenuItem menuItem = menu.findItem(R.id.menu_add);
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile() && LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+        if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             menuItem.setTitle("Create Order");
         } else {
             menuItem.setTitle("Create Token");

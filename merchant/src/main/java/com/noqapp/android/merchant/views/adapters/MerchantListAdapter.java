@@ -85,7 +85,7 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder.tv_label.setTextColor(Color.WHITE);
         } else {
             recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
-            recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
+            recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context, R.color.q_title_color));
             recordHolder.tv_serving_no.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
             recordHolder.tv_inqueue.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
             recordHolder.tv_label.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));

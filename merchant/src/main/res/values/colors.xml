@@ -29,4 +29,6 @@
 
     <color name="q_order_btn_unpaid">#b85050</color>
 
+    <color name="q_title_color">@color/color_action_bar</color>
+
 </resources>

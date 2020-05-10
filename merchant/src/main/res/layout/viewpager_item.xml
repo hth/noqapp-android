@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/ll_top"
@@ -19,6 +19,7 @@
             android:orientation="horizontal"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
+            android:visibility="gone"
             android:weightSum="1">
 
             <RelativeLayout
@@ -386,13 +387,9 @@
                         android:layout_alignParentLeft="true"
                         android:layout_toLeftOf="@+id/ll_btn"
                         android:scrollbars="vertical" />
-
-
-
-
                     <LinearLayout
                         android:id="@+id/ll_btn"
-                        android:layout_width="50dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:orientation="vertical"
@@ -441,10 +438,6 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-
-
-
-
                 <ProgressBar
                     android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"
@@ -456,4 +449,4 @@
         </LinearLayout>
 
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

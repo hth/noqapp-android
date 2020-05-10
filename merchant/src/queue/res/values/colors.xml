@@ -32,4 +32,5 @@
     <!--    color related to order q items-->
     <color name="q_order_btn_unpaid">#4A89DC</color>
     <color name="q_order_top_border">#E07E3D</color>
+    <color name="q_title_color">@color/color_list_subtitle</color>
 </resources>

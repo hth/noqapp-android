@@ -25,6 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/actionbar_text_color"
+        android:maxLength="12"
+        android:ellipsize="end"
         android:textSize="18sp"
         android:textStyle="bold" />
 
