@@ -44,10 +44,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.common.cache.Cache;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -545,7 +545,7 @@ public class LaunchActivity
                         .into(iv_profile);
             }
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             Log.e(TAG, "Failed Update Drawer UI", e);
         }
     }
@@ -604,25 +604,29 @@ public class LaunchActivity
 
 
     private void callReviewActivity(String codeQR, String token) {
-        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, token);
-        if (null == jtk) {
-            jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR, token);
-        }
-
-        if (null != jtk) {
-            Intent in = new Intent(launchActivity, ReviewActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jtk);
-            in.putExtras(bundle);
-            startActivityForResult(in, Constants.requestCodeJoinQActivity);
-            Log.v("Review screen call: ", jtk.toString());
-            ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
-            if (jsonTokenAndQueueArrayList.size() == 1) {
-                /* Un-subscribe the topic. */
-                NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+        try {
+            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, token);
+            if (null == jtk) {
+                jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR, token);
             }
-        } else {
-            ReviewDB.deleteReview(codeQR, token);
+
+            if (null != jtk) {
+                Intent in = new Intent(launchActivity, ReviewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jtk);
+                in.putExtras(bundle);
+                startActivityForResult(in, Constants.requestCodeJoinQActivity);
+                Log.v("Review screen call: ", jtk.toString());
+                ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+                if (jsonTokenAndQueueArrayList.size() == 1) {
+                    /* Un-subscribe the topic. */
+                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                }
+            } else {
+                ReviewDB.deleteReview(codeQR, token);
+            }
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -686,7 +690,7 @@ public class LaunchActivity
                                 true);
                     }
                 } catch (Exception e) {
-                    Crashlytics.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                     Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
                 }
             }
@@ -875,7 +879,8 @@ public class LaunchActivity
                 }
             }
         } catch (Exception e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed on update notification");
+            FirebaseCrashlytics.getInstance().log("Failed on update notification");
+            FirebaseCrashlytics.getInstance().recordException(e);
             Log.e(TAG, "Failed on update notification " + e.getLocalizedMessage());
         }
     }
@@ -1121,7 +1126,7 @@ public class LaunchActivity
                     isRegistered = true;
                 }
             } catch (Exception e) {
-                Crashlytics.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
             }
         }
@@ -1340,7 +1345,7 @@ public class LaunchActivity
                     }
                 }
             } catch (Exception e) {
-                Crashlytics.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
             }
             return getCountry(launchActivity);

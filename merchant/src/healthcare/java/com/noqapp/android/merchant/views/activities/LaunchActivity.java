@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -28,8 +27,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
-
 public class LaunchActivity
         extends BaseLaunchActivity
         implements LoginActivity.LoginCallBack, RegistrationActivity.RegisterCallBack {
@@ -40,7 +37,6 @@ public class LaunchActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
-        Fabric.with(this, new Answers());
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         launchActivity = this;

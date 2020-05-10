@@ -34,8 +34,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -762,8 +760,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             @Override
             public void btnPositiveClick() {
                 clearLoginData(false);
-                Answers.getInstance().logCustom(new CustomEvent("Logout")
-                        .putCustomAttribute("Success", "true"));
+//                Answers.getInstance().logCustom(new CustomEvent("Logout")
+//                        .putCustomAttribute("Success", "true"));
             }
 
             @Override

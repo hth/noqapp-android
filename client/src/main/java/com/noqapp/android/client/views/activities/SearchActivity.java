@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -244,7 +244,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                     startActivity(in);
                 } else {
                     Log.d(TAG, "Reached un-supported condition");
-                    Crashlytics.log(Log.ERROR, TAG, "Reached un-supported condition " + item.getBusinessType());
+                    FirebaseCrashlytics.getInstance().log("Reached un-supported condition  " + item.getBusinessType());
                 }
                 break;
             default: {

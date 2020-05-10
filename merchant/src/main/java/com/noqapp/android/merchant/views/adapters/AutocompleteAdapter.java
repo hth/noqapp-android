@@ -12,8 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.SearchEvent;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 
@@ -92,8 +90,8 @@ public class AutocompleteAdapter extends ArrayAdapter {
                 results.values = matchValues;
                 results.count = matchValues.size();
 
-                Answers.getInstance().logSearch(new SearchEvent()
-                        .putQuery(prefix.toString()));
+//                Answers.getInstance().logSearch(new SearchEvent()
+//                        .putQuery(prefix.toString()));
             }
 
             return results;
