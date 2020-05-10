@@ -36,6 +36,7 @@ import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.QueueAuthorize;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -854,7 +855,10 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             if (TextUtils.isEmpty(edt_referral.getText().toString())) {
                 edt_referral.setError("Enter referral code");
             } else {
-                // call api
+                QueueAuthorize queueAuthorize = new QueueAuthorize()
+                        .setCodeQR("")
+                        .setReferralCode(edt_referral.getText().toString());
+                queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                 AppUtils.hideKeyBoard(this);
                 new CustomToast().showToast(this, " Call referral api");
             }
