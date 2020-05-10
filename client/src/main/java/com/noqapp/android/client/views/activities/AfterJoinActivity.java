@@ -327,6 +327,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
             tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+            updateEstimatedTime();
             setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
             tv_name.setText(jsonProfile.getName());
             tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
@@ -453,10 +454,10 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     }
 
     public void setBackGround(int pos) {
-        tv_after.setTextColor(Color.WHITE);
-        tv_how_long.setTextColor(Color.WHITE);
-        // tv_estimated_time.setTextColor(Color.WHITE);
-        tv_after.setText("Soon is your turn! You are:");
+        tv_after.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
+        tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
+        tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
+        tv_after.setText("Your current position:");
         btn_cancel_queue.setEnabled(true);
         switch (pos) {
             case 0:
@@ -467,7 +468,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 break;
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                tv_after.setText("Next is your turn! You are:");
+                tv_after.setText("You are next!");
                 break;
             case 2:
                 ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
@@ -482,11 +483,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 break;
             default:
-                tv_after.setText("You are:");
+                tv_after.setText("Your current position:");
                 tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.btn_bg_inactive);
-                // tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
+                tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 break;
         }
     }
@@ -505,7 +506,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     private void updateEstimatedTime() {
         try {
-            if (!TextUtils.isEmpty(jsonToken.getExpectedServiceBegin())) {
+            if (jsonToken != null && !TextUtils.isEmpty(jsonToken.getExpectedServiceBegin())) {
                 tv_estimated_time.setText(String.format(getString(R.string.estimated_time), Formatter.getTimeAsString(Formatter.getDateFromString(jsonToken.getExpectedServiceBegin()))));
                 tv_estimated_time.setVisibility(View.VISIBLE);
             } else {
@@ -525,8 +526,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
             tv_estimated_time.setVisibility(View.INVISIBLE);
         }
-        tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
-        tv_estimated_time.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -537,7 +536,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     @Override
     public boolean updateUI(String qrCode, JsonTokenAndQueue jq, String go_to) {
-        if (codeQR.equals(qrCode) && tokenValue.equals(String.valueOf(jq.getServingNumber()))) {
+        if (codeQR.equals(qrCode) && (Integer.parseInt(tokenValue) >= jq.getServingNumber())) {
             //updating the serving status
             setObject(jq, go_to);
             if (jq.afterHowLong() > 0) {
@@ -598,6 +597,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     @Override
     public void queueJsonPurchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        // Todo: If queue-only store then return
         try {
             Log.e("Response: ", jsonPurchaseOrder.toString());
             frame_coupon.setVisibility(View.VISIBLE);

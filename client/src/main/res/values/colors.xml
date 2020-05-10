@@ -26,6 +26,9 @@
     <color name="segment_bg_color">#e5f8fa</color>
     <color name="segment_text_color">#928c9d</color>
 
+    <!-- Position in queue info-->
+    <color name="front_position_text_color">#505050</color>
+
     <color name="button_color">#f4511e</color>
     <color name="button_disable">#cccccc</color>
 
