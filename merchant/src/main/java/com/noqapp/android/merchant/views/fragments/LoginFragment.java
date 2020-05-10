@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -106,9 +104,9 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                     setProgressMessage("Login in progress..");
                     loginApiCalls.login(email.toLowerCase(), pwd);
 
-                    Answers.getInstance().logLogin(new LoginEvent()
-                            .putMethod("Email_Password_Login")
-                            .putSuccess(true));
+//                    Answers.getInstance().logLogin(new LoginEvent()
+//                            .putMethod("Email_Password_Login")
+//                            .putSuccess(true));
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }

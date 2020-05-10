@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.NetworkUtil;
@@ -17,17 +16,10 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.activities.LoginActivity;
-import com.noqapp.android.merchant.views.activities.NotificationActivity;
-import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.fragments.InventoryHomeFragment;
 
 import net.danlew.android.joda.JodaTimeAndroid;
-
-import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.LoginCallBack,
         RegistrationActivity.RegisterCallBack {
@@ -38,7 +30,6 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
         super.onCreate(savedInstanceState);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         isInventoryApp = true;
-        Fabric.with(this, new Answers());
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         launchActivity = this;

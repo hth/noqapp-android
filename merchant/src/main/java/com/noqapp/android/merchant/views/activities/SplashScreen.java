@@ -15,8 +15,6 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
-
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlertDialog;
@@ -30,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import io.fabric.sdk.android.Fabric;
 
 import java.util.UUID;
 
@@ -50,7 +47,6 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         //   getSupportActionBar().hide();
         setContentView(R.layout.splash);
         splashScreen = this;

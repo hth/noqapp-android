@@ -17,7 +17,6 @@ import com.noqapp.android.common.utils.PermissionUtils;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,7 +39,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
@@ -63,7 +61,6 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.splash);
         splashScreen = this;
         LottieAnimationView animationView = findViewById(R.id.animation_view);

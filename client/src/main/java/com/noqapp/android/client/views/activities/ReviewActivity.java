@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
@@ -110,18 +111,23 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                     tv_details.setText("Guest user with token #" + jtk.getToken());
                 }
 
-                switch (jtk.getBusinessType()) {
-                    case DO:
-                        tv_review_msg.setText(getString(R.string.review_msg_checkup_done));
-                        break;
-                    case RS:
-                    case FT:
-                        tv_review_msg.setText(getString(R.string.review_msg_order_done));
-                        break;
-                    default:
-                        tv_review_msg.setText(getString(R.string.review_msg_queue_done));
+                try {
+                    switch (jtk.getBusinessType()) {
+                        case DO:
+                            tv_review_msg.setText(getString(R.string.review_msg_checkup_done));
+                            break;
+                        case RS:
+                        case FT:
+                            tv_review_msg.setText(getString(R.string.review_msg_order_done));
+                            break;
+                        default:
+                            tv_review_msg.setText(getString(R.string.review_msg_queue_done));
 
+                    }
+                } catch (Exception e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
+
                 if (AppUtils.isRelease()) {
                     Bundle params = new Bundle();
                     params.putString("Business_Type", jtk.getBusinessType().getName());

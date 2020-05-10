@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -197,9 +195,9 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
-                Answers.getInstance().logLogin(new LoginEvent()
-                        .putMethod("Phone")
-                        .putSuccess(true));
+//                Answers.getInstance().logLogin(new LoginEvent()
+//                        .putMethod("Phone")
+//                        .putSuccess(true));
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }

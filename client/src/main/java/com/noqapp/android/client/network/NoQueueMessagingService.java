@@ -6,7 +6,7 @@ import static com.noqapp.android.client.utils.Constants.ISREVIEW;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
 import static com.noqapp.android.client.utils.Constants.TOKEN;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
@@ -137,7 +137,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicAppointmentData.class);
                         Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
-                        Crashlytics.log(Log.ERROR, TAG, "Failed to read message");
+                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QA);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                         e.printStackTrace();
                     }
                     break;
@@ -158,7 +159,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         }
                         Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
-                        Crashlytics.log(Log.ERROR, TAG, "Failed to read message");
+                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.Q);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                         e.printStackTrace();
                     }
                     break;
@@ -172,7 +174,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = jsonClientTokenAndQueueData;
                         Log.e("FCM", jsonData.toString());
                     } catch (Exception e) {
-                        Crashlytics.log(Log.ERROR, TAG, "Failed to read message");
+                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.CQO);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                         e.printStackTrace();
                     }
                     break;
@@ -181,7 +184,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientData.class);
                         Log.e("FCM Queue Review", jsonData.toString());
                     } catch (Exception e) {
-                        Crashlytics.log(Log.ERROR, TAG, "Failed to read message");
+                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QR);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                         e.printStackTrace();
                     }
                     break;
@@ -190,7 +194,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientOrderData.class);
                         Log.e("FCM Order Review", jsonData.toString());
                     } catch (Exception e) {
-                        Crashlytics.log(Log.ERROR, TAG, "Failed to read message");
+                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.OR);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                         e.printStackTrace();
                     }
                     break;
@@ -211,7 +216,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         }
                         Log.e("FCM order ", jsonData.toString());
                     } catch (Exception e) {
-                        Crashlytics.log(Log.ERROR, TAG, "Failed to read message");
+                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.O);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                         e.printStackTrace();
                     }
                     break;
@@ -221,7 +227,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonAlertData.class);
                         Log.e("FCM Review store", jsonData.toString());
                     } catch (Exception e) {
-                        Crashlytics.log(Log.ERROR, TAG, "Failed to read message");
+                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.D);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                         e.printStackTrace();
                     }
                     break;
@@ -230,7 +237,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonMedicalFollowUp.class);
                         Log.e("FCM Medical Followup", jsonData.toString());
                     } catch (Exception e) {
-                        Crashlytics.log(Log.ERROR, TAG, "Failed to read message");
+                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.MF);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                         e.printStackTrace();
                     }
                     break;
@@ -513,7 +521,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
             Log.e("Alarm set", "Done Alarm");
         } catch (Exception e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed to set alarm");
+            FirebaseCrashlytics.getInstance().log("Failed to set alarm " + e.getLocalizedMessage());
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
     }
