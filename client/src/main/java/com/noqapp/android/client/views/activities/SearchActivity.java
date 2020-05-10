@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.R;
@@ -30,6 +32,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
+import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -51,7 +54,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
     private LinearLayout ll_search;
-
+    private final String TAG = SearchActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -223,6 +226,27 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 startActivity(in);
             }
             break;
+            case RSQ:
+            case GSQ:
+            case BAQ:
+            case CFQ:
+            case FTQ:
+            case STQ:
+                //@TODO Modification done due to corona crisis, Re-check all the functionality
+                //proper testing required
+                if (BusinessSupportEnum.OQ == item.getBusinessType().getBusinessSupport()) {
+                    in = new Intent(this, BeforeJoinOrderQueueActivity.class);
+                    b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                    b.putBoolean(IBConstant.KEY_FROM_LIST, false);
+                    b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
+                    b.putSerializable("BizStoreElastic", item);
+                    in.putExtras(b);
+                    startActivity(in);
+                } else {
+                    Log.d(TAG, "Reached un-supported condition");
+                    Crashlytics.log(Log.ERROR, TAG, "Reached un-supported condition " + item.getBusinessType());
+                }
+                break;
             default: {
                 // open order screen
                 in = new Intent(this, StoreWithMenuActivity.class);
