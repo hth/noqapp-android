@@ -50,6 +50,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -429,7 +430,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                                 }
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, String.valueOf(jtk.getToken()));
-                                sendNotification(title, body, true, imageUrl); // pass null to show only notification with no action
+
+                                sendNotification(title, body, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
 
                                 // Check if User's turn then start Buzzer.
                                 if (Integer.parseInt(currentServing) == jtk.getToken()) {
@@ -475,6 +477,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         new CreateBigImageNotification(title, messageBody, imageUrl, isVibrate).execute();
     }
 
+    private void sendNotification(String title, String messageBody, boolean isVibrate, String imageUrl, int notificationPriority) {
+        new CreateBigImageQueueNotification(title, messageBody, imageUrl, isVibrate, notificationPriority).execute();
+    }
+
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.mipmap.notification_icon : R.mipmap.launcher;
@@ -509,6 +515,105 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         } catch (Exception e) {
             Crashlytics.log(Log.ERROR, TAG, "Failed to set alarm");
             e.printStackTrace();
+        }
+    }
+
+    private class CreateBigImageQueueNotification extends AsyncTask<String, Void, Bitmap> {
+        private String imageUrl = "";
+        private String title, messageBody;
+        private boolean isVibrate;
+        private int notificationPriority;
+
+        public CreateBigImageQueueNotification(String title, String message, String imageUrl, boolean isVibrate, int notificationPriority) {
+            this.imageUrl = imageUrl;
+            this.messageBody = message;
+            this.title = title;
+            this.isVibrate = isVibrate;
+            this.notificationPriority = Math.abs(notificationPriority);
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            if (TextUtils.isEmpty(imageUrl)) {
+                return null;
+            }
+
+            Bitmap bitmap;
+            try {
+                URL url = new URL(imageUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(input);
+                return bitmap;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int notificationId = 1;
+            String channelNoSound = "channel_q_no_sound";
+            String channelWithSound = "channel_q_with_sound";
+
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                String channelName = "Channel Name";
+                NotificationChannel mChannel;
+                if (notificationPriority <= 10){
+                    mChannel = new NotificationChannel(channelWithSound, channelName, NotificationManager.IMPORTANCE_HIGH);
+                    mChannel.setSound(defaultSoundUri, null);
+                } else {
+                    mChannel = new NotificationChannel(channelNoSound, channelName, NotificationManager.IMPORTANCE_LOW);
+                    mChannel.setSound(null, null);
+                }
+                notificationManager.createNotificationChannel(mChannel);
+            }
+
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(),
+                    notificationPriority <= 10 ? channelWithSound : channelNoSound)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+                    .setSmallIcon(getNotificationIcon())
+                    .setLargeIcon(getNotificationBitmap())
+                    .setContentTitle(title)
+                    .setContentText(messageBody)
+                    //.setAutoCancel(true)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
+                    .setLights(Color.parseColor("#ffb400"), 50, 10);
+            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
+                if (notificationPriority <= 10) {
+                    mBuilder.setPriority(Notification.PRIORITY_HIGH);
+                    mBuilder.setSound(defaultSoundUri);
+                }
+            }
+
+            if (bitmap != null) {
+                mBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
+                        .bigPicture(bitmap)
+                        //.setSummaryText(message)
+                        .bigLargeIcon(null));
+            }
+            if (isVibrate) {
+                mBuilder.setVibrate(new long[]{500, 500});
+            }
+
+            Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
+            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+            stackBuilder.addNextIntent(notificationIntent);
+            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+                    Constants.requestCodeNotification,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+            mBuilder.setContentIntent(resultPendingIntent);
+
+            notificationManager.notify(notificationId, mBuilder.build());
         }
     }
 
