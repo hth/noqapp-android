@@ -310,7 +310,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                             Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
                             startActivity(loginIntent);
                         }
-                        new CustomToast().showToast(BeforeJoinActivity.this, "please login to avail this feature");
+                        new CustomToast().showToast(BeforeJoinActivity.this, "Please login to avail this feature");
                     }
                 } else {
                     // any user can join
@@ -360,8 +360,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.requestCodeAfterJoinQActivity) {
             if (resultCode == RESULT_OK) {
-                boolean toclose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
-                if (toclose) {
+                boolean toClose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
+                if (toClose) {
                     finish();
                 }
             }
