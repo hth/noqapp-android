@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
@@ -17,15 +16,12 @@ import com.noqapp.android.merchant.utils.UserUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import io.fabric.sdk.android.Fabric;
-
 public class LaunchActivity extends BaseLaunchActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
-        Fabric.with(this, new Answers());
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         launchActivity = this;
