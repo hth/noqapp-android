@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_bg_kiosk"
+    android:orientation="vertical"
+    android:outlineProvider="paddedBounds"
+    android:paddingLeft="15dp"
+    android:paddingTop="20dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Authorized person only"
+            android:textSize="@dimen/text_size_fourteen"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:background="#80333333" />
+
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Approval required to access store \n If you have referral code. please enter and continue "
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_twelve" />
+
+        <EditText
+            android:id="@+id/edt_referral"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/square_white_bg_drawable"
+            android:gravity="center"
+            android:hint="referral code"
+            android:padding="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_twelve" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnPositive"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_orange"
+                android:padding="5dp"
+                android:text="OK"
+                android:textColor="#333333"
+                android:textSize="@dimen/text_size_fourteen"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnNegative"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_orange"
+                android:padding="5dp"
+                android:text="CANCEL"
+                android:textColor="#333333"
+                android:textSize="@dimen/text_size_fourteen"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
