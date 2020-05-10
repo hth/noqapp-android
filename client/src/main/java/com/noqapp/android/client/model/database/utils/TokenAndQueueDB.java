@@ -163,7 +163,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setArea(cursor.getString(22));
                         tokenAndQueue.setDisplayImage(cursor.getString(23));
                         tokenAndQueue.setQueueUserId(cursor.getString(24));
-                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
+                        tokenAndQueue.setPurchaseOrderState(cursor.getString(25) == null ? null : PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
                         tokenAndQueue.setTransactionId(cursor.getString(26));
                         tokenAndQueueList.add(tokenAndQueue);
                     }
@@ -201,7 +201,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setServingNumber(cursor.getInt(10));
                     tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
-                    tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
+                    tokenAndQueue.setQueueStatus(cursor.getString(13) == null ? null : QueueStatusEnum.valueOf(cursor.getString(13)));
                     tokenAndQueue.setServiceEndTime(cursor.getString(14));
                     tokenAndQueue.setRatingCount(cursor.getInt(15));
                     tokenAndQueue.setAverageServiceTime(cursor.getInt(16));
@@ -213,7 +213,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setArea(cursor.getString(22));
                     tokenAndQueue.setDisplayImage(cursor.getString(23));
                     tokenAndQueue.setQueueUserId(cursor.getString(24));
-                    tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
+                    tokenAndQueue.setPurchaseOrderState(cursor.getString(25) == null ? null : PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
                     tokenAndQueue.setTransactionId(cursor.getString(26));
                 }
             } catch (Exception e) {
@@ -264,7 +264,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setArea(cursor.getString(22));
                         tokenAndQueue.setDisplayImage(cursor.getString(23));
                         tokenAndQueue.setQueueUserId(cursor.getString(24));
-                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
+                        tokenAndQueue.setPurchaseOrderState(cursor.getString(25) == null ? null : PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
                         tokenAndQueue.setTransactionId(cursor.getString(26));
                         listJsonQueue.add(tokenAndQueue);
                     }
