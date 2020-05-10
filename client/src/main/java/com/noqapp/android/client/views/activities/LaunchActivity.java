@@ -818,7 +818,7 @@ public class LaunchActivity
                     if (activityCommunicator != null) {
                         boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
 
-                        if (isUpdated) {
+                        if (isUpdated || (jtk.getServingNumber() == jtk.getToken())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
                             if (null != reviewData) {
                                 if (!reviewData.getIsBuzzerShow().equals("1")) {
@@ -827,6 +827,9 @@ public class LaunchActivity
                                     ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
                                     Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
                                     startActivity(blinker);
+                                    if (isMsgAnnouncementEnable()) {
+                                        makeAnnouncement(jsonTextToSpeeches, msgId);
+                                    }
                                 } else {
                                     /* Blinker already shown */
                                 }
@@ -844,6 +847,9 @@ public class LaunchActivity
                                 ReviewDB.insert(cv);
                                 Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
                                 startActivity(blinker);
+                                if (isMsgAnnouncementEnable()) {
+                                    makeAnnouncement(jsonTextToSpeeches, msgId);
+                                }
                             }
                         }
                     }
