@@ -457,7 +457,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_after.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
         tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
         tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
-        tv_after.setText("Your current position:");
+        tv_after.setText("Your position in queue:");
         btn_cancel_queue.setEnabled(true);
         switch (pos) {
             case 0:
@@ -483,7 +483,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 break;
             default:
-                tv_after.setText("Your current position:");
+                tv_after.setText("Your position in queue:");
                 tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.btn_bg_inactive);
