@@ -41,6 +41,7 @@ public class CreateTable {
                     + TokenQueue.QUEUE_STATUS + " TEXT , "
                     + TokenQueue.SERVICE_END_TIME + " TEXT , "
                     + TokenQueue.RATING_COUNT + " TEXT , "
+                    + TokenQueue.AVERAGE_SERVICE_TIME + " INTEGER , "
                     + TokenQueue.HOURS_SAVED + " TEXT , "
                     + TokenQueue.CREATE_DATE + " TEXT , "
                     + TokenQueue.BUSINESS_TYPE + " TEXT , "
@@ -60,10 +61,8 @@ public class CreateTable {
     }
 
     private static void createTableTokenQueueHistory(SQLiteDatabase db) {
-        Log.d(TAG, "executing createTableTokenQueue");
         try {
-
-
+            Log.d(TAG, "executing createTableTokenQueue");
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueueHistory.TABLE_NAME + "("
                     + TokenQueue.CODE_QR + " TEXT , "
                     + TokenQueue.BUSINESS_NAME + " TEXT , "
@@ -81,6 +80,7 @@ public class CreateTable {
                     + TokenQueue.QUEUE_STATUS + " TEXT , "
                     + TokenQueue.SERVICE_END_TIME + " TEXT , "
                     + TokenQueue.RATING_COUNT + " TEXT , "
+                    + TokenQueue.AVERAGE_SERVICE_TIME + " INTEGER , "
                     + TokenQueue.HOURS_SAVED + " TEXT , "
                     + TokenQueue.CREATE_DATE + " TEXT , "
                     + TokenQueue.BUSINESS_TYPE + " TEXT , "

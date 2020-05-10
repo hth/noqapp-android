@@ -545,7 +545,8 @@ public class LaunchActivity
                         .into(iv_profile);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
+            Log.e(TAG, "Failed Update Drawer UI", e);
         }
     }
 
@@ -685,6 +686,7 @@ public class LaunchActivity
                                 true);
                     }
                 } catch (Exception e) {
+                    Crashlytics.logException(e);
                     Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
                 }
             }
@@ -883,8 +885,12 @@ public class LaunchActivity
             NoQueueBaseActivity.setDeviceID(deviceId);
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getTokenFCM(),
-                    Constants.appVersion(), CommonHelper.getLocation(latitude, longitude)));
+            deviceModel.register(
+                deviceId,
+                new DeviceToken(
+                        NoQueueBaseActivity.getTokenFCM(),
+                        Constants.appVersion(),
+                        CommonHelper.getLocation(latitude, longitude)));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -1113,6 +1119,7 @@ public class LaunchActivity
                     isRegistered = true;
                 }
             } catch (Exception e) {
+                Crashlytics.logException(e);
                 e.printStackTrace();
             }
         }
@@ -1331,6 +1338,7 @@ public class LaunchActivity
                     }
                 }
             } catch (Exception e) {
+                Crashlytics.logException(e);
                 e.printStackTrace();
             }
             return getCountry(launchActivity);

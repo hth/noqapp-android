@@ -10,7 +10,7 @@ import android.util.Log;
 public class Patch {
     private static final String TAG = Patch.class.getSimpleName();
 
-    public Patch(int migrateFrom, int migrateTo, String buildNumber) {
+    Patch(int migrateFrom, int migrateTo, String buildNumber) {
         Log.d(TAG, "DB Migrate from " + migrateFrom + " to " + migrateTo + ". Since build " + buildNumber);
     }
 
