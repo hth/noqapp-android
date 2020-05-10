@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hbb20.CountryCodePicker;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -94,6 +95,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             intent.putExtra("bizCategoryId",jsonTopic.getBizCategoryId());
             ((Activity) context).startActivity(intent);
         });
+        if (!LaunchActivity.isTablet)
+            rv_queue_people.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         return v;
     }
 

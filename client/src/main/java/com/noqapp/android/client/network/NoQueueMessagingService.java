@@ -19,6 +19,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.MyApplication;
 import com.noqapp.android.client.views.receivers.AlarmReceiver;
@@ -419,6 +420,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_GOTO, goTo);
                                         ReviewDB.insert(cv);
                                     }
+
                                 }
                                 //update DB & after join screen
                                 jtk.setServingNumber(Integer.parseInt(currentServing));
@@ -428,6 +430,13 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 }
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, String.valueOf(jtk.getToken()));
                                 sendNotification(title, body, true, imageUrl); // pass null to show only notification with no action
+
+                                // Check if User's turn then start Buzzer.
+                                if (Integer.parseInt(currentServing) == jtk.getToken()) {
+                                    Intent buzzerIntent = new Intent(this, BlinkerActivity.class);
+                                    buzzerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(buzzerIntent);
+                                }
                             }
                         }
                     }

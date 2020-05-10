@@ -150,7 +150,7 @@
     <string name="error_pwd_not_match">Both password should match</string>
     <string name="password">Password <font color='red'>\u002A</font></string>
     <string name="update_medical_history">Submit Case History</string>
-    <string name="change_name">Change \nPatient</string>
+    <string name="change_name">Change Patient</string>
     <string name="update_details">Update Details</string>
     <string name="patient_details">Business Patient ID</string>
     <string name="customer_id">Reg. Id</string>

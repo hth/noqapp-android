@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -53,16 +54,19 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
                     tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                    //    tokenAndQueue.setServiceEndTime(cursor.getString(14));
-                    tokenAndQueue.setCreateDate(cursor.getString(17));
-                    tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
-                    tokenAndQueue.setGeoHash(cursor.getString(19));
-                    tokenAndQueue.setTown(cursor.getString(20));
-                    tokenAndQueue.setArea(cursor.getString(21));
-                    tokenAndQueue.setDisplayImage(cursor.getString(22));
-                    tokenAndQueue.setQueueUserId(cursor.getString(23));
-                    tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                    tokenAndQueue.setTransactionId(cursor.getString(25));
+                    tokenAndQueue.setServiceEndTime(cursor.getString(14));
+                    tokenAndQueue.setRatingCount(cursor.getInt(15));
+                    tokenAndQueue.setAverageServiceTime(cursor.getInt(16));
+                    tokenAndQueue.setHoursSaved(cursor.getInt(17));
+                    tokenAndQueue.setCreateDate(cursor.getString(18));
+                    tokenAndQueue.setBusinessType(cursor.getString(19) == null ? null : BusinessTypeEnum.valueOf(cursor.getString(19)));
+                    tokenAndQueue.setGeoHash(cursor.getString(20));
+                    tokenAndQueue.setTown(cursor.getString(21));
+                    tokenAndQueue.setArea(cursor.getString(22));
+                    tokenAndQueue.setDisplayImage(cursor.getString(23));
+                    tokenAndQueue.setQueueUserId(cursor.getString(24));
+                    tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
+                    tokenAndQueue.setTransactionId(cursor.getString(26));
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
@@ -98,18 +102,19 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setLastNumber(cursor.getInt(11));
                         tokenAndQueue.setToken(cursor.getInt(12));
                         tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                        //  tokenAndQueue.setServiceEndTime(cursor.getString(14));
-                        //  tokenAndQueue.setRatingCount(cursor.getInt(15));
-                        //  tokenAndQueue.setHoursSaved(cursor.getInt(16));
-                        tokenAndQueue.setCreateDate(cursor.getString(17));
-                        tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
-                        tokenAndQueue.setGeoHash(cursor.getString(19));
-                        tokenAndQueue.setTown(cursor.getString(20));
-                        tokenAndQueue.setArea(cursor.getString(21));
-                        tokenAndQueue.setDisplayImage(cursor.getString(22));
-                        tokenAndQueue.setQueueUserId(cursor.getString(23));
-                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                        tokenAndQueue.setTransactionId(cursor.getString(25));
+                        tokenAndQueue.setServiceEndTime(cursor.getString(14));
+                        tokenAndQueue.setRatingCount(cursor.getInt(15));
+                        tokenAndQueue.setAverageServiceTime(cursor.getInt(16));
+                        tokenAndQueue.setHoursSaved(cursor.getInt(17));
+                        tokenAndQueue.setCreateDate(cursor.getString(18));
+                        tokenAndQueue.setBusinessType(cursor.getString(19) == null ? null : BusinessTypeEnum.valueOf(cursor.getString(19)));
+                        tokenAndQueue.setGeoHash(cursor.getString(20));
+                        tokenAndQueue.setTown(cursor.getString(21));
+                        tokenAndQueue.setArea(cursor.getString(22));
+                        tokenAndQueue.setDisplayImage(cursor.getString(23));
+                        tokenAndQueue.setQueueUserId(cursor.getString(24));
+                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
+                        tokenAndQueue.setTransactionId(cursor.getString(26));
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -147,18 +152,19 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setLastNumber(cursor.getInt(11));
                         tokenAndQueue.setToken(cursor.getInt(12));
                         tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                        //  tokenAndQueue.setServiceEndTime(cursor.getString(14));
-                        //  tokenAndQueue.setRatingCount(cursor.getInt(15));
-                        //  tokenAndQueue.setHoursSaved(cursor.getInt(16));
-                        tokenAndQueue.setCreateDate(cursor.getString(17));
-                        tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
-                        tokenAndQueue.setGeoHash(cursor.getString(19));
-                        tokenAndQueue.setTown(cursor.getString(20));
-                        tokenAndQueue.setArea(cursor.getString(21));
-                        tokenAndQueue.setDisplayImage(cursor.getString(22));
-                        tokenAndQueue.setQueueUserId(cursor.getString(23));
-                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                        tokenAndQueue.setTransactionId(cursor.getString(25));
+                        tokenAndQueue.setServiceEndTime(cursor.getString(14));
+                        tokenAndQueue.setRatingCount(cursor.getInt(15));
+                        tokenAndQueue.setAverageServiceTime(cursor.getInt(16));
+                        tokenAndQueue.setHoursSaved(cursor.getInt(17));
+                        tokenAndQueue.setCreateDate(cursor.getString(18));
+                        tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(19)));
+                        tokenAndQueue.setGeoHash(cursor.getString(20));
+                        tokenAndQueue.setTown(cursor.getString(21));
+                        tokenAndQueue.setArea(cursor.getString(22));
+                        tokenAndQueue.setDisplayImage(cursor.getString(23));
+                        tokenAndQueue.setQueueUserId(cursor.getString(24));
+                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
+                        tokenAndQueue.setTransactionId(cursor.getString(26));
                         tokenAndQueueList.add(tokenAndQueue);
                     }
                 } catch (Exception e) {
@@ -195,19 +201,20 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setServingNumber(cursor.getInt(10));
                     tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
-                    //   tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
+                    tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                     tokenAndQueue.setServiceEndTime(cursor.getString(14));
                     tokenAndQueue.setRatingCount(cursor.getInt(15));
-                    tokenAndQueue.setHoursSaved(cursor.getInt(16));
-                    tokenAndQueue.setCreateDate(cursor.getString(17));
-                    tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
-                    tokenAndQueue.setGeoHash(cursor.getString(19));
-                    tokenAndQueue.setTown(cursor.getString(20));
-                    tokenAndQueue.setArea(cursor.getString(21));
-                    tokenAndQueue.setDisplayImage(cursor.getString(22));
-                    tokenAndQueue.setQueueUserId(cursor.getString(23));
-                    tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                    tokenAndQueue.setTransactionId(cursor.getString(25));
+                    tokenAndQueue.setAverageServiceTime(cursor.getInt(16));
+                    tokenAndQueue.setHoursSaved(cursor.getInt(17));
+                    tokenAndQueue.setCreateDate(cursor.getString(18));
+                    tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(19)));
+                    tokenAndQueue.setGeoHash(cursor.getString(20));
+                    tokenAndQueue.setTown(cursor.getString(21));
+                    tokenAndQueue.setArea(cursor.getString(22));
+                    tokenAndQueue.setDisplayImage(cursor.getString(23));
+                    tokenAndQueue.setQueueUserId(cursor.getString(24));
+                    tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
+                    tokenAndQueue.setTransactionId(cursor.getString(26));
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -245,19 +252,20 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setServingNumber(cursor.getInt(10));
                         tokenAndQueue.setLastNumber(cursor.getInt(11));
                         tokenAndQueue.setToken(cursor.getInt(12));
-                        // tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
+                        tokenAndQueue.setQueueStatus(cursor.getString(13) == null ? null : QueueStatusEnum.valueOf(cursor.getString(13)));
                         tokenAndQueue.setServiceEndTime(cursor.getString(14));
                         tokenAndQueue.setRatingCount(cursor.getInt(15));
-                        tokenAndQueue.setHoursSaved(cursor.getInt(16));
-                        tokenAndQueue.setCreateDate(cursor.getString(17));
-                        tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
-                        tokenAndQueue.setGeoHash(cursor.getString(19));
-                        tokenAndQueue.setTown(cursor.getString(20));
-                        tokenAndQueue.setArea(cursor.getString(21));
-                        tokenAndQueue.setDisplayImage(cursor.getString(22));
-                        tokenAndQueue.setQueueUserId(cursor.getString(23));
-                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                        tokenAndQueue.setTransactionId(cursor.getString(25));
+                        tokenAndQueue.setAverageServiceTime(cursor.getInt(16));
+                        tokenAndQueue.setHoursSaved(cursor.getInt(17));
+                        tokenAndQueue.setCreateDate(cursor.getString(18));
+                        tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(19)));
+                        tokenAndQueue.setGeoHash(cursor.getString(20));
+                        tokenAndQueue.setTown(cursor.getString(21));
+                        tokenAndQueue.setArea(cursor.getString(22));
+                        tokenAndQueue.setDisplayImage(cursor.getString(23));
+                        tokenAndQueue.setQueueUserId(cursor.getString(24));
+                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
+                        tokenAndQueue.setTransactionId(cursor.getString(26));
                         listJsonQueue.add(tokenAndQueue);
                     }
                 } finally {
@@ -298,6 +306,7 @@ public class TokenAndQueueDB {
                 Log.d(TAG, "Data Saved history queue " + String.valueOf(successCount));
             } catch (SQLException e) {
                 Log.e(TAG, "Error saveHistoryQueue reason=" + e.getLocalizedMessage(), e);
+                Crashlytics.logException(e);
             }
         }
         return true;
@@ -324,6 +333,7 @@ public class TokenAndQueueDB {
             }
             cv.put(TokenQueue.SERVICE_END_TIME, tokenAndQueue.getServiceEndTime());
             cv.put(TokenQueue.RATING_COUNT, tokenAndQueue.getRatingCount());
+            cv.put(TokenQueue.AVERAGE_SERVICE_TIME, tokenAndQueue.getAverageServiceTime());
             cv.put(TokenQueue.HOURS_SAVED, tokenAndQueue.getHoursSaved());
             cv.put(TokenQueue.CREATE_DATE, tokenAndQueue.getCreateDate());
             cv.put(TokenQueue.AREA, tokenAndQueue.getArea());

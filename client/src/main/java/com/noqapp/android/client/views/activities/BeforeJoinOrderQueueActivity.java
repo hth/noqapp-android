@@ -242,7 +242,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                         if (validateView) {
                             //setColor(false);  skip due to view validation
                         } else {
-                            callAfterJoin();
+                            callJoinScreen();
                         }
                     } else {
                         btn_joinQueue.setText(getString(R.string.login_to_join));
@@ -261,7 +261,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                     // any user can join
                     btn_joinQueue.setText(getString(R.string.join));
                     btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
-                    callAfterJoin();
+                    callJoinScreen();
                 }
             } else {
                 btn_joinQueue.setText(getString(R.string.join));
@@ -274,7 +274,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         }
     }
 
-    private void callAfterJoin() {
+    private void callJoinScreen() {
         if (jsonQueue.isEnabledPayment() && !NoQueueBaseActivity.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else {

@@ -545,7 +545,8 @@ public class LaunchActivity
                         .into(iv_profile);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
+            Log.e(TAG, "Failed Update Drawer UI", e);
         }
     }
 
@@ -685,6 +686,7 @@ public class LaunchActivity
                                 true);
                     }
                 } catch (Exception e) {
+                    Crashlytics.logException(e);
                     Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
                 }
             }
@@ -818,7 +820,7 @@ public class LaunchActivity
                     if (activityCommunicator != null) {
                         boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
 
-                        if (isUpdated) {
+                        if (isUpdated || (jtk.getServingNumber() == jtk.getToken())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
                             if (null != reviewData) {
                                 if (!reviewData.getIsBuzzerShow().equals("1")) {
@@ -826,7 +828,11 @@ public class LaunchActivity
                                     cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                                     ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
                                     Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
-                                    startActivity(blinker);
+                                    blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getApplicationContext().startActivity(blinker);
+                                    if (isMsgAnnouncementEnable()) {
+                                        makeAnnouncement(jsonTextToSpeeches, msgId);
+                                    }
                                 } else {
                                     /* Blinker already shown */
                                 }
@@ -843,7 +849,11 @@ public class LaunchActivity
                                 cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                 ReviewDB.insert(cv);
                                 Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
-                                startActivity(blinker);
+                                blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getApplicationContext().startActivity(blinker);
+                                if (isMsgAnnouncementEnable()) {
+                                    makeAnnouncement(jsonTextToSpeeches, msgId);
+                                }
                             }
                         }
                     }
@@ -877,8 +887,12 @@ public class LaunchActivity
             NoQueueBaseActivity.setDeviceID(deviceId);
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getTokenFCM(),
-                    Constants.appVersion(), CommonHelper.getLocation(latitude, longitude)));
+            deviceModel.register(
+                deviceId,
+                new DeviceToken(
+                        NoQueueBaseActivity.getTokenFCM(),
+                        Constants.appVersion(),
+                        CommonHelper.getLocation(latitude, longitude)));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -1107,6 +1121,7 @@ public class LaunchActivity
                     isRegistered = true;
                 }
             } catch (Exception e) {
+                Crashlytics.logException(e);
                 e.printStackTrace();
             }
         }
@@ -1325,6 +1340,7 @@ public class LaunchActivity
                     }
                 }
             } catch (Exception e) {
+                Crashlytics.logException(e);
                 e.printStackTrace();
             }
             return getCountry(launchActivity);

@@ -70,9 +70,8 @@ public class ShowCustomDialog {
 
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
-        if (showNegativeBtn) {
-            btnNegative.setVisibility(View.VISIBLE);
-        }
+        btnNegative.setVisibility(showNegativeBtn ? View.VISIBLE: View.GONE);
+
         if (!TextUtils.isEmpty(btnPositiveText)) {
             btnPositive.setText(btnPositiveText);
         }

@@ -1,6 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,11 +38,13 @@ import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -50,6 +55,7 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
@@ -814,4 +820,52 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             }
         }
     }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        if (null != eej){
+            if (eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY.getCode())) {
+                showReferralDialog(this);
+            }else{
+                new ErrorResponseHandler().processError(this, eej);
+            }
+        }
+
+    }
+
+
+    private void showReferralDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_store_authentic, null, false);
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.setCancelable(false);
+        EditText edt_referral = customDialogView.findViewById(R.id.edt_referral);
+        Button btnPositive = customDialogView.findViewById(R.id.btnPositive);
+        Button btnNegative = customDialogView.findViewById(R.id.btnNegative);
+        btnNegative.setOnClickListener((View v) -> {
+            actionbarBack.performClick();
+        });
+        btnPositive.setOnClickListener((View v) -> {
+            edt_referral.setError(null);
+            if(TextUtils.isEmpty(edt_referral.getText().toString())){
+                edt_referral.setError("Enter referral code");
+            }else{
+               // call api
+                AppUtils.hideKeyBoard(this);
+                new CustomToast().showToast(this, " Call referral api");
+            }
+        });
+        try {
+            mAlertDialog.show();
+        } catch (Exception e) {
+            // WindowManager$BadTokenException will be caught and the app would not display
+            // the 'Force Close' message
+        }
+    }
+
 }

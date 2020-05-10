@@ -199,7 +199,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void onResume() {
         super.onResume();
         if (UserUtils.isLogin()) {
-            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
+            LaunchActivity.getLaunchActivity().setActionBarTitle(jsonTopic.getDisplayName());
             LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
             LaunchActivity.getLaunchActivity().enableDisableBack(false);
         } else {
