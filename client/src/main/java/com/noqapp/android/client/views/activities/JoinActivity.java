@@ -810,7 +810,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     ShowAlertInformation.showNetworkDialog(JoinActivity.this);
                 }
             }
-        }else if (requestCode == Constants.requestCodeAfterJoinQActivity) {
+        } else if (requestCode == Constants.requestCodeAfterJoinQActivity) {
             if (resultCode == RESULT_OK) {
                 boolean toclose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
                 if (toclose) {
@@ -824,10 +824,10 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if (null != eej){
+        if (null != eej) {
             if (eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY.getCode())) {
                 showReferralDialog(this);
-            }else{
+            } else {
                 new ErrorResponseHandler().processError(this, eej);
             }
         }
@@ -852,10 +852,10 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         });
         btnPositive.setOnClickListener((View v) -> {
             edt_referral.setError(null);
-            if(TextUtils.isEmpty(edt_referral.getText().toString())){
+            if (TextUtils.isEmpty(edt_referral.getText().toString())) {
                 edt_referral.setError("Enter referral code");
-            }else{
-               // call api
+            } else {
+                // call api
                 AppUtils.hideKeyBoard(this);
                 new CustomToast().showToast(this, " Call referral api");
             }
