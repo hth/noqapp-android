@@ -33,6 +33,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.WebViewActivity;
@@ -268,7 +269,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         dismissProgress();
        // AppUtils.authenticationProcessing();
         //On Login screen need not to clear the data
-        ShowAlertInformation.showThemeDialog(getActivity(),"Invalid Credentials","There was an error with your E-Mail/Password combination. Please try again.");
+        ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
+        showDialog.displayDialog("Invalid Credentials","There was an error with your E-Mail/Password combination. Please try again.");
     }
 
     private boolean isValidInput() {
