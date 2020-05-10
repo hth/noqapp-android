@@ -30,6 +30,7 @@ import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.presenter.AuthorizeResponsePresenter;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
@@ -81,8 +82,9 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 /**
  * Created by chandra on 5/7/17.
  */
-public class JoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator,
-        CFClientInterface, CashFreeNotifyQPresenter, QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter {
+public class JoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter,
+        ActivityCommunicator, CFClientInterface, CashFreeNotifyQPresenter,
+        QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter, AuthorizeResponsePresenter {
     private static final String TAG = JoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_mobile;
@@ -115,6 +117,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private CountDownTimer timer;
     private boolean isCancel = false;
     private boolean isPause = false;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -371,6 +374,22 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         jsonToken.getJsonPurchaseOrder().setCouponId(jsonPurchaseOrder.getCouponId());
         queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
         dismissProgress();
+    }
+
+    @Override
+    public void authorizePresenterResponse(JsonResponse response) {
+        if (null != alertDialog) {
+            alertDialog.dismiss();
+        }
+        responsePresenterResponse(response);
+    }
+
+    @Override
+    public void authorizePresenterError() {
+        if (null != alertDialog) {
+            alertDialog.dismiss();
+        }
+        responsePresenterResponse(null);
     }
 
 
@@ -841,9 +860,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_store_authentic, null, false);
         builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        mAlertDialog.setCancelable(false);
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(false);
         EditText edt_referral = customDialogView.findViewById(R.id.edt_referral);
         Button btnPositive = customDialogView.findViewById(R.id.btnPositive);
         Button btnNegative = customDialogView.findViewById(R.id.btnNegative);
@@ -856,15 +875,16 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 edt_referral.setError("Enter referral code");
             } else {
                 QueueAuthorize queueAuthorize = new QueueAuthorize()
-                        .setCodeQR("")
+                        .setCodeQR(jsonTokenAndQueue.getCodeQR())
                         .setReferralCode(edt_referral.getText().toString());
+                queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
                 queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                 AppUtils.hideKeyBoard(this);
                 new CustomToast().showToast(this, " Call referral api");
             }
         });
         try {
-            mAlertDialog.show();
+            alertDialog.show();
         } catch (Exception e) {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message

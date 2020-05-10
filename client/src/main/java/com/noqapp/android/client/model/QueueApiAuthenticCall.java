@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.TokenQueueApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.AuthorizeResponsePresenter;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -38,6 +39,7 @@ public class QueueApiAuthenticCall {
     private QueuePresenter queuePresenter;
     private TokenPresenter tokenPresenter;
     private ResponsePresenter responsePresenter;
+    private AuthorizeResponsePresenter authorizeResponsePresenter;
     private TokenAndQueuePresenter tokenAndQueuePresenter;
     private CashFreeNotifyQPresenter cashFreeNotifyQPresenter;
     private QueueJsonPurchaseOrderPresenter queueJsonPurchaseOrderPresenter;
@@ -70,6 +72,10 @@ public class QueueApiAuthenticCall {
 
     public void setCashFreeNotifyQPresenter(CashFreeNotifyQPresenter cashFreeNotifyQPresenter) {
         this.cashFreeNotifyQPresenter = cashFreeNotifyQPresenter;
+    }
+
+    public void setAuthorizeResponsePresenter(AuthorizeResponsePresenter authorizeResponsePresenter) {
+        this.authorizeResponsePresenter = authorizeResponsePresenter;
     }
 
     public void setQueueJsonPurchaseOrderPresenter(QueueJsonPurchaseOrderPresenter queueJsonPurchaseOrderPresenter) {
@@ -299,16 +305,16 @@ public class QueueApiAuthenticCall {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response success", String.valueOf(response.body()));
-                        responsePresenter.responsePresenterResponse(response.body());
+                        authorizeResponsePresenter.authorizePresenterResponse(response.body());
                     } else {
                         Log.e(TAG, "Failed to add authorized");
-                        responsePresenter.responseErrorPresenter(response.body().getError());
+                        authorizeResponsePresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        responsePresenter.authenticationFailure();
+                        authorizeResponsePresenter.authenticationFailure();
                     } else {
-                        responsePresenter.responseErrorPresenter(response.code());
+                        authorizeResponsePresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
@@ -316,7 +322,7 @@ public class QueueApiAuthenticCall {
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("authorize failure", t.getLocalizedMessage(), t);
-                responsePresenter.responsePresenterError();
+                authorizeResponsePresenter.authorizePresenterError();
             }
         });
     }
