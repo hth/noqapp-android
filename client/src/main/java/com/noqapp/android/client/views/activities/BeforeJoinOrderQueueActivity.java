@@ -255,7 +255,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                             Intent loginIntent = new Intent(BeforeJoinOrderQueueActivity.this, LoginActivity.class);
                             startActivity(loginIntent);
                         }
-                        new CustomToast().showToast(BeforeJoinOrderQueueActivity.this, "please login to avail this feature");
+                        new CustomToast().showToast(BeforeJoinOrderQueueActivity.this, "Please login to avail this feature");
                     }
                 } else {
                     // any user can join
