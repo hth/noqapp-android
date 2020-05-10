@@ -8,6 +8,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import android.util.Log;
 
 public abstract class BaseErrorResponseHandler {
+    private static final String TAG = BaseErrorResponseHandler.class.getName();
     protected int icon;
     protected String title = "";
     protected String msg = "";
@@ -56,6 +57,10 @@ public abstract class BaseErrorResponseHandler {
                     case STORE_NO_LONGER_EXISTS:
                     case QUEUE_NOT_STARTED:
                     case QUEUE_NOT_RE_STARTED:
+                        break;
+                    case QUEUE_AUTHORIZED_ONLY:
+                        Log.i(TAG, "Authorized Personnel only");
+                        break;
 
                     case USER_EXISTING:
                     case USER_NOT_FOUND:
