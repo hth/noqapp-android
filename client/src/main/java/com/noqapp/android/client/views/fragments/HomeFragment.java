@@ -750,7 +750,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                     cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                     ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                     Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
-                    startActivity(blinker);
+                    blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().getApplicationContext().startActivity(blinker);
                     if (LaunchActivity.isMsgAnnouncementEnable()) {
                         LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
                     }
@@ -762,7 +763,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                             cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                             ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
-                            startActivity(blinker);
+                            blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().getApplicationContext().startActivity(blinker);
                             if (LaunchActivity.isMsgAnnouncementEnable()) {
                                 LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
                             }

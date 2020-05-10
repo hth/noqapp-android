@@ -828,7 +828,8 @@ public class LaunchActivity
                                     cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                                     ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
                                     Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
-                                    startActivity(blinker);
+                                    blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getApplicationContext().startActivity(blinker);
                                     if (isMsgAnnouncementEnable()) {
                                         makeAnnouncement(jsonTextToSpeeches, msgId);
                                     }
@@ -848,7 +849,8 @@ public class LaunchActivity
                                 cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                 ReviewDB.insert(cv);
                                 Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
-                                startActivity(blinker);
+                                blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getApplicationContext().startActivity(blinker);
                                 if (isMsgAnnouncementEnable()) {
                                     makeAnnouncement(jsonTextToSpeeches, msgId);
                                 }
