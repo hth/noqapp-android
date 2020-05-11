@@ -46,6 +46,8 @@ public class Constants extends BaseConstants{
 
 
 
+    // Shared Preferences keys
+    public static final String APP_PACKAGE = "com.noqapp.android.client";
 
     /**
      * Computes App version.

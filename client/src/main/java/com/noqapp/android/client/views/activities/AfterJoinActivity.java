@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.AsyncTask;
@@ -327,6 +328,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
             tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+            // If avg wait time is available put it to app preference
+            if(jsonTokenAndQueue.getAverageServiceTime() != 0) {
+                SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                prefs.edit().putLong(codeQR, jsonTokenAndQueue.getAverageServiceTime()).apply();
+            }
             updateEstimatedTime();
             setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
             tv_name.setText(jsonProfile.getName());
@@ -510,8 +516,13 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 tv_estimated_time.setText(String.format(getString(R.string.estimated_time), Formatter.getTimeAsString(Formatter.getDateFromString(jsonToken.getExpectedServiceBegin()))));
                 tv_estimated_time.setVisibility(View.VISIBLE);
             } else {
-                if (!TextUtils.isEmpty(String.valueOf(jsonTokenAndQueue.getAverageServiceTime())) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
-                    String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime());
+                long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
+                if (avgServiceTime == 0) {
+                    SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                    avgServiceTime = prefs.getLong(jsonTokenAndQueue.getCodeQR(), 0);
+                }
+                if (!TextUtils.isEmpty(String.valueOf(avgServiceTime)) && avgServiceTime > 0) {
+                    String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * avgServiceTime);
                     if (null == output) {
                         tv_estimated_time.setVisibility(View.INVISIBLE);
                     } else {

@@ -1,6 +1,9 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
@@ -64,6 +69,29 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 } else {
                     holder.tv_total.setText(context.getString(R.string.serving_now));
                     holder.tv_total_value.setVisibility(View.VISIBLE);
+                    // Display wait time
+                    try {
+                        long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
+                        if (avgServiceTime == 0) {
+                            SharedPreferences prefs = this.context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                                avgServiceTime = prefs.getLong(jsonTokenAndQueue.getCodeQR(), 0);
+                            }
+                            if (!TextUtils.isEmpty(String.valueOf(avgServiceTime)) && avgServiceTime > 0) {
+                                String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * avgServiceTime);
+                                if (null == output) {
+                                    holder.tv_wait_time.setVisibility(View.INVISIBLE);
+                                } else {
+                                    holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), output));
+                                    holder.tv_wait_time.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                holder.tv_wait_time.setVisibility(View.INVISIBLE);
+                            }
+
+                    } catch (Exception e) {
+                        //Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
+                        holder.tv_wait_time.setVisibility(View.INVISIBLE);
+                    }
                 }
             } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
                 holder.tv_current_title.setText(context.getString(R.string.order));
@@ -126,6 +154,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
         private CardView card_view;
         private TextView tv_total_value;
         private TextView tv_current_value;
+        private TextView tv_wait_time;
         private TextView tv_current_title;
         private TextView tv_total;
         private LinearLayout ll_appointment;
@@ -143,6 +172,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             this.tv_detail = itemView.findViewById(R.id.tv_detail);
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_current_value = itemView.findViewById(R.id.tv_current_value);
+            this.tv_wait_time = itemView.findViewById(R.id.tv_wait_time);
             this.tv_current_title = itemView.findViewById(R.id.tv_current);
             this.tv_total_value = itemView.findViewById(R.id.tv_total_value);
             this.tv_total = itemView.findViewById(R.id.tv_total);

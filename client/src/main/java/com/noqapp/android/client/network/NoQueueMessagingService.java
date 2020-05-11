@@ -19,6 +19,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.MyApplication;
@@ -57,6 +58,7 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -99,6 +101,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
 
     public static void unSubscribeTopics(String topic) {
+
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
     }
 
@@ -442,7 +445,28 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, String.valueOf(jtk.getToken()));
 
                                 if(jtk.getToken() > Integer.parseInt(currentServing)) {
-                                    sendNotification(title, body, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
+                                    String notificationMessage = body;
+                                    // Add wait time to notification message
+                                    try {
+                                        long avgServiceTime = jtk.getAverageServiceTime();
+                                        if (avgServiceTime == 0) {
+                                            SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                                            avgServiceTime = prefs.getLong(jtk.getCodeQR(), 0);
+                                        }
+                                        if (!TextUtils.isEmpty(String.valueOf(avgServiceTime)) && avgServiceTime > 0) {
+                                            String output = GetTimeAgoUtils.getTimeAgo(jtk.afterHowLong() * avgServiceTime);
+                                            if (null != output) {
+                                                notificationMessage = body + String.format("\nEstimated wait time: %1$s", output);
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
+                                    }
+                                    sendNotification(title, notificationMessage, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
+                                } else {
+                                    // Delete the App Shared Preferences entry for this queue
+                                    SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                                    prefs.edit().remove(jtk.getCodeQR()).apply();
                                 }
 
                                 // Check if User's turn then start Buzzer.

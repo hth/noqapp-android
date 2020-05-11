@@ -54,7 +54,7 @@
     <dimen name="action_bar_icon_size">40dp</dimen>
     <dimen name="thumbnail_height">60dp</dimen>
     <dimen name="current_q_width">286dp</dimen>
-    <dimen name="current_q_height">115dp</dimen>
+    <dimen name="current_q_height">127dp</dimen>
 
     <dimen name="recent_q_width">190dp</dimen>
     <dimen name="recent_q_height">202dp</dimen>
