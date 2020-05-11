@@ -35,7 +35,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implem
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
@@ -63,6 +63,5 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implem
                 }
             }
         };
-        return filter;
     }
 }
