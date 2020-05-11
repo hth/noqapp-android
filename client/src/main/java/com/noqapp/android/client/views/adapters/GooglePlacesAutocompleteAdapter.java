@@ -9,10 +9,10 @@ import android.widget.Filterable;
 
 import com.noqapp.android.client.utils.AppUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {
-    private ArrayList<String> resultList;
+    private List<String> resultList;
 
     public GooglePlacesAutocompleteAdapter(Context context, int resource) {
         super(context, resource);
@@ -35,17 +35,21 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implem
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     // Retrieve the autocomplete results.
-                    resultList = AppUtils.autocomplete(constraint.toString());
+                    resultList = AppUtils.autoCompleteWithOkHttp(constraint.toString());
 
                     // Assign the data to the FilterResults
                     filterResults.values = resultList;
-                    filterResults.count = resultList.size();
+                    if (resultList != null) {
+                        filterResults.count = resultList.size();
+                    } else {
+                        filterResults.count = 0;
+                    }
                 }
                 return filterResults;
             }
@@ -59,6 +63,5 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implem
                 }
             }
         };
-        return filter;
     }
 }
