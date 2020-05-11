@@ -53,6 +53,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -69,6 +70,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.noqapp.android.common.model.types.UserLevelEnum.Q_SUPERVISOR;
 import static com.noqapp.android.common.model.types.UserLevelEnum.S_MANAGER;
@@ -316,7 +323,7 @@ public class AppUtils extends CommonHelper {
                     "&input=" + URLEncoder.encode(input, "utf8");
             URL url = new URL(sb);
 
-            System.out.println("URL: " + url);
+            Log.d(TAG, "URL: " + sb);
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
 
@@ -350,6 +357,58 @@ public class AppUtils extends CommonHelper {
             Log.e(TAG, "Cannot process JSON results", e);
         }
         return resultList;
+    }
+
+    public static ArrayList<String> autoCompleteWithOkHttp(String input) {
+        final ArrayList[] resultList = {new ArrayList<String>()};
+        OkHttpClient client = new OkHttpClient();
+        String url;
+        try {
+            url = Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON +
+                    "?key=" + Constants.GOOGLE_PLACE_API_KEY +
+                    "&components=country:" + LaunchActivity.COUNTRY_CODE +
+                    "&types=(regions)" +
+                    "&input=" + URLEncoder.encode(input, "utf8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                }
+
+                try {
+                    // Create a JSON object hierarchy from the results
+                    String data = response.body().string();
+                    Log.d(TAG, data);
+                    JSONObject jsonObj = new JSONObject(data);
+                    JSONArray predictions = jsonObj.getJSONArray("predictions");
+                    // Extract the Place descriptions from the results
+                    resultList[0] = new ArrayList<String>(predictions.length());
+                    for (int i = 0; i < predictions.length(); i++) {
+                        resultList[0].add(predictions.getJSONObject(i).getString("description"));
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "Cannot process JSON results", e);
+                }
+            }
+        });
+
+        return resultList[0];
     }
 
     public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
