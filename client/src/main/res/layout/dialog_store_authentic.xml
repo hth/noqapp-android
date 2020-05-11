@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Authorized person only"
+            android:text="Enter Referral Code"
             android:textSize="@dimen/text_size_fourteen"
             android:textStyle="bold" />
 
@@ -41,7 +41,7 @@
             android:layout_marginRight="10dp"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Approval required to access store \n If you have referral code. please enter and continue "
+            android:text="This queue requires a one time referral code to join. Please enter store provided code here. Contact store for a valid code."
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_twelve" />
 
@@ -55,7 +55,8 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/square_white_bg_drawable"
             android:gravity="center"
-            android:hint="referral code"
+            android:hint="REFERRAL_CODE"
+            android:inputType="textCapCharacters"
             android:padding="5dp"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_twelve" />
