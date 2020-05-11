@@ -359,8 +359,8 @@ public class AppUtils extends CommonHelper {
         return resultList;
     }
 
-    public static ArrayList<String> autoCompleteWithOkHttp(String input) {
-        final ArrayList[] resultList = {new ArrayList<String>()};
+    public static List<String> autoCompleteWithOkHttp(String input) {
+        List<String> resultList;
         OkHttpClient client = new OkHttpClient();
         String url;
         try {
@@ -378,37 +378,29 @@ public class AppUtils extends CommonHelper {
                 .url(url)
                 .build();
 
-        client.newCall(request).enqueue(new Callback() {
+        try {
+            Response response = client.newCall(request).execute();
 
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+            // Create a JSON object hierarchy from the results
+            String data = response.body().string();
+            JSONObject jsonObj = new JSONObject(data);
+            JSONArray predictions = jsonObj.getJSONArray("predictions");
+            // Extract the Place descriptions from the results
+            resultList = new ArrayList<String>(predictions.length());
+            for (int i = 0; i < predictions.length(); i++) {
+                resultList.add(predictions.getJSONObject(i).getString("description"));
             }
+        } catch (JSONException e) {
+            Log.e(TAG, "Cannot process JSON results", e);
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            Log.e(TAG, "Failed loading places ", e);
+            e.printStackTrace();
+            return null;
+        }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                }
-
-                try {
-                    // Create a JSON object hierarchy from the results
-                    String data = response.body().string();
-                    Log.d(TAG, data);
-                    JSONObject jsonObj = new JSONObject(data);
-                    JSONArray predictions = jsonObj.getJSONArray("predictions");
-                    // Extract the Place descriptions from the results
-                    resultList[0] = new ArrayList<String>(predictions.length());
-                    for (int i = 0; i < predictions.length(); i++) {
-                        resultList[0].add(predictions.getJSONObject(i).getString("description"));
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, "Cannot process JSON results", e);
-                }
-            }
-        });
-
-        return resultList[0];
+        return resultList;
     }
 
     public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
