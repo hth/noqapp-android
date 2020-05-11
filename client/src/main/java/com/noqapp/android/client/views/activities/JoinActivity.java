@@ -808,7 +808,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (requestCode == Constants.ACTIVITY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
-                Log.e("data recieve", jsonCoupon.toString());
+                Log.e("Data receive", jsonCoupon.toString());
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     showProgress();
@@ -832,8 +832,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             }
         } else if (requestCode == Constants.requestCodeAfterJoinQActivity) {
             if (resultCode == RESULT_OK) {
-                boolean toclose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
-                if (toclose) {
+                boolean toClose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
+                if (toClose) {
                     returnResultBack();
                     finish();
                 }
