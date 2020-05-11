@@ -880,7 +880,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
                 queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                 AppUtils.hideKeyBoard(this);
-                new CustomToast().showToast(this, " Call referral api");
+                new CustomToast().showToast(this, "Please try to join the queue again.");
             }
         });
         try {
