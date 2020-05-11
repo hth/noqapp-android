@@ -1,6 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
-//import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
@@ -125,7 +125,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
                     }
                 } catch (Exception e) {
-//                    FirebaseCrashlytics.getInstance().recordException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
                 if (AppUtils.isRelease()) {

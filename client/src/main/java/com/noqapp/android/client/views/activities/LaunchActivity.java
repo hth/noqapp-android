@@ -47,7 +47,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.common.cache.Cache;
 import com.google.firebase.analytics.FirebaseAnalytics;
-//import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -545,7 +545,7 @@ public class LaunchActivity
                         .into(iv_profile);
             }
         } catch (Exception e) {
-//            FirebaseCrashlytics.getInstance().recordException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             Log.e(TAG, "Failed Update Drawer UI", e);
         }
     }
@@ -626,7 +626,7 @@ public class LaunchActivity
                 ReviewDB.deleteReview(codeQR, token);
             }
         } catch (Exception e) {
-//            FirebaseCrashlytics.getInstance().recordException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -690,7 +690,7 @@ public class LaunchActivity
                                 true);
                     }
                 } catch (Exception e) {
-//                    FirebaseCrashlytics.getInstance().recordException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                     Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
                 }
             }
@@ -879,8 +879,8 @@ public class LaunchActivity
                 }
             }
         } catch (Exception e) {
-//            FirebaseCrashlytics.getInstance().log("Failed on update notification");
-//            FirebaseCrashlytics.getInstance().recordException(e);
+            FirebaseCrashlytics.getInstance().log("Failed on update notification");
+            FirebaseCrashlytics.getInstance().recordException(e);
             Log.e(TAG, "Failed on update notification " + e.getLocalizedMessage());
         }
     }
@@ -1126,7 +1126,7 @@ public class LaunchActivity
                     isRegistered = true;
                 }
             } catch (Exception e) {
-//                FirebaseCrashlytics.getInstance().recordException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
             }
         }
@@ -1345,7 +1345,7 @@ public class LaunchActivity
                     }
                 }
             } catch (Exception e) {
-//                FirebaseCrashlytics.getInstance().recordException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
             }
             return getCountry(launchActivity);
