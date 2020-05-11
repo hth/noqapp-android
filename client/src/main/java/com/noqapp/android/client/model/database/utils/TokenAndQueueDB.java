@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+//import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -306,8 +306,8 @@ public class TokenAndQueueDB {
                 Log.d(TAG, "Data Saved history queue " + successCount);
             } catch (SQLException e) {
                 Log.e(TAG, "Error saveHistoryQueue reason=" + e.getLocalizedMessage(), e);
-                FirebaseCrashlytics.getInstance().log("Error saveHistoryQueue reason " + e.getLocalizedMessage());
-                FirebaseCrashlytics.getInstance().recordException(e);
+//                FirebaseCrashlytics.getInstance().log("Error saveHistoryQueue reason " + e.getLocalizedMessage());
+//                FirebaseCrashlytics.getInstance().recordException(e);
 
             }
         }

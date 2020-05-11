@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+//import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
@@ -315,8 +315,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getTokenFCM());
             // tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().log("On Resume " + e.getLocalizedMessage());
-            FirebaseCrashlytics.getInstance().recordException(e);
+//            FirebaseCrashlytics.getInstance().log("On Resume " + e.getLocalizedMessage());
+//            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
     }
@@ -497,7 +497,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                     startActivity(in);
                 } else {
                     Log.d(TAG, "Reached un-supported condition");
-                    FirebaseCrashlytics.getInstance().log("Reached un-supported condition " + bizStoreElastic.getBusinessType());
+//                    FirebaseCrashlytics.getInstance().log("Reached un-supported condition " + bizStoreElastic.getBusinessType());
                 }
                 break;
             default:
@@ -596,8 +596,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 String one = o1.getScheduleDate() + " " + AppUtils.getTimeFourDigitWithColon(o1.getStartTime());
                 return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two));
             } catch (Exception e) {
-                FirebaseCrashlytics.getInstance().log("Failed on currentQueueResponse " + e.getLocalizedMessage());
-                FirebaseCrashlytics.getInstance().recordException(e);
+//                FirebaseCrashlytics.getInstance().log("Failed on currentQueueResponse " + e.getLocalizedMessage());
+//                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
                 return 0;
             }
@@ -928,8 +928,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             );
             sequence.start();
         } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().log("Failed to present showcase sequence " + e.getLocalizedMessage());
-            FirebaseCrashlytics.getInstance().recordException(e);
+//            FirebaseCrashlytics.getInstance().log("Failed to present showcase sequence " + e.getLocalizedMessage());
+//            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
     }
