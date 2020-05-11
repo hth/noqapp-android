@@ -303,7 +303,7 @@ public class TokenAndQueueDB {
             ContentValues values = createQueueContentValues(tokenAndQueue);
             try {
                 long successCount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueueHistory.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                Log.d(TAG, "Data Saved history queue " + String.valueOf(successCount));
+                Log.d(TAG, "Data Saved history queue " + successCount);
             } catch (SQLException e) {
                 Log.e(TAG, "Error saveHistoryQueue reason=" + e.getLocalizedMessage(), e);
                 FirebaseCrashlytics.getInstance().log("Error saveHistoryQueue reason " + e.getLocalizedMessage());

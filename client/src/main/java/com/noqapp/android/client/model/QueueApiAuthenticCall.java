@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.TokenQueueApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.AuthorizeResponsePresenter;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -16,6 +17,7 @@ import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
+import com.noqapp.android.client.presenter.beans.body.QueueAuthorize;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.DeviceToken;
@@ -37,6 +39,7 @@ public class QueueApiAuthenticCall {
     private QueuePresenter queuePresenter;
     private TokenPresenter tokenPresenter;
     private ResponsePresenter responsePresenter;
+    private AuthorizeResponsePresenter authorizeResponsePresenter;
     private TokenAndQueuePresenter tokenAndQueuePresenter;
     private CashFreeNotifyQPresenter cashFreeNotifyQPresenter;
     private QueueJsonPurchaseOrderPresenter queueJsonPurchaseOrderPresenter;
@@ -69,6 +72,10 @@ public class QueueApiAuthenticCall {
 
     public void setCashFreeNotifyQPresenter(CashFreeNotifyQPresenter cashFreeNotifyQPresenter) {
         this.cashFreeNotifyQPresenter = cashFreeNotifyQPresenter;
+    }
+
+    public void setAuthorizeResponsePresenter(AuthorizeResponsePresenter authorizeResponsePresenter) {
+        this.authorizeResponsePresenter = authorizeResponsePresenter;
     }
 
     public void setQueueJsonPurchaseOrderPresenter(QueueJsonPurchaseOrderPresenter queueJsonPurchaseOrderPresenter) {
@@ -287,6 +294,35 @@ public class QueueApiAuthenticCall {
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("abortQueue failure", t.getLocalizedMessage(), t);
                 responsePresenter.responsePresenterError();
+            }
+        });
+    }
+
+    public void authorize(String did, String mail, String auth, QueueAuthorize queueAuthorize) {
+        tokenQueueApiUrls.authorize(did, Constants.DEVICE_TYPE, mail, auth, queueAuthorize).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response success", String.valueOf(response.body()));
+                        authorizeResponsePresenter.authorizePresenterResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to add authorized");
+                        authorizeResponsePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        authorizeResponsePresenter.authenticationFailure();
+                    } else {
+                        authorizeResponsePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("authorize failure", t.getLocalizedMessage(), t);
+                authorizeResponsePresenter.authorizePresenterError();
             }
         });
     }

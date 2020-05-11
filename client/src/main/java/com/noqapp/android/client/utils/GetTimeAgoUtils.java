@@ -21,19 +21,19 @@ public class GetTimeAgoUtils {
         // TODO: localize
         final long diff = time;
         if (diff < MINUTE_MILLIS) {
-            return "In " + diff / 1000 + " seconds";
-        } else if (diff < 2 * MINUTE_MILLIS) {
-            return "In a minute";
+            return diff / 1000 + " seconds";
+        } else if (diff < 10 * MINUTE_MILLIS) {
+            return "Couple of minutes";
         } else if (diff < 50 * MINUTE_MILLIS) {
-            return "In " + diff / MINUTE_MILLIS + " minutes";
+            return "Approx " + diff / MINUTE_MILLIS + " minutes";
         } else if (diff < 90 * MINUTE_MILLIS) {
-            return "In an hour";
+            return "Approx an hour";
         } else if (diff < 24 * HOUR_MILLIS) {
-            return "In " + diff / HOUR_MILLIS + " hours ago";
+            return "Approx " + diff / HOUR_MILLIS + " hours";
         } else if (diff < 48 * HOUR_MILLIS) {
-            return "Tomorrow";
+            return "More than a day";
         } else {
-            return "In " + diff / DAY_MILLIS + " days";
+            return "Approx " + diff / DAY_MILLIS + " days";
         }
     }
 

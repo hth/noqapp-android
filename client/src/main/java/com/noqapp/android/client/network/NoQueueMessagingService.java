@@ -406,6 +406,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
                             JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
                             if (null != jtk) {
+                                boolean displayBuzzer = false;
                                 /*
                                  * Save codeQR of goto & show it in after join screen on app
                                  * Review DB for review key && current serving == token no.
@@ -419,6 +420,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         // update
                                     } else {
                                         //insert
+                                        displayBuzzer = true;
                                         ContentValues cv = new ContentValues();
                                         cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                         cv.put(DatabaseTable.Review.CODE_QR, codeQR);
@@ -439,10 +441,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 }
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, String.valueOf(jtk.getToken()));
 
-                                sendNotification(title, body, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
+                                if(jtk.getToken() > Integer.parseInt(currentServing)) {
+                                    sendNotification(title, body, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
+                                }
 
                                 // Check if User's turn then start Buzzer.
-                                if (Integer.parseInt(currentServing) == jtk.getToken()) {
+                                if (displayBuzzer && Integer.parseInt(currentServing) == jtk.getToken()) {
                                     Intent buzzerIntent = new Intent(this, BlinkerActivity.class);
                                     buzzerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(buzzerIntent);
