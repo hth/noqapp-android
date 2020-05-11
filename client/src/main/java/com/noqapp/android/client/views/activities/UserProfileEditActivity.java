@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+//import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
@@ -285,8 +285,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     }
                 } catch (Exception e) {
                     Log.e("Failed getting image ", e.getLocalizedMessage(), e);
-                    FirebaseCrashlytics.getInstance().log("Failed to find and upload profile image " + e.getLocalizedMessage());
-                    FirebaseCrashlytics.getInstance().recordException(e);
+//                    FirebaseCrashlytics.getInstance().log("Failed to find and upload profile image " + e.getLocalizedMessage());
+//                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
         } else if (requestCode == Constants.RC_DATE_PICKER && resultCode == Activity.RESULT_OK) {
