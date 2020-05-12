@@ -15,30 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "129734883266-qqt5vurf86llpo7segbfaq8lcbc9ct98.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.client",
-            "certificate_hash": "ce894260c6b648530aefc830dbd172430a4dd31f"
-          }
-        },
-        {
-          "client_id": "129734883266-isvaa1pgtheeck0pa0fn43gssirp44sc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.client",
-            "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
-          }
-        },
-        {
-          "client_id": "129734883266-h8e1kc0s10qkmus5q5270qgtfcvuv7h9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.client",
-            "certificate_hash": "e4918f2940dad94f7b514441999c093352eedd62"
-          }
-        },
-        {
           "client_id": "129734883266-9krf05gp97e64hia0443a98anl9cuorn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -70,16 +46,13 @@
       "api_key": [
         {
           "current_key": "AIzaSyAFDnkbcjkBX4JYmMWZOc1yEFLyffC4Ibo"
-        },
-        {
-          "current_key": "AIzaSyAbgo3xoKHY4f7K4_z-MQ5fLhXZhFswhYA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "129734883266-f54sbih0l01vo4n8pheie2ap0p7os79u.apps.googleusercontent.com",
+              "client_id": "129734883266-720n2155e6f3usvjmnoeffasn8f94i1k.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -125,16 +98,13 @@
       "api_key": [
         {
           "current_key": "AIzaSyAFDnkbcjkBX4JYmMWZOc1yEFLyffC4Ibo"
-        },
-        {
-          "current_key": "AIzaSyAbgo3xoKHY4f7K4_z-MQ5fLhXZhFswhYA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "129734883266-f54sbih0l01vo4n8pheie2ap0p7os79u.apps.googleusercontent.com",
+              "client_id": "129734883266-720n2155e6f3usvjmnoeffasn8f94i1k.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -156,14 +126,6 @@
         }
       },
       "oauth_client": [
-        {
-          "client_id": "129734883266-2mg0m5a5k3e18fc2c129lhu17bqsuraj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.merchant.healthcare",
-            "certificate_hash": "ce894260c6b648530aefc830dbd172430a4dd31f"
-          }
-        },
         {
           "client_id": "129734883266-23ohpuc82r3s68vebs6ukd4grs0qm9ts.apps.googleusercontent.com",
           "client_type": 1,
@@ -188,16 +150,13 @@
       "api_key": [
         {
           "current_key": "AIzaSyAFDnkbcjkBX4JYmMWZOc1yEFLyffC4Ibo"
-        },
-        {
-          "current_key": "AIzaSyAbgo3xoKHY4f7K4_z-MQ5fLhXZhFswhYA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "129734883266-f54sbih0l01vo4n8pheie2ap0p7os79u.apps.googleusercontent.com",
+              "client_id": "129734883266-720n2155e6f3usvjmnoeffasn8f94i1k.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -227,16 +186,13 @@
       "api_key": [
         {
           "current_key": "AIzaSyAFDnkbcjkBX4JYmMWZOc1yEFLyffC4Ibo"
-        },
-        {
-          "current_key": "AIzaSyAbgo3xoKHY4f7K4_z-MQ5fLhXZhFswhYA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "129734883266-f54sbih0l01vo4n8pheie2ap0p7os79u.apps.googleusercontent.com",
+              "client_id": "129734883266-720n2155e6f3usvjmnoeffasn8f94i1k.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -266,16 +222,13 @@
       "api_key": [
         {
           "current_key": "AIzaSyAFDnkbcjkBX4JYmMWZOc1yEFLyffC4Ibo"
-        },
-        {
-          "current_key": "AIzaSyAbgo3xoKHY4f7K4_z-MQ5fLhXZhFswhYA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "129734883266-f54sbih0l01vo4n8pheie2ap0p7os79u.apps.googleusercontent.com",
+              "client_id": "129734883266-720n2155e6f3usvjmnoeffasn8f94i1k.apps.googleusercontent.com",
               "client_type": 3
             },
             {
