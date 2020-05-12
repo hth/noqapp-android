@@ -256,6 +256,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     pushNotification.putExtra(FIREBASE_TYPE, mappedData.get(FIREBASE_TYPE));
                     pushNotification.putExtra(CODE_QR, mappedData.get(CODE_QR));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                    if (messageOrigin == MessageOriginEnum.Q) {
+                        // Update Currently serving in app preferences
+                        SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                        prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, mappedData.get(CODE_QR)), Integer.parseInt(mappedData.get(Constants.CURRENTLY_SERVING))).apply();
+                    }
                 } else {
                     // app is in background, show the notification in notification tray
                     //save data to database
@@ -444,13 +449,17 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 }
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, String.valueOf(jtk.getToken()));
 
-                                if(jtk.getToken() > Integer.parseInt(currentServing)) {
+                                // Check if user needs to be notified
+                                SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                                int lastServingNumber = prefs.getInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR), 0);
+
+                                if(jtk.getToken() > Integer.parseInt(currentServing) && lastServingNumber != Integer.parseInt(currentServing)) {
+                                    prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR), Integer.parseInt(currentServing)).apply();
                                     String notificationMessage = body;
                                     // Add wait time to notification message
                                     try {
                                         long avgServiceTime = jtk.getAverageServiceTime();
                                         if (avgServiceTime == 0) {
-                                            SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                                             avgServiceTime = prefs.getLong(jtk.getCodeQR(), 0);
                                         }
                                         if (!TextUtils.isEmpty(String.valueOf(avgServiceTime)) && avgServiceTime > 0) {
@@ -463,10 +472,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
                                     }
                                     sendNotification(title, notificationMessage, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
-                                } else {
+                                }
+
+                                if (jtk.getToken() < Integer.parseInt(currentServing)) {
                                     // Delete the App Shared Preferences entry for this queue
-                                    SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                                     prefs.edit().remove(jtk.getCodeQR()).apply();
+                                    prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR)).apply();
                                 }
 
                                 // Check if User's turn then start Buzzer.

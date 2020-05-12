@@ -48,6 +48,7 @@ public class Constants extends BaseConstants{
 
     // Shared Preferences keys
     public static final String APP_PACKAGE = "com.noqapp.android.client";
+    public static final String CURRENTLY_SERVING_KEY_FORMAT = "%s_currently_serving";
 
     /**
      * Computes App version.

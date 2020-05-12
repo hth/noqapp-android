@@ -328,9 +328,10 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
             tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
-            // If avg wait time is available put it to app preference
+            // Store the currently serving and avg wait time in the app preference
+            SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+            prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR), jsonTokenAndQueue.getServingNumber()).apply();
             if(jsonTokenAndQueue.getAverageServiceTime() != 0) {
-                SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                 prefs.edit().putLong(codeQR, jsonTokenAndQueue.getAverageServiceTime()).apply();
             }
             updateEstimatedTime();
