@@ -31,8 +31,8 @@ public class JsonBusinessCustomerLookup implements Serializable {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("nm")
-    private String name;
+    @JsonProperty("cn")
+    private String customerName;
 
     @JsonProperty("ru")
     private boolean registeredUser;
@@ -64,12 +64,12 @@ public class JsonBusinessCustomerLookup implements Serializable {
         return this;
     }
 
-    public String getName() {
-        return name;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public boolean isRegisteredUser() {
