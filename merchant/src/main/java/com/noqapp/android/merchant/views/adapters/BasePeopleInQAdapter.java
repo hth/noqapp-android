@@ -258,6 +258,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
+                recordHolder.tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
+                recordHolder.tv_customer_mobile.setText(jsonQueuedPerson.getCustomerPhone());
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId())) {
                     recordHolder.tv_status_msg.setBackgroundResource(R.drawable.bg_nogradient_round);
                     recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_available));

@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,11 +14,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.hbb20.CountryCodePicker;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -30,6 +36,7 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -215,22 +222,82 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_create_token, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+        CountryCodePicker countryCode = customDialogView.findViewById(R.id.ccp);
+        edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
+        EditText edtName = customDialogView.findViewById(R.id.edt_name);
+        RelativeLayout userInfo = customDialogView.findViewById(R.id.ll_center);
+        LinearLayout tokenInfo = customDialogView.findViewById(R.id.ll_bottom);
         tv_create_token = customDialogView.findViewById(R.id.tvtitle);
         tvCount = customDialogView.findViewById(R.id.tvcount);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
+        edtName.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (edtName.getText().toString().length() <= 0) {
+                    edtName.setError("Enter Name");
+                } else {
+                    edtName.setError(null);
+                }
+            }
+        });
+
+        edt_mobile.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (edt_mobile.getText().toString().length() <= 0) {
+                    edt_mobile.setError("Enter Phone No");
+                } else {
+                    edt_mobile.setError(null);
+                }
+            }
+        });
         btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         btn_create_token.setOnClickListener(v -> {
             if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
+                if (edt_mobile.getText().toString().length() <= 0) {
+                    edt_mobile.setError("Enter Phone No");
+                    return;
+                }
+                if (edtName.getText().toString().length() <= 0 ) {
+                    edtName.setError("Enter Name");
+                    return;
+                }
                 showProgress();
                 setDispensePresenter();
-                manageQueueApiCalls.dispenseToken(
+                JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer();
+                jsonBusinessCustomer.setCodeQR(codeQR);
+                jsonBusinessCustomer.setCustomerName(edtName.getText().toString());
+
+                jsonBusinessCustomer.setCustomerPhone(countryCode.getDefaultCountryCode() + edt_mobile.getText().toString());
+                jsonBusinessCustomer.setRegisteredUser(false);
+                manageQueueApiCalls.dispenseTokenWithClientInfo(
                         BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(),
-                        codeQR);
+                        jsonBusinessCustomer);
                 btn_create_token.setClickable(false);
+                userInfo.setVisibility(View.GONE);
+                tokenInfo.setVisibility(View.VISIBLE);
             } else {
                 mAlertDialog.dismiss();
             }
