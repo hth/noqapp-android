@@ -311,54 +311,6 @@ public class AppUtils extends CommonHelper {
         return latLng;
     }
 
-    public static ArrayList<String> autocomplete(String input) {
-        ArrayList<String> resultList = null;
-        HttpURLConnection conn = null;
-        StringBuilder jsonResults = new StringBuilder();
-        try {
-            String sb = Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON +
-                    "?key=" + Constants.GOOGLE_PLACE_API_KEY +
-                    "&components=country:" + LaunchActivity.COUNTRY_CODE +
-                    "&types=(regions)" +
-                    "&input=" + URLEncoder.encode(input, "utf8");
-            URL url = new URL(sb);
-
-            Log.d(TAG, "URL: " + sb);
-            conn = (HttpURLConnection) url.openConnection();
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-
-            // Load the results into a StringBuilder
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                jsonResults.append(buff, 0, read);
-            }
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "Error processing Places API URL", e);
-            return null;
-        } catch (IOException e) {
-            Log.e(TAG, "Error connecting to Places API", e);
-            return null;
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-        try {
-            // Create a JSON object hierarchy from the results
-            JSONObject jsonObj = new JSONObject(jsonResults.toString());
-            JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-            // Extract the Place descriptions from the results
-            resultList = new ArrayList<>(predsJsonArray.length());
-            for (int i = 0; i < predsJsonArray.length(); i++) {
-                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "Cannot process JSON results", e);
-        }
-        return resultList;
-    }
-
     public static List<String> autoCompleteWithOkHttp(String input) {
         List<String> resultList;
         OkHttpClient client = new OkHttpClient();
