@@ -79,20 +79,24 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         rb_5 = findViewById(R.id.rb_5);
 
         rg_save_time = findViewById(R.id.rg_save_time);
-        rg_save_time.setOnCheckedChangeListener((group, checkedId) -> {
-            for (int i = 0; i < rg_save_time.getChildCount(); i++) {
-                View o = rg_save_time.getChildAt(i);
-                if (o instanceof RadioButton) {
-                    o.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_unselect));
-                    ((RadioButton) o).setTextColor(Color.BLACK);
-                }
-            }
-            RadioButton rb = findViewById(checkedId);
-            rb.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_select));
-            rb.setTextColor(Color.WHITE);
-            tv_hr_saved.setText(getSeekbarLabel(Integer.parseInt(rb.getTag().toString())));
-        });
-        rb_4.setChecked(true);
+//        rg_save_time.setOnCheckedChangeListener((group, checkedId) -> {
+//            for (int i = 0; i < rg_save_time.getChildCount(); i++) {
+//                View o = rg_save_time.getChildAt(i);
+//                if (o instanceof RadioButton) {
+//                    o.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_unselect));
+//                    ((RadioButton) o).setTextColor(Color.BLACK);
+//                }
+//            }
+//            RadioButton rb = findViewById(checkedId);
+//            rb.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_select));
+//            rb.setTextColor(Color.WHITE);
+//            tv_hr_saved.setText(getSeekbarLabel(Integer.parseInt(rb.getTag().toString())));
+//        });
+        RadioButton rb = findViewById(R.id.rb_5);
+        rb.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_select));
+        rb.setTextColor(Color.WHITE);
+        tv_hr_saved.setText(getSeekbarLabel(Integer.parseInt(rb.getTag().toString())));
+        rb_5.setChecked(true);
         final Bundle extras = getIntent().getExtras();
 
         if (null != extras) {
@@ -139,7 +143,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         }
         //actionbarBack.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener((View v) -> onBackPressed());
-        ratingBar.setRating(4.0f);
+        ratingBar.setRating(5.0f);
         ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> tv_rating_value.setText(rating + ""));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener((View v) -> {

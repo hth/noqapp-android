@@ -45,7 +45,7 @@
             <EditText
                 android:id="@+id/edt_name"
                 style="@style/style_register_edt"
-                android:inputType="text" />
+                android:inputType="textCapWords" />
 
             <TextView
                 style="@style/style_register_tv"
