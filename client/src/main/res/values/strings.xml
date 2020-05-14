@@ -21,6 +21,7 @@
     <string name="join">Join Queue</string>
     <string name="login_to_join">Login to Join</string>
     <string name="cancel">Cancel</string>
+    <string name="quit_queue">Quit Queue</string>
     <string name="ratetheapp">Rate the app</string>
     <string name="legal">Legal</string>
     <string name="invite">Invite</string>
