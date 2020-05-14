@@ -17,6 +17,7 @@
     <string name="action_settings">सेटिंग्स और पसंद</string>
     <string name="join">Join Queue</string>
     <string name="cancel">रद्द करें</string>
+    <string name="quit_queue">कतार से बाहर निकलें</string>
     <string name="ratetheapp">एप्लिकेशन का मूल्यांकन करें</string>
     <string name="legal">वैधानिक</string>
     <string name="invite">आमंत्रित करें</string>

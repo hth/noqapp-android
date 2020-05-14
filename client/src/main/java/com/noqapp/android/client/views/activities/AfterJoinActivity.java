@@ -232,7 +232,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                     //Do nothing
                 }
             });
-            showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
+            showDialog.displayDialog("Quit Queue", "Choose OK to quit the queue.");
         });
         btn_pay.setOnClickListener((View v) -> {
             if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {

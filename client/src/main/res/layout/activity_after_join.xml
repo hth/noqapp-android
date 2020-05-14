@@ -705,7 +705,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:text="@string/cancel"
+                    android:text="@string/quit_queue"
                     android:textAllCaps="true"
                     android:textColor="@color/btn_color"
                     android:textSize="@dimen/text_size_sixteen"
