@@ -126,7 +126,7 @@
                                 android:id="@+id/edt_name"
                                 style="@style/style_register_edt"
                                 android:visibility="gone"
-                                android:inputType="text"/>
+                                android:inputType="textCapWords"/>
 
                         <RelativeLayout
                                 android:layout_width="match_parent"
