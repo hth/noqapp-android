@@ -2,14 +2,13 @@ package com.noqapp.android.common.utils;
 
 import static com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.i18n.phonenumbers.AsYouTypeFormatter;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
 import org.apache.commons.lang3.RegExUtils;
-
-import com.crashlytics.android.Crashlytics;
 
 import android.util.Log;
 
@@ -31,7 +30,7 @@ public class PhoneFormatterUtil {
             return phoneUtil.isValidNumber(phoneNumber);
         } catch (NumberParseException e) {
             Log.e(TAG, "Parsing phone=" + rawPhoneNumber + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
-            Crashlytics.log(Log.ERROR, TAG, "Parsing phone for validation " + rawPhoneNumber + " " + countryShortName);
+            FirebaseCrashlytics.getInstance().log("Parsing phone for validation " + rawPhoneNumber + " " + countryShortName);
             return false;
         }
     }
@@ -48,7 +47,7 @@ public class PhoneFormatterUtil {
             return phoneUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
             Log.e(TAG, "Parsing phone=" + rawPhoneNumber + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
-            Crashlytics.log(Log.ERROR, TAG, "Parsing phone " + rawPhoneNumber + " " + countryShortName);
+            FirebaseCrashlytics.getInstance().log("Parsing phone " + rawPhoneNumber + " " + countryShortName);
             return "";
         }
     }
@@ -73,7 +72,7 @@ public class PhoneFormatterUtil {
             return phoneNumber.getCountryCode() + String.valueOf(phoneNumber.getNationalNumber());
         } catch (Exception e) {
             Log.e(TAG, "Failed to parse phone=" + phone + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
-            Crashlytics.log(Log.ERROR, TAG, "Failed parsing country code " + phone + " " + countryShortName);
+            FirebaseCrashlytics.getInstance().log("Failed parsing country code " + phone + " " + countryShortName);
             throw new RuntimeException("Failed parsing country code");
         }
     }

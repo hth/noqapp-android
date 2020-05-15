@@ -13,7 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ExpandableListView;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -29,7 +29,6 @@ import org.joda.time.Months;
 import org.joda.time.Years;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.security.SecureRandom;
@@ -64,7 +63,7 @@ public class CommonHelper {
             return SDF_YYYY_MM_DD.format(date);
         } catch (ParseException e) {
             Log.e(TAG, "Failed parsing DOB=" + dob + " reason=" + e.getLocalizedMessage(), e);
-            Crashlytics.log(Log.ERROR, TAG, "Failed parsing DOB " + dob);
+            FirebaseCrashlytics.getInstance().log("Failed parsing DOB " + dob);
             return "";
         }
     }
@@ -150,7 +149,7 @@ public class CommonHelper {
                 age = years + "+ years";
             }
         } catch (Exception e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed calculate age " + dob);
+            FirebaseCrashlytics.getInstance().log("Failed calculate age " + dob);
             e.printStackTrace();
         }
         return age;
@@ -161,7 +160,7 @@ public class CommonHelper {
             Locale localeTemp = new Locale("", countryCode);
             return Currency.getInstance(localeTemp).getSymbol(localeTemp);
         } catch (Exception e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed get currency from country code " + countryCode);
+            FirebaseCrashlytics.getInstance().log("Failed get currency from country code " + countryCode);
             e.printStackTrace();
             return "";
         }
@@ -175,7 +174,7 @@ public class CommonHelper {
             try {
                 formattedDate = simpleDateFormat.format(new SimpleDateFormat(ISO8601_FMT, Locale.getDefault()).parse(date));
             } catch (ParseException e) {
-                Crashlytics.log(Log.ERROR, TAG, "Failed parse date " + date);
+                FirebaseCrashlytics.getInstance().log("Failed parse date " + date);
                 e.printStackTrace();
             }
             return formattedDate;
@@ -186,7 +185,7 @@ public class CommonHelper {
         try {
             return new SimpleDateFormat(CommonHelper.ISO8601_FMT, Locale.getDefault()).parse(date);
         } catch (ParseException e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed parse date " + date);
+            FirebaseCrashlytics.getInstance().log("Failed parse date " + date);
             e.printStackTrace();
         }
         return new Date();
@@ -236,7 +235,7 @@ public class CommonHelper {
                 return "";
             }
         } catch (Exception e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed displaying price jsonStoreProduct " + jsonStoreProduct);
+            FirebaseCrashlytics.getInstance().log("Failed displaying price jsonStoreProduct " + jsonStoreProduct);
             Log.e(TAG, "jsonStoreProduct " + e.getLocalizedMessage(), e);
             return "";
         }
@@ -322,7 +321,7 @@ public class CommonHelper {
                     }
                 }
             } catch (Exception e) {
-                Crashlytics.log(Log.ERROR, TAG, "Failed time slot " + slotMinute + ":" + strFromTime + ":" + strToTime);
+                FirebaseCrashlytics.getInstance().log("Failed time slot " + slotMinute + ":" + strFromTime + ":" + strToTime);
                 e.printStackTrace();
             }
             return timeSlot;
@@ -333,7 +332,7 @@ public class CommonHelper {
         try {
             return input.contains(":") ? Integer.parseInt(input.replace(":", "")) : Integer.parseInt(input);
         } catch (Exception e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed removeColon " + input);
+            FirebaseCrashlytics.getInstance().log("Failed removeColon " + input);
             e.printStackTrace();
             return 0;
         }
@@ -360,7 +359,7 @@ public class CommonHelper {
                 return false;
             }
         } catch (Exception e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed isDateBeforeToday " + selectedDay);
+            FirebaseCrashlytics.getInstance().log("Failed isDateBeforeToday " + selectedDay);
             e.printStackTrace();
         }
         return true;
@@ -459,7 +458,7 @@ public class CommonHelper {
                 }
                 return jsonStoreCategories;
             default:
-                Crashlytics.log(Log.ERROR, TAG, "Failed get categories for businessType " + businessType);
+                FirebaseCrashlytics.getInstance().log("Failed get categories for businessType " + businessType);
                 Log.e(TAG, "Reached un-supported condition" + businessType);
                 return jsonStoreCategories;
         }
