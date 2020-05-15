@@ -2,7 +2,7 @@ package com.noqapp.android.common.model.types.order;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.util.EnumSet;
@@ -91,7 +91,7 @@ public enum ProductTypeEnum {
             case HS:
                 return ProductTypeEnum.asListOfDescription(ProductTypeEnum.HEALTH_CARE_VALUES);
             default:
-                Crashlytics.log(Log.ERROR, TAG, "Failed get productTypeEnum for businessType " + businessType);
+                FirebaseCrashlytics.getInstance().log("Failed get productTypeEnum for businessType " + businessType);
                 Log.e(TAG, "Reached un-supported condition" + businessType);
                 return ProductTypeEnum.asListOfDescription();
         }
