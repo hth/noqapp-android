@@ -332,7 +332,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
             prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR), jsonTokenAndQueue.getServingNumber()).apply();
             if(jsonTokenAndQueue.getAverageServiceTime() != 0) {
-                prefs.edit().putLong(codeQR, jsonTokenAndQueue.getAverageServiceTime()).apply();
+                prefs.edit().putLong(String.format(Constants.ESTIMATED_WAIT_TIME, codeQR), jsonTokenAndQueue.getAverageServiceTime()).apply();
             }
             updateEstimatedTime();
             setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
@@ -382,6 +382,10 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         }
         NoQueueMessagingService.unSubscribeTopics(topic);
         TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
+        // Clear entry from App preferences
+        SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+        prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME, codeQR)).apply();
+        prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR)).apply();
         onBackPressed();
         dismissProgress();
     }
@@ -520,7 +524,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
                 if (avgServiceTime == 0) {
                     SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                    avgServiceTime = prefs.getLong(jsonTokenAndQueue.getCodeQR(), 0);
+                    avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME, jsonTokenAndQueue.getCodeQR()), 0);
                 }
                 if (!TextUtils.isEmpty(String.valueOf(avgServiceTime)) && avgServiceTime > 0) {
                     String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * avgServiceTime);
