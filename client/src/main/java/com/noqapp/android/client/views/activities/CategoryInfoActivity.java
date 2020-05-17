@@ -289,7 +289,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     title = "Select a Service";
                     break;
                 default:
-                    btn_join_queues.setText("Join Queue");
+                    btn_join_queues.setText("Get Token");
                     tv_toolbar_title.setText("Departments");
                     title = "Select a Queue";
             }
