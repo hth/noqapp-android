@@ -305,7 +305,7 @@
     <string name="delivery_mode">Delivery</string>
     <string name="request_email_otp">Request Email OTP</string>
     <string name="verify_email">Verify Email</string>
-    <string name="screen_qconfirm">Join Queue</string>
+    <string name="screen_qconfirm">Get Token</string>
     <string name="discount_error">Discount has already been applied</string>
     <string name="kiosk_dialog_msg">Continue to launch Kiosk Mode?</string>
     <string name="preference_settings">पसंदीदा समायोजन</string>

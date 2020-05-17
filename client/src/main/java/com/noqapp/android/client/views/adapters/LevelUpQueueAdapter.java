@@ -148,7 +148,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
                 childViewHolder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
-                childViewHolder.tv_join.setText("Walk-in");
+                childViewHolder.tv_join.setText("Get Token");
                 if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.HS) {
                     childViewHolder.tv_join.setText("Visit Store");
                 }
