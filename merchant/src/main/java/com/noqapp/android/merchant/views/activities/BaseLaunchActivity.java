@@ -52,6 +52,7 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
+import com.noqapp.android.common.views.activities.AppsLinksActivity;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
@@ -268,6 +269,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 Intent in3 = new Intent(launchActivity, ManagerProfileActivity.class);
                 startActivity(in3);
                 break;
+            case R.drawable.apps:
+                Intent in4 = new Intent(launchActivity, AppsLinksActivity.class);
+                startActivity(in4);
+                break;
             case R.drawable.logout:
                 showLogoutDialog();
                 break;
@@ -337,6 +342,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             settingList.add(new MenuDrawer(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
         }
         menuDrawerItems.add(new MenuDrawer("Settings", true, true, R.drawable.settings_square, settingList));
+        if(!AppUtils.isRelease()) {
+            menuDrawerItems.add(new MenuDrawer(getString(R.string.noqueue_apps), true, false, R.drawable.apps));
+        }
         menuDrawerItems.add(new MenuDrawer("Logout", true, false, R.drawable.logout));
         if (showChart) {
             menuDrawerItems.add(0, new MenuDrawer("Statistics", true, false, R.drawable.pie_chart));

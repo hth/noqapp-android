@@ -100,6 +100,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.utils.TextToSpeechHelper;
+import com.noqapp.android.common.views.activities.AppsLinksActivity;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.squareup.picasso.Picasso;
 
@@ -974,6 +975,9 @@ public class LaunchActivity
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
         menuDrawerItems.add(new MenuDrawer(getString(R.string.title_activity_contact_us), true, false, R.drawable.contact_us));
+        if(!AppUtils.isRelease()) {
+            menuDrawerItems.add(new MenuDrawer(getString(R.string.noqueue_apps), true, false, R.drawable.apps));
+        }
         if (isLogin) {
             menuDrawerItems.add(new MenuDrawer(getString(R.string.logout), true, false, R.drawable.ic_logout));
         }
@@ -1089,6 +1093,11 @@ public class LaunchActivity
                 break;
             case R.drawable.contact_us: {
                 Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.apps: {
+                Intent in = new Intent(LaunchActivity.this, AppsLinksActivity.class);
                 startActivity(in);
                 break;
             }
