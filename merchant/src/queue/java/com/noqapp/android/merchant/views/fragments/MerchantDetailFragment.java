@@ -802,4 +802,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
 
     }
+
+    @Override
+    public void userFound(JsonProfile jsonProfile) {
+        findCustomerResponse(jsonProfile);
+    }
+
+    @Override
+    public void userRegistered(JsonProfile jsonProfile) {
+        findCustomerResponse(jsonProfile);
+    }
 }
