@@ -64,6 +64,7 @@ public abstract class BaseErrorResponseHandler {
                     case USER_MAX_DEPENDENT:
                     case CHANGE_USER_IN_QUEUE:
                     case FAILED_FINDING_ADDRESS:
+                    case DEVICE_TIMEZONE_OFF:
 
                     case MEDICAL_RECORD_ENTRY_DENIED:
                     case MEDICAL_RECORD_ACCESS_DENIED:
@@ -92,6 +93,7 @@ public abstract class BaseErrorResponseHandler {
                     case QUEUE_JOIN_PAYMENT_FAILED:
                     case QUEUE_NO_SERVICE_NO_PAY:
                     case QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME:
+                    case QUEUE_SERVICE_LIMIT:
 
                     case SURVEY_NOT_FOUND:
 
