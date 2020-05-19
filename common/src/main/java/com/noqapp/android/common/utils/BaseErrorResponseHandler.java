@@ -94,6 +94,7 @@ public abstract class BaseErrorResponseHandler {
                     case QUEUE_NO_SERVICE_NO_PAY:
                     case QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME:
                     case QUEUE_SERVICE_LIMIT:
+                    case QUEUE_TOKEN_LIMIT:
 
                     case SURVEY_NOT_FOUND:
 
