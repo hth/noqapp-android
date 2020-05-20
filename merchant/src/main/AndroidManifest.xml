@@ -172,6 +172,10 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:name="com.noqapp.android.common.views.activities.AppsLinksActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
             android:name=".views.activities.PrivacyActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />

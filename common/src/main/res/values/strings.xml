@@ -12,4 +12,5 @@
     <string name="cat_picker_title_custom">Select Date</string>
     <string name="pdf_author">NoQueue HealthCare</string>
     <string name="noqueue">NoQueue</string>
+    <string name="noqueue_apps">NoQueue Apps</string>
 </resources>

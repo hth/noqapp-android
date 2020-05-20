@@ -5,4 +5,5 @@
     <color name="toast_text_color">#fff</color>
     <color name="update_text">#333</color>
     <color name="download_circle_bg">@android:color/darker_gray</color>
+    <color name="colorAccent">#aa22ee</color>
 </resources>

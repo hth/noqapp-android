@@ -475,8 +475,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 }
 
                                 if (jtk.getToken() < Integer.parseInt(currentServing)) {
-                                    // Delete the App Shared Preferences entry for this queue
-                                    prefs.edit().remove(jtk.getCodeQR()).apply();
+                                    // Clear the App Shared Preferences entry for this queue
+                                    prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME, codeQR)).apply();
                                     prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR)).apply();
                                 }
 
