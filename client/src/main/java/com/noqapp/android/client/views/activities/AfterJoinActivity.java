@@ -232,7 +232,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                     //Do nothing
                 }
             });
-            showDialog.displayDialog("Quit Queue", "Choose OK to quit the queue. You will loose your current Token number.");
+            showDialog.displayDialog("Quit Queue", "Choose OK to quit the queue. You will loose your current token number.");
         });
         btn_pay.setOnClickListener((View v) -> {
             if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
