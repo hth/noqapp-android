@@ -241,7 +241,7 @@ public class ChartFragment extends Fragment {
         if (null != healthCareStat) {
             int new_count = healthCareStat.getRepeatCustomers().getCustomerNew();
             int old_count = healthCareStat.getRepeatCustomers().getCustomerRepeat();
-            String[] mParties = new String[]{"New patient", "Repeat patient"};
+            String[] mParties = new String[]{"New", "Repeat"};
             ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
             entries.add(new PieEntry((float) new_count, mParties[0]));
             entries.add(new PieEntry((float) old_count, mParties[1]));

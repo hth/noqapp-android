@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Total patients visited this month"
+                    android:text="Total visits this month"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_sixteen"
                     android:textStyle="bold" />
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Total number of patient in last 12 months"
+                    android:text="Total visits per month"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_sixteen"
                     android:textStyle="bold" />
