@@ -411,7 +411,6 @@ public class CommonHelper {
         }
     }
 
-
     public static String getIPAddress() {
         try {
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
