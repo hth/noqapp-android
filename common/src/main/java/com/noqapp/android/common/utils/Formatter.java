@@ -1,14 +1,20 @@
 package com.noqapp.android.common.utils;
 
+import org.joda.time.Duration;
 import org.joda.time.LocalTime;
+import org.joda.time.Minutes;
+import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import android.util.Log;
 
+import com.noqapp.android.common.model.types.QueueStatusEnum;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -120,5 +126,14 @@ public class Formatter {
 
     public static LocalTime getLocalTime(int hourAndMinute) {
         return parseLocalTime(String.format(Locale.US, "%04d", hourAndMinute));
+    }
+
+    public static long computeEstimatedServiceTime(QueueStatusEnum queueStatus, String storeStart) {
+        switch (queueStatus) {
+            case S:
+                return Seconds.secondsBetween(LocalTime.parse(storeStart), LocalTime.now()).getSeconds() * 1000;
+            default:
+                return Calendar.getInstance().getTimeInMillis();
+        }
     }
 }
