@@ -1,16 +1,11 @@
 package com.noqapp.android.common.utils;
 
-import org.joda.time.DateTimeZone;
-import org.joda.time.Duration;
+import android.util.Log;
+
 import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
 import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import android.util.Log;
-
-import com.noqapp.android.common.model.types.QueueStatusEnum;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -125,7 +120,7 @@ public class Formatter {
         return Formatter.convertMilitaryTo12HourFormat(startHour) + " - " + Formatter.convertMilitaryTo12HourFormat(endHour);
     }
 
-    public static LocalTime getLocalTime(int hourAndMinute) {
+    private static LocalTime getLocalTime(int hourAndMinute) {
         return parseLocalTime(String.format(Locale.US, "%04d", hourAndMinute));
     }
 
