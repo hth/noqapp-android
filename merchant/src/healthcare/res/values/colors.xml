@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#19769f</color>
     <color name="colorAccent">#4691b2</color>
     <color name="color_action_bar">#19769f</color>
+    <color name="color_action_bar_secondary">#19769f</color>
     <color name="pressed_color">#31b7bd</color>
     <color name="segment_bg_color">#e3e8f5</color>
     <color name="segment_bg_color_select">#36B6AF</color>

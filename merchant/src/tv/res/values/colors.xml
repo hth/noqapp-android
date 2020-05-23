@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#2a497a</color>
     <color name="colorAccent">#8aa2db</color>
     <color name="color_action_bar">#5a74a9</color>
+    <color name="color_action_bar_secondary">#5a74a9</color>
     <color name="pressed_color">#8aa2db</color>
     <color name="radio_button_color">#2a497a</color>
     <color name="btn_txt_color">#fff</color>
