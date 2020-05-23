@@ -19,7 +19,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.GetTimeAgoUtils;
+import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.MyApplication;
@@ -36,6 +36,7 @@ import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -259,7 +260,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     if (messageOrigin == MessageOriginEnum.Q) {
                         // Update Currently serving in app preferences
                         SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                        prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, mappedData.get(CODE_QR)), Integer.parseInt(mappedData.get(Constants.CURRENTLY_SERVING))).apply();
+                        prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, mappedData.get(CODE_QR)), Integer.parseInt(mappedData.get(Constants.CURRENTLY_SERVING))).apply();
                     }
                 } else {
                     // app is in background, show the notification in notification tray
@@ -450,38 +451,40 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, String.valueOf(jtk.getToken()));
 
                                 // Check if user needs to be notified
+                                int currentlyServingNumber = Integer.parseInt(currentServing);
                                 SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                                int lastServingNumber = prefs.getInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR), 0);
+                                int lastServingNumber = prefs.getInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), 0);
 
-                                if(jtk.getToken() > Integer.parseInt(currentServing) && lastServingNumber != Integer.parseInt(currentServing)) {
-                                    prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR), Integer.parseInt(currentServing)).apply();
-                                    String notificationMessage = body;
+                                if(jtk.getToken() > currentlyServingNumber && lastServingNumber != currentlyServingNumber) {
+                                    String notificationMessage =
+                                            String.format(getApplicationContext().getString(R.string.position_in_queue), jtk.afterHowLong());
+
+                                    prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), currentlyServingNumber).apply();
                                     // Add wait time to notification message
                                     try {
-                                        long avgServiceTime = jtk.getAverageServiceTime();
-                                        if (avgServiceTime == 0) {
-                                            avgServiceTime = prefs.getLong(jtk.getCodeQR(), 0);
-                                        }
-                                        if (!TextUtils.isEmpty(String.valueOf(avgServiceTime)) && avgServiceTime > 0) {
-                                            String output = GetTimeAgoUtils.getTimeAgo(jtk.afterHowLong() * avgServiceTime);
-                                            if (null != output) {
-                                                notificationMessage = body + String.format("\nEstimated wait time: %1$s", output);
+                                        long avgServiceTime = jtk.getAverageServiceTime() != 0 ? jtk.getAverageServiceTime() :
+                                                prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
+                                        String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime,
+                                                jtk.afterHowLong(), QueueStatusEnum.N, jtk.getStartHour());
+                                            if (!TextUtils.isEmpty(waitTime)) {
+                                                notificationMessage = notificationMessage + String.format(
+                                                        "\nWait time: %1$s", waitTime);
                                             }
-                                        }
                                     } catch (Exception e) {
-                                        Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
+                                        Log.e("",
+                                                "Error setting wait time reason: " + e.getLocalizedMessage(), e);
                                     }
                                     sendNotification(title, notificationMessage, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
                                 }
 
-                                if (jtk.getToken() < Integer.parseInt(currentServing)) {
+                                if (jtk.getToken() <= currentlyServingNumber) {
                                     // Clear the App Shared Preferences entry for this queue
-                                    prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME, codeQR)).apply();
-                                    prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR)).apply();
+                                    prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply();
+                                    prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR)).apply();
                                 }
 
                                 // Check if User's turn then start Buzzer.
-                                if (displayBuzzer && Integer.parseInt(currentServing) == jtk.getToken()) {
+                                if (displayBuzzer && currentlyServingNumber == jtk.getToken()) {
                                     Intent buzzerIntent = new Intent(this, BlinkerActivity.class);
                                     buzzerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(buzzerIntent);

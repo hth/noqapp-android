@@ -48,8 +48,9 @@ public class Constants extends BaseConstants{
 
     // Shared Preferences keys
     public static final String APP_PACKAGE = "com.noqapp.android.client";
-    public static final String CURRENTLY_SERVING_KEY_FORMAT = "%s_currently_serving";
-    public static final String ESTIMATED_WAIT_TIME = "%s_estimated_wait";
+    // Pref key for Token status
+    public static final String CURRENTLY_SERVING_PREF_KEY = "%s_currently_serving";
+    public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
 
     /**
      * Computes App version.

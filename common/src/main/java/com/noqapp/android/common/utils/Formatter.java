@@ -129,13 +129,13 @@ public class Formatter {
         return parseLocalTime(String.format(Locale.US, "%04d", hourAndMinute));
     }
 
-    public static long computeEstimatedServiceTime(QueueStatusEnum queueStatus, String storeStart) {
-        switch (queueStatus) {
-            case S:
-                return Seconds.secondsBetween(parseLocalTime(currentSystemTime()), parseLocalTime(storeStart)).getSeconds() * 1000;
-            default:
-                return Calendar.getInstance().getTimeInMillis();
-        }
+    /**
+     * Computes the time left for store opening.
+     * @param storeStart store start time in military format
+     * @return time difference in milli
+     */
+    public static long computeTimeToStoreStart(int storeStart) {
+        return Seconds.secondsBetween(parseLocalTime(currentSystemTime()), getLocalTime(storeStart)).getSeconds() * 1000;
     }
 
     private static String currentSystemTime() {

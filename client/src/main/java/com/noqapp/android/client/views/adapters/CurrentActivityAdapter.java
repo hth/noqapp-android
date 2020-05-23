@@ -17,7 +17,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.GetTimeAgoUtils;
+import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
@@ -28,6 +28,7 @@ import java.util.List;
 
 
 public class CurrentActivityAdapter extends RecyclerView.Adapter {
+    private static final String TAG = CurrentActivityAdapter.class.getSimpleName();
     private final Context context;
     private final OnItemClickListener listener;
     private List<Object> dataSet;
@@ -66,31 +67,20 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 } else if (jsonTokenAndQueue.getServingNumber() == 0) {
                     holder.tv_total.setText("Queue not yet started");
                     holder.tv_total_value.setVisibility(View.GONE);
+                    // Display wait time
+                    String waitTime = displayWaitTimes(jsonTokenAndQueue);
+                    if (!TextUtils.isEmpty(waitTime)) {
+                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time)
+                                , waitTime));
+                    }
                 } else {
                     holder.tv_total.setText(context.getString(R.string.serving_now));
                     holder.tv_total_value.setVisibility(View.VISIBLE);
                     // Display wait time
-                    try {
-                        long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
-                        if (avgServiceTime == 0) {
-                            SharedPreferences prefs = this.context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                                avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME, jsonTokenAndQueue.getCodeQR()), 0);
-                            }
-                            if (!TextUtils.isEmpty(String.valueOf(avgServiceTime)) && avgServiceTime > 0) {
-                                String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * avgServiceTime);
-                                if (null == output) {
-                                    holder.tv_wait_time.setVisibility(View.INVISIBLE);
-                                } else {
-                                    holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), output));
-                                    holder.tv_wait_time.setVisibility(View.VISIBLE);
-                                }
-                            } else {
-                                holder.tv_wait_time.setVisibility(View.INVISIBLE);
-                            }
-
-                    } catch (Exception e) {
-                        //Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
-                        holder.tv_wait_time.setVisibility(View.INVISIBLE);
+                    String waitTime = displayWaitTimes(jsonTokenAndQueue);
+                    if (!TextUtils.isEmpty(waitTime)) {
+                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time)
+                                , waitTime));
                     }
                 }
             } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
@@ -133,6 +123,25 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 listener.currentAppointmentClick(jsonSchedule);
             });
         }
+    }
+
+    // Display wait time
+    private String  displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue){
+        try {
+            long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
+            if (avgServiceTime == 0) {
+                SharedPreferences prefs =
+                        this.context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY,
+                        jsonTokenAndQueue.getCodeQR()), 0);
+            }
+            return TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime,
+                    jsonTokenAndQueue.afterHowLong(), jsonTokenAndQueue.getQueueStatus(),
+                    jsonTokenAndQueue.getStartHour());
+        } catch (Exception e) {
+            Log.e(TAG, "Error setting wait time reason: " + e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 
     @Override
