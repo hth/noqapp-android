@@ -129,6 +129,12 @@ public class JsonQueue implements Serializable {
     @JsonProperty("as")
     private long averageServiceTime;
 
+    @JsonProperty("ls")
+    private int limitServiceByDays = 0;
+
+    @JsonProperty("pa")
+    private String priorityAccess = "OFF";
+
     //***************************/
     //*  Queue Settings Starts. */
     //***************************/
@@ -456,6 +462,24 @@ public class JsonQueue implements Serializable {
 
     public void setAverageServiceTime(long averageServiceTime) {
         this.averageServiceTime = averageServiceTime;
+    }
+
+    public int getLimitServiceByDays() {
+        return limitServiceByDays;
+    }
+
+    public JsonQueue setLimitServiceByDays(int limitServiceByDays) {
+        this.limitServiceByDays = limitServiceByDays;
+        return this;
+    }
+
+    public String getPriorityAccess() {
+        return priorityAccess;
+    }
+
+    public JsonQueue setPriorityAccess(String priorityAccess) {
+        this.priorityAccess = priorityAccess;
+        return this;
     }
 
     public boolean isRemoteJoinAvailable() {
