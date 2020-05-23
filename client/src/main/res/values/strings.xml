@@ -72,6 +72,7 @@
     <string name="you_are_after">You are after</string>
     <string name="serving_now">Now Serving </string>
     <string name="your_token">Your Token No</string>
+    <string name="position_in_queue">Position in queue: %1$d</string>
 
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
@@ -148,7 +149,7 @@
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
     <string name="alert">Alert</string>
-    <string name="estimated_time">Estimated wait time: %1$s</string>
+    <string name="estimated_time">Wait time: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
     <string name="error_join">Remote Queue Not Enabled</string>
     <string name="login_hint">Phone no. without country code</string>

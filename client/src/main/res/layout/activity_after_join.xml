@@ -278,10 +278,8 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="0dp"
                         android:gravity="center"
-                        android:text=""
                         android:textColor="#80000000"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:visibility="visible" />
+                        android:textSize="@dimen/text_size_twelve" />
 
                     <LinearLayout
                         android:id="@+id/ll_change_bg"

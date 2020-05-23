@@ -288,6 +288,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     tv_toolbar_title.setText("Health Service");
                     title = "Select a Service";
                     break;
+                // TODO(hth)
                 default:
                     btn_join_queues.setText("Get Token");
                     tv_toolbar_title.setText("Departments");

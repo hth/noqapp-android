@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,10 +42,10 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GeoHashUtils;
-import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
+import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
@@ -62,7 +61,6 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
@@ -330,9 +328,9 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
             // Store the currently serving and avg wait time in the app preference
             SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-            prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR), jsonTokenAndQueue.getServingNumber()).apply();
+            prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), jsonTokenAndQueue.getServingNumber()).apply();
             if(jsonTokenAndQueue.getAverageServiceTime() != 0) {
-                prefs.edit().putLong(String.format(Constants.ESTIMATED_WAIT_TIME, codeQR), jsonTokenAndQueue.getAverageServiceTime()).apply();
+                prefs.edit().putLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), jsonTokenAndQueue.getAverageServiceTime()).apply();
             }
             updateEstimatedTime();
             setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
@@ -384,8 +382,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
         // Clear entry from App preferences
         SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-        prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME, codeQR)).apply();
-        prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_KEY_FORMAT, codeQR)).apply();
+        prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply();
+        prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR)).apply();
         onBackPressed();
         dismissProgress();
     }
@@ -517,30 +515,19 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     private void updateEstimatedTime() {
         try {
-            if (jsonToken != null && !TextUtils.isEmpty(jsonToken.getExpectedServiceBegin())) {
-                tv_estimated_time.setText(String.format(getString(R.string.estimated_time), Formatter.getTimeAsString(Formatter.getDateFromString(jsonToken.getExpectedServiceBegin()))));
-                tv_estimated_time.setVisibility(View.VISIBLE);
-            } else {
-                long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
-                if (avgServiceTime == 0) {
-                    SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                    avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME, jsonTokenAndQueue.getCodeQR()), 0);
-                }
-                if (!TextUtils.isEmpty(String.valueOf(avgServiceTime)) && avgServiceTime > 0) {
-                    String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * avgServiceTime);
-                    if (null == output) {
-                        tv_estimated_time.setVisibility(View.INVISIBLE);
-                    } else {
-                        tv_estimated_time.setText(String.format(getString(R.string.estimated_time), output));
-                        tv_estimated_time.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    tv_estimated_time.setVisibility(View.INVISIBLE);
-                }
+            long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
+            if (avgServiceTime == 0) {
+                SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.getCodeQR()), 0);
+            }
+            String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime,
+                    jsonTokenAndQueue.afterHowLong(), jsonTokenAndQueue.getQueueStatus(),
+                    jsonTokenAndQueue.getStartHour());
+            if (!TextUtils.isEmpty(waitTime)) {
+                    tv_estimated_time.setText(String.format(getString(R.string.estimated_time), waitTime));
             }
         } catch (Exception e) {
-            Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
-            tv_estimated_time.setVisibility(View.INVISIBLE);
+            Log.e("", "Error setting estimated wait time reason: " + e.getLocalizedMessage(), e);
         }
     }
 

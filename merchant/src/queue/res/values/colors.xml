@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#656D78</color>
     <color name="colorAccent">#E6E9ED</color>
     <color name="color_action_bar">#E6E9ED</color>
+    <color name="color_action_bar_secondary">#B8BABE</color>
     <color name="color_indigo_toast">#6E329B</color>
     <color name="actionbar_text_color">#333333</color>
     <color name="actionbar_image_color">#333333</color>

@@ -344,10 +344,19 @@ public class JsonTokenAndQueue implements Serializable {
         return this;
     }
 
+    /**
+     * Get average service time for a token.
+     * @return average time in milli seconds
+     */
     public long getAverageServiceTime() {
         return averageServiceTime;
     }
 
+    /**
+     * Set average service time for a token.
+     * @param averageServiceTime average time in milli seconds
+     * @return token and queue
+     */
     public JsonTokenAndQueue setAverageServiceTime(long averageServiceTime) {
         this.averageServiceTime = averageServiceTime;
         return this;

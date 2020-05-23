@@ -149,7 +149,9 @@ public interface QueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     * @since 1.2.410
      */
+    @Deprecated
     @POST("api/m/q/dispenseToken/{codeQR}.json")
     Call<JsonToken> dispenseTokenWithoutClientInfo(
             @Header("X-R-DID")

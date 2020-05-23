@@ -246,7 +246,7 @@ public class ManageQueueApiCalls {
         });
     }
 
-
+    @Deprecated
     public void dispenseToken(String did, String mail, String auth, String codeQR) {
         queueApiUrls.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
