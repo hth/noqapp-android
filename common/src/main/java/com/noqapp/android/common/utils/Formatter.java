@@ -1,5 +1,6 @@
 package com.noqapp.android.common.utils;
 
+import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
@@ -131,9 +132,15 @@ public class Formatter {
     public static long computeEstimatedServiceTime(QueueStatusEnum queueStatus, String storeStart) {
         switch (queueStatus) {
             case S:
-                return Seconds.secondsBetween(LocalTime.parse(storeStart), LocalTime.now()).getSeconds() * 1000;
+                return Seconds.secondsBetween(parseLocalTime(currentSystemTime()), parseLocalTime(storeStart)).getSeconds() * 1000;
             default:
                 return Calendar.getInstance().getTimeInMillis();
         }
+    }
+
+    private static String currentSystemTime() {
+        TimeZone tz = Calendar.getInstance().getTimeZone();
+        Calendar c = Calendar.getInstance(tz);
+        return String.format(Locale.US, "%02d", c.get(Calendar.HOUR_OF_DAY)) + String.format(Locale.US, "%02d", c.get(Calendar.MINUTE));
     }
 }
