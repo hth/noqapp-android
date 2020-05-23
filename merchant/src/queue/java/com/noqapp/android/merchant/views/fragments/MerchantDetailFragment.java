@@ -137,7 +137,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 ((Activity) context).startActivity(intent);
             }
         } else {
-            //showCreateTokenDialog(context, codeQR);
             showCreateTokenDialogWithMobile(context, codeQR);
         }
     }
@@ -235,97 +234,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         } else {
             super.resetList();
         }
-    }
-
-    private void showCreateTokenDialog(final Context mContext, final String codeQR) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_create_token, null, false);
-        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-        CountryCodePicker countryCode = customDialogView.findViewById(R.id.ccp);
-        edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
-        EditText edtName = customDialogView.findViewById(R.id.edt_name);
-        RelativeLayout userInfo = customDialogView.findViewById(R.id.ll_center);
-        LinearLayout tokenInfo = customDialogView.findViewById(R.id.ll_bottom);
-        tv_create_token = customDialogView.findViewById(R.id.tvtitle);
-        tvCount = customDialogView.findViewById(R.id.tvcount);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        edtName.addTextChangedListener(new TextWatcher()  {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s)  {
-                if (edtName.getText().toString().length() <= 0) {
-                    edtName.setError("Enter Name");
-                } else {
-                    edtName.setError(null);
-                }
-            }
-        });
-
-        edt_mobile.addTextChangedListener(new TextWatcher()  {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s)  {
-                if (edt_mobile.getText().toString().length() <= 0) {
-                    edt_mobile.setError("Enter Phone No");
-                } else {
-                    edt_mobile.setError(null);
-                }
-            }
-        });
-        btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
-        btn_create_token.setOnClickListener(v -> {
-            if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
-                if (edt_mobile.getText().toString().length() <= 0) {
-                    edt_mobile.setError("Enter Phone No");
-                    return;
-                }
-                if (edtName.getText().toString().length() <= 0 ) {
-                    edtName.setError("Enter Name");
-                    return;
-                }
-                showProgress();
-                setDispensePresenter();
-                JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer();
-                jsonBusinessCustomer.setCodeQR(codeQR);
-                jsonBusinessCustomer.setCustomerName(edtName.getText().toString());
-
-                jsonBusinessCustomer.setCustomerPhone(countryCode.getDefaultCountryCode() + edt_mobile.getText().toString());
-                jsonBusinessCustomer.setRegisteredUser(false);
-                manageQueueApiCalls.dispenseTokenWithClientInfo(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
-                        jsonBusinessCustomer);
-                btn_create_token.setClickable(false);
-                userInfo.setVisibility(View.GONE);
-                tokenInfo.setVisibility(View.VISIBLE);
-            } else {
-                mAlertDialog.dismiss();
-            }
-        });
-
-        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
-        mAlertDialog.show();
     }
 
     @Override
