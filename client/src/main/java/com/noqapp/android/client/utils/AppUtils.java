@@ -116,7 +116,7 @@ public class AppUtils extends CommonHelper {
 
     public static void openAddressInMap(Activity context, String address) {
         try {
-            String map = "http://maps.google.co.in/maps?q=" + address;
+            String map = "http://maps.google.co.in/maps?q=" + Uri.encode(address);
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
             context.startActivity(intent);
         } catch (ActivityNotFoundException ex) {

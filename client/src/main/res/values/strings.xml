@@ -19,6 +19,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="join">Click to get Token</string>
+    <string name="view_token_status">View Token Status</string>
     <string name="login_to_join">Login to Join</string>
     <string name="cancel">Cancel</string>
     <string name="quit_queue">Quit Queue</string>
@@ -73,10 +74,14 @@
     <string name="serving_now">Now Serving </string>
     <string name="your_token">Your Token No</string>
     <string name="position_in_queue">Position in queue: %1$d</string>
+    <string name="daily_token_limit">Store daily token limit: %1$d</string>
+    <string name="revisit_restriction">Repeat service restriction: %1$s</string>
+    <string name="referral_code_required">One time identification code required to get Token</string>
 
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
-    <string name="people_in_queue">People waiting</string>
+    <string name="token_available">Token available</string>
+    <string name="people_in_queue">People in queue</string>
 
     <string name="cancel_queue">You have successfully cancelled</string>
     <string name="fail_to_cancel">Failed to cancel</string>

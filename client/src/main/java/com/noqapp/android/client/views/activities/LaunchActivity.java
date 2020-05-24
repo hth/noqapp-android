@@ -1227,6 +1227,12 @@ public class LaunchActivity
                                 cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                 ReviewDB.insert(cv);
                             }
+
+                            // Clear the App Shared Preferences entry for this queue
+                            SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                            prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply();
+                            prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR)).apply();
+
                             callReviewActivity(codeQR, token);
                             /* this code is added to close the join & after join screen if the request is processed */
                             if (activityCommunicator != null) {
