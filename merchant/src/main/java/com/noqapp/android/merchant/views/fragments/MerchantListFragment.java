@@ -194,8 +194,11 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         };
         timerHandler.post(updater);
         if (null != bundle) {
-            JsonMerchant jsonMerchant = (JsonMerchant) bundle.getSerializable("jsonMerchant");
-            updateListData(jsonMerchant.getTopics());
+            // TODO: Update design to store queue list on client locally instead of making API call on back
+            manageQueueApiCalls.getQueues(
+                    BaseLaunchActivity.getDeviceID(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth());
             subscribeTopics();
             initListView();
         } else {
