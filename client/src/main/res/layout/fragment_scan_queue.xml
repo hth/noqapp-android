@@ -38,7 +38,6 @@
                 android:visibility="gone"
                 card_view:cardCornerRadius="4dp">
 
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,7 +64,6 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve" />
 
-
                     <TextView
                         android:id="@+id/tv_no_thanks"
                         android:layout_width="wrap_content"
@@ -90,13 +88,9 @@
                         android:textAllCaps="true"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_size_twelve" />
-
-
                 </RelativeLayout>
 
-
             </androidx.cardview.widget.CardView>
-
 
             <RelativeLayout
                 android:id="@+id/rl_scan"
@@ -149,10 +143,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:background="@drawable/arrow_right" />
-
-
             </RelativeLayout>
-
 
             <LinearLayout
                 android:id="@+id/rl_current_activity"
@@ -173,14 +164,13 @@
                     android:padding="5dp">
 
                     <TextView
-                        android:id="@+id/tv_current_title"
+                        android:id="@+id/tv_active_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:text="@string/active_queue"
+                        android:text="@string/active_token"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/text_size_twelve" />
 
 
                 </RelativeLayout>
@@ -251,7 +241,6 @@
 
                 </RelativeLayout>
 
-
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -268,6 +257,74 @@
 
                     <ProgressBar
                         android:id="@+id/pb_events"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rl_business_around_you"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_business_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/business_near"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve" />
+
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="@dimen/bottom_view_height"
+                        android:layout_below="@+id/tv_business_title"
+                        android:background="@color/theme_aqua" />
+
+                    <TextView
+                        android:id="@+id/tv_near_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="5dp"
+                        android:text="@string/view_all"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_merchant_around_you"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:scrollbarSize="2dp"
+                        android:scrollbarStyle="outsideInset"
+                        android:scrollbarThumbHorizontal="@color/colorPrimary"
+                        android:scrollbars="horizontal" />
+
+                    <ProgressBar
+                        android:id="@+id/pb_near"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -299,11 +356,10 @@
                         android:layout_alignParentLeft="true"
                         android:text="@string/health_care"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/text_size_twelve" />
 
                     <View
-                        android:layout_width="50dp"
+                        android:layout_width="40dp"
                         android:layout_height="@dimen/bottom_view_height"
                         android:layout_below="@+id/tv_health_care_title"
                         android:background="@color/theme_aqua" />
@@ -343,77 +399,6 @@
                 </FrameLayout>
             </LinearLayout>
 
-
-            <LinearLayout
-                android:id="@+id/rl_merchant_around_you"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/cell_size"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/screen_padding_home"
-                android:paddingRight="@dimen/screen_padding_home">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:id="@+id/tv_merchant_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="@string/merchant_near"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="50dp"
-                        android:layout_height="@dimen/bottom_view_height"
-                        android:layout_below="@+id/tv_merchant_title"
-                        android:background="@color/theme_aqua" />
-
-                    <TextView
-                        android:id="@+id/tv_near_view_all"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:padding="5dp"
-                        android:text="@string/view_all"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:visibility="gone" />
-
-                </RelativeLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_merchant_around_you"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="5dp"
-                        android:scrollbarSize="2dp"
-                        android:scrollbarStyle="outsideInset"
-                        android:scrollbarThumbHorizontal="@color/colorPrimary"
-                        android:scrollbars="horizontal" />
-
-                    <ProgressBar
-                        android:id="@+id/pb_near"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:visibility="gone" />
-                </FrameLayout>
-            </LinearLayout>
-
-
             <LinearLayout
                 android:id="@+id/rl_feed"
                 android:layout_width="match_parent"
@@ -424,8 +409,8 @@
                 android:minHeight="55dp"
                 android:orientation="vertical"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp">
-
+                android:paddingRight="5dp"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -439,11 +424,10 @@
                         android:layout_alignParentLeft="true"
                         android:text="Feeds"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/text_size_twelve" />
 
                     <View
-                        android:layout_width="50dp"
+                        android:layout_width="30dp"
                         android:layout_height="@dimen/bottom_view_height"
                         android:layout_below="@+id/tv_feed_title"
                         android:background="@color/theme_aqua" />
@@ -459,7 +443,6 @@
                         android:visibility="invisible" />
 
                 </RelativeLayout>
-
 
                 <FrameLayout
                     android:id="@+id/layout_feed"

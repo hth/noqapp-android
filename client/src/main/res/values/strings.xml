@@ -2,7 +2,7 @@
     <string name="app_name">NoQueue</string>LaunchActivity
     <string name="title_activity_launch">NoQueue</string>
     <!--Screen Name-->
-    <string name="screen_qdetails">Queue Details</string>
+    <string name="screen_qdetails">Token Details</string>
     <string name="screen_invite">Invite</string>
     <string name="screen_review">Review</string>
     <string name="screen_notification">Notifications</string>
@@ -70,10 +70,12 @@
     <string name="offline">Network unavailable. Please connect your device to network.</string>
 
     <!--- Join Screen -->
-    <string name="you_are_after">You are after</string>
     <string name="serving_now">Now Serving </string>
     <string name="your_token">Your Token No</string>
+    <string name="your_position_in_queue_label">Your Position in queue</string>
+    <string name="position_in_queue_label">Position in queue</string>
     <string name="position_in_queue">Position in queue: %1$d</string>
+    <string name="your_are_next_label">You are next!</string>
     <string name="daily_token_limit">Store daily token limit: %1$d</string>
     <string name="revisit_restriction">Repeat service restriction: %1$s</string>
     <string name="referral_code_required">One time identification code required to get Token</string>
@@ -201,9 +203,9 @@
     <string name="english">English</string>
     <string name="current_location">Current location</string>
     <string name="scan_qr">SCAN QR</string>
-    <string name="active_queue">Active Queue/Order</string>
+    <string name="active_token">Active Token</string>
     <string name="health_care">Hospitals</string>
-    <string name="merchant_near">Health Care &amp; Other Services</string>
+    <string name="business_near">Business</string>
     <string name="view_all">View All</string>
     <string name="scan_info">Scan NoQueue QR Code to join queue or place an order</string>
     <string name="prompt_address_status">Address</string>
