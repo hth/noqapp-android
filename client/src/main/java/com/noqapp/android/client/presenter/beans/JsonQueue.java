@@ -10,6 +10,7 @@ import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.OnOffEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
@@ -133,7 +134,7 @@ public class JsonQueue implements Serializable {
     private int limitServiceByDays = 0;
 
     @JsonProperty("pa")
-    private String priorityAccess = "OFF";
+    private OnOffEnum priorityAccess = OnOffEnum.F;
 
     //***************************/
     //*  Queue Settings Starts. */
@@ -473,13 +474,12 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public String getPriorityAccess() {
+    public OnOffEnum getPriorityAccess() {
         return priorityAccess;
     }
 
-    public JsonQueue setPriorityAccess(String priorityAccess) {
+    public void setPriorityAccess(OnOffEnum priorityAccess) {
         this.priorityAccess = priorityAccess;
-        return this;
     }
 
     public boolean isRemoteJoinAvailable() {
