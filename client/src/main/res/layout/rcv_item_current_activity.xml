@@ -61,18 +61,6 @@
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold" />
 
-
-                        <TextView
-                            android:id="@+id/tv_address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:paddingLeft="5dp"
-                            android:text=""
-                            android:textSize="@dimen/text_size_twelve" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -85,18 +73,20 @@
 
 
                         <TextView
-                            android:id="@+id/tv_current_value"
+                            android:id="@+id/tv_token_value"
                             style="@style/style_join_queue_tv"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_token"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:background="@drawable/blue_gradient"
                             android:gravity="center"
                             android:text="sdsf"
-                            android:textColor="@color/color_list_text"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_fourteen" />
 
                         <TextView
-                            android:id="@+id/tv_current"
+                            android:id="@+id/tv_token_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/token"
@@ -119,22 +109,23 @@
 
 
                     <TextView
-                        android:id="@+id/tv_total_value"
+                        android:id="@+id/tv_position_in_queue_value"
                         style="@style/style_join_queue_tv"
                         android:layout_width="wrap_content"
-                        android:layout_alignBaseline="@+id/tv_total"
-                        android:layout_toRightOf="@+id/tv_total"
+                        android:layout_alignBaseline="@+id/tv_position_in_queue_label"
+                        android:layout_toRightOf="@+id/tv_position_in_queue_label"
                         android:gravity="center"
                         android:textColor="@color/theme_color_red"
-                        android:textSize="26sp" />
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_total"
+                        android:id="@+id/tv_position_in_queue_label"
                         style="@style/style_join_queue_tv"
                         android:layout_width="wrap_content"
                         android:gravity="center|bottom"
                         android:padding="5dp"
-                        android:text="@string/serving_now"
+                        android:text="@string/position_in_queue_label"
                         android:textColor="@color/theme_color_red"
                         android:textSize="@dimen/text_size_sixteen" />
 

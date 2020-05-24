@@ -2,7 +2,7 @@
     <string name="app_name">NoQueue</string>LaunchActivity
     <string name="title_activity_launch">NoQueue</string>
     <!--Screen Name-->
-    <string name="screen_qdetails">Queue Details</string>
+    <string name="screen_qdetails">टोकन विवरण</string>
     <string name="screen_invite">आमंत्रण</string>
     <string name="screen_review">समीक्षा</string>
     <string name="screen_notification">सूचनाएं</string>
@@ -161,9 +161,9 @@
     <string name="english">अंग्रेज़ी</string>
     <string name="current_location">वर्तमान स्थान</string>
     <string name="scan_qr">QR कोड स्कैन </string>
-    <string name="active_queue">सक्रिय पंक्ति / ऑर्डर</string>
+    <string name="active_token">सक्रिय पंक्ति / ऑर्डर</string>
     <string name="health_care">Hospitals</string>
-    <string name="merchant_near">आपके आस-पास की दुकानें</string>
+    <string name="business_near">आपके आस-पास की दुकानें</string>
     <string name="view_all">सभी को देखें</string>
     <string name="scan_info">कतार में शामिल होने के लिए QR कोड स्कैन करें / मौके पर ऑर्डर</string>
     <string name="prompt_address_status">पता</string>

@@ -38,13 +38,13 @@
     <dimen name="toolbar_text_size">40sp</dimen>
 
     <dimen name="change_bg_padding">15dp</dimen>
-    <dimen name="top_frame_height">200dp</dimen>
+    <dimen name="top_frame_height">140dp</dimen>
     <dimen name="child_frame_height">100dp</dimen>
     <dimen name="child_frame_padding">35dp</dimen>
     <dimen name="profile_pic_height">120dp</dimen>
     <dimen name="action_bar_icon_size">45dp</dimen>
     <dimen name="thumbnail_height">70dp</dimen>
-    <dimen name="current_q_width">337dp</dimen>
+    <dimen name="current_q_width">275dp</dimen>
     <dimen name="current_q_height">200dp</dimen>
 
     <dimen name="recent_q_width">215dp</dimen>

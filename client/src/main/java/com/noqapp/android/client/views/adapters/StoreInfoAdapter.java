@@ -54,14 +54,12 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
             case BK:
             case HS:
                 holder.tv_name.setText(item.getBusinessName());
-                holder.tv_status.setText("");
-                holder.tv_detail.setText("");
+                holder.tv_timing.setText("");
                 break;
             default:
                 holder.tv_name.setText(item.getDisplayName());
-                holder.tv_status.setText(AppUtils.getStoreOpenStatus(item));
                 StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(item.getStoreHourElasticList());
-                holder.tv_detail.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
+                holder.tv_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
         }
         if (!TextUtils.isEmpty(item.getDisplayImage())) {
             Picasso.get()
@@ -104,11 +102,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
-        private TextView tv_detail;
         private TextView tv_address;
+        private TextView tv_timing;
         private TextView tv_store_rating;
         private TextView tv_distance;
-        private TextView tv_status;
         private ImageView iv_main;
         private TextView tv_distance_unit;
         private CardView card_view;
@@ -116,11 +113,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
-            this.tv_detail = itemView.findViewById(R.id.tv_detail);
             this.tv_address = itemView.findViewById(R.id.tv_address);
+            this.tv_timing = itemView.findViewById(R.id.tv_detail);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
-            this.tv_status = itemView.findViewById(R.id.tv_status);
             this.tv_distance_unit = itemView.findViewById(R.id.tv_distance_unit);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);

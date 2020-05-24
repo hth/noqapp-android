@@ -104,7 +104,7 @@ public class SplashScreenTest2 {
                 allOf(withId(R.id.tv_near_view_all), withText("View All"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.rl_merchant_around_you),
+                                        withId(R.id.rl_business_around_you),
                                         0),
                                 2),
                         isDisplayed()));

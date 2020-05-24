@@ -26,7 +26,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".5">
+                android:layout_weight=".6">
 
                 <ImageView
                     android:id="@+id/iv_main"
@@ -81,7 +81,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".5"
+                android:layout_weight=".4"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
@@ -95,8 +95,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_fourteen"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/text_size_fourteen" />
 
 
                 <TextView
@@ -110,30 +109,21 @@
                     android:textColor="@color/text_header_color"
                     android:textSize="@dimen/text_size_ten" />
 
-                <TextView
-                    android:id="@+id/tv_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:text=""
-                    android:textColor="@color/text_header_color"
-                    android:textSize="@dimen/text_size_ten" />
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_status"
+                        android:id="@+id/tv_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_toLeftOf="@+id/tv_store_rating"
                         android:ellipsize="end"
-                        android:text=""
-                        android:textColor="#80000000"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textColor="@color/text_header_color"
+                        android:textSize="@dimen/text_size_ten" />
 
                     <TextView
                         android:id="@+id/tv_store_rating"

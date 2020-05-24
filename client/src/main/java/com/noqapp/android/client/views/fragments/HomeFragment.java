@@ -112,7 +112,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     private RecyclerView rv_health_care;
     private RecyclerView rv_current_activity;
     private RecyclerView rv_feed;
-    private TextView tv_current_title;
+    private TextView tv_active_title;
     private TextView tv_deviceId;
     private RecyclerView rv_merchant_around_you, rv_events;
     private TextView tv_health_care_view_all;
@@ -193,7 +193,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
         rv_health_care = view.findViewById(R.id.rv_health_care);
         rv_current_activity = view.findViewById(R.id.rv_current_activity);
-        tv_current_title = view.findViewById(R.id.tv_current_title);
+        tv_active_title = view.findViewById(R.id.tv_active_title);
         tv_deviceId = view.findViewById(R.id.tv_deviceId);
         rv_merchant_around_you = view.findViewById(R.id.rv_merchant_around_you);
         rv_events = view.findViewById(R.id.rv_events);
@@ -232,8 +232,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 rl_health_care.setVisibility(View.GONE);
             }
 
-            TextView tv_merchant_title = view.findViewById(R.id.tv_merchant_title);
-            tv_merchant_title.setText("Merchant Around You");
+            TextView tv_merchant_title = view.findViewById(R.id.tv_business_title);
+            tv_merchant_title.setText("Businesses Around You");
 
             LinearLayout rl_feed = view.findViewById(R.id.rl_feed);
             rl_feed.setVisibility(View.GONE);
@@ -703,7 +703,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
             CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(temp, getActivity(), currentClickListner);
             rv_current_activity.setAdapter(currentActivityAdapter);
-            tv_current_title.setText(getString(R.string.active_queue) + " (" + currentQueueList.size() + ")");
+            tv_active_title.setText(getString(R.string.active_token) + " (" + currentQueueList.size() + ")");
             currentActivityAdapter.notifyDataSetChanged();
 
             if (currentQueueList.size() > 0) {
