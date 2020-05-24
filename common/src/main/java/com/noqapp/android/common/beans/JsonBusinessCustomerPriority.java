@@ -27,17 +27,17 @@ import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
 public class JsonBusinessCustomerPriority extends AbstractDomain {
 
     @JsonProperty("pl")
-    private CustomerPriorityLevelEnum customerPriorityLevelEnum;
+    private CustomerPriorityLevelEnum customerPriorityLevel;
 
     @JsonProperty("pn")
     private String priorityName;
 
-    public CustomerPriorityLevelEnum getCustomerPriorityLevelEnum() {
-        return customerPriorityLevelEnum;
+    public CustomerPriorityLevelEnum getCustomerPriorityLevel() {
+        return customerPriorityLevel;
     }
 
-    public JsonBusinessCustomerPriority setCustomerPriorityLevelEnum(CustomerPriorityLevelEnum customerPriorityLevelEnum) {
-        this.customerPriorityLevelEnum = customerPriorityLevelEnum;
+    public JsonBusinessCustomerPriority setCustomerPriorityLevel(CustomerPriorityLevelEnum customerPriorityLevel) {
+        this.customerPriorityLevel = customerPriorityLevel;
         return this;
     }
 
