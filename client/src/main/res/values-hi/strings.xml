@@ -66,11 +66,15 @@
     <string name="you_are_after">You are after</string>
     <string name="serving_now">Serving now</string>
     <string name="your_token">आपका टोकन नंबर</string>
-
+    <string name="position_in_queue">कतार में स्थिति: %1$d</string>
+    <string name="daily_token_limit">स्टोर प्रतिदिन टोकन सीमा: %1$d</string>
+    <string name="revisit_restriction">अगली सेवा प्रतिबंध: %1$s</string>
+    <string name="referral_code_required">टोकन प्राप्त करने के लिए एक बार पहचान कोड की आवश्यकता</string>
 
     <!--- Scan Screen -->
-    <string name="currently_serving">Currently serving</string>
-    <string name="people_in_queue">कतार में लोगों की संख्या</string>
+    <string name="currently_serving">वर्तमान में सेवारत</string>
+    <string name="token_available">टोकन उपलब्ध</string>
+    <string name="people_in_queue">कतार में लोग</string>
 
     <string name="cancel_queue">आपने सफलतापूर्वक कतार रद्द कर दी है</string>
     <string name="fail_to_cancel">कतार रद्द करने में विफल रहा</string>

@@ -1,6 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Html;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -36,16 +39,21 @@ import com.squareup.picasso.Picasso;
 
 public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueuePresenter {
     private final String TAG = BeforeJoinOrderQueueActivity.class.getSimpleName();
+    private static final int MAX_AVAILABLE_TOKEN_DISPLAY = 99;
+
     private TextView tv_store_name;
     private TextView tv_queue_name;
-    private TextView tv_address, tv_store_address;
     private TextView tv_mobile;
-    private TextView tv_serving_no;
-    private TextView tv_people_in_q;
-    private TextView tv_hour_saved;
+    private TextView tv_store_timing;
+    private TextView tv_token_available, tv_token_available_text;
+    private TextView tv_people_in_q, tv_people_in_q_text;
     private TextView tv_rating_review;
     private TextView tv_rating;
     private TextView tv_delay_in_time;
+    private TextView tv_daily_token_limit;
+    private TextView tv_revisit_restriction;
+    private TextView tv_identification_code;
+    private TextView tv_address;
     private String codeQR;
     private JsonQueue jsonQueue;
     private boolean isJoinNotPossible = false;
@@ -62,13 +70,16 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         tv_store_name = findViewById(R.id.tv_store_name);
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
-        tv_store_address = findViewById(R.id.tv_store_address);
         tv_mobile = findViewById(R.id.tv_mobile);
-        tv_serving_no = findViewById(R.id.tv_serving_no);
+        tv_token_available = findViewById(R.id.tv_token_available);
+        tv_token_available_text = findViewById(R.id.tv_token_available_text);
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
-        tv_hour_saved = findViewById(R.id.tv_hour_saved);
+        tv_people_in_q_text = findViewById(R.id.tv_people_in_q_text);
+        tv_store_timing = findViewById(R.id.tv_store_timing);
+        tv_daily_token_limit = findViewById(R.id.tv_daily_token_limit);
+        tv_revisit_restriction = findViewById(R.id.tv_revisit_restriction);
+        tv_identification_code = findViewById(R.id.tv_identification_code);
         ImageView iv_category_banner = findViewById(R.id.iv_category_banner);
-        TextView tv_skip_msg = findViewById(R.id.tv_skip_msg);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         btn_pay_and_joinQueue = findViewById(R.id.btn_pay_and_joinQueue);
         btn_joinQueue = findViewById(R.id.btn_joinQueue);
@@ -81,10 +92,6 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 joinQueue(false);
         });
         tv_rating = findViewById(R.id.tv_rating);
-        Button btn_no = findViewById(R.id.btn_no);
-        btn_no.setOnClickListener((View v) -> {
-            finish();
-        });
 
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
@@ -92,7 +99,8 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             AppUtils.makeCall(BeforeJoinOrderQueueActivity.this, tv_mobile.getText().toString());
         });
 
-        tv_address.setOnClickListener((View v) -> {
+        LinearLayout ll_address = findViewById(R.id.ll_address);
+        ll_address.setOnClickListener((View v) -> {
             AppUtils.openAddressInMap(BeforeJoinOrderQueueActivity.this, tv_address.getText().toString());
         });
 
@@ -111,11 +119,6 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                         .into(iv_category_banner);
             } else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(iv_category_banner);
-            }
-            if (bundle.getBoolean(IBConstant.KEY_IS_REJOIN, false)) {
-                btn_joinQueue.setText(getString(R.string.yes));
-                tv_skip_msg.setVisibility(View.VISIBLE);
-                btn_no.setVisibility(View.VISIBLE);
             }
 
             if (isCategoryData) {
@@ -155,10 +158,32 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             tv_store_name.setText(jsonQueue.getBusinessName());
             tv_queue_name.setText(jsonQueue.getDisplayName());
             tv_address.setText(jsonQueue.getStoreAddress());
-            tv_store_address.setText(AppUtils.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-            tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
+            if(jsonQueue.getAvailableTokenCount() == 0) {
+                tv_token_available.setText(MAX_AVAILABLE_TOKEN_DISPLAY + "+");
+                tv_token_available_text.setText(getResources().getQuantityString(R.plurals.token_available, MAX_AVAILABLE_TOKEN_DISPLAY));
+            } else {
+                int tokenAvailableForDay = Math.max((jsonQueue.getAvailableTokenCount() - (jsonQueue.getServingNumber())
+                        + jsonQueue.getPeopleInQueue()), 0);
+                tv_token_available.setText(String.valueOf(tokenAvailableForDay));
+                tv_token_available_text.setText(getResources().getQuantityString(R.plurals.token_available, tokenAvailableForDay));
+            }
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
+            tv_people_in_q_text.setText(getResources().getQuantityString(R.plurals.people_in_queue, jsonQueue.getPeopleInQueue()));
+
+            if(jsonQueue.getAvailableTokenCount() != 0) {
+                tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), jsonQueue.getAvailableTokenCount()));
+                tv_daily_token_limit.setVisibility(View.VISIBLE);
+            }
+            if(jsonQueue.getLimitServiceByDays() != 0) {
+                tv_revisit_restriction.setText(String.format(getResources().getString(R.string.revisit_restriction),
+                        jsonQueue.getLimitServiceByDays()+ " days"));
+                tv_revisit_restriction.setVisibility(View.VISIBLE);
+            }
+            if (jsonQueue.getPriorityAccess().equalsIgnoreCase("ON")) {
+                tv_identification_code.setVisibility(View.VISIBLE);
+            }
+
             if (jsonQueue.getDelayedInMinutes() > 0) {
                 int hours = jsonQueue.getDelayedInMinutes() / 60;
                 int minutes = jsonQueue.getDelayedInMinutes() % 60;
@@ -169,7 +194,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 tv_delay_in_time.setVisibility(View.GONE);
             }
             String time = new AppUtils().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
-            tv_hour_saved.setText(time);
+            tv_store_timing.setText(time);
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener((View v) -> {
                 if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
@@ -201,6 +226,11 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 btn_joinQueue.setVisibility(View.GONE);
                 btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
             } else {
+                // Check if user is already in queue for this store
+                SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                if(prefs.contains(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, jsonQueue.getCodeQR()))) {
+                    btn_joinQueue.setText(getResources().getString(R.string.view_token_status));
+                }
                 btn_joinQueue.setVisibility(View.VISIBLE);
                 btn_pay_and_joinQueue.setVisibility(View.GONE);
             }

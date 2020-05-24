@@ -58,10 +58,10 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/tv_store_address"
+                            android:id="@+id/tv_mobile"
                             style="@style/style_join_queue_tv"
                             android:layout_alignParentLeft="true"
-                            android:layout_marginBottom="1dp"
+                            android:paddingBottom="7dp"
                             android:layout_toLeftOf="@+id/tv_enable_kiosk"
                             android:textColor="@color/colorAddress"
                             android:textSize="@dimen/text_size_fourteen" />
@@ -76,15 +76,6 @@
                             android:visibility="invisible" />
                     </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tv_mobile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="10dp"
-                        android:paddingRight="10dp"
-                        android:textColor="@color/colorAddress"
-                        android:textSize="@dimen/text_size_twelve" />
-
                     <RelativeLayout
                         android:id="@+id/rl_rating"
                         android:layout_width="match_parent"
@@ -92,7 +83,7 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:id="@+id/tv_hour_saved"
+                            android:id="@+id/tv_store_timing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
@@ -131,10 +122,10 @@
                 android:id="@+id/tv_delay_in_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="3dp"
                 android:gravity="center"
-                android:text=""
                 android:textColor="@color/theme_color_red"
-                android:textSize="@dimen/text_size_twelve"
+                android:textSize="@dimen/text_size_fourteen"
                 android:visibility="gone" />
 
             <LinearLayout
@@ -165,17 +156,17 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_serving_no"
+                            android:id="@+id/tv_token_available"
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/header_1" />
 
                         <TextView
-                            android:id="@+id/tv_left"
+                            android:id="@+id/tv_token_available_text"
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
-                            android:text="@string/currently_serving"
+                            android:text="@string/token_available"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/header_2" />
                     </LinearLayout>
@@ -210,15 +201,13 @@
                             android:textSize="@dimen/header_1" />
 
                         <TextView
-                            android:id="@+id/tv_right"
+                            android:id="@+id/tv_people_in_q_text"
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
-                            android:text="@string/people_in_queue"
                             android:textColor="#505050"
                             android:textSize="@dimen/header_2" />
                     </LinearLayout>
                 </FrameLayout>
-
 
             </LinearLayout>
 
@@ -231,79 +220,54 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_daily_token_limit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="@string/address"
-                    android:textColor="#606060"
-                    android:textSize="@dimen/text_size_twelve" />
-
-                <TextView
-                    android:id="@+id/tv_store_name"
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_sixteen" />
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/tv_address"
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginBottom="5dp"
-                    android:ellipsize="end"
-                    android:maxLines="2"
+                    android:id="@+id/tv_revisit_restriction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_fourteen" />
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_identification_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/colorAddress"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:text="@string/referral_code_required"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_skip_msg"
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_horizontal"
-                    android:text="@string/skip_msg"
-                    android:textColor="@color/colorMobile"
-                    android:textSize="@dimen/text_size_sixteen"
-                    android:visibility="gone" />
-
                 <LinearLayout
                     android:id="@+id/ll_btns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_skip_msg"
+                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp">
-
-                    <Button
-                        android:id="@+id/btn_no"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/btn_standard_height"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/btn_bg_inactive"
-                        android:clickable="true"
-                        android:fontFamily="sans-serif-medium"
-                        android:foreground="?attr/selectableItemBackgroundBorderless"
-                        android:gravity="center"
-                        android:text="@string/no"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorMobile"
-                        android:textSize="@dimen/text_size_sixteen"
-                        android:textStyle="normal"
-                        android:visibility="gone" />
-
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -344,8 +308,61 @@
 
                 </LinearLayout>
             </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/ll_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:id="@+id/tv_address_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:layout_marginTop="7dp"
+                        android:textColor="#606060"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:text="@string/address" />
+
+                    <TextView
+                        android:id="@+id/tv_store_name"
+                        style="@style/style_join_queue_tv"
+                        android:gravity="left"
+                        android:layout_below="@+id/tv_address_label"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/iv_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:clipToPadding="false"
+                        android:focusable="true"
+                        android:tint="@color/theme_color_red"
+                        android:src="@drawable/ic_map_place"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    style="@style/style_join_queue_tv"
+                    android:layout_marginBottom="7dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/colorAddress"
+                    android:textSize="@dimen/text_size_fourteen" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

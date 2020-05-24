@@ -25,7 +25,7 @@ public class TokenStatusUtils {
     if(avgServiceTime > 0 && positionInQueue > 0 ) {
       if(queueStatus == QueueStatusEnum.S) {
         long timeToStoreStartInMilli = Formatter.computeTimeToStoreStart(startHour);
-        return GetTimeAgoUtils.getTimeAgo((positionInQueue * avgServiceTime) + timeToStoreStartInMilli );
+        return GetTimeAgoUtils.getTimeAgo(Math.max(((positionInQueue * avgServiceTime) + timeToStoreStartInMilli), 0));
       } else {
         return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime);
       }
