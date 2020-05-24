@@ -1,9 +1,11 @@
 package com.noqapp.android.merchant.model.response.api;
 
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -93,5 +95,23 @@ public interface BusinessCustomerApiUrls {
 
             @Body
             JsonBusinessCustomerLookup jsonBusinessCustomerLookup
+    );
+
+    @POST("api/m/bc/access/action.json")
+    Call<JsonResponse> accessAction(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            CustomerPriority customerPriority
     );
 }
