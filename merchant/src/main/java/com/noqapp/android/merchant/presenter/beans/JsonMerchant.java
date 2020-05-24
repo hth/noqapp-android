@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonBusinessCustomerPriority;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 
@@ -35,6 +36,9 @@ public class JsonMerchant implements Serializable {
     @JsonProperty("ts")
     private List<JsonTopic> topics = new ArrayList<>();
 
+    @JsonProperty ("cp")
+    private List<JsonBusinessCustomerPriority> customerPriorities = new ArrayList<>();
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -61,6 +65,14 @@ public class JsonMerchant implements Serializable {
 
     public void setTopics(List<JsonTopic> topics) {
         this.topics = topics;
+    }
+
+    public List<JsonBusinessCustomerPriority> getCustomerPriorities() {
+        return customerPriorities;
+    }
+
+    public void setCustomerPriorities(List<JsonBusinessCustomerPriority> customerPriorities) {
+        this.customerPriorities = customerPriorities;
     }
 
     public ErrorEncounteredJson getError() {
