@@ -8,10 +8,11 @@ import java.util.Map;
  * 5/24/20 12:25 PM
  */
 public enum CustomerPriorityLevelEnum {
+    I("I", "Cast Iron (0)", 0, "FFFFFF"),
     S("S", "Silver (1)", 1, "B1D877"),
     G("G", "Gold (2)", 2, "8CDCDA"),
     P("P", "Platinum (3)", 3, "F16A70"),
-    R("R", "Rare Metal (Highest)", 4, "4D4D4D");
+    R("R", "Unobtainium (Highest)", 4, "4D4D4D");
 
     private final String description;
     private final String name;
@@ -52,6 +53,8 @@ public enum CustomerPriorityLevelEnum {
 
     public static CustomerPriorityLevelEnum getCustomerPriorityLevelEnumBasedOnLevel(int level) {
         switch (level) {
+            case 0:
+                return I;
             case 1:
                 return S;
             case 2:
