@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
@@ -73,7 +74,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                 case PH: {
                     // open order screen
                     in = new Intent(context, StoreDetailActivity.class);
-                    b.putSerializable("BizStoreElastic", null);
+                    b.putSerializable("BizStoreElastic", AppUtils.getStoreElastic(jsonQueueHistorical));
                     in.putExtras(b);
                     context.startActivity(in);
                 }
@@ -81,7 +82,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                 default: {
                     // open order screen
                     in = new Intent(context, StoreWithMenuActivity.class);
-                    b.putSerializable("BizStoreElastic", null);
+                    b.putSerializable("BizStoreElastic", AppUtils.getStoreElastic(jsonQueueHistorical));
                     in.putExtras(b);
                     context.startActivity(in);
                 }

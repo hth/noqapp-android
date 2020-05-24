@@ -79,7 +79,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                 case PH: {
                     // open order screen
                     in = new Intent(this, StoreDetailActivity.class);
-                    b.putSerializable("BizStoreElastic", null);
+                    b.putSerializable("BizStoreElastic",AppUtils.getStoreElastic(jsonQueueHistorical));
                     in.putExtras(b);
                     startActivity(in);
                 }
@@ -87,7 +87,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                 default: {
                     // open order screen
                     in = new Intent(this, StoreWithMenuActivity.class);
-                    b.putSerializable("BizStoreElastic", null);
+                    b.putSerializable("BizStoreElastic", AppUtils.getStoreElastic(jsonQueueHistorical));
                     in.putExtras(b);
                     startActivity(in);
                 }

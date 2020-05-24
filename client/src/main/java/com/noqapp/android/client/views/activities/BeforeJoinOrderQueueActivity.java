@@ -180,7 +180,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                         jsonQueue.getLimitServiceByDays()+ " days"));
                 tv_revisit_restriction.setVisibility(View.VISIBLE);
             }
-            if (jsonQueue.getPriorityAccess().equalsIgnoreCase("ON")) {
+            if (jsonQueue.getPriorityAccess().getDescription().equalsIgnoreCase("ON")) {
                 tv_identification_code.setVisibility(View.VISIBLE);
             }
 

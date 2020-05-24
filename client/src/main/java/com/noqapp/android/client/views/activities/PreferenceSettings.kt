@@ -110,7 +110,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         } else {
             tv_online.performClick()
         }
-        sc_sms.setOnCheckedChangeListener { buttonView, isChecked ->
+        sc_sms.setOnCheckedChangeListener { _, isChecked ->
             MyApplication.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
@@ -123,7 +123,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             clientPreferenceApiCalls.promotionalSMS(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
 
-        sc_sound.setOnCheckedChangeListener { _buttonView, isChecked ->
+        sc_sound.setOnCheckedChangeListener { _, isChecked ->
             MyApplication.setNotificationSoundEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
@@ -136,7 +136,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             clientPreferenceApiCalls.notificationSound(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
 
-        sc_msg_announce.setOnCheckedChangeListener { buttonView, isChecked ->
+        sc_msg_announce.setOnCheckedChangeListener { _, isChecked ->
             LaunchActivity.setMsgAnnouncmentEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
