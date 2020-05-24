@@ -27,7 +27,9 @@ class AppsViewPagerAdapter(private val activity: Activity, private val appLinksI
         Picasso.get().load(url).into(ivBanner)
         tvTitle.text = appLinksInfos[position].title
         tvDescription.text = appLinksInfos[position].description
-        btnDownload.setOnClickListener { v: View? -> CommonHelper.openPlayStore(activity, appLinksInfos[position].appPackageId) }
+        btnDownload.setOnClickListener {
+            CommonHelper.openPlayStore(activity, appLinksInfos[position].appPackageId)
+        }
         container.addView(view)
         return view
     }

@@ -30,6 +30,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
@@ -608,5 +609,12 @@ public class AppUtils extends CommonHelper {
             tv_rating_review.setText(reviewCount + " Reviews");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | (Paint.UNDERLINE_TEXT_FLAG));
         }
+    }
+
+    public static BizStoreElastic getStoreElastic(JsonQueueHistorical jsonQueueHistorical ){
+        BizStoreElastic bizStoreElastic = new BizStoreElastic();
+        bizStoreElastic.setCodeQR(jsonQueueHistorical.getCodeQR());
+        bizStoreElastic.setBusinessName(jsonQueueHistorical.getBusinessName());
+        return bizStoreElastic;
     }
 }
