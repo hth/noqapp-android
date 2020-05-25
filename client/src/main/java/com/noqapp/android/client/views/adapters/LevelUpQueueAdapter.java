@@ -146,7 +146,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_store_timing.setVisibility(View.VISIBLE);
                 childViewHolder.tv_status.setVisibility(View.VISIBLE);
                 childViewHolder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
-                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
+                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.orange_gradient));
                 childViewHolder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
                 childViewHolder.tv_join.setText("Get Token");
                 if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.HS) {
@@ -200,14 +200,14 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     if (bizStoreElastic.getBusinessType() != null) {
                         switch (bizStoreElastic.getBusinessType()) {
                             case DO:
-                                childViewHolder.tv_status.setText("Open now. For today's appointment click on Walk-In.");
+                                childViewHolder.tv_status.setText("Open now. For today's appointment click on Walk-In");
                                 break;
                             default:
-                                childViewHolder.tv_status.setText("Open now. Join the queue.");
+                                childViewHolder.tv_status.setText("Open now, get a Token");
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText("Open Now. Join the queue.");
+                        childViewHolder.tv_status.setText("Open Now, get a Token");
                     }
                     childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.open_queue));
                 }
@@ -243,7 +243,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             // for safety null check added for walking state
             if (null == bizStoreElastic.getWalkInState() || bizStoreElastic.getWalkInState() == WalkInStateEnum.E) {
-                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
+                childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.orange_gradient));
                 childViewHolder.tv_join.setTextColor(Color.WHITE);
                 childViewHolder.tv_join.setOnClickListener((View v) -> {
                     if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
@@ -334,10 +334,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 convertView = layoutInflater.inflate(R.layout.list_item_menu_group, parent, false);
             }
             TextView tv_list_header = convertView.findViewById(R.id.tv_list_header);
-            tv_list_header.setTypeface(null, Typeface.BOLD);
             tv_list_header.setText(headerTitle);
-            //ImageView ivGroupIndicator = convertView.findViewById(R.id.ivGroupIndicator);
-            // ivGroupIndicator.setSelected(isExpanded);
         }
         return convertView;
     }
