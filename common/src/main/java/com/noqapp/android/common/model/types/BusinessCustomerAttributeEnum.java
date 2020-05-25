@@ -5,10 +5,10 @@ package com.noqapp.android.common.model.types;
  * 5/24/20 3:16 AM
  */
 public enum BusinessCustomerAttributeEnum {
-    CA("CA", "CSD Approved"),
-    CR("CR", "CSD Reject"),
-    CG("CG", "CSD Grocery"),
-    CL("CL", "CSD Liquor");
+    AP("AP", "Approved"),
+    RJ("RJ", "Reject"),
+    GY("GY", "Grocery"),
+    LQ("LQ", "Liquor");
 
     private final String description;
     private final String name;
