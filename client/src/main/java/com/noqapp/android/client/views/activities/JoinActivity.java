@@ -876,7 +876,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             } else {
                 QueueAuthorize queueAuthorize = new QueueAuthorize()
                         .setCodeQR(jsonTokenAndQueue.getCodeQR())
-                        .setReferralCode(edt_referral.getText().toString());
+                        .setFirstCustomerId(edt_referral.getText().toString());
                 queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
                 queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                 AppUtils.hideKeyBoard(this);
