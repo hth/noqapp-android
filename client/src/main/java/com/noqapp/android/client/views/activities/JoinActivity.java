@@ -2,15 +2,23 @@ package com.noqapp.android.client.views.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -846,7 +854,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY.getCode())) {
-                showReferralDialog(this);
+                showAuthorizationDialog(this);
             } else {
                 new ErrorResponseHandler().processError(this, eej);
             }
@@ -854,41 +862,88 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     }
 
-    private void showReferralDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_store_authentic, null, false);
-        builder.setView(customDialogView);
-        alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.setCancelable(false);
-        EditText edt_referral = customDialogView.findViewById(R.id.edt_referral);
-        Button btnPositive = customDialogView.findViewById(R.id.btnPositive);
-        Button btnNegative = customDialogView.findViewById(R.id.btnNegative);
-        btnNegative.setOnClickListener((View v) -> {
-            actionbarBack.performClick();
-        });
-        btnPositive.setOnClickListener((View v) -> {
-            edt_referral.setError(null);
-            if (TextUtils.isEmpty(edt_referral.getText().toString())) {
-                edt_referral.setError("Enter referral code");
-            } else {
-                QueueAuthorize queueAuthorize = new QueueAuthorize()
-                        .setCodeQR(jsonTokenAndQueue.getCodeQR())
-                        .setFirstCustomerId(edt_referral.getText().toString());
-                queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
-                queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
-                AppUtils.hideKeyBoard(this);
-                new CustomToast().showToast(this, "Please try to join the queue again.");
+    private void showAuthorizationDialog(final Context context) {
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_custom_two_input);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
+        EditText edtGroceryCard = dialog.findViewById(R.id.edt_grocery_card);
+        EditText edtLiquorCard = dialog.findViewById(R.id.edt_liquor_card);
+
+        edtGroceryCard.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (edtGroceryCard.getText().toString().length() < 5) {
+                    edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
+                } else {
+                    edtGroceryCard.setError(null);
+                }
             }
         });
+
+        edtLiquorCard.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (edtLiquorCard.getText().toString().length() < 5) {
+                    edtLiquorCard.setError("Liquor Card Last 5 characters/numbers");
+                } else {
+                    edtLiquorCard.setError(null);
+                }
+            }
+        });
+
+        Button btn_positive = dialog.findViewById(R.id.btn_positive);
+        btn_positive.setOnClickListener(v -> {
+            if (btn_positive.getText().equals(context.getString(R.string.submit_button))) {
+                if (edtGroceryCard.getText().toString().length() < 5) {
+                    edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
+                    return;
+                } else if (edtLiquorCard.getText().toString().length() <= 0) {
+                    edtLiquorCard.setError("Enter Liquor Card Last 5 characters/numbers");
+                    return;
+                } else {
+                    QueueAuthorize queueAuthorize = new QueueAuthorize()
+                            .setCodeQR(jsonTokenAndQueue.getCodeQR())
+                            .setFirstCustomerId(edtGroceryCard.getText().toString())
+                            .setAdditionalCustomerId(edtLiquorCard.getText().toString());
+                    queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
+                    queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
+                    AppUtils.hideKeyBoard(this);
+                }
+            }
+        });
+        Button btn_negative = dialog.findViewById(R.id.btn_negative);
+        btn_negative.setOnClickListener(v -> dialog.dismiss());
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
         try {
-            alertDialog.show();
+            dialog.show();
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    finish();
+                }
+            });
         } catch (Exception e) {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
         }
-    }
 
+
+    }
 }
