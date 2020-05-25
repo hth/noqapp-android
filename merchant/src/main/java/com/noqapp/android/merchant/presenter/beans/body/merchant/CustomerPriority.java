@@ -33,6 +33,9 @@ public class CustomerPriority extends AbstractDomain {
     @JsonProperty("at")
     private ActionTypeEnum actionType;
 
+    @JsonProperty("qr")
+    private String codeQR;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -49,5 +52,13 @@ public class CustomerPriority extends AbstractDomain {
     public CustomerPriority setActionType(ActionTypeEnum actionType) {
         this.actionType = actionType;
         return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public void setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
     }
 }
