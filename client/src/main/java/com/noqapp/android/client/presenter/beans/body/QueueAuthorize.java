@@ -28,8 +28,11 @@ public class QueueAuthorize extends AbstractDomain {
     @JsonProperty("codeQR")
     private String codeQR;
 
-    @JsonProperty("rc")
-    private String referralCode;
+    @JsonProperty("fci")
+    private String firstCustomerId;
+
+    @JsonProperty("aci")
+    private String additionalCustomerId;
 
     public String getCodeQR() {
         return codeQR;
@@ -40,12 +43,19 @@ public class QueueAuthorize extends AbstractDomain {
         return this;
     }
 
-    public String getReferralCode() {
-        return referralCode;
+    public String getFirstCustomerId() {
+        return firstCustomerId;
     }
 
-    public QueueAuthorize setReferralCode(String referralCode) {
-        this.referralCode = referralCode;
-        return this;
+    public void setFirstCustomerId(String firstCustomerId) {
+        this.firstCustomerId = firstCustomerId;
+    }
+
+    public String getAdditionalCustomerId() {
+        return additionalCustomerId;
+    }
+
+    public void setAdditionalCustomerId(String additionalCustomerId) {
+        this.additionalCustomerId = additionalCustomerId;
     }
 }
