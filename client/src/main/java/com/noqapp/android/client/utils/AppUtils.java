@@ -125,6 +125,18 @@ public class AppUtils extends CommonHelper {
         }
     }
 
+    public static void openNavigationInMap(Activity context, String address) {
+        try {
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(address));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            context.startActivity(mapIntent);
+        } catch (ActivityNotFoundException ex) {
+            Log.e(TAG, "Failed opening address reason=" + ex.getLocalizedMessage());
+            new CustomToast().showToast(context, "Please install a maps application");
+        }
+    }
+
 
     private static void setRatingStarColor(Drawable drawable, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

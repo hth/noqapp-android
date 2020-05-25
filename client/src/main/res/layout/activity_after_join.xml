@@ -41,7 +41,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/child_frame_height"
-                            android:background="@drawable/blue_gradient"
+                            android:background="@drawable/blue_gradient_round"
                             android:orientation="horizontal" />
 
                         <androidx.cardview.widget.CardView
@@ -92,8 +92,7 @@
                                         android:paddingLeft="10dp"
                                         android:paddingRight="10dp"
                                         android:textColor="@android:color/black"
-                                        android:textSize="@dimen/text_size_sixteen"
-                                        android:textStyle="bold" />
+                                        android:textSize="@dimen/text_size_sixteen" />
 
                                     <TextView
                                         android:id="@+id/tv_hour_saved"
@@ -200,7 +199,7 @@
                                 android:layout_marginTop="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/blue_gradient_round"
+                                android:background="@drawable/grey_gradient_round"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
 
@@ -247,7 +246,7 @@
                                 android:layout_marginTop="10dp"
                                 android:layout_marginRight="@dimen/margin_left"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/orange_gradient"
+                                android:background="@drawable/blue_gradient_round"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
 
@@ -255,7 +254,7 @@
                                     android:id="@+id/tv_token"
                                     style="@style/style_join_queue_tv"
                                     android:gravity="center"
-                                    android:textColor="@android:color/white"
+                                    android:textColor="#505050"
                                     android:textSize="@dimen/header_1" />
 
                                 <TextView
@@ -263,12 +262,10 @@
                                     style="@style/style_join_queue_tv"
                                     android:gravity="center"
                                     android:text="@string/your_token"
-                                    android:textColor="@android:color/white"
+                                    android:textColor="#505050"
                                     android:textSize="@dimen/header_2" />
                             </LinearLayout>
                         </FrameLayout>
-
-
                     </LinearLayout>
 
                     <TextView
@@ -276,10 +273,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
                         android:layout_marginBottom="0dp"
                         android:gravity="center"
-                        android:textColor="#80000000"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textColor="#505050"
+                        android:textSize="@dimen/text_size_ten" />
 
                     <LinearLayout
                         android:id="@+id/ll_change_bg"
@@ -287,26 +285,26 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:background="@drawable/square_bg_drawable"
+                        android:background="@drawable/orange_gradient"
                         android:gravity="center_horizontal|center_vertical"
                         android:orientation="vertical"
                         android:paddingTop="@dimen/change_bg_padding"
                         android:paddingBottom="5dp">
 
                         <TextView
-                            android:id="@+id/tv_after"
+                            android:id="@+id/tv_position_in_queue_value"
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
-                            android:text="@string/you_are_after"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen" />
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/header_1" />
 
                         <TextView
-                            android:id="@+id/tv_how_long"
+                            android:id="@+id/tv_position_in_queue_label"
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
-                            android:textColor="@android:color/black"
-                            android:textSize="28sp" />
+                            android:text="@string/your_position_in_queue_label"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/header_2"/>
 
                     </LinearLayout>
 
@@ -335,43 +333,71 @@
                             android:id="@+id/tv_name"
                             style="@style/style_join_queue_tv"
                             android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
                             android:textColor="@color/colorAddress"
                             android:textSize="@dimen/text_size_sixteen" />
 
-                        <TextView
+                        <LinearLayout
+                            android:id="@+id/ll_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="@string/address"
-                            android:textColor="#606060"
-                            android:textSize="@dimen/text_size_twelve" />
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_store_name"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_sixteen" />
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/tv_address"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="#606060"
-                            android:textSize="@dimen/text_size_fourteen" />
+                            <TextView
+                                android:id="@+id/tv_address_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="left"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/address"
+                                android:textColor="#606060"
+                                android:textSize="@dimen/text_size_twelve" />
 
-                        <include layout="@layout/layout_map" />
+                            <TextView
+                                android:id="@+id/tv_store_name"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="left"
+                                android:layout_below="@+id/tv_address_label"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="@dimen/text_size_sixteen" />
+
+                            <ImageView
+                                android:id="@+id/iv_map"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_gravity="right"
+                                android:clipToPadding="false"
+                                android:focusable="true"
+                                android:tint="@color/theme_color_red"
+                                android:src="@drawable/ic_map_place"/>
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/tv_address"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="7dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:textColor="#606060"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -665,19 +691,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
                 <Button
                     android:id="@+id/btn_pay"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/btn_standard_height"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:layout_weight="0.0"
                     android:background="@drawable/btn_bg_enable"
                     android:clickable="true"
@@ -693,10 +717,8 @@
 
                 <Button
                     android:id="@+id/btn_cancel_queue"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/btn_standard_height"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:layout_weight="1.0"
                     android:background="@drawable/btn_bg_inactive"
                     android:clickable="true"

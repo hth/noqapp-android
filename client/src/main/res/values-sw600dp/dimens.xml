@@ -4,7 +4,7 @@
 
 
 
-    <dimen name="btn_standard_height">60dp</dimen>
+    <dimen name="btn_standard_height">67dp</dimen>
     <dimen name="menu_title_width">250dp</dimen>
     <dimen name="profile_icon_width">75dp</dimen>
     <dimen name="rating_text_size">18sp</dimen>
@@ -48,6 +48,7 @@
 
     <dimen name="change_bg_padding">10dp</dimen>
     <dimen name="top_frame_height">100dp</dimen>
+    <dimen name="top_frame_height_large">150dp</dimen>
     <dimen name="child_frame_height">75dp</dimen>
     <dimen name="child_frame_padding">25dp</dimen>
     <dimen name="profile_pic_height">90dp</dimen>
