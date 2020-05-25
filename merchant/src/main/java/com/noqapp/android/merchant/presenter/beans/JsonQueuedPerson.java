@@ -6,11 +6,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.model.types.BusinessCustomerAttributeEnum;
+import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -82,6 +86,12 @@ public class JsonQueuedPerson implements Serializable {
 
     @JsonProperty("c")
     private String created;
+
+    @JsonProperty("pl")
+    private CustomerPriorityLevelEnum customerPriorityLevel = CustomerPriorityLevelEnum.I;
+
+    @JsonProperty("ca")
+    private Set<BusinessCustomerAttributeEnum> businessCustomerAttributes = new HashSet<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
