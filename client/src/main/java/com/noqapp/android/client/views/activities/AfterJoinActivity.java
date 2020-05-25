@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -88,12 +89,12 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     private TextView tv_mobile;
     private TextView tv_serving_no;
     private TextView tv_token;
-    private TextView tv_how_long;
+    private TextView tv_position_in_queue_label;
+    private TextView tv_position_in_queue;
     private Button btn_cancel_queue;
-    private TextView tv_after;
     private TextView tv_estimated_time;
     private TextView tv_name;
-    private LinearLayout ll_change_bg;
+    private LinearLayout ll_address;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
@@ -135,9 +136,9 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_mobile = findViewById(R.id.tv_mobile);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_token = findViewById(R.id.tv_token);
-        tv_how_long = findViewById(R.id.tv_how_long);
+        tv_position_in_queue = findViewById(R.id.tv_position_in_queue_value);
         btn_cancel_queue = findViewById(R.id.btn_cancel_queue);
-        tv_after = findViewById(R.id.tv_after);
+        tv_position_in_queue_label = findViewById(R.id.tv_position_in_queue_label);
         tv_payment_status = findViewById(R.id.tv_payment_status);
         tv_due_amt = findViewById(R.id.tv_due_amt);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
@@ -145,7 +146,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
         TextView tv_add = findViewById(R.id.add_person);
         TextView tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
-        ll_change_bg = findViewById(R.id.ll_change_bg);
+        ll_address = findViewById(R.id.ll_address);
         ll_order_details = findViewById(R.id.ll_order_details);
         rl_discount = findViewById(R.id.rl_discount);
         card_amount = findViewById(R.id.card_amount);
@@ -251,11 +252,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             if (null != jsonTokenAndQueue) {
                 currencySymbol = AppUtils.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
-                LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
-                LatLng destination = new LatLng(
-                        GeoHashUtils.decodeLatitude(jsonTokenAndQueue.getGeoHash()),
-                        GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash()));
-                replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             }
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();
@@ -321,11 +317,12 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
             tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString()));
-            tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString()));
+            ll_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this,
+                    tv_address.getText().toString()));
             gotoPerson = (null != ReviewDB.getValue(codeQR, tokenValue)) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
-            tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+            tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
             // Store the currently serving and avg wait time in the app preference
             SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
             prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), jsonTokenAndQueue.getServingNumber()).apply();
@@ -463,40 +460,24 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     }
 
     public void setBackGround(int pos) {
-        tv_after.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
-        tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
-        tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.front_position_text_color));
-        tv_after.setText("Your position in queue:");
+        tv_position_in_queue_label.setText(R.string.your_position_in_queue_label);
         btn_cancel_queue.setEnabled(true);
         switch (pos) {
             case 0:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                tv_after.setText("It's your turn!!!");
-                tv_how_long.setText(gotoPerson);
+                tv_position_in_queue_label.setText(R.string.your_turn);
+                tv_position_in_queue.setText(gotoPerson);
                 btn_cancel_queue.setVisibility(View.GONE);
                 break;
             case 1:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                tv_after.setText("You are next!");
+                tv_position_in_queue_label.setText(R.string.your_are_next_label);
                 break;
             case 2:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                break;
             case 3:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                break;
             case 4:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                break;
             case 5:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 break;
             default:
-                tv_after.setText("Your position in queue:");
-                tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
-                tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
-                ll_change_bg.setBackgroundResource(R.drawable.btn_bg_inactive);
-                tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
+                tv_position_in_queue_label.setText(R.string.your_position_in_queue_label);
                 break;
         }
     }
@@ -508,7 +489,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         jsonTokenAndQueue.setToken(jq.getToken());
         tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
         tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
-        tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+        tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
         updateEstimatedTime();
         setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
     }
