@@ -240,6 +240,22 @@ public class JsonQueuedPerson implements Serializable {
         return this;
     }
 
+    public CustomerPriorityLevelEnum getCustomerPriorityLevel() {
+        return customerPriorityLevel;
+    }
+
+    public void setCustomerPriorityLevel(CustomerPriorityLevelEnum customerPriorityLevel) {
+        this.customerPriorityLevel = customerPriorityLevel;
+    }
+
+    public Set<BusinessCustomerAttributeEnum> getBusinessCustomerAttributes() {
+        return businessCustomerAttributes;
+    }
+
+    public void setBusinessCustomerAttributes(Set<BusinessCustomerAttributeEnum> businessCustomerAttributes) {
+        this.businessCustomerAttributes = businessCustomerAttributes;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
