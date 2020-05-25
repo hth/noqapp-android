@@ -97,6 +97,8 @@ public class QueueListActivity extends BaseActivity implements
         Bundle b = new Bundle();
         switch (item.getBusinessType()) {
             case DO:
+            case CD:
+            case CDQ:
             case BK:
                 // open hospital profile
                 if(LaunchActivity.isLockMode){

@@ -61,6 +61,8 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
             Bundle b = new Bundle();
             switch (jsonQueueHistorical.getBusinessType()) {
                 case DO:
+                case CD:
+                case CDQ:
                 case BK:
                     // open hospital/Bank profile
                     in = new Intent(context, BeforeJoinActivity.class);
@@ -103,6 +105,10 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                 switch (jsonQueueHistorical.getBusinessType()) {
                     case DO:
                         business = "Doctor";
+                        break;
+                    case CD:
+                    case CDQ:
+                        business = "Store";
                         break;
                     case BK:
                         business = "Bank";

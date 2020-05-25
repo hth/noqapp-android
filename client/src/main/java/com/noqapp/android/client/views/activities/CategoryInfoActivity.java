@@ -77,7 +77,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private TextView tv_address;
     private TextView tv_mobile;
     private TextView tv_complete_address;
-    private TextView tv_address_title;
     private TextView tv_rating_review;
     private TextView tv_rating;
     private RecyclerView rv_thumb_images;
@@ -104,7 +103,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         tv_address = findViewById(R.id.tv_address);
         tv_mobile = findViewById(R.id.tv_mobile);
         tv_complete_address = findViewById(R.id.tv_complete_address);
-        tv_address_title = findViewById(R.id.tv_address_title);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
         RecyclerView rv_categories = findViewById(R.id.rv_categories);
@@ -130,7 +128,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
             if (null != bizStoreElastic) {
-                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK) {
+                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK
+                        || bizStoreElastic.getBusinessType() == BusinessTypeEnum.CD || bizStoreElastic.getBusinessType() == BusinessTypeEnum.CDQ) {
                     setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
                 } else {
                     setProgressMessage("Loading ...");
@@ -191,7 +190,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
             tv_complete_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString()));
-            tv_address_title.setOnClickListener((View v) -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString()));
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             tv_rating.setText(AppUtils.round(rating) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
@@ -214,9 +212,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 }
             });
 
-            LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
-            LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()), GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()));
-            replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
             codeQR = bizStoreElastic.getCodeQR();
 
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
@@ -277,6 +272,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     btn_join_queues.setText("Find Doctor");
                     tv_toolbar_title.setText("Medical");
                     title = "Select a Doctor";
+                    break;
+                case CD:
+                case CDQ:
+                    btn_join_queues.setText("Canteen Queues");
+                    tv_toolbar_title.setText("Canteen Store");
+                    title = "Select a Queue";
                     break;
                 case BK:
                     btn_join_queues.setText("View Services");
@@ -457,6 +458,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         Bundle b = new Bundle();
         switch (item.getBusinessType()) {
             case DO:
+            case CD:
+            case CDQ:
             case BK:
                 // open hospital profile
                 in = new Intent(this, BeforeJoinActivity.class);

@@ -66,6 +66,8 @@ public class QueueHistoryDetailActivity extends BaseActivity {
             Bundle b = new Bundle();
             switch (jsonQueueHistorical.getBusinessType()) {
                 case DO:
+                case CD:
+                case CDQ:
                 case BK:
                     // open hospital/Bank profile
                     in = new Intent(QueueHistoryDetailActivity.this, BeforeJoinActivity.class);
