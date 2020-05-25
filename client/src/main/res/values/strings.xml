@@ -372,6 +372,12 @@
     <string name="preference_settings">Preference Settings</string>
     <string name="booking_offer">Get Flat Rs. 50 off on first booking via NoQueue</string>
 
+    <!-- ID dialog -->
+    <string name="authorization_dialog_title">Authorization</string>
+    <string name="authorization_dialog_message">One time authorization is required.</string>
+    <string name="submit_button">Submit</string>
+    <string name="cancel_button">Cancel</string>
+
     <!-- Temp String -->
     <string name="announcement_message">* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed</string>
 </resources>

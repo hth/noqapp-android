@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp"
+    android:background="@drawable/dialog_bg_new"
+    android:minHeight="300dp"
+    android:orientation="vertical"
+    android:outlineProvider="paddedBounds">
+
+
+    <ImageView
+        android:id="@+id/iv_banner"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="30dp"
+        android:background="@drawable/abc" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/authorization_dialog_title"
+        android:textColor="#333333"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/authorization_dialog_message"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_enter_grocery_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:text="Enter Grocery Card Last 5 characters/numbers"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_fourteen" />
+
+        <EditText
+            android:id="@+id/edt_grocery_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/square_white_bg_drawable"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+            android:hint="ABC23"
+            android:inputType="textCapCharacters"
+            android:maxLength="5"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="10dp"
+            android:textSize="@dimen/text_size_twelve" />
+
+        <TextView
+            android:id="@+id/tv_enter_liquor_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:gravity="left"
+            android:text="Liquor Card Last 5 characters/numbers"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_fourteen" />
+
+        <EditText
+            android:id="@+id/edt_liquor_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/square_white_bg_drawable"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+            android:hint="123AB"
+            android:inputType="textCapCharacters"
+            android:maxLength="5"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="10dp"
+            android:textSize="@dimen/text_size_twelve" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btn_positive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg"
+            android:padding="10dp"
+            android:text="@string/submit_button"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_negative"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg"
+            android:padding="10dp"
+            android:text="@string/cancel_button"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>
