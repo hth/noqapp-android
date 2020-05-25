@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -40,10 +39,9 @@ import com.squareup.picasso.Picasso;
 public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueuePresenter {
     private final String TAG = BeforeJoinOrderQueueActivity.class.getSimpleName();
     private static final int MAX_AVAILABLE_TOKEN_DISPLAY = 99;
+    private static final String TITLE_TOOLBAR_POSTFIX = " Queue";
 
-    private TextView tv_store_name;
     private TextView tv_queue_name;
-    private TextView tv_mobile;
     private TextView tv_store_timing;
     private TextView tv_token_available, tv_token_available_text;
     private TextView tv_people_in_q, tv_people_in_q_text;
@@ -53,6 +51,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     private TextView tv_daily_token_limit;
     private TextView tv_revisit_restriction;
     private TextView tv_identification_code;
+    private TextView tv_mobile;
     private TextView tv_address;
     private String codeQR;
     private JsonQueue jsonQueue;
@@ -67,7 +66,6 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_join_order_q);
         tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
-        tv_store_name = findViewById(R.id.tv_store_name);
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
         tv_mobile = findViewById(R.id.tv_mobile);
@@ -94,13 +92,12 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         tv_rating = findViewById(R.id.tv_rating);
 
         initActionsViews(true);
-        tv_toolbar_title.setText(getString(R.string.screen_join));
+
         tv_mobile.setOnClickListener((View v) -> {
             AppUtils.makeCall(BeforeJoinOrderQueueActivity.this, tv_mobile.getText().toString());
         });
 
-        LinearLayout ll_address = findViewById(R.id.ll_address);
-        ll_address.setOnClickListener((View v) -> {
+        tv_address.setOnClickListener((View v) -> {
             AppUtils.openAddressInMap(BeforeJoinOrderQueueActivity.this, tv_address.getText().toString());
         });
 
@@ -155,7 +152,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         if (null != jsonQueueTemp) {
             Log.d(TAG, "Queue=" + jsonQueueTemp.toString());
             this.jsonQueue = jsonQueueTemp;
-            tv_store_name.setText(jsonQueue.getBusinessName());
+            tv_toolbar_title.setText(jsonQueue.getBusinessName() + TITLE_TOOLBAR_POSTFIX);
             tv_queue_name.setText(jsonQueue.getDisplayName());
             tv_address.setText(jsonQueue.getStoreAddress());
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
@@ -363,8 +360,10 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     }
 
     private void setColor(boolean isEnable) {
-        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.btn_bg_enable : R.drawable.btn_bg_inactive));
-        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.btn_bg_enable : R.drawable.btn_bg_inactive));
+        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient :
+                R.drawable.btn_bg_inactive));
+        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient :
+                R.drawable.btn_bg_inactive));
         btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
         btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
     }
