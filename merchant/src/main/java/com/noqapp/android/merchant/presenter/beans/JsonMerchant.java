@@ -39,6 +39,9 @@ public class JsonMerchant implements Serializable {
     @JsonProperty ("cp")
     private List<JsonBusinessCustomerPriority> customerPriorities = new ArrayList<>();
 
+    @JsonProperty ("bf")
+    private JsonBusinessFeatures jsonBusinessFeatures;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -73,6 +76,14 @@ public class JsonMerchant implements Serializable {
 
     public void setCustomerPriorities(List<JsonBusinessCustomerPriority> customerPriorities) {
         this.customerPriorities = customerPriorities;
+    }
+
+    public JsonBusinessFeatures getJsonBusinessFeatures() {
+        return jsonBusinessFeatures;
+    }
+
+    public void setJsonBusinessFeatures(JsonBusinessFeatures jsonBusinessFeatures) {
+        this.jsonBusinessFeatures = jsonBusinessFeatures;
     }
 
     public ErrorEncounteredJson getError() {
