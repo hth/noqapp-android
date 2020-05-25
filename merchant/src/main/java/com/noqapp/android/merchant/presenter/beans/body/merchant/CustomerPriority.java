@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.BusinessCustomerAttributeEnum;
+import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * hitender
@@ -36,6 +41,12 @@ public class CustomerPriority extends AbstractDomain {
     @JsonProperty("qr")
     private String codeQR;
 
+    @JsonProperty("pl")
+    private CustomerPriorityLevelEnum customerPriorityLevel = CustomerPriorityLevelEnum.I;
+
+    @JsonProperty("ca")
+    private List<BusinessCustomerAttributeEnum> businessCustomerAttributes = new ArrayList<>();
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -60,5 +71,21 @@ public class CustomerPriority extends AbstractDomain {
 
     public void setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+    }
+
+    public CustomerPriorityLevelEnum getCustomerPriorityLevel() {
+        return customerPriorityLevel;
+    }
+
+    public void setCustomerPriorityLevel(CustomerPriorityLevelEnum customerPriorityLevel) {
+        this.customerPriorityLevel = customerPriorityLevel;
+    }
+
+    public List<BusinessCustomerAttributeEnum> getBusinessCustomerAttributes() {
+        return businessCustomerAttributes;
+    }
+
+    public void setBusinessCustomerAttributes(List<BusinessCustomerAttributeEnum> businessCustomerAttributes) {
+        this.businessCustomerAttributes = businessCustomerAttributes;
     }
 }
