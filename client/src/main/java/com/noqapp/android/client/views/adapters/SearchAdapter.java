@@ -124,6 +124,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
             holder.tv_bussiness_name.setText(bizStoreElastic.getBusinessName());
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
+                case CD:
+                case CDQ:
                 case BK:
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());

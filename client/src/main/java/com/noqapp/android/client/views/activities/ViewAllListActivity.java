@@ -50,6 +50,8 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
         switch (item.getBusinessType()) {
             //Level up
             case DO:
+            case CD:
+            case CDQ:
             case BK:
             case HS:
                 // open hospital/Bank profile

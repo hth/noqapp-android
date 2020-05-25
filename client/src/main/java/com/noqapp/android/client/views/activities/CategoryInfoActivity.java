@@ -130,7 +130,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
             if (null != bizStoreElastic) {
-                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK) {
+                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK
+                        || bizStoreElastic.getBusinessType() == BusinessTypeEnum.CD || bizStoreElastic.getBusinessType() == BusinessTypeEnum.CDQ) {
                     setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
                 } else {
                     setProgressMessage("Loading ...");
@@ -277,6 +278,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     btn_join_queues.setText("Find Doctor");
                     tv_toolbar_title.setText("Medical");
                     title = "Select a Doctor";
+                    break;
+                case CD:
+                case CDQ:
+                    btn_join_queues.setText("Canteen Queues");
+                    tv_toolbar_title.setText("Canteen Store");
+                    title = "Select a Queue";
                     break;
                 case BK:
                     btn_join_queues.setText("View Services");
@@ -457,6 +464,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         Bundle b = new Bundle();
         switch (item.getBusinessType()) {
             case DO:
+            case CD:
+            case CDQ:
             case BK:
                 // open hospital profile
                 in = new Intent(this, BeforeJoinActivity.class);

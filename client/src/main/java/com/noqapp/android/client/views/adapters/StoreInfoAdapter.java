@@ -51,6 +51,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
         BizStoreElastic item = dataSet.get(listPosition);
         switch (item.getBusinessType()) {
             case DO:
+            case CD:
+            case CDQ:
             case BK:
             case HS:
                 holder.tv_name.setText(item.getBusinessName());

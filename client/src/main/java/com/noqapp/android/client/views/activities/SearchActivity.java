@@ -206,6 +206,8 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         switch (item.getBusinessType()) {
             //Level up
             case DO:
+            case CD:
+            case CDQ:
             case BK:
             case HS:
                 if (LaunchActivity.isLockMode) {

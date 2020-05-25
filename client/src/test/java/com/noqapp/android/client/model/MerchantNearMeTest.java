@@ -65,6 +65,8 @@ public class MerchantNearMeTest extends ITest {
             BizStoreElastic bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
+                case CD:
+                case CDQ:
                 case BK:
                 case HS:
                     callLevelUp(bizStoreElastic);

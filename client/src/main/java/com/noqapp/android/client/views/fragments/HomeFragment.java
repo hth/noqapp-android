@@ -460,6 +460,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         switch (bizStoreElastic.getBusinessType()) {
             //Level up
             case DO:
+            case CD:
+            case CDQ:
             case BK:
             case HS:
                 // open hospital/Bank profile

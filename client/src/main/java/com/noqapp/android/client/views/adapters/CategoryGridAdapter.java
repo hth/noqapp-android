@@ -54,6 +54,8 @@ public class CategoryGridAdapter extends RecyclerView.Adapter {
         if (!jsonQueues.isEmpty()) {
             jsonQueue = jsonQueues.get(0);
             switch (jsonQueue.getBusinessType()) {
+                case CD:
+                case CDQ:
                 case BK:
                     Vholder.iv_main.setBackground(ContextCompat.getDrawable(context, R.drawable.bank_bg));
                     break;
