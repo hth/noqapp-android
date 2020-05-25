@@ -79,8 +79,7 @@
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginTop="3dp"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_eighteen"
-                                android:textStyle="bold" />
+                                android:textSize="@dimen/text_size_sixteen" />
 
                             <LinearLayout
                                 android:id="@+id/ll_top_header"
@@ -93,7 +92,7 @@
                                     style="@style/style_join_queue_tv"
                                     android:layout_marginBottom="3dp"
                                     android:textColor="@color/colorAddress"
-                                    android:textSize="@dimen/text_size_fourteen" />
+                                    android:textSize="@dimen/text_size_twelve" />
 
                                 <RelativeLayout
 
@@ -148,7 +147,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="@dimen/btn_standard_height"
                                         android:layout_alignParentRight="true"
-                                        android:background="@drawable/btn_bg_enable"
+                                        android:background="@drawable/orange_gradient"
                                         android:clickable="true"
                                         android:foreground="?attr/selectableItemBackgroundBorderless"
                                         android:paddingLeft="20dp"
@@ -175,9 +174,48 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/cardview"
+                        android:layout_marginBottom="20dp"
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_announcement"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:padding="10dp"
+                            card_view:cardBackgroundColor="@android:color/white"
+                            card_view:cardCornerRadius="4dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <TextView
+                                    android:id="@+id/tv_announcement_label"
+                                    style="@style/style_join_queue_tv"
+                                    android:layout_marginBottom="5dp"
+                                    android:drawableLeft="@drawable/ic_alert"
+                                    android:drawablePadding="5dp"
+                                    android:textColor="@android:color/holo_red_dark"
+                                    android:textSize="@dimen/text_size_fourteen"
+                                    android:textStyle="bold"
+                                    android:text="@string/biz_announcement"/>
+
+                                <TextView
+                                    android:id="@+id/tv_announcement_text"
+                                    style="@style/style_join_queue_tv"
+                                    android:layout_marginBottom="5dp"
+                                    android:textColor="@android:color/holo_red_dark"
+                                    android:textSize="@dimen/text_size_twelve"
+                                    android:text="@string/announcement_message"/>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
 
                         <TextView
                             android:id="@+id/tv_photos"
@@ -262,22 +300,11 @@
                         <TextView
                             android:id="@+id/tv_complete_address"
                             style="@style/style_join_queue_tv"
+                            android:drawableLeft="@mipmap/show_in_map"
+                            android:drawablePadding="5dp"
                             android:textColor="@color/text_header_color"
                             android:textSize="@dimen/text_size_fourteen" />
 
-                        <TextView
-                            android:id="@+id/tv_address_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:drawableLeft="@mipmap/show_in_map"
-                            android:drawablePadding="5dp"
-                            android:text="@string/maps_direction"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen" />
-
-                        <include layout="@layout/layout_map" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView

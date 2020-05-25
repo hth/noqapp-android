@@ -203,6 +203,7 @@
     <string name="will_be_served">you will be served in %1$s</string>
     <string name="ack">Acknowledge</string>
     <string name="your_turn">It\'s your turn !!!</string>
+    <string name="biz_announcement">ध्यान: कोविड-19 अपडेट</string>
     <string name="photo">तस्वीरें</string>
     <string name="amenities"> सुख-साधन</string>
     <string name="facility">सुविधाएँ</string>
@@ -315,4 +316,6 @@
     <string name="preference_settings">पसंदीदा समायोजन</string>
     <string name="booking_offer">Get Flat Rs. 50 off on first booking via NoQueue</string>
 
+    <!-- Temp String -->
+    <string name="announcement_message">* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed</string>
 </resources>

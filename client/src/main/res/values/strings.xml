@@ -245,6 +245,7 @@
     <string name="will_be_served">you will be served in %1$s</string>
     <string name="ack">Acknowledge</string>
     <string name="your_turn">It\'s your turn !!!</string>
+    <string name="biz_announcement">Attention: COVID-19 Update</string>
     <string name="photo">Photos</string>
     <string name="amenities">Amenities</string>
     <string name="facility">Facility</string>
@@ -370,4 +371,7 @@
     <string name="kiosk_dialog_msg">Continue to launch Kiosk Mode?</string>
     <string name="preference_settings">Preference Settings</string>
     <string name="booking_offer">Get Flat Rs. 50 off on first booking via NoQueue</string>
+
+    <!-- Temp String -->
+    <string name="announcement_message">* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed</string>
 </resources>
