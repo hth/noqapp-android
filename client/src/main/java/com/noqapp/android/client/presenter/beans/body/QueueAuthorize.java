@@ -47,15 +47,17 @@ public class QueueAuthorize extends AbstractDomain {
         return firstCustomerId;
     }
 
-    public void setFirstCustomerId(String firstCustomerId) {
+    public QueueAuthorize setFirstCustomerId(String firstCustomerId) {
         this.firstCustomerId = firstCustomerId;
+        return this;
     }
 
     public String getAdditionalCustomerId() {
         return additionalCustomerId;
     }
 
-    public void setAdditionalCustomerId(String additionalCustomerId) {
+    public QueueAuthorize setAdditionalCustomerId(String additionalCustomerId) {
         this.additionalCustomerId = additionalCustomerId;
+        return this;
     }
 }
