@@ -5,12 +5,17 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
 import com.noqapp.android.merchant.model.response.api.BusinessCustomerApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.interfaces.ApproveCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
@@ -28,6 +33,7 @@ public class BusinessCustomerApiCalls {
     private static final BusinessCustomerApiUrls businessCustomerApiUrls;
     private QueuePersonListPresenter queuePersonListPresenter;
     private FindCustomerPresenter findCustomerPresenter;
+    private ApproveCustomerPresenter approveCustomerPresenter;
 
     public void setQueuePersonListPresenter(QueuePersonListPresenter queuePersonListPresenter) {
         this.queuePersonListPresenter = queuePersonListPresenter;
@@ -35,6 +41,10 @@ public class BusinessCustomerApiCalls {
 
     public void setFindCustomerPresenter(FindCustomerPresenter findCustomerPresenter) {
         this.findCustomerPresenter = findCustomerPresenter;
+    }
+
+    public void setApproveCustomerPresenter( ApproveCustomerPresenter approveCustomerPresenter) {
+        this.approveCustomerPresenter = approveCustomerPresenter;
     }
 
     static {
@@ -125,6 +135,31 @@ public class BusinessCustomerApiCalls {
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("findCustomer fail", t.getLocalizedMessage(), t);
                 findCustomerPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+
+    public void accessCustomer(String did, String dt, String mail, String auth, CustomerPriority customerPriority) {
+        businessCustomerApiUrls.accessAction(did, Constants.DEVICE_TYPE, mail, auth, customerPriority).enqueue(new Callback<JsonQueuedPerson>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueuedPerson> call, @NonNull Response<JsonQueuedPerson> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        approveCustomerPresenter.approveCustomerResponse(response.body());
+                    }
+                 else {
+                        approveCustomerPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+                else {
+                    approveCustomerPresenter.responseErrorPresenter(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueuedPerson> call, @NonNull Throwable t) {
+                Log.e("accessCustomer Failure", t.getLocalizedMessage(), t);
             }
         });
     }

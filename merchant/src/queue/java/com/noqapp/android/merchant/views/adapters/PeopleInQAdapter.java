@@ -5,15 +5,22 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
 import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.interfaces.ApproveCustomerPresenter;
 
 import java.util.List;
 
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
+
 
     public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String codeQR, JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
         super(data, context, peopleInQAdapterClick, codeQR, jsonDataVisibility, jsonPaymentPermission);
@@ -42,6 +49,11 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     @Override
     public void uploadDocument(Context context, JsonQueuedPerson jsonQueuedPerson) {
         // No implementation needed here
+    }
+
+    @Override
+    void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId, String action, String codeQR) {
+
     }
 
     @Override

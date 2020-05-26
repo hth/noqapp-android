@@ -29,6 +29,8 @@
 
     <color name="product_grid_color">#E07E3D</color>
 
+    <color name="account_authentication">#E07E3D</color>
+
 
     <!--    color related to order q items-->
     <color name="q_order_btn_unpaid">#4A89DC</color>
