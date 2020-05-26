@@ -862,9 +862,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 }
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().log("Error code missing " + eej.getSystemErrorCode());
+                Log.e(TAG, "Error code missing" + eej.getSystemErrorCode(), e);
             }
         }
-
     }
 
     private void showAuthorizationDialog(final Context context) {
