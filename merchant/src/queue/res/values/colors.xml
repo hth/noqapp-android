@@ -7,30 +7,23 @@
     <color name="color_action_bar_secondary">#1374c6</color>
     <color name="pressed_color">#1992D7</color>
 
-    <color name="segment_bg_color">#E3EAF5</color>
-    <color name="segment_bg_color_select">#2C91C7</color>
+    <color name="segment_bg_color">#FFFFFF</color>
+    <color name="segment_bg_color_select">#909090</color>
     <color name="segment_text_color">@android:color/black</color>
     <color name="segment_text_color_select">@android:color/white</color>
-
     <color name="rating_select">@color/colorPrimaryDark</color>
     <color name="rating_unselect">@color/colorAccent</color>
 
     <color name="color_indigo_toast">#6E329B</color>
-    <color name="toast_background">@color/color_indigo_toast</color>
-
+    <color name="actionbar_text_color">#333333</color>
+    <color name="actionbar_image_color">#333333</color>
     <color name="btn_txt_color">#FFF</color>
     <color name="radio_button_color">#4A89DC</color>
     <color name="switch_tack_color">#5D9CEC</color>
 
 
 
-    <color name="actionbar_text_color">#333333</color>
-    <color name="actionbar_image_color">#333333</color>
-
-
-
-
-
+    <color name="toast_background">@color/color_indigo_toast</color>
     <color name="download_circle_bg">@color/colorAccent</color>
 
     <color name="color_header">#909090</color>
