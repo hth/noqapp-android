@@ -898,7 +898,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             @Override
             public void afterTextChanged(Editable s)  {
                 if (edtLiquorCard.getText().toString().length() < 5) {
-                    edtLiquorCard.setError("Liquor Card Last 5 characters/numbers");
+                    edtLiquorCard.setError("Enter liquor Card Last 5 characters/numbers");
                 } else {
                     edtLiquorCard.setError(null);
                 }
@@ -908,13 +908,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         Button btn_positive = dialog.findViewById(R.id.btn_positive);
         btn_positive.setOnClickListener(v -> {
             if (btn_positive.getText().equals(context.getString(R.string.submit_button))) {
-                if (edtGroceryCard.getText().toString().length() < 5) {
-                    edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
-                    return;
-                } else if (edtLiquorCard.getText().toString().length() <= 0) {
-                    edtLiquorCard.setError("Enter Liquor Card Last 5 characters/numbers");
-                    return;
-                } else {
+                if(edtGroceryCard.getText().toString().length() == 5
+                        || edtLiquorCard.getText().toString().length() == 5) {
                     QueueAuthorize queueAuthorize = new QueueAuthorize()
                             .setCodeQR(jsonTokenAndQueue.getCodeQR())
                             .setFirstCustomerId(edtGroceryCard.getText().toString())
@@ -922,6 +917,13 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
                     queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);
+                    new CustomToast().showToast(this, "Please try to join the queue again.");
+                } else {
+                    if (edtGroceryCard.getText().toString().length() < 5) {
+                        edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
+                    } else if (edtLiquorCard.getText().toString().length() < 5) {
+                        edtLiquorCard.setError("Enter Liquor Card Last 5 characters/numbers");
+                    }
                 }
             }
         });
