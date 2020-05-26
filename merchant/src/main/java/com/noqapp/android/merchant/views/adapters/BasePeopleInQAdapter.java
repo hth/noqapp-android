@@ -276,17 +276,20 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
         // Get colorCode from priority for each user card
         String priorityColorCode = "";
-        if(jsonQueuedPerson.getCustomerPriorityLevel() != null && jsonQueuedPerson.getCustomerPriorityLevel().getColorCode() != null) {
+        if (jsonQueuedPerson.getCustomerPriorityLevel() != null && jsonQueuedPerson.getCustomerPriorityLevel().getColorCode() != null) {
             priorityColorCode = jsonQueuedPerson.getCustomerPriorityLevel().getColorCode();
+        } else {
+            //Set Default value
+            priorityColorCode = CustomerPriorityLevelEnum.I.getColorCode();
         }
 
         if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
             //recordHolder.rl_sequence_new_time.setBackgroundColor(Color.TRANSPARENT);
-            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#"+priorityColorCode));
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#" + priorityColorCode));
             recordHolder.tv_sequence_number.setTextColor(Color.BLACK);
             recordHolder.tv_join_timing.setTextColor(Color.BLACK);
         } else {
-            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#"+priorityColorCode));
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#" + priorityColorCode));
             recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
             recordHolder.tv_join_timing.setTextColor(Color.WHITE);
         }
