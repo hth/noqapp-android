@@ -174,7 +174,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
-            if(BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType()) {
+            if(UserUtils.isLogin() && BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType()) {
                 SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                 boolean registered = prefs.getBoolean(Constants.PRE_REGISTER, false);
                 if (registered) {
