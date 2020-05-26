@@ -16,31 +16,22 @@
     <color name="rating_unselect">@color/colorAccent</color>
 
     <color name="color_indigo_toast">#6e329b</color>
-    <color name="toast_background">@color/color_indigo_toast</color>
-
+    <color name="color_green_toast">#227E5E</color>
+    <color name="toast_background">@color/color_green_toast</color>
 
     <color name="btn_txt_color">#fff</color>
     <color name="radio_button_color">#19769f</color>
     <color name="form_background_color">#31b7bd</color>
 
-
-
-
+    <color name="switch_tack_color">#a3c8d8</color>
+    <color name="download_circle_bg">@color/colorAccent</color>
 
     <color name="white_light">#efefef</color>
-
     <color name="disable_physical">#E6808080</color>
-
     <color name="icon_color">#6ec8cd</color>
-
-
 
     <color name="mv_primary">#8aa2db</color>
     <color name="mv_secondary">#2f83a8</color>
-    <color name="switch_tack_color">#a3c8d8</color>
-
-    `
-    <color name="download_circle_bg">@color/colorAccent</color>
 
     <color name="dental_seprator">#990044</color>
 </resources>
