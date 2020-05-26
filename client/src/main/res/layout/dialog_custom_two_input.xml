@@ -73,9 +73,8 @@
             android:id="@+id/tv_enter_liquor_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
             android:gravity="left"
-            android:text="Liquor Card Last 5 characters/numbers"
+            android:text="Enter Liquor Card Last 5 characters/numbers"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_fourteen" />
 

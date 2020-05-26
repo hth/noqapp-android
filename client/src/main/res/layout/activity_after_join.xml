@@ -41,7 +41,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/child_frame_height"
-                            android:background="@drawable/blue_gradient_round"
+                            android:background="@drawable/blue_gradient"
                             android:orientation="horizontal" />
 
                         <androidx.cardview.widget.CardView
@@ -268,21 +268,11 @@
                         </FrameLayout>
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_estimated_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="0dp"
-                        android:gravity="center"
-                        android:textColor="#505050"
-                        android:textSize="@dimen/text_size_ten" />
-
                     <LinearLayout
                         android:id="@+id/ll_change_bg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:background="@drawable/orange_gradient"
@@ -308,6 +298,14 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/tv_estimated_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:textColor="#505050"
+                        android:textSize="@dimen/text_size_ten" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -332,72 +330,30 @@
                         <TextView
                             android:id="@+id/tv_name"
                             style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
+                            android:layout_marginBottom="5dp"
                             android:textColor="@color/colorAddress"
                             android:textSize="@dimen/text_size_sixteen" />
 
-                        <LinearLayout
-                            android:id="@+id/ll_address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_address_label"
+                            style="@style/style_join_queue_tv"
+                            android:layout_marginTop="10dp"
+                            android:gravity="left"
+                            android:text="@string/address"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:textStyle="bold" />
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/tv_address_label"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="left"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/address"
-                                android:textColor="#606060"
-                                android:textSize="@dimen/text_size_twelve" />
-
-                            <TextView
-                                android:id="@+id/tv_store_name"
-                                style="@style/style_join_queue_tv"
-                                android:gravity="left"
-                                android:layout_below="@+id/tv_address_label"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginBottom="5dp"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="@dimen/text_size_sixteen" />
-
-                            <ImageView
-                                android:id="@+id/iv_map"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_gravity="right"
-                                android:clipToPadding="false"
-                                android:focusable="true"
-                                android:tint="@color/theme_color_red"
-                                android:src="@drawable/ic_map_place"/>
-
-                            </RelativeLayout>
-
-                            <TextView
-                                android:id="@+id/tv_address"
-                                style="@style/style_join_queue_tv"
-                                android:layout_marginBottom="7dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:ellipsize="end"
-                                android:maxLines="2"
-                                android:textColor="#606060"
-                                android:textSize="@dimen/text_size_fourteen" />
-
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_address"
+                            style="@style/style_join_queue_tv"
+                            android:layout_marginBottom="7dp"
+                            android:drawableLeft="@mipmap/show_in_map"
+                            android:drawablePadding="5dp"
+                            android:textColor="@color/text_header_color"
+                            android:textSize="@dimen/text_size_fourteen" />
 
                     </LinearLayout>
 
@@ -691,9 +647,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
