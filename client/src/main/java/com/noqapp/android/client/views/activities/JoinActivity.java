@@ -855,16 +855,16 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         dismissProgress();
         if (null != eej) {
             try {
-                if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemErrorCode()) == MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY) {
+                if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY) {
                     showAuthorizationDialog(this);
                 } else {
                     new ErrorResponseHandler().processError(this, eej);
                 }
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().log("Error code missing " + eej.getSystemErrorCode());
+                Log.e(TAG, "Error code missing" + eej.getSystemErrorCode(), e);
             }
         }
-
     }
 
     private void showAuthorizationDialog(final Context context) {
