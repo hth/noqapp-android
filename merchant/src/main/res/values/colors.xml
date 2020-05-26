@@ -31,6 +31,9 @@
 
     <color name="q_title_color">@color/color_action_bar</color>
 
+
     <color name="color_green_toast">#227E5E</color>
+
+    <color name="account_authentication">#E07E3D</color>
 
 </resources>

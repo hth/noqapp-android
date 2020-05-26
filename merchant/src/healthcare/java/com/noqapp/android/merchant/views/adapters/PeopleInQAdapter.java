@@ -252,4 +252,10 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
             }
         }
     }
+
+    @Override
+    void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId, String action,
+                         String codeQR) {
+        // Do-nothing: Anjali take a look.
+    }
 }
