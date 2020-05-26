@@ -384,7 +384,7 @@ android {
             applicationId "com.noqapp.android.merchant.healthcare"
 
             //Configure this flavor specific app name published in Play Store
-            resValue "string", "flavored_app_name", "Merchant HealthCare"
+            resValue "string", "flavored_app_name", "NoQueue HealthCare"
             resValue "string", "content_provider", "com.noqapp.android.merchant.healthcare.fileprovider"
             buildConfigField "String", "APP_FLAVOR", "\"NQMH\""
         }
@@ -392,7 +392,7 @@ android {
         queue {
             dimension "version"
             applicationId "com.noqapp.android.merchant"
-            resValue "string", "flavored_app_name", "Merchant Store"
+            resValue "string", "flavored_app_name", "NoQueue Business"
             resValue "string", "content_provider", "com.noqapp.android.merchant.fileprovider"
             buildConfigField "String", "APP_FLAVOR", "\"NQMS\""
         }
@@ -400,7 +400,7 @@ android {
         tv {
             dimension "version"
             applicationId "com.noqapp.android.merchant.tv"
-            resValue "string", "flavored_app_name", "Merchant TV"
+            resValue "string", "flavored_app_name", "NoQueue TV"
             resValue "string", "content_provider", "com.noqapp.android.merchant.tv.fileprovider"
             buildConfigField "String", "APP_FLAVOR", "\"NQMT\""
         }
@@ -408,7 +408,7 @@ android {
         inventory {
             dimension "version"
             applicationId "com.noqapp.android.merchant.inventory"
-            resValue "string", "flavored_app_name", "Merchant Inventory"
+            resValue "string", "flavored_app_name", "NoQueue Inventory"
             resValue "string", "content_provider", "com.noqapp.android.merchant.inventory.fileprovider"
             buildConfigField "String", "APP_FLAVOR", "\"NQMI\""
         }
