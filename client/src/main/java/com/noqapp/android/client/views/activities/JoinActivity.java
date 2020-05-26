@@ -923,6 +923,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);
                     new CustomToast().showToast(this, "Please try to join the queue again.");
+                    dialog.dismiss();
                 } else {
                     if (edtGroceryCard.getText().toString().length() < 5) {
                         edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
@@ -950,7 +951,5 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
         }
-
-
     }
 }

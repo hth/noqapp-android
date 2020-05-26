@@ -32,7 +32,7 @@ public class CustomToast {
         toastMessage.setTextColor(Color.WHITE);
         toastMessage.setGravity(Gravity.CENTER);
         Toast toast = new Toast(context);
-        toast.setDuration(isShort ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         return toast;
     }
