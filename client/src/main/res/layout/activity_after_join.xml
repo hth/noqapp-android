@@ -41,7 +41,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/child_frame_height"
-                            android:background="@drawable/blue_gradient_round"
+                            android:background="@drawable/blue_gradient"
                             android:orientation="horizontal" />
 
                         <androidx.cardview.widget.CardView
@@ -268,21 +268,11 @@
                         </FrameLayout>
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_estimated_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="0dp"
-                        android:gravity="center"
-                        android:textColor="#505050"
-                        android:textSize="@dimen/text_size_ten" />
-
                     <LinearLayout
                         android:id="@+id/ll_change_bg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:background="@drawable/orange_gradient"
@@ -308,6 +298,14 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/tv_estimated_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:textColor="#505050"
+                        android:textSize="@dimen/text_size_ten" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
