@@ -94,7 +94,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     private Button btn_cancel_queue;
     private TextView tv_estimated_time;
     private TextView tv_name;
-    private LinearLayout ll_address;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
@@ -127,7 +126,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
         new InitPaymentGateway().execute();
-        TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
         TextView tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
@@ -146,7 +144,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
         TextView tv_add = findViewById(R.id.add_person);
         TextView tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
-        ll_address = findViewById(R.id.ll_address);
         ll_order_details = findViewById(R.id.ll_order_details);
         rl_discount = findViewById(R.id.rl_discount);
         card_amount = findViewById(R.id.card_amount);
@@ -256,7 +253,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();
             tokenValue = String.valueOf(jsonTokenAndQueue.getToken());
-            tv_store_name.setText(jsonTokenAndQueue.getBusinessName());
             tv_queue_name.setText(jsonTokenAndQueue.getDisplayName());
             tv_address.setText(jsonTokenAndQueue.getStoreAddress());
             queueUserId = bundle.getStringExtra("qUserId");
@@ -317,7 +313,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
             tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString()));
-            ll_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this,
+            tv_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this,
                     tv_address.getText().toString()));
             gotoPerson = (null != ReviewDB.getValue(codeQR, tokenValue)) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
