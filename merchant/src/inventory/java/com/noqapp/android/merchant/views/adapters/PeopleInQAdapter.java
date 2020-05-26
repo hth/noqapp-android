@@ -48,4 +48,9 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     public void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
 
     }
+
+    @Override
+    void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId, String action, String codeQR) {
+        // Do-nothing: Anjali take a look.
+    }
 }
