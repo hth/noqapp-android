@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="toast_background">#333</color>
+    <color name="toast_background">#227E5E</color>
     <color name="toast_text_color">#fff</color>
     <color name="update_text">#333</color>
     <color name="download_circle_bg">@android:color/darker_gray</color>
     <color name="colorAccent">#aa22ee</color>
+    <color name="color_green_toast">#227E5E</color>
 </resources>

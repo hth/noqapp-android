@@ -611,13 +611,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
   @Override
   public void authorizePresenterResponse(JsonResponse response) {
-    Log.d("CategoryInfoActivity", "    ####    " + response + "    ####");
+    Log.d("CategoryInfoActivity", "AuthorizePresenterResponse is" + response);
       SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
       prefs.edit().putBoolean(Constants.PRE_REGISTER, true).apply();
   }
 
   @Override
   public void authorizePresenterError() {
-    Log.d("CategoryInfoActivity", "    ####    ERROR    ####");
+    Log.d("CategoryInfoActivity", "ERROR");
   }
 }

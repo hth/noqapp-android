@@ -140,7 +140,24 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentLeft="true"
-                                        android:layout_toLeftOf="@+id/btn_join_queues" />
+                                        android:layout_toLeftOf="@+id/btn_join_queues"
+                                        android:visibility="gone"/>
+
+                                    <Button
+                                        android:id="@+id/btn_register"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="@dimen/btn_standard_height"
+                                        android:layout_alignParentLeft="true"
+                                        android:background="@drawable/orange_gradient"
+                                        android:clickable="true"
+                                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                                        android:paddingLeft="20dp"
+                                        android:paddingRight="20dp"
+                                        android:textAllCaps="true"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="@dimen/text_size_fourteen"
+                                        android:text="Register"
+                                        android:visibility="gone"/>
 
                                     <Button
                                         android:id="@+id/btn_join_queues"
@@ -155,6 +172,7 @@
                                         android:textAllCaps="true"
                                         android:textColor="@android:color/white"
                                         android:textSize="@dimen/text_size_fourteen" />
+
                                 </RelativeLayout>
                             </LinearLayout>
 

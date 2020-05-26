@@ -12,6 +12,7 @@
     <color name="segment_text_color_select">@android:color/white</color>
     <color name="white_light">#efefef</color>
     <color name="color_indigo_toast">#6e329b</color>
+    <color name="color_green_toast">#227E5E</color>
     <color name="disable_physical">#E6808080</color>
 
     <color name="icon_color">#6ec8cd</color>
@@ -27,6 +28,6 @@
     <color name="rating_select">@color/colorPrimaryDark</color>
     <color name="rating_unselect">@color/colorAccent</color>
 
-    <color name="toast_background">@color/color_indigo_toast</color>
+    <color name="toast_background">@color/color_green_toast</color>
     <color name="download_circle_bg">@color/colorAccent</color>
 </resources>
