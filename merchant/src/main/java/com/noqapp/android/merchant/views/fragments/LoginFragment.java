@@ -15,11 +15,13 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.airbnb.lottie.L;
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.model.types.OnOffEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
@@ -179,15 +181,30 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
 
     @Override
     public void merchantResponse(JsonMerchant jsonMerchant) {
+        Gson gson = new Gson();
         if (null != jsonMerchant) {
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
             if (null != jsonMerchant.getJsonProfessionalProfile()) {
-                PreferenceObjects map = new Gson().fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), PreferenceObjects.class);
+                PreferenceObjects map = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), PreferenceObjects.class);
                 if (null != map) {
                     LaunchActivity.getLaunchActivity().setSuggestionsPrefs(map);
                 }
             }
+
+            if(jsonMerchant.getCustomerPriorities().size() > 0) {
+                String customerPriority = gson.toJson(jsonMerchant.getCustomerPriorities());
+                LaunchActivity.getLaunchActivity().setBusinessCustomerPriority(customerPriority);
+            }
+
+            if(jsonMerchant.getJsonBusinessFeatures() != null && jsonMerchant.getJsonBusinessFeatures().getPriorityAccess() !=null) {
+                boolean priorityAccess = false;
+                if(jsonMerchant.getJsonBusinessFeatures().getPriorityAccess() == OnOffEnum.O) {
+                   priorityAccess = true;
+                }
+                LaunchActivity.getLaunchActivity().setPriorityAccess(priorityAccess);
+            }
+
             if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR ||
                     jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 if ((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&

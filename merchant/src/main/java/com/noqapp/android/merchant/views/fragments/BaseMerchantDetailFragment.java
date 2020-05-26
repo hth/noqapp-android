@@ -35,7 +35,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -43,12 +46,14 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.Served;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -61,8 +66,10 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
+import com.noqapp.android.merchant.views.adapters.BasePeopleInQAdapter;
 import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
+import com.noqapp.android.merchant.views.interfaces.ApproveCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
@@ -75,7 +82,7 @@ import java.util.List;
 
 public abstract class BaseMerchantDetailFragment extends BaseFragment implements ManageQueuePresenter,
         DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,
-        RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
+        RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack, ApproveCustomerPresenter {
 
     protected Context context;
     protected TextView tv_create_token;
@@ -107,6 +114,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     protected TextView tv_appointment_count;
     protected FrameLayout fl_appointment;
     private ImageView iv_settings;
+    private BusinessCustomerApiCalls businessCustomerApiCalls;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -126,6 +134,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         context = getActivity();
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setManageQueuePresenter(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setApproveCustomerPresenter(this);
         if (null != topicsList && topicsList.size() > 0) {
             jsonTopic = topicsList.get(currentPosition);
         }
@@ -321,7 +331,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                         }
                     }
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                       // setProgressMessage("Fetching list...");
+                        // setProgressMessage("Fetching list...");
                         //showProgress();
                         manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
                     } else {
@@ -376,6 +386,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
 
     private void setPresenter() {
         manageQueueApiCalls.setManageQueuePresenter(this);
+        businessCustomerApiCalls.setApproveCustomerPresenter(this);
     }
 
     protected void setDispensePresenter() {
@@ -388,9 +399,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
             tv_appointment_count.setText(String.valueOf(jsonQueuePersonList.getAppointmentCountForToday()));
             Collections.sort(jsonQueuedPersonArrayList, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
-           // if (null == peopleInQAdapter) {
-                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
-                rv_queue_people.setAdapter(peopleInQAdapter);
+            // if (null == peopleInQAdapter) {
+                 peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
+                 rv_queue_people.setAdapter(peopleInQAdapter);
 //            } else {
 //                peopleInQAdapter.updateDataSet(jsonQueuedPersonArrayList,jsonTopic);
 //            }
@@ -702,6 +713,52 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     }
 
 
+    // Handler for Approve/Reject/Reset button
+    // Calls businessCustomerApiCalls to update priority and customer attribute
+    @Override
+    public void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, CustomerPriorityLevelEnum customerPriorityLevelEnum, ActionTypeEnum action, String codeQR) {
+        CustomerPriority customerPriority = new CustomerPriority();
+        customerPriority.setActionType(action);
+        customerPriority.setCustomerPriorityLevel(customerPriorityLevelEnum);
+        customerPriority.setQueueUserId(jsonQueuedPerson.getQueueUserId());
+        customerPriority.setCodeQR(codeQR);
+
+        Log.v("ApproveCustomer", "Approve");
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setApproveCustomerPresenter(this);
+        businessCustomerApiCalls.accessCustomer(
+                BaseLaunchActivity.getDeviceID(),
+                Constants.DEVICE_TYPE,
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(),
+                customerPriority
+        );
+    }
+
+    // Once the above API sends the updated JsonQueuedPerson response
+    // we update the dataset list object with updated information
+    // and notifiy the adapter
+    @Override
+    public void approveCustomerResponse(JsonQueuedPerson jsonQueuedPerson) {
+        int index = -1;
+
+        for(int i =0 ;i <jsonQueuedPersonArrayList.size(); i++){
+            JsonQueuedPerson queuedPerson = jsonQueuedPersonArrayList.get(i);
+                if(queuedPerson.getToken() == jsonQueuedPerson.getToken()) {
+                queuedPerson.setCustomerPriorityLevel(jsonQueuedPerson.getCustomerPriorityLevel());
+                queuedPerson.setBusinessCustomerAttributes(jsonQueuedPerson.getBusinessCustomerAttributes());
+                index = i;
+                break;
+            }
+        }
+
+        if(index != -1){
+            new CustomToast().showToast(this.context, "Action processed successfully!");
+            peopleInQAdapter.notifyItemChanged(index);
+        }
+    }
+
+
     @Override
     public void userRegistered(JsonProfile jsonProfile) {
         userFound(jsonProfile);
@@ -735,7 +792,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        if(menu instanceof MenuBuilder){
+        if(menu instanceof MenuBuilder) {
             MenuBuilder m = (MenuBuilder) menu;
             //noinspection RestrictedApi
             m.setOptionalIconsVisible(true);

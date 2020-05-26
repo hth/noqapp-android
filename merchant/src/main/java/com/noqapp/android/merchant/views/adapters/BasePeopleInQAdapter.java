@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.TextUtils;
@@ -10,7 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,7 +24,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonBusinessCustomerPriority;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.BusinessCustomerAttributeEnum;
+import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
@@ -38,17 +48,21 @@ import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.interfaces.ApproveCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import java.util.List;
 
 public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implements QueuePersonListPresenter {
     private static final String TAG = BasePeopleInQAdapter.class.getSimpleName();
-    private final Context context;
+    protected final Context context;
     private List<JsonQueuedPerson> dataSet;
     private int glowPosition = -1;
     protected String codeQR;
@@ -59,6 +73,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     private JsonDataVisibility jsonDataVisibility;
     private JsonPaymentPermission jsonPaymentPermission;
     protected CustomProgressBar customProgressBar;
+    protected String userAccountType;
+    private CustomerPriorityLevelEnum customerPriorityLevelEnum;
 
     public void updateDataSet(List<JsonQueuedPerson> dataSet, JsonTopic jsonTopic) {
         if (jsonTopic.getServingNumber() > 0) {
@@ -80,6 +96,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     // for medical Only
     abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId);
 
+    abstract void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId, String action, String codeQR);
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
@@ -126,8 +143,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
     public interface PeopleInQAdapterClick {
         void peopleInQClick(int position);
-
         void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, boolean isPaymentNotAllowed);
+        void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, CustomerPriorityLevelEnum customerPriorityLevelEnum, ActionTypeEnum action, String codeQR);
     }
 
     private PeopleInQAdapterClick peopleInQAdapterClick;
@@ -147,6 +164,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         RelativeLayout rl_sequence_new_time;
         ImageView iv_new;
         CardView cardview;
+        LinearLayout ll_account_authentication;
+        RadioGroup account_type;
+        Button authenticate_approve;
+        Button authenticate_reject;
+        Button authenticate_reset;
+
 
         private MyViewHolder(View itemView) {
             super(itemView);
@@ -164,6 +187,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);
+            this.ll_account_authentication = itemView.findViewById(R.id.account_authentication);
+            this.account_type = itemView.findViewById(R.id.account_type);
+            this.authenticate_approve = itemView.findViewById(R.id.authenticate_approve);
+            this.authenticate_reject= itemView.findViewById(R.id.authenticate_reject);
+            this.authenticate_reset = itemView.findViewById(R.id.authenticate_reset);
+
         }
     }
 
@@ -245,15 +274,78 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         // check parameter to show client is new or has previously visited
         recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
 
+        // Get colorCode from priority for each user card
+        String priorityColorCode = "";
+        if(jsonQueuedPerson.getCustomerPriorityLevel() != null && jsonQueuedPerson.getCustomerPriorityLevel().getColorCode() != null) {
+            priorityColorCode = jsonQueuedPerson.getCustomerPriorityLevel().getColorCode();
+        }
+
         if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
             //recordHolder.rl_sequence_new_time.setBackgroundColor(Color.TRANSPARENT);
-            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#9DC5C3"));
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#"+priorityColorCode));
             recordHolder.tv_sequence_number.setTextColor(Color.BLACK);
             recordHolder.tv_join_timing.setTextColor(Color.BLACK);
         } else {
-            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#"+priorityColorCode));
             recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
             recordHolder.tv_join_timing.setTextColor(Color.WHITE);
+        }
+
+
+        // Don't show radio buttons when merchant priority access is false
+        // or customer has already been approved.
+        if(LaunchActivity.getLaunchActivity().getPriorityAccess()
+                && jsonQueuedPerson.getBusinessCustomerAttributes() != null
+                &&  !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)) {
+
+            // Get the business customer priorities from sharedPreference set in loginActivity
+            List<JsonBusinessCustomerPriority> businessCustomerPriorities = LaunchActivity.getLaunchActivity().getBusinessCustomerPriority();
+            recordHolder.ll_account_authentication.setVisibility(View.VISIBLE);
+            RadioGroup.LayoutParams rprms;
+            // Clean up the radio group view
+            recordHolder.account_type.removeAllViews();
+
+            // Dynamically add radio buttons based on the businessCustomerPriorities
+            for(int i=0; i< businessCustomerPriorities.size(); i++){
+                JsonBusinessCustomerPriority jsonBusinessCustomerPriority = businessCustomerPriorities.get(i);
+                RadioButton radioButton = new RadioButton(this.context);
+                radioButton.setText(jsonBusinessCustomerPriority.getPriorityName());
+                radioButton.setId(View.generateViewId());
+                radioButton.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#E07E3D")));
+                rprms= new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                recordHolder.account_type.addView(radioButton, rprms);
+            }
+
+            // Get the selected account type when buyers clicks on radio button
+            // and reverse look up which businessCustomerPriorities enum does this belong
+            recordHolder.account_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+            {
+                public void onCheckedChanged(RadioGroup group, int checkedId)
+                {
+                    RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
+                    boolean isChecked = checkedRadioButton.isChecked();
+                    if (isChecked)
+                    {
+                        userAccountType = checkedRadioButton.getText().toString();
+                        for (JsonBusinessCustomerPriority j: businessCustomerPriorities){
+                            if(j.getPriorityName().equals(userAccountType)) {
+                                customerPriorityLevelEnum = j.getCustomerPriorityLevel();
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Show the radio buttons
+            recordHolder.ll_account_authentication.setVisibility(View.VISIBLE);
+            recordHolder.authenticate_approve.setOnClickListener(v -> peopleInQAdapterClick.approveCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.APPROVE, this.codeQR));
+            recordHolder.authenticate_reject.setOnClickListener(v -> peopleInQAdapterClick.approveCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.REJECT, this.codeQR));
+            recordHolder.authenticate_reset.setOnClickListener(v -> peopleInQAdapterClick.approveCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.CLEAR, this.codeQR));
+        }
+        else {
+            // Hide the radio buttons
+            recordHolder.ll_account_authentication.setVisibility(View.GONE);
         }
 
         switch (jsonQueuedPerson.getQueueUserState()) {

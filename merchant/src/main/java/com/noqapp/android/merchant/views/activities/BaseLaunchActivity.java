@@ -37,6 +37,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonBusinessCustomerPriority;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -58,8 +59,10 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -100,6 +103,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_NAME = "userName";
     protected final String KEY_IS_ACCESS_GRANT = "accessGrant";
     protected final String KEY_USER_LEVEL = "userLevel";
+    protected final String KEY_CUSTOMER_PRIORITY  = "customerpriority";
+    protected final String PRIORITY_ACCESS  = "priorityaccess";
     protected final String KEY_MERCHANT_COUNTER_NAME = "counterName";
     protected final String KEY_USER_ID = "userID";
     protected final String KEY_USER_LIST = "userList";
@@ -471,6 +476,14 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         sharedpreferences.edit().putString(KEY_USER_LEVEL, userLevel).apply();
     }
 
+    public void setBusinessCustomerPriority(String customerPriority) {
+        sharedpreferences.edit().putString(KEY_CUSTOMER_PRIORITY, customerPriority).apply();
+    }
+
+    public void setPriorityAccess(boolean priorityAccess) {
+        sharedpreferences.edit().putBoolean(PRIORITY_ACCESS, priorityAccess).apply();
+    }
+
     public static void setMsgAnnouncmentEnable(boolean isMsgAnnounce) {
         sharedpreferences.edit().putBoolean(PREKEY_IS_MSG_ANNOUNCE, isMsgAnnounce).apply();
     }
@@ -488,6 +501,19 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     public static void setTvRefreshTime(int refreshTime) {
         sharedpreferences.edit().putInt(PREKEY_TV_REFRESH_TIME, refreshTime).apply();
+    }
+
+    public List<JsonBusinessCustomerPriority> getBusinessCustomerPriority() {
+        Gson gson = new Gson();
+        List<JsonBusinessCustomerPriority> businessCustomerPriority = new ArrayList<>();
+        String customerPriority = sharedpreferences.getString(KEY_CUSTOMER_PRIORITY, "");
+        Type type = new TypeToken<List<JsonBusinessCustomerPriority>>() {}.getType();
+        businessCustomerPriority = gson.fromJson(customerPriority, type);
+        return businessCustomerPriority;
+    }
+
+    public boolean getPriorityAccess() {
+        return sharedpreferences.getBoolean(PRIORITY_ACCESS, false);
     }
 
     public static int getTvRefreshTime() {

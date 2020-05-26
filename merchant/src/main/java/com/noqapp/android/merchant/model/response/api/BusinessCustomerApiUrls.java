@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
 
 import retrofit2.Call;
@@ -98,7 +99,7 @@ public interface BusinessCustomerApiUrls {
     );
 
     @POST("api/m/bc/access/action.json")
-    Call<JsonResponse> accessAction(
+    Call<JsonQueuedPerson> accessAction(
             @Header("X-R-DID")
             String did,
 
