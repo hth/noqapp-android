@@ -1,9 +1,21 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,15 +33,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
+import com.noqapp.android.client.presenter.AuthorizeResponsePresenter;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.body.QueueAuthorize;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
@@ -43,6 +59,8 @@ import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.MapFragment;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
@@ -61,7 +79,7 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
  * Created by chandra on 5/7/17.
  */
 public class CategoryInfoActivity extends BaseActivity implements QueuePresenter,
-        LevelUpQueueAdapter.OnItemClickListener {
+        LevelUpQueueAdapter.OnItemClickListener, AuthorizeResponsePresenter {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -82,6 +100,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerView rv_thumb_images;
     private ImageView iv_category_banner;
     private Button btn_join_queues;
+    private Button btn_register;
     private RecyclerView rcv_amenities;
     private RecyclerView rcv_facility;
     private String codeQR;
@@ -93,6 +112,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerView rcv_accreditation;
     private LinearLayout ll_top_header;
     private ExpandableListView expandableListView;
+  private QueueApiAuthenticCall queueApiAuthenticCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +129,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         btn_join_queues = findViewById(R.id.btn_join_queues);
+        btn_register = findViewById(R.id.btn_register);
         rcv_amenities = findViewById(R.id.rcv_amenities);
         rcv_facility = findViewById(R.id.rcv_facility);
         rcv_accreditation = findViewById(R.id.rcv_accreditation);
@@ -116,12 +137,16 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         view_loader = findViewById(R.id.view_loader);
         expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(true);
+        queueApiAuthenticCall = new QueueApiAuthenticCall();
         tv_mobile.setOnClickListener((View v) -> {
             AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
         });
 
         btn_join_queues.setOnClickListener((View v) -> {
             joinClick();
+        });
+        btn_register.setOnClickListener((View v) -> {
+            register();
         });
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
@@ -148,6 +173,15 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
+            }
+            if(BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType()) {
+                SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                boolean registered = prefs.getBoolean(Constants.PRE_REGISTER, false);
+                if (registered) {
+                    btn_register.setVisibility(View.GONE);
+                } else {
+                    btn_register.setVisibility(View.VISIBLE);
+                }
             }
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
@@ -275,7 +309,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     break;
                 case CD:
                 case CDQ:
-                    btn_join_queues.setText("Canteen Queues");
+                    btn_join_queues.setText("CSD Token");
                     tv_toolbar_title.setText("Canteen Store");
                     title = "Select a Queue";
                     break;
@@ -488,4 +522,102 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
         }
     }
+
+    private void register(){
+      final Dialog dialog = new Dialog(this, android.R.style.Theme_Dialog);
+      dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+      dialog.setContentView(R.layout.dialog_custom_two_input);
+      dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+      dialog.setCanceledOnTouchOutside(true);
+      EditText edtGroceryCard = dialog.findViewById(R.id.edt_grocery_card);
+      EditText edtLiquorCard = dialog.findViewById(R.id.edt_liquor_card);
+
+      edtGroceryCard.addTextChangedListener(new TextWatcher()  {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void afterTextChanged(Editable s)  {
+          if (edtGroceryCard.getText().toString().length() < 5) {
+            edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
+          } else {
+            edtGroceryCard.setError(null);
+          }
+        }
+      });
+
+      edtLiquorCard.addTextChangedListener(new TextWatcher()  {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void afterTextChanged(Editable s)  {
+          if (edtLiquorCard.getText().toString().length() < 5) {
+            edtLiquorCard.setError("Enter liquor Card Last 5 characters/numbers");
+          } else {
+            edtLiquorCard.setError(null);
+          }
+        }
+      });
+
+      Button btn_positive = dialog.findViewById(R.id.btn_positive);
+      btn_positive.setOnClickListener(v -> {
+        if (btn_positive.getText().equals(this.getString(R.string.submit_button))) {
+          if(edtGroceryCard.getText().toString().length() == 5
+                  || edtLiquorCard.getText().toString().length() == 5) {
+            QueueAuthorize queueAuthorize = new QueueAuthorize()
+                    .setCodeQR(codeQR)
+                    .setFirstCustomerId(edtGroceryCard.getText().toString())
+                    .setAdditionalCustomerId(edtLiquorCard.getText().toString());
+            queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
+            queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
+            AppUtils.hideKeyBoard(this);
+            new CustomToast().showToast(this, "Please try to join the queue again.");
+            dialog.dismiss();
+          } else {
+            if (edtGroceryCard.getText().toString().length() < 5) {
+              edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
+            } else if (edtLiquorCard.getText().toString().length() < 5) {
+              edtLiquorCard.setError("Enter Liquor Card Last 5 characters/numbers");
+            }
+          }
+        }
+      });
+      Button btn_negative = dialog.findViewById(R.id.btn_negative);
+      btn_negative.setOnClickListener(v -> dialog.dismiss());
+      dialog.setCanceledOnTouchOutside(false);
+      dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+      dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+      try {
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+          @Override
+          public void onDismiss(DialogInterface dialog) {
+            finish();
+          }
+        });
+      } catch (Exception e) {
+        // WindowManager$BadTokenException will be caught and the app would not display
+        // the 'Force Close' message
+      }
+    }
+
+  @Override
+  public void authorizePresenterResponse(JsonResponse response) {
+    Log.d("CategoryInfoActivity", "    ####    " + response + "    ####");
+      SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+      prefs.edit().putBoolean(Constants.PRE_REGISTER, true).apply();
+  }
+
+  @Override
+  public void authorizePresenterError() {
+    Log.d("CategoryInfoActivity", "    ####    ERROR    ####");
+  }
 }
