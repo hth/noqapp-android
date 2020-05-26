@@ -31,6 +31,7 @@ import androidx.cardview.widget.CardView;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
@@ -853,10 +854,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         if (null != eej) {
-            if (eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY.getCode())) {
-                showAuthorizationDialog(this);
-            } else {
-                new ErrorResponseHandler().processError(this, eej);
+            try {
+                if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemErrorCode()) == MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY) {
+                    showAuthorizationDialog(this);
+                } else {
+                    new ErrorResponseHandler().processError(this, eej);
+                }
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().log("Error code missing " + eej.getSystemErrorCode());
             }
         }
 
