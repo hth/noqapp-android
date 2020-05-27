@@ -60,7 +60,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             holder.tv_position_in_queue_value.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
             if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
                 holder.tv_token_label.setText(context.getString(R.string.token));
-                if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0) {
+                if (jsonTokenAndQueue.getToken() <= jsonTokenAndQueue.getServingNumber()) {
                     holder.tv_position_in_queue_label.setText("It's your turn!!!");
                     holder.tv_position_in_queue_value.setVisibility(View.GONE);
                 } else if (jsonTokenAndQueue.getServingNumber() == 0) {
