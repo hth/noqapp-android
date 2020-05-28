@@ -855,7 +855,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         dismissProgress();
         if (null != eej) {
             try {
-                if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY) {
+                if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.QUEUE_JOINING_APPROVED_ONLY) {
                     showAuthorizationDialog(this);
                 } else {
                     new ErrorResponseHandler().processError(this, eej);
@@ -920,7 +920,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                             .setFirstCustomerId(edtGroceryCard.getText().toString())
                             .setAdditionalCustomerId(edtLiquorCard.getText().toString());
                     queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
-                    queueApiAuthenticCall.authorize(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
+                    queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);
                     new CustomToast().showToast(this, "Please try to join the queue again.");
                     dialog.dismiss();

@@ -56,6 +56,8 @@ public abstract class BaseErrorResponseHandler {
                     case STORE_NO_LONGER_EXISTS:
                     case QUEUE_NOT_STARTED:
                     case QUEUE_NOT_RE_STARTED:
+                    case QUEUE_JOINING_APPROVED_ONLY:
+                    case QUEUE_JOINING_IN_NOT_APPROVED_QUEUE:
 
                     case USER_EXISTING:
                     case USER_NOT_FOUND:

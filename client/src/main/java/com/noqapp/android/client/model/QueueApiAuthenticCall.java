@@ -298,8 +298,8 @@ public class QueueApiAuthenticCall {
         });
     }
 
-    public void authorize(String did, String mail, String auth, QueueAuthorize queueAuthorize) {
-        tokenQueueApiUrls.authorize(did, Constants.DEVICE_TYPE, mail, auth, queueAuthorize).enqueue(new Callback<JsonResponse>() {
+    public void businessApprove(String did, String mail, String auth, QueueAuthorize queueAuthorize) {
+        tokenQueueApiUrls.businessApprove(did, Constants.DEVICE_TYPE, mail, auth, queueAuthorize).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

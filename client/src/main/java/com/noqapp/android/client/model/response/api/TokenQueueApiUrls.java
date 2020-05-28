@@ -303,8 +303,8 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME}
      */
-    @POST("api/c/token/authorize.json")
-    Call<JsonResponse> authorize(
+    @POST("api/c/token/businessApprove.json")
+    Call<JsonResponse> businessApprove(
             @Header("X-R-DID")
             String did,
 
