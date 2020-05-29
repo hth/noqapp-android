@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="25dp"
+    android:layout_margin="15dp"
     android:background="@drawable/dialog_bg_new"
     android:minHeight="300dp"
     android:orientation="vertical"
@@ -14,7 +14,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="30dp"
+        android:layout_margin="20dp"
         android:background="@drawable/abc" />
 
     <TextView
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="left"
-            android:text="Enter Grocery Card Last 5 characters/numbers"
+            android:text="@string/grocery_card_number"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_fourteen" />
 
@@ -61,11 +61,11 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/square_white_bg_drawable"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-            android:hint="ABC23"
+            android:hint="@string/grocery_card_number_hint"
             android:inputType="textCapCharacters"
-            android:maxLength="5"
-            android:maxLines="1"
-            android:minLines="1"
+            android:imeOptions="actionNext"
+            android:maxLength="19"
+            android:singleLine="true"
             android:padding="10dp"
             android:textSize="@dimen/text_size_twelve" />
 
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:text="Enter Liquor Card Last 5 characters/numbers"
+            android:text="@string/liquor_card_number"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_fourteen" />
 
@@ -85,11 +85,11 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/square_white_bg_drawable"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-            android:hint="123AB"
+            android:hint="@string/liquor_card_number_hint"
             android:inputType="textCapCharacters"
-            android:maxLength="5"
-            android:maxLines="1"
-            android:minLines="1"
+            android:imeOptions="actionDone"
+            android:maxLength="19"
+            android:singleLine="true"
             android:padding="10dp"
             android:textSize="@dimen/text_size_twelve" />
 
