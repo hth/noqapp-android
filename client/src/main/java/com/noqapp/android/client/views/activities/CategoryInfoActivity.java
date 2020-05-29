@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -21,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -98,6 +98,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private ImageView iv_category_banner;
     private Button btn_join_queues;
     private Button btn_register;
+    private CardView cv_announcement;
     private RecyclerView rcv_amenities;
     private RecyclerView rcv_facility;
     private String codeQR;
@@ -126,7 +127,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         btn_join_queues = findViewById(R.id.btn_join_queues);
-        btn_register = findViewById(R.id.btn_register);
+        btn_register = findViewById(R.id.btn_pre_approve);
+        cv_announcement = findViewById(R.id.cv_announcement);
         rcv_amenities = findViewById(R.id.rcv_amenities);
         rcv_facility = findViewById(R.id.rcv_facility);
         rcv_accreditation = findViewById(R.id.rcv_accreditation);
@@ -171,6 +173,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
+
             if(UserUtils.isLogin() && BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType()) {
                 SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                 boolean registered = prefs.getBoolean(Constants.PRE_REGISTER, false);
@@ -244,6 +247,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             });
 
             codeQR = bizStoreElastic.getCodeQR();
+
+            //TODO: This information need to come from bizStoreElastic along with formatted announcement text
+            if (BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() ||
+                    BusinessTypeEnum.CD == bizStoreElastic.getBusinessType() ) {
+                cv_announcement.setVisibility(View.VISIBLE);
+            }
 
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
             List<String> amenities = new ArrayList<>();

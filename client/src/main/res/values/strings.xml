@@ -205,7 +205,7 @@
     <string name="scan_qr">SCAN QR</string>
     <string name="active_token">Active Token</string>
     <string name="health_care">Hospitals</string>
-    <string name="business_near">Business</string>
+    <string name="business_near">Business/Institution</string>
     <string name="view_all">View All</string>
     <string name="scan_info">Scan NoQueue QR Code to join queue or place an order</string>
     <string name="prompt_address_status">Address</string>
@@ -245,6 +245,7 @@
     <string name="will_be_served">you will be served in %1$s</string>
     <string name="ack">Acknowledge</string>
     <string name="your_turn">It\'s your turn !!!</string>
+    <string name="pre_approve">Pre-Approve</string>
     <string name="biz_announcement">Attention: COVID-19 Update</string>
     <string name="photo">Photos</string>
     <string name="amenities">Amenities</string>

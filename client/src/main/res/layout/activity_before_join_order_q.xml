@@ -148,25 +148,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:orientation="horizontal" >
 
                 <FrameLayout
+                    android:id="@+id/fl_token_available"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical">
-
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="@dimen/block_1_width"
                         android:layout_height="@dimen/block_1_height"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/margin_left"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center"
                         android:background="@drawable/grey_gradient_round"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
@@ -193,20 +189,15 @@
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="@dimen/block_1_width"
                         android:layout_height="@dimen/block_1_height"
-                        android:layout_gravity="right"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="@dimen/margin_left"
-                        android:layout_marginBottom="10dp"
                         android:background="@drawable/blue_gradient_round"
-                        android:gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:orientation="vertical">
 
                         <TextView

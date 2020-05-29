@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
 
     private TextView tv_queue_name;
     private TextView tv_store_timing;
+    private FrameLayout fl_token_available;
     private TextView tv_token_available, tv_token_available_text;
     private TextView tv_people_in_q, tv_people_in_q_text;
     private TextView tv_rating_review;
@@ -69,6 +71,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
         tv_mobile = findViewById(R.id.tv_mobile);
+        fl_token_available = findViewById(R.id.fl_token_available);
         tv_token_available = findViewById(R.id.tv_token_available);
         tv_token_available_text = findViewById(R.id.tv_token_available_text);
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
@@ -156,12 +159,10 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             tv_queue_name.setText(jsonQueue.getDisplayName());
             tv_address.setText(jsonQueue.getStoreAddress());
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-            if(jsonQueue.getAvailableTokenCount() == 0) {
-                tv_token_available.setText(MAX_AVAILABLE_TOKEN_DISPLAY + "+");
-                tv_token_available_text.setText(getResources().getQuantityString(R.plurals.token_available, MAX_AVAILABLE_TOKEN_DISPLAY));
-            } else {
-                int tokenAvailableForDay = Math.max((jsonQueue.getAvailableTokenCount() - (jsonQueue.getServingNumber())
-                        + jsonQueue.getPeopleInQueue()), 0);
+            if(jsonQueue.getAvailableTokenCount() != 0) {
+                fl_token_available.setVisibility(View.VISIBLE);
+                int tokenAlreadyIssued = jsonQueue.getServingNumber() + jsonQueue.getPeopleInQueue();
+                int tokenAvailableForDay = Math.max(jsonQueue.getAvailableTokenCount() - tokenAlreadyIssued, 0);
                 tv_token_available.setText(String.valueOf(tokenAvailableForDay));
                 tv_token_available_text.setText(getResources().getQuantityString(R.plurals.token_available, tokenAvailableForDay));
             }
