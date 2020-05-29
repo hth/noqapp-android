@@ -855,7 +855,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         dismissProgress();
         if (null != eej) {
             try {
-                if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.QUEUE_JOINING_APPROVED_ONLY) {
+                if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.JOIN_PRE_APPROVED_QUEUE_ONLY) {
                     showAuthorizationDialog(this);
                 } else {
                     new ErrorResponseHandler().processError(this, eej);
