@@ -593,7 +593,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(),
                             UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);
-                    new CustomToast().showToast(this, "Please try to join the queue again.");
+                    new CustomToast().showToast(this, "Your registration is completed.");
                     dialog.dismiss();
                 } else {
                     if (edtGroceryCard.getText().toString().length() < 19) {

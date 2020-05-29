@@ -876,34 +876,42 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         EditText edtGroceryCard = dialog.findViewById(R.id.edt_grocery_card);
         EditText edtLiquorCard = dialog.findViewById(R.id.edt_liquor_card);
 
-        edtGroceryCard.addTextChangedListener(new TextWatcher()  {
+        edtGroceryCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
-                if (edtGroceryCard.getText().toString().length() < 5) {
-                    edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
+            public void afterTextChanged(Editable s) {
+                if (edtGroceryCard.getText().toString().length() < 19) {
+                    edtGroceryCard.setError(getString(R.string.grocery_card_number_entry_error));
+                } else if (edtGroceryCard.getText().toString().charAt(0) != 'G') {
+                    edtGroceryCard.setError(getString(R.string.grocery_card_number_prefix_error));
                 } else {
                     edtGroceryCard.setError(null);
                 }
             }
         });
 
-        edtLiquorCard.addTextChangedListener(new TextWatcher()  {
+        edtLiquorCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
-                if (edtLiquorCard.getText().toString().length() < 5) {
-                    edtLiquorCard.setError("Enter liquor Card Last 5 characters/numbers");
+            public void afterTextChanged(Editable s) {
+                if (edtLiquorCard.getText().toString().length() < 19) {
+                    edtLiquorCard.setError(getString(R.string.liquor_card_number_entry_error));
+                } else if (edtLiquorCard.getText().toString().charAt(0) != 'L') {
+                    edtLiquorCard.setError(getString(R.string.liquor_card_number_prefix_error));
                 } else {
                     edtLiquorCard.setError(null);
                 }
@@ -912,23 +920,24 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
         Button btn_positive = dialog.findViewById(R.id.btn_positive);
         btn_positive.setOnClickListener(v -> {
-            if (btn_positive.getText().equals(context.getString(R.string.submit_button))) {
-                if(edtGroceryCard.getText().toString().length() == 5
-                        || edtLiquorCard.getText().toString().length() == 5) {
+            if (btn_positive.getText().equals(this.getString(R.string.submit_button))) {
+                if (edtGroceryCard.getText().toString().length() == 19
+                        || edtLiquorCard.getText().toString().length() == 19) {
                     QueueAuthorize queueAuthorize = new QueueAuthorize()
-                            .setCodeQR(jsonTokenAndQueue.getCodeQR())
+                            .setCodeQR(codeQR)
                             .setFirstCustomerId(edtGroceryCard.getText().toString())
                             .setAdditionalCustomerId(edtLiquorCard.getText().toString());
                     queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
-                    queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
+                    queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(),
+                            UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);
                     new CustomToast().showToast(this, "Please try to join the queue again.");
                     dialog.dismiss();
                 } else {
-                    if (edtGroceryCard.getText().toString().length() < 5) {
-                        edtGroceryCard.setError("Enter grocery Card Last 5 characters/numbers");
-                    } else if (edtLiquorCard.getText().toString().length() < 5) {
-                        edtLiquorCard.setError("Enter Liquor Card Last 5 characters/numbers");
+                    if (edtGroceryCard.getText().toString().length() < 19) {
+                        edtGroceryCard.setError(getString(R.string.grocery_card_number_entry_error));
+                    } else if (edtLiquorCard.getText().toString().length() < 19) {
+                        edtLiquorCard.setError(getString(R.string.liquor_card_number_entry_error));
                     }
                 }
             }
