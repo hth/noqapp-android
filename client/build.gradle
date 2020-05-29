@@ -458,21 +458,21 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    testImplementation 'org.mockito:mockito-core:3.2.4'
+    testImplementation 'org.mockito:mockito-core:3.3.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
 
     // (Required) Writing and executing Unit Tests on the JUnit Platform
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 
     // (Optional) If you need "Parameterized Tests"
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
 
     // (Optional) If you also have JUnit 4-based tests
     testImplementation "junit:junit:4.13"
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.5.2'
-    testImplementation 'org.awaitility:awaitility:4.0.2'
+    testImplementation 'org.awaitility:awaitility:4.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
