@@ -205,7 +205,7 @@
     <string name="scan_qr">SCAN QR</string>
     <string name="active_token">Active Token</string>
     <string name="health_care">Hospitals</string>
-    <string name="business_near">Business</string>
+    <string name="business_near">Business/Institution</string>
     <string name="view_all">View All</string>
     <string name="scan_info">Scan NoQueue QR Code to join queue or place an order</string>
     <string name="prompt_address_status">Address</string>
