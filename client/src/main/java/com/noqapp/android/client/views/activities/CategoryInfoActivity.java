@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -126,7 +125,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         btn_join_queues = findViewById(R.id.btn_join_queues);
-        btn_register = findViewById(R.id.btn_register);
+        btn_register = findViewById(R.id.btn_pre_approve);
         rcv_amenities = findViewById(R.id.rcv_amenities);
         rcv_facility = findViewById(R.id.rcv_facility);
         rcv_accreditation = findViewById(R.id.rcv_accreditation);

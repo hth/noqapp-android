@@ -144,7 +144,7 @@
                                         android:visibility="gone"/>
 
                                     <Button
-                                        android:id="@+id/btn_register"
+                                        android:id="@+id/btn_pre_approve"
                                         android:layout_width="wrap_content"
                                         android:layout_height="@dimen/btn_standard_height"
                                         android:layout_alignParentLeft="true"
@@ -156,7 +156,7 @@
                                         android:textAllCaps="true"
                                         android:textColor="@android:color/white"
                                         android:textSize="@dimen/text_size_fourteen"
-                                        android:text="Register"
+                                        android:text="@string/pre_approve"
                                         android:visibility="gone"/>
 
                                     <Button
