@@ -178,7 +178,11 @@ public class LaunchActivity
         ImageView iv_notification = findViewById(R.id.iv_notification);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
-        COUNTRY_CODE = getCountryCode();
+        if (BuildConfig.BUILD_TYPE.equals("debug")) {
+            COUNTRY_CODE = "IN";
+        } else {
+            COUNTRY_CODE = getCountryCode();
+        }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
         if (!isCountryIndia()) {
