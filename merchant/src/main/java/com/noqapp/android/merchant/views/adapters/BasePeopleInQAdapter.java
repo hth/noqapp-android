@@ -326,6 +326,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
                 public void onCheckedChanged(RadioGroup group, int checkedId)
                 {
                     RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
+                    // Remove error from last child
+                    int lastChildPos = group.getChildCount()-1;
+                    ((RadioButton)group.getChildAt(lastChildPos)).setError(null);
+
                     boolean isChecked = checkedRadioButton.isChecked();
                     if (isChecked)
                     {
@@ -342,7 +346,21 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
             // Show the radio buttons
             recordHolder.ll_account_authentication.setVisibility(View.VISIBLE);
-            recordHolder.authenticate_approve.setOnClickListener(v -> peopleInQAdapterClick.approveCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.APPROVE, this.codeQR));
+            recordHolder.authenticate_approve.setOnClickListener(v -> {
+                if (recordHolder.account_type.getCheckedRadioButtonId() == -1)
+                {
+                    // No radio buttons checked, show error and return.
+                    int lastChildPos = recordHolder.account_type.getChildCount()-1;
+                    ((RadioButton)recordHolder.account_type.getChildAt(lastChildPos)).setError("Please select one of " +
+                            "the choices");
+                    return;
+                }
+                else
+                {
+                    peopleInQAdapterClick.approveCustomer(
+                            context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.APPROVE, this.codeQR);
+                }
+            });
             recordHolder.authenticate_reject.setOnClickListener(v -> peopleInQAdapterClick.approveCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.REJECT, this.codeQR));
             recordHolder.authenticate_reset.setOnClickListener(v -> peopleInQAdapterClick.approveCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.CLEAR, this.codeQR));
         }
