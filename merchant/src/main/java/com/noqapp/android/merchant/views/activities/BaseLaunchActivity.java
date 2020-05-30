@@ -59,10 +59,8 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -98,15 +96,15 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     protected DeviceApiCalls deviceApiCalls;
     public static MerchantListFragment merchantListFragment;
-    protected final String IS_LOGIN = "IsLoggedIn";
+    protected final String IS_LOGIN = "isLoggedIn";
     protected final String KEY_USER_EMAIL = "userEmail";
     protected final String KEY_USER_NAME = "userName";
     protected final String KEY_IS_ACCESS_GRANT = "accessGrant";
     protected final String KEY_USER_LEVEL = "userLevel";
-    protected final String KEY_CUSTOMER_PRIORITY  = "customerpriority";
-    protected final String PRIORITY_ACCESS  = "priorityaccess";
+    protected final String KEY_CUSTOMER_PRIORITY  = "customerPriority";
+    protected final String PRIORITY_ACCESS  = "priorityAccess";
     protected final String KEY_MERCHANT_COUNTER_NAME = "counterName";
-    protected final String KEY_USER_ID = "userID";
+    protected final String KEY_USER_ID = "userId";
     protected final String KEY_USER_LIST = "userList";
     protected final String KEY_USER_AUTH = "auth";
     protected final String KEY_LAST_UPDATE = "last_update";
@@ -123,7 +121,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
     protected long lastPress;
-    protected Toast backpressToast;
+    protected Toast backPressToast;
     public NetworkUtil networkUtil;
     protected FcmNotificationReceiver fcmNotificationReceiver;
     protected static LaunchActivity launchActivity;
@@ -754,11 +752,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (fm.getBackStackEntryCount() == 0) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastPress > 3000) {
-                backpressToast = new CustomToast().getToast(launchActivity, getString(R.string.exit_the_app));
-                backpressToast.show();
+                backPressToast = new CustomToast().getToast(launchActivity, getString(R.string.exit_the_app));
+                backPressToast.show();
                 lastPress = currentTime;
             } else {
-                if (backpressToast != null) backpressToast.cancel();
+                if (backPressToast != null) backPressToast.cancel();
                 //super.onBackPressed();
                 finish();
             }
