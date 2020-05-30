@@ -299,7 +299,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         // or customer has already been approved.
         if(LaunchActivity.getLaunchActivity().getPriorityAccess()
                 && jsonQueuedPerson.getBusinessCustomerAttributes() != null
-                &&  !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)) {
+                &&  !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)
+                && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.RJ)) {
 
             // Get the business customer priorities from sharedPreference set in loginActivity
             List<JsonBusinessCustomerPriority> businessCustomerPriorities = LaunchActivity.getLaunchActivity().getBusinessCustomerPriority();
@@ -319,7 +320,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
                 recordHolder.account_type.addView(radioButton, rprms);
             }
 
-            // Get the selected account type when buyers clicks on radio button
+            // Get the selected account type be listening to click on radio button
             // and reverse look up which businessCustomerPriorities enum does this belong
             recordHolder.account_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
             {
