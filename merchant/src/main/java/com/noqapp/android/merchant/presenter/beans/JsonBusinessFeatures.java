@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.model.types.OnOffEnum;
 
+import java.io.Serializable;
+
 /**
  * hitender
  * 5/24/20 4:35 PM
@@ -25,7 +27,7 @@ import com.noqapp.android.common.model.types.OnOffEnum;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonBusinessFeatures extends AbstractDomain {
+public class JsonBusinessFeatures extends AbstractDomain implements Serializable {
 
     @JsonProperty("pa")
     private OnOffEnum priorityAccess;

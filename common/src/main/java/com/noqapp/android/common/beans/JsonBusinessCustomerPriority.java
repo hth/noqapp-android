@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
 
+import java.io.Serializable;
+
 /**
  * hitender
  * 5/24/20 1:20 PM
@@ -24,7 +26,7 @@ import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonBusinessCustomerPriority extends AbstractDomain {
+public class JsonBusinessCustomerPriority extends AbstractDomain implements Serializable {
 
     @JsonProperty("pl")
     private CustomerPriorityLevelEnum customerPriorityLevel;
