@@ -484,7 +484,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         sharedpreferences.edit().putBoolean(PRIORITY_ACCESS, priorityAccess).apply();
     }
 
-    public static void setMsgAnnouncmentEnable(boolean isMsgAnnounce) {
+    public static void setMsgAnnouncementEnable(boolean isMsgAnnounce) {
         sharedpreferences.edit().putBoolean(PREKEY_IS_MSG_ANNOUNCE, isMsgAnnounce).apply();
     }
 
