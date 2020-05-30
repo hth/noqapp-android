@@ -51,7 +51,7 @@ public class Constants extends BaseConstants{
     // Pref key for Token status
     public static final String CURRENTLY_SERVING_PREF_KEY = "%s_currently_serving";
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
-    public static final String PRE_REGISTER = "registered_with_id";
+    public static final String PRE_REGISTER = "pre_approve";
 
     /**
      * Computes App version.
