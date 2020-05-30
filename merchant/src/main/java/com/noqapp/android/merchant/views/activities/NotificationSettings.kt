@@ -62,7 +62,7 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
                 10 -> {rb_10.isChecked = true}
             }
             sc_msg_announce.setOnCheckedChangeListener { buttonView, isChecked ->
-                LaunchActivity.setMsgAnnouncmentEnable(isChecked)
+                LaunchActivity.setMsgAnnouncementEnable(isChecked)
                 if (isChecked) {
                     // The switch is enabled/checked
                     CustomToast().showToast(this@NotificationSettings, "Message Announcement Enabled")
