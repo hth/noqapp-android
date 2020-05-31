@@ -218,11 +218,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             }
             isValid = false;
         }
-        if (TextUtils.isEmpty(edt_Mail.getText().toString())) {
-            edt_Mail.setError(getString(R.string.error_email_blank));
-            errorMsg = getString(R.string.error_email_blank);
-            isValid = false;
-        } else {
+        if (!TextUtils.isEmpty(edt_Mail.getText().toString())) {
             if (!CommonHelper.isValidEmail(edt_Mail.getText().toString())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
                 if (TextUtils.isEmpty(errorMsg)) {
