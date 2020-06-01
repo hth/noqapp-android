@@ -591,7 +591,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 edt_mobile.setEnabled(true);
                 btn_create_token.setVisibility(View.VISIBLE);
                 btn_create_token.setClickable(true);
-                if(R.id.rb_mobile == checkedId) {
+                if (R.id.rb_mobile == checkedId) {
                     ll_mobile.setVisibility(View.VISIBLE);
                     ll_cust_id.setVisibility(View.GONE);
                     ll_unregistered.setVisibility(View.GONE);
@@ -630,8 +630,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                             JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer();
                             jsonBusinessCustomer.setCodeQR(codeQR);
                             jsonBusinessCustomer.setCustomerName(edt_name_unregistered.getText().toString());
-                            jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode()
-                                    + edt_mobile_unregistered.getText().toString());
+                            jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode() + edt_mobile_unregistered.getText().toString());
                             jsonBusinessCustomer.setRegisteredUser(false);
                             manageQueueApiCalls.dispenseTokenWithClientInfo(
                                     BaseLaunchActivity.getDeviceID(),
