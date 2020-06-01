@@ -640,7 +640,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                                     jsonBusinessCustomer);
                         }
 
-                        if (BuildConfig.TOKEN_WITHOUT_MOBILE) {
+                        if (BuildConfig.TOKEN_WITHOUT_USER_INFO.equalsIgnoreCase("OFF")) {
                             manageQueueApiCalls.dispenseToken(
                                     BaseLaunchActivity.getDeviceID(),
                                     LaunchActivity.getLaunchActivity().getEmail(),
