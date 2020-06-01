@@ -214,8 +214,7 @@ android {
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "MEDICAL_FORM_VERSION", medicalFormVersion
-
-            buildConfigField BOOLEAN, "TOKEN_WITHOUT_MOBILE", FALSE
+            buildConfigField STRING, "TOKEN_WITHOUT_USER_INFO", tokenWithoutUserInfo
         }
 
         sandbox {
@@ -258,6 +257,7 @@ android {
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "MEDICAL_FORM_VERSION", medicalFormVersion
+            buildConfigField STRING, "TOKEN_WITHOUT_USER_INFO", tokenWithoutUserInfo
         }
 
         release {
@@ -297,6 +297,7 @@ android {
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "MEDICAL_FORM_VERSION", medicalFormVersion
+            buildConfigField STRING, "TOKEN_WITHOUT_USER_INFO", tokenWithoutUserInfo
         }
     }
 
