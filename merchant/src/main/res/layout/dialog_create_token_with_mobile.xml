@@ -310,7 +310,7 @@
                             android:layout_height="@dimen/btn_height"
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/bg_gradient_round"
-                            android:text="@string/search_customer"
+                            android:text="@string/search_registered_customer"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen"

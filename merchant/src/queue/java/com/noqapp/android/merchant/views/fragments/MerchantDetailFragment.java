@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,12 +26,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hbb20.CountryCodePicker;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
@@ -53,7 +48,6 @@ import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
@@ -594,12 +588,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 ll_mobile.setVisibility(View.VISIBLE);
                 ll_cust_id.setVisibility(View.GONE);
                 ll_unregistered.setVisibility(View.GONE);
-                btn_create_token.setText(getString(R.string.search_customer));
+                btn_create_token.setText(getString(R.string.search_registered_customer));
             } else if (R.id.rb_customer_id == checkedId) {
                 ll_cust_id.setVisibility(View.VISIBLE);
                 ll_mobile.setVisibility(View.GONE);
                 ll_unregistered.setVisibility(View.GONE);
-                btn_create_token.setText(getString(R.string.search_customer));
+                btn_create_token.setText(getString(R.string.search_registered_customer));
             } else {
                 ll_unregistered.setVisibility(View.VISIBLE);
                 ll_mobile.setVisibility(View.GONE);
@@ -649,7 +643,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             } else {
                 cid = "";
                 btn_create_order = view.findViewById(R.id.btn_create_order);
-                btn_create_token.setText("Search Customer");
+                btn_create_token.setText(getString(R.string.search_registered_customer));
                 btn_create_token.setOnClickListener(v -> {
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                         return;
