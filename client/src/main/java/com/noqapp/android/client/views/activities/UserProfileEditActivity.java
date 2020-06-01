@@ -456,8 +456,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
-        if (((null == dependentProfile && isDependent && nameList.contains(name))) || (null == dependentProfile && !isDependent && !NoQueueBaseActivity.getUserName().toUpperCase().equals(name) && nameList.contains(name)) ||
-                (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
+        if (((null == dependentProfile && isDependent && nameList.contains(name)))
+                || (null == dependentProfile && !isDependent && !NoQueueBaseActivity.getUserName().toUpperCase().equals(name) && nameList.contains(name))
+                || (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
             edt_Name.setError(getString(R.string.error_name_exist));
             isValid = false;
         }
