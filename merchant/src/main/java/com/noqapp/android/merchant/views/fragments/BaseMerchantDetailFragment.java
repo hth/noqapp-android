@@ -318,7 +318,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 case P:
                 case R:
                 case S:
-                    tv_create_token.setText("The generated token no is ");
+                    tv_create_token.setText("Token Number");
                     btn_create_token.setText(context.getString(R.string.done));
                     tvCount.setText(String.valueOf(token.getToken()));
                     tvCount.setVisibility(View.VISIBLE);
