@@ -583,125 +583,123 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        rg_token_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // View cleanup
-                sp_patient_list.setVisibility(View.GONE);
-                tv_select_patient.setVisibility(View.GONE);
-                edt_mobile.setEnabled(true);
-                btn_create_token.setVisibility(View.VISIBLE);
-                btn_create_token.setClickable(true);
-                if (R.id.rb_mobile == checkedId) {
-                    ll_mobile.setVisibility(View.VISIBLE);
-                    ll_cust_id.setVisibility(View.GONE);
-                    ll_unregistered.setVisibility(View.GONE);
-                    btn_create_token.setText(getString(R.string.search_customer));
-                } else if (R.id.rb_customer_id == checkedId) {
-                    ll_cust_id.setVisibility(View.VISIBLE);
-                    ll_mobile.setVisibility(View.GONE);
-                    ll_unregistered.setVisibility(View.GONE);
-                    btn_create_token.setText(getString(R.string.search_customer));
-                } else {
-                    ll_unregistered.setVisibility(View.VISIBLE);
-                    ll_mobile.setVisibility(View.GONE);
-                    ll_cust_id.setVisibility(View.GONE);
-                    btn_create_token.setText(getString(R.string.create_token));
-                }
+        rg_token_type.setOnCheckedChangeListener((group, checkedId) -> {
+            // View cleanup
+            sp_patient_list.setVisibility(View.GONE);
+            tv_select_patient.setVisibility(View.GONE);
+            edt_mobile.setEnabled(true);
+            btn_create_token.setVisibility(View.VISIBLE);
+            btn_create_token.setClickable(true);
+            if (R.id.rb_mobile == checkedId) {
+                ll_mobile.setVisibility(View.VISIBLE);
+                ll_cust_id.setVisibility(View.GONE);
+                ll_unregistered.setVisibility(View.GONE);
+                btn_create_token.setText(getString(R.string.search_customer));
+            } else if (R.id.rb_customer_id == checkedId) {
+                ll_cust_id.setVisibility(View.VISIBLE);
+                ll_mobile.setVisibility(View.GONE);
+                ll_unregistered.setVisibility(View.GONE);
+                btn_create_token.setText(getString(R.string.search_customer));
+            } else {
+                ll_unregistered.setVisibility(View.VISIBLE);
+                ll_mobile.setVisibility(View.GONE);
+                ll_cust_id.setVisibility(View.GONE);
+                btn_create_token.setText(getString(R.string.create_token));
+            }
 
-                // Bind listeners
-                if (rg_token_type.getCheckedRadioButtonId() == R.id.rb_unregistered) {
-                    EditText edt_mobile_unregistered = view.findViewById(R.id.edt_mobile_unregistered);
-                    EditText edt_name_unregistered = view.findViewById(R.id.edt_name_unregistered);
-                    btn_create_token.setOnClickListener(v -> {
-                        boolean isValid = true;
-                        AppUtils.hideKeyBoard(getActivity());
+            // Bind listeners
+            if (rg_token_type.getCheckedRadioButtonId() == R.id.rb_unregistered) {
+                EditText edt_mobile_unregistered = view.findViewById(R.id.edt_mobile_unregistered);
+                EditText edt_name_unregistered = view.findViewById(R.id.edt_name_unregistered);
+                btn_create_token.setOnClickListener(v -> {
+                    boolean isValid = true;
+                    AppUtils.hideKeyBoard(getActivity());
+                    setDispensePresenter();
+                    // get selected radio button from radioGroup
+                    if (TextUtils.isEmpty(edt_mobile_unregistered.getText())) {
+                        edt_mobile_unregistered.setError(getString(R.string.error_mobile_blank));
+                        isValid = false;
+                    }
+                    if (TextUtils.isEmpty(edt_name_unregistered.getText())) {
+                        edt_name_unregistered.setError(getString(R.string.error_customer_name));
+                        isValid = false;
+                    }
+
+                    if (isValid) {
+                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer();
+                        jsonBusinessCustomer.setCodeQR(codeQR);
+                        jsonBusinessCustomer.setCustomerName(edt_name_unregistered.getText().toString());
+                        jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode() + edt_mobile_unregistered.getText().toString());
+                        jsonBusinessCustomer.setRegisteredUser(false);
+                        manageQueueApiCalls.dispenseTokenWithClientInfo(
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                jsonBusinessCustomer);
+                    }
+
+                    if (BuildConfig.TOKEN_WITHOUT_USER_INFO.equalsIgnoreCase("ON")) {
+                        manageQueueApiCalls.dispenseToken(
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                codeQR);
+                    }
+                });
+            } else {
+                cid = "";
+                btn_create_order = view.findViewById(R.id.btn_create_order);
+                btn_create_token.setText("Search Customer");
+                btn_create_token.setOnClickListener(v -> {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    boolean isValid = true;
+                    edt_mobile.setError(null);
+                    edt_id.setError(null);
+                    AppUtils.hideKeyBoard(getActivity());
+                    // get selected radio button from radioGroup
+                    int selectedId = rg_token_type.getCheckedRadioButtonId();
+                    if (selectedId == R.id.rb_mobile) {
+                        if (TextUtils.isEmpty(edt_mobile.getText())) {
+                            edt_mobile.setError(getString(R.string.error_mobile_blank));
+                            isValid = false;
+                        }
+                    } else {
+                        if (TextUtils.isEmpty(edt_id.getText())) {
+                            edt_id.setError(getString(R.string.error_customer_id));
+                            isValid = false;
+                        }
+                    }
+
+                    if (isValid ) {
+                        setProgressMessage("Searching customer...");
+                        showProgress();
+                        setProgressCancel(false);
                         setDispensePresenter();
-                        // get selected radio button from radioGroup
-                        if (TextUtils.isEmpty(edt_mobile_unregistered.getText())) {
-                            edt_mobile_unregistered.setError(getString(R.string.error_mobile_blank));
-                            isValid = false;
-                        }
-                        if (TextUtils.isEmpty(edt_name_unregistered.getText())) {
-                            edt_name_unregistered.setError(getString(R.string.error_customer_name));
-                            isValid = false;
-                        }
-
-                        if (isValid) {
-                            JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer();
-                            jsonBusinessCustomer.setCodeQR(codeQR);
-                            jsonBusinessCustomer.setCustomerName(edt_name_unregistered.getText().toString());
-                            jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode() + edt_mobile_unregistered.getText().toString());
-                            jsonBusinessCustomer.setRegisteredUser(false);
-                            manageQueueApiCalls.dispenseTokenWithClientInfo(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    jsonBusinessCustomer);
-                        }
-
-                        if (BuildConfig.TOKEN_WITHOUT_USER_INFO.equalsIgnoreCase("ON")) {
-                            manageQueueApiCalls.dispenseToken(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    codeQR);
-                        }
-                    });
-                } else {
-                    cid = "";
-                    btn_create_order = view.findViewById(R.id.btn_create_order);
-                    btn_create_token.setText("Search Customer");
-                    btn_create_token.setOnClickListener(v -> {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        boolean isValid = true;
-                        edt_mobile.setError(null);
-                        edt_id.setError(null);
-                        AppUtils.hideKeyBoard(getActivity());
-                        // get selected radio button from radioGroup
-                        int selectedId = rg_token_type.getCheckedRadioButtonId();
-                        if (selectedId == R.id.rb_mobile) {
-                            if (TextUtils.isEmpty(edt_mobile.getText())) {
-                                edt_mobile.setError(getString(R.string.error_mobile_blank));
-                                isValid = false;
-                            }
-                        } else {
-                            if (TextUtils.isEmpty(edt_id.getText())) {
-                                edt_id.setError(getString(R.string.error_customer_id));
-                                isValid = false;
-                            }
-                        }
-
-                        if (isValid ) {
-                            setProgressMessage("Searching customer...");
-                            showProgress();
-                            setProgressCancel(false);
-                            setDispensePresenter();
-                            String phone = "";
+                        String phone = "";
+                        cid = "";
+                        if (rb_mobile.isChecked()) {
+                            edt_id.setText("");
+                            countryCode = ccp.getSelectedCountryCode();
+                            phone = countryCode + edt_mobile.getText().toString();
                             cid = "";
-                            if (rb_mobile.isChecked()) {
-                                edt_id.setText("");
-                                countryCode = ccp.getSelectedCountryCode();
-                                phone = countryCode + edt_mobile.getText().toString();
-                                cid = "";
-                            } else {
-                                cid = edt_id.getText().toString();
-                                edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
-                            }
-                            businessCustomerApiCalls = new BusinessCustomerApiCalls();
-                            businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
-                            businessCustomerApiCalls.findCustomer(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                            btn_create_token.setClickable(false);
-                            //  mAlertDialog.dismiss();
+                        } else {
+                            cid = edt_id.getText().toString();
+                            edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                         }
-                    });
-                }
+                        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+                        businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
+                        businessCustomerApiCalls.findCustomer(
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                        btn_create_token.setClickable(false);
+                        //  mAlertDialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -756,7 +754,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
                             jsonBusinessCustomer);
-
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }
