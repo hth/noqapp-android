@@ -452,7 +452,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             edt_Name.setError(getString(R.string.error_name_blank));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(name) && name.length() < 4) {
+        if (!TextUtils.isEmpty(name) && name.length() < 3) {
             edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
