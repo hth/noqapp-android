@@ -46,7 +46,7 @@
     <string name="login">लॉग इन</string>
     <string name="phone">फोन <font color='red'>\u002A</font></string>
     <string name="name">नाम <font color='red'>\u002A</font></string>
-    <string name="mail">ई-मेल </string>
+    <string name="mail">ई-मेल</string>
     <string name="birthday">जन्मदिवस  <font color='red'>\u002A</font></string>
     <string name="gender">लिंग  <font color='red'>\u002A</font></string>
     <string name="invitecode">निमंत्रण कोड</string>
