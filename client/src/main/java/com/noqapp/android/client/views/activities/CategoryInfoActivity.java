@@ -111,7 +111,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerView rcv_accreditation;
     private LinearLayout ll_top_header;
     private ExpandableListView expandableListView;
-  private QueueApiAuthenticCall queueApiAuthenticCall;
+    private QueueApiAuthenticCall queueApiAuthenticCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +175,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 ShowAlertInformation.showNetworkDialog(this);
             }
 
-            if(UserUtils.isLogin() && BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType()) {
+            if (UserUtils.isLogin() && BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType()) {
                 SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                 boolean registered = prefs.getBoolean(Constants.PRE_REGISTER, false);
                 if (registered) {
@@ -251,7 +251,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             //TODO: This information need to come from bizStoreElastic along with formatted announcement text
             if (BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() ||
-                    BusinessTypeEnum.CD == bizStoreElastic.getBusinessType() ) {
+                    BusinessTypeEnum.CD == bizStoreElastic.getBusinessType()) {
                 cv_announcement.setVisibility(View.VISIBLE);
             }
 
@@ -504,7 +504,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             case BK:
                 // open hospital profile
                 in = new Intent(this, BeforeJoinActivity.class);
-                in.putExtra(IBConstant.KEY_IS_DO,item.getBusinessType()== BusinessTypeEnum.DO);
+                in.putExtra(IBConstant.KEY_IS_DO, item.getBusinessType() == BusinessTypeEnum.DO);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
@@ -586,23 +586,22 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             if (btn_positive.getText().equals(this.getString(R.string.submit_button))) {
                 String gCard = null;
                 String lCard = null;
-                if(edtGroceryCard.getError() == null && !TextUtils.isEmpty(edtGroceryCard.getText())) {
+                if (edtGroceryCard.getError() == null && !TextUtils.isEmpty(edtGroceryCard.getText())) {
                     gCard = edtGroceryCard.getText().toString();
                 }
-                if(edtLiquorCard.getError() == null && !TextUtils.isEmpty(edtLiquorCard.getText())) {
+                if (edtLiquorCard.getError() == null && !TextUtils.isEmpty(edtLiquorCard.getText())) {
                     lCard = edtLiquorCard.getText().toString();
                 }
 
-                if ( !TextUtils.isEmpty(gCard) || !TextUtils.isEmpty(lCard)) {
+                if (!TextUtils.isEmpty(gCard) || !TextUtils.isEmpty(lCard)) {
                     QueueAuthorize queueAuthorize = new QueueAuthorize()
                             .setCodeQR(codeQR)
-                            .setFirstCustomerId(edtGroceryCard.getText().toString())
-                            .setAdditionalCustomerId(edtLiquorCard.getText().toString());
+                            .setFirstCustomerId(gCard)
+                            .setAdditionalCustomerId(lCard);
                     queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
-                    queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                            UserUtils.getAuth(), queueAuthorize);
+                    queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);
-                    new CustomToast().showToast(this, "Your registration is completed.");
+                    new CustomToast().showToast(this, "Successfully submitted pre-approval.");
                     dialog.dismiss();
                 } else {
                     if (edtGroceryCard.getText().toString().length() < 19) {
