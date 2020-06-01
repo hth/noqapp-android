@@ -64,4 +64,6 @@
     <dimen name="front_tooth_width_chart">15dp</dimen>
     <dimen name="front_tooth_height_chart">30dp</dimen>
     <dimen name="top_tooth_size_chart">15dp</dimen>
+
+    <dimen name="dialog_min_height">300dp</dimen>
 </resources>
