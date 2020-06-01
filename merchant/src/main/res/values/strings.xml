@@ -135,6 +135,7 @@
 
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_customer_id">Please enter Customer Id</string>
+    <string name="error_customer_name">Please enter Customer Name</string>
 
     <string name="login_hint">Phone no. without country code</string>
     <string name="resend_otp">Resend OTP</string>
@@ -267,5 +268,6 @@
     <string name="setting_msg">Changes made here is permanent. These changes will reflect immediately.</string>
     <string name="treatment_plan">Treatment Plan</string>
     <string name="add_new">Create Token</string>
+    <string name="search_customer">Search Customer</string>
 
 </resources>

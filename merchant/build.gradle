@@ -214,6 +214,8 @@ android {
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "MEDICAL_FORM_VERSION", medicalFormVersion
+
+            buildConfigField BOOLEAN, "TOKEN_WITHOUT_MOBILE", FALSE
         }
 
         sandbox {

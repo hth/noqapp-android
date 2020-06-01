@@ -17,6 +17,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
@@ -330,6 +331,11 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     if (UserUtils.isLogin()) {
                         btn_joinQueue.setText(getString(R.string.join));
                         btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
+                        if(jsonQueue.getBusinessType() != BusinessTypeEnum.HS){
+                            // Set the primary account holder selected if not related to Health-care service
+                            // TODO(pth): Fix another way to set primary by default
+                            sp_name_list.setSelection(1);
+                        }
                         if (validateView) {
                             //setColor(false);  skip due to view validation
                         } else {

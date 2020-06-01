@@ -8,6 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:minHeight="@dimen/dialog_min_height"
         android:layout_gravity="center"
         android:background="@android:color/white">
 
@@ -47,7 +48,7 @@
             android:layout_below="@+id/ll_top"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:padding="20dp">
+            android:padding="15dp">
 
 
             <LinearLayout
@@ -87,12 +88,12 @@
                     android:orientation="vertical">
 
                     <RadioGroup
-                        android:id="@+id/rg_user_id"
+                        android:id="@+id/rg_token_type"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/rb_mobile"
@@ -100,20 +101,31 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
                             android:layout_weight="1"
-                            android:checked="true"
+                            android:checked="false"
                             android:text="Mobile No"
-                            android:textSize="@dimen/text_size_fourteen"
+                            android:textSize="@dimen/text_size_twelve"
                             app:buttonTint="@color/radio_button_color" />
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/rb_customer_id"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="User Id"
+                            android:textSize="@dimen/text_size_twelve"
+                            app:buttonTint="@color/radio_button_color" />
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/rb_unregistered"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:layout_weight="1"
                             android:checked="false"
-                            android:text="Customer ID"
-                            android:textSize="@dimen/text_size_fourteen"
+                            android:text="Unregistered"
+                            android:textSize="@dimen/text_size_twelve"
                             app:buttonTint="@color/radio_button_color" />
                     </RadioGroup>
 
@@ -121,9 +133,10 @@
                         android:id="@+id/ll_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:orientation="horizontal">
+                        android:layout_marginLeft="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <com.hbb20.CountryCodePicker
                             android:id="@+id/ccp"
@@ -132,7 +145,6 @@
                             android:layout_marginRight="5dp"
                             android:layout_marginBottom="10dp"
                             android:background="#e2e2e2"
-                            android:paddingStart="5dp"
                             app:ccp_autoDetectCountry="true"
                             app:ccp_countryPreference="IN,US"
                             app:ccp_defaultLanguage="ENGLISH"
@@ -144,7 +156,6 @@
                             android:id="@+id/edt_mobile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
                             android:background="@drawable/square_white_bg_drawable"
                             android:inputType="phone"
                             android:maxLength="10"
@@ -154,20 +165,105 @@
                             android:textSize="@dimen/text_size_fourteen" />
                     </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/edt_id"
+                    <LinearLayout
+                        android:id="@+id/ll_cust_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/square_white_bg_drawable"
-                        android:inputType="text"
-                        android:maxLength="10"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:visibility="gone" />
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
+                        <EditText
+                            android:id="@+id/edt_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/square_white_bg_drawable"
+                            android:inputType="text"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:padding="10dp"
+                            android:textSize="@dimen/text_size_fourteen" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_unregistered"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.hbb20.CountryCodePicker
+                                android:id="@+id/ccp_unregistered"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="#e2e2e2"
+                                android:paddingStart="5dp"
+                                app:ccp_autoDetectCountry="true"
+                                app:ccp_countryPreference="IN,US"
+                                app:ccp_defaultLanguage="ENGLISH"
+                                app:ccp_defaultNameCode="IN"
+                                app:ccp_rememberLastSelection="true"
+                                app:ccp_textSize="14sp" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/edt_mobile_unregistered"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:textSize="@dimen/text_size_fourteen" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_enter_name_unregistered"
+                                android:layout_width="100dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="5dp"
+                                android:gravity="center"
+                                android:background="#e2e2e2"
+                                android:text="Name"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                            <EditText
+                                android:id="@+id/edt_name_unregistered"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:inputType="textCapWords"
+                                android:maxLength="20"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:textSize="@dimen/text_size_twelve"
+                                android:hint="Enter Name"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/tv_select_patient"
                         android:layout_width="match_parent"
@@ -194,20 +290,16 @@
                         android:padding="5dp"
                         android:visibility="gone" />
 
-
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp">
-
+                        android:layout_margin="15dp">
 
                         <Button
                             android:id="@+id/btn_create_order"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/btn_height"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginBottom="30dp"
+                            android:layout_marginBottom="10dp"
                             android:background="@drawable/bg_gradient_round"
                             android:text="@string/create_token"
                             android:textAllCaps="false"
@@ -219,14 +311,13 @@
                             android:id="@+id/btn_create_token"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/btn_height"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginBottom="30dp"
+                            android:layout_marginBottom="10dp"
                             android:background="@drawable/bg_gradient_round"
-                            android:text="@string/create_token"
+                            android:text="@string/search_customer"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_fourteen" />
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:visibility="gone" />
 
 
                     </FrameLayout>

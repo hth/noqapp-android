@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -583,8 +584,16 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         Button btn_positive = dialog.findViewById(R.id.btn_positive);
         btn_positive.setOnClickListener(v -> {
             if (btn_positive.getText().equals(this.getString(R.string.submit_button))) {
-                if (edtGroceryCard.getText().toString().length() == 19
-                        || edtLiquorCard.getText().toString().length() == 19) {
+                String gCard = null;
+                String lCard = null;
+                if(edtGroceryCard.getError() == null && !TextUtils.isEmpty(edtGroceryCard.getText())) {
+                    gCard = edtGroceryCard.getText().toString();
+                }
+                if(edtLiquorCard.getError() == null && !TextUtils.isEmpty(edtLiquorCard.getText())) {
+                    lCard = edtLiquorCard.getText().toString();
+                }
+
+                if ( !TextUtils.isEmpty(gCard) || !TextUtils.isEmpty(lCard)) {
                     QueueAuthorize queueAuthorize = new QueueAuthorize()
                             .setCodeQR(codeQR)
                             .setFirstCustomerId(edtGroceryCard.getText().toString())
