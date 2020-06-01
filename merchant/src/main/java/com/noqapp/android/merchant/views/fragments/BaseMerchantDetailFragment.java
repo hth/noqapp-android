@@ -274,7 +274,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             context.startActivity(in);
             RegistrationActivity.registerCallBack = this;
             LoginActivity.loginCallBack = this;
-        } else if (null != eej && eej.getSystemErrorCode().equals("350")) {
+        } else if (null != eej && eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.MERCHANT_COULD_NOT_ACQUIRE.getCode())) {
             new CustomToast().showToast(context, getString(R.string.error_client_just_acquired));
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");

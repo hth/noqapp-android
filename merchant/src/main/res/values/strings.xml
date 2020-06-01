@@ -268,6 +268,6 @@
     <string name="setting_msg">Changes made here is permanent. These changes will reflect immediately.</string>
     <string name="treatment_plan">Treatment Plan</string>
     <string name="add_new">Create Token</string>
-    <string name="search_customer">Search Customer</string>
+    <string name="search_registered_customer">Search Registered Customer</string>
 
 </resources>

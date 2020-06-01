@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="center_horizontal"
-                    android:text="Click button to create token"
+                    android:text="Search &#038; click button to create token"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_fourteen" />
 
@@ -98,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
                             android:layout_weight="1"
-                            android:checked="true"
+                            android:checked="false"
                             android:text="Mobile No"
                             android:textSize="@dimen/text_size_twelve"
                             app:buttonTint="@color/radio_button_color" />
@@ -110,7 +110,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:checked="false"
-                            android:text="Id"
+                            android:text="Search By Id"
                             android:textSize="@dimen/text_size_twelve"
                             app:buttonTint="@color/radio_button_color" />
 
@@ -310,7 +310,7 @@
                             android:layout_height="@dimen/btn_height"
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/bg_gradient_round"
-                            android:text="@string/search_customer"
+                            android:text="@string/search_registered_customer"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen"
