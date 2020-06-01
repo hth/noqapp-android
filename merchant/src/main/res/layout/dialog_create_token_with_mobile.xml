@@ -28,7 +28,6 @@
                 android:background="@drawable/cross"
                 android:padding="10dp" />
 
-
             <TextView
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
@@ -38,7 +37,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_sixteen"
                 android:textStyle="bold" />
-
         </RelativeLayout>
 
 
@@ -49,7 +47,6 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:padding="15dp">
-
 
             <LinearLayout
                 android:id="@+id/ll_center"
@@ -101,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
                             android:layout_weight="1"
-                            android:checked="false"
+                            android:checked="true"
                             android:text="Mobile No"
                             android:textSize="@dimen/text_size_twelve"
                             app:buttonTint="@color/radio_button_color" />
