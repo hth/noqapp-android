@@ -113,7 +113,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:checked="false"
-                            android:text="User Id"
+                            android:text="Biz Id"
                             android:textSize="@dimen/text_size_twelve"
                             app:buttonTint="@color/radio_button_color" />
 
@@ -124,7 +124,7 @@
                             android:layout_gravity="right"
                             android:layout_weight="1"
                             android:checked="false"
-                            android:text="Unregistered"
+                            android:text="Un-registered"
                             android:textSize="@dimen/text_size_twelve"
                             app:buttonTint="@color/radio_button_color" />
                     </RadioGroup>
