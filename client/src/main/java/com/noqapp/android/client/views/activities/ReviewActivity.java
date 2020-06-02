@@ -12,7 +12,7 @@ import com.noqapp.android.client.presenter.beans.body.OrderReview;
 import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -135,7 +135,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 if (AppUtils.isRelease()) {
                     Bundle params = new Bundle();
                     params.putString("Business_Type", jtk.getBusinessType().getName());
-                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_REVIEW_SCREEN, params);
+                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_REVIEW_SCREEN, params);
                 }
             }
         } else {

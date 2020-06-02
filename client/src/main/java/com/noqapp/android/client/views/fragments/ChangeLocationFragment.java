@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
@@ -119,7 +119,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
             }
         });
         if (AppUtils.isRelease()) {
-            FabricEvents.logContentEvent(FabricEvents.EVENT_CHANGE_LOCATION);
+            AnalyticsEvents.logContentEvent(AnalyticsEvents.EVENT_CHANGE_LOCATION);
         }
         return view;
     }

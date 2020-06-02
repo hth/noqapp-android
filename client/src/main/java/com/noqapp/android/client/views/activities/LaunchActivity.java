@@ -64,7 +64,7 @@ import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -735,7 +735,7 @@ public class LaunchActivity
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Language", "HINDI");
-                fireBaseAnalytics.logEvent(FabricEvents.EVENT_CHANGE_LANGUAGE, params);
+                fireBaseAnalytics.logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
             }
         });
         ll_english.setOnClickListener((View v) -> {
@@ -744,7 +744,7 @@ public class LaunchActivity
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Language", "ENGLISH");
-                fireBaseAnalytics.logEvent(FabricEvents.EVENT_CHANGE_LANGUAGE, params);
+                fireBaseAnalytics.logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
             }
         });
         dialog.show();

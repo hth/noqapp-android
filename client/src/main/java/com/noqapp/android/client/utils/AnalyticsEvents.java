@@ -5,10 +5,10 @@ import android.os.Bundle;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
-public class FabricEvents {
+public class AnalyticsEvents {
 
     public static final String EVENT_REVIEW_SCREEN = "Review_Screen";
-    public static final String EVENT_FEED = "feed_dec_18";
+    public static final String EVENT_FEED = "Feed_Dec_18";
     public static final String EVENT_RATE_APP = "Rate_The_App";
     public static final String EVENT_SEARCH = "Search_Screen";
     public static final String EVENT_BUZZER_SCREEN = "Buzzer_Screen";
@@ -25,7 +25,7 @@ public class FabricEvents {
     public static final String EVENT_INVITE = "Invite_Screen";
     public static final String EVENT_LOGIN_SCREEN = "Login_Screen";
     public static final String EVENT_ERROR = "Log_Error";
-    public static final String EVENT_SCAN_CODEQR_SCREEN = "ScanCodeQR";
+    public static final String EVENT_SCAN_STORE_CODE_QR_SCREEN = "Scan_Store_CodeQR";
 
     public static void logContentEvent(String event){
         Bundle params = new Bundle();

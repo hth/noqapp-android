@@ -3,7 +3,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
 import com.noqapp.android.common.pojos.DisplayNotification;
 
@@ -35,7 +35,7 @@ public class NotificationActivity extends BaseActivity {
             rl_empty.setVisibility(View.GONE);
         }
         if (AppUtils.isRelease()) {
-            FabricEvents.logContentEvent(FabricEvents.EVENT_NOTIFICATION_SCREEN);
+            AnalyticsEvents.logContentEvent(AnalyticsEvents.EVENT_NOTIFICATION_SCREEN);
         }
     }
 

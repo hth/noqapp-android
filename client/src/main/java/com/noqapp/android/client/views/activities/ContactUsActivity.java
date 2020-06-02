@@ -12,7 +12,7 @@ import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -69,7 +69,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
         });
 
         if (AppUtils.isRelease()) {
-            FabricEvents.logContentEvent(FabricEvents.EVENT_CONTACT_US_SCREEN);
+            AnalyticsEvents.logContentEvent(AnalyticsEvents.EVENT_CONTACT_US_SCREEN);
         }
     }
 
