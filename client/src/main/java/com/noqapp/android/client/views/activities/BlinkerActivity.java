@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 
 
 public class BlinkerActivity extends Activity {
@@ -51,7 +51,7 @@ public class BlinkerActivity extends Activity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         if (AppUtils.isRelease()) {
-            FabricEvents.logContentEvent(FabricEvents.EVENT_BUZZER_SCREEN);
+            AnalyticsEvents.logContentEvent(AnalyticsEvents.EVENT_BUZZER_SCREEN);
         }
 
         if (null != vibrator && vibrator.hasVibrator()) {

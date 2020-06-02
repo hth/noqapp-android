@@ -19,7 +19,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.squareup.picasso.Picasso;
 
@@ -72,7 +72,7 @@ public class FeedActivity extends AppCompatActivity {
             params.putString(FirebaseAnalytics.Param.CONTENT, jsonFeed.getTitle());
             params.putString(FirebaseAnalytics.Param.ITEM_ID, jsonFeed.getContentId());
             params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, jsonFeed.getContentType());
-            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_FEED, params);
+            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_FEED, params);
         }
     }
 

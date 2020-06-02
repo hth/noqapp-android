@@ -4,16 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
@@ -30,7 +27,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -187,7 +184,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                         Bundle params = new Bundle();
                         params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
-                        LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_PLACE_ORDER, params);
+                        LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_PLACE_ORDER, params);
                     }
                 }
             } else {
@@ -245,7 +242,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                     Bundle params = new Bundle();
                     params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
-                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_CANCEL_ORDER, params);
+                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_ORDER, params);
                 }
             }
         } else {

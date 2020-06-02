@@ -28,7 +28,7 @@ import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -43,7 +43,6 @@ import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.common.utils.ShowUploadImageDialog;
-import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.common.views.activities.helper.CapitalizeEachWordFirstLetterTextWatcher;
 import com.squareup.picasso.Picasso;
 
@@ -335,7 +334,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         DependentApiCall dependentModel = new DependentApiCall(this);
                         dependentModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
                         if (AppUtils.isRelease()) {
-                            FabricEvents.logContentEvent(FabricEvents.EVENT_DEPENDENT_ADDED);
+                            AnalyticsEvents.logContentEvent(AnalyticsEvents.EVENT_DEPENDENT_ADDED);
                         }
                     }
                 } else {

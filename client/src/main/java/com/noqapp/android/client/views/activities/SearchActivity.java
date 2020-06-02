@@ -26,7 +26,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -146,8 +146,8 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         }
         if (AppUtils.isRelease()) {
             Bundle params = new Bundle();
-            params.putString(FirebaseAnalytics.Param.SEARCH_TERM, FabricEvents.EVENT_SEARCH);
-            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(FabricEvents.EVENT_SEARCH, params);
+            params.putString(FirebaseAnalytics.Param.SEARCH_TERM, AnalyticsEvents.EVENT_SEARCH);
+            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
         }
     }
 
