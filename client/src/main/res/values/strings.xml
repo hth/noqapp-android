@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NoQueue</string>LaunchActivity
+    <string name="app_name">NoQueue</string>
     <string name="title_activity_launch">NoQueue</string>
     <!--Screen Name-->
     <string name="screen_qdetails">Token Details</string>
