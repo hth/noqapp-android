@@ -132,7 +132,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     private boolean fromList = false;
     private ArrayList<BizStoreElastic> nearMeData;
     private ArrayList<BizStoreElastic> nearMeHospital;
-    private CurrentActivityAdapter.OnItemClickListener currentClickListner;
+    private CurrentActivityAdapter.OnItemClickListener currentClickListener;
     private StoreInfoAdapter.OnItemClickListener storeListener;
     private String scrollId = "";
     private double lat, lng;
@@ -247,7 +247,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         super.onActivityCreated(savedInstanceState);
 
         tokenQueueViewInterface = this;
-        currentClickListner = this;
+        currentClickListener = this;
         storeListener = this;
         mHandler = new QueueHandler();
 
@@ -703,7 +703,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             temp.addAll(currentQueueList);
             temp.addAll(jsonSchedules);
 
-            CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(temp, getActivity(), currentClickListner);
+            CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(temp, getActivity(), currentClickListener);
             rv_current_activity.setAdapter(currentActivityAdapter);
             tv_active_title.setText(getString(R.string.active_token) + " (" + currentQueueList.size() + ")");
             currentActivityAdapter.notifyDataSetChanged();
