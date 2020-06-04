@@ -455,24 +455,21 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                                 int lastServingNumber = prefs.getInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), 0);
 
-                                if(jtk.getToken() > currentlyServingNumber && lastServingNumber != currentlyServingNumber) {
-                                    String notificationMessage =
-                                            String.format(getApplicationContext().getString(R.string.position_in_queue), jtk.afterHowLong());
+                                if (jtk.getToken() > currentlyServingNumber && lastServingNumber != currentlyServingNumber) {
+                                    String notificationMessage = String.format(getApplicationContext().getString(R.string.position_in_queue), jtk.afterHowLong());
 
                                     prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), currentlyServingNumber).apply();
                                     // Add wait time to notification message
                                     try {
-                                        long avgServiceTime = jtk.getAverageServiceTime() != 0 ? jtk.getAverageServiceTime() :
-                                                prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
-                                        String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime,
-                                                jtk.afterHowLong(), QueueStatusEnum.N, jtk.getStartHour());
-                                            if (!TextUtils.isEmpty(waitTime)) {
-                                                notificationMessage = notificationMessage + String.format(
-                                                        "\nWait time: %1$s", waitTime);
-                                            }
+                                        long avgServiceTime = jtk.getAverageServiceTime() != 0
+                                                ? jtk.getAverageServiceTime()
+                                                : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
+                                        String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime, jtk.afterHowLong(), QueueStatusEnum.N, jtk.getStartHour());
+                                        if (!TextUtils.isEmpty(waitTime)) {
+                                            notificationMessage = notificationMessage + String.format("\nWait time: %1$s", waitTime);
+                                        }
                                     } catch (Exception e) {
-                                        Log.e("",
-                                                "Error setting wait time reason: " + e.getLocalizedMessage(), e);
+                                        Log.e("", "Error setting wait time reason: " + e.getLocalizedMessage(), e);
                                     }
                                     sendNotification(title, notificationMessage, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
                                 }
@@ -616,7 +613,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
                 NotificationChannel mChannel;
-                if (notificationPriority <= 10){
+                if (notificationPriority <= 10) {
                     mChannel = new NotificationChannel(channelWithSound, channelName, NotificationManager.IMPORTANCE_HIGH);
                     mChannel.setSound(defaultSoundUri, null);
                 } else {
