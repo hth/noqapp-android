@@ -613,7 +613,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
                 NotificationChannel mChannel;
-                if (notificationPriority <= 10) {
+                if (notificationPriority <= 25) {
                     mChannel = new NotificationChannel(channelWithSound, channelName, NotificationManager.IMPORTANCE_HIGH);
                     mChannel.setSound(defaultSoundUri, null);
                 } else {
