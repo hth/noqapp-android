@@ -373,9 +373,6 @@ android {
 
     testOptions {
         unitTests.all {
-            // All the usual Gradle options.
-            jvmArgs '-XX:MaxPermSize=256m'
-
             jacoco {
                 includeNoLocationClasses = true
             }
