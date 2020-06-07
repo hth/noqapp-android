@@ -153,11 +153,15 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
             if (null != bizStoreElastic) {
-                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK
-                        || bizStoreElastic.getBusinessType() == BusinessTypeEnum.CD || bizStoreElastic.getBusinessType() == BusinessTypeEnum.CDQ) {
-                    setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
-                } else {
-                    setProgressMessage("Loading ...");
+                switch (bizStoreElastic.getBusinessType()) {
+                    case DO:
+                    case BK:
+                    case CD:
+                    case CDQ:
+                        setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
+                        break;
+                    default:
+                        setProgressMessage("Loading ...");
                 }
             } else {
                 setProgressMessage("Loading ...");
@@ -175,7 +179,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 ShowAlertInformation.showNetworkDialog(this);
             }
 
-            if (UserUtils.isLogin() && BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType()) {
+            if (UserUtils.isLogin() && (BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() || BusinessTypeEnum.CD == bizStoreElastic.getBusinessType())) {
                 SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                 boolean registered = prefs.getBoolean(Constants.PRE_REGISTER, false);
                 if (registered) {

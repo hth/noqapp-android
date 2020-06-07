@@ -79,7 +79,6 @@ public class MerchantNearMeTest extends ITest {
         }
     }
 
-
     @DisplayName("Calling level up business")
     void callLevelUp(BizStoreElastic bizStoreElastic) {
         queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
@@ -87,7 +86,7 @@ public class MerchantNearMeTest extends ITest {
         queueApiUnAuthenticCall.getAllQueueStateLevelUp(did, bizStoreElastic.getCodeQR());
         System.out.println("Level up api called");
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilQResponseFromServer());
-        Assert.assertTrue("Store not found", null != queueApiUnAuthenticCall.bizStoreElasticList);
+        Assert.assertNotNull("Store not found", queueApiUnAuthenticCall.bizStoreElasticList);
         if (null != queueApiUnAuthenticCall.bizStoreElasticList) {
             System.out.println("Levelup response: \n" + queueApiUnAuthenticCall.bizStoreElasticList.toString());
         }
@@ -99,7 +98,7 @@ public class MerchantNearMeTest extends ITest {
         storeDetailApiCalls.getStoreDetail(did, bizStoreElastic.getCodeQR());
         System.out.println("Store Api called: ");
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilStoreResponseFromServer());
-        Assert.assertTrue("Store not found", null != storeDetailApiCalls.jsonStore);
+        Assert.assertNotNull("Store not found", storeDetailApiCalls.jsonStore);
 
         storeDetailApiCalls.setResponseReceived(false);
         jsonStore = storeDetailApiCalls.jsonStore;
