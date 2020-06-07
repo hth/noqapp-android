@@ -10,8 +10,10 @@
     <string name="screen_invite_details">Invite Details</string>
     <string name="screen_join">Get Token</string>
     <string name="screen_search">Search</string>
+
     <string name="screen_profile">Profile</string>
     <string name="screen_edit_profile">Edit Profile</string>
+
     <string name="medical_profile">Medical Profile</string>
     <string name="medical_profiles">Medical Profiles</string>
     <string name="screen_view_all">View All</string>
@@ -51,7 +53,7 @@
     <string name="login">Login</string>
     <string name="phone">Phone <font color='red'>\u002A</font></string>
     <string name="name">Name <font color='red'>\u002A</font></string>
-    <string name="mail">Mail</string>
+    <string name="mail">Mail <font color='red'>\u002A</font></string>
     <string name="birthday">Birthday <font color='red'>\u002A</font></string>
     <string name="gender">Gender <font color='red'>\u002A</font></string>
     <string name="invitecode">Invite code</string>
@@ -91,7 +93,6 @@
     <string name="cancel_order">You have successfully cancelled the order</string>
     <string name="fail_to_cancel_order">Failed to cancel the order</string>
 
-
     <!--- Review Screen -->
     <string name="radio_save_30min">0</string>
     <string name="radio_save_1hr">1</string>
@@ -114,7 +115,11 @@
     <string name="exit_app">Press back again to exit</string>
     <string name="app_missing">No app to share invitation</string>
     <string name="select_country">Select Country</string>
-    <!--Stop waiting in queues. Use my invite code '%@' to download and register with NoQueue. We both earn Remote Joins. To learn more, go to www.noqapp.com/about. \n\nIf you own a store or restaurant or provide services and would like to increase customer satisfaction become NoQueue Merchant. Learn more go to page www.noqapp.com/about.-->
+    <!--Stop waiting in queues. Use my invite code '%@' to download and
+    register with NoQueue. We both earn Remote Joins. To learn more, go
+    to www.noqapp.com/about. \n\nIf you own a store or restaurant or provide
+    services and would like to increase customer satisfaction become NoQueue
+    Merchant. Learn more go to page www.noqapp.com/about.-->
 
     <!--Me Screen-->
     <string name="logout">Logout</string>
@@ -128,6 +133,7 @@
     <string name="review_thanks">Thanks for feedback.</string>
     <string name="error_timesaved">Please provide how many no. of hour(s) you saved.</string>
     <string name="error_qrcode_scan">Not a valid NoQueue QR Code</string>
+
     <string name="verify_phone_auth">Verify</string>
     <string name="hint_verification_code">Verification Code</string>
     <string name="status_code_sent">Code Sent</string>
@@ -138,7 +144,6 @@
     <string name="store_hour">Hours:</string>
     <string name="store_today_hour">Today:</string>
     <string name="store_closed">Closed Today</string>
-
 
     <!--Error  messages-->
     <string name="error_prevent_joining">%1$s %2$s is no longer accepting new token for the day</string>
@@ -176,7 +181,6 @@
     <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission. The application will now exit.</string>
 
-
     <string name="msg_default_status">Place NoQueue QR Code inside the viewfinder rectangle to scan it.</string>
     <string name="notification_alert">You haven\'t receive any notification yet :(.</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -187,7 +191,6 @@
     <string name="my_appointments">My Appointments</string>
     <string name="medical_history_details">Case History</string>
 
-
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="error_field_required">This field is required</string>
@@ -195,7 +198,6 @@
     <string name="prompt_gender">Gender</string>
     <string name="prompt_marital_status">marital status</string>
     <string name="action_update">Update Profile</string>
-
 
     <string name="language_setting">Change Language</string>
     <string name="lang_dialog_title">Change Language</string>
@@ -274,7 +276,6 @@
     <string name="review_msg_queue_done">Your were served successfully</string>
     <!-- Language select dialog -->
 
-
     <string name="mds_chief_complaints">Chief Complaint:</string>
     <string name="mds_past_history">Past History:</string>
     <string name="mds_family_history">Family History:</string>
@@ -332,7 +333,6 @@
     <string name="total_amount_paid">Total Amount Paid:</string>
     <string name="total_amount_remaing">Total Amount Remaining:</string>
     <string name="pay_and_join">Pay &amp; Confirm Queue</string>
-
 
     <!-- Empty Screens labels -->
     <string name="empty_order_title">Your bag is empty</string>

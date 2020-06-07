@@ -8,15 +8,22 @@
     <string name="screen_notification">सूचनाएं</string>
     <string name="screen_legal">वैधानिक</string>
     <string name="screen_invite_details">आमंत्रण विवरण</string>
-    <string name="screen_join">Join Queue</string>
-    <string name="screen_search">तलाशी</string>
+    <string name="screen_join">कतार मे जुङे</string>
+    <string name="screen_search">तलाशी (खोज)</string>
+
     <string name="screen_profile">प्रोफाइल</string>
     <string name="screen_edit_profile">प्रोफाइल एडिट करें</string>
+
+    <string name="medical_profile">मेडिकल प्रोफाइल</string>
+    <string name="medical_profiles">मेडिकल प्रोफाइल</string>
     <string name="screen_view_all">समग्र अवलोकन</string>
-    <string name="title_activity_contact_us">हमें संपर्क करें</string>
+    <string name="screen_upcoming_appointment">मेरे अपॉइंटमेंट</string>
+
     <string name="action_settings">सेटिंग्स और पसंद</string>
-    <string name="join">Join Queue</string>
+    <string name="join">क्लिक कर टोकन प्राप्त करें</string>
+    <string name="view_token_status">टोकन स्थिति देखें</string>
     <string name="cancel">रद्द करें</string>
+    <string name="login_to_join">लॉग इन करें</string>
     <string name="quit_queue">कतार से बाहर निकलें</string>
     <string name="ratetheapp">एप्लिकेशन का मूल्यांकन करें</string>
     <string name="legal">वैधानिक</string>
@@ -28,7 +35,8 @@
     <string name="your_invite_code">आपका आमंत्रण कोड</string>
     <string name="copy">प्रतिलिपि</string>
     <string name="send_invite">आमंत्रण भेजें </string>
-    <string name="empty_history">आपके पास कोई \n हालिया इतिहास नहीं है।</string>
+    <string name="empty_invite_code">लॉगिन कर निमंत्रण कोड साझा करें</string>
+    <string name="empty_history">आपके पास कोई हालिया इतिहास नहीं है। (हालिया इतिहास उपलब्ध नहीं)</string>
     <string name="close">बंद करे</string>
 
 
@@ -39,33 +47,36 @@
     <string name="version_no">एप्लिकेशन  संस्करण: %1$s</string>
 
     <!--Register Screen-->
-
     <string name="phonenumber">फोन नंबर</string>
     <string name="register">पंजीकरण</string>
 
     <string name="login">लॉग इन</string>
-    <string name="phone">फोन <font color='red'>\u002A</font></string>
-    <string name="name">नाम <font color='red'>\u002A</font></string>
+    <string name="phone">फोन<font color='red'>\u002A</font></string>
+    <string name="name">नाम<font color='red'>\u002A</font></string>
     <string name="mail">ई-मेल</string>
     <string name="birthday">जन्मदिवस  <font color='red'>\u002A</font></string>
-    <string name="gender">लिंग  <font color='red'>\u002A</font></string>
+    <string name="gender">लिंग<font color='red'>\u002A</font></string>
     <string name="invitecode">निमंत्रण कोड</string>
     <string name="btnregister">पंजीकरण जारी रखें</string>
     <string name="error_name_blank">कृपया नाम दर्ज करें</string>
-    <string name="error_name_length">Name length should be at least 3 or higher</string>
-    <string name="error_invalid_email">कृपया वैध ईमेल दर्ज़ करें</string>
+    <string name="error_email_blank">कृपया ई-मेल दर्ज करें</string>
+    <string name="error_name_length">नाम ३ अकक्षर या अधिक</string>
+    <string name="error_invalid_email">कृपया वैध ई-मेल दर्ज़ करें</string>
     <string name="error_invalid_date">कृपया एक वैध तिथि चुनें</string>
     <string name="error_dob_blank">कृपया जन्म तिथि दर्ज करें</string>
-    <string name="error_dob_format">Please enter date of birth in yyyy-MM-dd format</string>
+    <string name="error_dob_format">कृपया yyyy-MM-dd प्रारूप में जन्म तिथि दर्ज करें</string>
 
 
     <!--Error and message-->
     <string name="networkerror">नेटवर्क त्रुटि</string>
-    <string name="offline">प्रसार अनुपलब्ध है। कृपया अपने डिवाइस को नेटवर्क से कनेक्ट करें</string>
+    <string name="offline">नेटवर्क अनुपलब्ध है। कृपया अपने डिवाइस को नेटवर्क से कनेक्ट करें।</string>
+
     <!--- Join Screen -->
-    <string name="you_are_after">You are after</string>
-    <string name="serving_now">Serving now</string>
+    <string name="serving_now">सेवा में</string>
     <string name="your_token">आपका टोकन नंबर</string>
+    <string name="your_position_in_queue_label">कतार में आपकी स्थिति</string>
+    <string name="position_in_queue_label">कतार में स्थिति</string>
+    <string name="your_are_next_label">आप अगले हैं!</string>
     <string name="position_in_queue">कतार में स्थिति: %1$d</string>
     <string name="daily_token_limit">स्टोर प्रतिदिन टोकन सीमा: %1$d</string>
     <string name="revisit_restriction">अगली सेवा प्रतिबंध: %1$s</string>
@@ -79,6 +90,8 @@
     <string name="cancel_queue">आपने सफलतापूर्वक कतार रद्द कर दी है</string>
     <string name="fail_to_cancel">कतार रद्द करने में विफल रहा</string>
 
+    <string name="cancel_order">आपने सफलतापूर्वक ऑर्डर निरस्त किया</string>
+    <string name="fail_to_cancel_order">ऑर्डर निरस्त नाकाम</string>
 
     <!--- Review Screen -->
     <string name="radio_save_30min">शून्य</string>
@@ -99,9 +112,14 @@
 
     <!-- Others -->
     <string name="ok">OK</string>
-    <string name="exit_app">बाहर निकलने के लिए वापस फिर से दबाएं</string>
+    <string name="exit_app">बाहर के लिए वापस दबाएं</string>
     <string name="app_missing">आमंत्रण साझा करने के लिए कोई ऐप नहीं है</string>
     <string name="select_country">देश चुनिए</string>
+    <!--Stop waiting in queues. Use my invite code '%@' to download and
+    register with NoQueue. We both earn Remote Joins. To learn more, go
+    to www.noqapp.com/about. \n\nIf you own a store or restaurant or provide
+    services and would like to increase customer satisfaction become NoQueue
+    Merchant. Learn more go to page www.noqapp.com/about.-->
 
     <!--Me Screen-->
     <string name="logout">लॉग आउट</string>
@@ -128,87 +146,114 @@
     <string name="store_closed">आज बंद है।</string>
 
     <!--Error  messages-->
-    <string name="error_prevent_joining">%1$s %2$s is no longer accepting new token for the day</string>
-    <string name="error_day_closed">%1$s %2$s is closed for the day</string>
-    <string name="error_token_available_from">%1$s %2$s will start issuing new token after %3$s. Please try again after %3$s.</string>
-    <string name="error_token_not_available_from">%1$s %2$s is closing for the day soon. Hence no new tokens would be available.</string>
-    <string name="error_business_closed_permanent">%1$s %2$s is closed permanently</string>
-    <string name="error_business_has_closed_for_the_day">%1$s %2$s has closed for the day</string>
-    <string name="error_user_needs_to_be_logged_in">Please login to join %1$s %2$s</string>
-    <string name="error_reached_daily_limit">All tokens for this queue has been acquired for the day.</string>
-    <string name="text_time_saved">How much time did you save ?</string>
-    <string name="authentication_fail_title">Authentication failure</string>
-    <string name="authentication_fail_msg">Please login again.</string>
-    <string name="barcode_error">Queue not found</string>
-    <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
+    <string name="error_prevent_joining">%1$s %2$s अब नये टोकन स्वीकार नहीं हो रहें हैं।</string>
+    <string name="error_day_closed">%1$s %2$s अाज दिन के लिए बंद है।</string>
+    <string name="error_token_available_from">%1$s %2$s नया टोकन जारी करना शुरू करेंगे %3$s के बाद। कृपया पुनः प्रयास करें %3$s.</string>
+    <string name="error_token_not_available_from">%1$s %2$s जल्द ही बंद होगा।</string>
+    <string name="error_business_closed_permanent">%1$s %2$s स्थायी रूप से बंद है।</string>
+    <string name="error_business_has_closed_for_the_day">%1$s %2$s अाज बंद हो चुका है।</string>
+    <string name="error_user_needs_to_be_logged_in">कृपया लोगिन करें क्योंकि %1$s %2$s</string>
+    <string name="error_reached_daily_limit">अाज के सभी टोकन दिये जा चुके है।</string>
+    <string name="text_time_saved">अाप का कितना समय बचा?</string>
+    <string name="authentication_fail_title">प्रमाणीकरण विफलता</string>
+    <string name="authentication_fail_msg">कृपया फिर से लॉग-इन करें</string>
+    <string name="barcode_error">यह कोड सही नहीं हैं।</string>
+    <string name="barcode_error_msg">कोई व्यापारी इस NoQueue कोड से संबद्ध नहीं है।</string>
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc\n</string>
     <string name="alert">सावधान</string>
     <string name="estimated_time">प्रतीक्षा समय: %1$s</string>
-    <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
-    <string name="error_join">Remote Queue Not Enabled</string>
+    <string name="error_remote_join_not_available">रिमोट जॉइन की अनुमति नहीं है। कृपया स्टोर पर जाएँ।</string>
+    <string name="error_join">दूरस्थ कतार सक्षम नहीं है।</string>
     <string name="login_hint">देश के कोड के बिना फोन नंबर दर्ज करें। </string>
 
-    <string name="btn_playstore">Open Play Store</string>
-    <string name="playstore_update_title">Newer App Version Available</string>
-    <string name="playstore_update_msg">New version of NoQueue is available on play store. Please update your app to latest version.\n</string>
-    <string name="notification_alert">You don\'t have any notifications.</string>
+    <string name="bullet">\u27A3</string>
+    <string name="circle_large_bullet">\u2B24</string>
+    <string name="circle_small_bullet">\u2022</string>
+    <string name="horizontal_ellipsis">\u2026</string>
+    <string name="triangular_bullet">\u2023</string>
+    <string name="right_pointing_angle_quotation">\u203A</string>
+    <string name="asterisk">\u002A</string>
+
+    <string name="btn_playstore">प्ले स्टोर खोलें</string>
+    <string name="playstore_update_title">नया ऐप संस्करण उपलब्ध है।</string>
+    <string name="playstore_update_msg">नोक्यू(NoQueue) का नया संस्करण प्ले स्टोर पर उपलब्ध है। कृपया अपने ऐप को नवीनतम संस्करण में अपडेट करें।</string>
+
+    <string name="low_storage_error">कम डिवाइस स्टोरेज के कारण फेस डिटेक्टर निर्भरताएं डाउनलोड नहीं की जा सकती हैं।</string>
+    <string name="no_camera_permission">यह एप्लिकेशन नहीं चल सकता क्योंकि इसमें कैमरा अनुमति नहीं है। एप्लिकेशन अब बाहर निकल जाएगा।</string>
+
+    <string name="msg_default_status">NoQueue QR कोड को दृश्यदर्शी आयत के अंदर रखें।</string>
+    <string name="notification_alert">कोई सूचना उपलब्ध नहीं है।</string>
+    <string name="navigation_drawer_open">नेविगेशन ड्रॉअर खोलें</string>
+    <string name="navigation_drawer_close">नेविगेशन ड्रॉअर बंद करें</string>
     <string name="home">होम</string>
     <string name="share">शेयर/साझा करें</string>
     <string name="medical_history">पिछले डॉक्टर का दौरा</string>
+    <string name="my_appointments">मेरे अपॉइंटमेंट</string>
+    <string name="medical_history_details">पूर्ववृत्त (केस हिस्ट्री)</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">ई-मेल</string>
+    <string name="error_field_required">यह फ़ील्ड आवश्यक है।</string>
+    <string name="prompt_user_name">उपयोगकर्ता नाम</string>
+    <string name="prompt_gender">लिंग</string>
+    <string name="prompt_marital_status">वैवाहिक स्थिति</string>
+    <string name="action_update">प्रोफ़ाइल अपडेट</string>
+
     <string name="language_setting">भाषा बदलें</string>
     <string name="lang_dialog_title">भाषा बदलें</string>
     <string name="hindi"> हिंदी</string>
     <string name="english">अंग्रेज़ी</string>
     <string name="current_location">वर्तमान स्थान</string>
     <string name="scan_qr">QR कोड स्कैन </string>
-    <string name="active_token">सक्रिय पंक्ति / ऑर्डर</string>
-    <string name="health_care">Hospitals</string>
-    <string name="business_near">आपके आस-पास की दुकानें</string>
+    <string name="active_token">सक्रिय टोकन</string>
+    <string name="health_care">अस्पताल</string>
+    <string name="business_near">बिजनेस/संस्थाये</string>
     <string name="view_all">सभी को देखें</string>
     <string name="scan_info">कतार में शामिल होने के लिए QR कोड स्कैन करें / मौके पर ऑर्डर</string>
     <string name="prompt_address_status">पता</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
-    <string name="medical_history_alert">You don\'t have any medical history.</string>
+    <string name="medical_history_alert">आपका कोई मेडिकल इतिहास नहीं है।</string>
     <string name="screen_order">ऑर्डर विवरण</string>
-    <string name="screen_order_confirm">ऑर्डर Confirmation</string>
+    <string name="screen_order_confirm">ऑर्डर पुष्टीकरण</string>
     <string name="transaction_history">लेन-देन</string>
     <string name="error_mobile_no_same">कृपया नया मोबाइल नंबर दर्ज करें</string>
     <string name="password">पासवर्ड <font color='red'>\u002A</font></string>
     <string name="error_pwd_blank">कृपया पासवर्ड भरें</string>
-    <string name="error_pwd_not_match">Both password should match</string>
-    <string name="error_pwd_length">Password should contains more than 6 characters</string>
-    <string name="action_update_additional">Update Additional Info</string>
-    <string name="additional_info_legal">Below information will be capture only if you visit a doctor.</string>
-    <string name="blood_type">Blood Group</string>
-    <string name="height">Height</string>
-    <string name="education">Education</string>
-    <string name="experience">Experience</string>
-    <string name="available_other_place">Avaliable at other places</string>
-    <string name="whole_day">24 Hours</string>
+    <string name="error_pwd_not_match">दोनों पासवर्ड का मिलान होना चाहिए</string>
+    <string name="error_pwd_length">पासवर्ड में ६ से अधिक अक्षर होने चाहिए</string>
+    <string name="action_update_additional">अद्यतन अतिरिक्त जानकारी</string>
+    <string name="additional_info_legal">नीचे दी गई जानकारी डॉक्टर के मिलने उपरांत रेकोरङ कि जाएगी।</string>
+    <string name="blood_type">रक्त समूह(Group)</string>
+    <string name="height">ऊंचाई</string>
+    <string name="education">शिक्षा</string>
+    <string name="experience">अनुभव</string>
+    <string name="available_other_place">अन्य स्थानों पर उपलब्ध है</string>
+    <string name="whole_day">चौबीसो घंटे</string>
     <string name="error_patient_name_missing">कृपया एक रोगी का नाम चुनें</string>
     <string name="dependent_list">परिवार के सदस्य</string>
     <string name="personal_info">व्यक्तिगत जानकारी</string>
-    <string name="location_change">Location update</string>
-    <string name="location_msg">ऐसा लगता है कि आपका स्थान बदल गया है। क्या आप इसे अपडेट करना चाहते हैं?</string>
-    <string name="token">TOKEN</string>
+    <string name="location_change">स्थान अद्यतन</string>
+    <string name="location_msg">आपके स्थान मे बदलाव पाया गया है। स्थान अपडेट चाहेंगे?</string>
+    <string name="token">टोकन</string>
     <string name="login_via_otp">ओटीपी के माध्यम से लॉगिन / पंजीकरण करें</string>
     <string name="resend_otp">ओटीपी पुनः भेजें</string>
     <string name="awards">पुरस्कार</string>
-    <string name="new_location">We\'ve detected a change in your location. Would you like to update?</string>
-    <string name="no_thanks">No Thanks</string>
+    <string name="new_location">आपके स्थान मे बदलाव पाया गया है। स्थान अपडेट चाहेंगे?</string>
+    <string name="no_thanks">जी नहीं, धन्यवाद</string>
     <string name="update"> सुधार </string>
     <string name="patient_name">रोगी का नाम</string>
     <string name="add_dependent">आश्रित जोड़ें</string>
     <string name="queue_details">कतार विवरण</string>
-    <string name="will_be_served">you will be served in %1$s</string>
-    <string name="ack">Acknowledge</string>
-    <string name="your_turn">It\'s your turn !!!</string>
-    <string name="biz_announcement">ध्यान: कोविड-19 अपडेट</string>
+    <string name="will_be_served">अाप को सेवा %1$s</string>
+    <string name="ack">स्वीकार, धन्यवाद</string>
+    <string name="your_turn">आपकी बारी है !!!</string>
+    <string name="pre_approve"> प्रि-अप्रुव </string>
+    <string name="biz_announcement">ध्यान: कोविड-१९ अपडेट</string>
     <string name="photo">तस्वीरें</string>
-    <string name="amenities"> सुख-साधन</string>
-    <string name="facility">सुविधाएँ</string>
-    <string name="skip_msg">You were not served. \nPress yes to join the queue again.</string>
-    <string name="order_now">Order Now</string>
+    <string name="amenities">सुविधाएँ</string>
+    <string name="facility">फसिलिटीज़</string>
+    <string name="skip_msg">आपकी सेवा नहीं हुई।\nफिर से कतार में शामिल होने के लिए हाँ दबाएं।</string>
+    <string name="order_now">ऑर्डर करें</string>
     <string name="payment_due">भुगतान राशि-</string>
     <string name="total_tax">समस्त टैक्स-</string>
     <string name="total_amount">कुल रकम-</string>
@@ -218,7 +263,7 @@
     <string name="mobile_no">मोबाइल नंबर</string>
     <string name="payment_mode">भुगतान के तरीके</string>
     <string name="payment_mode_cash"> नकद</string>
-    <string name="payment_mode_wallet">Wallet</string>
+    <string name="payment_mode_wallet">वालेट(₹)</string>
     <string name="payment_mode_cards">क्रेडिट / डेबिट कार्ड</string>
     <string name="payment_mode_online">ऑनलाइन</string>
     <string name="pwd">पासवर्ड</string>
@@ -226,96 +271,122 @@
     <string name="male">पुरुष</string>
     <string name="female">स्त्री</string>
     <string name="great">बहुत बढ़िया!!</string>
-    <string name="review_msg_checkup_done">आपका चेक अप सफलतापूर्वक हो गया है</string>
-    <string name="review_msg_order_done">Your order has been delivered successfully</string>
-    <string name="review_msg_queue_done">Your were served successfully</string>
+    <string name="review_msg_checkup_done">आपका चेक अप सफलतापूर्वक हो गया है।</string>
+    <string name="review_msg_order_done">आपका ऑर्डर सफलतापूर्वक वितरित कर दिया गया है।</string>
+    <string name="review_msg_queue_done">आपकी सफलतापूर्वक सेवा की गई हैं।</string>
+    <!-- Language select dialog -->
 
-    <string name="mds_chief_complaints">Chief Complaint:</string>
-    <string name="mds_past_history">Past History:</string>
-    <string name="mds_family_history">Family History:</string>
-    <string name="mds_known_allergies">Known Allergies:</string>
-    <string name="mds_physical_exam">Physical Examination:</string>
-    <string name="mds_clinical_findings">Clinical Findings:</string>
-    <string name="mds_provisional_diagnosis">Provisional/Differential Diagnosis:</string>
-    <string name="mds_investigation_advice">Investigation Advised:</string>
-    <string name="mds_medication">Medication:</string>
-    <string name="mds_assist">Assist</string>
-    <string name="mds_follow_up">Follow up:</string>
-    <string name="mds_instruction">Instruction/Plan to patient:</string>
+    <string name="mds_chief_complaints">प्रमुख शिकायत:</string>
+    <string name="mds_past_history">विगत इतिहास:</string>
+    <string name="mds_family_history">परिवार के इतिहास:</string>
+    <string name="mds_known_allergies">ज्ञात एलर्जी:</string>
+    <string name="mds_physical_exam">शारीरिक परीक्षा:</string>
+    <string name="mds_clinical_findings">नैदानिक निष्कर्ष:</string>
+    <string name="mds_provisional_diagnosis">अनंतिम / विभेदक निदान:</string>
+    <string name="mds_investigation_advice">जांच की सलाह दी:</string>
+    <string name="mds_medication">दवाई:</string>
+    <string name="mds_assist">असिस्ट</string>
+    <string name="mds_follow_up">अगली तारीख:</string>
+    <string name="mds_instruction">रोगी को निर्देश:</string>
     <string name="about_me">डॉक्टर के बारे में</string>
     <string name="license">लाइसेंस</string>
-    <string name="mds_pathology_invs_advice">Investigation Advised >> Pathology:</string>
-    <string name="mds_radiology_invs_advice">Investigation Advised >> Radiology:</string>
+    <string name="mds_pathology_invs_advice">जांच की सलाह >> पैथोलॉजी:</string>
+    <string name="mds_radiology_invs_advice">जांच की सलाह >> रेडियोलोजी:</string>
     <string name="maps_direction">मानचित्र और दिशा-निर्देश</string>
     <string name="change_number">नंबर बदलें</string>
-    <string name="email_validate">Account activation mail sent to email below</string>
-    <string name="change_email">Change Email</string>
-    <string name="email_hint">Please enter email ID</string>
-    <string name="otp">Enter OTP</string>
-    <string name="validate_via_otp">Validate email via OTP</string>
-    <string name="error_otp_blank">OTP is required</string>
-    <string name="msg_vibrator_off">Your phone is on silent mode. App might fail to acknowledge you when its your turn.</string>
-    <string name="error_mobile_no_length">Phone number has to be 10 digits</string>
-    <string name="profile"> <u>PROFILE</u></string>
+    <string name="email_validate">खाता सक्रियण मेल नीचे ई-मेल पर भेजा गया</string>
+    <string name="change_email">ई-मेल बदलें</string>
+    <string name="email_hint">कृपया ई-मेल आईडी दर्ज करें</string>
+    <string name="otp">ओटीपी दर्ज करें</string>
+    <string name="validate_via_otp">ईमेल को ओटीपी के माध्यम से मान्य करें</string>
+    <string name="error_otp_blank">ओटीपी आवश्यक है।</string>
+    <string name="msg_vibrator_off">आपका फोन साइलेंट मोड पर है। अपनी बारी आने पर ऐप आपको स्वीकार करने में विफल हो सकता है।</string>
+    <string name="error_mobile_no_length">फोन नंबर १० अंकों का होना चाहिए</string>
+    <string name="profile"> <u>प्रोफ़ाइल</u></string>
     <string name="merchant_account">व्यापारी बने</string>
-    <string name="address">Address</string>
-    <string name="privacy_in_short">Privacy Quick Overview</string>
-    <string name="order_history">Order &amp; Queue History</string>
-    <string name="subject">Subject</string>
-    <string name="message">Feedback/Suggestions/Issues</string>
-    <string name="error_subject_blank">Please enter subject</string>
-    <string name="error_feedback_blank">Please enter message</string>
-    <string name="screen_order_detail">Order Summary</string>
-    <string name="order_items">Order Items</string>
-    <string name="history">History</string>
-    <string name="empty_review">No one has reviewed. Be the first to review.</string>
-    <string name="rejoin">Rejoin</string>
-    <string name="reorder">Reorder</string>
-    <string name="additional">Add product in comment if not available. Specify delivery/order instruction, If any</string>
-    <string name="error_name_exist">A profile with this name already added</string>
-    <string name="order">ORDER</string>
-    <string name="activate">Activate</string>
-    <string name="change_address">Change Address</string>
-    <string name="error_account_block">Account is blocked. Contact support.</string>
-    <string name="privacy_bydefault">Privacy by default and by design</string>
-    <string name="transgender">Transgender</string>
-    <string name="screen_all_feeds">All Feeds</string>
-    <string name="total_amount_paid">Total Amount Paid:</string>
-    <string name="total_amount_remaing">Total Amount Remaining:</string>
-    <string name="pay_and_join">Pay &amp; Confirm Queue</string>
+    <string name="address">पता</string>
+    <string name="privacy_in_short">गोपनीयता त्वरित अवलोकन</string>
+    <string name="order_history">आदेश और कतार इतिहास</string>
+    <string name="title_activity_contact_us">हमें संपर्क करें</string>
+    <string name="subject">विषय</string>
+    <string name="message">प्रतिक्रिया / सुझाव / मुद्दे</string>
+    <string name="error_subject_blank">कृपया विषय दर्ज करें</string>
+    <string name="error_feedback_blank">कृपया संदेश दर्ज करें</string>
+    <string name="screen_order_detail">आदेश सारांश</string>
+    <string name="screen_queue_detail">कतार सारांश</string>
+    <string name="order_items">ऑर्डर सामान</string>
+    <string name="history">इतिहास</string>
+    <string name="empty_review">किसी ने समीक्षा नहीं की। सबसे पहले समीक्षा करने वाले बनें।</string>
+    <string name="check_your_email">ओटीपी पाने के लिए कृपया अपना ईमेल देखें</string>
+    <string name="rejoin">पुन: जुड़े</string>
+    <string name="reorder">पुन: ऑर्डर</string>
+    <string name="additional">उपलब्ध नहीं होने पर टिप्पणी में उत्पाद जोड़ें। वितरण / आदेश निर्देश निर्दिष्ट करें, यदि कोई</string>
+    <string name="error_name_exist">इस नाम के साथ एक प्रोफ़ाइल पहले से ही जोड़ा गया है।</string>
+    <string name="order">ऑर्डर</string>
+    <string name="activate">सक्रिय</string>
+    <string name="change_address">पता बदल जाना</string>
+    <string name="error_account_block">खाता अवरुद्ध है। सहयोग टीम से संपर्क करें।</string>
+    <string name="privacy_bydefault">डिफ़ॉल्ट रूप से और डिज़ाइन द्वारा गोपनीयता</string>
+    <string name="transgender">ट्रांसजेंडर</string>
+    <string name="screen_all_feeds">सभी फ़ीड्स</string>
+    <string name="screen_all_events">घटनाक्रम और प्रस्ताव</string>
+    <string name="total_amount_paid">भुगतान की गई कुल राशि:</string>
+    <string name="total_amount_remaing">कुल राशि शेष:</string>
+    <string name="pay_and_join">पे एंड कन्फर्म क्यू</string>
 
     <!-- Empty Screens labels -->
-    <string name="empty_order_title">Your bag is empty</string>
-    <string name="empty_order_subtitle">There is nothing selected</string>
-    <string name="empty_noti_title">Empty notification</string>
-    <string name="empty_noti_subtitle">There are no notification</string>
-    <string name="empty_queue_title">Empty Queue</string>
-    <string name="empty_queue_subtitle">You have yet to see the \n awesomeness of NoQueue. \n\n Join a queue to see it.</string>
-    <string name="empty_medical_h_title">Empty Medical History</string>
-    <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n\n You don\'t have any medical history.</string>
-    <string name="empty_my_appointment_title">Empty Appointments</string>
-    <string name="empty_my_appointment_subtitle">Congratulation!!! \nYou are healthy. \n\n You don\'t have any medical appointments.</string>
+    <string name="empty_order_title">आपका बैग खाली है।</string>
+    <string name="empty_order_subtitle">कुछ भी चयनित नहीं है।</string>
+    <string name="empty_noti_title">खाली अधिसूचना।</string>
+    <string name="empty_noti_subtitle">कोई अधिसूचना नहीं है।</string>
+    <string name="empty_queue_title">खाली कतार</string>
+    <string name="empty_queue_subtitle">आपको अभी तक देखना बाकी है \n नोक्यू(NoQueue) की awesomeness. \n\n इसे देखने के लिए एक कतार में शामिल हों.</string>
+    <string name="empty_medical_h_title">खाली मेडिकल हिस्ट्री</string>
+    <string name="empty_medical_h_subtitle">बधाई!!! \n अाप स्वस्थ हो। \n\n अाप की कोई मेडिकल हिस्ट्री नहीं हैं।</string>
+    <string name="empty_review_title">रेटिंग करे</string>
+    <string name="empty_review_subtitle">हमे आपके बहुमूल्य समीक्षा की प्रतीक्षा हैं।</string>
+    <string name="empty_my_appointment_title">खाली नियुक्तियाँ</string>
+    <string name="empty_my_appointment_subtitle">>बधाई!!! \nअाप स्वस्थ हो। \n\n अाप की कोई मेडिकल नियुक्ति नहीं हैं।</string>
 
-    <string name="empty_my_coupon_title">Empty Coupons</string>
-    <string name="empty_my_coupon_subtitle">Sorry, You don\'t have any coupon right now.</string>
-    <string name="empty_all_coupon_title">Empty Coupons</string>
-    <string name="empty_all_coupon_subtitle">There is currently no coupons available.</string>
-    <string name="empty_review_title">Rate Us</string>
-    <string name="empty_review_subtitle">We are waiting for your valuable review</string>
-    <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
-    <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>
-    <string name="screen_addressbook">My address</string>
-    <string name="delivery_mode_home">Home Delivery</string>
-    <string name="delivery_mode_takeaway">Pick up</string>
-    <string name="delivery_mode">Delivery</string>
-    <string name="request_email_otp">Request Email OTP</string>
-    <string name="verify_email">Verify Email</string>
-    <string name="screen_qconfirm">Get Token</string>
-    <string name="discount_error">Discount has already been applied</string>
-    <string name="kiosk_dialog_msg">Continue to launch Kiosk Mode?</string>
+    <string name="empty_my_coupon_title">खाली कूपन</string>
+    <string name="empty_my_coupon_subtitle">आपके पास कोई कूपन नहीं है।</string>
+    <string name="empty_all_coupon_title">खाली कूपन</string>
+    <string name="empty_all_coupon_subtitle">वर्तमान में कोई कूपन उपलब्ध नहीं है।</string>
+    <string name="user_list">उपयोगकर्ता</string>
+    <string name="update_via_front_desk">रक्त प्रकार को बदलने के लिए चिकित्सक से संपर्क करें।</string>
+    <string name="share_medical_profile_info">बेहतर सेवा हेतु आपकी चिकित्सा प्रोफ़ाइल डॉक्टर और अस्पताल के साथ साझा की जाती है। कृपया चिकित्सा प्रोफ़ाइल को अप-टू-डेट रखे।</string>
+    <string name="screen_addressbook">पता</string>
+    <string name="delivery_mode_home">घर पर डिलीवरी</string>
+    <string name="delivery_mode_takeaway">पिक अप</string>
+    <string name="delivery_mode">वितरण</string>
+    <string name="request_email_otp">ईमेल ओटीपी का अनुरोध करें</string>
+    <string name="verify_email">ईमेल सत्यापित करें</string>
+    <string name="offers">कूपन</string>
+    <string name="screen_qconfirm">टोकन प्राप्त करें</string>
+    <string name="notification_setting">अधिसूचना</string>
+    <string name="gps_error_msg_final">इस क्रिया को सक्षम करने के लिए स्थान सेटिंग की आवश्यकता होती है। सेटिंग में जाएं और अनुमतियाँ दृश्य के अंदर स्थान अनुमति की जांच करें</string>
+    <string name="gps_error_msg">इस क्रिया को सक्षम करने के लिए स्थान सेटिंग की आवश्यकता होती है। सेटिंग में जाएं और अनुमतियाँ दृश्य के अंदर स्थान अनुमति की जांच करें</string>
+
+    <string name="discount_error">डिस्काउंट लागाया जा चुका है।</string>
+    <string name="kiosk_dialog_title">कियोस्क मोड</string>
+    <string name="kiosk_dialog_msg">कियोस्क मोड लॉन्च करना जारी रखें?</string>
     <string name="preference_settings">पसंदीदा समायोजन</string>
-    <string name="booking_offer">Get Flat Rs. 50 off on first booking via NoQueue</string>
+    <string name="booking_offer">नोक्यू(NoQueue) के माध्यम से पहली बुकिंग पर ५0 ₹ कि छुट</string>
+
+    <!-- ID dialog -->
+    <string name="authorization_dialog_title">पूर्व अनुमोदन</string>
+    <string name="authorization_dialog_message">* एक बार की एंट्री\n* अंतिम स्वीकृति @सी ऎस ङि \n* अनुमोदन के लिए सही श्रेणी से टोकन चुनें (अफ़सर/सर्विंग/सेवानिवृत्त)</string>
+    <string name="grocery_card_number">किराने कार्ड नंबर</string>
+    <string name="liquor_card_number">शराब/मदिरा कार्ड नंबर</string>
+    <string name="grocery_card_number_hint">किराने कार्ड के १९-वर्णों</string>
+    <string name="liquor_card_number_hint">शराब/मदिरा कार्ड के १९-वर्णों</string>
+    <string name="grocery_card_number_entry_error">किराने कार्ड के १९-वर्णों जरुरी है।</string>
+    <string name="liquor_card_number_entry_error">शराब/मदिरा कार्ड के १९-वर्णों जरुरी है।</string>
+    <string name="grocery_card_number_prefix_error">किराने कार्ड G से शुरू होता है।</string>
+    <string name="liquor_card_number_prefix_error">शराब/मदिरा कार्ड L से शुरू होता है।</string>
+    <string name="submit_button">प्रस्तुत</string>
+    <string name="cancel_button">रद्द करना</string>
 
     <!-- Temp String -->
-    <string name="announcement_message">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed</string>
+    <string name="announcement_message">* आरोग्य सेतु ऐप पर हरित स्थिति अनिवार्य है। \n* दस्ताने और मास्क अनिवार्य हैं। \n* ऎक कार्ड, ऎक टोकन और ऎक पर्सन की अनुमति होगी।</string>
 </resources>
