@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -27,6 +28,7 @@ import com.hbb20.CountryCodePicker;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
@@ -121,87 +123,144 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         tvCount = view.findViewById(R.id.tvcount);
         ll_main_section = view.findViewById(R.id.ll_main_section);
         ll_mobile = view.findViewById(R.id.ll_mobile);
+        LinearLayout ll_cust_id = view.findViewById(R.id.ll_cust_id);
+        LinearLayout ll_unregistered = view.findViewById(R.id.ll_unregistered);
         edt_mobile = view.findViewById(R.id.edt_mobile);
         sp_patient_list = view.findViewById(R.id.sp_patient_list);
         tv_select_patient = view.findViewById(R.id.tv_select_patient);
+        btn_create_token = view.findViewById(R.id.btn_create_token);
 
 
         final EditText edt_id = view.findViewById(R.id.edt_id);
-        final RadioGroup rg_user_id = view.findViewById(R.id.rg_user_id);
+        final RadioGroup rg_token_type = view.findViewById(R.id.rg_token_type);
         final RadioButton rb_mobile = view.findViewById(R.id.rb_mobile);
         builder.setView(view);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_mobile) {
-                    ll_mobile.setVisibility(View.VISIBLE);
-                    edt_id.setVisibility(View.GONE);
-                    edt_id.setText("");
-                } else {
-                    edt_id.setVisibility(View.VISIBLE);
-                    ll_mobile.setVisibility(View.GONE);
-                    edt_mobile.setText("");
-                }
-            }
-        });
-        cid = "";
-        ccp = view.findViewById(R.id.ccp);
         String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
+        ccp = view.findViewById(R.id.ccp);
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
-        btn_create_order = view.findViewById(R.id.btn_create_order);
-        btn_create_token = view.findViewById(R.id.btn_create_token);
-        btn_create_token.setText("Search Patient");
-        btn_create_token.setOnClickListener(v -> {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                return;
-            }
-            mLastClickTime = SystemClock.elapsedRealtime();
-            boolean isValid = true;
-            edt_mobile.setError(null);
-            edt_id.setError(null);
-            AppUtils.hideKeyBoard(getActivity());
-            // get selected radio button from radioGroup
-            int selectedId = rg_user_id.getCheckedRadioButtonId();
-            if (selectedId == R.id.rb_mobile) {
-                if (TextUtils.isEmpty(edt_mobile.getText())) {
-                    edt_mobile.setError(getString(R.string.error_mobile_blank));
-                    isValid = false;
-                }
+        CountryCodePicker ccp_unregistered = view.findViewById(R.id.ccp_unregistered);
+        ccp_unregistered.setDefaultCountryUsingNameCode(String.valueOf(c_code));
+
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        rg_token_type.setOnCheckedChangeListener((group, checkedId) -> {
+            // View cleanup
+            sp_patient_list.setVisibility(View.GONE);
+            tv_select_patient.setVisibility(View.GONE);
+            edt_mobile.setEnabled(true);
+            btn_create_token.setVisibility(View.VISIBLE);
+            btn_create_token.setClickable(true);
+            if (R.id.rb_mobile == checkedId) {
+                ll_mobile.setVisibility(View.VISIBLE);
+                ll_cust_id.setVisibility(View.GONE);
+                ll_unregistered.setVisibility(View.GONE);
+                btn_create_token.setText(getString(R.string.search_registered_patient));
+            } else if (R.id.rb_customer_id == checkedId) {
+                ll_cust_id.setVisibility(View.VISIBLE);
+                ll_mobile.setVisibility(View.GONE);
+                ll_unregistered.setVisibility(View.GONE);
+                btn_create_token.setText(getString(R.string.search_registered_patient));
             } else {
-                if (TextUtils.isEmpty(edt_id.getText())) {
-                    edt_id.setError(getString(R.string.error_customer_id));
-                    isValid = false;
-                }
+                ll_unregistered.setVisibility(View.VISIBLE);
+                ll_mobile.setVisibility(View.GONE);
+                ll_cust_id.setVisibility(View.GONE);
+                btn_create_token.setText(getString(R.string.create_token));
             }
 
+            // Bind listeners
+            if (rg_token_type.getCheckedRadioButtonId() == R.id.rb_unregistered) {
+                EditText edt_mobile_unregistered = view.findViewById(R.id.edt_mobile_unregistered);
+                EditText edt_name_unregistered = view.findViewById(R.id.edt_name_unregistered);
+                btn_create_token.setOnClickListener(v -> {
+                    boolean isValid = true;
+                    AppUtils.hideKeyBoard(getActivity());
+                    setDispensePresenter();
+                    // get selected radio button from radioGroup
+                    if (TextUtils.isEmpty(edt_mobile_unregistered.getText())) {
+                        edt_mobile_unregistered.setError(getString(R.string.error_mobile_blank));
+                        isValid = false;
+                    }
+                    if (TextUtils.isEmpty(edt_name_unregistered.getText())) {
+                        edt_name_unregistered.setError(getString(R.string.error_patient_name));
+                        isValid = false;
+                    }
 
-            if (isValid) {
-                setProgressMessage("Searching patient...");
-                showProgress();
-                setProgressCancel(false);
-                setDispensePresenter();
-                String phone = "";
+                    if (isValid) {
+                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer();
+                        jsonBusinessCustomer.setCodeQR(codeQR);
+                        jsonBusinessCustomer.setCustomerName(edt_name_unregistered.getText().toString());
+                        jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode() + edt_mobile_unregistered.getText().toString());
+                        jsonBusinessCustomer.setRegisteredUser(false);
+                        manageQueueApiCalls.dispenseTokenWithClientInfo(
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                jsonBusinessCustomer);
+                    }
+
+                    if (BuildConfig.TOKEN_WITHOUT_USER_INFO.equalsIgnoreCase("ON")) {
+                        manageQueueApiCalls.dispenseToken(
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                codeQR);
+                    }
+                });
+            } else {
                 cid = "";
-                if (rb_mobile.isChecked()) {
-                    edt_id.setText("");
-                    countryCode = ccp.getSelectedCountryCode();
-                    phone = countryCode + edt_mobile.getText().toString();
-                    cid = "";
-                } else {
-                    cid = edt_id.getText().toString();
-                    edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
-                }
-                businessCustomerApiCalls = new BusinessCustomerApiCalls();
-                businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
-                businessCustomerApiCalls.findCustomer(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
-                        new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                btn_create_token.setClickable(false);
-                //  mAlertDialog.dismiss();
+                btn_create_order = view.findViewById(R.id.btn_create_order);
+                btn_create_token.setText(getString(R.string.search_registered_patient));
+                btn_create_token.setOnClickListener(v -> {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    boolean isValid = true;
+                    edt_mobile.setError(null);
+                    edt_id.setError(null);
+                    AppUtils.hideKeyBoard(getActivity());
+                    // get selected radio button from radioGroup
+                    int selectedId = rg_token_type.getCheckedRadioButtonId();
+                    if (selectedId == R.id.rb_mobile) {
+                        if (TextUtils.isEmpty(edt_mobile.getText())) {
+                            edt_mobile.setError(getString(R.string.error_mobile_blank));
+                            isValid = false;
+                        }
+                    } else {
+                        if (TextUtils.isEmpty(edt_id.getText())) {
+                            edt_id.setError(getString(R.string.error_patient_id));
+                            isValid = false;
+                        }
+                    }
+
+                    if (isValid ) {
+                        setProgressMessage("Searching Patient...");
+                        showProgress();
+                        setProgressCancel(false);
+                        setDispensePresenter();
+                        String phone = "";
+                        cid = "";
+                        if (rb_mobile.isChecked()) {
+                            edt_id.setText("");
+                            countryCode = ccp.getSelectedCountryCode();
+                            phone = countryCode + edt_mobile.getText().toString();
+                            cid = "";
+                        } else {
+                            cid = edt_id.getText().toString();
+                            edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
+                        }
+                        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+                        businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
+                        businessCustomerApiCalls.findCustomer(
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                        btn_create_token.setClickable(false);
+                        //  mAlertDialog.dismiss();
+                    }
+                });
             }
         });
 
