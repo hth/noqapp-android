@@ -137,6 +137,10 @@
     <string name="error_customer_id">Please enter Customer Id</string>
     <string name="error_customer_name">Please enter Customer Name</string>
 
+    <string name="error_patient_id">Please enter Patient Id</string>
+    <string name="error_patient_name">Please enter Patient Name</string>
+
+
     <string name="login_hint">Phone no. without country code</string>
     <string name="resend_otp">Resend OTP</string>
     <string name="verify_phone_auth">Verify</string>
@@ -269,5 +273,6 @@
     <string name="treatment_plan">Treatment Plan</string>
     <string name="add_new">Create Token</string>
     <string name="search_registered_customer">Search Registered Customer</string>
+    <string name="search_registered_patient">Search Registered Patient</string>
 
 </resources>
