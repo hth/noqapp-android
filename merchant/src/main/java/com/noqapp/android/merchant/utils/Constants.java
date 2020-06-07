@@ -58,7 +58,7 @@ public class Constants extends BaseConstants {
         if (StringUtils.isBlank(VERSION_RELEASE)) {
             switch (BuildConfig.BUILD_TYPE) {
                 case "debug":
-                    VERSION_RELEASE = "1.2.450";
+                    VERSION_RELEASE = "1.2.500";
                     break;
                 default:
                     VERSION_RELEASE = BuildConfig.VERSION_NAME;
