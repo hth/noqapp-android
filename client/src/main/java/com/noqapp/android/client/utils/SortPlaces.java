@@ -1,6 +1,7 @@
 package com.noqapp.android.client.utils;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.common.primitives.Doubles;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 
 import java.util.Comparator;
@@ -21,17 +22,24 @@ public class SortPlaces implements Comparator<BizStoreElastic> {
 
         double distanceToPlace1 = distance(currentLoc.latitude, currentLoc.longitude, lat1, lon1);
         double distanceToPlace2 = distance(currentLoc.latitude, currentLoc.longitude, lat2, lon2);
-        return (int) (distanceToPlace1 - distanceToPlace2);
+        return Doubles.compare(distanceToPlace1, distanceToPlace2);
     }
 
-    private double distance(double fromLat, double fromLon, double toLat, double toLon) {
-        double radius = 6378137;   // approximate Earth radius, *in meters*
-        double deltaLat = toLat - fromLat;
-        double deltaLon = toLon - fromLon;
-        double angle = 2 * Math.asin(Math.sqrt(
-                Math.pow(Math.sin(deltaLat / 2), 2) +
-                        Math.cos(fromLat) * Math.cos(toLat) *
-                                Math.pow(Math.sin(deltaLon / 2), 2)));
-        return radius * angle;
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+        double height = 0.0;
+
+        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+        return Math.sqrt(distance);
     }
 }
