@@ -23,6 +23,7 @@ import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.MyApplication;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.receivers.AlarmReceiver;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
@@ -485,6 +486,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     Intent buzzerIntent = new Intent(this, BlinkerActivity.class);
                                     buzzerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(buzzerIntent);
+                                    if (LaunchActivity.isMsgAnnouncementEnable()) {
+                                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData.getJsonTextToSpeeches(), mappedData.get("mi"));
+                                    }
                                 }
                             }
                         }
