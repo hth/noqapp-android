@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model.response.api;
 
+import com.noqapp.android.client.presenter.beans.JsonInQueuePerson;
 import com.noqapp.android.common.beans.JsonCouponList;
 
 import retrofit2.Call;
@@ -16,7 +17,7 @@ public interface AuthenticateClientInQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @GET("api/c/a/inQueue/{codeQR}/{token}.json")
-    Call<JsonCouponList> clientInQueue(
+    Call<JsonInQueuePerson> clientInQueue(
             @Header("X-R-DID")
             String did,
 
