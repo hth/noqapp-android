@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -23,6 +26,10 @@ import androidx.cardview.widget.CardView;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
@@ -36,9 +43,9 @@ import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
@@ -61,9 +68,12 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
@@ -114,6 +124,9 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     private TextView tv_coupon_amount;
     private TextView tv_coupon_name;
     private CFPaymentService cfPaymentService;
+    private ImageView iv_codeqr;
+    private LinearLayout ll_qr_token;
+    private TextView tv_token_qr,tv_token_date,tv_token_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +159,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         btn_pay = findViewById(R.id.btn_pay);
-
+        iv_codeqr = findViewById(R.id.iv_codeqr);
+        ll_qr_token = findViewById(R.id.ll_qr_token);
+        tv_token_qr = findViewById(R.id.tv_token_qr);
+        tv_token_date = findViewById(R.id.tv_token_date);
+        tv_token_time = findViewById(R.id.tv_token_time);
         rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
         rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
         frame_coupon = findViewById(R.id.frame_coupon);
@@ -317,14 +334,14 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             // Store the currently serving and avg wait time in the app preference
             SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
             prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), jsonTokenAndQueue.getServingNumber()).apply();
-            if(jsonTokenAndQueue.getAverageServiceTime() != 0) {
+            if (jsonTokenAndQueue.getAverageServiceTime() != 0) {
                 prefs.edit().putLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), jsonTokenAndQueue.getAverageServiceTime()).apply();
             }
             updateEstimatedTime();
             setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
             tv_name.setText(jsonProfile.getName());
             tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
-
+            generateQRCode();
             if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
                     setProgressMessage("Fetching Queue data...");
@@ -496,7 +513,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                     jsonTokenAndQueue.afterHowLong(), jsonTokenAndQueue.getQueueStatus(),
                     jsonTokenAndQueue.getStartHour());
             if (!TextUtils.isEmpty(waitTime)) {
-                    tv_estimated_time.setText(String.format(getString(R.string.estimated_time), waitTime));
+                tv_estimated_time.setText(String.format(getString(R.string.estimated_time), waitTime));
             }
         } catch (Exception e) {
             Log.e("", "Error setting estimated wait time reason: " + e.getLocalizedMessage(), e);
@@ -574,6 +591,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     public void queueJsonPurchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         // Todo: If queue-only store then return
         try {
+            generateQRCode();
             Log.e("Response: ", jsonPurchaseOrder.toString());
             frame_coupon.setVisibility(View.VISIBLE);
             this.jsonTokenAndQueue.setJsonPurchaseOrder(jsonPurchaseOrder);
@@ -795,6 +813,42 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         jsonTokenAndQueue.setQueueUserId(queueUserId);
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
+        generateQRCode();
         dismissProgress();
+    }
+
+
+    private void generateQRCode() {
+        String codeQrInfo = "CODEQR: " + codeQR + "\n" + "TOKEN NO: " + tokenValue + "\n" + "QUEUE USER ID: " + queueUserId;
+        com.google.zxing.Writer writer = new QRCodeWriter();
+        String qr_code_data = Uri.encode(codeQrInfo, "utf-8");
+        int width = 250;
+        int height = 250;
+        try {
+            BitMatrix bm = writer.encode(qr_code_data, BarcodeFormat.QR_CODE, width, height);
+
+            Bitmap imageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            for (int i = 0; i < width; i++) {//width
+                for (int j = 0; j < height; j++) {//height
+                    imageBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
+                }
+            }
+            iv_codeqr.setVisibility(View.VISIBLE);
+            ll_qr_token.setVisibility(View.VISIBLE);
+            tv_token_qr.setVisibility(View.VISIBLE);
+            tv_token_date.setVisibility(View.VISIBLE);
+            tv_token_time.setVisibility(View.VISIBLE);
+            iv_codeqr.setImageBitmap(imageBitmap);
+            tv_token_qr.setText(tokenValue);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/EEE", Locale.getDefault());
+            tv_token_date.setText(CommonHelper.formatStringDate(sdf,jsonTokenAndQueue.getCreateDate()));
+//            while(true){
+                String timeStamp = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault()).format(new Date());
+                tv_token_time.setText(timeStamp);
+//            }
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
     }
 }

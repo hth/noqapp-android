@@ -15,7 +15,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/ll_btm"
             android:layout_alignParentTop="true"
             android:fillViewport="true">
 
@@ -631,79 +630,140 @@
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_codeqr"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/ll_qr_token"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/blue_gradient_round"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_token_qr"
+                        style="@style/style_join_queue_tv"
+                        android:gravity="center"
+                        android:textColor="#505050"
+                        android:textSize="150sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/tv_token_date"
+                        android:layout_width="0dp"
+                        android:layout_weight=".5"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/your_token"
+                        android:textColor="#505050"
+                        android:layout_margin="10dp"
+                        android:textSize="25sp"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tv_token_time"
+                        android:layout_width="0dp"
+                        android:layout_weight=".5"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="@string/your_token"
+                        android:layout_margin="10dp"
+                        android:textColor="#505050"
+                        android:textSize="25sp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_btm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <Button
+                            android:id="@+id/btn_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/btn_standard_height"
+                            android:layout_weight="0.0"
+                            android:background="@drawable/btn_bg_enable"
+                            android:clickable="true"
+                            android:fontFamily="sans-serif-medium"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center"
+                            android:text="Pay"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_sixteen"
+                            android:textStyle="normal"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btn_cancel_queue"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/btn_standard_height"
+                            android:layout_weight="1.0"
+                            android:background="@drawable/btn_bg_inactive"
+                            android:clickable="true"
+                            android:fontFamily="sans-serif-medium"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center"
+                            android:text="@string/quit_queue"
+                            android:textAllCaps="true"
+                            android:textColor="@color/btn_color"
+                            android:textSize="@dimen/text_size_sixteen"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_vibrator_off"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="#BF000000"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/msg_vibrator_off"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
             </LinearLayout>
 
 
         </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/ll_btm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <Button
-                    android:id="@+id/btn_pay"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_standard_height"
-                    android:layout_weight="0.0"
-                    android:background="@drawable/btn_bg_enable"
-                    android:clickable="true"
-                    android:fontFamily="sans-serif-medium"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:text="Pay"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_sixteen"
-                    android:textStyle="normal"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/btn_cancel_queue"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_standard_height"
-                    android:layout_weight="1.0"
-                    android:background="@drawable/btn_bg_inactive"
-                    android:clickable="true"
-                    android:fontFamily="sans-serif-medium"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:text="@string/quit_queue"
-                    android:textAllCaps="true"
-                    android:textColor="@color/btn_color"
-                    android:textSize="@dimen/text_size_sixteen"
-                    android:textStyle="normal" />
-
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/tv_vibrator_off"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="#BF000000"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/msg_vibrator_off"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_sixteen"
-                android:textStyle="bold"
-                android:visibility="gone" />
-        </LinearLayout>
 
     </RelativeLayout>
 </LinearLayout>
