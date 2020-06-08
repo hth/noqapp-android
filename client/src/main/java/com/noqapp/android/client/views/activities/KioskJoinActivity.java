@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,7 +44,7 @@ import java.util.List;
 
 public class KioskJoinActivity extends BaseActivity implements QueuePresenter, TokenPresenter {
     private final String TAG = KioskJoinActivity.class.getSimpleName();
-    private TextView tv_consult_fees, tv_cancelation_fees;
+    private TextView tv_consult_fees, tv_cancellation_fees;
     private TextView tv_serving_no;
     private TextView tv_people_in_q;
     private TextView tv_hour_saved;
@@ -79,7 +78,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         tv_right = findViewById(R.id.tv_right);
         tv_left = findViewById(R.id.tv_left);
         tv_consult_fees = findViewById(R.id.tv_consult_fees);
-        tv_cancelation_fees = findViewById(R.id.tv_cancelation_fees);
+        tv_cancellation_fees = findViewById(R.id.tv_cancelation_fees);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
         tv_hour_saved = findViewById(R.id.tv_hour_saved);
@@ -191,9 +190,9 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                     String feeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + jsonQueue.getProductPrice() / 100 + "</b>  Consultation fee";
                     tv_consult_fees.setText(Html.fromHtml(feeString));
                     String cancelFeeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + jsonQueue.getCancellationPrice() / 100 + "</b>  Cancellation fee";
-                    tv_cancelation_fees.setText(Html.fromHtml(cancelFeeString));
+                    tv_cancellation_fees.setText(Html.fromHtml(cancelFeeString));
                     tv_consult_fees.setVisibility(View.VISIBLE);
-                    tv_cancelation_fees.setVisibility(View.VISIBLE);
+                    tv_cancellation_fees.setVisibility(View.VISIBLE);
                     tv_add.setVisibility(View.VISIBLE);
                     add_person.setVisibility(View.VISIBLE);
                     sp_name_list.setVisibility(View.VISIBLE);
@@ -202,7 +201,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                     break;
                 default:
                     tv_consult_fees.setVisibility(View.GONE);
-                    tv_cancelation_fees.setVisibility(View.GONE);
+                    tv_cancellation_fees.setVisibility(View.GONE);
                     tv_add.setVisibility(View.GONE);
                     add_person.setVisibility(View.GONE);
                     sp_name_list.setSelection(1);// Q join @ Name of primary
