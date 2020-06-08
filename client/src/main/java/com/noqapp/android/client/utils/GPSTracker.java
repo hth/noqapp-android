@@ -20,6 +20,8 @@ import android.util.Log;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
+import com.noqapp.android.client.R;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -208,13 +210,13 @@ public class GPSTracker implements LocationListener {
 
     public void showSettingsAlert() {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-        dialog.setTitle("Enable GPS")
-                .setMessage("Gps is disabled, in order to use the application properly you need to enable GPS of your device")
-                .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+        dialog.setTitle(mContext.getString(R.string.enable_gps))
+                .setMessage(mContext.getString(R.string.message_enable_gps))
+                .setPositiveButton(mContext.getString(R.string.btn_location_setting), (paramDialogInterface, paramInt) -> {
                     Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     mContext.startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
                 })
-                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
+                .setNegativeButton(mContext.getString(R.string.cancel_button), (paramDialogInterface, paramInt) -> {
                 });
         dialog.show();
     }

@@ -389,4 +389,15 @@
 
     <!-- Temp String -->
     <string name="announcement_message">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed</string>
+
+    <!-- Strings from Code 06062020 -->
+    <string name="loading_queue_details">Loading queue details...</string>
+    <string name="please_login_to_join">Please login to join</string>
+    <string name="enable_gps">Enable GPS</string>
+    <string name="message_enable_gps">GPS is disabled. In order to use the application properly, please enable GPS of the device.</string>
+    <string name="btn_location_setting">Location Settings</string>
+    <string name="select_patient">Select Patient</string>
+    <string name="logout_warning">You will be logout in %1$d seconds</string>
+    <string name="try_again">try again</string>
+
 </resources>

@@ -389,4 +389,15 @@
 
     <!-- Temp String -->
     <string name="announcement_message">* आरोग्य सेतु ऐप पर हरित स्थिति अनिवार्य है। \n* दस्ताने और मास्क अनिवार्य हैं। \n* ऎक कार्ड, ऎक टोकन और ऎक पर्सन की अनुमति होगी।</string>
+
+    <!-- Strings from Code 06062020 -->
+    <string name="loading_queue_details">कतार विवरण...</string>
+    <string name="please_login_to_join">कृपया लॉगिन करें</string>
+    <string name="enable_gps">GPS सक्षम करें</string>
+    <string name="message_enable_gps">GPS बंद है। एप्लिकेशन को ठीक से उपयोग करने के लिए, कृपया डिवाइस का GPS चालु करें।</string>
+    <string name="btn_location_setting">लोकेशन सेटिंग्स</string>
+    <string name="select_patient">रोगी का चयन करें</string>
+    <string name="logout_warning">आपको %1$d सेकंड मे लॉग आउट किया जाएगा</string>
+    <string name="try_again">पुनः प्रयास करें</string>
+
 </resources>
