@@ -27,6 +27,7 @@ import androidx.cardview.widget.CardView;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -817,10 +818,9 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         dismissProgress();
     }
 
-
     private void generateQRCode() {
         String codeQrInfo = "CODEQR: " + codeQR + "\n" + "TOKEN NO: " + tokenValue + "\n" + "QUEUE USER ID: " + queueUserId;
-        com.google.zxing.Writer writer = new QRCodeWriter();
+        Writer writer = new QRCodeWriter();
         String qr_code_data = Uri.encode(codeQrInfo, "utf-8");
         int width = 250;
         int height = 250;
@@ -842,10 +842,10 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             tv_token_qr.setText(tokenValue);
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/EEE", Locale.getDefault());
-            tv_token_date.setText(CommonHelper.formatStringDate(sdf,jsonTokenAndQueue.getCreateDate()));
+            tv_token_date.setText(CommonHelper.formatStringDate(sdf, jsonTokenAndQueue.getCreateDate()));
 //            while(true){
-                String timeStamp = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault()).format(new Date());
-                tv_token_time.setText(timeStamp);
+            String timeStamp = new SimpleDateFormat("HH:mm:ss:SSS a", Locale.getDefault()).format(new Date());
+            tv_token_time.setText(timeStamp);
 //            }
         } catch (WriterException e) {
             e.printStackTrace();
