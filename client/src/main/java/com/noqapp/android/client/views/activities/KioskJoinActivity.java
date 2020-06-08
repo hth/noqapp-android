@@ -127,7 +127,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             }
 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                setProgressMessage("Loading queue details...");
+                setProgressMessage(getString(R.string.loading_queue_details));
                 showProgress();
                 if (UserUtils.isLogin()) {
                     QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
@@ -231,7 +231,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             new CustomToast().showToast(this, joinErrorMsg);
             showHideView(false);
             setColor(false);
-            if (joinErrorMsg.startsWith("Please login to join")) {
+            if (joinErrorMsg.startsWith(getString(R.string.please_login_to_join))) {
                 // login required
                 if (validateView) {
                     btn_joinQueue.setText(getString(R.string.login_to_join));
@@ -348,7 +348,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         if (UserUtils.isLogin()) {
             List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
             profileList.add(0, NoQueueBaseActivity.getUserProfile());
-            profileList.add(0, new JsonProfile().setName("Select Patient"));
+            profileList.add(0, new JsonProfile().setName(getString(R.string.select_patient)));
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);
             if (profileList.size() == 2) {
@@ -398,16 +398,16 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
     private void logoutFromKiosk() {
 
         tv_timer.setVisibility(View.VISIBLE);
-        tv_timer.setText("You will be logout in " + time + " seconds");
+        tv_timer.setText(String.format(getString(R.string.logout_warning), time));
         waitTimer = new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                tv_timer.setText("You will be logout in " + time + " seconds");
+                tv_timer.setText(String.format(getString(R.string.logout_warning), time));
                 time--;
             }
 
             public void onFinish() {
-                tv_timer.setText("try again");
+                tv_timer.setText(getString(R.id.try_again));
             }
 
         }.start();
