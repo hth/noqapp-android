@@ -198,7 +198,8 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+        //@TODO revert this changes after corona issue
+        /*//super.onBackPressed();
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
             backPressToast = new CustomToast().getToast(this, "Please review the service, It is valuable to us.");
@@ -210,7 +211,12 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             }
             returnResultBack();
             finish();
-        }
+        }*/
+        // @TODO revert all 3 below line
+        NoQueueBaseActivity.setReviewShown(true);
+        ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
+        super.onBackPressed();
+        // @TODO revert all 3 above line
     }
 
     @Override

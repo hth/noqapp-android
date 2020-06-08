@@ -522,6 +522,7 @@ public class LaunchActivity
         /* Shown only one time if the review is canceled */
         if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown() && !NoQueueBaseActivity.getShowHelper()) {
             callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
+            Log.d("onResume review screen","review screen called");
         }
 
         ReviewData reviewDataSkip = ReviewDB.getSkippedQueue();
