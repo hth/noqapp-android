@@ -187,11 +187,10 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             }
             switch (jsonQueue.getBusinessType()) {
                 case DO:
-                case PH:
                 case HS:
-                    String feeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getProductPrice() / 100) + "</b>  Consultation fee";
+                    String feeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + jsonQueue.getProductPrice() / 100 + "</b>  Consultation fee";
                     tv_consult_fees.setText(Html.fromHtml(feeString));
-                    String cancelFeeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getCancellationPrice() / 100) + "</b>  Cancellation fee";
+                    String cancelFeeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + jsonQueue.getCancellationPrice() / 100 + "</b>  Cancellation fee";
                     tv_cancelation_fees.setText(Html.fromHtml(cancelFeeString));
                     tv_consult_fees.setVisibility(View.VISIBLE);
                     tv_cancelation_fees.setVisibility(View.VISIBLE);
@@ -221,9 +220,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         dismissProgress();
     }
 
-
     private void joinQueue(boolean validateView) {
-
         showHideView(true);
         setColor(true);
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
@@ -311,7 +308,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         }
     }
 
-
     /*
      *If user navigate to AfterJoinActivity screen from here &
      * he press back from that screen Join screen should removed from activity stack
@@ -320,8 +316,8 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.requestCodeAfterJoinQActivity) {
             if (resultCode == RESULT_OK) {
-                boolean toclose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
-                if (toclose) {
+                boolean isClose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
+                if (isClose) {
                     finish();
                 }
             }
@@ -396,7 +392,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
     }
 
     private void logoutFromKiosk() {
-
         tv_timer.setVisibility(View.VISIBLE);
         tv_timer.setText(String.format(getString(R.string.logout_warning), time));
         waitTimer = new CountDownTimer(30000, 1000) {
@@ -407,41 +402,30 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             }
 
             public void onFinish() {
-                tv_timer.setText(getString(R.id.try_again));
+                tv_timer.setText(getString(R.string.try_again));
             }
 
         }.start();
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                try {
-                    iv_home.performClick();
-                    if (waitTimer != null) {
-                        waitTimer.cancel();
-                        waitTimer = null;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        handler.postDelayed(() -> {
+            try {
+                iv_home.performClick();
+                if (waitTimer != null) {
+                    waitTimer.cancel();
+                    waitTimer = null;
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }, Constants.SCREEN_TIME_OUT);
     }
 
 
-    private Handler disconnectHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
+    private Handler disconnectHandler = new Handler(msg -> true);
 
-            return true;
-        }
-    });
-
-    private Runnable disconnectCallback = new Runnable() {
-        @Override
-        public void run() {
-            // Perform any required operation on disconnect
-            iv_home.performClick();
-        }
+    private Runnable disconnectCallback = () -> {
+        // Perform any required operation on disconnect
+        iv_home.performClick();
     };
 
     public void resetDisconnectTimer() {
