@@ -187,7 +187,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             }
             switch (jsonQueue.getBusinessType()) {
                 case DO:
-                case PH:
                 case HS:
                     String feeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + jsonQueue.getProductPrice() / 100 + "</b>  Consultation fee";
                     tv_consult_fees.setText(Html.fromHtml(feeString));
