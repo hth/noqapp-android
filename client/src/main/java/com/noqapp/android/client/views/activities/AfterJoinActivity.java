@@ -68,9 +68,12 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
@@ -122,6 +125,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     private TextView tv_coupon_name;
     private CFPaymentService cfPaymentService;
     private ImageView iv_codeqr;
+    private LinearLayout ll_qr_token;
+    private TextView tv_token_qr,tv_token_date,tv_token_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +160,10 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         btn_pay = findViewById(R.id.btn_pay);
         iv_codeqr = findViewById(R.id.iv_codeqr);
+        ll_qr_token = findViewById(R.id.ll_qr_token);
+        tv_token_qr = findViewById(R.id.tv_token_qr);
+        tv_token_date = findViewById(R.id.tv_token_date);
+        tv_token_time = findViewById(R.id.tv_token_time);
         rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
         rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
         frame_coupon = findViewById(R.id.frame_coupon);
@@ -825,7 +834,19 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 }
             }
             iv_codeqr.setVisibility(View.VISIBLE);
+            ll_qr_token.setVisibility(View.VISIBLE);
+            tv_token_qr.setVisibility(View.VISIBLE);
+            tv_token_date.setVisibility(View.VISIBLE);
+            tv_token_time.setVisibility(View.VISIBLE);
             iv_codeqr.setImageBitmap(imageBitmap);
+            tv_token_qr.setText(tokenValue);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/EEE", Locale.getDefault());
+            tv_token_date.setText(CommonHelper.formatStringDate(sdf,jsonTokenAndQueue.getCreateDate()));
+//            while(true){
+                String timeStamp = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault()).format(new Date());
+                tv_token_time.setText(timeStamp);
+//            }
         } catch (WriterException e) {
             e.printStackTrace();
         }
