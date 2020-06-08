@@ -407,7 +407,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             }
 
             public void onFinish() {
-                tv_timer.setText(getString(R.id.try_again));
+                tv_timer.setText(getString(R.string.try_again));
             }
 
         }.start();
