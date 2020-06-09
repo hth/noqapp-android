@@ -87,6 +87,7 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -308,6 +309,8 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         ScannerFragment scannerFragment = new ScannerFragment(this, scanCodeQRType() );
         transaction.add(R.id.frame_scan, scannerFragment);
         transaction.commit();
+
+        showScannerWhenMatchingRole();
     }
 
     @Override
@@ -326,6 +329,24 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             FirebaseCrashlytics.getInstance().log("On Resume " + e.getLocalizedMessage());
             FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
+        }
+
+        showScannerWhenMatchingRole();
+    }
+
+    private void showScannerWhenMatchingRole() {
+        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
+        if (null == jsonProfile) {
+            frame_scan.setVisibility(View.GONE);
+        } else {
+            switch (jsonProfile.getUserLevel()) {
+                case S_MANAGER:
+                case Q_SUPERVISOR:
+                    frame_scan.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    frame_scan.setVisibility(View.GONE);
+            }
         }
     }
 
