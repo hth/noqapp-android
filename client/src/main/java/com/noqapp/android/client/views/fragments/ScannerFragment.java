@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 public class ScannerFragment extends BaseFragment {
     public static final int RC_BARCODE_CAPTURE = 23;
-    public static final int RC_SCAN_CODE_QR = 24;
+    public static final int RC_SCAN_CODE_QR_TO_VALIDATE_TOKEN = 24;
     private final String TAG = ScannerFragment.class.getSimpleName();
     protected RelativeLayout rl_scan;
     private int requestCode;
@@ -47,32 +47,19 @@ public class ScannerFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
         rl_scan = view.findViewById(R.id.rl_scan);
         rl_scan.setOnClickListener(v -> {
-            if(requestCode == RC_BARCODE_CAPTURE){
-                startScanningBarcode();
-            }else{
-                startScanningQRcode();
-            }
+            startScanningBarcode();
         });
         return view;
     }
 
     protected void startScanningBarcode() {
         if (PermissionUtils.isCameraAndStoragePermissionAllowed(getActivity())) {
-            requestCode = RC_BARCODE_CAPTURE;
             scanBarcode();
         } else {
             requestCameraAndStoragePermission();
         }
     }
 
-    protected void startScanningQRcode() {
-        if (PermissionUtils.isCameraAndStoragePermissionAllowed(getActivity())) {
-            requestCode = RC_SCAN_CODE_QR;
-            scanBarcode();
-        } else {
-            requestCameraAndStoragePermission();
-        }
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -145,7 +132,7 @@ public class ScannerFragment extends BaseFragment {
                             Toast toast = Toast.makeText(getActivity(), getString(R.string.error_qrcode_scan), Toast.LENGTH_SHORT);
                             toast.show();
                         }
-                    }else if (requestCode == RC_SCAN_CODE_QR) {
+                    }else if (requestCode == RC_SCAN_CODE_QR_TO_VALIDATE_TOKEN) {
                         if (null != scanResult) {
                             String temp = Uri.decode(contents);
                             String[] scanData = temp.split("#");
