@@ -819,7 +819,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     }
 
     private void generateQRCode() {
-        String codeQrInfo = "CODEQR: " + codeQR + "\n" + "TOKEN NO: " + tokenValue + "\n" + "QUEUE USER ID: " + queueUserId;
+        String codeQrInfo =  codeQR + "#"  + tokenValue + "#" + queueUserId;
         Writer writer = new QRCodeWriter();
         String qr_code_data = Uri.encode(codeQrInfo, "utf-8");
         int width = 250;

@@ -3,11 +3,13 @@ package com.noqapp.android.client.views.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
@@ -17,29 +19,60 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public abstract class ScannerFragment extends NoQueueBaseFragment {
-    private static final int RC_BARCODE_CAPTURE = 23;
+public class ScannerFragment extends BaseFragment {
+    public static final int RC_BARCODE_CAPTURE = 23;
+    public static final int RC_SCAN_CODE_QR = 24;
     private final String TAG = ScannerFragment.class.getSimpleName();
+    protected RelativeLayout rl_scan;
+    private int requestCode;
+    private ScanResult scanResult;
+    public ScannerFragment(ScanResult scanResult, int requestCode) {
+        this.scanResult = scanResult;
+        this.requestCode = requestCode;
+    }
 
-    public ScannerFragment() {
+    public interface ScanResult{
 
+         void barcodeResult(String codeQR, boolean isCategoryData);
+
+         void qrCodeResult(String[] scanData );
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+        rl_scan = view.findViewById(R.id.rl_scan);
+        rl_scan.setOnClickListener(v -> {
+            if(requestCode == RC_BARCODE_CAPTURE){
+                startScanningBarcode();
+            }else{
+                startScanningQRcode();
+            }
+        });
+        return view;
     }
 
     protected void startScanningBarcode() {
         if (PermissionUtils.isCameraAndStoragePermissionAllowed(getActivity())) {
+            requestCode = RC_BARCODE_CAPTURE;
             scanBarcode();
         } else {
             requestCameraAndStoragePermission();
         }
     }
 
-    protected abstract void barcodeResult(String codeQR, boolean isCategoryData);
+    protected void startScanningQRcode() {
+        if (PermissionUtils.isCameraAndStoragePermissionAllowed(getActivity())) {
+            requestCode = RC_SCAN_CODE_QR;
+            scanBarcode();
+        } else {
+            requestCameraAndStoragePermission();
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -50,7 +83,7 @@ public abstract class ScannerFragment extends NoQueueBaseFragment {
         Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
         intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
         intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
-        startActivityForResult(intent, RC_BARCODE_CAPTURE);
+        startActivityForResult(intent, requestCode);
     }
 
 
@@ -81,26 +114,26 @@ public abstract class ScannerFragment extends NoQueueBaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RC_BARCODE_CAPTURE) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                String contents = data.getStringExtra("SCAN_RESULT");
+                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
 
-                    String contents = data.getStringExtra("SCAN_RESULT");
-                    String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-
-                    Log.v(TAG, "Scanned CodeQR=" + contents);
-                    if (StringUtils.isBlank(contents)) {
-                        Log.d("MainActivity", "Cancelled scan");
-                        Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-                    } else {
+                Log.v(TAG, "Scanned CodeQR=" + contents);
+                if (StringUtils.isBlank(contents)) {
+                    Log.d("MainActivity", "Cancelled scan");
+                    Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                } else {
+                    if (requestCode == RC_BARCODE_CAPTURE) {
                         if (contents.startsWith("https://q.noqapp.com")) {
                             try {
                                 String[] codeQR = contents.split("/");
                                 //endswith - q.htm or b.htm
                                 // to define weather we need to show category screen or join screen
                                 boolean isCategoryData = contents.endsWith("b.htm");
-                                barcodeResult(codeQR[3], isCategoryData);
-
+                                if (null != scanResult) {
+                                    scanResult.barcodeResult(codeQR[3], isCategoryData);
+                                }
                                 Bundle params = new Bundle();
                                 params.putString("codeQR", codeQR[3]);
                                 LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SCAN_STORE_CODE_QR_SCREEN, params);
@@ -112,14 +145,21 @@ public abstract class ScannerFragment extends NoQueueBaseFragment {
                             Toast toast = Toast.makeText(getActivity(), getString(R.string.error_qrcode_scan), Toast.LENGTH_SHORT);
                             toast.show();
                         }
+                    }else if (requestCode == RC_SCAN_CODE_QR) {
+                        if (null != scanResult) {
+                            String temp = Uri.decode(contents);
+                            String[] scanData = temp.split("#");
+                            scanResult.qrCodeResult(scanData);
+                            Log.d("SCAN RESULT", temp);
+                        }
+                    }else{
+                        // do nothing
                     }
-                    Log.d(TAG, "Barcode read: " + contents);
-                } else {
-                    // statusMessage.setText(R.string.barcode_failure);
-                    Log.d(TAG, "No barcode captured, intent data is null");
                 }
+                Log.d(TAG, "Barcode read: " + contents);
             } else {
-
+                // statusMessage.setText(R.string.barcode_failure);
+                Log.d(TAG, "No barcode captured, intent data is null");
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

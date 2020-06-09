@@ -10,13 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +29,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
+import com.noqapp.android.client.model.AuthenticateClientInQueueApiCalls;
 import com.noqapp.android.client.model.FeedApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -35,6 +38,7 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.presenter.ClientInQueuePresenter;
 import com.noqapp.android.client.presenter.FeedPresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -43,6 +47,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
+import com.noqapp.android.client.presenter.beans.JsonInQueuePerson;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
@@ -85,12 +90,16 @@ import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -101,14 +110,14 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
-public class HomeFragment extends ScannerFragment implements View.OnClickListener,
+public class HomeFragment extends NoQueueBaseFragment implements View.OnClickListener,
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
         CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
         StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
-        FeedPresenter, AdvertisementPresenter {
+        FeedPresenter, AdvertisementPresenter, ScannerFragment.ScanResult, ClientInQueuePresenter {
 
     private final String TAG = HomeFragment.class.getSimpleName();
-    private RelativeLayout rl_scan;
+    private FrameLayout frame_scan;
     private RecyclerView rv_health_care;
     private RecyclerView rv_current_activity;
     private RecyclerView rv_feed;
@@ -189,7 +198,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
 
-        rl_scan = view.findViewById(R.id.rl_scan);
+        frame_scan = view.findViewById(R.id.frame_scan);
 
         rv_health_care = view.findViewById(R.id.rv_health_care);
         rv_current_activity = view.findViewById(R.id.rv_current_activity);
@@ -211,8 +220,6 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
         tv_update = view.findViewById(R.id.tv_update);
-
-        rl_scan.setOnClickListener(this);
         tv_health_care_view_all.setOnClickListener(this);
         tv_near_view_all.setOnClickListener(this);
         tv_feed_view_all.setOnClickListener(this);
@@ -300,6 +307,11 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         }
 //        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
+
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        ScannerFragment scannerFragment = new ScannerFragment(this, ScannerFragment.RC_SCAN_CODE_QR) ;
+        transaction.add(R.id.frame_scan, scannerFragment);
+        transaction.commit();
     }
 
     @Override
@@ -349,7 +361,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     }
 
     @Override
-    protected void barcodeResult(String codeQR, boolean isCategoryData) {
+    public void barcodeResult(String codeQR, boolean isCategoryData) {
         if (isCategoryData) {
             Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
             Bundle b = new Bundle();
@@ -365,6 +377,18 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             startActivity(in);
         }
     }
+
+    @Override
+    public void qrCodeResult(String[] scanData ) {
+        if(scanData.length > 2) {
+            AuthenticateClientInQueueApiCalls authenticateClientInQueueApiCalls = new AuthenticateClientInQueueApiCalls(this);
+            showProgress();
+            setProgressMessage("Validating token...");
+            authenticateClientInQueueApiCalls.clientInQueue(UserUtils.getDeviceId(), UserUtils.getEmail(),
+                    UserUtils.getAuth(), scanData[0], scanData[1]);
+        }
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -806,9 +830,6 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-            case R.id.rl_scan:
-                startScanningBarcode();
-                break;
             case R.id.tv_health_care_view_all:
                 healthCareClick();
                 break;
@@ -867,6 +888,18 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                 startActivity(in);
             }
         }
+    }
+
+    @Override
+    public void clientInQueueResponse(JsonInQueuePerson jsonInQueuePerson) {
+        Log.e("JsonInQueuePerson", jsonInQueuePerson.toString());
+        new CustomToast().showToast(getActivity(),"Valid User");
+    }
+
+    @Override
+    public void clientInQueueErrorPresenter(ErrorEncounteredJson eej) {
+        Log.e("JsonInQueuePerson error", eej.toString());
+        new CustomToast().showToast(getActivity(),"Not a Valid User");
     }
 
     private static class QueueHandler extends Handler {
