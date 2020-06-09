@@ -53,7 +53,7 @@
     <string name="login">Login</string>
     <string name="phone">Phone <font color='red'>\u002A</font></string>
     <string name="name">Name <font color='red'>\u002A</font></string>
-    <string name="mail">Mail <font color='red'>\u002A</font></string>
+    <string name="mail">Mail</string>
     <string name="birthday">Birthday <font color='red'>\u002A</font></string>
     <string name="gender">Gender <font color='red'>\u002A</font></string>
     <string name="invitecode">Invite code</string>
