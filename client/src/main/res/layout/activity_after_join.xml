@@ -666,28 +666,29 @@
                     android:weightSum="1">
 
                     <TextView
-                        android:id="@+id/tv_token_date"
+                        android:id="@+id/tv_token_day"
                         android:layout_width="0dp"
                         android:layout_weight=".5"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:text="@string/your_token"
                         android:textColor="#505050"
                         android:layout_margin="10dp"
                         android:textSize="25sp"
                         android:visibility="gone"/>
 
-                    <TextView
+                    <TextClock
                         android:id="@+id/tv_token_time"
                         android:layout_width="0dp"
                         android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:gravity="right"
+                        android:format12Hour="hh:mm:ss a"
                         android:text="@string/your_token"
                         android:layout_margin="10dp"
                         android:textColor="#505050"
                         android:textSize="25sp"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <LinearLayout

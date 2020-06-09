@@ -380,8 +380,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             AuthenticateClientInQueueApiCalls authenticateClientInQueueApiCalls = new AuthenticateClientInQueueApiCalls(this);
             showProgress();
             setProgressMessage("Validating token...");
-            authenticateClientInQueueApiCalls.clientInQueue(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                    UserUtils.getAuth(), scanData[0], scanData[1]);
+            authenticateClientInQueueApiCalls.clientInQueue(
+                    UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(),
+                    scanData[0],
+                    scanData[1]);
         }
     }
 
@@ -965,10 +969,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         }
     }
 
-
     private int scanCodeQRType(){
-        // return ScannerFragment.RC_BARCODE_CAPTURE   // @TODO return RC_BARCODE_CAPTURE for normal scan
-        return ScannerFragment.RC_SCAN_CODE_QR_TO_VALIDATE_TOKEN;
-
+        return ScannerFragment.RC_BARCODE_CAPTURE;
     }
 }

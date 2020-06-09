@@ -16,6 +16,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,21 +25,21 @@ import org.json.JSONObject;
 
 public class ScannerFragment extends BaseFragment {
     public static final int RC_BARCODE_CAPTURE = 23;
-    public static final int RC_SCAN_CODE_QR_TO_VALIDATE_TOKEN = 24;
     private final String TAG = ScannerFragment.class.getSimpleName();
     protected RelativeLayout rl_scan;
     private int requestCode;
     private ScanResult scanResult;
+
     public ScannerFragment(ScanResult scanResult, int requestCode) {
         this.scanResult = scanResult;
         this.requestCode = requestCode;
     }
 
-    public interface ScanResult{
+    public interface ScanResult {
 
-         void barcodeResult(String codeQR, boolean isCategoryData);
+        void barcodeResult(String codeQR, boolean isCategoryData);
 
-         void qrCodeResult(String[] scanData );
+        void qrCodeResult(String[] scanData);
     }
 
     @Override
@@ -114,17 +115,25 @@ public class ScannerFragment extends BaseFragment {
                     if (requestCode == RC_BARCODE_CAPTURE) {
                         if (contents.startsWith("https://q.noqapp.com")) {
                             try {
-                                String[] codeQR = contents.split("/");
-                                //endswith - q.htm or b.htm
-                                // to define weather we need to show category screen or join screen
-                                boolean isCategoryData = contents.endsWith("b.htm");
-                                if (null != scanResult) {
-                                    scanResult.barcodeResult(codeQR[3], isCategoryData);
+                                if (contents.endsWith(MessageOriginEnum.AU.name())) {
+                                    if (null != scanResult) {
+                                        String[] codeQR = contents.split("https://q.noqapp.com/");
+                                        String[] scanData = codeQR[1].split("#");
+                                        scanResult.qrCodeResult(scanData);
+                                        Log.d("SCAN RESULT", codeQR[1]);
+                                    }
+                                } else {
+                                    String[] codeQR = contents.split("/");
+                                    //endswith - q.htm or b.htm
+                                    // to define weather we need to show category screen or join screen
+                                    boolean isCategoryData = contents.endsWith("b.htm");
+                                    if (null != scanResult) {
+                                        scanResult.barcodeResult(codeQR[3], isCategoryData);
+                                    }
+                                    Bundle params = new Bundle();
+                                    params.putString("codeQR", codeQR[3]);
+                                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SCAN_STORE_CODE_QR_SCREEN, params);
                                 }
-                                Bundle params = new Bundle();
-                                params.putString("codeQR", codeQR[3]);
-                                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SCAN_STORE_CODE_QR_SCREEN, params);
-
                             } catch (Exception e) {
                                 Log.e(TAG, "Failed parsing codeQR reason=" + e.getLocalizedMessage(), e);
                             }
@@ -132,14 +141,7 @@ public class ScannerFragment extends BaseFragment {
                             Toast toast = Toast.makeText(getActivity(), getString(R.string.error_qrcode_scan), Toast.LENGTH_SHORT);
                             toast.show();
                         }
-                    }else if (requestCode == RC_SCAN_CODE_QR_TO_VALIDATE_TOKEN) {
-                        if (null != scanResult) {
-                            String temp = Uri.decode(contents);
-                            String[] scanData = temp.split("#");
-                            scanResult.qrCodeResult(scanData);
-                            Log.d("SCAN RESULT", temp);
-                        }
-                    }else{
+                    } else {
                         // do nothing
                     }
                 }
