@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -62,6 +61,7 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -71,7 +71,6 @@ import com.squareup.picasso.Picasso;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -88,8 +87,10 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 /**
  * Created by chandra on 5/7/17.
  */
-public class AfterJoinActivity extends BaseActivity implements ResponsePresenter, ActivityCommunicator,
-        QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter, CFClientInterface, CashFreeNotifyQPresenter {
+public class AfterJoinActivity
+        extends BaseActivity
+        implements ResponsePresenter, ActivityCommunicator, QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter,
+        CFClientInterface, CashFreeNotifyQPresenter {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_mobile;
@@ -127,7 +128,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     private CFPaymentService cfPaymentService;
     private ImageView iv_codeqr;
     private LinearLayout ll_qr_token;
-    private TextView tv_token_qr,tv_token_date,tv_token_time;
+    private TextView tv_token_qr, tv_token_day, tv_token_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +164,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         iv_codeqr = findViewById(R.id.iv_codeqr);
         ll_qr_token = findViewById(R.id.ll_qr_token);
         tv_token_qr = findViewById(R.id.tv_token_qr);
-        tv_token_date = findViewById(R.id.tv_token_date);
+        tv_token_day = findViewById(R.id.tv_token_day);
         tv_token_time = findViewById(R.id.tv_token_time);
         rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
         rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
@@ -819,34 +820,29 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     }
 
     private void generateQRCode() {
-        String codeQrInfo =  codeQR + "#"  + tokenValue + "#" + queueUserId;
+        String authenticateInQueue = "https://q.noqapp.com/" + codeQR + "#" + tokenValue + "#" + "_" + MessageOriginEnum.AU;
         Writer writer = new QRCodeWriter();
-        String qr_code_data = Uri.encode(codeQrInfo, "utf-8");
         int width = 250;
         int height = 250;
         try {
-            BitMatrix bm = writer.encode(qr_code_data, BarcodeFormat.QR_CODE, width, height);
+            BitMatrix bm = writer.encode(authenticateInQueue, BarcodeFormat.QR_CODE, width, height);
 
             Bitmap imageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            for (int i = 0; i < width; i++) {//width
-                for (int j = 0; j < height; j++) {//height
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
                     imageBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
             iv_codeqr.setVisibility(View.VISIBLE);
             ll_qr_token.setVisibility(View.VISIBLE);
             tv_token_qr.setVisibility(View.VISIBLE);
-            tv_token_date.setVisibility(View.VISIBLE);
+            tv_token_day.setVisibility(View.VISIBLE);
             tv_token_time.setVisibility(View.VISIBLE);
             iv_codeqr.setImageBitmap(imageBitmap);
             tv_token_qr.setText(tokenValue);
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/EEE", Locale.getDefault());
-            tv_token_date.setText(CommonHelper.formatStringDate(sdf, jsonTokenAndQueue.getCreateDate()));
-//            while(true){
-            String timeStamp = new SimpleDateFormat("HH:mm:ss:SSS a", Locale.getDefault()).format(new Date());
-            tv_token_time.setText(timeStamp);
-//            }
+            tv_token_day.setText(CommonHelper.formatStringDate(sdf, jsonTokenAndQueue.getCreateDate()));
         } catch (WriterException e) {
             e.printStackTrace();
         }

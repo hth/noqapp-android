@@ -1,15 +1,14 @@
 <resources>
-    <string name="app_name">NoQueue Merchant</string>
-    <string name="app_name_splash">Merchant</string>
-
+    <string name="app_name">NoQueue Business</string>
+    <string name="app_name_splash">Business</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">email</string>
     <string name="prompt_pwd">password</string>
     <string name="sign_in">Login</string>
 
-    <string name="forget_pwd"><u>Forgot password</u></string>
-    <string name="become_merchant"><u>Become a merchant</u></string>
+    <string name="forget_pwd"><u>Forgot Password</u></string>
+    <string name="become_merchant"><u>Register Your Business</u></string>
     <string name="error_email_blank">Please enter email id</string>
     <string name="error_email_invalid">Please enter valid email</string>
     <string name="error_pwd_blank">Please enter password</string>

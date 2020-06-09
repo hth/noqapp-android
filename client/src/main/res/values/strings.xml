@@ -53,7 +53,7 @@
     <string name="login">Login</string>
     <string name="phone">Phone <font color='red'>\u002A</font></string>
     <string name="name">Name <font color='red'>\u002A</font></string>
-    <string name="mail">Mail <font color='red'>\u002A</font></string>
+    <string name="mail">Mail</string>
     <string name="birthday">Birthday <font color='red'>\u002A</font></string>
     <string name="gender">Gender <font color='red'>\u002A</font></string>
     <string name="invitecode">Invite code</string>
@@ -303,7 +303,7 @@
     <string name="msg_vibrator_off">Your phone is on silent mode. App might fail to acknowledge you when its your turn.</string>
     <string name="error_mobile_no_length">Phone number has to be 10 digits</string>
     <string name="profile"> <u>PROFILE</u></string>
-    <string name="merchant_account">Become a merchant</string>
+    <string name="merchant_account">Register Your Business</string>
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
     <string name="order_history">Order &amp; Queue History</string>

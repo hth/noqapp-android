@@ -33,7 +33,7 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
 
     private int mId;
     private Activity context;
-    private boolean isFirstScandetaction = true;
+    private boolean isFirstScanDetection = true;
 
     private static final int COLOR_CHOICES[] = {
             Color.BLUE,
@@ -82,17 +82,16 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
      */
     void updateItem(Barcode barcode) {
         mBarcode = barcode;
-        if (isFirstScandetaction) {
+        if (isFirstScanDetection) {
             postInvalidate();
             if (null != mBarcode) {
-                isFirstScandetaction = false;
+                isFirstScanDetection = false;
                 Intent intent = new Intent();
-                intent.putExtra("SCAN_RESULT", barcode.rawValue.toString());
+                intent.putExtra("SCAN_RESULT", barcode.rawValue);
                 intent.putExtra("SCAN_RESULT_FORMAT", String.valueOf(barcode.format));
                 context.setResult(Activity.RESULT_OK, intent);
                 context.finish();
             }
-
         }
     }
 
@@ -102,7 +101,7 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
     @Override
     public void draw(Canvas canvas) {
         Barcode barcode = mBarcode;
-        if (barcode == null) {
+        if (null == barcode) {
             return;
         }
 
