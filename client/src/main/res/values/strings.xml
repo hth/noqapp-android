@@ -303,7 +303,7 @@
     <string name="msg_vibrator_off">Your phone is on silent mode. App might fail to acknowledge you when its your turn.</string>
     <string name="error_mobile_no_length">Phone number has to be 10 digits</string>
     <string name="profile"> <u>PROFILE</u></string>
-    <string name="merchant_account">Become a merchant</string>
+    <string name="merchant_account">Register Your Business</string>
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
     <string name="order_history">Order &amp; Queue History</string>
