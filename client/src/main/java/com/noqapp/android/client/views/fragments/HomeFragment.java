@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -97,9 +96,6 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -309,7 +305,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        ScannerFragment scannerFragment = new ScannerFragment(this, ScannerFragment.RC_SCAN_CODE_QR) ;
+        ScannerFragment scannerFragment = new ScannerFragment(this, scanCodeQRType() );
         transaction.add(R.id.frame_scan, scannerFragment);
         transaction.commit();
     }
@@ -970,4 +966,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     }
 
 
+    private int scanCodeQRType(){
+        // return ScannerFragment.RC_BARCODE_CAPTURE   // @TODO return RC_BARCODE_CAPTURE for normal scan
+        return ScannerFragment.RC_SCAN_CODE_QR_TO_VALIDATE_TOKEN;
+
+    }
 }
