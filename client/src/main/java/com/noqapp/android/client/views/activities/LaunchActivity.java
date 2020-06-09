@@ -181,7 +181,7 @@ public class LaunchActivity
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
         } else {
-            COUNTRY_CODE = "IN";
+            COUNTRY_CODE = getCountryCode();
         }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
@@ -432,6 +432,7 @@ public class LaunchActivity
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.tv_version:
+                //Do nothing
                 break;
             case R.id.tv_email:
                 if (UserUtils.isLogin()) {
