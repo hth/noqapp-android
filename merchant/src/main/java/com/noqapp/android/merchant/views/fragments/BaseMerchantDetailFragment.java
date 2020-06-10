@@ -712,14 +712,19 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         }
     }
 
-
     // Handler for Approve/Reject/Reset button
     // Calls businessCustomerApiCalls to update priority and customer attribute
     @Override
-    public void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, CustomerPriorityLevelEnum customerPriorityLevelEnum, ActionTypeEnum action, String codeQR) {
+    public void actionOnBusinessCustomer(
+            Context context,
+            JsonQueuedPerson jsonQueuedPerson,
+            CustomerPriorityLevelEnum customerPriorityLevel,
+            ActionTypeEnum action,
+            String codeQR
+    ) {
         CustomerPriority customerPriority = new CustomerPriority();
         customerPriority.setActionType(action);
-        customerPriority.setCustomerPriorityLevel(customerPriorityLevelEnum);
+        customerPriority.setCustomerPriorityLevel(customerPriorityLevel);
         customerPriority.setQueueUserId(jsonQueuedPerson.getQueueUserId());
         customerPriority.setCodeQR(codeQR);
 

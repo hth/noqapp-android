@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonBusinessCustomerPriority;
-import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.BusinessCustomerAttributeEnum;
@@ -48,14 +47,10 @@ import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.body.merchant.CustomerPriority;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.interfaces.ApproveCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import java.util.List;
@@ -144,7 +139,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     public interface PeopleInQAdapterClick {
         void peopleInQClick(int position);
         void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, boolean isPaymentNotAllowed);
-        void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, CustomerPriorityLevelEnum customerPriorityLevelEnum, ActionTypeEnum action, String codeQR);
+        void actionOnBusinessCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, CustomerPriorityLevelEnum customerPriorityLevel, ActionTypeEnum action, String codeQR);
     }
 
     private PeopleInQAdapterClick peopleInQAdapterClick;
@@ -358,12 +353,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
                 }
                 else
                 {
-                    peopleInQAdapterClick.approveCustomer(
+                    peopleInQAdapterClick.actionOnBusinessCustomer(
                             context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.APPROVE, this.codeQR);
                 }
             });
-            recordHolder.authenticate_reject.setOnClickListener(v -> peopleInQAdapterClick.approveCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.REJECT, this.codeQR));
-            recordHolder.authenticate_reset.setOnClickListener(v -> peopleInQAdapterClick.approveCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.CLEAR, this.codeQR));
+            recordHolder.authenticate_reject.setOnClickListener(v -> peopleInQAdapterClick.actionOnBusinessCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.REJECT, this.codeQR));
+            recordHolder.authenticate_reset.setOnClickListener(v -> peopleInQAdapterClick.actionOnBusinessCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.CLEAR, this.codeQR));
         }
         else {
             // Hide the radio buttons
