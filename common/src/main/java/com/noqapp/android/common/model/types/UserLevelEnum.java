@@ -9,8 +9,10 @@ public enum UserLevelEnum {
     Q_SUPERVISOR("Queue Supervisor", 22),
     A_SUPERVISOR("Asset Supervisor", 23),
     S_MANAGER("Store Manager", 24),
-    M_ADMIN("Merchant Admin", 29),
+    M_ACCOUNTANT("Business Accountant", 26),
+    M_ADMIN("Business Admin", 29),
     TECHNICIAN("Tech", 40),
+    MEDICAL_TECHNICIAN("Medical Tech", 41),
     SUPERVISOR("Super", 50),
     ANALYSIS("Analysis", 60),
     ADMIN("Admin", 90);
