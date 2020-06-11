@@ -990,7 +990,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         }
     }
 
-    private int scanCodeQRType(){
+    private int scanCodeQRType() {
         return ScannerFragment.RC_BARCODE_CAPTURE;
     }
 }
