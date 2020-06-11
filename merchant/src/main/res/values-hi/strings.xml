@@ -147,7 +147,7 @@
     <string name="payment_setting">Payment Settings</string>
     <string name="text_deduction">Cancellation Charge</string>
     <string name="today_setting">Today\'s Setting</string>
-    <string name="permanent_setting">Permanent Settings</string>
+    <string name="permanent_setting">Permanent Settings (7 Days)</string>
     <string name="text_fees">Fee/Service Charge</string>
     <string name="enable_payment">Enable Payment Service</string>
     <string name="screen_all_review">Reviews</string>
