@@ -136,10 +136,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 default:
                     long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
                     if (avgServiceTime == 0) {
-                        SharedPreferences prefs = this.context.getSharedPreferences(
-                                Constants.APP_PACKAGE,
-                                Context.MODE_PRIVATE);
-
+                        SharedPreferences prefs = this.context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                         avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.getCodeQR()), 0);
                     }
                     return TokenStatusUtils.calculateEstimatedWaitTime(
