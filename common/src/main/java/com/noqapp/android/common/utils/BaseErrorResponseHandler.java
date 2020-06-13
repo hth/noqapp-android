@@ -112,6 +112,9 @@ public abstract class BaseErrorResponseHandler {
                     case APPOINTMENT_ALREADY_EXISTS:
                     case APPOINTMENT_ACTION_NOT_PERMITTED:
 
+                    case QRCODE_INVALID:
+                    case QRCODE_DENIED_ACCESS:
+
                     case SEVERE:
                     case DEVICE_DETAIL_MISSING:
                     case ACCOUNT_INACTIVE:
