@@ -47,6 +47,9 @@ public class JsonInQueuePerson extends AbstractDomain implements Serializable {
     @JsonProperty("qu")
     private QueueUserStateEnum queueUserState;
 
+    @JsonProperty ("e")
+    private String expectedServiceBegin;
+
     @JsonProperty("pl")
     private CustomerPriorityLevelEnum customerPriorityLevel = CustomerPriorityLevelEnum.I;
 
@@ -105,6 +108,14 @@ public class JsonInQueuePerson extends AbstractDomain implements Serializable {
 
     public void setQueueUserState(QueueUserStateEnum queueUserState) {
         this.queueUserState = queueUserState;
+    }
+
+    public String getExpectedServiceBegin() {
+        return expectedServiceBegin;
+    }
+
+    public void setExpectedServiceBegin(String expectedServiceBegin) {
+        this.expectedServiceBegin = expectedServiceBegin;
     }
 
     public CustomerPriorityLevelEnum getCustomerPriorityLevel() {
