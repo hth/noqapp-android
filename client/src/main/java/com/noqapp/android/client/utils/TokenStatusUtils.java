@@ -52,14 +52,14 @@ public class TokenStatusUtils {
         if (minutes >= 45) {
             LocalTime before = localTime.minusMinutes(minutes).plusMinutes(30);
             LocalTime after = before.plusHours(1);
-            return "time slot between " + before.getHourOfDay() + ":" + before.getMinuteOfHour() + " - " + after.getHourOfDay() + ":" + after.getMinuteOfHour();
+            return "between " + before.getHourOfDay() + ":" + before.getMinuteOfHour() + " - " + after.getHourOfDay() + ":" + after.getMinuteOfHour();
         } else if (minutes <= 15) {
             LocalTime before = localTime.minusMinutes(minutes).minusMinutes(30);
             LocalTime after = before.plusHours(1);
-            return "time slot between " + before.getHourOfDay() + ":" + before.getMinuteOfHour() + " - " + after.getHourOfDay() + ":" + after.getMinuteOfHour();
+            return "between " + before.getHourOfDay() + ":" + before.getMinuteOfHour() + " - " + after.getHourOfDay() + ":" + after.getMinuteOfHour();
         } else {
             LocalTime after = localTime.plusHours(1);
-            return "time slot between " + localTime.getHourOfDay() + ":" + "00" + " - " + after.getHourOfDay() + ":" + "00";
+            return "between " + localTime.getHourOfDay() + ":" + "00" + " - " + after.getHourOfDay() + ":" + "00";
         }
     }
 }

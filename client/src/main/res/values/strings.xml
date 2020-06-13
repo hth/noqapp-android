@@ -162,6 +162,7 @@
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
     <string name="alert">Alert</string>
     <string name="estimated_time">Wait time: %1$s</string>
+    <string name="time_slot">Visit: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
     <string name="error_join">Remote Queue Not Enabled</string>
     <string name="login_hint">Phone no. without country code</string>
