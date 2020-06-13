@@ -22,15 +22,19 @@ public class TokenStatusUtils {
      * @return the estimated wait time
      */
     public static String calculateEstimatedWaitTime(
-            long avgServiceTime,
-            int positionInQueue,
-            QueueStatusEnum queueStatus,
-            int startHour
+        long avgServiceTime,
+        int positionInQueue,
+        QueueStatusEnum queueStatus,
+        int startHour
     ) {
         if (avgServiceTime > 0 && positionInQueue > 0) {
             if (queueStatus == QueueStatusEnum.S) {
                 long timeToStoreStartInMilli = Formatter.computeTimeToStoreStart(startHour);
-                return GetTimeAgoUtils.getTimeAgo(Math.max(((positionInQueue * avgServiceTime) + timeToStoreStartInMilli), 0));
+                if (timeToStoreStartInMilli > 0) {
+                    return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime + timeToStoreStartInMilli);
+                } else {
+                    return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime);
+                }
             } else {
                 return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime);
             }
