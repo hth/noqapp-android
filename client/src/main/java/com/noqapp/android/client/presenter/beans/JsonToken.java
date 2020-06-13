@@ -158,7 +158,7 @@ public class JsonToken {
     @JsonIgnoreProperties
     public int afterHowLong() {
         int position = token - servingNumber;
-        return position > 0 ? position : 0;
+        return Math.max(position, 0);
     }
 
     @JsonIgnoreProperties
