@@ -3,6 +3,8 @@ package com.noqapp.android.merchant.views.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.airbnb.lottie.L;
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -55,7 +57,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
     private LoginApiCalls loginApiCalls;
     private MerchantProfileApiCalls merchantProfileModel;
     private View view;
-    private TextView tv_forget_pwd, tv_become_merchant;
 
     public LoginFragment() {
         super();
@@ -67,7 +68,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         view = inflater.inflate(R.layout.frag_login, container, false);
         btn_login = view.findViewById(R.id.btn_login);
         actv_email = view.findViewById(R.id.actv_email);
-        tv_forget_pwd = view.findViewById(R.id.tv_forget_pwd);
+        TextView tv_forget_pwd = view.findViewById(R.id.tv_forget_pwd);
         tv_forget_pwd.setOnClickListener(v -> {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 Intent in = new Intent(getActivity(), WebViewActivity.class);
@@ -78,7 +79,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
         });
-        tv_become_merchant = view.findViewById(R.id.tv_become_merchant);
+        TextView tv_become_merchant = view.findViewById(R.id.tv_become_merchant);
         tv_become_merchant.setOnClickListener(v -> {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 Intent in = new Intent(getActivity(), WebViewActivity.class);
@@ -90,6 +91,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
             }
         });
         edt_pwd = view.findViewById(R.id.edt_pwd);
+        edt_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
         userList = LaunchActivity.getLaunchActivity().getUserList();
         loginApiCalls = new LoginApiCalls(this);
         merchantProfileModel = new MerchantProfileApiCalls();
@@ -112,6 +114,20 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }
+            }
+        });
+        ImageView iv_show_hide_password = view.findViewById(R.id.iv_show_hide_password);
+        iv_show_hide_password.setOnClickListener(v -> {
+            if (edt_pwd.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+                iv_show_hide_password.setImageResource(R.drawable.show_password);
+                //@TODO change image with close/cross eye
+                //Show Password
+                edt_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            } else {
+                iv_show_hide_password.setImageResource(R.drawable.show_password);
+                //Hide Password
+                edt_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
             }
         });
         return view;
