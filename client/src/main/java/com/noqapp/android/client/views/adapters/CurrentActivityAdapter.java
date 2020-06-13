@@ -127,16 +127,30 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
     // Display wait time
     private String  displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue){
         try {
-            long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
-            if (avgServiceTime == 0) {
-                SharedPreferences prefs =
-                        this.context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY,
-                        jsonTokenAndQueue.getCodeQR()), 0);
+            switch (jsonTokenAndQueue.getBusinessType()) {
+                case CD:
+                case CDQ:
+                case GSQ:
+                    String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
+                    return String.format("\nVisit: %1$s", slot);
+                default:
+                    long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
+                    if (avgServiceTime == 0) {
+                        SharedPreferences prefs = this.context.getSharedPreferences(
+                                Constants.APP_PACKAGE,
+                                Context.MODE_PRIVATE);
+
+                        avgServiceTime = prefs.getLong(
+                                String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY,
+                                        jsonTokenAndQueue.getCodeQR()),
+                                0);
+                    }
+                    return TokenStatusUtils.calculateEstimatedWaitTime(
+                            avgServiceTime,
+                            jsonTokenAndQueue.afterHowLong(),
+                            jsonTokenAndQueue.getQueueStatus(),
+                            jsonTokenAndQueue.getStartHour());
             }
-            return TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime,
-                    jsonTokenAndQueue.afterHowLong(), jsonTokenAndQueue.getQueueStatus(),
-                    jsonTokenAndQueue.getStartHour());
         } catch (Exception e) {
             Log.e(TAG, "Error setting wait time reason: " + e.getLocalizedMessage(), e);
         }

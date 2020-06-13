@@ -462,12 +462,21 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), currentlyServingNumber).apply();
                                     // Add wait time to notification message
                                     try {
-                                        long avgServiceTime = jtk.getAverageServiceTime() != 0
-                                                ? jtk.getAverageServiceTime()
-                                                : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
-                                        String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime, jtk.afterHowLong(), QueueStatusEnum.N, jtk.getStartHour());
-                                        if (!TextUtils.isEmpty(waitTime)) {
-                                            notificationMessage = notificationMessage + String.format("\nWait time: %1$s", waitTime);
+                                        switch (jtk.getBusinessType()) {
+                                            case CD:
+                                            case CDQ:
+                                            case GSQ:
+                                                String slot = TokenStatusUtils.timeSlot(jtk.getServiceEndTime());
+                                                notificationMessage = notificationMessage + String.format("\nVisit: %1$s", slot);
+                                                break;
+                                            default:
+                                                long avgServiceTime = jtk.getAverageServiceTime() != 0
+                                                        ? jtk.getAverageServiceTime()
+                                                        : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
+                                                String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime, jtk.afterHowLong(), QueueStatusEnum.N, jtk.getStartHour());
+                                                if (!TextUtils.isEmpty(waitTime)) {
+                                                    notificationMessage = notificationMessage + String.format("\nWait time: %1$s", waitTime);
+                                                }
                                         }
                                     } catch (Exception e) {
                                         Log.e("", "Error setting wait time reason: " + e.getLocalizedMessage(), e);
