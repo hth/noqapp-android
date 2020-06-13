@@ -82,6 +82,16 @@ public class Formatter {
         }
     }
 
+    public static String getTimeMilitary(String inputDate) {
+        try {
+            DateFormat outputFormat = new SimpleDateFormat("HHmm", Locale.getDefault());
+            return outputFormat.format(formatRFC822.parse(inputDate));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     public static LocalTime parseLocalTime(String rawTimestamp) {
         return inputFormatter.parseLocalTime(rawTimestamp);
     }

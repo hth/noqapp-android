@@ -3,6 +3,8 @@ package com.noqapp.android.client.utils;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
 
+import org.joda.time.LocalTime;
+
 /**
  * This is a utile class for token status.
  */
@@ -40,5 +42,24 @@ public class TokenStatusUtils {
             }
         }
         return null;
+    }
+
+    public static String timeSlot(String date) {
+        String expectedServiceTime = Formatter.getTimeMilitary(date);
+        LocalTime localTime = Formatter.parseLocalTime(expectedServiceTime);
+
+        int minutes = localTime.getMinuteOfHour();
+        if (minutes >= 45) {
+            LocalTime before = localTime.minusMinutes(minutes).plusMinutes(30);
+            LocalTime after = before.plusHours(1);
+            return "time slot between " + before.getHourOfDay() + ":" + before.getMinuteOfHour() + " - " + after.getHourOfDay() + ":" + after.getMinuteOfHour();
+        } else if (minutes <= 15) {
+            LocalTime before = localTime.minusMinutes(minutes).minusMinutes(30);
+            LocalTime after = before.plusHours(1);
+            return "time slot between " + before.getHourOfDay() + ":" + before.getMinuteOfHour() + " - " + after.getHourOfDay() + ":" + after.getMinuteOfHour();
+        } else {
+            LocalTime after = localTime.plusHours(1);
+            return "time slot between " + localTime.getHourOfDay() + ":" + "00" + " - " + after.getHourOfDay() + ":" + "00";
+        }
     }
 }
