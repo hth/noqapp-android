@@ -68,8 +68,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     // Display wait time
                     String waitTime = displayWaitTimes(jsonTokenAndQueue);
                     if (!TextUtils.isEmpty(waitTime)) {
-                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time)
-                                , waitTime));
+                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
                     }
                 } else {
                     holder.tv_position_in_queue_label.setText(context.getString(R.string.position_in_queue_label));
@@ -77,8 +76,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     // Display wait time
                     String waitTime = displayWaitTimes(jsonTokenAndQueue);
                     if (!TextUtils.isEmpty(waitTime)) {
-                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time)
-                                , waitTime));
+                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
                     }
                 }
             } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
@@ -154,7 +152,6 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return dataSet.size();
     }
-
 
     public interface OnItemClickListener {
         void currentQorOrderItemClick(JsonTokenAndQueue item);
