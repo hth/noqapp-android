@@ -439,7 +439,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     }
 
     private void navigateToAfterJoinScreen(JsonToken jsonToken) {
-
         jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
         jsonTokenAndQueue.setToken(jsonToken.getToken());
         jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());

@@ -511,11 +511,22 @@ public class AfterJoinActivity
                 SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                 avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.getCodeQR()), 0);
             }
-            String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime,
-                    jsonTokenAndQueue.afterHowLong(), jsonTokenAndQueue.getQueueStatus(),
-                    jsonTokenAndQueue.getStartHour());
-            if (!TextUtils.isEmpty(waitTime)) {
-                tv_estimated_time.setText(String.format(getString(R.string.estimated_time), waitTime));
+            switch (jsonTokenAndQueue.getBusinessType()) {
+                case CD:
+                case CDQ:
+                case GSQ:
+                    String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
+                    tv_estimated_time.setText(String.format(getString(R.string.time_slot), slot));
+                    break;
+                default:
+                    String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
+                            avgServiceTime,
+                            jsonTokenAndQueue.afterHowLong(),
+                            jsonTokenAndQueue.getQueueStatus(),
+                            jsonTokenAndQueue.getStartHour());
+                    if (!TextUtils.isEmpty(waitTime)) {
+                        tv_estimated_time.setText(String.format(getString(R.string.estimated_time), waitTime));
+                    }
             }
         } catch (Exception e) {
             Log.e("", "Error setting estimated wait time reason: " + e.getLocalizedMessage(), e);

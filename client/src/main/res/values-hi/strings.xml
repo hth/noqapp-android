@@ -162,6 +162,7 @@
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc\n</string>
     <string name="alert">सावधान</string>
     <string name="estimated_time">प्रतीक्षा समय: %1$s</string>
+    <string name="time_slot">इस समय पर जाएँ: %1$s</string>
     <string name="error_remote_join_not_available">रिमोट जॉइन की अनुमति नहीं है। कृपया स्टोर पर जाएँ।</string>
     <string name="error_join">दूरस्थ कतार सक्षम नहीं है।</string>
     <string name="login_hint">देश के कोड के बिना फोन नंबर दर्ज करें। </string>
