@@ -26,7 +26,6 @@ import com.noqapp.android.common.utils.Formatter;
 
 import java.util.List;
 
-
 public class CurrentActivityAdapter extends RecyclerView.Adapter {
     private static final String TAG = CurrentActivityAdapter.class.getSimpleName();
     private final Context context;
