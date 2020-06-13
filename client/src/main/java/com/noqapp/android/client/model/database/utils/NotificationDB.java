@@ -64,9 +64,12 @@ public class NotificationDB {
                 try {
                     while (cursor.moveToNext()) {
                         DisplayNotification notificationBeans = new DisplayNotification();
+                        notificationBeans.setKey(cursor.getString(0));
+                        notificationBeans.setCodeQR(cursor.getString(1));
                         notificationBeans.setMsg(cursor.getString(2));
                         notificationBeans.setTitle(cursor.getString(3));
                         notificationBeans.setStatus(cursor.getString(4));
+                        notificationBeans.setSequence(cursor.getInt(5));
                         notificationBeans.setNotificationCreate(cursor.getString(6));
                         notificationBeans.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(7)));
                         notificationBeans.setImageUrl(cursor.getString(8));
@@ -109,6 +112,18 @@ public class NotificationDB {
     public static void clearNotificationTable() {
         try {
             dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteNotification(Integer sequence, String key) {
+        try {
+            int out = dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME,
+                    DatabaseTable.Notification.SEQUENCE + "=? AND " +
+                            DatabaseTable.Notification.KEY + "=?",
+                    new String[]{Integer.toString(sequence), key});
+            Log.v("notification deleted:", "" + out);
         } catch (Exception e) {
             e.printStackTrace();
         }

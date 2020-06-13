@@ -25,10 +25,13 @@ import java.util.List;
 public class NotificationListAdapter extends BaseAdapter {
     private Context context;
     private List<DisplayNotification> notificationsList;
+    private DeleteRecord deleteRecord;
 
-    public NotificationListAdapter(Context context, List<DisplayNotification> notificationsList) {
+    public NotificationListAdapter(Context context, List<DisplayNotification> notificationsList,
+                                   DeleteRecord deleteRecord) {
         this.context = context;
         this.notificationsList = notificationsList;
+        this.deleteRecord = deleteRecord;
     }
 
     public int getCount() {
@@ -54,15 +57,17 @@ public class NotificationListAdapter extends BaseAdapter {
             recordHolder.tv_create = view.findViewById(R.id.tv_create);
             recordHolder.iv_business = view.findViewById(R.id.iv_business);
             recordHolder.iv_big_image = view.findViewById(R.id.iv_big_image);
+            recordHolder.iv_delete = view.findViewById(R.id.iv_delete);
             recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_title.setText(notificationsList.get(position).getTitle());
-        recordHolder.tv_msg.setText(notificationsList.get(position).getMsg());
+        DisplayNotification displayNotification = notificationsList.get(position);
+        recordHolder.tv_title.setText(displayNotification.getTitle());
+        recordHolder.tv_msg.setText(displayNotification.getMsg());
         try {
-            String dateString = notificationsList.get(position).getNotificationCreate();
+            String dateString = displayNotification.getNotificationCreate();
             long startDate = new Date().getTime() - CommonHelper.stringToDate(dateString).getTime();
             recordHolder.tv_create.setText(GetTimeAgoUtils.getTimeInAgo(startDate));
         } catch (Exception e) {
@@ -70,20 +75,25 @@ public class NotificationListAdapter extends BaseAdapter {
             recordHolder.tv_create.setText("");
         }
 
-        if (notificationsList.get(position).getStatus().equals(NotificationDB.KEY_UNREAD)) {
+        if (displayNotification.getStatus().equals(NotificationDB.KEY_UNREAD)) {
             recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
         } else {
             recordHolder.cardview.setCardBackgroundColor(Color.parseColor("#f6f6f6"));
         }
 
-        if (TextUtils.isEmpty(notificationsList.get(position).getImageUrl())) {
+        if (TextUtils.isEmpty(displayNotification.getImageUrl())) {
             recordHolder.iv_big_image.setVisibility(View.GONE);
         } else {
             recordHolder.iv_big_image.setVisibility(View.VISIBLE);
             Picasso.get().load(
-                    notificationsList.get(position).getImageUrl())
+                    displayNotification.getImageUrl())
                     .into(recordHolder.iv_big_image);
         }
+        recordHolder.iv_delete.setOnClickListener(v -> {
+            if (null != deleteRecord) {
+                deleteRecord.deleteNotification(displayNotification);
+            }
+        });
         return view;
     }
 
@@ -93,9 +103,14 @@ public class NotificationListAdapter extends BaseAdapter {
         TextView tv_create;
         ImageView iv_business;
         ImageView iv_big_image;
+        ImageView iv_delete;
         CardView cardview;
 
         RecordHolder() {
         }
+    }
+
+    public interface DeleteRecord {
+        void deleteNotification(DisplayNotification displayNotification);
     }
 }

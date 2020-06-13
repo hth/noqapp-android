@@ -13,6 +13,9 @@ public class DisplayNotification {
     private String notificationCreate;
     private BusinessTypeEnum businessType;
     private String imageUrl;
+    private Integer sequence;
+    private String key;
+    private String codeQR;
 
     public DisplayNotification() {
 
@@ -72,6 +75,33 @@ public class DisplayNotification {
         return this;
     }
 
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public DisplayNotification setSequence(Integer sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public DisplayNotification setKey(String key) {
+        this.key = key;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public DisplayNotification setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DisplayNotification{");
@@ -81,6 +111,9 @@ public class DisplayNotification {
         sb.append(", notificationCreate='").append(notificationCreate).append('\'');
         sb.append(", businessType=").append(businessType);
         sb.append(", imageUrl='").append(imageUrl).append('\'');
+        sb.append(", sequence=").append(sequence);
+        sb.append(", key='").append(key).append('\'');
+        sb.append(", codeQR='").append(codeQR).append('\'');
         sb.append('}');
         return sb.toString();
     }
