@@ -138,4 +138,21 @@ public class JsonInQueuePerson extends AbstractDomain implements Serializable {
     public void setError(ErrorEncounteredJson error) {
         this.error = error;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonInQueuePerson{");
+        sb.append("token=").append(token);
+        sb.append(", customerName='").append(customerName).append('\'');
+        sb.append(", customerPhone='").append(customerPhone).append('\'');
+        sb.append(", businessCustomerId='").append(businessCustomerId).append('\'');
+        sb.append(", displayName='").append(displayName).append('\'');
+        sb.append(", queueUserState=").append(queueUserState);
+        sb.append(", customerPriorityLevel=").append(customerPriorityLevel);
+        sb.append(", transactionId='").append(transactionId).append('\'');
+        sb.append(", created='").append(created).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
+    }
 }

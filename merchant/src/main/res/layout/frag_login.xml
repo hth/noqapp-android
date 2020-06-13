@@ -87,7 +87,7 @@
                     android:layout_marginRight="5dp"
                     android:alpha=".5"
                     android:padding="5dp"
-                    android:src="@drawable/show_password" />
+                    android:src="@drawable/password_hide" />
                 </RelativeLayout>
                 <Button
                     android:id="@+id/btn_login"
