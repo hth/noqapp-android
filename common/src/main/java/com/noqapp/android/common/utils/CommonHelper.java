@@ -471,8 +471,7 @@ public class CommonHelper {
     public int getFirstVisibleGroup(ExpandableListView expandableListView) {
         int firstVis = expandableListView.getFirstVisiblePosition();
         long packedPosition = expandableListView.getExpandableListPosition(firstVis);
-        int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
-        return groupPosition;
+        return ExpandableListView.getPackedPositionGroup(packedPosition);
     }
 
     /**
