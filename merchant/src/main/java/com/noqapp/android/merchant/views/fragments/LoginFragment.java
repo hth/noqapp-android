@@ -119,12 +119,12 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         ImageView iv_show_hide_password = view.findViewById(R.id.iv_show_hide_password);
         iv_show_hide_password.setOnClickListener(v -> {
             if (edt_pwd.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
-                iv_show_hide_password.setImageResource(R.drawable.show_password);
+                iv_show_hide_password.setImageResource(R.drawable.password_hide);
                 //@TODO change image with close/cross eye
                 //Show Password
                 edt_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             } else {
-                iv_show_hide_password.setImageResource(R.drawable.show_password);
+                iv_show_hide_password.setImageResource(R.drawable.password_show);
                 //Hide Password
                 edt_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
