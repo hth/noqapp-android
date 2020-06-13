@@ -56,22 +56,39 @@
                     android:textColor="@android:color/black"
                     android:textColorHint="@color/color_login_hint"
                     android:textSize="@dimen/text_size_fourteen" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/square_white_bg_drawable"
+                    android:layout_marginBottom="10dp">
 
                 <EditText
                     android:id="@+id/edt_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/square_white_bg_drawable"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/iv_show_hide_password"
                     android:hint="@string/prompt_pwd"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:padding="10dp"
                     android:singleLine="true"
+                    android:background="@null"
                     android:textColor="@android:color/black"
                     android:textColorHint="@color/color_login_hint"
                     android:textSize="@dimen/text_size_fourteen" />
 
+                <ImageView
+                    android:id="@+id/iv_show_hide_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:alpha=".5"
+                    android:padding="5dp"
+                    android:src="@drawable/password_hide" />
+                </RelativeLayout>
                 <Button
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"

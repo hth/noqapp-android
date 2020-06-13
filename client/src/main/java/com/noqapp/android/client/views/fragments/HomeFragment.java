@@ -1,15 +1,22 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -58,6 +65,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.RateTheAppManager;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
@@ -306,7 +314,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        ScannerFragment scannerFragment = new ScannerFragment(this, scanCodeQRType() );
+        ScannerFragment scannerFragment = new ScannerFragment(this, scanCodeQRType());
         transaction.add(R.id.frame_scan, scannerFragment);
         transaction.commit();
 
@@ -396,8 +404,8 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     }
 
     @Override
-    public void qrCodeResult(String[] scanData ) {
-        if(scanData.length > 2) {
+    public void qrCodeResult(String[] scanData) {
+        if (scanData.length > 2) {
             AuthenticateClientInQueueApiCalls authenticateClientInQueueApiCalls = new AuthenticateClientInQueueApiCalls(this);
             showProgress();
             setProgressMessage("Validating token...");
@@ -914,13 +922,13 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     @Override
     public void clientInQueueResponse(JsonInQueuePerson jsonInQueuePerson) {
         Log.e("JsonInQueuePerson", jsonInQueuePerson.toString());
-        new CustomToast().showToast(getActivity(),"Valid User");
+        displayValidUserDialog(jsonInQueuePerson);
     }
 
     @Override
     public void clientInQueueErrorPresenter(ErrorEncounteredJson eej) {
         Log.e("JsonInQueuePerson error", eej.toString());
-        new CustomToast().showToast(getActivity(),"Not a Valid User");
+        ShowAlertInformation.showInfoDisplayDialog(getActivity(),"InValid Token","This token is not valid to queue");
     }
 
     private static class QueueHandler extends Handler {
@@ -992,5 +1000,29 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 
     private int scanCodeQRType() {
         return ScannerFragment.RC_BARCODE_CAPTURE;
+    }
+
+    public void displayValidUserDialog(JsonInQueuePerson jsonInQueuePerson) {
+        final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_valid_user);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
+        TextView tv_store_name = dialog.findViewById(R.id.tv_store_name);
+        TextView tv_user_name = dialog.findViewById(R.id.tv_user_name);
+        TextView tv_user_token = dialog.findViewById(R.id.tv_user_token);
+        TextView tv_user_status = dialog.findViewById(R.id.tv_user_status);
+        tv_store_name.setText(jsonInQueuePerson.getDisplayName().trim());
+        tv_user_name.setText(TextUtils.isEmpty(jsonInQueuePerson.getCustomerName()) ? "Guest User" : jsonInQueuePerson.getCustomerName());
+        tv_user_token.setText(String.valueOf(jsonInQueuePerson.getToken()));
+        tv_user_status.setText(jsonInQueuePerson.getQueueUserState().getDescription());
+        Button btnPositive = dialog.findViewById(R.id.btnPositive);
+        btnPositive.setOnClickListener((View v) -> {
+            dialog.dismiss();
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 }
