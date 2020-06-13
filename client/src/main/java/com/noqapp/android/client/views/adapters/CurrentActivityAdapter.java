@@ -125,7 +125,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
     }
 
     // Display wait time
-    private String  displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue){
+    private String displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue) {
         try {
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case CD:
@@ -140,10 +140,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                                 Constants.APP_PACKAGE,
                                 Context.MODE_PRIVATE);
 
-                        avgServiceTime = prefs.getLong(
-                                String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY,
-                                        jsonTokenAndQueue.getCodeQR()),
-                                0);
+                        avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.getCodeQR()), 0);
                     }
                     return TokenStatusUtils.calculateEstimatedWaitTime(
                             avgServiceTime,
