@@ -26,7 +26,6 @@ import com.noqapp.android.common.utils.Formatter;
 
 import java.util.List;
 
-
 public class CurrentActivityAdapter extends RecyclerView.Adapter {
     private static final String TAG = CurrentActivityAdapter.class.getSimpleName();
     private final Context context;
@@ -69,8 +68,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     // Display wait time
                     String waitTime = displayWaitTimes(jsonTokenAndQueue);
                     if (!TextUtils.isEmpty(waitTime)) {
-                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time)
-                                , waitTime));
+                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
                     }
                 } else {
                     holder.tv_position_in_queue_label.setText(context.getString(R.string.position_in_queue_label));
@@ -78,8 +76,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     // Display wait time
                     String waitTime = displayWaitTimes(jsonTokenAndQueue);
                     if (!TextUtils.isEmpty(waitTime)) {
-                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time)
-                                , waitTime));
+                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
                     }
                 }
             } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
@@ -125,7 +122,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
     }
 
     // Display wait time
-    private String  displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue){
+    private String displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue) {
         try {
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case CD:
@@ -136,14 +133,8 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 default:
                     long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
                     if (avgServiceTime == 0) {
-                        SharedPreferences prefs = this.context.getSharedPreferences(
-                                Constants.APP_PACKAGE,
-                                Context.MODE_PRIVATE);
-
-                        avgServiceTime = prefs.getLong(
-                                String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY,
-                                        jsonTokenAndQueue.getCodeQR()),
-                                0);
+                        SharedPreferences prefs = this.context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                        avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.getCodeQR()), 0);
                     }
                     return TokenStatusUtils.calculateEstimatedWaitTime(
                             avgServiceTime,
@@ -161,7 +152,6 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return dataSet.size();
     }
-
 
     public interface OnItemClickListener {
         void currentQorOrderItemClick(JsonTokenAndQueue item);
