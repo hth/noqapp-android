@@ -65,18 +65,40 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 } else if (jsonTokenAndQueue.getServingNumber() == 0) {
                     holder.tv_position_in_queue_label.setText("Queue not yet started");
                     holder.tv_position_in_queue_value.setVisibility(View.GONE);
-                    // Display wait time
-                    String waitTime = displayWaitTimes(jsonTokenAndQueue);
-                    if (!TextUtils.isEmpty(waitTime)) {
-                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
+                    switch (jsonTokenAndQueue.getBusinessType()) {
+                        case CD:
+                        case CDQ:
+                        case GSQ:
+                            String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
+                            if (!TextUtils.isEmpty(slot)) {
+                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.time_slot), slot));
+                            }
+                            break;
+                        default:
+                            // Display wait time
+                            String waitTime = displayWaitTimes(jsonTokenAndQueue);
+                            if (!TextUtils.isEmpty(waitTime)) {
+                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
+                            }
                     }
                 } else {
                     holder.tv_position_in_queue_label.setText(context.getString(R.string.position_in_queue_label));
                     holder.tv_position_in_queue_value.setVisibility(View.VISIBLE);
-                    // Display wait time
-                    String waitTime = displayWaitTimes(jsonTokenAndQueue);
-                    if (!TextUtils.isEmpty(waitTime)) {
-                        holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
+                    switch (jsonTokenAndQueue.getBusinessType()) {
+                        case CD:
+                        case CDQ:
+                        case GSQ:
+                            String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
+                            if (!TextUtils.isEmpty(slot)) {
+                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.time_slot), slot));
+                            }
+                            break;
+                        default:
+                            // Display wait time
+                            String waitTime = displayWaitTimes(jsonTokenAndQueue);
+                            if (!TextUtils.isEmpty(waitTime)) {
+                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
+                            }
                     }
                 }
             } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
@@ -122,26 +144,18 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
     }
 
     // Display wait time
-    private String displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue) {
+    private String  displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue){
         try {
-            switch (jsonTokenAndQueue.getBusinessType()) {
-                case CD:
-                case CDQ:
-                case GSQ:
-                    String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
-                    return String.format("\nVisit: %1$s", slot);
-                default:
-                    long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
-                    if (avgServiceTime == 0) {
-                        SharedPreferences prefs = this.context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                        avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.getCodeQR()), 0);
-                    }
-                    return TokenStatusUtils.calculateEstimatedWaitTime(
-                            avgServiceTime,
-                            jsonTokenAndQueue.afterHowLong(),
-                            jsonTokenAndQueue.getQueueStatus(),
-                            jsonTokenAndQueue.getStartHour());
+            long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
+            if (avgServiceTime == 0) {
+                SharedPreferences prefs = this.context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.getCodeQR()), 0);
             }
+            return TokenStatusUtils.calculateEstimatedWaitTime(
+                    avgServiceTime,
+                    jsonTokenAndQueue.afterHowLong(),
+                    jsonTokenAndQueue.getQueueStatus(),
+                    jsonTokenAndQueue.getStartHour());
         } catch (Exception e) {
             Log.e(TAG, "Error setting wait time reason: " + e.getLocalizedMessage(), e);
         }
