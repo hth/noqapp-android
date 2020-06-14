@@ -127,7 +127,7 @@
     <string name="create_case">Case \nHistory</string>
 
     <string name="notification_setting">Notification</string>
-    <string name="broadcast_message">Send Sms</string>
+    <string name="broadcast_message">Send Message</string>
     <string name="language_setting">Change Language</string>
     <string name="lang_dialog_title">Change Language</string>
     <string name="hindi">Hindi</string>
@@ -140,9 +140,9 @@
     <string name="error_patient_id">Please enter Patient Id</string>
     <string name="error_patient_name">Please enter Patient Name</string>
 
-    <string name="error_title_blank">Please enter SMS title</string>
-    <string name="error_title_min_length">SMS title length should be more than 3</string>
-    <string name="error_body_blank">Please enter sms body</string>
+    <string name="error_title_blank">Please enter message title</string>
+    <string name="error_title_min_length">Title length should be more than 3</string>
+    <string name="error_body_blank">Please enter message body</string>
 
     <string name="login_hint">Phone no. without country code</string>
     <string name="resend_otp">Resend OTP</string>
@@ -228,7 +228,7 @@
     <string name="appointment_setting">Appointment Settings</string>
     <string name="text_deduction">Cancellation Charge</string>
     <string name="today_setting">Today\'s Setting</string>
-    <string name="permanent_setting">Permanent Settings (7 Days)</string>
+    <string name="permanent_setting">Permanent Settings (For all 7 Days)</string>
     <string name="text_fees">Fee/Service Charge</string>
     <string name="enable_payment">Enable Payment Service</string>
     <string name="enable_appointment">Enable Appointment/Walk-in Appointment Service</string>

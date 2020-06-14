@@ -84,8 +84,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class BaseLaunchActivity
+        extends AppCompatActivity
+        implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
     private static SharedPreferences sharedpreferences;
     protected List<MenuDrawer> menuDrawerItems = new ArrayList<>();
@@ -101,8 +102,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_NAME = "userName";
     protected final String KEY_IS_ACCESS_GRANT = "accessGrant";
     protected final String KEY_USER_LEVEL = "userLevel";
-    protected final String KEY_CUSTOMER_PRIORITY  = "customerPriority";
-    protected final String PRIORITY_ACCESS  = "priorityAccess";
+    protected final String KEY_CUSTOMER_PRIORITY = "customerPriority";
+    protected final String PRIORITY_ACCESS = "priorityAccess";
     protected final String KEY_MERCHANT_COUNTER_NAME = "counterName";
     protected final String KEY_USER_ID = "userId";
     protected final String KEY_USER_LIST = "userList";
@@ -278,9 +279,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 break;
             case R.drawable.sms:
                 if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
-                    Intent sendSmsIntent = new Intent(launchActivity, SendSmsToQueueActivity.class);
-                    sendSmsIntent.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
-                    startActivity(sendSmsIntent);
+                    Intent sendMessageIntent = new Intent(launchActivity, SendMessageToQueueActivity.class);
+                    sendMessageIntent.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                    startActivity(sendMessageIntent);
                 } else {
                     new CustomToast().showToast(launchActivity, "No queue available");
                 }
@@ -355,7 +356,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             settingList.add(new MenuDrawer(getString(R.string.broadcast_message), false, false, R.drawable.sms));
         }
         menuDrawerItems.add(new MenuDrawer("Settings", true, true, R.drawable.settings_square, settingList));
-        if(!AppUtils.isRelease()) {
+        if (!AppUtils.isRelease()) {
             menuDrawerItems.add(new MenuDrawer(getString(R.string.noqueue_apps), true, false, R.drawable.apps));
         }
         menuDrawerItems.add(new MenuDrawer("Logout", true, false, R.drawable.logout));
@@ -499,6 +500,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public static boolean isMsgAnnouncementEnable() {
         return sharedpreferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
     }
+
     public static void setTvSplitViewEnable(boolean isTvSplitView) {
         sharedpreferences.edit().putBoolean(PREKEY_IS_TV_SPLIT_VIEW, isTvSplitView).apply();
     }
@@ -662,7 +664,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             } else if (jsonData instanceof JsonAlertData) {
                 Log.e("onReceiveJsonAlertData", jsonData.toString());
             } else if (jsonData instanceof JsonTopicOrderData) {
-                Log.e("onReceiveJsonTopicOdata", jsonData.toString());
+                Log.e("onReceiveJsonTopicData", jsonData.toString());
                 if (null != fragmentCommunicator) {
                     fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
                 }
