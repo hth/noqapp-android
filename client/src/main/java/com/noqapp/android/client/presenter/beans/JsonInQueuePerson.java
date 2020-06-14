@@ -159,6 +159,7 @@ public class JsonInQueuePerson extends AbstractDomain implements Serializable {
         sb.append(", businessCustomerId='").append(businessCustomerId).append('\'');
         sb.append(", displayName='").append(displayName).append('\'');
         sb.append(", queueUserState=").append(queueUserState);
+        sb.append(", expectedServiceBegin='").append(expectedServiceBegin).append('\'');
         sb.append(", customerPriorityLevel=").append(customerPriorityLevel);
         sb.append(", transactionId='").append(transactionId).append('\'');
         sb.append(", created='").append(created).append('\'');

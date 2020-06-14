@@ -67,6 +67,7 @@ import com.noqapp.android.client.utils.RateTheAppManager;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.SortPlaces;
+import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
 import com.noqapp.android.client.views.activities.AllEventsActivity;
@@ -928,7 +929,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     @Override
     public void clientInQueueErrorPresenter(ErrorEncounteredJson eej) {
         Log.e("JsonInQueuePerson error", eej.toString());
-        ShowAlertInformation.showInfoDisplayDialog(getActivity(),"InValid Token","This token is not valid to queue");
+        ShowAlertInformation.showInfoDisplayDialog(getActivity(),"Invalid Token","This token is not valid to queue");
     }
 
     private static class QueueHandler extends Handler {
@@ -1012,15 +1013,17 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         TextView tv_user_name = dialog.findViewById(R.id.tv_user_name);
         TextView tv_user_token = dialog.findViewById(R.id.tv_user_token);
         TextView tv_user_status = dialog.findViewById(R.id.tv_user_status);
+        TextView tv_user_time_slot = dialog.findViewById(R.id.tv_user_time_slot);
         tv_store_name.setText(jsonInQueuePerson.getDisplayName().trim());
         tv_user_name.setText(TextUtils.isEmpty(jsonInQueuePerson.getCustomerName()) ? "Guest User" : jsonInQueuePerson.getCustomerName());
         tv_user_token.setText(String.valueOf(jsonInQueuePerson.getToken()));
         tv_user_status.setText(jsonInQueuePerson.getQueueUserState().getDescription());
+        tv_user_time_slot.setText(TokenStatusUtils.timeSlot(jsonInQueuePerson.getExpectedServiceBegin()));
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         btnPositive.setOnClickListener((View v) -> {
             dialog.dismiss();
         });
-        dialog.setCanceledOnTouchOutside(false);
+        //dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.show();

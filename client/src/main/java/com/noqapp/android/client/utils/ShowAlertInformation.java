@@ -133,7 +133,7 @@ public class ShowAlertInformation {
     }
 
     public static void showInfoDisplayDialog(Context context, String title, String message) {
-        ShowCustomDialog showDialog = new ShowCustomDialog(context, true);
+        ShowCustomDialog showDialog = new ShowCustomDialog(context, false);
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
             public void btnPositiveClick() {
