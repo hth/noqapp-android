@@ -34,6 +34,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:minLines="1"
+            android:maxLength="36"
             android:padding="10dp"
             android:textSize="@dimen/text_size_fourteen" />
 
@@ -48,7 +49,7 @@
             android:background="@drawable/square_white_bg_drawable"
             android:gravity="top"
             android:hint="Add sms details here"
-            android:maxLength="500"
+            android:maxLength="256"
             android:padding="10dp"
             android:textSize="@dimen/text_size_fourteen" />
 
