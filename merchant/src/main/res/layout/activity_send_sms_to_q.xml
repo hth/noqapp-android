@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99ffffff"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout_home" />
+
+
+    <RelativeLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99ffffff"
+        android:padding="10dp">
+
+        <Spinner
+            android:id="@+id/sp_queue"
+            android:background="@drawable/sp_background"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"/>
+
+
+        <EditText
+            android:id="@+id/edt_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sp_queue"
+            android:background="@drawable/square_white_bg_drawable"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="10dp"
+            android:textSize="@dimen/text_size_fourteen" />
+
+        <EditText
+            android:id="@+id/edt_body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_submit"
+            android:layout_below="@+id/edt_subject"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/square_white_bg_drawable"
+            android:gravity="top"
+            android:hint="Add sms details here"
+            android:maxLength="500"
+            android:padding="10dp"
+            android:textSize="@dimen/text_size_fourteen" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_gradient_round"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="submit"
+            android:textAllCaps="true"
+            android:textColor="@color/btn_txt_color"
+            android:textSize="@dimen/text_size_sixteen" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
