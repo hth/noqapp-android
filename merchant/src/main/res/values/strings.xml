@@ -127,7 +127,7 @@
     <string name="create_case">Case \nHistory</string>
 
     <string name="notification_setting">Notification</string>
-    <string name="broadcast_message">Send Sms</string>
+    <string name="broadcast_message">Send Message</string>
     <string name="language_setting">Change Language</string>
     <string name="lang_dialog_title">Change Language</string>
     <string name="hindi">Hindi</string>
