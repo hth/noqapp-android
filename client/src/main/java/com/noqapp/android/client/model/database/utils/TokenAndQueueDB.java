@@ -80,6 +80,27 @@ public class TokenAndQueueDB {
         return listJsonQueue;
     }
 
+    //  //@TODO hth re check  updating the existing value
+    // Added to update the current list with old values
+    public static List<JsonTokenAndQueue> getUpdatedCurrentQueueList(List<JsonTokenAndQueue> newList, List<JsonTokenAndQueue> oldList) {
+        if(null == newList || newList.size() == 0|| null == oldList || oldList.size() == 0) {
+            return newList;
+        }else{
+            for (int i = 0; i < newList.size(); i++) {
+                JsonTokenAndQueue jtkNew = newList.get(i);
+                for (int j = 0; j < oldList.size(); j++) {
+                    JsonTokenAndQueue jtkOld = oldList.get(j);
+                    if(jtkNew.getCodeQR().equals(jtkOld.getCodeQR()) && jtkNew.getToken() == jtkOld.getToken()){
+                        newList.get(i).setServiceEndTime(jtkOld.getServiceEndTime());
+                        break;
+                    }
+                }
+
+            }
+            return newList;
+        }
+    }
+
     public static JsonTokenAndQueue getCurrentQueueObject(String codeQR, String token) {
         JsonTokenAndQueue tokenAndQueue = null;
         try {
@@ -283,6 +304,11 @@ public class TokenAndQueueDB {
     public static boolean saveCurrentQueue(List<JsonTokenAndQueue> list) {
 
         for (JsonTokenAndQueue tokenAndQueue : list) {
+            //@TODO hth re check  updating the existing value
+            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(tokenAndQueue.getCodeQR(), String.valueOf(tokenAndQueue.getToken()));
+            if(null != jtk) {
+                tokenAndQueue.setServiceEndTime(jtk.getServiceEndTime());
+            }
             ContentValues values = createQueueContentValues(tokenAndQueue);
             try {
                 long successCount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
