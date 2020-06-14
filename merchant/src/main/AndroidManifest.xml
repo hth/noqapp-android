@@ -79,6 +79,11 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
+            android:name=".views.activities.SendSmsToQueueActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
             android:name=".views.activities.PhysicalDialogActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true"

@@ -276,6 +276,15 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 Intent in4 = new Intent(launchActivity, AppsLinksActivity.class);
                 startActivity(in4);
                 break;
+            case R.drawable.sms:
+                if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
+                    Intent sendSmsIntent = new Intent(launchActivity, SendSmsToQueueActivity.class);
+                    sendSmsIntent.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                    startActivity(sendSmsIntent);
+                } else {
+                    new CustomToast().showToast(launchActivity, "No queue available");
+                }
+                break;
             case R.drawable.logout:
                 showLogoutDialog();
                 break;
@@ -343,6 +352,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         settingList.add(new MenuDrawer(getString(R.string.language_setting), false, false, R.drawable.language));
         if (isLoggedIn()) {
             settingList.add(new MenuDrawer(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
+            settingList.add(new MenuDrawer(getString(R.string.broadcast_message), false, false, R.drawable.sms));
         }
         menuDrawerItems.add(new MenuDrawer("Settings", true, true, R.drawable.settings_square, settingList));
         if(!AppUtils.isRelease()) {
