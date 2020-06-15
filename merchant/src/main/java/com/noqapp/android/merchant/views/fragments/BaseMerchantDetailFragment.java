@@ -747,9 +747,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void approveCustomerResponse(JsonQueuedPerson jsonQueuedPerson) {
         int index = -1;
 
-        for(int i =0 ;i <jsonQueuedPersonArrayList.size(); i++){
+        for (int i = 0; i < jsonQueuedPersonArrayList.size(); i++) {
             JsonQueuedPerson queuedPerson = jsonQueuedPersonArrayList.get(i);
-                if(queuedPerson.getToken() == jsonQueuedPerson.getToken()) {
+            if (queuedPerson.getToken() == jsonQueuedPerson.getToken()) {
                 queuedPerson.setCustomerPriorityLevel(jsonQueuedPerson.getCustomerPriorityLevel());
                 queuedPerson.setBusinessCustomerAttributes(jsonQueuedPerson.getBusinessCustomerAttributes());
                 index = i;
@@ -757,12 +757,11 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             }
         }
 
-        if(index != -1){
+        if (index != -1) {
             new CustomToast().showToast(this.context, "Action processed successfully!");
             peopleInQAdapter.notifyItemChanged(index);
         }
     }
-
 
     @Override
     public void userRegistered(JsonProfile jsonProfile) {
@@ -791,7 +790,6 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
         tv_counter_name.performClick();
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
