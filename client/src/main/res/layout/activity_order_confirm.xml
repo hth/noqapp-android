@@ -127,7 +127,7 @@
                 android:gravity="center"
                 android:text=""
                 android:textColor="#80000000"
-                android:textSize="@dimen/text_size_twelve" />
+                android:textSize="@dimen/text_size_fourteen" />
 
             <TextView
                 android:id="@+id/tv_status"
