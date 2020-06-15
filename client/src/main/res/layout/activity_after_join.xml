@@ -304,7 +304,7 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
                         android:textColor="#505050"
-                        android:textSize="@dimen/text_size_ten" />
+                        android:textSize="@dimen/text_size_fourteen" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

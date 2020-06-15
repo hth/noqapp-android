@@ -733,7 +733,6 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         businessCustomerApiCalls.setApproveCustomerPresenter(this);
         businessCustomerApiCalls.accessCustomer(
                 BaseLaunchActivity.getDeviceID(),
-                Constants.DEVICE_TYPE,
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(),
                 customerPriority

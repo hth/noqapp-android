@@ -139,20 +139,17 @@ public class BusinessCustomerApiCalls {
         });
     }
 
-
-    public void accessCustomer(String did, String dt, String mail, String auth, CustomerPriority customerPriority) {
+    public void accessCustomer(String did, String mail, String auth, CustomerPriority customerPriority) {
         businessCustomerApiUrls.accessAction(did, Constants.DEVICE_TYPE, mail, auth, customerPriority).enqueue(new Callback<JsonQueuedPerson>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuedPerson> call, @NonNull Response<JsonQueuedPerson> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         approveCustomerPresenter.approveCustomerResponse(response.body());
+                    } else {
+                        approveCustomerPresenter.responseErrorPresenter(response.body().getError());
                     }
-                 else {
-                        approveCustomerPresenter.responseErrorPresenter(response.code());
-                    }
-                }
-                else {
+                } else {
                     approveCustomerPresenter.responseErrorPresenter(response.code());
                 }
             }
