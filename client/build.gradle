@@ -16,15 +16,6 @@ def manifestVersionName() {
     return xml.attributes()[ns.versionName].toString()
 }
 
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-    }
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 
@@ -66,7 +57,7 @@ android {
             versionPatch = versionProps['VERSION_PATCH'].toInteger()
         }
     } else {
-        throw new GradleException("Could not read version.properties!")
+        throw new FileNotFoundException("Could not read version.properties!")
     }
 
     def versionBuildPropsFile = file('version.build.properties')
@@ -102,7 +93,7 @@ android {
                 versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
             }
         } else {
-            throw new GradleException("Could not read version.build.properties!")
+            throw new FileNotFoundException("Could not read version.build.properties!")
         }
     }
 
