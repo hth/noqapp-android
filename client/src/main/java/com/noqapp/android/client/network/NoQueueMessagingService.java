@@ -465,7 +465,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         switch (jtk.getBusinessType()) {
                                             case CD:
                                             case CDQ:
-                                            case GSQ:
                                                 String slot = TokenStatusUtils.timeSlot(jtk.getServiceEndTime());
                                                 notificationMessage = notificationMessage + String.format("\nVisit: %1$s", slot);
                                                 break;
