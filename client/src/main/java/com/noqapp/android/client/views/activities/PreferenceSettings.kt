@@ -137,7 +137,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
 
         sc_msg_announce.setOnCheckedChangeListener { _, isChecked ->
-            LaunchActivity.setMsgAnnouncmentEnable(isChecked)
+            LaunchActivity.setMsgAnnouncementEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@PreferenceSettings, "Message Announcement Enabled")

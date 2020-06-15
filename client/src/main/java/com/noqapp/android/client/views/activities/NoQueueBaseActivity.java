@@ -256,7 +256,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.getBoolean(KEY_SHOW_HELPER, true);
     }
 
-    public static void setMsgAnnouncmentEnable(boolean isMsgAnnounce) {
+    public static void setMsgAnnouncementEnable(boolean isMsgAnnounce) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putBoolean(PREKEY_IS_MSG_ANNOUNCE, isMsgAnnounce);
         editor.apply();
