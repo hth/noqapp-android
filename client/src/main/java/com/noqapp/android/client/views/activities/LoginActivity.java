@@ -71,7 +71,8 @@ public class LoginActivity extends OTPActivity {
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
-        if (!TextUtils.isEmpty(NoQueueBaseActivity.getPreviousUserQID()) && !NoQueueBaseActivity.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+        if (!TextUtils.isEmpty(NoQueueBaseActivity.getPreviousUserQID())
+                && !NoQueueBaseActivity.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
             NotificationDB.clearNotificationTable();
             ReviewDB.clearReviewTable();
             LaunchActivity.getLaunchActivity().reCreateDeviceID();

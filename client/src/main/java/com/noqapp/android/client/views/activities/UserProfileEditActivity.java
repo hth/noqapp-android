@@ -57,7 +57,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener,
         ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
     private static final String TAG = UserProfileEditActivity.class.getSimpleName();

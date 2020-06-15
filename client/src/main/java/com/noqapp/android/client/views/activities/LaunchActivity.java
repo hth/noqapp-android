@@ -493,7 +493,7 @@ public class LaunchActivity
                 }
             } else {
                 /* Permission denied, Disable the functionality that depends on this permission. */
-                new CustomToast().showToast(this, "permission denied");
+                new CustomToast().showToast(this, "Permission denied");
             }
             return;
         }
