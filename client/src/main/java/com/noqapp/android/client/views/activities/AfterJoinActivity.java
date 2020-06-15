@@ -514,7 +514,6 @@ public class AfterJoinActivity
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case CD:
                 case CDQ:
-                case GSQ:
                     String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
                     tv_estimated_time.setText(String.format(getString(R.string.time_slot), slot));
                     break;
