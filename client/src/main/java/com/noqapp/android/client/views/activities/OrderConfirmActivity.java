@@ -366,8 +366,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         //
         LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
         String geoHash = getIntent().getStringExtra("GeoHash");
-        LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(geoHash),
-                GeoHashUtils.decodeLongitude(geoHash));
+        LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(geoHash), GeoHashUtils.decodeLongitude(geoHash));
         replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
         checkProductWithZeroPrice();
 
