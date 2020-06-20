@@ -55,8 +55,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private int getNotificationIcon() {
-        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.mipmap.notification_icon : R.mipmap.launcher;
+        return R.mipmap.notification_icon;
     }
 }
 
