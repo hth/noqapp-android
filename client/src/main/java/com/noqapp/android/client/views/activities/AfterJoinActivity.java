@@ -242,7 +242,7 @@ public class AfterJoinActivity
                     //Do nothing
                 }
             });
-            showDialog.displayDialog("Quit Queue", "Choose OK to quit the queue. You will loose your current token number.");
+            showDialog.displayDialog("Cancel Your Token", "Choose OK to cancel your token. You will loose your current token number.");
         });
         btn_pay.setOnClickListener((View v) -> {
             if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
@@ -852,7 +852,7 @@ public class AfterJoinActivity
             tv_token_qr.setText(tokenValue);
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/EEE", Locale.getDefault());
-            tv_token_day.setText(CommonHelper.formatStringDate(sdf, jsonTokenAndQueue.getCreateDate()));
+            tv_token_day.setText(CommonHelper.formatStringDate(sdf, jsonTokenAndQueue.getServiceEndTime()));
         } catch (WriterException e) {
             e.printStackTrace();
         }
