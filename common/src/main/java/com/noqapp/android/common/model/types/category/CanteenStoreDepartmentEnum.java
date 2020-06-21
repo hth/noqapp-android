@@ -43,6 +43,22 @@ public enum CanteenStoreDepartmentEnum {
         return businessCustomerAttribute;
     }
 
+    public static BusinessCustomerAttributeEnum getBusinessCustomerAttribute(String name) {
+        switch (name) {
+            case "EG":
+            case "XG":
+            case "SG":
+            case "OG":
+                return GR;
+            case "EL":
+            case "XL":
+            case "SL":
+            case "OL":
+                return LQ;
+        }
+        return GR;
+    }
+
     @Override
     public String toString() {
         return description;

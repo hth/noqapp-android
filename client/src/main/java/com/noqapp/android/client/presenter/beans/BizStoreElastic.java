@@ -610,6 +610,11 @@ public class BizStoreElastic implements Serializable {
                 ", famousFor='" + famousFor + '\'' +
                 ", displayImage='" + displayImage + '\'' +
                 ", storeHourElasticList=" + storeHourElasticList +
+                ", productPrice=" + productPrice +
+                ", walkInState=" + walkInState +
+                ", appointmentState=" + appointmentState +
+                ", appointmentDuration=" + appointmentDuration +
+                ", appointmentOpenHowFar=" + appointmentOpenHowFar +
                 ", bizServiceImages=" + bizServiceImages +
                 ", amenities=" + amenities +
                 ", facilities=" + facilities +
