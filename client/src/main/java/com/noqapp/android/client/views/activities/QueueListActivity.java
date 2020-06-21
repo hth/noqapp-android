@@ -17,9 +17,12 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.CategoryHeaderAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
+import com.noqapp.android.common.model.types.BusinessCustomerAttributeEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +42,38 @@ public class QueueListActivity extends BaseActivity implements
         setContentView(R.layout.activity_queue_list);
         initActionsViews(true);
         try {
-            categoryMap = (List<JsonCategory>) getIntent().getExtras().getSerializable("list");
-            queueMap = (Map<String, ArrayList<BizStoreElastic>>) getIntent().getExtras().getSerializable("hashmap");
+            List<JsonCategory> tempCategoryMap = (List<JsonCategory>) getIntent().getExtras().getSerializable("list");
+            Map<String, ArrayList<BizStoreElastic>> tempQueueMap = (Map<String, ArrayList<BizStoreElastic>>) getIntent().getExtras().getSerializable("hashmap");
+            if (getIntent().getExtras().getBoolean("isCanteenStore", false)) {
+                categoryMap = new ArrayList<>();
+                queueMap = new HashMap<>();
+                Map<String, JsonCategory> keys = new HashMap();
+                for (int i = 0; i < tempCategoryMap.size(); i++) {
+                    BusinessCustomerAttributeEnum businessCustomerAttribute = CanteenStoreDepartmentEnum.
+                            getBusinessCustomerAttribute(tempCategoryMap.get(i).getBizCategoryId());
+                    if (!keys.containsKey(businessCustomerAttribute.getName())) {
+                        keys.put(businessCustomerAttribute.getName(),null);
+                        categoryMap.add(new JsonCategory().setCategoryName(businessCustomerAttribute.getDescription()).setBizCategoryId(businessCustomerAttribute.getName()));
+                    }
+                }
+                for (Map.Entry<String, ArrayList<BizStoreElastic>> entry : tempQueueMap.entrySet()) {
+                    ArrayList<BizStoreElastic> innerList = entry.getValue();
+                    for (int i = 0; i < innerList.size(); i++) {
+                        BusinessCustomerAttributeEnum businessCustomerAttribute = CanteenStoreDepartmentEnum.
+                                getBusinessCustomerAttribute(innerList.get(i).getBizCategoryId());
+                        if (queueMap.containsKey(businessCustomerAttribute.getName())) {
+                            queueMap.get(businessCustomerAttribute.getName()).add(innerList.get(i));
+                        } else {
+                            queueMap.put(businessCustomerAttribute.getName(), new ArrayList<>());
+                            queueMap.get(businessCustomerAttribute.getName()).add(innerList.get(i));
+                        }
+                    }
+
+                }
+            } else {
+                categoryMap = tempCategoryMap;
+                queueMap = tempQueueMap;
+            }
             String title = getIntent().getExtras().getString("title", "Select Queue");
             tv_toolbar_title.setText(title);
         } catch (Exception e) {
@@ -101,14 +134,14 @@ public class QueueListActivity extends BaseActivity implements
             case CDQ:
             case BK:
                 // open hospital profile
-                if(LaunchActivity.isLockMode){
+                if (LaunchActivity.isLockMode) {
                     in = new Intent(this, KioskJoinActivity.class);
                 } else {
                     in = new Intent(this, BeforeJoinActivity.class);
                 }
                 b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 b.putString(IBConstant.KEY_IMAGE_URL, AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
-                b.putBoolean(IBConstant.KEY_IS_DO, item.getBusinessType()== BusinessTypeEnum.DO);
+                b.putBoolean(IBConstant.KEY_IS_DO, item.getBusinessType() == BusinessTypeEnum.DO);
                 in.putExtras(b);
                 startActivity(in);
                 break;

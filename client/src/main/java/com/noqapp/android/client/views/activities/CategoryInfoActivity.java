@@ -459,6 +459,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
             in.putExtra("title", title);
             in.putExtra("position", 0);
+            in.putExtra("isCanteenStore",(BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() || BusinessTypeEnum.CD == bizStoreElastic.getBusinessType()));
             startActivity(in);
         }
     }

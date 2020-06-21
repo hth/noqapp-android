@@ -857,7 +857,20 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.JOIN_PRE_APPROVED_QUEUE_ONLY) {
                     showAuthorizationDialog(this);
                 } else {
-                    new ErrorResponseHandler().processError(this, eej);
+                    //new ErrorResponseHandler().processError(this, eej);
+                    ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this);
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                        @Override
+                        public void btnPositiveClick() {
+                            finish();
+                        }
+
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
+                        }
+                    });
+                    showDialog.displayDialog("Alert", eej.getReason());
                 }
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().log("Error code missing " + eej.getSystemErrorCode());

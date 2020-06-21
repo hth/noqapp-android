@@ -25,6 +25,7 @@
     <string name="login_to_join">Login to Join</string>
     <string name="cancel">Cancel</string>
     <string name="quit_queue">Cancel Your Token</string>
+    <string name="go_back">Go Back </string>
     <string name="ratetheapp">Rate the app</string>
     <string name="legal">Legal</string>
     <string name="invite">Invite</string>

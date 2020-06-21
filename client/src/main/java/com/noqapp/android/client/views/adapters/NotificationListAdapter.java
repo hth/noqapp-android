@@ -94,6 +94,7 @@ public class NotificationListAdapter extends BaseAdapter {
                 deleteRecord.deleteNotification(displayNotification);
             }
         });
+
         return view;
     }
 
@@ -113,4 +114,5 @@ public class NotificationListAdapter extends BaseAdapter {
     public interface DeleteRecord {
         void deleteNotification(DisplayNotification displayNotification);
     }
+
 }

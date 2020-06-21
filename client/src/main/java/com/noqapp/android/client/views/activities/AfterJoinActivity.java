@@ -99,6 +99,7 @@ public class AfterJoinActivity
     private TextView tv_position_in_queue_label;
     private TextView tv_position_in_queue;
     private Button btn_cancel_queue;
+    private Button btn_go_back;
     private TextView tv_estimated_time;
     private TextView tv_name;
     private JsonToken jsonToken;
@@ -146,6 +147,7 @@ public class AfterJoinActivity
         tv_token = findViewById(R.id.tv_token);
         tv_position_in_queue = findViewById(R.id.tv_position_in_queue_value);
         btn_cancel_queue = findViewById(R.id.btn_cancel_queue);
+        btn_go_back = findViewById(R.id.btn_go_back);
         tv_position_in_queue_label = findViewById(R.id.tv_position_in_queue_label);
         tv_payment_status = findViewById(R.id.tv_payment_status);
         tv_due_amt = findViewById(R.id.tv_due_amt);
@@ -251,6 +253,7 @@ public class AfterJoinActivity
                 //do nothing
             }
         });
+        btn_go_back.setOnClickListener(v -> iv_home.performClick());
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
         queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();

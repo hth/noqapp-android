@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.merchant.model.database.DatabaseTable;
 import com.noqapp.android.merchant.utils.Constants;
@@ -67,9 +68,12 @@ public class NotificationDB {
                 try {
                     while (cursor.moveToNext()) {
                         DisplayNotification notificationBeans = new DisplayNotification();
+                        notificationBeans.setKey(cursor.getString(0));
+                        notificationBeans.setCodeQR(cursor.getString(1));
                         notificationBeans.setMsg(cursor.getString(2));
                         notificationBeans.setTitle(cursor.getString(3));
                         notificationBeans.setStatus(cursor.getString(4));
+                        notificationBeans.setSequence(cursor.getInt(5));
                         notificationBeans.setNotificationCreate(cursor.getString(6));
                         displayNotificationList.add(notificationBeans);
                     }
@@ -104,6 +108,26 @@ public class NotificationDB {
             return result;
         } catch (Exception e) {
             return 0;
+        }
+    }
+
+    public static void clearNotificationTable() {
+        try {
+            dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteNotification(Integer sequence, String key) {
+        try {
+            int out = dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME,
+                    DatabaseTable.Notification.SEQUENCE + "=? AND " +
+                            DatabaseTable.Notification.KEY + "=?",
+                    new String[]{Integer.toString(sequence), key});
+            Log.v("notification deleted:", "" + out);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
