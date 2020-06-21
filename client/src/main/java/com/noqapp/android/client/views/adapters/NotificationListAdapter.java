@@ -1,8 +1,11 @@
 package com.noqapp.android.client.views.adapters;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.squareup.picasso.Picasso;
@@ -58,6 +62,7 @@ public class NotificationListAdapter extends BaseAdapter {
             recordHolder.iv_business = view.findViewById(R.id.iv_business);
             recordHolder.iv_big_image = view.findViewById(R.id.iv_big_image);
             recordHolder.iv_delete = view.findViewById(R.id.iv_delete);
+            recordHolder.iv_copy = view.findViewById(R.id.iv_copy);
             recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
@@ -94,6 +99,9 @@ public class NotificationListAdapter extends BaseAdapter {
                 deleteRecord.deleteNotification(displayNotification);
             }
         });
+        recordHolder.iv_copy.setOnClickListener(v -> {
+            copyText(displayNotification.getMsg());
+        });
         return view;
     }
 
@@ -104,6 +112,7 @@ public class NotificationListAdapter extends BaseAdapter {
         ImageView iv_business;
         ImageView iv_big_image;
         ImageView iv_delete;
+        ImageView iv_copy;
         CardView cardview;
 
         RecordHolder() {
@@ -112,5 +121,17 @@ public class NotificationListAdapter extends BaseAdapter {
 
     public interface DeleteRecord {
         void deleteNotification(DisplayNotification displayNotification);
+    }
+
+    private void copyText(String selectedText) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", selectedText);
+        clipboard.setPrimaryClip(clip);
+        if (selectedText.equals("")) {
+            new CustomToast().showToast(context, "Nothing to copy");
+        }else {
+            new CustomToast().showToast(context, "Copied");
+            Log.d("Notification text copy",selectedText);
+        }
     }
 }

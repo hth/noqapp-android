@@ -44,7 +44,7 @@ public class NotificationActivity extends BaseActivity implements NotificationLi
 
     private void loadListData(){
         List<DisplayNotification> notificationsList = NotificationDB.getNotificationsList();
-        NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList, this::deleteNotification);
+        NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList, this);
         listview.setAdapter(adapter);
         if (notificationsList.size() <= 0) {
             listview.setVisibility(View.GONE);
