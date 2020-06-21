@@ -699,6 +699,25 @@
                     android:layout_alignParentBottom="true"
                     android:orientation="vertical">
 
+                    <Button
+                        android:id="@+id/btn_go_back"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_standard_height"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/btn_bg_inactive"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:text="@string/go_back"
+                        android:textAllCaps="true"
+                        android:textColor="@color/btn_color"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="normal" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
