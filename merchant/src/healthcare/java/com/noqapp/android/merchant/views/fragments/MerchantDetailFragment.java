@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -58,7 +57,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     private Button btn_create_order;
     private BusinessCustomerApiCalls businessCustomerApiCalls;
     private String countryCode = "";
-    private String cid = "";
+    private String businessCustomerId = "";
     private CountryCodePicker ccp;
     private long mLastClickTime = 0;
 
@@ -208,7 +207,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     }
                 });
             } else {
-                cid = "";
+                businessCustomerId = "";
                 btn_create_order = view.findViewById(R.id.btn_create_order);
                 btn_create_token.setText(getString(R.string.search_registered_patient));
                 btn_create_token.setOnClickListener(v -> {
@@ -240,14 +239,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         setProgressCancel(false);
                         setDispensePresenter();
                         String phone = "";
-                        cid = "";
+                        businessCustomerId = "";
                         if (rb_mobile.isChecked()) {
                             edt_id.setText("");
                             countryCode = ccp.getSelectedCountryCode();
                             phone = countryCode + edt_mobile.getText().toString();
-                            cid = "";
+                            businessCustomerId = "";
                         } else {
-                            cid = edt_id.getText().toString();
+                            businessCustomerId = edt_id.getText().toString();
                             edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                         }
                         businessCustomerApiCalls = new BusinessCustomerApiCalls();
@@ -256,7 +255,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                                 BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
-                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(businessCustomerId));
                         btn_create_token.setClickable(false);
                         //  mAlertDialog.dismiss();
                     }
@@ -307,16 +306,18 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     setProgressCancel(false);
                     String phoneNoWithCode = "";
                     setDispensePresenter();
-                    if (TextUtils.isEmpty(cid)) {
+                    if (TextUtils.isEmpty(businessCustomerId)) {
                         phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
                     }
 
-                    JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
-                            setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                    JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer()
+                            .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                     jsonBusinessCustomer
                             .setCodeQR(topicsList.get(currentPosition).getCodeQR())
                             .setCustomerPhone(phoneNoWithCode)
-                            .setBusinessCustomerId(cid);
+                            .setBusinessCustomerId(businessCustomerId)
+                            .setRegisteredUser(true);
+
                     manageQueueApiCalls.dispenseTokenWithClientInfo(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
