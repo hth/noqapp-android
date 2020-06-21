@@ -48,20 +48,10 @@
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_toLeftOf="@+id/iv_copy"
+                        android:layout_toLeftOf="@+id/iv_delete"
                         android:textColor="#333"
                         android:textSize="@dimen/text_size_fourteen"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/iv_copy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/iv_delete"
-                        android:background="@drawable/copy"
-                        android:padding="10dp" />
 
                     <ImageView
                         android:id="@+id/iv_delete"
