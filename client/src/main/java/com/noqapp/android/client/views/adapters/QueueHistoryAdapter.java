@@ -4,6 +4,7 @@ package com.noqapp.android.client.views.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +16,23 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.activities.BeforeJoinActivity;
+import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.StoreWithMenuActivity;
+import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
 
 public class QueueHistoryAdapter extends RecyclerView.Adapter {
+    private final String TAG = QueueHistoryAdapter.class.getSimpleName();
     private final Context context;
     private final OnItemClickListener listener;
     private ArrayList<JsonQueueHistorical> dataSet;
@@ -81,6 +85,27 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                     context.startActivity(in);
                 }
                 break;
+                case RSQ:
+                case GSQ:
+                case BAQ:
+                case CFQ:
+                case FTQ:
+                case STQ:
+                    //@TODO Modification done due to corona crisis, Re-check all the functionality
+                    //proper testing required
+                    if (BusinessSupportEnum.OQ == jsonQueueHistorical.getBusinessType().getBusinessSupport()) {
+                        in = new Intent(context, BeforeJoinOrderQueueActivity.class);
+                        b.putString(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
+                        b.putBoolean(IBConstant.KEY_FROM_LIST, false);
+                        b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
+                        b.putSerializable("BizStoreElastic", AppUtils.getStoreElastic(jsonQueueHistorical));
+                        in.putExtras(b);
+                        context.startActivity(in);
+                    } else {
+                        Log.d(TAG, "Reached un-supported condition");
+                        FirebaseCrashlytics.getInstance().log("Reached un-supported condition " + jsonQueueHistorical.getBusinessType());
+                    }
+                    break;
                 default: {
                     // open order screen
                     in = new Intent(context, StoreWithMenuActivity.class);
