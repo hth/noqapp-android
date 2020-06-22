@@ -166,12 +166,12 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                                         + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                                 break;
                             default:
-                                childViewHolder.tv_status.setText("Closed Now. You can join queue at "
+                                childViewHolder.tv_status.setText("Closed Now. You can get token at "
                                         + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText("Closed Now. You can join queue at "
+                        childViewHolder.tv_status.setText("Closed Now. You can get token at "
                                 + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                     }
                 }
@@ -184,12 +184,12 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                                 childViewHolder.tv_status.setText("Now accepting appointments for today");
                                 break;
                             default:
-                                childViewHolder.tv_status.setText("Now you can join queue. Queue service will begin at "
+                                childViewHolder.tv_status.setText("Now you can join queue. Service will begin at "
                                         + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText("Now you can join queue. Queue service will begin at "
+                        childViewHolder.tv_status.setText("Now you can join queue. Service will begin at "
                                 + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                     }
                     childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
@@ -203,11 +203,11 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                                 childViewHolder.tv_status.setText("Open now. For today's appointment click on Walk-In");
                                 break;
                             default:
-                                childViewHolder.tv_status.setText("Open now, get a Token");
+                                childViewHolder.tv_status.setText("Open now, Token available");
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText("Open Now, get a Token");
+                        childViewHolder.tv_status.setText("Open now, Token available");
                     }
                     childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.open_queue));
                 }
