@@ -58,9 +58,13 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
         this.listener = listener;
     }
 
-    public LevelUpQueueAdapter(Context context, List<JsonCategory> listDataHeader,
-                               Map<String, ArrayList<BizStoreElastic>> listDataChild,
-                               OnItemClickListener listener, boolean isSingleEntry) {
+    public LevelUpQueueAdapter(
+            Context context,
+            List<JsonCategory> listDataHeader,
+            Map<String, ArrayList<BizStoreElastic>> listDataChild,
+            OnItemClickListener listener,
+            boolean isSingleEntry
+    ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -69,9 +73,9 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
+    public Object getChild(int groupPosition, int childPosition) {
         return this.listDataChild.get(this.listDataHeader.get(groupPosition).getBizCategoryId())
-                .get(childPosititon);
+                .get(childPosition);
     }
 
     @Override
@@ -80,8 +84,13 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(
+            final int groupPosition,
+            final int childPosition,
+            boolean isLastChild,
+            View convertView,
+            ViewGroup parent
+    ) {
         try {
             final ChildViewHolder childViewHolder;
             final BizStoreElastic bizStoreElastic = (BizStoreElastic) getChild(groupPosition, childPosition);
@@ -348,7 +357,6 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 
     public final class ChildViewHolder {
         private TextView tv_name;
