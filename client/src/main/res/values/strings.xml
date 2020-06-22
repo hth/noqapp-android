@@ -382,7 +382,7 @@
     <string name="liquor_card_number">Liquor card number</string>
     <string name="grocery_card_number_hint">19-characters grocery card</string>
     <string name="liquor_card_number_hint">19-characters liquor card</string>
-    <string name="grocery_card_number_entry_error" translatable="false">Card number must be 19-characters</string>
+    <string name="grocery_card_number_entry_error">Card number must be 19-characters</string>
     <string name="liquor_card_number_entry_error">Card number must be 19-characters</string>
     <string name="grocery_card_number_prefix_error">Card number must start with G</string>
     <string name="liquor_card_number_prefix_error">Card number must start with L</string>
