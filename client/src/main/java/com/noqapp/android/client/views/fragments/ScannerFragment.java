@@ -30,15 +30,15 @@ public class ScannerFragment extends BaseFragment {
     private int requestCode;
     private ScanResult scanResult;
 
+    public ScannerFragment() {}
+
     public ScannerFragment(ScanResult scanResult, int requestCode) {
         this.scanResult = scanResult;
         this.requestCode = requestCode;
     }
 
     public interface ScanResult {
-
         void barcodeResult(String codeQR, boolean isCategoryData);
-
         void qrCodeResult(String[] scanData);
     }
 
