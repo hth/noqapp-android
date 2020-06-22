@@ -401,4 +401,18 @@
     <string name="logout_warning">आपको %1$d सेकंड मे लॉग आउट किया जाएगा</string>
     <string name="try_again">पुनः प्रयास करें</string>
 
+    <!-- Strings from Code 06202020 -->
+    <string name="find_doctor">डॉक्टर खोजें</string>
+    <string name="medical">मेडिकल</string>
+    <string name="select_a_doctor">डॉक्टर का चयन करें</string>
+    <string name="csd_token">सीएसडी टोकन</string>
+    <string name="canteen_store">कैंटीन स्टोर</string>
+    <string name="select_a_queue">कतार का चयन करें</string>
+    <string name="view_services">सेवाएँ देखें</string>
+    <string name="bank">बैंक</string>
+    <string name="select_a_service">सेवा का चयन करें</string>
+    <string name="health_service">स्वास्थ्य सेवा</string>
+    <string name="get_token">टोकन प्राप्त करें</string>
+    <string name="departments">विभाग</string>
+
 </resources>
