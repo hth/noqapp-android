@@ -1,8 +1,7 @@
 apply plugin: 'checkstyle'
-apply plugin: 'findbugs'
 apply plugin: 'pmd'
 
-check.dependsOn 'checkstyle', 'findbugs', 'pmd'
+check.dependsOn 'checkstyle', 'pmd'
 
 checkstyle {
     toolVersion "8.16"
@@ -14,27 +13,6 @@ task checkstyle(type: Checkstyle) {
     source 'src/main/java'
     include '**/*.java'
     exclude '**/gen/**'
-
-    classpath = files()
-}
-
-task findbugs(type: FindBugs) {
-    ignoreFailures = true
-    effort = "max"
-    reportLevel = "high"
-    excludeFilter = new File("${project.rootDir}/config/quality/findbugs/findbugs-filter.xml")
-    classes = files("$project.buildDir/intermediates/javac/")
-
-    source 'src/main/java'
-    include '**/*.java'
-    exclude '**/gen/**'
-
-    reports {
-        xml {
-            destination(file("$project.buildDir/reports/findbugs/findbugs.xml"))
-            xml.withMessages true
-        }
-    }
 
     classpath = files()
 }

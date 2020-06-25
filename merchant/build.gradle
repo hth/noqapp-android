@@ -31,9 +31,6 @@ tasks.withType(Test) {
 }
 
 android {
-    configurations.all {
-        resolutionStrategy.force 'com.googlecode.findbugs:jsr305:3.0.0'
-    }
     archivesBaseName = "merchant"
 
     compileSdkVersion 29
