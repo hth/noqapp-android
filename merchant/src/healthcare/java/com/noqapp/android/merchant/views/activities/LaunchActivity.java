@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -32,10 +33,16 @@ public class LaunchActivity
         implements LoginActivity.LoginCallBack, RegistrationActivity.RegisterCallBack {
 
     private TextView tv_badge;
+    private FirebaseAnalytics fireBaseAnalytics;
+
+    public FirebaseAnalytics getFireBaseAnalytics() {
+        return fireBaseAnalytics;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
