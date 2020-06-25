@@ -151,11 +151,12 @@ public class LaunchActivity
     private TextToSpeechHelper textToSpeechHelper;
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
-    private FirebaseAnalytics fireBaseAnalytics;
 
     public FirebaseAnalytics getFireBaseAnalytics() {
         return fireBaseAnalytics;
     }
+
+    private FirebaseAnalytics fireBaseAnalytics;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -180,7 +181,7 @@ public class LaunchActivity
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
         } else {
-            COUNTRY_CODE = "IN";
+            COUNTRY_CODE = getCountryCode();
         }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
