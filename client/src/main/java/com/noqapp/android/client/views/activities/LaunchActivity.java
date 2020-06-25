@@ -24,7 +24,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -152,11 +151,12 @@ public class LaunchActivity
     private TextToSpeechHelper textToSpeechHelper;
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
-    private FirebaseAnalytics fireBaseAnalytics;
 
     public FirebaseAnalytics getFireBaseAnalytics() {
         return fireBaseAnalytics;
     }
+
+    private FirebaseAnalytics fireBaseAnalytics;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -280,21 +280,6 @@ public class LaunchActivity
             }
         }
         setKioskMode();
-        forceACrash();
-    }
-
-    public void forceACrash() {
-        Button crashButton = new Button(this);
-        crashButton.setText("Crash!");
-        crashButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                throw new RuntimeException("Test Crash"); // Force a crash
-            }
-        });
-
-        addContentView(crashButton, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     private void setKioskMode() {
