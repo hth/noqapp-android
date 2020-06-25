@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BILLING" />
@@ -37,8 +38,8 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/notification_icon" />
         <!--
- Set color used with incoming notification messages. This is used when no color is set for the incoming
-     notification message. See README(https://goo.gl/6BKBk7) for more.
+        Set color used with incoming notification messages. This is used when no color is set for the incoming
+        notification message. See README(https://goo.gl/6BKBk7) for more.
         -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
