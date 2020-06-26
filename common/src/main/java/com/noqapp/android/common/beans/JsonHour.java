@@ -48,6 +48,12 @@ public class JsonHour implements Serializable {
     @JsonProperty("ae")
     private int appointmentEndHour;
 
+    @JsonProperty("ls")
+    private int lunchTimeStart;
+
+    @JsonProperty("le")
+    private int lunchTimeEnd;
+
     @JsonProperty("pj")
     private boolean preventJoining;
 
@@ -119,6 +125,22 @@ public class JsonHour implements Serializable {
     public JsonHour setAppointmentEndHour(int appointmentEndHour) {
         this.appointmentEndHour = appointmentEndHour;
         return this;
+    }
+
+    public int getLunchTimeStart() {
+        return lunchTimeStart;
+    }
+
+    public void setLunchTimeStart(int lunchTimeStart) {
+        this.lunchTimeStart = lunchTimeStart;
+    }
+
+    public int getLunchTimeEnd() {
+        return lunchTimeEnd;
+    }
+
+    public void setLunchTimeEnd(int lunchTimeEnd) {
+        this.lunchTimeEnd = lunchTimeEnd;
     }
 
     public boolean isPreventJoining() {
