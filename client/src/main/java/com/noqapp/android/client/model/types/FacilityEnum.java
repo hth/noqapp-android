@@ -24,7 +24,8 @@ public enum FacilityEnum {
     SO("SO", "Sunday OPD"),
     DEL("DEL", "Delivery"),
     PIK("PIK", "Pick Up"),
-    FRS("FRS", "Fresh Food");
+    FRS("FRS", "Fresh Food"),
+    FRW("FRW", "Free Drinking Water");
 
     private final String description;
     private final String name;
