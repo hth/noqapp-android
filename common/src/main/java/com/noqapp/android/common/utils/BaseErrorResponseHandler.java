@@ -59,6 +59,7 @@ public abstract class BaseErrorResponseHandler {
                     case JOIN_PRE_APPROVED_QUEUE_ONLY:
                     case JOINING_NOT_PRE_APPROVED_QUEUE:
                     case JOINING_QUEUE_PERMISSION_DENIED:
+                    case SERVICE_AFTER_CLOSING_HOUR:
 
                     case USER_EXISTING:
                     case USER_NOT_FOUND:
