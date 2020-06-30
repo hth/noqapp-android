@@ -84,6 +84,9 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;
 
+    @JsonProperty("sl")
+    private String timeSlotMessage;
+
     @JsonProperty("c")
     private String created;
 
@@ -229,6 +232,14 @@ public class JsonQueuedPerson implements Serializable {
     public JsonQueuedPerson setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
         this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
+    }
+
+    public String getTimeSlotMessage() {
+        return timeSlotMessage;
+    }
+
+    public void setTimeSlotMessage(String timeSlotMessage) {
+        this.timeSlotMessage = timeSlotMessage;
     }
 
     public String getCreated() {
