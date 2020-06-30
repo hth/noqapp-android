@@ -25,6 +25,8 @@ public enum FacilityEnum {
     DEL("DEL", "Delivery"),
     PIK("PIK", "Pick Up"),
     FRS("FRS", "Fresh Food"),
+    CAS("CAS", "Cash"),
+    CRD("CRD", "Debit/Credit Cards"),
     FRW("FRW", "Free Drinking Water");
 
     private final String description;
