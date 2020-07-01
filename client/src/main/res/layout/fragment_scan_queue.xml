@@ -128,7 +128,7 @@
                         android:layout_alignParentLeft="true"
                         android:text="@string/active_token"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textSize="@dimen/text_size_fourteen" />
 
 
                 </RelativeLayout>
@@ -246,11 +246,13 @@
                         android:layout_alignParentLeft="true"
                         android:text="@string/business_near"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textSize="@dimen/text_size_fourteen" />
 
                     <View
-                        android:layout_width="40dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/bottom_view_height"
+                        android:layout_alignRight="@+id/tv_business_title"
+                        android:layout_alignLeft="@+id/tv_business_title"
                         android:layout_below="@+id/tv_business_title"
                         android:background="@color/theme_aqua" />
 
@@ -314,11 +316,13 @@
                         android:layout_alignParentLeft="true"
                         android:text="@string/health_care"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textSize="@dimen/text_size_fourteen" />
 
                     <View
-                        android:layout_width="40dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/bottom_view_height"
+                        android:layout_alignRight="@+id/tv_health_care_title"
+                        android:layout_alignLeft="@+id/tv_health_care_title"
                         android:layout_below="@+id/tv_health_care_title"
                         android:background="@color/theme_aqua" />
 
@@ -382,11 +386,13 @@
                         android:layout_alignParentLeft="true"
                         android:text="Feeds"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textSize="@dimen/text_size_fourteen" />
 
                     <View
-                        android:layout_width="30dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/bottom_view_height"
+                        android:layout_alignRight="@+id/tv_feed_title"
+                        android:layout_alignLeft="@+id/tv_feed_title"
                         android:layout_below="@+id/tv_feed_title"
                         android:background="@color/theme_aqua" />
 
