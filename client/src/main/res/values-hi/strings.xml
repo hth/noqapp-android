@@ -416,4 +416,21 @@
     <string name="get_token">टोकन प्राप्त करें</string>
     <string name="departments">विभाग</string>
 
+    <!-- Strings from Code 06292020 -->
+    <string name="closed">बन्द</string>
+    <string name="closing_soon">जल्द ही बंद होगा</string>
+    <string name="now_closed">बंद है</string>
+    <string name="visit_store">स्टोर पर जायें</string>
+    <string name="closed_now_booking_start_at">बंद है। अपॉइंटमेंट बुकिंग शुरू होगी</string>
+    <string name="closed_now_token_available_after">बंद है। टोकन उपलब्ध होगा</string>
+    <string name="accepting_today_appointment">आज कि अपॉइंटमेंटं शुरू</string>
+    <string name="open_serving_at">खुला है। सेवायें शुरू</string>
+    <string name="open_for_walkin">खुला है। आज के अपॉइंटमेंट के लिये Walk-In क्लिक करें</string>
+    <string name="open_token_available">खुला है। टोकन उपलब्ध</string>
+    <string name="visit_store_for_service">सेवा हेतु स्टोर पर जायें</string>
+    <string name="no_walkin">Walk-In नहीं लिये जाएँगे</string>
+    <string name="login_for_appt_booking">कृपया लॉग-इन करें अपॉइंटमेंट के लिये</string>
+    <string name="no_doctor_profile">डाक्टर प्रोफ़ाइल उपलब्ध नहीं</string>
+    <string name="please_login">कृपया लॉग-इन करें</string>
+    <string name="guest_user">गेस्ट उपयोगकर्ता</string>
 </resources>
