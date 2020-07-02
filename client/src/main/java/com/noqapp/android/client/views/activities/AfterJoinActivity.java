@@ -94,7 +94,7 @@ public class AfterJoinActivity
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_mobile;
-    private TextView tv_serving_no;
+    //private TextView tv_serving_no; // No longer displayed, to be deleted
     private TextView tv_token;
     private TextView tv_position_in_queue_label;
     private TextView tv_position_in_queue;
@@ -128,8 +128,7 @@ public class AfterJoinActivity
     private TextView tv_coupon_name;
     private CFPaymentService cfPaymentService;
     private ImageView iv_codeqr;
-    private LinearLayout ll_qr_token;
-    private TextView tv_token_qr, tv_token_day, tv_token_time;
+    private TextView tv_token_day, tv_token_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +142,7 @@ public class AfterJoinActivity
         ImageView iv_right_bg = findViewById(R.id.iv_right_bg);
         ImageView iv_left_bg = findViewById(R.id.iv_left_bg);
         tv_mobile = findViewById(R.id.tv_mobile);
-        tv_serving_no = findViewById(R.id.tv_serving_no);
+        //tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_token = findViewById(R.id.tv_token);
         tv_position_in_queue = findViewById(R.id.tv_position_in_queue_value);
         btn_cancel_queue = findViewById(R.id.btn_cancel_queue);
@@ -164,8 +163,6 @@ public class AfterJoinActivity
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         btn_pay = findViewById(R.id.btn_pay);
         iv_codeqr = findViewById(R.id.iv_codeqr);
-        ll_qr_token = findViewById(R.id.ll_qr_token);
-        tv_token_qr = findViewById(R.id.tv_token_qr);
         tv_token_day = findViewById(R.id.tv_token_day);
         tv_token_time = findViewById(R.id.tv_token_time);
         rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
@@ -333,7 +330,7 @@ public class AfterJoinActivity
             tv_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this,
                     tv_address.getText().toString()));
             gotoPerson = (null != ReviewDB.getValue(codeQR, tokenValue)) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
-            tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+            //tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
             tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
             // Store the currently serving and avg wait time in the app preference
@@ -500,7 +497,7 @@ public class AfterJoinActivity
         // jsonTokenAndQueue = jq; removed to avoided the override of the data
         jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
         jsonTokenAndQueue.setToken(jq.getToken());
-        tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+        //tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
         tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
         tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
         updateEstimatedTime();
@@ -527,7 +524,7 @@ public class AfterJoinActivity
                             jsonTokenAndQueue.getQueueStatus(),
                             jsonTokenAndQueue.getStartHour());
                     if (!TextUtils.isEmpty(waitTime)) {
-                        tv_estimated_time.setText(String.format(getString(R.string.estimated_time), waitTime));
+                        tv_estimated_time.setText(waitTime);
                     }
             }
         } catch (Exception e) {
@@ -847,14 +844,11 @@ public class AfterJoinActivity
                 }
             }
             iv_codeqr.setVisibility(View.VISIBLE);
-            ll_qr_token.setVisibility(View.VISIBLE);
-            tv_token_qr.setVisibility(View.VISIBLE);
             tv_token_day.setVisibility(View.VISIBLE);
             tv_token_time.setVisibility(View.VISIBLE);
             iv_codeqr.setImageBitmap(imageBitmap);
-            tv_token_qr.setText(tokenValue);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/EEE", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE/dd", Locale.getDefault());
             tv_token_day.setText(CommonHelper.formatStringDate(sdf, jsonTokenAndQueue.getServiceEndTime()));
         } catch (WriterException e) {
             e.printStackTrace();

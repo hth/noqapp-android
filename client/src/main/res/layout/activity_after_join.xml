@@ -155,21 +155,58 @@
 
                     </FrameLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/tv_delay_in_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/theme_color_red"
                         android:textSize="@dimen/text_size_twelve"
                         android:visibility="gone" />
 
+                    <LinearLayout
+                        android:id="@+id/ll_token"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/blue_gradient_round"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_token"
+                            style="@style/style_join_queue_tv"
+                            android:gravity="top|center_horizontal"
+                            android:textColor="#505050"
+                            android:textSize="100sp" />
+
+                        <TextView
+                            android:id="@+id/tv_right"
+                            style="@style/style_join_queue_tv"
+                            android:gravity="bottom|center_horizontal"
+                            android:layout_margin="20dp"
+                            android:textColor="#505050"
+                            android:textSize="20sp"
+                            android:text="@string/your_token" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="0dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:weightSum="1">
 
@@ -177,9 +214,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".5"
+                            android:layout_marginRight="10dp"
                             android:gravity="center"
                             android:orientation="vertical">
-
 
                             <ImageView
                                 android:id="@+id/iv_left_bg"
@@ -191,31 +228,32 @@
                                 android:background="@drawable/stethoscope" />
 
                             <LinearLayout
-                                android:layout_width="@dimen/block_1_width"
+                                android:layout_width="match_parent"
                                 android:layout_height="@dimen/block_1_height"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="@dimen/margin_left"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:background="@drawable/grey_gradient_round"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/tv_serving_no"
+                                    android:id="@+id/tv_estimated_time"
                                     style="@style/style_join_queue_tv"
-                                    android:gravity="center"
+                                    android:gravity="top|center_horizontal"
+                                    android:padding="5dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:minLines="1"
                                     android:textColor="#505050"
-                                    android:textSize="@dimen/header_1" />
+                                    android:textSize="@dimen/text_size_eighteen" />
 
                                 <TextView
                                     android:id="@+id/tv_left"
                                     style="@style/style_join_queue_tv"
-                                    android:gravity="center"
-                                    android:text="@string/serving_now"
+                                    android:gravity="bottom|center_horizontal"
+                                    android:padding="5dp"
+                                    android:text="@string/wait_time"
                                     android:textColor="#505050"
-                                    android:textSize="@dimen/header_2" />
+                                    android:textSize="@dimen/text_size_twelve" />
                             </LinearLayout>
 
                         </FrameLayout>
@@ -225,6 +263,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".5"
+                            android:layout_marginLeft="10dp"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -238,79 +277,41 @@
                                 android:background="@drawable/medicine" />
 
                             <LinearLayout
-                                android:layout_width="@dimen/block_1_width"
+                                android:id="@+id/ll_change_bg"
+                                android:layout_width="match_parent"
                                 android:layout_height="@dimen/block_1_height"
-                                android:layout_gravity="right"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="@dimen/margin_left"
-                                android:layout_marginBottom="10dp"
-                                android:background="@drawable/blue_gradient_round"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/orange_gradient"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/tv_token"
+                                    android:id="@+id/tv_position_in_queue_value"
                                     style="@style/style_join_queue_tv"
-                                    android:gravity="center"
-                                    android:textColor="#505050"
-                                    android:textSize="@dimen/header_1" />
+                                    android:gravity="top|center_horizontal"
+                                    android:padding="5dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:minLines="1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="@dimen/text_size_twenty"
+                                    android:textStyle="bold"/>
 
                                 <TextView
-                                    android:id="@+id/tv_right"
+                                    android:id="@+id/tv_position_in_queue_label"
                                     style="@style/style_join_queue_tv"
-                                    android:gravity="center"
-                                    android:text="@string/your_token"
-                                    android:textColor="#505050"
-                                    android:textSize="@dimen/header_2" />
+                                    android:gravity="bottom|center_horizontal"
+                                    android:padding="5dp"
+                                    android:text="@string/your_position_in_queue_label"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="@dimen/text_size_twelve" />
                             </LinearLayout>
                         </FrameLayout>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/ll_change_bg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/orange_gradient"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:orientation="vertical"
-                        android:paddingTop="@dimen/change_bg_padding"
-                        android:paddingBottom="5dp">
-
-                        <TextView
-                            android:id="@+id/tv_position_in_queue_value"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/header_1" />
-
-                        <TextView
-                            android:id="@+id/tv_position_in_queue_label"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:text="@string/your_position_in_queue_label"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/header_2"/>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_estimated_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center"
-                        android:textColor="#505050"
-                        android:textSize="@dimen/text_size_fourteen" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -629,67 +630,49 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
-                </LinearLayout>
-
                 <ImageView
                     android:id="@+id/iv_codeqr"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
                     android:layout_gravity="center_horizontal"
                     android:visibility="gone" />
 
-                <LinearLayout
-                    android:id="@+id/ll_qr_token"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/blue_gradient_round"
-                    android:gravity="center_vertical"
-                    android:visibility="gone"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_token_qr"
-                        style="@style/style_join_queue_tv"
-                        android:gravity="center"
-                        android:textColor="#505050"
-                        android:textSize="150sp"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:id="@+id/tv_token_day"
-                        android:layout_width="0dp"
-                        android:layout_weight=".5"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="@string/your_token"
-                        android:textColor="#505050"
-                        android:layout_margin="10dp"
-                        android:textSize="25sp"
-                        android:visibility="gone"/>
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:orientation="horizontal">
 
-                    <TextClock
-                        android:id="@+id/tv_token_time"
-                        android:layout_width="0dp"
-                        android:layout_weight=".5"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:format12Hour="hh:mm:ss a"
-                        android:text="@string/your_token"
-                        android:layout_margin="10dp"
-                        android:textColor="#505050"
-                        android:textSize="25sp"
-                        android:visibility="gone" />
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_token_day"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:gravity="left"
+                            android:drawableStart="@mipmap/calendar"
+                            android:drawablePadding="2dp"
+                            android:textColor="#505050"
+                            android:textSize="@dimen/text_size_eighteen"
+                            android:visibility="gone"/>
+
+                        <TextClock
+                            android:id="@+id/tv_token_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="right"
+                            android:drawableStart="@mipmap/clock"
+                            android:drawablePadding="2dp"
+                            android:format12Hour="hh:mm:ss a"
+                            android:textColor="#505050"
+                            android:textSize="@dimen/text_size_eighteen"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_btm"
@@ -778,12 +761,9 @@
                         android:textStyle="bold"
                         android:visibility="gone" />
                 </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-
-
         </ScrollView>
-
-
-
     </RelativeLayout>
 </LinearLayout>
