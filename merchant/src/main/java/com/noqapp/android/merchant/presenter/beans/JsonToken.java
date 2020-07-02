@@ -16,7 +16,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serializable;
 
 /**
- * Merchant this object is different from client object. It fills different requirenment.
+ * Merchant this object is different from client object. It fills different requirement.
  * Decided not to merge for now.
  * User: hitender
  * Date: 4/16/17 5:49 PM
