@@ -391,7 +391,8 @@
     <string name="cancel_button">रद्द करना</string>
 
     <!-- Temp String -->
-    <string name="announcement_message">* आरोग्य सेतु ऐप पर हरित स्थिति अनिवार्य है। \n* दस्ताने और मास्क अनिवार्य हैं। \n* ऎक कार्ड, ऎक टोकन और ऎक पर्सन की अनुमति होगी। \n* केवल इस URC पर निर्भर करने वाले।</string>
+    <string name="announcement_message_csd">* आरोग्य सेतु ऐप पर हरित स्थिति अनिवार्य है। \n* दस्ताने और मास्क अनिवार्य हैं। \n* ऎक कार्ड, ऎक टोकन और ऎक पर्सन की अनुमति होगी। \n* केवल इस URC पर निर्भर करने वाले।</string>
+    <string name="announcement_message_covid">* अपनी सुरक्षा के लिये दस्ताने और मास्क पहने \n* हर समय सोशल डिस्टन्सिंग का पालन करें \n* अपने हाथों को बार बार धोयें</string>
 
     <!-- Strings from Code 06062020 -->
     <string name="loading_queue_details">कतार विवरण...</string>

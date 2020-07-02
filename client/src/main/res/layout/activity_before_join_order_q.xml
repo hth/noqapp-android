@@ -258,6 +258,34 @@
                     android:textSize="@dimen/text_size_fourteen"
                     android:text="@string/referral_code_required"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_announcement_label"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@drawable/ic_alert"
+                        android:drawablePadding="5dp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold"
+                        android:text="@string/biz_announcement"/>
+
+                    <TextView
+                        android:id="@+id/tv_announcement_text"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:text="@string/announcement_message_covid"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <RelativeLayout

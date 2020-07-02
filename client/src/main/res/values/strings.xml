@@ -391,7 +391,8 @@
     <string name="cancel_button">Cancel</string>
 
     <!-- Temp String -->
-    <string name="announcement_message">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed\n* Only for dependent on this URC</string>
+    <string name="announcement_message_csd">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed\n* Only for dependent on this URC</string>
+    <string name="announcement_message_covid">* Use gloves &amp; mask for safety\n* Maintain Social distancing at all times\n* Wash hands frequently</string>
 
     <!-- Strings from Code 06062020 -->
     <string name="loading_queue_details">Loading queue details...</string>
