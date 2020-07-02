@@ -439,13 +439,13 @@ public class TokenAndQueueDB {
                 new String[]{codeQR, date}) > 0;
     }
 
-    private static String getTransactionID(JsonTokenAndQueue jsonTokenAndQueue){
-        if(PurchaseOrderStateEnum.IN == jsonTokenAndQueue.getPurchaseOrderState()) {
+    private static String getTransactionID(JsonTokenAndQueue jsonTokenAndQueue) {
+        if (PurchaseOrderStateEnum.IN == jsonTokenAndQueue.getPurchaseOrderState()) {
             return "";
-        }else{
-            if(null == jsonTokenAndQueue.getJsonPurchaseOrder()){
+        } else {
+            if (null == jsonTokenAndQueue.getJsonPurchaseOrder()) {
                 return "";
-            }else{
+            } else {
                 return jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId();
             }
         }
