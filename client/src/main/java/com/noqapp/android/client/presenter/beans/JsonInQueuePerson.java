@@ -56,6 +56,9 @@ public class JsonInQueuePerson extends AbstractDomain implements Serializable {
     @JsonProperty("ti")
     private String transactionId;
 
+    @JsonProperty("sl")
+    private String timeSlotMessage;
+
     @JsonProperty("c")
     private String created;
 
@@ -132,6 +135,14 @@ public class JsonInQueuePerson extends AbstractDomain implements Serializable {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getTimeSlotMessage() {
+        return timeSlotMessage;
+    }
+
+    public void setTimeSlotMessage(String timeSlotMessage) {
+        this.timeSlotMessage = timeSlotMessage;
     }
 
     public String getCreated() {
