@@ -130,8 +130,6 @@ public class CreateTable {
                 ");");
     }
 
-
-
     static void dropAndCreateTable(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueue.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueueHistory.TABLE_NAME + "'");
@@ -140,29 +138,30 @@ public class CreateTable {
         createAllTable(db);
         LaunchActivity.getLaunchActivity().reCreateDeviceID();
     }
+
     static void alterTable(SQLiteDatabase db) {
         try {
             db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.TRANSACTION_ID + " TEXT;");
             db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.TRANSACTION_ID + " TEXT;");
-            Log.e("Table ","Created");
-        }catch (Exception e){
+            Log.e("Table ", "Created");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     static void alterNotificationTable(SQLiteDatabase db) {
         try {
             db.execSQL("ALTER TABLE " + Notification.TABLE_NAME + " ADD COLUMN " + Notification.IMAGE_URL + " TEXT;");
-            Log.e("Table ","Created");
-        }catch (Exception e){
+            Log.e("Table ", "Created");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     static void createAllTable(SQLiteDatabase db) {
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
         createTableReview(db);
         createTableNotification(db);
     }
-
-
 }
