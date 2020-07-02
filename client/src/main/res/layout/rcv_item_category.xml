@@ -184,7 +184,7 @@
                         android:paddingLeft="25dp"
                         android:paddingRight="25dp"
                         android:paddingTop="10dp"
-                        android:text="Get Token"
+                        android:text="@string/get_token"
                         android:layout_below="@+id/tv_status"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_twelve"

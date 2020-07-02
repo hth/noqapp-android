@@ -43,6 +43,7 @@
     <dimen name="text_size_fourteen">14sp</dimen>
     <dimen name="text_size_sixteen">16sp</dimen>
     <dimen name="text_size_eighteen">18sp</dimen>
+    <dimen name="text_size_twenty">20sp</dimen>
 
 
     <dimen name="segment_text_size">14sp</dimen>

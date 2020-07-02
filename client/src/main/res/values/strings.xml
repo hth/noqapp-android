@@ -163,6 +163,7 @@
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
     <string name="alert">Alert</string>
     <string name="estimated_time">Wait time: %1$s</string>
+    <string name="wait_time">Wait time</string>
     <string name="time_slot">Visit: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
     <string name="error_join">Remote Queue Not Enabled</string>
@@ -390,7 +391,8 @@
     <string name="cancel_button">Cancel</string>
 
     <!-- Temp String -->
-    <string name="announcement_message">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed\n* Only for dependent on this URC</string>
+    <string name="announcement_message_csd">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed\n* Only for dependent on this URC</string>
+    <string name="announcement_message_covid">* Use gloves &amp; mask for safety\n* Maintain Social distancing at all times\n* Wash hands frequently</string>
 
     <!-- Strings from Code 06062020 -->
     <string name="loading_queue_details">Loading queue details...</string>
@@ -416,4 +418,21 @@
     <string name="get_token">Get Token</string>
     <string name="departments">Departments</string>
 
+    <!-- Strings from Code 06292020 -->
+    <string name="closed">Closed</string>
+    <string name="closing_soon">Closing soon</string>
+    <string name="now_closed">Now closed</string>
+    <string name="visit_store">Visit Store</string>
+    <string name="closed_now_booking_start_at">Closed Now. Appointment booking starts at</string>
+    <string name="closed_now_token_available_after">Closed Now. Token available after</string>
+    <string name="accepting_today_appointment">Now accepting appointments for today</string>
+    <string name="open_serving_at">Now open. Service begins at</string>
+    <string name="open_for_walkin">Now open. For today\'s appointment click on Walk-In</string>
+    <string name="open_token_available">Now open. Tokens available.</string>
+    <string name="visit_store_for_service">Please visit store to avail the service.</string>
+    <string name="no_walkin">is not accepting walk-ins.</string>
+    <string name="login_for_appt_booking">Please login to book an appointment</string>
+    <string name="no_doctor_profile">Doctor profile is not available currently</string>
+    <string name="please_login">Please login</string>
+    <string name="guest_user">Guest User</string>
 </resources>

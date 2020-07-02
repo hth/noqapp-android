@@ -99,7 +99,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private ImageView iv_category_banner;
     private Button btn_join_queues;
     private Button btn_register;
-    private CardView cv_announcement;
+    private TextView tv_announcement_text;
     private RecyclerView rcv_amenities;
     private RecyclerView rcv_facility;
     private String codeQR;
@@ -129,7 +129,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         iv_category_banner = findViewById(R.id.iv_category_banner);
         btn_join_queues = findViewById(R.id.btn_join_queues);
         btn_register = findViewById(R.id.btn_pre_approve);
-        cv_announcement = findViewById(R.id.cv_announcement);
+        tv_announcement_text = findViewById(R.id.tv_announcement_text);
         rcv_amenities = findViewById(R.id.rcv_amenities);
         rcv_facility = findViewById(R.id.rcv_facility);
         rcv_accreditation = findViewById(R.id.rcv_accreditation);
@@ -256,7 +256,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             //TODO: This information need to come from bizStoreElastic along with formatted announcement text
             if (BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() ||
                     BusinessTypeEnum.CD == bizStoreElastic.getBusinessType()) {
-                cv_announcement.setVisibility(View.VISIBLE);
+                tv_announcement_text.setText(R.string.announcement_message_csd);
+            } else {
+                tv_announcement_text.setText(R.string.announcement_message_covid);
             }
 
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
@@ -314,31 +316,31 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
-                    btn_join_queues.setText("Find Doctor");
-                    tv_toolbar_title.setText("Medical");
-                    title = "Select a Doctor";
+                    btn_join_queues.setText(getString(R.string.find_doctor));
+                    tv_toolbar_title.setText(getString(R.string.medical));
+                    title = getString(R.string.select_a_doctor);
                     break;
                 case CD:
                 case CDQ:
-                    btn_join_queues.setText("CSD Token");
-                    tv_toolbar_title.setText("Canteen Store");
-                    title = "Select a Queue";
+                    btn_join_queues.setText(getString(R.string.csd_token));
+                    tv_toolbar_title.setText(getString(R.string.canteen_store));
+                    title = getString(R.string.select_a_queue);
                     break;
                 case BK:
-                    btn_join_queues.setText("View Services");
-                    tv_toolbar_title.setText("Bank");
-                    title = "Select a Service";
+                    btn_join_queues.setText(getString(R.string.view_services));
+                    tv_toolbar_title.setText(getString(R.string.bank));
+                    title = getString(R.string.select_a_service);
                     break;
                 case HS:
-                    btn_join_queues.setText("View Services");
-                    tv_toolbar_title.setText("Health Service");
-                    title = "Select a Service";
+                    btn_join_queues.setText(getString(R.string.view_services));
+                    tv_toolbar_title.setText(getString(R.string.health_service));
+                    title = getString(R.string.select_a_service);
                     break;
                 // TODO(hth)
                 default:
-                    btn_join_queues.setText("Get Token");
-                    tv_toolbar_title.setText("Departments");
-                    title = "Select a Queue";
+                    btn_join_queues.setText(getString(R.string.get_token));
+                    tv_toolbar_title.setText(getString(R.string.departments));
+                    title = getString(R.string.select_a_queue);
             }
         } else {
             //TODO(chandra) when its empty do something nice

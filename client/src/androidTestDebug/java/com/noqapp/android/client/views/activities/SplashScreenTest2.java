@@ -215,7 +215,7 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatTextView3 = onView(
-                allOf(withId(R.id.tv_join), withText("Get Token"),
+                allOf(withId(R.id.tv_join), withText(R.string.get_token),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.RelativeLayout")),

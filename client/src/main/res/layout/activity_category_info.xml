@@ -204,8 +204,7 @@
                             android:layout_marginTop="15dp"
                             android:padding="10dp"
                             card_view:cardBackgroundColor="@android:color/white"
-                            card_view:cardCornerRadius="4dp"
-                            android:visibility="gone">
+                            card_view:cardCornerRadius="4dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -229,8 +228,7 @@
                                     style="@style/style_join_queue_tv"
                                     android:layout_marginBottom="5dp"
                                     android:textColor="@android:color/holo_red_dark"
-                                    android:textSize="@dimen/text_size_twelve"
-                                    android:text="@string/announcement_message"/>
+                                    android:textSize="@dimen/text_size_twelve" />
 
                             </LinearLayout>
 

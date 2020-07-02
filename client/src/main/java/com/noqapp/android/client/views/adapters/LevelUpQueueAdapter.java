@@ -147,19 +147,19 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_status.setText(context.getString(R.string.store_closed));
                 childViewHolder.tv_store_timing.setVisibility(View.VISIBLE);
                 childViewHolder.tv_status.setVisibility(View.GONE);
-                childViewHolder.tv_store_timing.setText("Closed");
+                childViewHolder.tv_store_timing.setText(context.getResources().getString(R.string.closed));
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_inactive));
                 childViewHolder.tv_join.setTextColor(context.getResources().getColor(R.color.button_color));
-                childViewHolder.tv_join.setText("Closed");
+                childViewHolder.tv_join.setText(context.getResources().getString(R.string.closed));
             } else {
                 childViewHolder.tv_store_timing.setVisibility(View.VISIBLE);
                 childViewHolder.tv_status.setVisibility(View.VISIBLE);
                 childViewHolder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.orange_gradient));
                 childViewHolder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
-                childViewHolder.tv_join.setText("Get Token");
+                childViewHolder.tv_join.setText(context.getResources().getString(R.string.get_token));
                 if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.HS) {
-                    childViewHolder.tv_join.setText("Visit Store");
+                    childViewHolder.tv_join.setText(context.getResources().getString(R.string.visit_store));
                 }
             }
 
@@ -171,17 +171,17 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     if (bizStoreElastic.getBusinessType() != null) {
                         switch (bizStoreElastic.getBusinessType()) {
                             case DO:
-                                childViewHolder.tv_status.setText("Closed Now. Appointment booking starts at "
-                                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.closed_now_booking_start_at)
+                                        + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                                 break;
                             default:
-                                childViewHolder.tv_status.setText("Closed Now. Token available after "
-                                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.closed_now_token_available_after)
+                                        + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText("Closed Now. Token available after "
-                                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                        childViewHolder.tv_status.setText(context.getResources().getString(R.string.closed_now_token_available_after)
+                                + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                     }
                 }
 
@@ -190,16 +190,16 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     if (bizStoreElastic.getBusinessType() != null) {
                         switch (bizStoreElastic.getBusinessType()) {
                             case DO:
-                                childViewHolder.tv_status.setText("Now accepting appointments for today");
+                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.accepting_today_appointment));
                                 break;
                             default:
-                                childViewHolder.tv_status.setText("Now open. Service begins at "
-                                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
+                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.open_serving_at)
+                                        + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText("Now open. Service begins at "
-                                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
+                        childViewHolder.tv_status.setText(context.getResources().getString(R.string.open_serving_at)
+                                + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                     }
                     childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
                 }
@@ -209,32 +209,32 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     if (bizStoreElastic.getBusinessType() != null) {
                         switch (bizStoreElastic.getBusinessType()) {
                             case DO:
-                                childViewHolder.tv_status.setText("Now open. For today's appointment click on Walk-In");
+                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.open_for_walkin));
                                 break;
                             default:
-                                childViewHolder.tv_status.setText("Now open. Tokens available.");
+                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.open_token_available));
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText("Now open. Tokens available.");
+                        childViewHolder.tv_status.setText(context.getResources().getString(R.string.open_token_available));
                     }
                     childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.open_queue));
                 }
 
                 // When between Token Not Available From and End Hour
                 if (timeIn24HourFormat >= storeHourElastic.getTokenNotAvailableFrom() && timeIn24HourFormat < storeHourElastic.getEndHour()) {
-                    childViewHolder.tv_status.setText("Closing soon");
+                    childViewHolder.tv_status.setText(context.getResources().getString(R.string.closing_soon));
                     childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
                 }
 
                 // When after End Hour
                 if (timeIn24HourFormat >= storeHourElastic.getEndHour()) {
-                    childViewHolder.tv_status.setText("Now closed");
+                    childViewHolder.tv_status.setText(context.getResources().getString(R.string.now_closed));
                     childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
                 }
             } else {
                 //TODO(hth) Show when will this be open next. For now hide it.
-                childViewHolder.tv_status.setText("Closed");
+                childViewHolder.tv_status.setText(context.getResources().getString(R.string.closed));
                 childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
             }
             AppUtils.loadProfilePic(childViewHolder.iv_main, bizStoreElastic.getDisplayImage(), context);
@@ -258,14 +258,15 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
                         listener.onCategoryItemClick(bizStoreElastic);
                     } else {
-                        new CustomToast().showToast(context, "Please visit store to avail the service.");
+                        new CustomToast().showToast(context, context.getResources().getString(R.string.visit_store_for_service));
                     }
                 });
             } else {
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_inactive));
                 childViewHolder.tv_join.setTextColor(Color.BLACK);
                 childViewHolder.tv_join.setOnClickListener((View v) -> {
-                    new CustomToast().showToast(context, bizStoreElastic.getDisplayName() + " is not accepting walk-ins.");
+                    new CustomToast().showToast(context, bizStoreElastic.getDisplayName() + " "
+                            + context.getResources().getString(R.string.no_walkin));
                 });
             }
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
@@ -287,7 +288,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
                     context.startActivity(in);
                 } else {
-                    new CustomToast().showToast(context, "Please login to book an appointment");
+                    new CustomToast().showToast(context, context.getResources().getString(R.string.login_for_appt_booking));
                     Intent loginIntent = new Intent(context, LoginActivity.class);
                     context.startActivity(loginIntent);
                 }
@@ -295,7 +296,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             childViewHolder.iv_main.setOnClickListener((View v) -> {
                 if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                     if (TextUtils.isEmpty(bizStoreElastic.getWebProfileId())) {
-                        new CustomToast().showToast(context, "Doctor profile is not available currently");
+                        new CustomToast().showToast(context, context.getResources().getString(R.string.no_doctor_profile));
                     } else {
                         Intent intent = new Intent(context, ManagerProfileActivity.class);
                         intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());

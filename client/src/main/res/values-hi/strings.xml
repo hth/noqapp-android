@@ -163,6 +163,7 @@
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc\n</string>
     <string name="alert">सावधान</string>
     <string name="estimated_time">प्रतीक्षा समय: %1$s</string>
+    <string name="wait_time">प्रतीक्षा समय</string>
     <string name="time_slot">इस समय पर जाएँ: %1$s</string>
     <string name="error_remote_join_not_available">रिमोट जॉइन की अनुमति नहीं है। कृपया स्टोर पर जाएँ।</string>
     <string name="error_join">दूरस्थ कतार सक्षम नहीं है।</string>
@@ -390,7 +391,8 @@
     <string name="cancel_button">रद्द करना</string>
 
     <!-- Temp String -->
-    <string name="announcement_message">* आरोग्य सेतु ऐप पर हरित स्थिति अनिवार्य है। \n* दस्ताने और मास्क अनिवार्य हैं। \n* ऎक कार्ड, ऎक टोकन और ऎक पर्सन की अनुमति होगी। \n* केवल इस URC पर निर्भर करने वाले।</string>
+    <string name="announcement_message_csd">* आरोग्य सेतु ऐप पर हरित स्थिति अनिवार्य है। \n* दस्ताने और मास्क अनिवार्य हैं। \n* ऎक कार्ड, ऎक टोकन और ऎक पर्सन की अनुमति होगी। \n* केवल इस URC पर निर्भर करने वाले।</string>
+    <string name="announcement_message_covid">* अपनी सुरक्षा के लिये दस्ताने और मास्क पहने \n* हर समय सोशल डिस्टन्सिंग का पालन करें \n* अपने हाथों को बार बार धोयें</string>
 
     <!-- Strings from Code 06062020 -->
     <string name="loading_queue_details">कतार विवरण...</string>
@@ -416,4 +418,21 @@
     <string name="get_token">टोकन प्राप्त करें</string>
     <string name="departments">विभाग</string>
 
+    <!-- Strings from Code 06292020 -->
+    <string name="closed">बन्द</string>
+    <string name="closing_soon">जल्द ही बंद होगा</string>
+    <string name="now_closed">बंद है</string>
+    <string name="visit_store">स्टोर पर जायें</string>
+    <string name="closed_now_booking_start_at">बंद है। अपॉइंटमेंट बुकिंग शुरू होगी</string>
+    <string name="closed_now_token_available_after">बंद है। टोकन उपलब्ध होगा</string>
+    <string name="accepting_today_appointment">आज कि अपॉइंटमेंटं शुरू</string>
+    <string name="open_serving_at">खुला है। सेवायें शुरू</string>
+    <string name="open_for_walkin">खुला है। आज के अपॉइंटमेंट के लिये Walk-In क्लिक करें</string>
+    <string name="open_token_available">खुला है। टोकन उपलब्ध</string>
+    <string name="visit_store_for_service">सेवा हेतु स्टोर पर जायें</string>
+    <string name="no_walkin">Walk-In नहीं लिये जाएँगे</string>
+    <string name="login_for_appt_booking">कृपया लॉग-इन करें अपॉइंटमेंट के लिये</string>
+    <string name="no_doctor_profile">डाक्टर प्रोफ़ाइल उपलब्ध नहीं</string>
+    <string name="please_login">कृपया लॉग-इन करें</string>
+    <string name="guest_user">गेस्ट उपयोगकर्ता</string>
 </resources>
