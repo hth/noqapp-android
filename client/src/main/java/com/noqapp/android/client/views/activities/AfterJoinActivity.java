@@ -823,6 +823,7 @@ public class AfterJoinActivity
         jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
         jsonTokenAndQueue.setToken(jsonToken.getToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
+        jsonTokenAndQueue.setTimeSlotMessage(jsonToken.getTimeSlotMessage());
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         generateQRCode();

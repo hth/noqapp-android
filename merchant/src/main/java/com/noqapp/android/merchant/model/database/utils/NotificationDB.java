@@ -31,7 +31,6 @@ public class NotificationDB {
     public static final String KEY_NOTIFY = "KY_NOTI";
     private static final String TAG = NotificationDB.class.getSimpleName();
 
-
     public static void insertNotification(String key, String codeQR, String value, String title) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseTable.Notification.KEY, key);
@@ -59,7 +58,6 @@ public class NotificationDB {
 
 
     public static List<DisplayNotification> getNotificationsList() {
-
         String query = "SELECT *  FROM " + DatabaseTable.Notification.TABLE_NAME + " ORDER BY "+DatabaseTable.Notification.SEQUENCE+ " DESC ";
         List<DisplayNotification> displayNotificationList = new ArrayList<>();
         Cursor cursor = dbHandler.getWritableDb().rawQuery(query, null);

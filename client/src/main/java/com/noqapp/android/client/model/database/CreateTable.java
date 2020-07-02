@@ -52,6 +52,7 @@ public class CreateTable {
                     + TokenQueue.QID + " TEXT , "
                     + TokenQueue.PURCHASE_ORDER_STATE + " TEXT , "
                     + TokenQueue.TRANSACTION_ID + " TEXT , "
+                    + TokenQueue.TIME_SLOT + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");

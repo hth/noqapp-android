@@ -67,6 +67,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setQueueUserId(cursor.getString(24));
                     tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
                     tokenAndQueue.setTransactionId(cursor.getString(26));
+                    tokenAndQueue.setTimeSlotMessage(cursor.getString(27));
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
@@ -83,14 +84,14 @@ public class TokenAndQueueDB {
     //  //@TODO hth re check  updating the existing value
     // Added to update the current list with old values
     public static List<JsonTokenAndQueue> getUpdatedCurrentQueueList(List<JsonTokenAndQueue> newList, List<JsonTokenAndQueue> oldList) {
-        if(null == newList || newList.size() == 0|| null == oldList || oldList.size() == 0) {
+        if (null == newList || newList.size() == 0 || null == oldList || oldList.size() == 0) {
             return newList;
-        }else{
+        } else {
             for (int i = 0; i < newList.size(); i++) {
                 JsonTokenAndQueue jtkNew = newList.get(i);
                 for (int j = 0; j < oldList.size(); j++) {
                     JsonTokenAndQueue jtkOld = oldList.get(j);
-                    if(jtkNew.getCodeQR().equals(jtkOld.getCodeQR()) && jtkNew.getToken() == jtkOld.getToken()){
+                    if (jtkNew.getCodeQR().equals(jtkOld.getCodeQR()) && jtkNew.getToken() == jtkOld.getToken()) {
                         newList.get(i).setServiceEndTime(jtkOld.getServiceEndTime());
                         break;
                     }
@@ -136,6 +137,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setQueueUserId(cursor.getString(24));
                         tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
                         tokenAndQueue.setTransactionId(cursor.getString(26));
+                        tokenAndQueue.setTimeSlotMessage(cursor.getString(27));
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -186,6 +188,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setQueueUserId(cursor.getString(24));
                         tokenAndQueue.setPurchaseOrderState(cursor.getString(25) == null ? null : PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
                         tokenAndQueue.setTransactionId(cursor.getString(26));
+                        tokenAndQueue.setTimeSlotMessage(cursor.getString(27));
                         tokenAndQueueList.add(tokenAndQueue);
                     }
                 } catch (Exception e) {
@@ -371,7 +374,8 @@ public class TokenAndQueueDB {
             cv.put(TokenQueue.DISPLAY_IMAGE, tokenAndQueue.getDisplayImage());
             cv.put(TokenQueue.QID, tokenAndQueue.getQueueUserId());
             cv.put(TokenQueue.PURCHASE_ORDER_STATE, tokenAndQueue.getPurchaseOrderState().name());
-            cv.put(TokenQueue.TRANSACTION_ID,getTransactionID(tokenAndQueue));
+            cv.put(TokenQueue.TRANSACTION_ID, getTransactionID(tokenAndQueue));
+            cv.put(TokenQueue.TIME_SLOT, tokenAndQueue.getTimeSlotMessage());
         } catch (Exception e) {
             Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);
         }
