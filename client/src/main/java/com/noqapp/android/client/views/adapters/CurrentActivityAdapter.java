@@ -68,16 +68,16 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     switch (jsonTokenAndQueue.getBusinessType()) {
                         case CD:
                         case CDQ:
-                            String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
+                            String slot = jsonTokenAndQueue.getTimeSlotMessage();
                             if (!TextUtils.isEmpty(slot)) {
-                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.time_slot), slot));
+                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.time_slot_formatted), slot));
                             }
                             break;
                         default:
                             // Display wait time
                             String waitTime = displayWaitTimes(jsonTokenAndQueue);
                             if (!TextUtils.isEmpty(waitTime)) {
-                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
+                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.wait_time_formatted), waitTime));
                             }
                     }
                 } else {
@@ -86,16 +86,16 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     switch (jsonTokenAndQueue.getBusinessType()) {
                         case CD:
                         case CDQ:
-                            String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
+                            String slot = jsonTokenAndQueue.getTimeSlotMessage();
                             if (!TextUtils.isEmpty(slot)) {
-                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.time_slot), slot));
+                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.time_slot_formatted), slot));
                             }
                             break;
                         default:
                             // Display wait time
                             String waitTime = displayWaitTimes(jsonTokenAndQueue);
                             if (!TextUtils.isEmpty(waitTime)) {
-                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.estimated_time), waitTime));
+                                holder.tv_wait_time.setText(String.format(this.context.getString(R.string.wait_time_formatted), waitTime));
                             }
                     }
                 }

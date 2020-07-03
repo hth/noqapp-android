@@ -424,6 +424,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         jsonTokenAndQueue.setServingNumber(token.getServingNumber());
         jsonTokenAndQueue.setToken(token.getToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
+        jsonTokenAndQueue.setTimeSlotMessage(jsonToken.getTimeSlotMessage());
         dismissProgress();
         if (UserUtils.isLogin()) {
             if (isEnabledPayment) {
