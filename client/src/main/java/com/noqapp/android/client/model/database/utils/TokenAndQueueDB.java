@@ -405,13 +405,13 @@ public class TokenAndQueueDB {
 //        }
 //    }
 
-    public static boolean updateCurrentListQueueObject(String codeQR, String servingno, String token) {
+    public static boolean updateCurrentListQueueObject(String codeQR, String servingNumber, String token) {
         try {
             ContentValues con = new ContentValues();
-            con.put(TokenQueue.SERVING_NUMBER, servingno);
+            con.put(TokenQueue.SERVING_NUMBER, servingNumber);
             //  con.put(TokenQueue.TOKEN, token);
             int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token});
-            Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
+            Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + successCount);
 
             return successCount > 0;
         } catch (Exception e) {
