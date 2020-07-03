@@ -29,8 +29,10 @@ public class GetTimeAgoUtils {
             return context.getResources().getString(R.string.few_minutes);
         } else if (diff < 50 * MINUTE_MILLIS) {
             return String.format(context.getResources().getString(R.string.approx_minutes), (diff / MINUTE_MILLIS ));
-        } else if (diff < 90 * MINUTE_MILLIS) {
+        } else if (diff < 75 * MINUTE_MILLIS) {
             return context.getResources().getString(R.string.approx_an_hour);
+        } else if (diff < 135 * MINUTE_MILLIS) {
+            return context.getResources().getString(R.string.approx_two_hours);
         } else if (diff < 24 * HOUR_MILLIS) {
             return String.format(context.getResources().getString(R.string.approx_hours), (diff / HOUR_MILLIS ));
         } else if (diff < 48 * HOUR_MILLIS) {
