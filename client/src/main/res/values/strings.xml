@@ -80,7 +80,7 @@
     <string name="your_are_next_label">You are next!</string>
     <string name="daily_token_limit">Daily token limit: %1$d</string>
     <string name="revisit_restriction">Repeat service restriction: %1$s</string>
-    <string name="referral_code_required">One time identification code required to get Token</string>
+    <string name="referral_code_required">One time identification code required to get token</string>
 
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
