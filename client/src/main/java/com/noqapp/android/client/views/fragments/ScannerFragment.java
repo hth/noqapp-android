@@ -3,7 +3,6 @@ package com.noqapp.android.client.views.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +19,6 @@ import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ScannerFragment extends BaseFragment {
     public static final int RC_BARCODE_CAPTURE = 23;
