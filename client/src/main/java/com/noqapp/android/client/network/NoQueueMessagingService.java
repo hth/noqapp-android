@@ -465,8 +465,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         switch (jtk.getBusinessType()) {
                                             case CD:
                                             case CDQ:
-                                                String slot = TokenStatusUtils.timeSlot(jtk.getServiceEndTime());
-                                                notificationMessage = notificationMessage + String.format("\nVisit: %1$s", slot);
+                                                String slot = jtk.getTimeSlotMessage();
+                                                notificationMessage =
+                                                        notificationMessage + String.format(getApplicationContext().getString(R.string.time_slot_formatted_newline), slot);
                                                 break;
                                             default:
                                                 long avgServiceTime = jtk.getAverageServiceTime() != 0
@@ -474,7 +475,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                                         : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
                                                 String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime, jtk.afterHowLong(), QueueStatusEnum.N, jtk.getStartHour());
                                                 if (!TextUtils.isEmpty(waitTime)) {
-                                                    notificationMessage = notificationMessage + String.format("\nWait time: %1$s", waitTime);
+                                                    notificationMessage =
+                                                            notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
                                                 }
                                         }
                                     } catch (Exception e) {

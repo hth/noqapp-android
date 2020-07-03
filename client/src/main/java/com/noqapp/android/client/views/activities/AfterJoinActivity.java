@@ -100,7 +100,7 @@ public class AfterJoinActivity
     private TextView tv_position_in_queue;
     private Button btn_cancel_queue;
     private Button btn_go_back;
-    private TextView tv_estimated_time;
+    private TextView tv_estimated_time, tv_left;
     private TextView tv_name;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
@@ -153,6 +153,7 @@ public class AfterJoinActivity
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_hour_saved = findViewById(R.id.tv_hour_saved);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
+        tv_left = findViewById(R.id.tv_left);
         TextView tv_add = findViewById(R.id.add_person);
         TextView tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
         ll_order_details = findViewById(R.id.ll_order_details);
@@ -514,8 +515,9 @@ public class AfterJoinActivity
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case CD:
                 case CDQ:
-                    String slot = TokenStatusUtils.timeSlot(jsonTokenAndQueue.getServiceEndTime());
-                    tv_estimated_time.setText(String.format(getString(R.string.time_slot), slot));
+                    String slot = jsonTokenAndQueue.getTimeSlotMessage();
+                    tv_estimated_time.setText(slot);
+                    tv_left.setText(R.string.time_slot);
                     break;
                 default:
                     String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
@@ -525,6 +527,7 @@ public class AfterJoinActivity
                             jsonTokenAndQueue.getStartHour());
                     if (!TextUtils.isEmpty(waitTime)) {
                         tv_estimated_time.setText(waitTime);
+                        tv_left.setText(R.string.wait_time);
                     }
             }
         } catch (Exception e) {
@@ -823,7 +826,6 @@ public class AfterJoinActivity
         jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
         jsonTokenAndQueue.setToken(jsonToken.getToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
-        jsonTokenAndQueue.setTimeSlotMessage(jsonToken.getTimeSlotMessage());
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         generateQRCode();

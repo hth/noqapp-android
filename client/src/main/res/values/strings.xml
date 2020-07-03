@@ -162,9 +162,12 @@
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
     <string name="alert">Alert</string>
-    <string name="estimated_time">Wait time: %1$s</string>
     <string name="wait_time">Wait time</string>
-    <string name="time_slot">Visit: %1$s</string>
+    <string name="wait_time_formatted">Wait time: %1$s</string>
+    <string name="wait_time_formatted_newline">\nWait time: %1$s</string>
+    <string name="time_slot">Time slot</string>
+    <string name="time_slot_formatted">Time slot: %1$s</string>
+    <string name="time_slot_formatted_newline">\nTime slot: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
     <string name="error_join">Remote Queue Not Enabled</string>
     <string name="login_hint">Phone no. without country code</string>
