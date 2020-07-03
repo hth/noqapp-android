@@ -169,7 +169,7 @@
     <string name="time_slot_formatted">Time slot: %1$s</string>
     <string name="time_slot_formatted_newline">\nTime slot: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
-    <string name="error_join">Remote Queue Not Enabled</string>
+    <string name="error_join">Remote Join Not Enabled</string>
     <string name="login_hint">Phone no. without country code</string>
 
     <string name="bullet">\u27A3</string>

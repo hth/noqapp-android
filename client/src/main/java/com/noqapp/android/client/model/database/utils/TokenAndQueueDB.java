@@ -86,22 +86,21 @@ public class TokenAndQueueDB {
     //  //@TODO hth re check  updating the existing value
     // Added to update the current list with old values
     public static List<JsonTokenAndQueue> getUpdatedCurrentQueueList(List<JsonTokenAndQueue> newList, List<JsonTokenAndQueue> oldList) {
-        if (null == newList || newList.size() == 0 || null == oldList || oldList.size() == 0) {
-            return newList;
-        } else {
+        if (null != newList && newList.size() != 0 && null != oldList && oldList.size() != 0) {
             for (int i = 0; i < newList.size(); i++) {
                 JsonTokenAndQueue jtkNew = newList.get(i);
                 for (int j = 0; j < oldList.size(); j++) {
                     JsonTokenAndQueue jtkOld = oldList.get(j);
                     if (jtkNew.getCodeQR().equals(jtkOld.getCodeQR()) && jtkNew.getToken() == jtkOld.getToken()) {
                         newList.get(i).setServiceEndTime(jtkOld.getServiceEndTime());
+                        newList.get(i).setTimeSlotMessage(jtkOld.getTimeSlotMessage());
                         break;
                     }
                 }
 
             }
-            return newList;
         }
+        return newList;
     }
 
     public static JsonTokenAndQueue getCurrentQueueObject(String codeQR, String token) {
