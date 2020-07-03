@@ -1,10 +1,10 @@
 <resources>
     <plurals name="people_in_queue">
-        <item quantity="one">Person in queue</item>
-        <item quantity="other">People in queue</item>
+        <item quantity="one">@string/person_in_queue</item>
+        <item quantity="other">@string/people_in_queue</item>
     </plurals>
     <plurals name="token_available">
-        <item quantity="one">Token available</item>
-        <item quantity="other">Tokens available</item>
+        <item quantity="one">@string/token_available</item>
+        <item quantity="other">@string/tokens_available</item>
     </plurals>
 </resources>

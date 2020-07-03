@@ -85,6 +85,8 @@
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
     <string name="token_available">Token available</string>
+    <string name="tokens_available">Tokens available</string>
+    <string name="person_in_queue">Person in queue</string>
     <string name="people_in_queue">People in queue</string>
 
     <string name="cancel_queue">You have successfully cancelled</string>
@@ -446,4 +448,6 @@
     <string name="approx_hours">Approx %1$d hours</string>
     <string name="more_than_a_day">More than a day</string>
     <string name="approx_days">Approx %1$d days</string>
+
+    <string name="queue_not_started">Queue not yet started</string>
 </resources>

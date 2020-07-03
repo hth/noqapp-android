@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="@dimen/dialog_min_height"
+        android:minHeight="@dimen/create_token_dialog_min_height"
         android:layout_gravity="center"
         android:background="@android:color/white">
 
@@ -90,13 +90,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="15dp"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/rb_mobile"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left"
+                            android:layout_gravity="center_horizontal"
                             android:layout_weight="1"
                             android:checked="false"
                             android:text="Mobile No"
@@ -105,9 +105,9 @@
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/rb_customer_id"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_horizontal"
                             android:layout_weight="1"
                             android:checked="false"
                             android:text="Search By Id"
@@ -116,9 +116,9 @@
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/rb_unregistered"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
+                            android:layout_gravity="center_horizontal"
                             android:layout_weight="1"
                             android:checked="false"
                             android:text="Un-registered"
