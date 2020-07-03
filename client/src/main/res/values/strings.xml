@@ -80,7 +80,7 @@
     <string name="your_are_next_label">You are next!</string>
     <string name="daily_token_limit">Daily token limit: %1$d</string>
     <string name="revisit_restriction">Repeat service restriction: %1$s</string>
-    <string name="referral_code_required">One time identification code required to get Token</string>
+    <string name="referral_code_required">One time identification code required to get token</string>
 
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
@@ -445,6 +445,7 @@
     <string name="few_minutes">Few minutes</string>
     <string name="approx_minutes">Approx %1$d minutes</string>
     <string name="approx_an_hour">Approx an hour</string>
+    <string name="approx_two_hours">Approx two hours</string>
     <string name="approx_hours">Approx %1$d hours</string>
     <string name="more_than_a_day">More than a day</string>
     <string name="approx_days">Approx %1$d days</string>
