@@ -28,6 +28,7 @@ import com.noqapp.android.common.beans.JsonBusinessCustomerPriority;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.BusinessCustomerAttributeEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.PaymentPermissionEnum;
@@ -70,6 +71,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     protected CustomProgressBar customProgressBar;
     protected String userAccountType;
     private CustomerPriorityLevelEnum customerPriorityLevelEnum;
+    private BusinessTypeEnum businessTypeEnum;
 
     public void updateDataSet(List<JsonQueuedPerson> dataSet, JsonTopic jsonTopic) {
         if (jsonTopic.getServingNumber() > 0) {
@@ -153,6 +155,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         TextView tv_change_name;
         TextView tv_upload_document;
         TextView tv_business_customer_id;
+        TextView tv_token_time_slot;
         TextView tv_join_timing;
         TextView tv_last_visit;
         TextView tv_payment_stat;
@@ -176,6 +179,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             this.tv_change_name = itemView.findViewById(R.id.tv_change_name);
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
+            this.tv_token_time_slot = itemView.findViewById(R.id.tv_token_time_slot);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
             this.tv_last_visit = itemView.findViewById(R.id.tv_last_visit);
             this.tv_payment_stat = itemView.findViewById(R.id.tv_payment_stat);
@@ -223,6 +227,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         this.jsonDataVisibility = jsonTopic.getJsonDataVisibility();
         this.jsonPaymentPermission = jsonTopic.getJsonPaymentPermission();
         this.bizCategoryId = jsonTopic.getBizCategoryId();
+        this.businessTypeEnum = jsonTopic.getBusinessType();
         customProgressBar = new CustomProgressBar(context);
     }
 
@@ -251,6 +256,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
                 TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
                         ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
                         : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
+        // Time slot should be visible only for CD or CDQ.
+        if((businessTypeEnum == BusinessTypeEnum.CD || businessTypeEnum == BusinessTypeEnum.CDQ)
+                && !TextUtils.isEmpty(jsonQueuedPerson.getTimeSlotMessage())) {
+            recordHolder.tv_token_time_slot.setVisibility(View.VISIBLE);
+            recordHolder.tv_token_time_slot.setText(context.getString(R.string.time_slot, jsonQueuedPerson.getTimeSlotMessage()));
+        }
         if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().getUserProfile()) {
             recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                     PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
