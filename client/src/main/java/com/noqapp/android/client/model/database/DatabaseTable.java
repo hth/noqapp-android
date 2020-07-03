@@ -35,6 +35,7 @@ public class DatabaseTable {
         public static final String QID = "queueUserID";
         public static final String PURCHASE_ORDER_STATE = "purchaseOrderState";
         public static final String TRANSACTION_ID = "transactionId";
+        public static final String TIME_SLOT = "timeSlotMessage";
 
         private TokenQueue() {
         }

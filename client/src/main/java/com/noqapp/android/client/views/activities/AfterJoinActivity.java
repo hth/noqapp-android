@@ -814,15 +814,16 @@ public class AfterJoinActivity
         }
     }
 
-    public void tokenPresenterResponse(JsonToken token) {
-        Log.d(TAG, token.toString());
-        this.jsonToken = token;
-        tokenValue = String.valueOf(token.getToken());
+    public void tokenPresenterResponse(JsonToken jsonToken) {
+        Log.d(TAG, jsonToken.toString());
+        this.jsonToken = jsonToken;
+        tokenValue = String.valueOf(jsonToken.getToken());
         btn_cancel_queue.setEnabled(true);
         NoQueueMessagingService.subscribeTopics(topic);
-        jsonTokenAndQueue.setServingNumber(token.getServingNumber());
-        jsonTokenAndQueue.setToken(token.getToken());
+        jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
+        jsonTokenAndQueue.setToken(jsonToken.getToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
+        jsonTokenAndQueue.setTimeSlotMessage(jsonToken.getTimeSlotMessage());
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         generateQRCode();

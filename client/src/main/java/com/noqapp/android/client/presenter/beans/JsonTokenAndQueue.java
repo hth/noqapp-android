@@ -128,6 +128,12 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("ti")
     private String transactionId;
 
+    /**
+     * This field is not part of this object. It comes from JsonToken. It comes only once.
+     * {@link JsonToken#getTimeSlotMessage}.
+     */
+    private String timeSlotMessage;
+
     public String getCodeQR() {
         return codeQR;
     }
@@ -415,6 +421,14 @@ public class JsonTokenAndQueue implements Serializable {
     public JsonTokenAndQueue setTransactionId(String transactionId) {
         this.transactionId = transactionId;
         return this;
+    }
+
+    public String getTimeSlotMessage() {
+        return timeSlotMessage;
+    }
+
+    public void setTimeSlotMessage(String timeSlotMessage) {
+        this.timeSlotMessage = timeSlotMessage;
     }
 
     @Override

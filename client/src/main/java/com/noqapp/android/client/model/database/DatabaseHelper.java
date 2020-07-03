@@ -29,6 +29,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             public void apply(SQLiteDatabase db) {
                 CreateTable.dropAndCreateTable(db);
             }
+        }, new Patch(9, 10, "1.2.515") {
+            public void apply(SQLiteDatabase db) {
+                CreateTable.dropAndCreateTable(db);
+            }
         },
     };
     private static DatabaseHelper dbInstance;
