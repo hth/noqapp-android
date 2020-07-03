@@ -471,7 +471,7 @@ public class AfterJoinActivity
     }
 
     public void setBackGround(int pos) {
-        tv_position_in_queue_label.setText(R.string.your_position_in_queue_label);
+        tv_position_in_queue_label.setText(R.string.position_in_queue_label);
         btn_cancel_queue.setEnabled(true);
         switch (pos) {
             case 0:
@@ -488,7 +488,7 @@ public class AfterJoinActivity
             case 5:
                 break;
             default:
-                tv_position_in_queue_label.setText(R.string.your_position_in_queue_label);
+                tv_position_in_queue_label.setText(R.string.position_in_queue_label);
                 break;
         }
     }
@@ -524,7 +524,8 @@ public class AfterJoinActivity
                             avgServiceTime,
                             jsonTokenAndQueue.afterHowLong(),
                             jsonTokenAndQueue.getQueueStatus(),
-                            jsonTokenAndQueue.getStartHour());
+                            jsonTokenAndQueue.getStartHour(),
+                            this);
                     if (!TextUtils.isEmpty(waitTime)) {
                         tv_estimated_time.setText(waitTime);
                         tv_left.setText(R.string.wait_time);

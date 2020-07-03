@@ -244,7 +244,7 @@
                                     android:maxLines="1"
                                     android:minLines="1"
                                     android:textColor="#505050"
-                                    android:textSize="@dimen/text_size_eighteen" />
+                                    android:textSize="@dimen/text_size_fourteen" />
 
                                 <TextView
                                     android:id="@+id/tv_left"
@@ -301,7 +301,7 @@
                                     style="@style/style_join_queue_tv"
                                     android:gravity="bottom|center_horizontal"
                                     android:padding="5dp"
-                                    android:text="@string/your_position_in_queue_label"
+                                    android:text="@string/position_in_queue_label"
                                     android:textColor="@android:color/white"
                                     android:textSize="@dimen/text_size_twelve" />
                             </LinearLayout>

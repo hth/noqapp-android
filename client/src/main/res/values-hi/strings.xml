@@ -74,8 +74,7 @@
 
     <!--- Join Screen -->
     <string name="serving_now">सेवा में</string>
-    <string name="your_token">आपका टोकन नंबर</string>
-    <string name="your_position_in_queue_label">कतार में आपकी स्थिति</string>
+    <string name="your_token">टोकन</string>
     <string name="position_in_queue_label">कतार में स्थिति</string>
     <string name="your_are_next_label">आप अगले हैं!</string>
     <string name="position_in_queue">कतार में स्थिति: %1$d</string>
@@ -438,4 +437,13 @@
     <string name="no_doctor_profile">डाक्टर प्रोफ़ाइल उपलब्ध नहीं</string>
     <string name="please_login">कृपया लॉग-इन करें</string>
     <string name="guest_user">गेस्ट उपयोगकर्ता</string>
+
+    <!-- Time ago util -->
+    <string name="seconds">%1$d सेकंड</string>
+    <string name="few_minutes">कुछ मिनट</string>
+    <string name="approx_minutes">लगभग %1$d मिनट</string>
+    <string name="approx_an_hour">लगभग एक घंटे</string>
+    <string name="approx_hours">लगभग %1$d घंटे</string>
+    <string name="more_than_a_day">एक दिन से ज्यादा</string>
+    <string name="approx_days">लगभग %1$d दिन</string>
 </resources>

@@ -153,7 +153,8 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     avgServiceTime,
                     jsonTokenAndQueue.afterHowLong(),
                     jsonTokenAndQueue.getQueueStatus(),
-                    jsonTokenAndQueue.getStartHour());
+                    jsonTokenAndQueue.getStartHour(),
+                    this.context);
         } catch (Exception e) {
             Log.e(TAG, "Error setting wait time reason: " + e.getLocalizedMessage(), e);
         }
