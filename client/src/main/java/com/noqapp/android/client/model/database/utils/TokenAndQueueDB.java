@@ -14,6 +14,8 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -252,7 +254,6 @@ public class TokenAndQueueDB {
     }
 
     public static List<JsonTokenAndQueue> getHistoryQueueList() {
-
         String query = "SELECT * , MAX(" + TokenQueue.CREATE_DATE + ") FROM " + TokenQueueHistory.TABLE_NAME + " GROUP BY " + TokenQueue.CODE_QR;
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
         Cursor cursor = dbHandler.getWritableDb().rawQuery(query, null);
@@ -305,7 +306,6 @@ public class TokenAndQueueDB {
     }
 
     public static boolean saveCurrentQueue(List<JsonTokenAndQueue> list) {
-
         for (JsonTokenAndQueue tokenAndQueue : list) {
             //@TODO hth re check  updating the existing value
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(tokenAndQueue.getCodeQR(), String.valueOf(tokenAndQueue.getToken()));
@@ -315,7 +315,7 @@ public class TokenAndQueueDB {
             ContentValues values = createQueueContentValues(tokenAndQueue);
             try {
                 long successCount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                Log.d(TAG, "Data Saved current queue " + String.valueOf(successCount));
+                Log.d(TAG, "Data Saved current queue " + successCount);
             } catch (SQLException e) {
                 Log.e(TAG, "Error saveCurrentQueue reason=" + e.getLocalizedMessage(), e);
             }
@@ -337,7 +337,6 @@ public class TokenAndQueueDB {
                 Log.e(TAG, "Error saveHistoryQueue reason=" + e.getLocalizedMessage(), e);
                 FirebaseCrashlytics.getInstance().log("Error saveHistoryQueue reason " + e.getLocalizedMessage());
                 FirebaseCrashlytics.getInstance().recordException(e);
-
             }
         }
         return true;
@@ -375,7 +374,9 @@ public class TokenAndQueueDB {
             cv.put(TokenQueue.QID, tokenAndQueue.getQueueUserId());
             cv.put(TokenQueue.PURCHASE_ORDER_STATE, tokenAndQueue.getPurchaseOrderState().name());
             cv.put(TokenQueue.TRANSACTION_ID, getTransactionID(tokenAndQueue));
-            cv.put(TokenQueue.TIME_SLOT, tokenAndQueue.getTimeSlotMessage());
+            if (StringUtils.isNotBlank(tokenAndQueue.getTimeSlotMessage())) {
+                cv.put(TokenQueue.TIME_SLOT, tokenAndQueue.getTimeSlotMessage());
+            }
         } catch (Exception e) {
             Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);
         }
@@ -386,7 +387,7 @@ public class TokenAndQueueDB {
         ContentValues values = createQueueContentValues(object);
         try {
             long rowInsertCount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-            Log.d(TAG, "Data Saved in current queue " + String.valueOf(rowInsertCount));
+            Log.d(TAG, "Data Saved in current queue " + rowInsertCount);
         } catch (SQLException e) {
             Log.e(TAG, "Error saveJoinQueueObject reason=" + e.getLocalizedMessage(), e);
         }
@@ -426,7 +427,7 @@ public class TokenAndQueueDB {
             con.put(TokenQueue.PURCHASE_ORDER_STATE, orderState);
             //  con.put(TokenQueue.TOKEN, token);
             int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token});
-            Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
+            Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + successCount);
 
             return successCount > 0;
         } catch (Exception e) {
