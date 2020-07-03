@@ -60,10 +60,10 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
                 holder.tv_token_label.setText(context.getString(R.string.token));
                 if (jsonTokenAndQueue.getToken() <= jsonTokenAndQueue.getServingNumber()) {
-                    holder.tv_position_in_queue_label.setText("It's your turn!!!");
+                    holder.tv_position_in_queue_label.setText(this.context.getString(R.string.your_turn));
                     holder.tv_position_in_queue_value.setVisibility(View.GONE);
                 } else if (jsonTokenAndQueue.getServingNumber() == 0) {
-                    holder.tv_position_in_queue_label.setText("Queue not yet started");
+                    holder.tv_position_in_queue_label.setText(this.context.getString(R.string.queue_not_started));
                     holder.tv_position_in_queue_value.setVisibility(View.GONE);
                     switch (jsonTokenAndQueue.getBusinessType()) {
                         case CD:
