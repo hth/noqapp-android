@@ -241,6 +241,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setQueueUserId(cursor.getString(24));
                     tokenAndQueue.setPurchaseOrderState(cursor.getString(25) == null ? null : PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
                     tokenAndQueue.setTransactionId(cursor.getString(26));
+                    tokenAndQueue.setTimeSlotMessage(cursor.getString(27));
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -291,6 +292,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setQueueUserId(cursor.getString(24));
                         tokenAndQueue.setPurchaseOrderState(cursor.getString(25) == null ? null : PurchaseOrderStateEnum.valueOf(cursor.getString(25)));
                         tokenAndQueue.setTransactionId(cursor.getString(26));
+                        tokenAndQueue.setTimeSlotMessage(cursor.getString(27));
                         listJsonQueue.add(tokenAndQueue);
                     }
                 } finally {
