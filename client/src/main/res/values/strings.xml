@@ -74,8 +74,7 @@
 
     <!--- Join Screen -->
     <string name="serving_now">Now Serving </string>
-    <string name="your_token">Your Token No</string>
-    <string name="your_position_in_queue_label">Your Position in queue</string>
+    <string name="your_token">Token</string>
     <string name="position_in_queue_label">Position in queue</string>
     <string name="position_in_queue">Position in queue: %1$d</string>
     <string name="your_are_next_label">You are next!</string>
@@ -438,4 +437,13 @@
     <string name="no_doctor_profile">Doctor profile is not available currently</string>
     <string name="please_login">Please login</string>
     <string name="guest_user">Guest User</string>
+
+    <!-- Time ago util -->
+    <string name="seconds">%1$d seconds</string>
+    <string name="few_minutes">Few minutes</string>
+    <string name="approx_minutes">Approx %1$d minutes</string>
+    <string name="approx_an_hour">Approx an hour</string>
+    <string name="approx_hours">Approx %1$d hours</string>
+    <string name="more_than_a_day">More than a day</string>
+    <string name="approx_days">Approx %1$d days</string>
 </resources>

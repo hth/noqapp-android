@@ -1,5 +1,7 @@
 package com.noqapp.android.client.utils;
 
+import android.content.Context;
+
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -27,18 +29,19 @@ public class TokenStatusUtils {
         long avgServiceTime,
         int positionInQueue,
         QueueStatusEnum queueStatus,
-        int startHour
+        int startHour,
+        Context context
     ) {
         if (avgServiceTime > 0 && positionInQueue > 0) {
             if (queueStatus == QueueStatusEnum.S) {
                 long timeToStoreStartInMilli = Formatter.computeTimeToStoreStart(startHour);
                 if (timeToStoreStartInMilli > 0) {
-                    return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime + timeToStoreStartInMilli);
+                    return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime + timeToStoreStartInMilli, context);
                 } else {
-                    return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime);
+                    return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime, context);
                 }
             } else {
-                return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime);
+                return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime, context);
             }
         }
         return null;

@@ -473,7 +473,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                                 long avgServiceTime = jtk.getAverageServiceTime() != 0
                                                         ? jtk.getAverageServiceTime()
                                                         : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
-                                                String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime, jtk.afterHowLong(), QueueStatusEnum.N, jtk.getStartHour());
+                                                String waitTime =
+                                                        TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime,
+                                                                jtk.afterHowLong(), QueueStatusEnum.N,
+                                                                jtk.getStartHour(), getApplicationContext());
                                                 if (!TextUtils.isEmpty(waitTime)) {
                                                     notificationMessage =
                                                             notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
@@ -623,10 +626,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             String channelWithSound = "channel_q_with_sound";
 
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            boolean highImportance = notificationPriority <= 10 || (notificationPriority % 5 == 0);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
                 NotificationChannel mChannel;
-                if (notificationPriority <= 25) {
+                if (highImportance) {
                     mChannel = new NotificationChannel(channelWithSound, channelName, NotificationManager.IMPORTANCE_HIGH);
                     mChannel.setSound(defaultSoundUri, null);
                 } else {
@@ -637,7 +641,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
 
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(),
-                    notificationPriority <= 10 ? channelWithSound : channelNoSound)
+                    highImportance ? channelWithSound : channelNoSound)
                     .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
                     .setSmallIcon(getNotificationIcon())
                     .setLargeIcon(getNotificationBitmap())
@@ -647,10 +651,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                     .setLights(Color.parseColor("#ffb400"), 50, 10);
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
-                if (notificationPriority <= 10) {
+                if (highImportance) {
                     mBuilder.setPriority(Notification.PRIORITY_HIGH);
-                    mBuilder.setSound(defaultSoundUri);
+                } else {
+                    mBuilder.setPriority(Notification.PRIORITY_DEFAULT);
                 }
+                mBuilder.setSound(defaultSoundUri);
             }
 
             if (bitmap != null) {
