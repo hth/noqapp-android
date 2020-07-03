@@ -168,7 +168,7 @@
     <string name="time_slot_formatted">Time slot: %1$s</string>
     <string name="time_slot_formatted_newline">\nTime slot: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
-    <string name="error_join">Remote Queue Not Enabled</string>
+    <string name="error_join">Remote Join Not Enabled</string>
     <string name="login_hint">Phone no. without country code</string>
 
     <string name="bullet">\u27A3</string>
@@ -394,7 +394,7 @@
 
     <!-- Temp String -->
     <string name="announcement_message_csd">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed\n* Only for dependent on this URC</string>
-    <string name="announcement_message_covid">* Use gloves &amp; mask for safety\n* Maintain Social distancing at all times\n* Wash hands frequently</string>
+    <string name="announcement_message_covid">* Wear mask during visit\n* Maintain Social distancing at all times\n* Wash hands frequently</string>
 
     <!-- Strings from Code 06062020 -->
     <string name="loading_queue_details">Loading queue details...</string>

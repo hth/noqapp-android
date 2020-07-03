@@ -24,7 +24,7 @@ public class NoQueueDBPresenter {
         /* Delete before inserting as this is always a fresh data on every call. */
         List<JsonTokenAndQueue> tempList = TokenAndQueueDB.getCurrentQueueList();
         TokenAndQueueDB.deleteCurrentQueue();
-        List<JsonTokenAndQueue> updateTempList = TokenAndQueueDB.getUpdatedCurrentQueueList(tokenAndQueues,tempList);
+        List<JsonTokenAndQueue> updateTempList = TokenAndQueueDB.getUpdatedCurrentQueueList(tokenAndQueues, tempList);
         boolean msg = TokenAndQueueDB.saveCurrentQueue(updateTempList);
         if (msg) {
             tokenQueueViewInterface.currentQueueSaved();

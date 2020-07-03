@@ -16,7 +16,6 @@ def manifestVersionName() {
     return xml.attributes()[ns.versionName].toString()
 }
 
-apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 
 repositories {
@@ -487,9 +486,9 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.google.firebase.crashlytics'
 
 /** Gradle default task. */
 defaultTasks 'clean', 'assembleDebug'

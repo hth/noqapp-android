@@ -27,7 +27,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.Objects;
 
 public class QueueHistoryFragment extends BaseFragment implements
         QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
@@ -70,19 +70,16 @@ public class QueueHistoryFragment extends BaseFragment implements
         startActivity(intent);
     }
 
-
     @Override
     public void queueHistoryResponse(JsonQueueHistoricalList jsonQueueHistoricalList) {
         listData = new ArrayList<>(jsonQueueHistoricalList.getQueueHistoricals());
-        Collections.sort(listData, new Comparator<JsonQueueHistorical>() {
-            public int compare(JsonQueueHistorical o1, JsonQueueHistorical o2) {
-                try {
-                    return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated()).
-                            compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
+        Collections.sort(listData, (o1, o2) -> {
+            try {
+                return Objects.requireNonNull(CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated())).
+                        compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
             }
         });
         //add all items
@@ -95,5 +92,4 @@ public class QueueHistoryFragment extends BaseFragment implements
         }
         dismissProgress();
     }
-
 }

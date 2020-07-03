@@ -24,5 +24,4 @@ public class MyAppointmentsActivity extends TabbedActivity {
         adapter.addFragment(new PastAppointmentFragment(), "Past");
         viewPager.setAdapter(adapter);
     }
-
 }
