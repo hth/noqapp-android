@@ -99,16 +99,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="5dp"
-                android:drawableRight="@drawable/edit"
+                android:layout_marginBottom="3dp"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/text_size_twelve" />
 
+            <TextView
+                android:id="@+id/tv_token_time_slot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/edit"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_twelve"
+                android:visibility="gone" />
 
             <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 

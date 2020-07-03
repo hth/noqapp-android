@@ -278,4 +278,6 @@
     <string name="search_registered_customer">Search Registered Customer</string>
     <string name="search_registered_patient">Search Registered Patient</string>
 
+    <string name="time_slot">Time slot: %1$s</string>
+
 </resources>
