@@ -6,6 +6,7 @@ import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -145,8 +146,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
-                        placeholder(getResources().getDrawable(R.drawable.profile_theme)).
-                        error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
+                        placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
+                        error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
@@ -234,6 +235,14 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 tv_delay_in_time.setVisibility(View.GONE);
             }
             String time = new AppUtils().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
+            // @TODO need lunch time in jsonQueue
+           /* if(null != bizStoreElastic){
+                StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
+                String lunchTime = new AppUtils().formatTodayStoreLunchTiming(this, storeHourElastic.getLunchTimeStart(), storeHourElastic.getLunchTimeEnd());
+                if(!TextUtils.isEmpty(lunchTime)){
+                    time += "\n"+lunchTime;
+                }
+            }*/
             tv_store_timing.setText(time);
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener((View v) -> {

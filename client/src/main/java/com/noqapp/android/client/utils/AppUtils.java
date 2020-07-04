@@ -509,6 +509,14 @@ public class AppUtils extends CommonHelper {
         }
     }
 
+    public String formatTodayStoreLunchTiming(Context context, int startHour, int endHour) {
+        if (startHour == 0 || endHour == 0) {
+            return "";
+        } else {
+            return context.getString(R.string.lunch_time) + Formatter.duration(startHour, endHour);
+        }
+    }
+
     public boolean checkStoreClosedWithTime(StoreHourElastic storeHourElastic) {
         if ((storeHourElastic.getStartHour() == 0 && storeHourElastic.getEndHour() == 0)) {
             return true;
