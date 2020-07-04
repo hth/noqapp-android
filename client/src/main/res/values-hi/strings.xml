@@ -260,6 +260,7 @@
     <string name="amenities">सुविधाएँ</string>
     <string name="facility">फसिलिटीज़</string>
     <string name="skip_msg">आपकी सेवा नहीं हुई।\nफिर से कतार में शामिल होने के लिए हाँ दबाएं।</string>
+    <string name="skip">छोड़ें</string>
     <string name="order_now">ऑर्डर करें</string>
     <string name="payment_due">भुगतान राशि-</string>
     <string name="total_tax">समस्त टैक्स-</string>
@@ -454,4 +455,6 @@
     <string name="detect_your_location"><u>अपना क्षेत्र चुनने के लिए यहां क्लिक करें</u></string>
     <string name="screen_change_location">अपना क्षेत्र चुने</string>
     <string name="thanku">हमें आपकी सेवा करने के लिए अवसर देने के लिए धन्यवाद</string>
+    <string name="banner_msg_1">Hi, there</string>
+    <string name="banner_msg_2">We\'re super excited to have you on board. \n Welcome to NoQueue</string>
 </resources>

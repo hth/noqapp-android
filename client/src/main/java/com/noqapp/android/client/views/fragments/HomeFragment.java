@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +64,6 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.RateTheAppManager;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.utils.UserUtils;
@@ -81,6 +79,7 @@ import com.noqapp.android.client.views.activities.EventsDetailActivity;
 import com.noqapp.android.client.views.activities.FeedActivity;
 import com.noqapp.android.client.views.activities.ImageViewerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.LoginActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.OrderConfirmActivity;
 import com.noqapp.android.client.views.activities.SearchActivity;
@@ -99,7 +98,6 @@ import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -163,6 +161,8 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
+    private View rl_helper;
+    private Button btnLogin, btnSkip;
 
 
     public HomeFragment() {
@@ -202,10 +202,13 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         frame_scan = view.findViewById(R.id.frame_scan);
 
+        rl_helper = view.findViewById(R.id.rl_helper);
+        btnLogin = view.findViewById(R.id.btnLogin);
+        btnSkip = view.findViewById(R.id.btnSkip);
         rv_health_care = view.findViewById(R.id.rv_health_care);
         rv_current_activity = view.findViewById(R.id.rv_current_activity);
         tv_active_title = view.findViewById(R.id.tv_active_title);
@@ -466,9 +469,19 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         isProgressFirstTime = false;
         if (isAdded()) {
             if (NoQueueBaseActivity.getShowHelper()) {
-                if (AppUtils.isRelease()) {
-                    presentShowcaseSequence();
-                }
+//                if (AppUtils.isRelease()) {
+//                    presentShowcaseSequence();
+//                }
+                rl_helper.setVisibility(View.VISIBLE);
+                btnSkip.setOnClickListener(v -> rl_helper.setVisibility(View.GONE));
+                btnLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rl_helper.setVisibility(View.GONE);
+                        Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(loginIntent);
+                    }
+                });
                 NoQueueBaseActivity.setShowHelper(false);
             } else {
                 if (isRateUsFirstTime && null != getActivity()) {
