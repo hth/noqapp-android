@@ -64,7 +64,8 @@
                     android:gravity="center_horizontal"
                     android:text="Search &#038; click button to create token"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_fourteen" />
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvcount"
@@ -88,41 +89,39 @@
                         android:id="@+id/rg_token_type"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginVertical="10dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_gravity="left"
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/rb_mobile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
+                            android:paddingVertical="2dp"
                             android:checked="false"
                             android:text="Mobile No"
-                            android:textSize="@dimen/text_size_twelve"
+                            android:textSize="@dimen/text_size_fourteen"
                             app:buttonTint="@color/radio_button_color" />
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/rb_customer_id"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
+                            android:paddingVertical="2dp"
                             android:checked="false"
                             android:text="Search By Id"
-                            android:textSize="@dimen/text_size_twelve"
+                            android:textSize="@dimen/text_size_fourteen"
                             app:buttonTint="@color/radio_button_color" />
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/rb_unregistered"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
+                            android:paddingVertical="2dp"
                             android:checked="false"
                             android:text="Un-registered"
-                            android:textSize="@dimen/text_size_twelve"
+                            android:textSize="@dimen/text_size_fourteen"
                             app:buttonTint="@color/radio_button_color" />
                     </RadioGroup>
 
