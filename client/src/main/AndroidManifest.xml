@@ -205,8 +205,7 @@
         <activity
             android:name=".views.activities.SearchActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:theme="@style/BaseTheme" />
         <activity
             android:name=".views.activities.InviteActivity"
             android:screenOrientation="portrait"

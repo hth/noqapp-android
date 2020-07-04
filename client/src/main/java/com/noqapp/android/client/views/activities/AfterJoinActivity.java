@@ -606,75 +606,77 @@ public class AfterJoinActivity
     @Override
     public void queueJsonPurchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         // Todo: If queue-only store then return
+        generateQRCode();
         try {
-            generateQRCode();
-            Log.e("Response: ", jsonPurchaseOrder.toString());
-            frame_coupon.setVisibility(View.VISIBLE);
-            this.jsonTokenAndQueue.setJsonPurchaseOrder(jsonPurchaseOrder);
-            LinearLayout.LayoutParams params = setLayoutWidthParams(false);
-            params.setMargins(0, 0, 20, 0);
-            btn_pay.setLayoutParams(params);
-            btn_cancel_queue.setLayoutParams(setLayoutWidthParams(false));
-            if (null == jsonToken) {
-                jsonToken = new JsonToken();
-            }
-            jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
-            card_amount.setVisibility(View.VISIBLE);
-            // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-            tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
-            tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-            tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-            if (null != jsonPurchaseOrder.getJsonCoupon())
-                tv_coupon_name.setText(jsonPurchaseOrder.getJsonCoupon().getDiscountName());
-            if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
-                rl_discount.setVisibility(View.GONE);
-            } else {
-                tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-            }
-            ll_order_details.removeAllViews();
-            for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
-                JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
-                LayoutInflater inflater = LayoutInflater.from(this);
-                View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
-                TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
-                TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-                tv_title.setText(jsonPurchaseOrderProduct.getProductName()
-                        + " "
-                        + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())
-                        + " " + currencySymbol
-                        + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice())
-                        + " x "
-                        + jsonPurchaseOrderProduct.getProductQuantity());
-                tv_total_price.setText(currencySymbol
-                        + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
-                ll_order_details.addView(inflatedLayout);
-            }
-            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
-                btn_pay.setVisibility(View.GONE);
-                btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
-                frame_coupon.setVisibility(View.GONE);
-                rl_apply_coupon.setClickable(false);
-            } else {
-                tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
-                btn_pay.setVisibility(View.VISIBLE);
+            if (null != jsonPurchaseOrder) {
+                Log.e("Response: ", jsonPurchaseOrder.toString());
+                frame_coupon.setVisibility(View.VISIBLE);
+                this.jsonTokenAndQueue.setJsonPurchaseOrder(jsonPurchaseOrder);
+                LinearLayout.LayoutParams params = setLayoutWidthParams(false);
+                params.setMargins(0, 0, 20, 0);
                 btn_pay.setLayoutParams(params);
                 btn_cancel_queue.setLayoutParams(setLayoutWidthParams(false));
-                if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
-                    rl_apply_coupon.setVisibility(View.VISIBLE);
-                    rl_coupon_applied.setVisibility(View.GONE);
-                    rl_discount.setVisibility(View.GONE);
-
-                } else {
-                    rl_apply_coupon.setVisibility(View.GONE);
-                    rl_coupon_applied.setVisibility(View.VISIBLE);
-                    rl_discount.setVisibility(View.VISIBLE);
+                if (null == jsonToken) {
+                    jsonToken = new JsonToken();
                 }
-            }
+                jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
+                card_amount.setVisibility(View.VISIBLE);
+                // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+                tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
+                tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+                tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+                if (null != jsonPurchaseOrder.getJsonCoupon())
+                    tv_coupon_name.setText(jsonPurchaseOrder.getJsonCoupon().getDiscountName());
+                if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
+                    rl_discount.setVisibility(View.GONE);
+                } else {
+                    tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+                }
+                ll_order_details.removeAllViews();
+                for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
+                    JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
+                    LayoutInflater inflater = LayoutInflater.from(this);
+                    View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
+                    TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
+                    TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
+                    tv_title.setText(jsonPurchaseOrderProduct.getProductName()
+                            + " "
+                            + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())
+                            + " " + currencySymbol
+                            + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice())
+                            + " x "
+                            + jsonPurchaseOrderProduct.getProductQuantity());
+                    tv_total_price.setText(currencySymbol
+                            + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
+                    ll_order_details.addView(inflatedLayout);
+                }
+                if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+                    tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
+                    btn_pay.setVisibility(View.GONE);
+                    btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
+                    frame_coupon.setVisibility(View.GONE);
+                    rl_apply_coupon.setClickable(false);
+                } else {
+                    tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+                    btn_pay.setVisibility(View.VISIBLE);
+                    btn_pay.setLayoutParams(params);
+                    btn_cancel_queue.setLayoutParams(setLayoutWidthParams(false));
+                    if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
+                        rl_apply_coupon.setVisibility(View.VISIBLE);
+                        rl_coupon_applied.setVisibility(View.GONE);
+                        rl_discount.setVisibility(View.GONE);
 
-            if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) || 0 == Integer.parseInt(jsonPurchaseOrder.getOrderPrice())) {
-                frame_coupon.setVisibility(View.GONE);
-                rl_discount.setVisibility(View.GONE);
+                    } else {
+                        rl_apply_coupon.setVisibility(View.GONE);
+                        rl_coupon_applied.setVisibility(View.VISIBLE);
+                        rl_discount.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) || 0 == Integer.parseInt(jsonPurchaseOrder.getOrderPrice())) {
+                    frame_coupon.setVisibility(View.GONE);
+                    rl_discount.setVisibility(View.GONE);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

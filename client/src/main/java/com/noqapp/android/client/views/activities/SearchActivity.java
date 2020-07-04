@@ -105,7 +105,6 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             return false;
         });
 
-
         tv_auto.setOnClickListener((View v) -> {
             lat = String.valueOf(LaunchActivity.getLaunchActivity().latitude);
             lng = String.valueOf(LaunchActivity.getLaunchActivity().longitude);
@@ -125,6 +124,8 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             city = city_name;
             AppUtils.hideKeyBoard(SearchActivity.this);
             initDefaultLatLng();
+            edt_search.setText("");
+            edt_search.requestFocus();
 
         });
         autoCompleteTextView.setThreshold(3);
@@ -149,6 +150,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             params.putString(FirebaseAnalytics.Param.SEARCH_TERM, AnalyticsEvents.EVENT_SEARCH);
             LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
         }
+        edt_search.requestFocus();
     }
 
     private void initDefaultLatLng() {
