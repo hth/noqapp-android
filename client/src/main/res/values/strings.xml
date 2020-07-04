@@ -451,4 +451,6 @@
     <string name="approx_days">Approx %1$d days</string>
 
     <string name="queue_not_started">Queue not yet started</string>
+    <string name="detect_your_location"><u>Click here to detect your location</u></string>
+    <string name="screen_change_location">Search Location</string>
 </resources>

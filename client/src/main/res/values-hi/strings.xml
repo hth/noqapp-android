@@ -451,4 +451,6 @@
     <string name="approx_days">लगभग %1$d दिन</string>
 
     <string name="queue_not_started">कतार अभी शुरू नहीं हुई है</string>
+    <string name="detect_your_location"><u>अपना क्षेत्र चुनने के लिए यहां क्लिक करें</u></string>
+    <string name="screen_change_location">अपना क्षेत्र चुने</string>
 </resources>

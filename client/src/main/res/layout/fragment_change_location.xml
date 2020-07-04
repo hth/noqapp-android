@@ -36,7 +36,7 @@
                     android:padding="10dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"
-                    android:textSize="@dimen/text_size_twelve"/>
+                    android:textSize="@dimen/text_size_sixteen"/>
 
             <TextView
                     android:id="@+id/tv_auto"
@@ -49,8 +49,9 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
-                    android:text="Auto-detect Location"
-                    android:textSize="@dimen/text_size_ten"/>
+                    android:textColor="#3e3e3e"
+                    android:text="@string/detect_your_location"
+                    android:textSize="@dimen/text_size_sixteen"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>
