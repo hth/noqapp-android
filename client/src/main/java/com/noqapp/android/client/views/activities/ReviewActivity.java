@@ -19,6 +19,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
 import android.app.Activity;
@@ -30,11 +31,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
 
 import java.text.DateFormat;
@@ -53,6 +56,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     private int selectedRadio = 1;
     private long lastPress;
     private Toast backPressToast;
+    private LinearLayout ll_fill_review, ll_thank_u;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,9 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         tv_hr_saved = findViewById(R.id.tv_hr_saved);
         TextView tv_details = findViewById(R.id.tv_details);
         edt_review = findViewById(R.id.edt_review);
+
+        ll_fill_review = findViewById(R.id.ll_fill_review);
+        ll_thank_u = findViewById(R.id.ll_thank_u);
 
         rb_1 = findViewById(R.id.rb_1);
         rb_2 = findViewById(R.id.rb_2);
@@ -102,6 +109,14 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         if (null != extras) {
             jtk = (JsonTokenAndQueue) extras.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (null != jtk) {
+                if (jtk.getBusinessType() == BusinessTypeEnum.DO) {
+                    ll_thank_u.setVisibility(View.VISIBLE);
+                    ll_fill_review.setVisibility(View.GONE);
+                    btn_submit.setText(getString(R.string.go_back));
+                } else {
+                    ll_thank_u.setVisibility(View.GONE);
+                    ll_fill_review.setVisibility(View.VISIBLE);
+                }
                 tv_store_name.setText(jtk.getBusinessName());
                 tv_queue_name.setText(jtk.getDisplayName());
                 tv_address.setText(jtk.getStoreAddress());
@@ -147,50 +162,54 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> tv_rating_value.setText(rating + ""));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener((View v) -> {
-            if (ratingBar.getRating() == 0) {
-                Toast.makeText(ReviewActivity.this, getString(R.string.error_rateservice), Toast.LENGTH_LONG).show();
-            }
+            if (jtk.getBusinessType() == BusinessTypeEnum.DO) {
+                onBackPressed();
+            } else {
+                if (ratingBar.getRating() == 0) {
+                    Toast.makeText(ReviewActivity.this, getString(R.string.error_rateservice), Toast.LENGTH_LONG).show();
+                }
 //                else if (seekBar.getProgress() / 20 == 0) {
 //                    Toast.makeText(ReviewActivity.this, getString(R.string.error_timesaved), Toast.LENGTH_LONG).show();
 //                }
-            else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    /* New instance of progressbar because it is a new activity. */
-                    setProgressCancel(true);
-                    setProgressMessage("Submitting review...");
-                    showProgress();
-                    if (UserUtils.isLogin()) {
-                        if (jtk.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-                            OrderReview orderReview = new OrderReview();
-                            orderReview.setCodeQR(jtk.getCodeQR());
-                            orderReview.setToken(jtk.getToken());
-                            orderReview.setRatingCount(Math.round(ratingBar.getRating()));
-                            orderReview.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
-                            new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
+                else {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        /* New instance of progressbar because it is a new activity. */
+                        setProgressCancel(true);
+                        setProgressMessage("Submitting review...");
+                        showProgress();
+                        if (UserUtils.isLogin()) {
+                            if (jtk.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+                                OrderReview orderReview = new OrderReview();
+                                orderReview.setCodeQR(jtk.getCodeQR());
+                                orderReview.setToken(jtk.getToken());
+                                orderReview.setRatingCount(Math.round(ratingBar.getRating()));
+                                orderReview.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+                                new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
+                            } else {
+                                QueueReview rr = new QueueReview()
+                                        .setCodeQR(jtk.getCodeQR())
+                                        .setToken(jtk.getToken())
+                                        .setHoursSaved(selectedRadio) // update according select radio
+                                        .setRatingCount(Math.round(ratingBar.getRating()))
+                                        .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
+                                        .setQueueUserId(jtk.getQueueUserId());
+                                new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                            }
                         } else {
                             QueueReview rr = new QueueReview()
                                     .setCodeQR(jtk.getCodeQR())
                                     .setToken(jtk.getToken())
                                     .setHoursSaved(selectedRadio) // update according select radio
                                     .setRatingCount(Math.round(ratingBar.getRating()))
-                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
-                                    .setQueueUserId(jtk.getQueueUserId());
-                            new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+
+                            ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
+                            reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);
+                            reviewApiUnAuthenticCall.queue(UserUtils.getDeviceId(), rr);
                         }
                     } else {
-                        QueueReview rr = new QueueReview()
-                                .setCodeQR(jtk.getCodeQR())
-                                .setToken(jtk.getToken())
-                                .setHoursSaved(selectedRadio) // update according select radio
-                                .setRatingCount(Math.round(ratingBar.getRating()))
-                                .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
-
-                        ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
-                        reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);
-                        reviewApiUnAuthenticCall.queue(UserUtils.getDeviceId(), rr);
+                        ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
                     }
-                } else {
-                    ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
                 }
             }
         });
@@ -215,6 +234,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         // @TODO revert all 3 below line
         NoQueueBaseActivity.setReviewShown(true);
         ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
+        TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         super.onBackPressed();
         // @TODO revert all 3 above line
     }

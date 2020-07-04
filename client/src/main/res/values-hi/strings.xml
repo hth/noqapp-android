@@ -25,7 +25,7 @@
     <string name="cancel">रद्द करें</string>
     <string name="login_to_join">लॉग इन करें</string>
     <string name="quit_queue">कतार से बाहर निकलें</string>
-    <string name="go_back">वापस जाओ</string>
+    <string name="go_back">वापस जाएँ</string>
     <string name="ratetheapp">एप्लिकेशन का मूल्यांकन करें</string>
     <string name="legal">वैधानिक</string>
     <string name="invite">आमंत्रित करें</string>
@@ -453,4 +453,5 @@
     <string name="queue_not_started">कतार अभी शुरू नहीं हुई है</string>
     <string name="detect_your_location"><u>अपना क्षेत्र चुनने के लिए यहां क्लिक करें</u></string>
     <string name="screen_change_location">अपना क्षेत्र चुने</string>
+    <string name="thanku">हमें आपकी सेवा करने के लिए अवसर देने के लिए धन्यवाद</string>
 </resources>

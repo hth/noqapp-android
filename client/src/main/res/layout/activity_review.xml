@@ -1,191 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:card_view="http://schemas.android.com/apk/res-auto"
-              xmlns:seek_view="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#99ffffff"
-              android:focusableInTouchMode="true"
-              android:orientation="vertical">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99ffffff"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout"/>
+    <include layout="@layout/toolbar_layout" />
 
     <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:overScrollMode="never">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:overScrollMode="never">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:weightSum="1">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:weightSum="1">
 
 
             <TextView
-                    android:id="@+id/tv_review_msg"
-                    style="@style/style_join_queue_tv"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:textColor="@android:color/black"
-                    android:text=""
-                    android:textSize="@dimen/text_size_sixteen"/>
+                android:id="@+id/tv_review_msg"
+                style="@style/style_join_queue_tv"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_sixteen" />
 
 
             <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    card_view:cardCornerRadius="4dp"
-                    card_view:cardElevation="4dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="4dp">
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                            android:id="@+id/tv_service"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:text="Share your experience to serve you better"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-                    <RelativeLayout
+                        <LinearLayout
+                            android:id="@+id/ll_thank_u"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center">
-
-                        <RatingBar
-                                android:id="@+id/ratingBar"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginLeft="-15dp"
-                                android:layout_marginRight="-15dp"
-                                android:isIndicator="false"
-                                android:max="5"
-                                android:scaleX=".5"
-                                android:scaleY=".5"
-                                android:stepSize="1"
-                                android:theme="@style/RatingBar"/>
-
-                        <TextView
-                                android:id="@+id/tv_rating_value"
-                                style="@style/style_join_queue_tv"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@+id/ratingBar"
-                                android:text="0.0"
-                                android:textColor="@android:color/black"
-                                android:textSize="20sp"
-                                android:visibility="gone"/>
-                    </RelativeLayout>
-
-                    <TextView
-                            style="@style/style_join_queue_tv"
+                            android:layout_height="200dp"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginBottom="5dp"
-                            android:gravity="center_horizontal"
-                            android:text="@string/text_time_saved"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:visibility="gone"/>
-
-                    <RadioGroup
-                            android:id="@+id/rg_save_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="20dp"
+                            android:background="@drawable/blue_gradient_round"
+                            android:gravity="center"
+                            android:orientation="vertical"
                             android:visibility="gone">
 
+                            <TextView
+                                android:id="@+id/tv_token"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="center_horizontal"
+                                android:text="@string/thanku"
+                                android:textColor="#505050"
+                                android:textSize="40sp" />
 
-                        <RadioButton
-                                android:id="@+id/rb_1"
-                                android:layout_width="@dimen/review_radius"
-                                android:layout_height="@dimen/review_radius"
-                                android:background="@drawable/time_save_unselect"
-                                android:textColor="@android:color/black"
-                                android:layout_margin="5dp"
-                                android:textSize="10sp"
-                                android:gravity="center"
-                                android:button="@null"
-                                android:tag="1"
-                                android:text="30 min"/>
+                        </LinearLayout>
 
-                        <RadioButton
-                                android:id="@+id/rb_2"
-                                android:layout_width="@dimen/review_radius"
-                                android:layout_height="@dimen/review_radius"
-                                android:background="@drawable/time_save_unselect"
-                                android:textColor="@android:color/black"
-                                android:layout_margin="5dp"
-                                android:textSize="10sp"
-                                android:gravity="center"
-                                android:button="@null"
-                                android:tag="2"
-                                android:text="1 hr"/>
-
-                        <RadioButton
-                                android:id="@+id/rb_3"
-                                android:layout_width="@dimen/review_radius"
-                                android:layout_height="@dimen/review_radius"
-                                android:background="@drawable/time_save_unselect"
-                                android:textColor="@android:color/black"
-                                android:layout_margin="5dp"
-                                android:textSize="10sp"
-                                android:gravity="center"
-                                android:button="@null"
-                                android:tag="3"
-                                android:text="2 hr"/>
-
-                        <RadioButton
-                                android:id="@+id/rb_4"
-                                android:layout_width="@dimen/review_radius"
-                                android:layout_height="@dimen/review_radius"
-                                android:background="@drawable/time_save_unselect"
-                                android:textColor="@android:color/black"
-                                android:layout_margin="5dp"
-                                android:textSize="10sp"
-                                android:gravity="center"
-                                android:button="@null"
-                                android:tag="4"
-                                android:text="3 hr"/>
-
-                        <RadioButton
-                                android:id="@+id/rb_5"
-                                android:layout_width="@dimen/review_radius"
-                                android:layout_height="@dimen/review_radius"
-                                android:background="@drawable/time_save_unselect"
-                                android:textColor="@android:color/black"
-                                android:layout_margin="5dp"
-                                android:textSize="10sp"
-                                android:gravity="center"
-                                android:button="@null"
-                                android:tag="5"
-                                android:text="4 hr"/>
-
-
-                    </RadioGroup>
-
-
-                    <LinearLayout
+                        <LinearLayout
+                            android:id="@+id/ll_fill_review"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:orientation="vertical"
+                            android:visibility="gone"
                             android:weightSum="1">
 
+                            <TextView
+                                android:id="@+id/tv_service"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="center"
+                                android:text="Share your experience to serve you better"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen" />
 
-                        <TextView
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center">
+
+                                <RatingBar
+                                    android:id="@+id/ratingBar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginLeft="-15dp"
+                                    android:layout_marginRight="-15dp"
+                                    android:isIndicator="false"
+                                    android:max="5"
+                                    android:scaleX=".5"
+                                    android:scaleY=".5"
+                                    android:stepSize="1"
+                                    android:theme="@style/RatingBar" />
+
+                                <TextView
+                                    android:id="@+id/tv_rating_value"
+                                    style="@style/style_join_queue_tv"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/ratingBar"
+                                    android:text="0.0"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="20sp"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
+                            <TextView
+                                style="@style/style_join_queue_tv"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="5dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/text_time_saved"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:visibility="gone" />
+
+                            <RadioGroup
+                                android:id="@+id/rg_save_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+
+                                <RadioButton
+                                    android:id="@+id/rb_1"
+                                    android:layout_width="@dimen/review_radius"
+                                    android:layout_height="@dimen/review_radius"
+                                    android:layout_margin="5dp"
+                                    android:background="@drawable/time_save_unselect"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:tag="1"
+                                    android:text="30 min"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="10sp" />
+
+                                <RadioButton
+                                    android:id="@+id/rb_2"
+                                    android:layout_width="@dimen/review_radius"
+                                    android:layout_height="@dimen/review_radius"
+                                    android:layout_margin="5dp"
+                                    android:background="@drawable/time_save_unselect"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:tag="2"
+                                    android:text="1 hr"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="10sp" />
+
+                                <RadioButton
+                                    android:id="@+id/rb_3"
+                                    android:layout_width="@dimen/review_radius"
+                                    android:layout_height="@dimen/review_radius"
+                                    android:layout_margin="5dp"
+                                    android:background="@drawable/time_save_unselect"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:tag="3"
+                                    android:text="2 hr"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="10sp" />
+
+                                <RadioButton
+                                    android:id="@+id/rb_4"
+                                    android:layout_width="@dimen/review_radius"
+                                    android:layout_height="@dimen/review_radius"
+                                    android:layout_margin="5dp"
+                                    android:background="@drawable/time_save_unselect"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:tag="4"
+                                    android:text="3 hr"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="10sp" />
+
+                                <RadioButton
+                                    android:id="@+id/rb_5"
+                                    android:layout_width="@dimen/review_radius"
+                                    android:layout_height="@dimen/review_radius"
+                                    android:layout_margin="5dp"
+                                    android:background="@drawable/time_save_unselect"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:tag="5"
+                                    android:text="4 hr"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="10sp" />
+
+
+                            </RadioGroup>
+
+
+                            <TextView
                                 android:id="@+id/tv_hr_saved"
                                 style="@style/style_join_queue_tv"
                                 android:layout_gravity="center_horizontal"
@@ -194,17 +220,17 @@
                                 android:text=""
                                 android:textColor="@color/colorAddress"
                                 android:textSize="@dimen/text_size_fourteen"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
 
-                        <TextView
+                            <TextView
                                 style="@style/style_join_queue_tv"
                                 android:layout_width="match_parent"
                                 android:layout_marginTop="10dp"
                                 android:text="Comments/ Suggestions"
                                 android:textColor="@color/colorAddress"
-                                android:textSize="@dimen/text_size_fourteen"/>
+                                android:textSize="@dimen/text_size_fourteen" />
 
-                        <EditText
+                            <EditText
                                 android:id="@+id/edt_review"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -212,119 +238,120 @@
                                 android:background="@drawable/square_bg_drawable"
                                 android:gravity="top"
                                 android:inputType="textMultiLine"
+                                android:maxLength="256"
                                 android:maxLines="4"
                                 android:minLines="4"
-                                android:maxLength="256"
-                                android:textSize="@dimen/text_size_fourteen"
-                                android:padding="5dp"/>
+                                android:padding="5dp"
+                                android:textSize="@dimen/text_size_fourteen" />
 
-                        <Button
-                                android:id="@+id/btn_submit"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_gravity="center"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="0dp"
-                                android:layout_marginRight="0dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/btn_bg_enable"
-                                android:foreground="?attr/selectableItemBackgroundBorderless"
-                                android:clickable="true"
-                                android:gravity="center"
-                                android:paddingLeft="100dp"
-                                android:paddingRight="100dp"
-                                android:text="@string/submit"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/text_size_fourteen"/>
-                    </LinearLayout>
+                        </LinearLayout>
+                    </FrameLayout>
 
+                    <Button
+                        android:id="@+id/btn_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/btn_bg_enable"
+                        android:clickable="true"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:paddingLeft="100dp"
+                        android:paddingRight="100dp"
+                        android:text="@string/submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_fourteen" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    card_view:cardCornerRadius="4dp"
-                    card_view:cardElevation="4dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="4dp">
 
                 <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="Queue Details"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_sixteen"
-                            android:textStyle="bold"/>
+                        style="@style/style_join_queue_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Queue Details"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="bold" />
 
                     <TextView
-                            android:id="@+id/tv_details"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/great"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_sixteen"
-                            android:visibility="visible"
-                            android:textStyle="bold"/>
+                        android:id="@+id/tv_details"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/great"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
 
                     <TextView
-                            android:id="@+id/tv_store_name"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="Costco"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_sixteen"/>
+                        android:id="@+id/tv_store_name"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Costco"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_sixteen" />
 
                     <TextView
-                            android:id="@+id/tv_queue_name"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="Queue Name"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_sixteen"/>
+                        android:id="@+id/tv_queue_name"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Queue Name"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_sixteen" />
 
                     <TextView
-                            android:id="@+id/tv_address"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="10dp"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="Location: Address is Station \n Railway station"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                        android:id="@+id/tv_address"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Location: Address is Station \n Railway station"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen" />
 
                     <TextView
-                            android:id="@+id/tv_mobile"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="10dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="Date of service: Today"
-                            android:textColor="@color/colorAddress"
-                            android:gravity="right"
-                            android:textSize="@dimen/text_size_twelve"/>
+                        android:id="@+id/tv_mobile"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="right"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Date of service: Today"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_twelve" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
