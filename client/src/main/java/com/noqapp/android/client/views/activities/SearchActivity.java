@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -55,6 +56,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private AutoCompleteTextView autoCompleteTextView;
     private LinearLayout ll_search;
     private final String TAG = SearchActivity.class.getSimpleName();
+    private RelativeLayout rl_empty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -62,6 +64,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         setContentView(R.layout.activity_search);
         RecyclerView rv_search = findViewById(R.id.rv_search);
         edt_search = findViewById(R.id.edt_search);
+        rl_empty = findViewById(R.id.rl_empty);
         TextView tv_auto = findViewById(R.id.tv_auto);
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         ll_search = findViewById(R.id.ll_search);
@@ -276,6 +279,9 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         searchAdapter.notifyDataSetChanged();
         if (bizStoreElasticList.getBizStoreElastics().size() == 0) {
             new ShowAlertInformation().showSnakeBar(ll_search, "Search result empty");
+            rl_empty.setVisibility(View.VISIBLE);
+        } else {
+            rl_empty.setVisibility(View.GONE);
         }
         dismissProgress();
 

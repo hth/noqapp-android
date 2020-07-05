@@ -349,6 +349,8 @@
     <string name="empty_noti_title">खाली अधिसूचना।</string>
     <string name="empty_noti_subtitle">कोई अधिसूचना नहीं है।</string>
     <string name="empty_queue_title">खाली कतार</string>
+    <string name="empty_search_title">Search Store/Queue</string>
+    <string name="empty_search_subtitle">Search your favourite Store/Queue here. If available then store will be in list.</string>
     <string name="empty_queue_subtitle">आपको अभी तक देखना बाकी है \n नोक्यू(NoQueue) की awesomeness. \n\n इसे देखने के लिए एक कतार में शामिल हों.</string>
     <string name="empty_medical_h_title">खाली मेडिकल हिस्ट्री</string>
     <string name="empty_medical_h_subtitle">बधाई!!! \n अाप स्वस्थ हो। \n\n अाप की कोई मेडिकल हिस्ट्री नहीं हैं।</string>
