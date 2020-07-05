@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,7 +155,13 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             } else {
                 childViewHolder.tv_store_timing.setVisibility(View.VISIBLE);
                 childViewHolder.tv_status.setVisibility(View.VISIBLE);
-                childViewHolder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
+                String time = new AppUtils().formatTodayStoreTiming(context, storeHourElastic);
+                String lunchTime = new AppUtils().formatTodayStoreLunchTiming(context, storeHourElastic.getLunchTimeStart(), storeHourElastic.getLunchTimeEnd());
+                if (!TextUtils.isEmpty(lunchTime)) {
+                    time += "\n" + lunchTime;
+                }
+                Log.e("value: "+childPosition, time);
+                childViewHolder.tv_store_timing.setText(time);
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.orange_gradient));
                 childViewHolder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
                 childViewHolder.tv_join.setText(context.getResources().getString(R.string.get_token));
