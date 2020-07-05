@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -14,11 +15,15 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.presenter.FeedbackPresenter;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class ContactUsActivity extends BaseActivity implements FeedbackPresenter {
     private Feedback feedback = new Feedback();
@@ -42,9 +47,16 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             }
         }
         if (UserUtils.isLogin()) {
-            btn_submit.setEnabled(true);
-            edt_body.setEnabled(true);
-            edt_subject.setEnabled(true);
+            if (NoQueueBaseActivity.getUserProfile().isAccountValidated()) {
+                btn_submit.setEnabled(true);
+                edt_body.setEnabled(true);
+                edt_subject.setEnabled(true);
+            } else {
+                btn_submit.setEnabled(false);
+                edt_body.setEnabled(false);
+                edt_subject.setEnabled(false);
+                new CustomToast().showToast(ContactUsActivity.this, "To contact us you need to verify your email address. Go to profile to verify.");
+            }
         } else {
             btn_submit.setEnabled(false);
             edt_body.setEnabled(false);

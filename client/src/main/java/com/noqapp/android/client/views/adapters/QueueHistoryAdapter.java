@@ -60,6 +60,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         holder.tv_queue_join_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription());
         holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());
+        holder.tv_token_assigned.setText(String.valueOf(jsonQueueHistorical.getTokenNumber()));
         holder.btn_rejoin.setOnClickListener((View v) -> {
             Intent in;
             Bundle b = new Bundle();
@@ -165,7 +166,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
 
         private TextView tv_name;
         private TextView tv_support;
-        private TextView tv_address;
+        private TextView tv_token_assigned;
         private TextView tv_queue_join_date;
         private TextView tv_queue_status;
         private TextView tv_business_name_address;
@@ -177,7 +178,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
-            this.tv_address = itemView.findViewById(R.id.tv_address);
+            this.tv_token_assigned = itemView.findViewById(R.id.tv_token_assigned);
             this.tv_queue_join_date = itemView.findViewById(R.id.tv_queue_join_date);
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
             this.tv_business_name_address = itemView.findViewById(R.id.tv_business_name_address);
