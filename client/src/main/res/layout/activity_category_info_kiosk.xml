@@ -71,7 +71,7 @@
                             android:drawableRight="@drawable/ic_cancel"
                             android:drawablePadding="20dp"
                             android:drawableTint="@color/theme_color_red"
-                            android:hint="Search Store/Queue"
+                            android:hint="@string/search_hint"
                             android:imeOptions="actionSearch"
                             android:inputType="text|textNoSuggestions"
                             android:maxLines="1"

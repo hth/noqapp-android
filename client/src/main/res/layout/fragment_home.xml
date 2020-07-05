@@ -447,7 +447,7 @@
         android:id="@+id/rl_helper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#99000000"
+        android:background="#CC000000"
         android:visibility="gone">
 
         <ImageView
@@ -464,27 +464,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_banner"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="20dp"
             android:gravity="center"
-            android:text="@string/banner_msg_1"
             android:textColor="@android:color/white"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_msg2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_msg1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="center"
-            android:text="@string/banner_msg_2"
-            android:textColor="@android:color/white"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textSize="80sp"
+            android:textStyle="bold"
+            android:text="@string/app_name" />
 
         <LinearLayout
             android:layout_width="match_parent"

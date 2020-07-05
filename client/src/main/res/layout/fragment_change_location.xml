@@ -29,7 +29,7 @@
                     android:drawableRight="@drawable/ic_cancel"
                     android:drawableTint="@color/theme_color_red"
                     android:ems="10"
-                    android:hint="Search location..."
+                    android:hint="@string/location_search_hint"
                     android:inputType="textNoSuggestions"
                     android:maxLines="1"
                     android:minLines="1"
