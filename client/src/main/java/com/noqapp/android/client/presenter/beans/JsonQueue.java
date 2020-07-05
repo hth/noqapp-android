@@ -136,7 +136,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("as")
     private long averageServiceTime;
 
-    @JsonProperty("ls")
+    @JsonProperty("sd")
     private int limitServiceByDays = 0;
 
     @JsonProperty("pa")
