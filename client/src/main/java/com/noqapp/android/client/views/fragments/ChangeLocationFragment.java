@@ -47,6 +47,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
         ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = view.findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText(getString(R.string.screen_change_location));
+        AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         actionbarBack.setOnClickListener((View v) -> {
             if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
                 lat = Constants.DEFAULT_LATITUDE;
@@ -69,33 +70,31 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 lat = LaunchActivity.getLaunchActivity().latitude;
                 lng = LaunchActivity.getLaunchActivity().longitude;
                 city = LaunchActivity.getLaunchActivity().cityName;
-                AppUtils.hideKeyBoard(getActivity());
             }
+            AppUtils.setAutoCompleteText(autoCompleteTextView, city);
+            AppUtils.hideKeyBoard(getActivity());
         });
-        AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
-        autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    String city_name = (String) parent.getItemAtPosition(position);
-                    LatLng latLng = AppUtils.getLocationFromAddress(getActivity(), city_name);
-                    if (null != latLng) {
-                        lat = latLng.latitude;
-                        lng = latLng.longitude;
-                        LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city_name);
-                        //finish();
-                    } else {
-                        //lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-                        //lng = LaunchActivity.getLaunchActivity().getDefaultLongitude();
-                    }
-                    city = city_name;
-                    AppUtils.hideKeyBoard(getActivity());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
+        autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
+        autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
+            try {
+                String city_name = (String) parent.getItemAtPosition(position);
+                LatLng latLng = AppUtils.getLocationFromAddress(getActivity(), city_name);
+                if (null != latLng) {
+                    lat = latLng.latitude;
+                    lng = latLng.longitude;
+                    LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city_name);
+                    //finish();
+                } else {
+                    //lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
+                    //lng = LaunchActivity.getLaunchActivity().getDefaultLongitude();
+                }
+                city = city_name;
+                AppUtils.hideKeyBoard(getActivity());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         });
         autoCompleteTextView.setThreshold(3);
         autoCompleteTextView.setOnTouchListener((v, event) -> {
