@@ -78,7 +78,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         tv_right = findViewById(R.id.tv_right);
         tv_left = findViewById(R.id.tv_left);
         tv_consult_fees = findViewById(R.id.tv_consult_fees);
-        tv_cancellation_fees = findViewById(R.id.tv_cancelation_fees);
+        tv_cancellation_fees = findViewById(R.id.tv_cancellation_fees);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
         tv_hour_saved = findViewById(R.id.tv_hour_saved);
@@ -377,7 +377,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         new CustomToast().showToast(this, "Token generated successfully. Your token no is: " + token.getToken());
         logoutFromKiosk();
         dismissProgress();
-
     }
 
     @Override
@@ -419,7 +418,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         }, Constants.SCREEN_TIME_OUT);
     }
 
-
     private Handler disconnectHandler = new Handler(msg -> true);
 
     private Runnable disconnectCallback = () -> {
@@ -440,7 +438,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
     public void onUserInteraction() {
         resetDisconnectTimer();
     }
-
 
     @Override
     public void onStop() {

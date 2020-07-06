@@ -6,7 +6,6 @@ import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -56,7 +55,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_rating_review;
     private TextView tv_rating;
     private TextView tv_delay_in_time;
-    private TextView tv_consult_fees, tv_cancelation_fees;
+    private TextView tv_consult_fees, tv_cancellation_fees;
     private TextView tv_add, add_person;
     private TextView tv_daily_token_limit;
     private TextView tv_revisit_restriction;
@@ -87,7 +86,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         iv_token_available_bg = findViewById(R.id.iv_token_available_bg);
         tv_consult = findViewById(R.id.tv_consult);
         tv_consult_fees = findViewById(R.id.tv_consult_fees);
-        tv_cancelation_fees = findViewById(R.id.tv_cancelation_fees);
+        tv_cancellation_fees = findViewById(R.id.tv_cancellation_fees);
         tv_token_available = findViewById(R.id.tv_token_available);
         tv_token_available_text = findViewById(R.id.tv_token_available_text);
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
@@ -277,7 +276,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     String feeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getProductPrice() / 100) + "</b>  Consultation fee";
                     tv_consult_fees.setText(Html.fromHtml(feeString));
                     String cancelFeeString = "<b>" + AppUtils.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getCancellationPrice() / 100) + "</b>  Cancellation fee";
-                    tv_cancelation_fees.setText(Html.fromHtml(cancelFeeString));
+                    tv_cancellation_fees.setText(Html.fromHtml(cancelFeeString));
                     tv_consult.setVisibility(View.VISIBLE);
                     ll_select_family_member.setVisibility(View.VISIBLE);
                     iv_token_available_bg.setVisibility(View.VISIBLE);

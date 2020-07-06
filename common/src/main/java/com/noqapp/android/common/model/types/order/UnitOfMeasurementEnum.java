@@ -7,13 +7,21 @@ import java.util.List;
  * Created by hitender on 4/1/18.
  */
 public enum UnitOfMeasurementEnum {
-    CN("CN", "count"),
+    CN("CN", "count (nos)"),
     DZ("DZ", "dozen"),
+    HD("HD", "1/2 dozen"),
     MG("MG", "mg"),
     GM("GM", "gm"),
     KG("KG", "kg"),
     ML("ML", "ml"),
-    LT("LT", "lt");
+    LT("LT", "lt"),
+
+    CM("CM", "cm"),
+    LA("LA", "Large"),
+    XL("XL", "Extra Large"),
+    ME("ME", "Medium"),
+    SM("SM", "Small"),
+    KT("KT", "Kit");
 
     private final String name;
     private final String description;
