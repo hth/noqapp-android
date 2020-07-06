@@ -207,7 +207,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 }
             }
 
-            if(jsonMerchant.getCustomerPriorities().size() > 0) {
+            if (null != jsonMerchant.getCustomerPriorities() && jsonMerchant.getCustomerPriorities().size() > 0) {
                 String customerPriority = gson.toJson(jsonMerchant.getCustomerPriorities());
                 LaunchActivity.getLaunchActivity().setBusinessCustomerPriority(customerPriority);
             }
