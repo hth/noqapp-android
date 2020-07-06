@@ -64,7 +64,7 @@
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
     <string name="setting">Queue Settings</string>
-    <string name="error_pwd_length">Password length should be greater than 5</string>
+    <string name="error_pwd_length">Password length should be greater than 6</string>
     <string name="authentication_fail">Authentication failure</string>
     <string name="authentication_fail_msg">Please login again.</string>
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
@@ -86,7 +86,7 @@
     <string name="unlimited_token">Un-limited tokens</string>
     <string name="limited_token">Limited tokens</string>
     <string name="error_time">Time has to be greater than 12:00 AM</string>
-    <string name="error_access_denied">Not authorized to access. Please contact your admin for permission.</string>
+    <string name="error_access_denied">You have logged in successfully but not authorized to access. Please contact your admin for permission.</string>
     <string name="text_delay">Change today\'s arrival time</string>
     <string name="error_delay_time">Arrival time should be between Queue start time and Queue close time.</string>
     <string name="queue_closed">Queue Closed</string>
