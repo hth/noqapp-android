@@ -73,7 +73,7 @@
     <string name="create_token">Create Token</string>
     <string name="unlimited_token">Un-limited tokens</string>
     <string name="error_time">Time has to be greater than 12:00 AM</string>
-    <string name="error_access_denied">Not authorized to access. Please contact your admin for permission.</string>
+    <string name="error_access_denied">You have logged in successfully but not authorized to access. Please contact your admin for permission.</string>
 
     <string name="notification_alert">You don\'t have any notifications.</string>
     <string name="screen_queue_chart_detail">Charts</string>
