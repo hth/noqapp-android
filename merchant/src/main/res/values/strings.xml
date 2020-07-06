@@ -64,7 +64,7 @@
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
     <string name="setting">Queue Settings</string>
-    <string name="error_pwd_length">Password length should be greater than 5</string>
+    <string name="error_pwd_length">Password length should be greater than 6</string>
     <string name="authentication_fail">Authentication failure</string>
     <string name="authentication_fail_msg">Please login again.</string>
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>

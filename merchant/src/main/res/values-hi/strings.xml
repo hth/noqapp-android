@@ -57,7 +57,7 @@
     <string name="cancel">रद्द करना</string>
     <string name="update">नवीनतम</string>
     <string name="setting">सेटिंग्स बदली करे</string>
-    <string name="error_pwd_length">पासवर्ड की लंबाई 5 से अधिक होनी चाहिए</string>
+    <string name="error_pwd_length">पासवर्ड की लंबाई 6 से अधिक होनी चाहिए</string>
     <string name="authentication_fail">प्रमाणीकरण विफलता</string>
     <string name="authentication_fail_msg">कृपया फिर से लॉग इन करे </string>
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
