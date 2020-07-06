@@ -94,6 +94,12 @@ public class JsonQueue implements Serializable {
     @JsonProperty("e")
     private int endHour;
 
+    @JsonProperty("ls")
+    private int lunchTimeStart;
+
+    @JsonProperty("le")
+    private int lunchTimeEnd;
+
     @JsonProperty("de")
     private int delayedInMinutes;
 
@@ -130,7 +136,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("as")
     private long averageServiceTime;
 
-    @JsonProperty("ls")
+    @JsonProperty("sd")
     private int limitServiceByDays = 0;
 
     @JsonProperty("pa")
@@ -351,6 +357,22 @@ public class JsonQueue implements Serializable {
     public JsonQueue setEndHour(int endHour) {
         this.endHour = endHour;
         return this;
+    }
+
+    public int getLunchTimeStart() {
+        return lunchTimeStart;
+    }
+
+    public void setLunchTimeStart(int lunchTimeStart) {
+        this.lunchTimeStart = lunchTimeStart;
+    }
+
+    public int getLunchTimeEnd() {
+        return lunchTimeEnd;
+    }
+
+    public void setLunchTimeEnd(int lunchTimeEnd) {
+        this.lunchTimeEnd = lunchTimeEnd;
     }
 
     public int getDelayedInMinutes() {
