@@ -146,7 +146,7 @@
                                 android:textSize="@dimen/text_size_twelve" />
 
                             <TextView
-                                android:id="@+id/tv_cancelation_fees"
+                                android:id="@+id/tv_cancellation_fees"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
