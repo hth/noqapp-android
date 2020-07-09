@@ -91,7 +91,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
         clipboard.setPrimaryClip(clip);
         if (selectedText.equals("")) {
             new CustomToast().showToast(getActivity(), "Nothing to copy");
-        }else {
+        } else {
             new CustomToast().showToast(getActivity(), "Copied");
         }
     }
