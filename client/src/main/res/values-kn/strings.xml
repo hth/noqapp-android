@@ -1,6 +1,466 @@
 <resources>
     <string name="app_name">NoQueue</string>
+    <string name="title_activity_launch">NoQueue</string>
+    <!--Screen Name-->
+    <string name="screen_qdetails">ಟೋಕನ್ ವಿವರಗಳು</string>
+    <string name="screen_invite">ಆಹ್ವಾನಿಸಿ</string>
+    <string name="screen_review">ವಿಮರ್ಶಿಸಿ</string>
+    <string name="screen_notification">ಸೂಚನೆಗಳು</string>
+    <string name="screen_legal">ಕಾನೂನುಬದ್ಧ</string>
+    <string name="screen_invite_details">ಆಹ್ವಾನದ ವಿವರಗಳು</string>
+    <string name="screen_join">ಟೋಕನ್ ಪಡೆಯಿರಿ</string>
+    <string name="screen_search">ಹುಡುಕಿ</string>
+
+    <string name="screen_profile">ಪ್ರೊಫೈಲ್</string>
+    <string name="screen_edit_profile">ಪ್ರೊಫೈಲ್ ಸಂಕಲಿಸಿ</string>
+
+    <string name="medical_profile">ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್</string>
+    <string name="medical_profiles">ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್‌ಗಳು</string>
+    <string name="screen_view_all">ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ</string>
+    <string name="screen_upcoming_appointment">ನನ್ನ ನೇಮಕಾತಿಗಳು</string>
+
+    <string name="action_settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+    <string name="join">ಟೋಕನ್ ಪಡೆಯಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
+    <string name="view_token_status">ಟೋಕನ್ ಸ್ಥಿತಿಯನ್ನು ವೀಕ್ಷಿಸಿ</string>
+    <string name="login_to_join">ಸೇರಲು ಲಾಗಿನ್ ಮಾಡಿ</string>
+    <string name="cancel">ರದ್ದುಮಾಡಿ</string>
+    <string name="quit_queue">ನಿಮ್ಮ ಟೋಕನ್ ರದ್ದುಮಾಡಿ</string>
+    <string name="go_back">ಹಿಂದಕ್ಕೆ ಹೋಗಿ</string>
+    <string name="ratetheapp">ಅಪ್ಲಿಕೇಶನ್‌ಗೆ ಕ್ರಮಾಂಕ ನೀಡಿ</string>
+    <string name="legal">ಕಾನೂನುಬದ್ಧ</string>
+    <string name="invite">ಆಹ್ವಾನಿಸಿ</string>
+    <string name="firstname">ಮೊದಲ ಹೆಸರು</string>
+
+    <!--Invite Screen-->
+    <string name="how_it_works">ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ?</string>
+    <string name="your_invite_code">ನಿಮ್ಮ ಆಹ್ವಾನದ ಕೋಡ್</string>
+    <string name="copy">ನಕಲಿಸಿ</string>
+    <string name="send_invite">ಆಹ್ವಾನಗಳನ್ನು ಕಳುಹಿಸಿ</string>
+    <string name="empty_invite_code">ಹಂಚಿಕೊಳ್ಳಲು ಆಹ್ವಾನ ಕೋಡ್ ಹೊಂದಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ.</string>
+    <string name="empty_history">ನೀವು ಯಾವುದೇ \n ಇತ್ತೀಚಿನ ಇತಿಹಾಸವನ್ನು ಹೊಂದಿಲ್ಲ.</string>
+    <string name="close">ಮುಚ್ಚಿ</string>
+
+
+    <!--Legal Screen-->
+    <string name="privacy_policy">ಖಾಸಗಿತನದ ನೀತಿ</string>
+    <string name="term_condition">ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು</string>
+    <string name="about_us">ನಮ್ಮ ಬಗ್ಗೆ</string>
+    <string name="version_no">ಆಪ್ ಆವೃತ್ತಿ: %1$s</string>
+
+    <!--Register Screen-->
+    <string name="phonenumber">ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>
+    <string name="register">ನೋಂದಣಿ</string>
+
+    <string name="login">ಲಾಗಿನ್ ಮಾಡಿ</string>
+    <string name="phone">ಫೋನ್ <font color='red'>\u002A</font></string>
+    <string name="name">ಹೆಸರು <font color='red'>\u002A</font></string>
+    <string name="mail">ಮೇಲ್</string>
+    <string name="birthday">ಜನ್ಮದಿನ <font color='red'>\u002A</font></string>
+    <string name="gender">ಲಿಂಗ <font color='red'>\u002A</font></string>
+    <string name="invitecode">ಆಹ್ವಾನದ ಕೋಡ್ </string>
+    <string name="btnregister">ನೋಂದಣಿ ಮುಂದುವರಿಸಿ</string>
+    <string name="error_name_blank">ದಯವಿಟ್ಟು ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="error_email_blank">ದಯವಿಟ್ಟು ಇಮೇಲ್ ನಮೂದಿಸಿ</string>
+    <string name="error_name_length">ಹೆಸರಿನ ಉದ್ದ ಕನಿಷ್ಠ 3 ಅಥವಾ ಹೆಚ್ಚಿನದಾಗಿರಬೇಕು</string>
+    <string name="error_invalid_email">ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಇಮೇಲ್ ಅನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="error_invalid_date">ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="error_dob_blank">ದಯವಿಟ್ಟು ಹುಟ್ಟಿದ ದಿನಾಂಕವನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="error_dob_format">ದಯವಿಟ್ಟು ಹುಟ್ಟಿದ ದಿನಾಂಕವನ್ನು yyyy-MM-dd ಸ್ವರೂಪದಲ್ಲಿ ನಮೂದಿಸಿ</string>
+
+
+    <!--Error and message-->
+    <string name="networkerror">ನೆಟ್‌ವರ್ಕ್ ದೋಷ</string>
+    <string name="offline">ನೆಟ್‌ವರ್ಕ್ ಲಭ್ಯವಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸಾಧನವನ್ನು ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಸಂಪರ್ಕಿಸಿ.</string>
+
+    <!--- Join Screen -->
+    <string name="serving_now">ಈಗ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ </string>
+    <string name="your_token">ನಿಮ್ಮ ಟೋಕನ್ ಸಂ</string>
+    <string name="position_in_queue_label">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ</string>
+    <string name="position_in_queue">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ: %1$d</string>
+    <string name="your_are_next_label">ಮುಂದಿನದು ನಿಮ್ಮ ಸರದಿ!</string>
+    <string name="daily_token_limit">ದೈನಂದಿನ ಟೋಕನ್ ಮಿತಿ: %1$d</string>
+    <string name="revisit_restriction">ಸೇವಾ ನಿರ್ಬಂಧವನ್ನು ಪುನರಾವರ್ತಿಸಿ: %1$s</string>
+    <string name="referral_code_required">ಟೋಕನ್ ಪಡೆಯಲು ಒಂದು ಬಾರಿಯ ಗುರುತಿನ ಕೋಡ್ ಬೇಕಿರುತ್ತದೆ</string>
+
+    <!--- Scan Screen -->
+    <string name="currently_serving">ಪ್ರಸ್ತುತ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ</string>
+    <string name="token_available">ಟೋಕನ್ ಲಭ್ಯವಿದೆ</string>
+    <string name="tokens_available">ಟೋಕನ್ ಲಭ್ಯವಿದೆ</string>
+    <string name="person_in_queue">ಸರದಿಯಲ್ಲಿರುವ ಜನರು</string>
+    <string name="people_in_queue">ಸರದಿಯಲ್ಲಿರುವ ಜನರು</string>
+
+    <string name="cancel_queue">ನೀವು ಯಶಸ್ವಿಯಾಗಿ ರದ್ದುಗೊಳಿಸಿದ್ದೀರಿ</string>
+    <string name="fail_to_cancel">ರದ್ದುಗೊಳಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
+
+    <string name="cancel_order">ನೀವು ಆರ್ಡರ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರದ್ದುಗೊಳಿಸಿದ್ದೀರಿ</string>
+    <string name="fail_to_cancel_order">ಆರ್ಡರ್ ರದ್ದುಗೊಳಿಸಲು ವಿಫಲ</string>
+
+    <!--- Review Screen -->
+    <string name="radio_save_30min">0</string>
+    <string name="radio_save_1hr">1</string>
+    <string name="radio_save_2hr">2</string>
+    <string name="radio_save_3hr">3</string>
+    <string name="radio_save_4hr">4</string>
+    <string name="submit">ವಿಮರ್ಶೆಯನ್ನು ಸೇರಿಸಿ</string>
+
+    <string name="radio_save_30min_f">30 ನಿಮಿಷಗಳು</string>
+    <string name="radio_save_1hr_f">1 ಗಂಟೆ</string>
+    <string name="radio_save_2hr_f">2 ಗಂಟೆ</string>
+    <string name="radio_save_3hr_f">3 ಗಂಟೆ</string>
+    <string name="radio_save_4hr_f">4 ಗಂಟೆ</string>
+
+    <string name="time_saved">ಉಳಿಸಲಾದ ಸಮಯ:&#160;</string>
+
+
+    <!-- Others -->
+    <string name="ok">ಸರಿ</string>
+    <string name="exit_app">ನಿರ್ಗಮಿಸಲು ಮತ್ತೆ ಬ್ಯಾಕ್ ಒತ್ತಿ</string>
+    <string name="app_missing">ಆಹ್ವಾನವನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಯಾವುದೇ ಆಪ್ ಇಲ್ಲ</string>
+    <string name="select_country">ದೇಶವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <!--Stop waiting in queues. Use my invite code '%@' to download and
+    register with NoQueue. We both earn Remote Joins. To learn more, go
+    to www.noqapp.com/about. \n\nIf you own a store or restaurant or provide
+    services and would like to increase customer satisfaction become NoQueue
+    Merchant. Learn more go to page www.noqapp.com/about.-->
+
+    <!--Me Screen-->
+    <string name="logout">ಲಾಗ್ ಔಟ್</string>
+    <string name="login_register">ಲಾಗಿನ್ / ನೋಂದಾಯಿಸಿ</string>
+    <string name="yes">ಹೌದು</string>
+    <string name="no">ಇಲ್ಲ</string>
+    <string name="logout_msg">ಲಾಗ್ ಇನ್ ಆಗದಿದ್ದಾಗ ರಚಿಸಲಾದ ಡೇಟಾವನ್ನು ಶಾಶ್ವತವಾಗಿ ಕಳೆದುಕೊಳ್ಳಬಹುದು</string>
+    <string name="error_mobile_blank">ದಯವಿಟ್ಟು ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="error_login">ರಿಮೋಟ್ ಸೇರ್ಪಡೆಗೆ ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
+    <string name="error_rateservice">ದಯವಿಟ್ಟು ಸೇವೆಗೆ ಕ್ರಮಾಂಕ ನೀಡಿ</string>
+    <string name="review_thanks">ಪ್ರತಿಕ್ರಿಯೆಗಾಗಿ ಧನ್ಯವಾದಗಳು.</string>
+    <string name="error_timesaved">ದಯವಿಟ್ಟು ನೀವು ಉಳಿಸಿದ ಗಂಟೆ (ಗಳ) ಸಂಖ್ಯೆಯನ್ನು ನೀಡಿ.</string>
+    <string name="error_qrcode_scan">ಮಾನ್ಯವಾದ NoQueue QR ಕೋಡ್ ಅಲ್ಲ</string>
+
+    <string name="verify_phone_auth">ಪರಿಶೀಲಿಸಿ</string>
+    <string name="hint_verification_code">ಪರಿಶೀಲನಾ ಕೋಡ್</string>
+    <string name="status_code_sent">ಕೋಡ್ ಕಳುಹಿಸಲಾಗಿದೆ</string>
+    <string name="status_verification_failed">ಪರಿಶೀಲನೆ ವಿಫಲವಾಗಿದೆ</string>
+    <string name="status_verification_succeeded">ಪರಿಶೀಲನೆ ಯಶಸ್ವಿಯಾಗಿದೆ</string>
+    <string name="status_sign_in_failed">ಸೈನ್ ಇನ್ ವಿಫಲವಾಗಿದೆ</string>
+    <string name="instant_validation">ಒಟಿಪಿ ನಮೂದಿಸಿ</string>
+    <string name="store_hour">ಗಂಟೆಗಳು:</string>
+    <string name="store_today_hour">ಇಂದು:</string>
+    <string name="store_closed">ಇಂದು ಮುಚ್ಚಿದೆ</string>
+
+    <!--Error  messages-->
+    <string name="error_prevent_joining">%1$s %2$s ಈವತ್ತು ಇನ್ನೂ ಹೊಸ ಟೋಕನ್ ಅನ್ನು ಸ್ವೀಕರಿಸುತ್ತಿಲ್ಲ</string>
+    <string name="error_day_closed">%1$s %2$s ಈವತ್ತಿಗೆ ಮುಚ್ಚಿದೆ</string>
+    <string name="error_token_available_from">%1$s %2$s ಇದು %3$s ನಂತರ ಹೊಸ ಟೋಕನ್ ನೀಡಲು ಪ್ರಾರಂಭಿಸುತ್ತದೆ. ದಯವಿಟ್ಟು %3$s ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="error_token_not_available_from">%1$s %2$s ಶೀಘ್ರದಲ್ಲೇ ಈವತ್ತಿಗೆ ಮುಚ್ಚಲಿದೆ ಆದ್ದರಿಂದ ಯಾವುದೇ ಹೊಸ ಟೋಕನ್‌ಗಳು ಲಭ್ಯವಿರುವುದಿಲ್ಲ.</string>
+    <string name="error_business_closed_permanent">%1$s %2$s ಶಾಶ್ವತವಾಗಿ ಮುಚ್ಚಿದೆ</string>
+    <string name="error_business_has_closed_for_the_day">%1$s %2$s ಈವತ್ತಿಗೆ ಮುಚ್ಚಿದೆ</string>
+    <string name="error_user_needs_to_be_logged_in">%1$s %2$s ಅನ್ನು ಸೇರಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
+    <string name="error_reached_daily_limit">ಇಂದಿಗೆ ಈ ಸರದಿಗಾಗಿ ಎಲ್ಲಾ ಟೋಕನ್‌ಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳಲಾಗಿದೆ.</string>
+    <string name="text_time_saved">ನೀವು ಎಷ್ಟು ಸಮಯ ಉಳಿಸಿದ್ದೀರಿ?</string>
+    <string name="authentication_fail_title">ದೃಢೀಕರಣ ವಿಫಲವಾಗಿದೆ</string>
+    <string name="authentication_fail_msg">ದಯವಿಟ್ಟು ಮತ್ತೆ ಲಾಗಿನ್ ಮಾಡಿ.</string>
+    <string name="barcode_error">ಸರದಿ ಕಂಡುಬಂದಿಲ್ಲ</string>
+    <string name="barcode_error_msg">ಈ NoQueue ಕೋಡ್‌ನೊಂದಿಗೆ ಯಾವುದೇ ವ್ಯಾಪಾರಿ ಸಂಬಂಧ ಹೊಂದಿಲ್ಲ</string>
+    <string name="copy_right">ವೆಬ್‌ಸೈಟ್: https://noqapp.com\n\n NoQueue &#174; ಇದು NoQueue Inc.\n 2020 \u00a9 NoQueue Inc ನ ವ್ಯಾಪಾರೀ ಲಾಂಛನವಾಗಿದೆ</string>
+    <string name="alert">ಎಚ್ಚರಿಕೆ</string>
+    <string name="wait_time">Wait time</string>
+    <string name="wait_time_formatted">Wait time: %1$s</string>
+    <string name="wait_time_formatted_newline">\nप्रतीक्षा समय: %1$s</string>
+    <string name="time_slot">ಭೇಟಿ: %1$s</string>
+    <string name="time_slot_formatted">Time slot: %1$s</string>
+    <string name="time_slot_formatted_newline">\nटाइम स्लॉट: %1$s</string>
+    <string name="error_remote_join_not_available">ರಿಮೋಟ್ ಸೇರ್ಪಡೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ಟೋರ್‌ಗೆ ಭೇಟಿ ನೀಡಿ.</string>
+    <string name="error_join">ರಿಮೋಟ್ ಸರದಿಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿಲ್ಲ</string>
+    <string name="login_hint">ದೂರವಾಣಿ ಸಂಖ್ಯೆ. ದೇಶದ ಕೋಡ್ ಇಲ್ಲದೆ</string>
+
+    <string name="bullet">\u27A3</string>
+    <string name="circle_large_bullet">\u2B24</string>
+    <string name="circle_small_bullet">\u2022</string>
+    <string name="horizontal_ellipsis">\u2026</string>
+    <string name="triangular_bullet">\u2023</string>
+    <string name="right_pointing_angle_quotation">\u203A</string>
+    <string name="asterisk">\u002A</string>
+
+    <string name="btn_playstore">ಪ್ಲೇ ಸ್ಟೋರ್ ತೆರೆಯಿರಿ</string>
+    <string name="playstore_update_title">ಹೊಸ ಆಪ್ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ</string>
+    <string name="playstore_update_msg">NoQueue ನ ಹೊಸ ಆವೃತ್ತಿ ಪ್ಲೇ ಸ್ಟೋರ್‌ನಲ್ಲಿ ಲಭ್ಯವಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಗೆ ನವೀಕರಿಸಿ. \n</string>
+
+    <string name="low_storage_error">ಸಾಧನ ಸಂಗ್ರಹಣೆ ಕಡಿಮೆ ಇರುವುದರಿಂದ ಫೇಸ್ ಡಿಟೆಕ್ಟರ್ ಅವಲಂಬನೆಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</string>
+    <string name="no_camera_permission">ಕ್ಯಾಮೆರಾ ಅನುಮತಿ ಇಲ್ಲದ ಕಾರಣ ಈ ಅಪ್ಲಿಕೇಶನ್ ನಡೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ. ಅಪ್ಲಿಕೇಶನ್ ಈಗ ನಿರ್ಗಮಿಸುತ್ತದೆ.</string>
+
+    <string name="msg_default_status">NoQueue QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲು ಅದನ್ನು ವ್ಯೂಫೈಂಡರ್ ಚೌಕದ ಒಳಗೆ ಇರಿಸಿ.</string>
+    <string name="notification_alert">ನೀವು ಇನ್ನೂ ಯಾವುದೇ ಸೂಚನೆ ಸ್ವೀಕರಿಸಿಲ್ಲ :(.</string>
+    <string name="navigation_drawer_open">ನ್ಯಾವಿಗೇಶನ್ ಡ್ರಾಯರ್ ತೆರೆಯಿರಿ</string>
+    <string name="navigation_drawer_close">ನ್ಯಾವಿಗೇಶನ್ ಡ್ರಾಯರ್ ಮುಚ್ಚಿ</string>
+    <string name="home">ಹೋಂ</string>
+    <string name="share">ಹಂಚಿಕೊಳ್ಳಿ</string>
+    <string name="medical_history">ಹಿಂದಿನ ವೈದ್ಯರ ಭೇಟಿಗಳು</string>
+    <string name="my_appointments">ನನ್ನ ನೇಮಕಾತಿಗಳು</string>
+    <string name="medical_history_details">ಕೇಸ್ ಇತಿಹಾಸ</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">ಇಮೇಲ್</string>
+    <string name="error_field_required">ಈ ಕ್ಷೇತ್ರ ಅಗತ್ಯವಿದೆ</string>
+    <string name="prompt_user_name">ಬಳಕೆದಾರರ ಹೆಸರು</string>
+    <string name="prompt_gender">ಲಿಂಗ</string>
+    <string name="prompt_marital_status">ವೈವಾಹಿಕ ಸ್ಥಿತಿ</string>
+    <string name="action_update">ಪ್ರೊಫೈಲ್ ನವೀಕರಿಸಿ</string>
+
+    <string name="language_setting">ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಿ</string>
+    <string name="lang_dialog_title">ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಿ</string>
     <string name="hindi">हिंदी</string>
     <string name="kannada">ಕನ್ನಡ</string>
     <string name="english">English</string>
+    <string name="current_location">ಈಗಿನ ಸ್ಥಳ</string>
+    <string name="scan_qr">SCAN QR</string>
+    <string name="active_token">ಸಕ್ರಿಯ ಟೋಕನ್</string>
+    <string name="health_care">ಆಸ್ಪತ್ರೆಗಳು</string>
+    <string name="business_near">ವ್ಯಾಪಾರ / ಸಂಸ್ಥೆ</string>
+    <string name="view_all">ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ</string>
+    <string name="scan_info">ಸರದಿ ಸೇರಲು ಅಥವಾ ಆರ್ಡರ್ ಮಾಡಲು NoQueue QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ</string>
+    <string name="prompt_address_status">ವಿಳಾಸ</string>
+    <string name="prompt_dob">DD-MM-YYYY</string>
+    <string name="medical_history_alert">ನಿಮಗೆ ಯಾವುದೇ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸವಿಲ್ಲ.</string>
+    <string name="screen_order">ಆರ್ಡರ್ ಸಾರಾಂಶ</string>
+    <string name="screen_order_confirm">ಆರ್ಡರ್ ಧೃಡೀಕರಣ</string>
+    <string name="transaction_history">ವ್ಯವಹಾರಗಳು</string>
+    <string name="error_mobile_no_same">ದಯವಿಟ್ಟು ಹೊಸ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="password">ಪಾಸ್‌ವರ್ಡ್ <font color='red'>\u002A</font></string>
+    <string name="error_pwd_blank">ದಯವಿಟ್ಟು ಪಾಸ್‌ವರ್ಡ್‌ ನಮೂದಿಸಿ</string>
+    <string name="error_pwd_not_match">ಎರಡೂ ಪಾಸ್‌ವರ್ಡ್ ಹೊಂದಿಕೆಯಾಗಬೇಕು</string>
+    <string name="error_pwd_length">ಪಾಸ್ವರ್ಡ್ 6 ಅಕ್ಷರಗಳಿಗಿಂತ ಹೆಚ್ಚಿರಬೇಕು</string>
+    <string name="action_update_additional">ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿಯನ್ನು ನವೀಕರಿಸಿ</string>
+    <string name="additional_info_legal">ನೀವು ವೈದ್ಯರನ್ನು ಭೇಟಿ ಮಾಡಿದರೆ ಮಾತ್ರ ಕೆಳಗಿನ ಮಾಹಿತಿಯನ್ನು ಸೆರೆಹಿಡಿಯಲಾಗುತ್ತದೆ.</string>
+    <string name="blood_type">ರಕ್ತದ ಗುಂಪು</string>
+    <string name="height">ಎತ್ತರ</string>
+    <string name="education">ಶಿಕ್ಷಣ</string>
+    <string name="experience">ಅನುಭವ</string>
+    <string name="available_other_place">ಇತರ ಸ್ಥಳಗಳಲ್ಲಿ ಲಭ್ಯವಿದೆ</string>
+    <string name="whole_day">24 ಗಂಟೆಗಳು</string>
+    <string name="lunch_time">Lunch time</string>
+    <string name="error_patient_name_missing">ದಯವಿಟ್ಟು ರೋಗಿಯ ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="dependent_list">ಕುಟುಂಬದ ಸದಸ್ಯರು</string>
+    <string name="personal_info">ವೈಯಕ್ತಿಕ ಮಾಹಿತಿ</string>
+    <string name="location_change">ಸ್ಥಳದ ನವೀಕರಣ</string>
+    <string name="location_msg">ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಬದಲಾಯಿಸಿರಬಹುದು. ನೀವು ಅದನ್ನು ನವೀಕರಿಸಲು ಬಯಸುತ್ತೀರಾ?</string>
+    <string name="token">ಟೋಕನ್</string>
+    <string name="login_via_otp">ಒಟಿಪಿ ಮೂಲಕ ಲಾಗಿನ್ / ನೋಂದಾಯಿಸಿ</string>
+    <string name="resend_otp">ಒಟಿಪಿಯನ್ನು ಮರುಹೊಂದಿಸಿ</string>
+    <string name="awards">ಪ್ರಶಸ್ತಿಗಳು</string>
+    <string name="new_location">ನಾವು ನಿಮ್ಮ ಸ್ಥಳದಲ್ಲಿ ಬದಲಾವಣೆಯನ್ನು ಪತ್ತೆ ಮಾಡಿದ್ದೇವೆ. ನೀವು ನವೀಕರಿಸಲು ಬಯಸುವಿರಾ?</string>
+    <string name="no_thanks">ಬೇಡ ಧನ್ಯವಾದಗಳು</string>
+    <string name="update">ನವೀಕರಿಸಿ</string>
+    <string name="patient_name">ರೋಗಿಯ ಹೆಸರು</string>
+    <string name="add_dependent">ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ಸೇರಿಸಿ</string>
+    <string name="queue_details">ಸರತಿಯ ವಿವರಗಳು</string>
+    <string name="will_be_served">ನಿಮಗೆ %1$s ನಲ್ಲಿ ಸೇವೆ ನೀಡಲಾಗುವುದು</string>
+    <string name="ack">ಅಂಗೀಕರಿಸಿ</string>
+    <string name="your_turn">ಈಗ ನಿಮ್ಮ ಸರದಿ !!!</string>
+    <string name="pre_approve">ಪೂರ್ವ ಅನುಮೋದನೆ</string>
+    <string name="biz_announcement">ಗಮನ: ಕೋವಿಡ್-19 ನವೀಕರಣ</string>
+    <string name="photo">ಫೋಟೋಗಳು</string>
+    <string name="amenities">ಸೌಲಭ್ಯಗಳು</string>
+    <string name="facility">ಸೌಲಭ್ಯ</string>
+    <string name="skip_msg">ನಿಮಗೆ ಸೇವೆ ನೀಡಲಾಗಿಲ್ಲ. \nಮತ್ತೆ ಸರದಿಯಲ್ಲಿ ಸೇರಲು ಹೌದೆಂದು ಒತ್ತಿ.</string>
+    <string name="skip">Skip</string>
+    <string name="order_now">ಈಗ ಆರ್ಡರ್ ಮಾಡಿ</string>
+    <string name="payment_due">ಪಾವತಿ ಬಾಕಿಯಿದೆ:</string>
+    <string name="total_tax">ಒಟ್ಟು ತೆರಿಗೆ:</string>
+    <string name="total_amount">ಒಟ್ಟು ಮೊತ್ತ:</string>
+    <string name="order_details">ಆರ್ಡರ್ ವಿವರಗಳು</string>
+    <string name="deliver_address">ಡೆಲಿವರಿ ವಿಳಾಸ</string>
+    <string name="add_address">ವಿಳಾಸವನ್ನು ಸೇರಿಸಿ</string>
+    <string name="mobile_no">ಮೊಬೈಲ್ ಸಂಖ್ಯೆ</string>
+    <string name="payment_mode">ಪಾವತಿ</string>
+    <string name="payment_mode_cash">ನಗದು</string>
+    <string name="payment_mode_wallet">ವಾಲೆಟ್</string>
+    <string name="payment_mode_cards">ಕ್ರೆಡಿಟ್ / ಡೆಬಿಟ್ ಕಾರ್ಡ್</string>
+    <string name="payment_mode_online">ಆನ್‌ಲೈನ್</string>
+    <string name="pwd">ಪಾಸ್‌ವರ್ಡ್‌</string>
+    <string name="cnf_pwd">ಪಾಸ್‌ವರ್ಡ್‌ ದೃಢೀಕರಿಸಿ</string>
+    <string name="male">ಗಂಡು</string>
+    <string name="female">ಹೆಣ್ಣು</string>
+    <string name="great">ಅದ್ಭುತ!</string>
+    <string name="review_msg_checkup_done">ನಿಮ್ಮ ಪರಿಶೀಲನೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಮಾಡಲಾಗಿದೆ</string>
+    <string name="review_msg_order_done">ನಿಮ್ಮ ಆರ್ಡರ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ತಲುಪಿಸಲಾಗಿದೆ</string>
+    <string name="review_msg_queue_done">ನಿಮಗೆ ಯಶಸ್ವಿಯಾಗಿ ಸೇವೆ ಸಲ್ಲಿಸಲಾಗಿದೆ</string>
+    <!-- Language select dialog -->
+
+    <string name="mds_chief_complaints">ಮುಖ್ಯ ದೂರು:</string>
+    <string name="mds_past_history">ಹಿಂದಿನ ಇತಿಹಾಸ:</string>
+    <string name="mds_family_history">ಕುಟುಂಬದ ಇತಿಹಾಸ:</string>
+    <string name="mds_known_allergies">ತಿಳಿದಿರುವ ಅಲರ್ಜಿಗಳು:</string>
+    <string name="mds_physical_exam">ದೈಹಿಕ ಪರೀಕ್ಷೆ:</string>
+    <string name="mds_clinical_findings">ವೈದ್ಯಕೀಯ ಸಂಶೋಧನೆಗಳು:</string>
+    <string name="mds_provisional_diagnosis">ತಾತ್ಕಾಲಿಕ / ಭೇದಾತ್ಮಕ ರೋಗನಿರ್ಣಯ:</string>
+    <string name="mds_investigation_advice">ತನಿಖೆಗೆ ಸಲಹೆ ನೀಡಲಾಗಿದೆ:</string>
+    <string name="mds_medication">ಔಷಧೋಪಚಾರ:</string>
+    <string name="mds_assist">ಸಹಾಯ</string>
+    <string name="mds_follow_up">ಅನುಸರಣೆ</string>
+    <string name="mds_instruction">ರೋಗಿಗೆ ಸೂಚನೆ / ಯೋಜನೆ:</string>
+    <string name="about_me">ವೈದ್ಯರ ಬಗ್ಗೆ</string>
+    <string name="license">ಪರವಾನಗಿ</string>
+    <string name="mds_pathology_invs_advice">ಸಲಹೆ ನೀಡಲಾದ ತನಿಖೆ >> ರೋಗಶಾಸ್ತ್ರ:</string>
+    <string name="mds_radiology_invs_advice">ಸಲಹೆ ನೀಡಲಾದ ತನಿಖೆ >> ವಿಕಿರಣಶಾಸ್ತ್ರ:</string>
+    <string name="maps_direction">ನಕ್ಷೆಗಳು ಹಾಗೂ ನಿರ್ದೇಶನಗಳು</string>
+    <string name="change_number">ಸಂಖ್ಯೆಯನ್ನು ಬದಲಾಯಿಸಿ</string>
+    <string name="email_validate">ಖಾತೆ ಸಕ್ರಿಯಗೊಳಿಸುವ ಮೇಲ್ ಅನ್ನು ಕೆಳಗಿನ ಇಮೇಲ್‌ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ</string>
+    <string name="change_email">ಇಮೇಲ್ ಬದಲಾಯಿಸಿ</string>
+    <string name="email_hint">ದಯವಿಟ್ಟು ಇಮೇಲ್ ಐಡಿಯನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="otp">ಒಟಿಪಿ ನಮೂದಿಸಿ</string>
+    <string name="validate_via_otp">ಒಟಿಪಿ ಮೂಲಕ ಇಮೇಲ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ</string>
+    <string name="error_otp_blank">ಒಟಿಪಿ ಅಗತ್ಯವಿದೆ</string>
+    <string name="msg_vibrator_off">ನಿಮ್ಮ ಫೋನ್ ಸೈಲೆಂಟ್ ಮೋಡ್‌ನಲ್ಲಿದೆ. ನಿಮ್ಮ ಸರದಿ ಬಂದಾಗ ಅಪ್ಲಿಕೇಶನ್ ನಿಮ್ಮನ್ನು ಗುರುತಿಸುವಲ್ಲಿ ವಿಫಲವಾಗಬಹುದು.</string>
+    <string name="error_mobile_no_length">ಫೋನ್ ಸಂಖ್ಯೆ 10 ಅಂಕೆಗಳಿರಬೇಕು</string>
+    <string name="profile"> <u>ಪ್ರೊಫೈಲ್</u></string>
+    <string name="merchant_account">ನಿಮ್ಮ ವ್ಯಾಪಾರವನ್ನು ನೋಂದಾಯಿಸಿ</string>
+    <string name="address">ವಿಳಾಸ</string>
+    <string name="privacy_in_short">ಗೌಪ್ಯತೆಯ ತ್ವರಿತ ಅವಲೋಕನ</string>
+    <string name="order_history">ಆರ್ಡರ್ ಹಾಗೂ ಸರದಿಯ ಇತಿಹಾಸ</string>
+    <string name="title_activity_contact_us">ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ</string>
+    <string name="subject">ವಿಷಯ</string>
+    <string name="message">ಪ್ರತಿಕ್ರಿಯೆ / ಸಲಹೆಗಳು / ಸಮಸ್ಯೆಗಳು</string>
+    <string name="error_subject_blank">ದಯವಿಟ್ಟು ವಿಷಯವನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="error_feedback_blank">ದಯವಿಟ್ಟು ಸಂದೇಶವನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="screen_order_detail">ಆರ್ಡರ್ ಸಾರಾಂಶ</string>
+    <string name="screen_queue_detail">ಸರದಿಯ ಸಾರಾಂಶ</string>
+    <string name="order_items">ಆರ್ಡರ್ ಮಾಡಿದ ಐಟಮ್‌ಗಳು</string>
+    <string name="history">ಇತಿಹಾಸ</string>
+    <string name="empty_review">ಯಾರೂ ವಿಮರ್ಶೆ ಮಾಡಿಲ್ಲ. ಪರಿಶೀಲಿಸಿದವರಲ್ಲಿ ಮೊದಲಿಗರಾಗಿರಿ.</string>
+    <string name="check_your_email">ಒಟಿಪಿ ಪಡೆಯಲು ದಯವಿಟ್ಟು ನಿಮ್ಮ ಇಮೇಲ್ ಪರಿಶೀಲಿಸಿ</string>
+    <string name="rejoin">ಮತ್ತೆ ಸೇರಿ</string>
+    <string name="reorder">ಮರುಆರ್ಡರ್</string>
+    <string name="additional">ಲಭ್ಯವಿಲ್ಲದಿದ್ದರೆ ಉತ್ಪನ್ನವನ್ನು ಕಾಮೆಂಟ್‌ನಲ್ಲಿ ಸೇರಿಸಿ. ಡೆಲಿವರಿ / ಆರ್ಡರ್ ಸೂಚನೆಯನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಿ</string>
+    <string name="error_name_exist">ಈ ಹೆಸರಿನ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಈಗಾಗಲೇ ಸೇರಿಸಲಾಗಿದೆ</string>
+    <string name="order">ಆರ್ಡರ್</string>
+    <string name="activate">ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
+    <string name="change_address">ವಿಳಾಸವನ್ನು ಬದಲಾಯಿಸಿ</string>
+    <string name="error_account_block">ಖಾತೆಯನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ. ಸಂಪರ್ಕ ಬೆಂಬಲ.</string>
+    <string name="privacy_bydefault">ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ ಮತ್ತು ವಿನ್ಯಾಸದ ಖಾಸಗಿತನ</string>
+    <string name="transgender">ಮಂಗಳಮುಖಿ</string>
+    <string name="screen_all_feeds">ಎಲ್ಲಾ ಫೀಡ್‌ಗಳು</string>
+    <string name="screen_all_events">ಈವೆಂಟ್‌ಗಳು ಹಾಗೂ ಆಫರ್‌ಗಳು</string>
+    <string name="total_amount_paid">ಪಾವತಿಸಿದ ಒಟ್ಟು ಮೊತ್ತ:</string>
+    <string name="total_amount_remaing">ಉಳಿದಿರುವ ಒಟ್ಟು ಮೊತ್ತ:</string>
+    <string name="pay_and_join">ಪಾವತಿಸಿ ಹಾಗೂ ಸರದಿಯನ್ನು ಧೃಢೀಕರಿಸಿ</string>
+
+    <!-- Empty Screens labels -->
+    <string name="empty_order_title">ನಿಮ್ಮ ಚೀಲ ಖಾಲಿಯಾಗಿದೆ</string>
+    <string name="empty_order_subtitle">ಏನನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ</string>
+    <string name="empty_noti_title">ಖಾಲಿ ಸೂಚನೆ</string>
+    <string name="empty_noti_subtitle">ಯಾವುದೇ ಸೂಚನೆಯಿಲ್ಲ</string>
+    <string name="empty_queue_title">ಖಾಲಿ ಸರದಿ</string>
+    <string name="empty_search_title">Search Store/Queue</string>
+    <string name="empty_search_subtitle">Search your favourite Store/Queue here. If available then store will be in list.</string>
+    <string name="empty_queue_subtitle">NoQueue ನ ಅದ್ಭುತವನ್ನು \n ನೀವಿನ್ನೂ ನೋಡಬೇಕಾಗಿದೆ. \n\n ಅದನ್ನು ನೋಡಲು ಸರದಿಯನ್ನು ಸೇರಿಕೊಳ್ಳಿ.</string>
+    <string name="empty_medical_h_title">ಖಾಲಿ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ</string>
+    <string name="empty_medical_h_subtitle">ಅಭಿನಂದನೆಗಳು !!! \nನೀವು ಆರೋಗ್ಯವಾಗಿದ್ದೀರಿ. \n\nನಿಮಗೆ ಯಾವುದೇ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸವಿಲ್ಲ.</string>
+    <string name="empty_review_title">ನಮಗೆ ಕ್ರಮಾಂಕ ನೀಡಿ</string>
+    <string name="empty_review_subtitle">ನಿಮ್ಮ ಅಮೂಲ್ಯವಾದ ವಿಮರ್ಶೆಗಾಗಿ ನಾವು ಕಾಯುತ್ತಿದ್ದೇವೆ</string>
+    <string name="empty_my_appointment_title">ಖಾಲಿ ನೇಮಕಾತಿಗಳು</string>
+    <string name="empty_my_appointment_subtitle">ಅಭಿನಂದನೆಗಳು !!! \nನೀವು ಆರೋಗ್ಯವಾಗಿದ್ದೀರಿ. \n\nನೀವು ಯಾವುದೇ ವೈದ್ಯಕೀಯ ನೇಮಕಾತಿಯನ್ನು ಹೊಂದಿಲ್ಲ.</string>
+
+    <string name="empty_my_coupon_title">ಖಾಲಿ ಕೂಪನ್‌ಗಳು</string>
+    <string name="empty_my_coupon_subtitle">ಕ್ಷಮಿಸಿ</string>
+    <string name="empty_all_coupon_title">ಖಾಲಿ ಕೂಪನ್‌ಗಳು</string>
+    <string name="empty_all_coupon_subtitle">ಪ್ರಸ್ತುತ ಯಾವುದೇ ಕೂಪನ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ.</string>
+    <string name="user_list">ಬಳಕೆದಾರರು</string>
+    <string name="update_via_front_desk">ರಕ್ತ ಪ್ರಕಾರವನ್ನು ಮಾರ್ಪಡಿಸಲು ವೈದ್ಯಕೀಯ ವೃತ್ತಿಪರರನ್ನು ಸಂಪರ್ಕಿಸಿ</string>
+    <string name="share_medical_profile_info">ಉತ್ತಮ ಸೇವೆಯನ್ನು ಒದಗಿಸಲು ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್ ಅನ್ನು ವೈದ್ಯರು ಹಾಗೂ ಆಸ್ಪತ್ರೆಯ ಜೊತೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್ ಅನ್ನು ನವೀಕರಿಸಿಡಿ.</string>
+    <string name="screen_addressbook">ನನ್ನ ವಿಳಾಸ</string>
+    <string name="delivery_mode_home">ಹೋಂ ಡೆಲಿವರಿ</string>
+    <string name="delivery_mode_takeaway">ಪಿಕಪ್</string>
+    <string name="delivery_mode">ಡೆಲಿವರಿ</string>
+    <string name="request_email_otp">ಇಮೇಲ್ ಒಟಿಪಿಗಾಗಿ ವಿನಂತಿಸಿ</string>
+    <string name="verify_email">ಇಮೇಲ್ ಪರಿಶೀಲಿಸಿ</string>
+    <string name="offers">ಕೂಪನ್‌ಗಳು</string>
+    <string name="screen_qconfirm">ಸರದಿಗೆ ಸೇರಿ</string>
+    <string name="notification_setting">ಸೂಚನೆ</string>
+    <string name="gps_error_msg_final">ಈ ಕ್ರಿಯೆಗೆ ಸ್ಥಳ ಸೆಟ್ಟಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಬೇಕು. ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ ಹೋಗಿ ಮತ್ತು ಅನುಮತಿಗಳ ವೀಕ್ಷಣೆಯೊಳಗಿನ ಸ್ಥಳದ ಅನುಮತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ</string>
+    <string name="gps_error_msg">ಈ ಕ್ರಿಯೆಗೆ ಸ್ಥಳ ಸೆಟ್ಟಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಬೇಕು. ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ ಹೋಗಿ ಮತ್ತು ಅನುಮತಿಗಳ ವೀಕ್ಷಣೆಯೊಳಗಿನ ಸ್ಥಳದ ಅನುಮತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ</string>
+
+    <string name="discount_error">ರಿಯಾಯಿತಿಯನ್ನು ಈಗಾಗಲೇ ಅನ್ವಯಿಸಲಾಗಿದೆ</string>
+    <string name="kiosk_dialog_title">ಕಿಯೋಸ್ಕ್ ಮೋಡ್</string>
+    <string name="kiosk_dialog_msg">ಕಿಯೋಸ್ಕ್ ಮೋಡ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸುವುದನ್ನು ಮುಂದುವರಿಸಬೇಕೇ?</string>
+    <string name="preference_settings">ಆದ್ಯತೆಯ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+    <string name="booking_offer">ನೇರವಾಗಿ ರೂ. 50 ರೂ ಅನ್ನು NoQueue ಮೂಲಕ ಮೊದಲ ಬುಕಿಂಗ್‌ನಲ್ಲಿ ಪಡೆಯಿರಿ</string>
+
+    <!-- ID dialog -->
+    <string name="authorization_dialog_title">ಪೂರ್ವ ಅನುಮೋದನೆ</string>
+    <string name="authorization_dialog_message">* ಒಂದು ಬಾರಿಯ ಪ್ರವೇಶ \n* ಅಂತಿಮ ಅನುಮೋದನೆ @CSD\n* ಅನುಮೋದನೆಗಾಗಿ ಸರಿಯಾದ ವರ್ಗದಿಂದ ಟೋಕನ್ ಆಯ್ಕೆಮಾಡಿ (ಅಧಿಕಾರಿ / ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿರುವವರು / ನಿವೃತ್ತರು)</string>
+    <string name="grocery_card_number">ದಿನಸಿ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ</string>
+    <string name="liquor_card_number">ಮದ್ಯ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ</string>
+    <string name="grocery_card_number_hint">19 ಅಕ್ಷರಗಳ ಕಿರಾಣಿ ಕಾರ್ಡ್</string>
+    <string name="liquor_card_number_hint">19 ಅಕ್ಷರಗಳ ಮದ್ಯದ ಕಾರ್ಡ್</string>
+    <string name="grocery_card_number_entry_error">ಕಾರ್ಡ್ ಸಂಖ್ಯೆ 19-ಅಕ್ಷರಗಳಾಗಿರಬೇಕು</string>
+    <string name="liquor_card_number_entry_error">ಕಾರ್ಡ್ ಸಂಖ್ಯೆ 19-ಅಕ್ಷರಗಳಾಗಿರಬೇಕು</string>
+    <string name="grocery_card_number_prefix_error">ಕಾರ್ಡ್ ಸಂಖ್ಯೆ G ಯೊಂದಿಗೆ ಪ್ರಾರಂಭವಾಗಬೇಕು</string>
+    <string name="liquor_card_number_prefix_error">ಕಾರ್ಡ್ ಸಂಖ್ಯೆ L ನಿಂದ ಪ್ರಾರಂಭವಾಗಬೇಕು</string>
+    <string name="submit_button">ಸಲ್ಲಿಸಿ</string>
+    <string name="cancel_button">ರದ್ದುಮಾಡಿ</string>
+
+    <!-- Temp String -->
+    <string name="announcement_message_csd">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed\n* Only for dependent on this URC</string>
+    <string name="announcement_message_covid">* Mask is mandatory during visit\n* Maintain Social distancing at all times\n* Wash hands frequently</string>
+
+    <!-- Strings from Code 06062020 -->
+    <string name="loading_queue_details">Loading queue details...</string>
+    <string name="please_login_to_join">Please login to join</string>
+    <string name="enable_gps">ಜಿಪಿಎಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
+    <string name="message_enable_gps">ಜಿಪಿಎಸ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಸರಿಯಾಗಿ ಬಳಸಲು</string>
+    <string name="btn_location_setting">ಲೊಕೇಷನ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+    <string name="select_patient">ರೋಗಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="logout_warning">ನೀವು %1$d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಲಾಗೌಟ್ ಆಗುತ್ತೀರಿ</string>
+    <string name="try_again">ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</string>
+
+    <!-- Strings from Code 06202020 -->
+    <string name="find_doctor">ವೈದ್ಯರನ್ನು ಹುಡುಕಿ</string>
+    <string name="medical">ವೈದ್ಯಕೀಯ</string>
+    <string name="select_a_doctor">ವೈದ್ಯರನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string>
+    <string name="csd_token">CSD ಟೋಕನ್</string>
+    <string name="canteen_store">ಕ್ಯಾಂಟೀನ್ ಸ್ಟೋರ್</string>
+    <string name="select_a_queue">ಸರದಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="view_services">ಸೇವೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ</string>
+    <string name="bank">ಬ್ಯಾಂಕ್</string>
+    <string name="select_a_service">ಸೇವೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="health_service">ಆರೋಗ್ಯ ಸೇವೆ</string>
+    <string name="get_token">ಟೋಕನ್ ಪಡೆಯಿರಿ</string>
+    <string name="departments">ಇಲಾಖೆಗಳು</string>
+
+    <!-- Strings from Code 06292020 -->
+    <string name="closed">ಮುಚ್ಚಲಾಗಿದೆ</string>
+    <string name="closing_soon">ಶೀಘ್ರದಲ್ಲೇ ಮುಚ್ಚಲಾಗುತ್ತಿದೆ</string>
+    <string name="now_closed">ಈಗ ಮುಚ್ಚಲಾಗಿದೆ</string>
+    <string name="visit_store">ಸ್ಟೋರ್‌ಗೆ ಭೇಟಿ ನೀಡಿ</string>
+    <string name="closed_now_booking_start_at">ಈಗ ಮುಚ್ಚಲಾಗಿದೆ. ನೇಮಕಾತಿ ಬುಕಿಂಗ್ ಪ್ರಾರಂಭವಾಗುವ ಸಮಯ </string>
+    <string name="closed_now_token_available_after">ಈಗ ಮುಚ್ಚಲಾಗಿದೆ. ಟೋಕನ್ ಇದರ ನಂತರ ಲಭ್ಯವಿದೆ</string>
+    <string name="accepting_today_appointment">ಈಗ ಈವತ್ತಿಗೆ ನೇಮಕಾತಿಗಳನ್ನು ಸ್ವೀಕರಿಸಲಾಗುತ್ತಿದೆ</string>
+    <string name="open_serving_at">ಈಗ ತೆರೆದಿದೆ. ಸೇವೆ ಪ್ರಾರಂಭವಾಗುವ ಸಮಯ</string>
+    <string name="open_for_walkin">ಈಗ ತೆರೆದಿದೆ. ಇಂದಿನ ನೇಮಕಾತಿಗಾಗಿ ವಾಕ್-ಇನ್ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
+    <string name="open_token_available">ಈಗ ತೆರೆದಿದೆ. ಟೋಕನ್‌ಗಳು ಲಭ್ಯವಿದೆ.</string>
+    <string name="visit_store_for_service">ಸೇವೆಯನ್ನು ಪಡೆಯಲು ದಯವಿಟ್ಟು ಸ್ಟೋರ್‌ಗೆ ಭೇಟಿ ನೀಡಿ.</string>
+    <string name="no_walkin">ವಾಕ್-ಇನ್‌ಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ.</string>
+    <string name="login_for_appt_booking">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಕಾಯ್ದಿರಿಸಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
+    <string name="no_doctor_profile">ಪ್ರಸ್ತುತ ವೈದ್ಯರ ಪ್ರೊಫೈಲ್ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="please_login">ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಆಗಿ</string>
+    <string name="guest_user">ಅತಿಥಿ ಬಳಕೆದಾರರು</string>
+
+    <!-- Time ago util -->
+    <string name="seconds">%1$d ಸೆಕೆಂಡುಗಳು</string>
+    <string name="few_minutes">ಕೆಲವು ನಿಮಿಷಗಳು</string>
+    <string name="approx_minutes">ಸುಮಾರು %1$d ನಿಮಿಷಗಳು</string>
+    <string name="approx_an_hour">ಸುಮಾರು ಒಂದು ಗಂಟೆ</string>
+    <string name="approx_two_hours">ಅಂದಾಜು ಎರಡು ಗಂಟೆ</string>
+    <string name="approx_hours">ಸುಮಾರು %1$d ಗಂಟೆಗಳು</string>
+    <string name="more_than_a_day">ಒಂದು ದಿನಕ್ಕಿಂತ ಹೆಚ್ಚು</string>
+    <string name="approx_days">ಅಂದಾಜು %1$d ದಿನಗಳು</string>
+
+    <string name="queue_not_started">ಸರದಿ ಇನ್ನೂ ಪ್ರಾರಂಭವಾಗಿಲ್ಲ</string>
+    <string name="detect_your_location"><u> ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಕಂಡುಹಿಡಿಯಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ </u></string>
+    <string name="screen_change_location">ಸ್ಥಳವನ್ನು ಹುಡುಕಿ</string>
+    <string name="thanku">ಭೇಟಿ ನೀಡಿದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು</string>
+
+    <!-- 07/04 -->
+    <string name="location_search_hint">ನಗರದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="search_hint">ಹುಡುಕಲು ನಮೂದಿಸಿ</string>
 </resources>

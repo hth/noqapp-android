@@ -262,7 +262,7 @@
     <string name="amenities">Amenities</string>
     <string name="facility">Facility</string>
     <string name="skip_msg">You were not served. \nPress yes to join the queue again.</string>
-    <string name="skip">SKIP</string>
+    <string name="skip">Skip</string>
     <string name="order_now">Order Now</string>
     <string name="payment_due">Payment Due:</string>
     <string name="total_tax">Total Tax:</string>
@@ -463,5 +463,4 @@
     <!-- 07/04 -->
     <string name="location_search_hint">Enter city name</string>
     <string name="search_hint">Enter to search</string>
-
 </resources>
