@@ -208,7 +208,8 @@
 
     <string name="language_setting">Change Language</string>
     <string name="lang_dialog_title">Change Language</string>
-    <string name="hindi">Hindi</string>
+    <string name="hindi">हिंदी</string>
+    <string name="kannada">ಕನ್ನಡ</string>
     <string name="english">English</string>
     <string name="current_location">Current location</string>
     <string name="scan_qr">SCAN QR</string>
