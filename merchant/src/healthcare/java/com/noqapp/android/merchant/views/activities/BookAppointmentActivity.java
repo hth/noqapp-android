@@ -380,17 +380,15 @@ public class BookAppointmentActivity extends BaseActivity implements
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_mobile) {
-                    ll_mobile.setVisibility(View.VISIBLE);
-                    edt_id.setVisibility(View.GONE);
-                    edt_id.setText("");
-                } else {
-                    edt_id.setVisibility(View.VISIBLE);
-                    ll_mobile.setVisibility(View.GONE);
-                    edt_mobile.setText("");
-                }
+        rg_user_id.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_mobile) {
+                ll_mobile.setVisibility(View.VISIBLE);
+                edt_id.setVisibility(View.GONE);
+                edt_id.setText("");
+            } else {
+                edt_id.setVisibility(View.VISIBLE);
+                ll_mobile.setVisibility(View.GONE);
+                edt_mobile.setText("");
             }
         });
         cid = "";
