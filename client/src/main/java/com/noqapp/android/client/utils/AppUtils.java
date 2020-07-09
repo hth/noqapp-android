@@ -517,7 +517,7 @@ public class AppUtils extends CommonHelper {
         if (lunchTimeStart == 0 || lunchTimeEnd == 0) {
             return "";
         } else {
-            return context.getString(R.string.lunch_time) + Formatter.duration(lunchTimeStart, lunchTimeEnd);
+            return context.getString(R.string.lunch_time) + ": " + Formatter.duration(lunchTimeStart, lunchTimeEnd);
         }
     }
 

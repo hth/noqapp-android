@@ -115,6 +115,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_store_timing = convertView.findViewById(R.id.tv_store_timing);
                 childViewHolder.tv_time_label = convertView.findViewById(R.id.tv_time_label);
                 childViewHolder.tv_status = convertView.findViewById(R.id.tv_status);
+                childViewHolder.tv_lunch_time = convertView.findViewById(R.id.tv_lunch_time);
                 childViewHolder.iv_main = convertView.findViewById(R.id.iv_main);
                 childViewHolder.tv_join = convertView.findViewById(R.id.tv_join);
                 childViewHolder.btn_book_appointment = convertView.findViewById(R.id.btn_book_appointment);
@@ -158,7 +159,8 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 String time = new AppUtils().formatTodayStoreTiming(context, storeHourElastic);
                 String lunchTime = new AppUtils().formatTodayStoreLunchTiming(context, storeHourElastic.getLunchTimeStart(), storeHourElastic.getLunchTimeEnd());
                 if (!TextUtils.isEmpty(lunchTime)) {
-                    time += "\n" + lunchTime;
+                    childViewHolder.tv_lunch_time.setText(lunchTime);
+                    childViewHolder.tv_lunch_time.setVisibility(View.VISIBLE);
                 }
                 Log.e("value: "+childPosition, time);
                 childViewHolder.tv_store_timing.setText(time);
@@ -376,6 +378,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
         private TextView tv_store_timing;
         private TextView tv_time_label;
         private TextView tv_status;
+        private TextView tv_lunch_time;
         private Button tv_join;
         private Button btn_book_appointment;
         private TextView tv_consult_fees;
