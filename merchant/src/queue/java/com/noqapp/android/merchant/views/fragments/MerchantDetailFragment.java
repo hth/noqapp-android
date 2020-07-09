@@ -606,10 +606,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 EditText edt_mobile_unregistered = view.findViewById(R.id.edt_mobile_unregistered);
                 EditText edt_name_unregistered = view.findViewById(R.id.edt_name_unregistered);
                 btn_create_token.setOnClickListener(v -> {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
                     boolean isValid = true;
                     AppUtils.hideKeyBoard(getActivity());
                     setDispensePresenter();
@@ -624,6 +620,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     }
 
                     if (isValid) {
+                        btn_create_token.setEnabled(false);
                         JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer();
                         jsonBusinessCustomer.setCodeQR(codeQR);
                         jsonBusinessCustomer.setCustomerName(edt_name_unregistered.getText().toString());

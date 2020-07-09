@@ -238,12 +238,20 @@
                 android:id="@+id/tv_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
                 android:gravity="center_vertical"
                 android:paddingRight="10dp"
                 android:text=""
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/text_size_twelve" />
+
+            <TextView
+                android:id="@+id/tv_lunch_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingRight="10dp"
+                android:textSize="@dimen/text_size_twelve"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
