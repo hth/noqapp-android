@@ -724,6 +724,8 @@ public class LaunchActivity
         dialog.setCanceledOnTouchOutside(true);
         final LinearLayout ll_hindi = dialog.findViewById(R.id.ll_hindi);
         final LinearLayout ll_kannada = dialog.findViewById(R.id.ll_kannada);
+        ll_kannada.setVisibility(View.GONE);
+
         final LinearLayout ll_english = dialog.findViewById(R.id.ll_english);
         final RadioButton rb_hi = dialog.findViewById(R.id.rb_hi);
         final RadioButton rb_ka = dialog.findViewById(R.id.rb_ka);
