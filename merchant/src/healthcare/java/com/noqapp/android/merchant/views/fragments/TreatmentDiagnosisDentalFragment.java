@@ -132,8 +132,9 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
 
             tv_remove.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
             dataObj = temp;
-            tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(MedicalDataStatic.Dental.ADDITIONAL_OPTION) ?
-                    dataObj.getShortName() : "Tooth Number: " + dataObj.getShortName());
+            tv_medicine_name.setText(dataObj.getShortName().equalsIgnoreCase(MedicalDataStatic.Dental.ADDITIONAL_OPTION)
+                    ? dataObj.getShortName()
+                    : "Tooth Number: " + dataObj.getShortName());
             if (isEdit) {
                 // Pre fill the data
                 sc_dental_option.setSelectedSegment(dental_option_data.indexOf(dataObj.getDentalProcedure()));
