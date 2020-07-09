@@ -44,7 +44,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     private static final String TITLE_TOOLBAR_POSTFIX = " Queue";
 
     private TextView tv_queue_name;
-    private TextView tv_store_timing;
+    private TextView tv_store_timing, tv_lunch_time;
     private FrameLayout fl_token_available;
     private TextView tv_token_available, tv_token_available_text;
     private TextView tv_people_in_q, tv_people_in_q_text;
@@ -78,6 +78,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
         tv_people_in_q_text = findViewById(R.id.tv_people_in_q_text);
         tv_store_timing = findViewById(R.id.tv_store_timing);
+        tv_lunch_time = findViewById(R.id.tv_lunch_time);
         tv_daily_token_limit = findViewById(R.id.tv_daily_token_limit);
         tv_revisit_restriction = findViewById(R.id.tv_revisit_restriction);
         tv_identification_code = findViewById(R.id.tv_identification_code);
@@ -197,12 +198,14 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
                 String lunchTime = new AppUtils().formatTodayStoreLunchTiming(this, storeHourElastic.getLunchTimeStart(), storeHourElastic.getLunchTimeEnd());
                 if (!TextUtils.isEmpty(lunchTime)) {
-                    time += "\n" + lunchTime;
+                    tv_lunch_time.setText(lunchTime);
+                    tv_lunch_time.setVisibility(View.VISIBLE);
                 }
             } else {
                 String lunchTime = new AppUtils().formatTodayStoreLunchTiming(this, jsonQueue.getLunchTimeStart(), jsonQueue.getLunchTimeEnd());
                 if (!TextUtils.isEmpty(lunchTime)) {
-                    time += "\n" + lunchTime;
+                    tv_lunch_time.setText(lunchTime);
+                    tv_lunch_time.setVisibility(View.VISIBLE);
                 }
             }
             tv_store_timing.setText(time);
