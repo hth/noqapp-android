@@ -119,12 +119,8 @@ public class ShowAlertInformation {
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener((View v) -> {
-            mAlertDialog.dismiss();
-        });
-        btn_yes.setOnClickListener((View v) -> {
-            mAlertDialog.dismiss();
-        });
+        btn_no.setOnClickListener((View v) -> mAlertDialog.dismiss());
+        btn_yes.setOnClickListener((View v) -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 
