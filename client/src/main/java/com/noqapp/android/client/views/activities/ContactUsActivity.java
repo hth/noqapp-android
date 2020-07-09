@@ -55,7 +55,9 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
                 btn_submit.setEnabled(false);
                 edt_body.setEnabled(false);
                 edt_subject.setEnabled(false);
-                new CustomToast().showToast(ContactUsActivity.this, "To contact us you need to verify your email address. Go to profile to verify.");
+                new CustomToast().showToast(
+                        ContactUsActivity.this,
+                        "To contact us you need to verify your email address. Go to profile to verify.");
             }
         } else {
             btn_submit.setEnabled(false);
@@ -74,10 +76,14 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             } else {
                 setProgressMessage("Sending feedback...");
                 showProgress();
-                new FeedbackApiCall(ContactUsActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
-                        feedback.setBody(edt_body.getText().toString()).setSubject(edt_subject.getText().toString()));
+                new FeedbackApiCall(ContactUsActivity.this).review(
+                        UserUtils.getDeviceId(),
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        feedback
+                                .setBody(edt_body.getText().toString())
+                                .setSubject(edt_subject.getText().toString()));
             }
-
         });
 
         if (AppUtils.isRelease()) {
