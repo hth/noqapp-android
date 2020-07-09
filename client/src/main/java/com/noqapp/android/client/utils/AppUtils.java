@@ -513,28 +513,20 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public String formatTodayStoreLunchTiming(Context context, int startHour, int endHour) {
-        if (startHour == 0 || endHour == 0) {
+    public String formatTodayStoreLunchTiming(Context context, int lunchTimeStart, int lunchTimeEnd) {
+        if (lunchTimeStart == 0 || lunchTimeEnd == 0) {
             return "";
         } else {
-            return context.getString(R.string.lunch_time) + Formatter.duration(startHour, endHour);
+            return context.getString(R.string.lunch_time) + Formatter.duration(lunchTimeStart, lunchTimeEnd);
         }
     }
 
     public boolean checkStoreClosedWithTime(StoreHourElastic storeHourElastic) {
-        if ((storeHourElastic.getStartHour() == 0 && storeHourElastic.getEndHour() == 0)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (storeHourElastic.getStartHour() == 0 && storeHourElastic.getEndHour() == 0);
     }
 
     public boolean checkStoreClosedWithAppointmentTime(StoreHourElastic storeHourElastic) {
-        if ((storeHourElastic.getAppointmentStartHour() == 0 && storeHourElastic.getAppointmentEndHour() == 0)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (storeHourElastic.getAppointmentStartHour() == 0 && storeHourElastic.getAppointmentEndHour() == 0);
     }
 
     public static void shareTheApp(Context context) {

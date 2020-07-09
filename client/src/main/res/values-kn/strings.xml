@@ -436,7 +436,7 @@
     <string name="closed_now_token_available_after">ಈಗ ಮುಚ್ಚಲಾಗಿದೆ. ಟೋಕನ್ ಇದರ ನಂತರ ಲಭ್ಯವಿದೆ</string>
     <string name="accepting_today_appointment">ಈಗ ಈವತ್ತಿಗೆ ನೇಮಕಾತಿಗಳನ್ನು ಸ್ವೀಕರಿಸಲಾಗುತ್ತಿದೆ</string>
     <string name="open_serving_at">ಈಗ ತೆರೆದಿದೆ. ಸೇವೆ ಪ್ರಾರಂಭವಾಗುವ ಸಮಯ</string>
-    <string name="open_for_walkin">ಈಗ ತೆರೆದಿದೆ. ಇಂದಿನ ನೇಮಕಾತಿಗಾಗಿ ವಾಕ್-ಇನ್ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
+    <string name="open_for_walkin">ಈಗ ತೆರೆದಿದೆ. ಇಂದಿನ ನೇಮಕಾತಿಗಾಗಿ ಟೋಕನ್‌ಗಳು ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
     <string name="open_token_available">ಈಗ ತೆರೆದಿದೆ. ಟೋಕನ್‌ಗಳು ಲಭ್ಯವಿದೆ.</string>
     <string name="visit_store_for_service">ಸೇವೆಯನ್ನು ಪಡೆಯಲು ದಯವಿಟ್ಟು ಸ್ಟೋರ್‌ಗೆ ಭೇಟಿ ನೀಡಿ.</string>
     <string name="no_walkin">ವಾಕ್-ಇನ್‌ಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ.</string>
