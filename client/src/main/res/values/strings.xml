@@ -436,7 +436,7 @@
     <string name="closed_now_token_available_after">Closed Now. Token available after</string>
     <string name="accepting_today_appointment">Now accepting appointments for today</string>
     <string name="open_serving_at">Now open. Service begins at</string>
-    <string name="open_for_walkin">Now open. For today\'s appointment click on Walk-In</string>
+    <string name="open_for_walkin">Now open. For today\'s appointment click on Get Token</string>
     <string name="open_token_available">Now open. Tokens available.</string>
     <string name="visit_store_for_service">Please visit store to avail the service.</string>
     <string name="no_walkin">is not accepting walk-ins.</string>
