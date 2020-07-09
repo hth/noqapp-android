@@ -62,6 +62,22 @@ public class ShowAlertInformation {
         showDialog.displayDialog(context.getString(R.string.barcode_error), context.getString(R.string.barcode_error_msg));
     }
 
+    public static void showAlertWithDismissCapability(final Context context, String title, String message) {
+        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+            @Override
+            public void btnPositiveClick() {
+                ((Activity) context).finish();
+            }
+
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
+            }
+        });
+        showDialog.displayDialog(title, message);
+    }
+
     public static void showThemePlayStoreDialog(final Context context, String title, String message, boolean isNegativeEnable) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -119,12 +135,8 @@ public class ShowAlertInformation {
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener((View v) -> {
-            mAlertDialog.dismiss();
-        });
-        btn_yes.setOnClickListener((View v) -> {
-            mAlertDialog.dismiss();
-        });
+        btn_no.setOnClickListener((View v) -> mAlertDialog.dismiss());
+        btn_yes.setOnClickListener((View v) -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 

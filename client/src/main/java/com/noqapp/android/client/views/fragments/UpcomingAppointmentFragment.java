@@ -59,8 +59,10 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
             showProgress();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(), UserUtils.getAuth());
+            appointmentApiCalls.allAppointments(
+                    UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
