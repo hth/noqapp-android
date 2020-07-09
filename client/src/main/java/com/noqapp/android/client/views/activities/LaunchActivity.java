@@ -217,7 +217,7 @@ public class LaunchActivity
             if (language.equals("hi")) {
                 language = "hi";
                 locale = new Locale("hi");
-            } if (language.equals("kn")) {
+            } else if (language.equals("kn")) {
                 language = "kn";
                 locale = new Locale("kn");
             } else {
@@ -733,7 +733,7 @@ public class LaunchActivity
             rb_hi.setChecked(true);
             rb_ka.setChecked(false);
             rb_en.setChecked(false);
-        } if (language.equals("kn")) {
+        } else if (language.equals("kn")) {
             rb_hi.setChecked(false);
             rb_ka.setChecked(true);
             rb_en.setChecked(false);
