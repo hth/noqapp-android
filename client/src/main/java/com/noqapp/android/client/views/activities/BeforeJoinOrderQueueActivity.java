@@ -193,11 +193,16 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 tv_delay_in_time.setVisibility(View.GONE);
             }
             String time = new AppUtils().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
-            if(null != bizStoreElastic){
+            if (null != bizStoreElastic && bizStoreElastic.getStoreHourElasticList().size() > 0) {
                 StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
                 String lunchTime = new AppUtils().formatTodayStoreLunchTiming(this, storeHourElastic.getLunchTimeStart(), storeHourElastic.getLunchTimeEnd());
-                if(!TextUtils.isEmpty(lunchTime)){
-                    time += "\n"+lunchTime;
+                if (!TextUtils.isEmpty(lunchTime)) {
+                    time += "\n" + lunchTime;
+                }
+            } else {
+                String lunchTime = new AppUtils().formatTodayStoreLunchTiming(this, jsonQueue.getLunchTimeStart(), jsonQueue.getLunchTimeEnd());
+                if (!TextUtils.isEmpty(lunchTime)) {
+                    time += "\n" + lunchTime;
                 }
             }
             tv_store_timing.setText(time);
