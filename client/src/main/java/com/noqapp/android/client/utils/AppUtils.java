@@ -218,6 +218,10 @@ public class AppUtils extends CommonHelper {
                 LaunchActivity.language = "en_US";
                 LaunchActivity.locale = Locale.ENGLISH;
                 LaunchActivity.languagePref.edit().putString("pref_language", "en").apply();
+            } else if (language.equals("kn")) {
+                LaunchActivity.language = "kn";
+                LaunchActivity.locale = new Locale("kn");
+                LaunchActivity.languagePref.edit().putString("pref_language", "kn").apply();
             } else {
                 LaunchActivity.language = "hi";
                 LaunchActivity.locale = new Locale("hi");

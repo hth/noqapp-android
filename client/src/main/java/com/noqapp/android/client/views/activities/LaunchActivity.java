@@ -217,6 +217,9 @@ public class LaunchActivity
             if (language.equals("hi")) {
                 language = "hi";
                 locale = new Locale("hi");
+            } if (language.equals("kn")) {
+                language = "kn";
+                locale = new Locale("kn");
             } else {
                 locale = Locale.ENGLISH;
                 language = "en_US";
@@ -720,16 +723,24 @@ public class LaunchActivity
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(true);
         final LinearLayout ll_hindi = dialog.findViewById(R.id.ll_hindi);
+        final LinearLayout ll_kannada = dialog.findViewById(R.id.ll_kannada);
         final LinearLayout ll_english = dialog.findViewById(R.id.ll_english);
         final RadioButton rb_hi = dialog.findViewById(R.id.rb_hi);
+        final RadioButton rb_ka = dialog.findViewById(R.id.rb_ka);
         final RadioButton rb_en = dialog.findViewById(R.id.rb_en);
 
         if (language.equals("hi")) {
             rb_hi.setChecked(true);
+            rb_ka.setChecked(false);
+            rb_en.setChecked(false);
+        } if (language.equals("kn")) {
+            rb_hi.setChecked(false);
+            rb_ka.setChecked(true);
             rb_en.setChecked(false);
         } else {
-            rb_en.setChecked(true);
             rb_hi.setChecked(false);
+            rb_ka.setChecked(false);
+            rb_en.setChecked(true);
         }
         ll_hindi.setOnClickListener((View v) -> {
             AppUtils.changeLanguage("hi");
@@ -737,6 +748,15 @@ public class LaunchActivity
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Language", "HINDI");
+                fireBaseAnalytics.logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
+            }
+        });
+        ll_kannada.setOnClickListener((View v) -> {
+            AppUtils.changeLanguage("kn");
+            dialog.dismiss();
+            if (AppUtils.isRelease()) {
+                Bundle params = new Bundle();
+                params.putString("Language", "KANNADA");
                 fireBaseAnalytics.logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
             }
         });

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">NoQueue</string>
+    <string name="hindi">हिंदी</string>
+    <string name="kannada">ಕನ್ನಡ</string>
+    <string name="english">English</string>
+</resources>
