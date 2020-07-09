@@ -62,6 +62,22 @@ public class ShowAlertInformation {
         showDialog.displayDialog(context.getString(R.string.barcode_error), context.getString(R.string.barcode_error_msg));
     }
 
+    public static void showAlertWithDismissCapability(final Context context, String title, String message) {
+        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+            @Override
+            public void btnPositiveClick() {
+                ((Activity) context).finish();
+            }
+
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
+            }
+        });
+        showDialog.displayDialog(title, message);
+    }
+
     public static void showThemePlayStoreDialog(final Context context, String title, String message, boolean isNegativeEnable) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
