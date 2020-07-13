@@ -257,7 +257,7 @@ android {
         }
 
         release {
-            debuggable false
+            debuggable true
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
