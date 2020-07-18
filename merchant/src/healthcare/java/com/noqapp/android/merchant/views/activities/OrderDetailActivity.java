@@ -391,7 +391,6 @@ public class OrderDetailActivity
             }
         } else {
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-
         }
 
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState()

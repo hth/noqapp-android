@@ -263,15 +263,17 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             recordHolder.tv_token_time_slot.setText(context.getString(R.string.time_slot, jsonQueuedPerson.getTimeSlotMessage()));
         }
         if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().getUserProfile()) {
-            recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                    PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+            recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo)
+                    ? context.getString(R.string.unregister_user)
+                    : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         }
 
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
         if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
             recordHolder.tv_customer_mobile.setOnClickListener(v -> {
-                if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
                     AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                }
             });
         } else {
             recordHolder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
@@ -305,7 +307,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         // or customer has already been approved.
         if(LaunchActivity.getLaunchActivity().getPriorityAccess()
                 && jsonQueuedPerson.getBusinessCustomerAttributes() != null
-                &&  !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)
+                && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)
                 && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.RJ)) {
 
             // Get the business customer priorities from sharedPreference set in loginActivity
@@ -316,36 +318,31 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             recordHolder.account_type.removeAllViews();
 
             // Dynamically add radio buttons based on the businessCustomerPriorities
-            for(int i=0; i< businessCustomerPriorities.size(); i++){
+            for (int i = 0; i < businessCustomerPriorities.size(); i++) {
                 JsonBusinessCustomerPriority jsonBusinessCustomerPriority = businessCustomerPriorities.get(i);
                 RadioButton radioButton = new RadioButton(this.context);
                 radioButton.setText(jsonBusinessCustomerPriority.getPriorityName());
                 radioButton.setId(View.generateViewId());
                 radioButton.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#E07E3D")));
-                rprms= new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                rprms = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 recordHolder.account_type.addView(radioButton, rprms);
             }
 
             // Get the selected account type be listening to click on radio button
             // and reverse look up which businessCustomerPriorities enum does this belong
-            recordHolder.account_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-            {
-                public void onCheckedChanged(RadioGroup group, int checkedId)
-                {
-                    RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
-                    // Remove error from last child
-                    int lastChildPos = group.getChildCount()-1;
-                    ((RadioButton)group.getChildAt(lastChildPos)).setError(null);
+            recordHolder.account_type.setOnCheckedChangeListener((RadioGroup.OnCheckedChangeListener) (group, checkedId) -> {
+                RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
+                // Remove error from last child
+                int lastChildPos = group.getChildCount()-1;
+                ((RadioButton)group.getChildAt(lastChildPos)).setError(null);
 
-                    boolean isChecked = checkedRadioButton.isChecked();
-                    if (isChecked)
-                    {
-                        userAccountType = checkedRadioButton.getText().toString();
-                        for (JsonBusinessCustomerPriority j: businessCustomerPriorities){
-                            if(j.getPriorityName().equals(userAccountType)) {
-                                customerPriorityLevelEnum = j.getCustomerPriorityLevel();
-                                break;
-                            }
+                boolean isChecked = checkedRadioButton.isChecked();
+                if (isChecked) {
+                    userAccountType = checkedRadioButton.getText().toString();
+                    for (JsonBusinessCustomerPriority j: businessCustomerPriorities){
+                        if(j.getPriorityName().equals(userAccountType)) {
+                            customerPriorityLevelEnum = j.getCustomerPriorityLevel();
+                            break;
                         }
                     }
                 }
@@ -358,8 +355,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
                 {
                     // No radio buttons checked, show error and return.
                     int lastChildPos = recordHolder.account_type.getChildCount()-1;
-                    ((RadioButton)recordHolder.account_type.getChildAt(lastChildPos)).setError("Please select one of " +
-                            "the choices");
+                    ((RadioButton)recordHolder.account_type.getChildAt(lastChildPos)).setError("Please select one of the choices");
                     return;
                 }
                 else
@@ -373,7 +369,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         }
         else {
             // Hide the radio buttons
-            recordHolder.ll_account_authentication.setVisibility(View.GONE);
+            if (null != recordHolder.ll_account_authentication) {
+                recordHolder.ll_account_authentication.setVisibility(View.GONE);
+            }
         }
 
         switch (jsonQueuedPerson.getQueueUserState()) {
