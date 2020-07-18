@@ -307,7 +307,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         // or customer has already been approved.
         if(LaunchActivity.getLaunchActivity().getPriorityAccess()
                 && jsonQueuedPerson.getBusinessCustomerAttributes() != null
-                &&  !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)
+                && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)
                 && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.RJ)) {
 
             // Get the business customer priorities from sharedPreference set in loginActivity
