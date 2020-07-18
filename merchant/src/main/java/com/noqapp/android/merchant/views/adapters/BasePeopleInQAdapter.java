@@ -330,24 +330,19 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
             // Get the selected account type be listening to click on radio button
             // and reverse look up which businessCustomerPriorities enum does this belong
-            recordHolder.account_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-            {
-                public void onCheckedChanged(RadioGroup group, int checkedId)
-                {
-                    RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
-                    // Remove error from last child
-                    int lastChildPos = group.getChildCount()-1;
-                    ((RadioButton)group.getChildAt(lastChildPos)).setError(null);
+            recordHolder.account_type.setOnCheckedChangeListener((RadioGroup.OnCheckedChangeListener) (group, checkedId) -> {
+                RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
+                // Remove error from last child
+                int lastChildPos = group.getChildCount()-1;
+                ((RadioButton)group.getChildAt(lastChildPos)).setError(null);
 
-                    boolean isChecked = checkedRadioButton.isChecked();
-                    if (isChecked)
-                    {
-                        userAccountType = checkedRadioButton.getText().toString();
-                        for (JsonBusinessCustomerPriority j: businessCustomerPriorities){
-                            if(j.getPriorityName().equals(userAccountType)) {
-                                customerPriorityLevelEnum = j.getCustomerPriorityLevel();
-                                break;
-                            }
+                boolean isChecked = checkedRadioButton.isChecked();
+                if (isChecked) {
+                    userAccountType = checkedRadioButton.getText().toString();
+                    for (JsonBusinessCustomerPriority j: businessCustomerPriorities){
+                        if(j.getPriorityName().equals(userAccountType)) {
+                            customerPriorityLevelEnum = j.getCustomerPriorityLevel();
+                            break;
                         }
                     }
                 }
