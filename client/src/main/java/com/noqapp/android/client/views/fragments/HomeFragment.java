@@ -428,12 +428,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         //No call for super(). Bug on API Level > 11.
     }
 
-    private void getNearMeInfo(String city, String lat, String longitute) {
+    private void getNearMeInfo(String city, String latitude, String longitude) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             SearchStoreQuery searchStoreQuery = new SearchStoreQuery();
             searchStoreQuery.setCityName(city);
-            searchStoreQuery.setLatitude(lat);
-            searchStoreQuery.setLongitude(longitute);
+            searchStoreQuery.setLatitude(latitude);
+            searchStoreQuery.setLongitude(longitude);
             searchStoreQuery.setFilters("xyz");
             searchStoreQuery.setScrollId("");
             if (isProgressFirstTime) {
@@ -474,13 +474,10 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //                }
                 rl_helper.setVisibility(View.VISIBLE);
                 btnSkip.setOnClickListener(v -> rl_helper.setVisibility(View.GONE));
-                btnLogin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        rl_helper.setVisibility(View.GONE);
-                        Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-                        startActivity(loginIntent);
-                    }
+                btnLogin.setOnClickListener(v -> {
+                    rl_helper.setVisibility(View.GONE);
+                    Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(loginIntent);
                 });
                 NoQueueBaseActivity.setShowHelper(false);
             } else {
