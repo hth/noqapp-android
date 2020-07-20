@@ -295,7 +295,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
             advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
-
         } else {
             if (isAdded()) {
                 ShowAlertInformation.showNetworkDialog(getActivity());
