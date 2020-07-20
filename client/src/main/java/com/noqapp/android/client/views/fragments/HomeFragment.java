@@ -164,7 +164,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private View rl_helper;
     private Button btnLogin, btnSkip;
 
-
     public HomeFragment() {
         // default constructor required
     }
@@ -296,7 +295,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
             advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
-
         } else {
             if (isAdded()) {
                 ShowAlertInformation.showNetworkDialog(getActivity());
@@ -307,13 +305,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             lat = Constants.DEFAULT_LATITUDE;
             lng = Constants.DEFAULT_LONGITUDE;
             city = Constants.DEFAULT_CITY;
-            getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
         } else {
             lat = LaunchActivity.getLaunchActivity().latitude;
             lng = LaunchActivity.getLaunchActivity().longitude;
             city = LaunchActivity.getLaunchActivity().cityName;
-            getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
         }
+        getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
 //        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
 
@@ -428,12 +425,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         //No call for super(). Bug on API Level > 11.
     }
 
-    private void getNearMeInfo(String city, String lat, String longitute) {
+    private void getNearMeInfo(String city, String latitude, String longitude) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             SearchStoreQuery searchStoreQuery = new SearchStoreQuery();
             searchStoreQuery.setCityName(city);
-            searchStoreQuery.setLatitude(lat);
-            searchStoreQuery.setLongitude(longitute);
+            searchStoreQuery.setLatitude(latitude);
+            searchStoreQuery.setLongitude(longitude);
             searchStoreQuery.setFilters("xyz");
             searchStoreQuery.setScrollId("");
             if (isProgressFirstTime) {
@@ -474,13 +471,10 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //                }
                 rl_helper.setVisibility(View.VISIBLE);
                 btnSkip.setOnClickListener(v -> rl_helper.setVisibility(View.GONE));
-                btnLogin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        rl_helper.setVisibility(View.GONE);
-                        Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-                        startActivity(loginIntent);
-                    }
+                btnLogin.setOnClickListener(v -> {
+                    rl_helper.setVisibility(View.GONE);
+                    Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(loginIntent);
                 });
                 NoQueueBaseActivity.setShowHelper(false);
             } else {
