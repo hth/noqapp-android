@@ -164,7 +164,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private View rl_helper;
     private Button btnLogin, btnSkip;
 
-
     public HomeFragment() {
         // default constructor required
     }
@@ -307,13 +306,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             lat = Constants.DEFAULT_LATITUDE;
             lng = Constants.DEFAULT_LONGITUDE;
             city = Constants.DEFAULT_CITY;
-            getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
         } else {
             lat = LaunchActivity.getLaunchActivity().latitude;
             lng = LaunchActivity.getLaunchActivity().longitude;
             city = LaunchActivity.getLaunchActivity().cityName;
-            getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
         }
+        getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
 //        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
 
