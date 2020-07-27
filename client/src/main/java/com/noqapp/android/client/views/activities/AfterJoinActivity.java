@@ -96,6 +96,7 @@ public class AfterJoinActivity
     private TextView tv_mobile;
     //private TextView tv_serving_no; // No longer displayed, to be deleted
     private TextView tv_token;
+    private LinearLayout ll_change_bg;
     private TextView tv_position_in_queue_label;
     private TextView tv_position_in_queue;
     private Button btn_cancel_queue;
@@ -144,6 +145,7 @@ public class AfterJoinActivity
         tv_mobile = findViewById(R.id.tv_mobile);
         //tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_token = findViewById(R.id.tv_token);
+        ll_change_bg = findViewById(R.id.ll_change_bg);
         tv_position_in_queue = findViewById(R.id.tv_position_in_queue_value);
         btn_cancel_queue = findViewById(R.id.btn_cancel_queue);
         btn_go_back = findViewById(R.id.btn_go_back);
@@ -476,16 +478,19 @@ public class AfterJoinActivity
         switch (pos) {
             case 0:
                 tv_position_in_queue_label.setText(R.string.your_turn);
+                ll_change_bg.setBackgroundResource(R.drawable.green_gradient);
                 tv_position_in_queue.setText(gotoPerson);
                 btn_cancel_queue.setVisibility(View.GONE);
                 break;
             case 1:
                 tv_position_in_queue_label.setText(R.string.your_are_next_label);
+                ll_change_bg.setBackgroundResource(R.drawable.green_gradient);
                 break;
             case 2:
             case 3:
             case 4:
             case 5:
+                ll_change_bg.setBackgroundResource(R.drawable.green_gradient);
                 break;
             default:
                 tv_position_in_queue_label.setText(R.string.position_in_queue_label);
