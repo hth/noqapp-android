@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "742452513487-de9ejtbb4uct9lrsh7kegbvbd9p4naab.apps.googleusercontent.com",
+          "client_id": "742452513487-qlgtnvlq3mfs9svfrlki1n7l2kmnf4da.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.noqapp.android.client",
@@ -311,6 +311,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-7nkksuqnkv4ce8o3q96fj3ml9f0aic2r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.tv",
+            "certificate_hash": "0e137f697b9c1958b3403d05b9097bcbb46d92de"
+          }
+        },
+        {
           "client_id": "742452513487-inc7ptjs86g92vd91nm2aacsg1ueere9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -339,6 +347,50 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.noqapp.android.merchant.tv",
+            "certificate_hash": "1d23a30bb84942599d0f8d82d47c9c4ffdd63d84"
+          }
+        },
+        {
+          "client_id": "742452513487-k76d5rmg39dq9uoptti054qqa1rbnftu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClTVFDeoyMqFdyqr27sjEMF59X5h_gtuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742452513487-e7jq2hn2d8u75b9bhpd6nu11jqpfkit1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "742452513487-udjgbe2m1olanksoh43cb8bi0q807u4v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.noqapp.ios.client"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742452513487:android:010291d3b84d33600645ba",
+        "android_client_info": {
+          "package_name": "com.noqapp.android.merchant.visitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742452513487-qdjqlr4q1bi4rd4ema8g51j82oa3v28j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.visitor",
             "certificate_hash": "1d23a30bb84942599d0f8d82d47c9c4ffdd63d84"
           }
         },

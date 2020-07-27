@@ -241,6 +241,58 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129734883266:android:e3c127a6eac8b628dfc85b",
+        "android_client_info": {
+          "package_name": "com.noqapp.android.merchant.visitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129734883266-lq44duf6gle0mhjtu0f3f3mlvqsomk27.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.visitor",
+            "certificate_hash": "6dfddc3fb5d5f9d1059496d407fd5f2da7b5f93b"
+          }
+        },
+        {
+          "client_id": "129734883266-9qc4fe9v408ds4jfse6iv5v1b87cchoj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.visitor",
+            "certificate_hash": "0e137f697b9c1958b3403d05b9097bcbb46d92de"
+          }
+        },
+        {
+          "client_id": "129734883266-f54sbih0l01vo4n8pheie2ap0p7os79u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFDnkbcjkBX4JYmMWZOc1yEFLyffC4Ibo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129734883266-720n2155e6f3usvjmnoeffasn8f94i1k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "129734883266-quteqmhpfhnm9jbnccfnsq5p5j1sebg0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.noqapp.ios.merchant.healthcare"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
