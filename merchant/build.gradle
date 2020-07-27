@@ -399,6 +399,14 @@ android {
             resValue "string", "content_provider", "com.noqapp.android.merchant.inventory.fileprovider"
             buildConfigField "String", "APP_FLAVOR", "\"NQMI\""
         }
+
+        vistor {
+            dimension "version"
+            applicationId "com.noqapp.android.merchant.vistor"
+            resValue "string", "flavored_app_name", "NoQueue Vistior"
+            resValue "string", "content_provider", "com.noqapp.android.merchant.vistor.fileprovider"
+            buildConfigField "String", "APP_FLAVOR", "\"NQMV\""
+        }
     }
 }
 
