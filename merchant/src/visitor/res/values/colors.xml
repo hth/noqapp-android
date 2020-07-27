@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3088D1</color>
-    <color name="colorPrimaryDark">#1374c6</color>
-    <color name="colorAccent">#458FCE</color>
-    <color name="color_action_bar">#1374c6</color>
-    <color name="color_action_bar_secondary">#1374c6</color>
-    <color name="pressed_color">#1992D7</color>
+    <color name="colorPrimary">#009AC6</color>
+    <color name="colorPrimaryDark">#00aedc</color>
+    <color name="colorAccent">#009AC6</color>
+    <color name="color_action_bar">#00aedc</color>
+    <color name="color_action_bar_secondary">#00aedc</color>
+    <color name="pressed_color">#19B4DF</color>
 
     <color name="segment_bg_color">#E3EAF5</color>
-    <color name="segment_bg_color_select">#2C91C7</color>
+    <color name="segment_bg_color_select">#19B4DF</color>
     <color name="segment_text_color">@android:color/black</color>
     <color name="segment_text_color_select">@android:color/white</color>
 
@@ -20,10 +20,10 @@
     <color name="toast_background">@color/color_green_toast</color>
 
     <color name="btn_txt_color">#FFF</color>
-    <color name="radio_button_color">#1374c6</color>
-    <color name="form_background_color">#1992D7</color>
+    <color name="radio_button_color">#0089B0</color>
+    <color name="form_background_color">#009AC6</color>
 
-    <color name="switch_tack_color">#A1BFD9</color>
+    <color name="switch_tack_color">#009AC6</color>
 
     <color name="actionbar_text_color">#333333</color>
     <color name="actionbar_image_color">#333333</color>
@@ -31,13 +31,13 @@
     <color name="download_circle_bg">@color/colorAccent</color>
     <color name="color_header">#909090</color>
 
-    <color name="btn_start_color">#1374C6</color>
-    <color name="btn_end_color">#20B8ED</color>
+    <color name="btn_start_color">#00aedc</color>
+    <color name="btn_end_color">#a0e9de</color>
 
-    <color name="product_grid_color">#E07E3D</color>
+    <color name="product_grid_color">#0089B0</color>
 
     <!--    color related to order q items-->
-    <color name="q_order_btn_unpaid">#4A89DC</color>
-    <color name="q_order_top_border">#E07E3D</color>
+    <color name="q_order_btn_unpaid">#0089B0</color>
+    <color name="q_order_top_border">#19B4DF</color>
     <color name="q_title_color">@color/color_list_subtitle</color>
 </resources>
