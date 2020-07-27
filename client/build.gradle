@@ -402,7 +402,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:4.8.0'
-    implementation 'org.apache.commons:commons-text:1.8'
+    implementation 'org.apache.commons:commons-text:1.9'
     implementation 'net.danlew:android.joda:2.10.6'
     implementation 'com.google.guava:guava:29.0-android'
     implementation 'com.google.firebase:firebase-core:17.4.4'
@@ -442,7 +442,7 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation 'org.mockito:mockito-core:3.4.4'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testImplementation 'joda-time:joda-time:2.10.6'
