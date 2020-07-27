@@ -1,0 +1,411 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_action_bar">
+
+        <ImageView
+            android:id="@+id/actionbarBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/cross"
+            android:tint="@color/actionbar_image_color"
+            android:tintMode="@color/actionbar_image_color"
+            android:padding="10dp" />
+
+
+        <TextView
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/edit_prod"
+            android:textColor="@color/actionbar_text_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_add_update"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ll_top"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/bg_gradient_round"
+        android:text="@string/update"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_fourteen" />
+
+    <Button
+        android:id="@+id/btn_view"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ll_top"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_gradient_round"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="View Display"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_fourteen" />
+
+    <include
+        android:id="@+id/productview"
+        layout="@layout/edit_product_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_add_update"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productview"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/ll_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_offline_title"
+                style="@style/style_register_tv"
+                android:layout_width="match_parent"
+                android:paddingTop="10dp"
+                android:text="@string/store_offline" />
+
+            <LinearLayout
+                android:id="@+id/ll_store_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/tv_online"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_weight=".5"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/store_on"
+                    android:textSize="@dimen/text_size_fourteen" />
+
+                <TextView
+                    android:id="@+id/tv_offline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_weight=".5"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/store_offline_1"
+                    android:textSize="@dimen/text_size_fourteen" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_name" />
+
+            <EditText
+                android:id="@+id/edt_prod_name"
+                android:layout_width="@dimen/edit_field_width_p"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edt_roun_rect"
+                android:inputType="text"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_fourteen" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight=".5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_price" />
+
+                    <EditText
+                        android:id="@+id/edt_prod_price"
+                        android:layout_width="@dimen/edit_field_width_p"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_roun_rect"
+                        android:inputType="numberDecimal"
+                        android:maxLength="7"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight=".5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_discount" />
+
+                    <EditText
+                        android:id="@+id/edt_prod_discount"
+                        android:layout_width="@dimen/edit_field_width_p"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_roun_rect"
+                        android:inputType="numberDecimal"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_category" />
+
+<!--            <Spinner-->
+<!--                android:id="@+id/sp_category_type"-->
+<!--                android:layout_width="@dimen/edit_field_width_p"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="@drawable/sp_background"-->
+<!--                android:padding="3dp" />-->
+
+            <TextView
+                android:id="@+id/tv_category_type"
+                android:layout_width="@dimen/edit_field_width_p"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edt_roun_rect"
+                android:maxLines="1"
+                android:minHeight="@dimen/btn_height"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_fourteen" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_unit_value" />
+
+                    <EditText
+                        android:id="@+id/edt_prod_unit_value"
+                        android:layout_width="@dimen/edit_field_width_p"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/edt_roun_rect"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/btn_height"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_unit" />
+
+                    <Spinner
+                        android:id="@+id/sp_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/sp_background"
+                        android:padding="3dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/product_pack_size" />
+
+                    <EditText
+                        android:id="@+id/edt_prod_pack_size"
+                        android:layout_width="@dimen/edit_field_width_p"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/edt_roun_rect"
+                        android:hint="@string/product_pack_size"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/btn_height"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_type" />
+
+            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/sc_product_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                segmentedcontrol:columnCount="2"
+                segmentedcontrol:distributeEvenly="false"
+                segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:radius="6dp"
+                segmentedcontrol:radiusForEverySegment="false"
+                segmentedcontrol:segmentHorizontalMargin="0dp"
+                segmentedcontrol:segmentVerticalMargin="0dp"
+                segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                segmentedcontrol:strokeWidth="1dp"
+                segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                segmentedcontrol:textVerticalPadding="5dp"
+                segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_desc" />
+
+            <EditText
+                android:id="@+id/edt_prod_description"
+                android:layout_width="@dimen/edit_field_width_p"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edt_roun_rect"
+                android:inputType="text"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_fourteen" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/product_daily_limit" />
+
+            <EditText
+                android:id="@+id/edt_prod_limit"
+                android:layout_width="@dimen/edit_field_width_p"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edt_roun_rect"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_fourteen" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

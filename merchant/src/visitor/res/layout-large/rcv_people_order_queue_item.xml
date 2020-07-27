@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview"
+    android:layout_width="300dp"
+    android:layout_height="400dp"
+    android:padding="10dp"
+    card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="2dp"
+    card_view:cardUseCompatPadding="true">
+
+
+    <LinearLayout
+        android:id="@+id/ll_side"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_sequence_new_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/tv_sequence_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_join_timing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_new"
+                android:layout_toRightOf="@+id/tv_sequence_number"
+                android:gravity="right"
+                android:text=""
+                android:textSize="@dimen/text_size_ten" />
+
+            <ImageView
+                android:id="@+id/iv_new"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="3dp"
+                android:background="@drawable/new_client"
+                android:backgroundTint="@android:color/white"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_customer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:minLines="1"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_fourteen" />
+
+            <TextView
+                android:id="@+id/tv_customer_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:textSize="@dimen/text_size_twelve" />
+
+
+            <TextView
+                android:id="@+id/tv_order_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:textSize="@dimen/text_size_twelve" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/tv_order_data"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/btn_bg_grey"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="View order details"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_twelve" />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
+
+                    <TextView
+                        android:id="@+id/tv_order_prepared"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/bg_gradient_round"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Order prepared"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_twelve" />
+
+                    <TextView
+                        android:id="@+id/tv_order_done"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/bg_gradient_round"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Order Done"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_twelve" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/tv_order_accept"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/bg_gradient_round"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Accept Order"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_twelve" />
+
+                <TextView
+                    android:id="@+id/tv_order_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/bg_gradient_round"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Cancel Order"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_twelve" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_upload_document"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_gradient_round"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Upload Document"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_twelve" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_item_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:color/darker_gray" />
+
+                <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                    android:id="@+id/listview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbarAlwaysDrawVerticalTrack="true" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+
+
