@@ -245,7 +245,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         }
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark))
                 .setSmallIcon(getNotificationIcon())
                 .setLargeIcon(bm)
                 .setContentTitle(title)
