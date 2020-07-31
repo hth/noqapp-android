@@ -22,6 +22,7 @@ public class BlinkerActivity extends Activity {
     private Thread thread;
     private Vibrator vibrator;
     private boolean stopVibrate = false;
+    private final int buzzer_count = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,23 +57,20 @@ public class BlinkerActivity extends Activity {
 
         if (null != vibrator && vibrator.hasVibrator()) {
             final long[] pattern = {0, 1000, 1000, 1000, 1000};
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < 5; i++) {
-                        if (!stopVibrate) {
-                            vibrator.vibrate(pattern, -1);
-                            try {
-                                Thread.sleep(4000); //the time, the complete pattern needs
-                            } catch (InterruptedException e) {
-                                if (null != thread)
-                                    thread.interrupt();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            return;
+            Runnable runnable = () -> {
+                for (int i = 0; i < buzzer_count; i++) {
+                    if (!stopVibrate) {
+                        vibrator.vibrate(pattern, -1);
+                        try {
+                            Thread.sleep(4000); //the time, the complete pattern needs
+                        } catch (InterruptedException e) {
+                            if (null != thread)
+                                thread.interrupt();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+                    } else {
+                        return;
                     }
                 }
             };
