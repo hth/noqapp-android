@@ -214,18 +214,27 @@ public class AppUtils extends CommonHelper {
 
     public static void changeLanguage(String language) {
         if (!language.equals("")) {
-            if (language.equals("en")) {
-                LaunchActivity.language = "en_US";
-                LaunchActivity.locale = Locale.ENGLISH;
-                LaunchActivity.languagePref.edit().putString("pref_language", "en").apply();
-            } else if (language.equals("kn")) {
-                LaunchActivity.language = "kn";
-                LaunchActivity.locale = new Locale("kn");
-                LaunchActivity.languagePref.edit().putString("pref_language", "kn").apply();
-            } else {
-                LaunchActivity.language = "hi";
-                LaunchActivity.locale = new Locale("hi");
-                LaunchActivity.languagePref.edit().putString("pref_language", "hi").apply();
+            switch (language) {
+                case "en":
+                    LaunchActivity.language = "en_US";
+                    LaunchActivity.locale = Locale.ENGLISH;
+                    LaunchActivity.languagePref.edit().putString("pref_language", "en").apply();
+                    break;
+                case "kn":
+                    LaunchActivity.language = "kn";
+                    LaunchActivity.locale = new Locale("kn");
+                    LaunchActivity.languagePref.edit().putString("pref_language", "kn").apply();
+                    break;
+                case "fr":
+                    LaunchActivity.language = "fr";
+                    LaunchActivity.locale = new Locale("fr");
+                    LaunchActivity.languagePref.edit().putString("pref_language", "fr").apply();
+                    break;
+                default:
+                    LaunchActivity.language = "hi";
+                    LaunchActivity.locale = new Locale("hi");
+                    LaunchActivity.languagePref.edit().putString("pref_language", "hi").apply();
+                    break;
             }
         } else {
             LaunchActivity.language = "en_US";

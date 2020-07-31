@@ -220,6 +220,9 @@ public class LaunchActivity
             } else if (language.equals("kn")) {
                 language = "kn";
                 locale = new Locale("kn");
+            }  else if (language.equals("fr")) {
+                language = "fr";
+                locale = new Locale("fr");
             } else {
                 locale = Locale.ENGLISH;
                 language = "en_US";
@@ -576,7 +579,7 @@ public class LaunchActivity
 //        if(null != fcmNotificationReceiver)
 //            fcmNotificationReceiver.unregister(this);
         super.onPause();
-        languagePref.unregisterOnSharedPreferenceChangeListener(this);
+       // languagePref.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -1117,7 +1120,9 @@ public class LaunchActivity
                 break;
             }
             case R.drawable.language:
-                showChangeLangDialog();
+               // showChangeLangDialog();
+                Intent claIntent = new Intent(LaunchActivity.this, ChangeLanguageActivity.class);
+                startActivity(claIntent);
                 break;
             case R.drawable.contact_us: {
                 Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);

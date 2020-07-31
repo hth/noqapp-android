@@ -463,4 +463,7 @@
     <!-- 07/04 -->
     <string name="location_search_hint">नगर का नाम डालें</string>
     <string name="search_hint">खोज करें</string>
+    <string name="lang_indian_language">Indian Language</string>
+    <string name="lang_foreign_language">Foreign Language</string>
+    <string name="french">French</string>
 </resources>
