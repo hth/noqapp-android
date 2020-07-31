@@ -8,395 +8,404 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
-        <LinearLayout
-            android:id="@+id/ll_top"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:weightSum="1">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_alignParentTop="true">
-
-                <ImageView
-                    android:id="@+id/iv_category_banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:scaleType="fitXY" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:background="@drawable/image_foreground" />
-            </FrameLayout>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="155dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="10dp"
-                card_view:cardElevation="3dp"
-                card_view:cardBackgroundColor="@android:color/white"
-                card_view:cardCornerRadius="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/tv_queue_name"
-                            style="@style/style_join_queue_tv"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginTop="5dp"
-                            android:layout_toLeftOf="@+id/tv_enable_kiosk"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_eighteen"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_enable_kiosk"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_gravity="right"
-                            android:text="Kiosk Mode"
-                            android:visibility="invisible" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/rl_rating"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:id="@+id/tv_store_timing"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:paddingLeft="0dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_twelve" />
-                        <TextView
-                            android:id="@+id/tv_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@+id/tv_rating_review"
-                            android:drawableLeft="@mipmap/star_fill"
-                            android:drawablePadding="5dp"
-                            android:gravity="center"
-                            android:text="0.0"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/rating_text_size" />
-
-                        <TextView
-                            android:id="@+id/tv_rating_review"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginLeft="5dp"
-                            android:textColor="@color/review_color"
-                            android:textSize="@dimen/text_size_twelve" />
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tv_lunch_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:paddingRight="10dp"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:visibility="gone" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            </RelativeLayout>
-            <TextView
-                android:id="@+id/tv_delay_in_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:gravity="center"
-                android:textColor="@color/theme_color_red"
-                android:textSize="@dimen/text_size_fourteen"
-                android:visibility="gone" />
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/ll_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:orientation="horizontal" >
-
-                <FrameLayout
-                    android:id="@+id/fl_token_available"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="@dimen/block_1_width"
-                        android:layout_height="@dimen/block_1_height"
-                        android:layout_gravity="center"
-                        android:background="@drawable/grey_gradient_round"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_token_available"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/header_1" />
-
-                        <TextView
-                            android:id="@+id/tv_token_available_text"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:text="@string/token_available"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/header_2" />
-                    </LinearLayout>
-
-                </FrameLayout>
-
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="@dimen/block_1_width"
-                        android:layout_height="@dimen/block_1_height"
-                        android:background="@drawable/blue_gradient_round"
-                        android:layout_gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_people_in_q"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:textColor="#505050"
-                            android:textSize="@dimen/header_1" />
-
-                        <TextView
-                            android:id="@+id/tv_people_in_q_text"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:textColor="#505050"
-                            android:textSize="@dimen/header_2" />
-                    </LinearLayout>
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_daily_token_limit"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_fourteen"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_revisit_restriction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_fourteen"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_identification_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_fourteen"
-                    android:text="@string/referral_code_required"
-                    android:visibility="gone" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
                     android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/tv_announcement_label"
-                        style="@style/style_join_queue_tv"
-                        android:layout_marginBottom="5dp"
-                        android:drawableLeft="@drawable/ic_alert"
-                        android:drawablePadding="5dp"
-                        android:textColor="@android:color/holo_red_dark"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:textStyle="bold"
-                        android:text="@string/biz_announcement"/>
-
-                    <TextView
-                        android:id="@+id/tv_announcement_text"
-                        style="@style/style_join_queue_tv"
-                        android:layout_marginBottom="5dp"
-                        android:textColor="@android:color/holo_red_dark"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:text="@string/announcement_message_covid"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/ll_btns"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_skip_msg"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
+                    android:weightSum="1">
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="220dp"
+                        android:layout_alignParentTop="true">
 
-                        <Button
-                            android:id="@+id/btn_joinQueue"
+                        <ImageView
+                            android:id="@+id/iv_category_banner"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/btn_standard_height"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/orange_gradient"
-                            android:clickable="true"
-                            android:fontFamily="sans-serif-medium"
-                            android:foreground="?attr/selectableItemBackgroundBorderless"
-                            android:gravity="center"
-                            android:text="@string/join"
-                            android:textAllCaps="true"
-                            android:textColor="@color/colorMobile"
-                            android:textSize="@dimen/text_size_sixteen"
-                            android:textStyle="normal" />
+                            android:layout_height="220dp"
+                            android:scaleType="fitXY" />
 
-                        <Button
-                            android:id="@+id/btn_pay_and_joinQueue"
+                        <View
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/btn_standard_height"
-                            android:background="@drawable/btn_bg_inactive"
-                            android:clickable="true"
-                            android:fontFamily="sans-serif-medium"
-                            android:foreground="?attr/selectableItemBackgroundBorderless"
-                            android:gravity="center"
-                            android:text="@string/pay_and_join"
-                            android:textAllCaps="true"
-                            android:textColor="@color/colorMobile"
-                            android:textSize="@dimen/text_size_sixteen"
-                            android:textStyle="normal"
-                            android:visibility="gone" />
+                            android:layout_height="220dp"
+                            android:background="@drawable/image_foreground" />
+                    </FrameLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="155dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:padding="10dp"
+                        card_view:cardBackgroundColor="@android:color/white"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="3dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="10dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tv_queue_name"
+                                    style="@style/style_join_queue_tv"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/tv_enable_kiosk"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_eighteen"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_enable_kiosk"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="right"
+                                    android:text="Kiosk Mode"
+                                    android:visibility="invisible" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl_rating"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_store_timing"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:paddingLeft="0dp"
+                                    android:paddingRight="10dp"
+                                    android:textColor="@color/colorAddress"
+                                    android:textSize="@dimen/text_size_twelve" />
+
+                                <TextView
+                                    android:id="@+id/tv_rating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toLeftOf="@+id/tv_rating_review"
+                                    android:drawableLeft="@mipmap/star_fill"
+                                    android:drawablePadding="5dp"
+                                    android:gravity="center"
+                                    android:text="0.0"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/rating_text_size" />
+
+                                <TextView
+                                    android:id="@+id/tv_rating_review"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="5dp"
+                                    android:textColor="@color/review_color"
+                                    android:textSize="@dimen/text_size_twelve" />
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/tv_lunch_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:paddingRight="10dp"
+                                android:textSize="@dimen/text_size_twelve"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_delay_in_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:textColor="@color/theme_color_red"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/fl_token_available"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="@dimen/block_1_width"
+                            android:layout_height="@dimen/block_1_height"
+                            android:layout_gravity="center"
+                            android:background="@drawable/grey_gradient_round"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_token_available"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="center"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/header_1" />
+
+                            <TextView
+                                android:id="@+id/tv_token_available_text"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="center"
+                                android:text="@string/token_available"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/header_2" />
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="@dimen/block_1_width"
+                            android:layout_height="@dimen/block_1_height"
+                            android:layout_gravity="center"
+                            android:background="@drawable/blue_gradient_round"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_people_in_q"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="center"
+                                android:textColor="#505050"
+                                android:textSize="@dimen/header_1" />
+
+                            <TextView
+                                android:id="@+id/tv_people_in_q_text"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="center"
+                                android:textColor="#505050"
+                                android:textSize="@dimen/header_2" />
+                        </LinearLayout>
                     </FrameLayout>
 
                 </LinearLayout>
-            </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_dep_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <TextView
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/phonenumber"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_fourteen"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_daily_token_limit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/tv_mobile"
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginBottom="10dp"
-                    android:drawableLeft="@mipmap/phone"
-                    android:drawablePadding="5dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_fourteen" />
+                    <TextView
+                        android:id="@+id/tv_revisit_restriction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:visibility="gone" />
 
-                <TextView
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/address"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_fourteen"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_identification_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/referral_code_required"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/tv_address"
-                    style="@style/style_join_queue_tv"
-                    android:drawableLeft="@mipmap/show_in_map"
-                    android:drawablePadding="5dp"
-                    android:textColor="@color/text_header_color"
-                    android:textSize="@dimen/text_size_fourteen" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
+                        <TextView
+                            android:id="@+id/tv_announcement_label"
+                            style="@style/style_join_queue_tv"
+                            android:layout_marginBottom="5dp"
+                            android:drawableLeft="@drawable/ic_alert"
+                            android:drawablePadding="5dp"
+                            android:text="@string/biz_announcement"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_announcement_text"
+                            style="@style/style_join_queue_tv"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/announcement_message_covid"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/text_size_twelve" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/ll_btns"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_skip_msg"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:id="@+id/btn_joinQueue"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/btn_standard_height"
+                                android:layout_marginBottom="10dp"
+                                android:background="@drawable/orange_gradient"
+                                android:clickable="true"
+                                android:fontFamily="sans-serif-medium"
+                                android:foreground="?attr/selectableItemBackgroundBorderless"
+                                android:gravity="center"
+                                android:text="@string/join"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorMobile"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="normal" />
+
+                            <Button
+                                android:id="@+id/btn_pay_and_joinQueue"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/btn_standard_height"
+                                android:background="@drawable/btn_bg_inactive"
+                                android:clickable="true"
+                                android:fontFamily="sans-serif-medium"
+                                android:foreground="?attr/selectableItemBackgroundBorderless"
+                                android:gravity="center"
+                                android:text="@string/pay_and_join"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorMobile"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="normal"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_dep_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/phonenumber"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_mobile"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="10dp"
+                        android:drawableLeft="@mipmap/phone"
+                        android:drawablePadding="5dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <TextView
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/address"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        style="@style/style_join_queue_tv"
+                        android:drawableLeft="@mipmap/show_in_map"
+                        android:drawablePadding="5dp"
+                        android:textColor="@color/text_header_color"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
