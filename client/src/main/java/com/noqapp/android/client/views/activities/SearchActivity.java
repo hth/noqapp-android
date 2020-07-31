@@ -28,6 +28,7 @@ import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -44,7 +45,7 @@ import java.util.ArrayList;
  * Created by chandra on 5/7/17.
  */
 public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener,
-        SearchBusinessStorePresenter {
+        SearchBusinessStorePresenter, GPSTracker.LocationCommunicator {
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
     private String scrollId = "";
@@ -57,6 +58,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private LinearLayout ll_search;
     private final String TAG = SearchActivity.class.getSimpleName();
     private RelativeLayout rl_empty;
+    private GPSTracker gpsTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -109,11 +111,12 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         });
 
         tv_auto.setOnClickListener((View v) -> {
-            lat = String.valueOf(LaunchActivity.getLaunchActivity().latitude);
-            lng = String.valueOf(LaunchActivity.getLaunchActivity().longitude);
-            city = LaunchActivity.getLaunchActivity().cityName;
-            AppUtils.setAutoCompleteText(autoCompleteTextView, city);
-            AppUtils.hideKeyBoard(SearchActivity.this);
+            gpsTracker = new GPSTracker(this, this);
+            if (gpsTracker.isLocationEnabled()) {
+                gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
@@ -309,5 +312,24 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         } else {
             performSearch();
         }
+    }
+
+    @Override
+    public void updateLocationUI() {
+        // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
+        double latitude, longitude;
+        if (gpsTracker.getLatitude() == 0) {
+            latitude = Constants.DEFAULT_LATITUDE;
+            longitude = Constants.DEFAULT_LONGITUDE;
+            city = Constants.DEFAULT_CITY;
+        } else {
+            latitude = gpsTracker.getLatitude();
+            longitude = gpsTracker.getLongitude();
+            city = gpsTracker.getCityName();
+        }
+        lat = String.valueOf(latitude);
+        lng = String.valueOf(longitude);
+        AppUtils.setAutoCompleteText(autoCompleteTextView, city);
+        AppUtils.hideKeyBoard(this);
     }
 }
