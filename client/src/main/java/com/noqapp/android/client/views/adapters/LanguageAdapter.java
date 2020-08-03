@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,16 +20,17 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.pojos.LanguageInfo;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.List;
 
 public class LanguageAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<LanguageInfo> languageInfos;
-    private Context context;
+    private Activity context;
     private boolean isIndian;
 
-    public LanguageAdapter(Context context, List<LanguageInfo> languageInfos,
+    public LanguageAdapter(Activity context, List<LanguageInfo> languageInfos,
                            OnItemClickListener listener, boolean isIndian) {
         this.languageInfos = languageInfos;
         this.context = context;
@@ -61,6 +63,8 @@ public class LanguageAdapter extends RecyclerView.Adapter {
                 LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
             }
             notifyDataSetChanged();
+            new CustomToast().showToast(context, " Language changed successfully");
+            context.finish();
             if(null != listener){
                 listener.onLanguageSelected(languageInfo);
             }
