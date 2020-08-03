@@ -59,8 +59,8 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 public class SettingActivity extends BaseActivity implements StoreSettingPresenter, View.OnClickListener {
     protected ImageView actionbarBack, iv_delete_scheduling;
     private String codeQR;
-    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available,
-            tv_limited_label, tv_delay_in_minute;
+    private TextView tv_store_close, tv_store_start, tv_store_lunch_start, tv_store_lunch_close,
+            tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
     private CheckBox cb_limit, cb_enable_payment;
     private EditText edt_token_no;
@@ -252,10 +252,14 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         tv_store_start = findViewById(R.id.tv_store_start);
         tv_token_not_available = findViewById(R.id.tv_token_not_available);
         tv_store_close = findViewById(R.id.tv_store_close);
+        tv_store_lunch_start = findViewById(R.id.tv_store_lunch_start);
+        tv_store_lunch_close = findViewById(R.id.tv_store_lunch_close);
         tv_token_available.setOnClickListener(new TextViewClick(tv_token_available));
         tv_store_start.setOnClickListener(new TextViewClick(tv_store_start));
         tv_token_not_available.setOnClickListener(new TextViewClick(tv_token_not_available));
         tv_store_close.setOnClickListener(new TextViewClick(tv_store_close));
+        tv_store_lunch_start.setOnClickListener(new TextViewClick(tv_store_lunch_start));
+        tv_store_lunch_close.setOnClickListener(new TextViewClick(tv_store_lunch_close));
         tv_limited_label = findViewById(R.id.tv_limited_label);
         tv_delay_in_minute = findViewById(R.id.tv_delay_in_minute);
         TextView tv_close_day_of_week = findViewById(R.id.tv_close_day_of_week);
@@ -274,6 +278,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             tv_store_close.setEnabled(false);
             tv_token_available.setEnabled(false);
             tv_token_not_available.setEnabled(false);
+            tv_store_lunch_start.setEnabled(false);
+            tv_store_lunch_close.setEnabled(false);
         }
 
         Button btn_update_deduction = findViewById(R.id.btn_update_deduction);
@@ -303,6 +309,12 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Issue token from' should be before 'Stop issuing token after'.");
                 } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
                     ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Stop issuing token after' should be before 'Queue close time'.");
+                } else if (isEndTimeBeforeStartTime(tv_store_lunch_start, tv_store_lunch_close)) {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue lunch start time' should be before 'Queue lunch close time'.");
+                }else if (isEndTimeBeforeStartTime(tv_store_start, tv_store_lunch_start)) {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue lunch start time' should be after 'Queue start time'.");
+                } else if (isEndTimeBeforeStartTime(tv_store_lunch_close, tv_store_close)) {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue lunch close time' should be before 'Queue close time'.");
                 } else {
                     callUpdate(getString(R.string.setting_token_q_timing));
                 }
@@ -534,6 +546,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getTokenNotAvailableFrom()));
             tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getEndHour()));
+            tv_store_lunch_start.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getLunchTimeStart()));
+            tv_store_lunch_close.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getLunchTimeEnd()));
             LocalTime localTime = Formatter.parseLocalTime(String.format(Locale.US, "%04d", storeSetting.getStartHour()));
             localTime = localTime.plusMinutes(storeSetting.getDelayedInMinutes());
             tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
@@ -693,6 +707,14 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
 
                 if (StringUtils.isNotBlank(tv_store_close.getText().toString())) {
                     storeSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
+                }
+
+                if (StringUtils.isNotBlank(tv_store_lunch_start.getText().toString())) {
+                    storeSetting.setLunchTimeStart(Integer.parseInt(tv_store_lunch_start.getText().toString().replace(":", "")));
+                }
+
+                if (StringUtils.isNotBlank(tv_store_lunch_close.getText().toString())) {
+                    storeSetting.setLunchTimeEnd(Integer.parseInt(tv_store_lunch_close.getText().toString().replace(":", "")));
                 }
 
                 if (StringUtils.isNotBlank(tv_scheduling_from.getText().toString())) {
