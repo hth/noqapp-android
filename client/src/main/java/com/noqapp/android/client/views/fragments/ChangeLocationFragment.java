@@ -140,4 +140,20 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);
         AppUtils.hideKeyBoard(getActivity());
     }
+
+    @Override
+    public void onDetach() {
+        if (null != gpsTracker) {
+            gpsTracker.stopUsingGPS();
+        }
+        super.onDetach();
+    }
+
+    @Override
+    public void onStop() {
+        if (null != gpsTracker) {
+            gpsTracker.stopUsingGPS();
+        }
+        super.onStop();
+    }
 }
