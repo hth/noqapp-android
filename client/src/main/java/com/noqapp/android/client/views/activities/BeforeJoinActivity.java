@@ -106,12 +106,14 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         btn_pay_and_joinQueue = findViewById(R.id.btn_pay_and_joinQueue);
         btn_joinQueue = findViewById(R.id.btn_joinQueue);
         btn_joinQueue.setOnClickListener((View v) -> {
-            if (null != jsonQueue)
+            if (null != jsonQueue) {
                 joinQueue(false);
+            }
         });
         btn_pay_and_joinQueue.setOnClickListener((View v) -> {
-            if (null != jsonQueue)
+            if (null != jsonQueue) {
                 joinQueue(false);
+            }
         });
         tv_rating = findViewById(R.id.tv_rating);
         ll_select_family_member = findViewById(R.id.ll_select_family_member);
@@ -119,9 +121,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         add_person = findViewById(R.id.add_person);
         tv_add.setPaintFlags(tv_add.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         Button btn_no = findViewById(R.id.btn_no);
-        btn_no.setOnClickListener((View v) -> {
-            finish();
-        });
+        btn_no.setOnClickListener((View v) -> finish());
         sp_name_list = findViewById(R.id.sp_name_list);
 
         initActionsViews(true);
@@ -177,7 +177,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                         QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
                         queueApiAuthenticCall.setQueuePresenter(this);
                         queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-
                     } else {
                         QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
                         queueApiUnAuthenticCall.setQueuePresenter(this);
@@ -223,8 +222,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                 tv_daily_token_limit.setVisibility(View.VISIBLE);
             }
             if (jsonQueue.getLimitServiceByDays() != 0) {
-                tv_revisit_restriction.setText(String.format(getResources().getString(R.string.revisit_restriction),
-                        jsonQueue.getLimitServiceByDays() + " days"));
+                tv_revisit_restriction.setText(String.format(getResources().getString(R.string.revisit_restriction), jsonQueue.getLimitServiceByDays() + " days"));
                 tv_revisit_restriction.setVisibility(View.VISIBLE);
             }
             if (jsonQueue.getPriorityAccess().getDescription().equalsIgnoreCase("ON")) {
@@ -318,7 +316,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         swipeRefreshLayout.setRefreshing(false);
     }
 
-
     private void joinQueue(boolean validateView) {
         showHideView(true);
         setColor(true);
@@ -332,7 +329,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                 if (validateView) {
                     btn_joinQueue.setText(getString(R.string.login_to_join));
                     btn_pay_and_joinQueue.setText(getString(R.string.login_to_join));
-
                 } else {
                     Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
@@ -416,7 +412,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         }
     }
 
-
     /*
      *If user navigate to AfterJoinActivity screen from here &
      * he press back from that screen Join screen should removed from activity stack
@@ -462,10 +457,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
     }
 
     private void setColor(boolean isEnable) {
-        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient :
-                R.drawable.btn_bg_inactive));
-        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient :
-                R.drawable.btn_bg_inactive));
+        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient : R.drawable.btn_bg_inactive));
+        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient : R.drawable.btn_bg_inactive));
         btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
         btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
     }
@@ -489,7 +482,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                     QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
                     queueApiAuthenticCall.setQueuePresenter(this);
                     queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-
                 } else {
                     QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
                     queueApiUnAuthenticCall.setQueuePresenter(this);
