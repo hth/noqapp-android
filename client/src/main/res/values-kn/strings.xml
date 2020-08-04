@@ -465,6 +465,6 @@
     <string name="search_hint">ಹುಡುಕಲು ನಮೂದಿಸಿ</string>
     <string name="lang_indian_language">Indian Language</string>
     <string name="lang_foreign_language">Foreign Language</string>
-    <string name="french">French</string>
+    <string name="french">ಫ್ರೆಂಚ್</string>
     <string name="business_too_far_from_location">Business is too far from your location. You cannot join the queue</string>
 </resources>
