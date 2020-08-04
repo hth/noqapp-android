@@ -515,7 +515,7 @@ public abstract class BaseLaunchActivity
 
     public List<JsonBusinessCustomerPriority> getBusinessCustomerPriority() {
         Gson gson = new Gson();
-        List<JsonBusinessCustomerPriority> businessCustomerPriority = new ArrayList<>();
+        List<JsonBusinessCustomerPriority> businessCustomerPriority;
         String customerPriority = sharedpreferences.getString(KEY_CUSTOMER_PRIORITY, "");
         Type type = new TypeToken<List<JsonBusinessCustomerPriority>>() {}.getType();
         businessCustomerPriority = gson.fromJson(customerPriority, type);
