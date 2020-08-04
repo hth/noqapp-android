@@ -404,7 +404,7 @@
     <string name="announcement_message_covid">* मास्क पहनना अनिवार्य है।\n* हर समय सोशल डिस्टन्सिंग का पालन करें।\n* अपने हाथों को बार बार धोयें।</string>
 
     <!-- Strings from Code 06062020 -->
-    <string name="loading_queue_details">कतार विवरण...</string>
+    <string name="loading_queue_details">कतार विवरण…</string>
     <string name="please_login_to_join">कृपया लॉगिन करें</string>
     <string name="enable_gps">GPS सक्षम करें</string>
     <string name="message_enable_gps">GPS बंद है। एप्लिकेशन को ठीक से उपयोग करने के लिए, कृपया डिवाइस का GPS चालु करें।</string>
