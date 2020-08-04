@@ -47,15 +47,15 @@ public class ChangeLanguageActivity extends BaseActivity implements LanguageAdap
 
     private ArrayList<LanguageInfo> getEnabledIndianLanguage() {
         ArrayList<LanguageInfo> indianLanguages = new ArrayList<>();
-        indianLanguages.add(new LanguageInfo(getString(R.string.hindi), "hi", R.drawable.hindi, LaunchActivity.language.equals("hi")));
-        indianLanguages.add(new LanguageInfo(getString(R.string.kannada), "kn", R.drawable.hindi, LaunchActivity.language.equals("kn")));
+        indianLanguages.add(new LanguageInfo(getString(R.string.hindi), "hi", R.drawable.flag_india, LaunchActivity.language.equals("hi")));
+        indianLanguages.add(new LanguageInfo(getString(R.string.kannada), "kn", R.drawable.flag_india, LaunchActivity.language.equals("kn")));
         return indianLanguages;
     }
 
     private ArrayList<LanguageInfo> getEnabledForeignLanguage() {
         ArrayList<LanguageInfo> foreignLanguages = new ArrayList<>();
-        foreignLanguages.add(new LanguageInfo(getString(R.string.french), "fr", R.drawable.english, LaunchActivity.language.equals("fr")));
-        foreignLanguages.add(new LanguageInfo(getString(R.string.english), "en", R.drawable.english, LaunchActivity.language.equals("en_US")));
+        foreignLanguages.add(new LanguageInfo(getString(R.string.french), "fr", R.drawable.flag_france, LaunchActivity.language.equals("fr")));
+        foreignLanguages.add(new LanguageInfo(getString(R.string.english), "en", R.drawable.flag_united_kingdom, LaunchActivity.language.equals("en_US")));
         return foreignLanguages;
     }
 }

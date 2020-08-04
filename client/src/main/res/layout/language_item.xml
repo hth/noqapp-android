@@ -31,7 +31,7 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/hindi" />
+                android:background="@drawable/flag_india" />
 
             <TextView
                 android:id="@+id/tv_language_title"

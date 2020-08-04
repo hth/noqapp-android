@@ -57,7 +57,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
-                        android:background="@drawable/hindi" />
+                        android:background="@drawable/flag_india" />
 
                 <TextView
                         android:layout_width="0dp"
@@ -99,7 +99,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/hindi" />
+                    android:background="@drawable/flag_india" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -142,7 +142,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
-                        android:background="@drawable/english" />
+                        android:background="@drawable/flag_united_kingdom" />
 
                 <TextView
                         android:layout_width="0dp"
