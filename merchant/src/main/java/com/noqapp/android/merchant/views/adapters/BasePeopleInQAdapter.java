@@ -305,7 +305,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
         // Don't show radio buttons when merchant priority access is false
         // or customer has already been approved.
-        if(LaunchActivity.getLaunchActivity().getPriorityAccess()
+        if (LaunchActivity.getLaunchActivity().getPriorityAccess()
                 && jsonQueuedPerson.getBusinessCustomerAttributes() != null
                 && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)
                 && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.RJ)) {
@@ -318,6 +318,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             recordHolder.account_type.removeAllViews();
 
             // Dynamically add radio buttons based on the businessCustomerPriorities
+
             for (int i = 0; i < businessCustomerPriorities.size(); i++) {
                 JsonBusinessCustomerPriority jsonBusinessCustomerPriority = businessCustomerPriorities.get(i);
                 RadioButton radioButton = new RadioButton(this.context);
@@ -333,14 +334,14 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             recordHolder.account_type.setOnCheckedChangeListener((RadioGroup.OnCheckedChangeListener) (group, checkedId) -> {
                 RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
                 // Remove error from last child
-                int lastChildPos = group.getChildCount()-1;
-                ((RadioButton)group.getChildAt(lastChildPos)).setError(null);
+                int lastChildPos = group.getChildCount() - 1;
+                ((RadioButton) group.getChildAt(lastChildPos)).setError(null);
 
                 boolean isChecked = checkedRadioButton.isChecked();
                 if (isChecked) {
                     userAccountType = checkedRadioButton.getText().toString();
-                    for (JsonBusinessCustomerPriority j: businessCustomerPriorities){
-                        if(j.getPriorityName().equals(userAccountType)) {
+                    for (JsonBusinessCustomerPriority j : businessCustomerPriorities) {
+                        if (j.getPriorityName().equals(userAccountType)) {
                             customerPriorityLevelEnum = j.getCustomerPriorityLevel();
                             break;
                         }
@@ -351,15 +352,11 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             // Show the radio buttons
             recordHolder.ll_account_authentication.setVisibility(View.VISIBLE);
             recordHolder.authenticate_approve.setOnClickListener(v -> {
-                if (recordHolder.account_type.getCheckedRadioButtonId() == -1)
-                {
+                if (recordHolder.account_type.getCheckedRadioButtonId() == -1) {
                     // No radio buttons checked, show error and return.
-                    int lastChildPos = recordHolder.account_type.getChildCount()-1;
-                    ((RadioButton)recordHolder.account_type.getChildAt(lastChildPos)).setError("Please select one of the choices");
-                    return;
-                }
-                else
-                {
+                    int lastChildPos = recordHolder.account_type.getChildCount() - 1;
+                    ((RadioButton) recordHolder.account_type.getChildAt(lastChildPos)).setError("Please select one of the choices");
+                } else {
                     peopleInQAdapterClick.actionOnBusinessCustomer(
                             context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.APPROVE, this.codeQR);
                 }

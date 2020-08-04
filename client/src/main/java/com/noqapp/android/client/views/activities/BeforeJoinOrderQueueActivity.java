@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
@@ -38,7 +39,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
-public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueuePresenter {
+public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueuePresenter, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = BeforeJoinOrderQueueActivity.class.getSimpleName();
     private static final int MAX_AVAILABLE_TOKEN_DISPLAY = 99;
     private static final String TITLE_TOOLBAR_POSTFIX = " Queue";
@@ -62,12 +63,14 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     private String joinErrorMsg = "";
     private Button btn_pay_and_joinQueue, btn_joinQueue;
     private BizStoreElastic bizStoreElastic;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private boolean isCategoryData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_join_order_q);
+        swipeRefreshLayout = findViewById(R.id.refresh);
         tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
@@ -105,12 +108,12 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         tv_address.setOnClickListener((View v) -> {
             AppUtils.openAddressInMap(BeforeJoinOrderQueueActivity.this, tv_address.getText().toString());
         });
-
+        swipeRefreshLayout.setOnRefreshListener(this);
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
             bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
-            boolean isCategoryData = bundle.getBoolean(IBConstant.KEY_IS_CATEGORY, false);
+            isCategoryData = bundle.getBoolean(IBConstant.KEY_IS_CATEGORY, false);
             String imageUrl = bizStoreElastic.getDisplayImage();
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
@@ -150,10 +153,12 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     public void queueError() {
         Log.d(TAG, "Queue=Error");
         dismissProgress();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void queueResponse(JsonQueue jsonQueueTemp) {
+        swipeRefreshLayout.setRefreshing(false);
         if (null != jsonQueueTemp) {
             Log.d(TAG, "Queue=" + jsonQueueTemp.toString());
             this.jsonQueue = jsonQueueTemp;
@@ -254,6 +259,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
 
     @Override
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {
+        swipeRefreshLayout.setRefreshing(false);
         dismissProgress();
     }
 
@@ -321,7 +327,9 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     private void callJoinScreen() {
         if (jsonQueue.isEnabledPayment() && !NoQueueBaseActivity.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
-        } else {
+        } else if (!AppUtils.isValidStoreDistanceForUser(jsonQueue)) {
+            new CustomToast().showToast(this, getString(R.string.business_too_far_from_location));
+        }else {
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
             in.putExtra(IBConstant.KEY_FROM_LIST, false);
@@ -383,5 +391,32 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 R.drawable.btn_bg_inactive));
         btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
         btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
+    }
+
+    @Override
+    public void onRefresh() {
+        if (isCategoryData) {
+            swipeRefreshLayout.setRefreshing(false);
+        } else {
+
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                setProgressMessage("Loading queue details...");
+                swipeRefreshLayout.setRefreshing(true);
+                showProgress();
+                if (UserUtils.isLogin()) {
+                    QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
+                    queueApiAuthenticCall.setQueuePresenter(this);
+                    queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+
+                } else {
+                    QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
+                    queueApiUnAuthenticCall.setQueuePresenter(this);
+                    queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
+                }
+            } else {
+                swipeRefreshLayout.setRefreshing(false);
+                ShowAlertInformation.showNetworkDialog(this);
+            }
+        }
     }
 }

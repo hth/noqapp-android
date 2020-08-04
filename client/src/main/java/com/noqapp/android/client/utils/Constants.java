@@ -30,6 +30,9 @@ public class Constants extends BaseConstants{
     public static final String QID = "qid";
     public static final String MESSAGE_ID = "mi";
 
+    public static final int VALID_DOCTOR_STORE_DISTANCE_FOR_TOKEN = 150;
+    public static final int VALID_STORE_DISTANCE_FOR_TOKEN = 5;
+
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
 
     //error codes

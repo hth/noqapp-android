@@ -27,6 +27,8 @@ import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
     private double lat, lng;
     private String city = "";
+    private GPSTracker gpsTracker;
+    private AutoCompleteTextView autoCompleteTextView;
 
     public ChangeLocationFragment() {
 
@@ -36,18 +38,11 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_change_location, container, false);
-        GPSTracker gpsTracker = new GPSTracker(getActivity(), this);
-        if (gpsTracker.isLocationEnabled()) {
-            gpsTracker.getLocation();
-        } else {
-            gpsTracker.showSettingsAlert();
-        }
-
         TextView tv_auto = view.findViewById(R.id.tv_auto);
         ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = view.findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText(getString(R.string.screen_change_location));
-        AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
+        autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         actionbarBack.setOnClickListener((View v) -> {
             if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
                 lat = Constants.DEFAULT_LATITUDE;
@@ -62,17 +57,13 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
             LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city);
         });
         tv_auto.setOnClickListener((View v) -> {
-            if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-                lat = Constants.DEFAULT_LATITUDE;
-                lng = Constants.DEFAULT_LONGITUDE;
-                city = Constants.DEFAULT_CITY;
+            gpsTracker = new GPSTracker(getActivity(), this);
+            if (gpsTracker.isLocationEnabled()) {
+                gpsTracker.getLocation();
             } else {
-                lat = LaunchActivity.getLaunchActivity().latitude;
-                lng = LaunchActivity.getLaunchActivity().longitude;
-                city = LaunchActivity.getLaunchActivity().cityName;
+                gpsTracker.showSettingsAlert();
             }
-            AppUtils.setAutoCompleteText(autoCompleteTextView, city);
-            AppUtils.hideKeyBoard(getActivity());
+
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
@@ -136,5 +127,33 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
     @Override
     public void updateLocationUI() {
         // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
+        if (gpsTracker.getLatitude() == 0) {
+            lat = Constants.DEFAULT_LATITUDE;
+            lng = Constants.DEFAULT_LONGITUDE;
+            city = Constants.DEFAULT_CITY;
+        } else {
+            lat = gpsTracker.getLatitude();
+            lng = gpsTracker.getLongitude();
+            city = gpsTracker.getCityName();
+        }
+        LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city);
+        AppUtils.setAutoCompleteText(autoCompleteTextView, city);
+        AppUtils.hideKeyBoard(getActivity());
+    }
+
+    @Override
+    public void onDetach() {
+        if (null != gpsTracker) {
+            gpsTracker.stopUsingGPS();
+        }
+        super.onDetach();
+    }
+
+    @Override
+    public void onStop() {
+        if (null != gpsTracker) {
+            gpsTracker.stopUsingGPS();
+        }
+        super.onStop();
     }
 }

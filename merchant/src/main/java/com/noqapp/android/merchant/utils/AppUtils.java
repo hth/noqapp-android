@@ -149,11 +149,7 @@ public class AppUtils extends CommonHelper {
     }
 
     private static void setRatingStarColor(Drawable drawable, @ColorInt int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            DrawableCompat.setTint(drawable, color);
-        } else {
-            drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        }
+        DrawableCompat.setTint(drawable, color);
     }
 
     public boolean checkStoreClosedWithTime(JsonHour jsonHour) {

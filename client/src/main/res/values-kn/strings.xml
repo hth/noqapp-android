@@ -404,7 +404,7 @@
     <string name="announcement_message_covid">* Mask is mandatory during visit\n* Maintain Social distancing at all times\n* Wash hands frequently</string>
 
     <!-- Strings from Code 06062020 -->
-    <string name="loading_queue_details">Loading queue details...</string>
+    <string name="loading_queue_details">Loading queue details…</string>
     <string name="please_login_to_join">Please login to join</string>
     <string name="enable_gps">ಜಿಪಿಎಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
     <string name="message_enable_gps">ಜಿಪಿಎಸ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಸರಿಯಾಗಿ ಬಳಸಲು</string>
@@ -463,4 +463,8 @@
     <!-- 07/04 -->
     <string name="location_search_hint">ನಗರದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
     <string name="search_hint">ಹುಡುಕಲು ನಮೂದಿಸಿ</string>
+    <string name="lang_indian_language">Indian Language</string>
+    <string name="lang_foreign_language">Foreign Language</string>
+    <string name="french">ಫ್ರೆಂಚ್</string>
+    <string name="business_too_far_from_location">Business is too far from your location. You cannot join the queue</string>
 </resources>

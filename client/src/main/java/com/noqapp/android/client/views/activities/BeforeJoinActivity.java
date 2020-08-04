@@ -38,11 +38,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
-public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
+public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = BeforeJoinActivity.class.getSimpleName();
     private static final int MAX_AVAILABLE_TOKEN_DISPLAY = 99;
     private static final String TITLE_TOOLBAR_POSTFIX = " Queue";
@@ -71,12 +73,15 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     private String joinErrorMsg = "";
     private Button btn_pay_and_joinQueue, btn_joinQueue;
     private ImageView iv_token_bg, iv_token_available_bg;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private boolean isCategoryData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_join);
+        swipeRefreshLayout = findViewById(R.id.refresh);
         tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
@@ -101,12 +106,14 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         btn_pay_and_joinQueue = findViewById(R.id.btn_pay_and_joinQueue);
         btn_joinQueue = findViewById(R.id.btn_joinQueue);
         btn_joinQueue.setOnClickListener((View v) -> {
-            if (null != jsonQueue)
+            if (null != jsonQueue) {
                 joinQueue(false);
+            }
         });
         btn_pay_and_joinQueue.setOnClickListener((View v) -> {
-            if (null != jsonQueue)
+            if (null != jsonQueue) {
                 joinQueue(false);
+            }
         });
         tv_rating = findViewById(R.id.tv_rating);
         ll_select_family_member = findViewById(R.id.ll_select_family_member);
@@ -114,9 +121,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         add_person = findViewById(R.id.add_person);
         tv_add.setPaintFlags(tv_add.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         Button btn_no = findViewById(R.id.btn_no);
-        btn_no.setOnClickListener((View v) -> {
-            finish();
-        });
+        btn_no.setOnClickListener((View v) -> finish());
         sp_name_list = findViewById(R.id.sp_name_list);
 
         initActionsViews(true);
@@ -136,11 +141,11 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 new CustomToast().showToast(BeforeJoinActivity.this, "Please login to add dependents");
             }
         });
-
+        swipeRefreshLayout.setOnRefreshListener(this);
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
-            boolean isCategoryData = bundle.getBoolean(IBConstant.KEY_IS_CATEGORY, false);
+            isCategoryData = bundle.getBoolean(IBConstant.KEY_IS_CATEGORY, false);
             String imageUrl = bundle.getString(IBConstant.KEY_IMAGE_URL);
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
@@ -172,7 +177,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                         QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
                         queueApiAuthenticCall.setQueuePresenter(this);
                         queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-
                     } else {
                         QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
                         queueApiUnAuthenticCall.setQueuePresenter(this);
@@ -189,10 +193,12 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     public void queueError() {
         Log.d(TAG, "Queue=Error");
         dismissProgress();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void queueResponse(JsonQueue jsonQueueTemp) {
+        swipeRefreshLayout.setRefreshing(false);
         if (null != jsonQueueTemp) {
             Log.d(TAG, "Queue=" + jsonQueueTemp.toString());
             this.jsonQueue = jsonQueueTemp;
@@ -200,7 +206,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             tv_queue_name.setText(jsonQueue.getDisplayName());
             tv_address.setText(jsonQueue.getStoreAddress());
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-            if(jsonQueue.getAvailableTokenCount() != 0) {
+            if (jsonQueue.getAvailableTokenCount() != 0) {
                 fl_token_available.setVisibility(View.VISIBLE);
                 int tokenAlreadyIssued = jsonQueue.getServingNumber() + jsonQueue.getPeopleInQueue();
                 int tokenAvailableForDay = Math.max(jsonQueue.getAvailableTokenCount() - tokenAlreadyIssued, 0);
@@ -211,13 +217,12 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
             tv_people_in_q_text.setText(getResources().getQuantityString(R.plurals.people_in_queue, jsonQueue.getPeopleInQueue()));
 
-            if(jsonQueue.getAvailableTokenCount() != 0) {
+            if (jsonQueue.getAvailableTokenCount() != 0) {
                 tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), jsonQueue.getAvailableTokenCount()));
                 tv_daily_token_limit.setVisibility(View.VISIBLE);
             }
-            if(jsonQueue.getLimitServiceByDays() != 0) {
-                tv_revisit_restriction.setText(String.format(getResources().getString(R.string.revisit_restriction),
-                        jsonQueue.getLimitServiceByDays()+ " days"));
+            if (jsonQueue.getLimitServiceByDays() != 0) {
+                tv_revisit_restriction.setText(String.format(getResources().getString(R.string.revisit_restriction), jsonQueue.getLimitServiceByDays() + " days"));
                 tv_revisit_restriction.setVisibility(View.VISIBLE);
             }
             if (jsonQueue.getPriorityAccess().getDescription().equalsIgnoreCase("ON")) {
@@ -295,7 +300,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             } else {
                 // Check if user is already in queue for this store
                 SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                if(prefs.contains(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, jsonQueue.getCodeQR()))) {
+                if (prefs.contains(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, jsonQueue.getCodeQR()))) {
                     btn_joinQueue.setText(getResources().getString(R.string.view_token_status));
                 }
                 btn_joinQueue.setVisibility(View.VISIBLE);
@@ -308,8 +313,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     @Override
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {
         dismissProgress();
+        swipeRefreshLayout.setRefreshing(false);
     }
-
 
     private void joinQueue(boolean validateView) {
         showHideView(true);
@@ -324,7 +329,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 if (validateView) {
                     btn_joinQueue.setText(getString(R.string.login_to_join));
                     btn_pay_and_joinQueue.setText(getString(R.string.login_to_join));
-
                 } else {
                     Intent loginIntent = new Intent(BeforeJoinActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
@@ -339,7 +343,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     if (UserUtils.isLogin()) {
                         btn_joinQueue.setText(getString(R.string.join));
                         btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
-                        if(jsonQueue.getBusinessType() != BusinessTypeEnum.HS){
+                        if (jsonQueue.getBusinessType() != BusinessTypeEnum.HS) {
                             // Set the primary account holder selected if not related to Health-care service
                             // TODO(pth): Fix another way to set primary by default
                             sp_name_list.setSelection(1);
@@ -387,6 +391,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     private void callAfterJoin() {
         if (jsonQueue.isEnabledPayment() && !NoQueueBaseActivity.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
+        } else if (!AppUtils.isValidStoreDistanceForUser(jsonQueue)) {
+            new CustomToast().showToast(this, getString(R.string.business_too_far_from_location));
         } else {
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
@@ -405,7 +411,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             }
         }
     }
-
 
     /*
      *If user navigate to AfterJoinActivity screen from here &
@@ -452,10 +457,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     }
 
     private void setColor(boolean isEnable) {
-        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient :
-                R.drawable.btn_bg_inactive));
-        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient :
-                R.drawable.btn_bg_inactive));
+        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient : R.drawable.btn_bg_inactive));
+        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient : R.drawable.btn_bg_inactive));
         btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
         btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
     }
@@ -464,5 +467,30 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         add_person.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         sp_name_list.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         tv_add.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onRefresh() {
+        if (isCategoryData) {
+            swipeRefreshLayout.setRefreshing(false);
+        } else {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                swipeRefreshLayout.setRefreshing(true);
+                setProgressMessage("Loading queue details...");
+                showProgress();
+                if (UserUtils.isLogin()) {
+                    QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
+                    queueApiAuthenticCall.setQueuePresenter(this);
+                    queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                } else {
+                    QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
+                    queueApiUnAuthenticCall.setQueuePresenter(this);
+                    queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
+                }
+            } else {
+                swipeRefreshLayout.setRefreshing(false);
+                ShowAlertInformation.showNetworkDialog(this);
+            }
+        }
     }
 }

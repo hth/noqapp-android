@@ -174,12 +174,15 @@
     <string name="practice_start">Practice Start</string>
     <string name="error_customer_id_input">Only letters or numbers are allowed</string>
     <string name="give_discount">Applicable discount</string>
-    <string name="setting_token_timing">Token timing</string>
+    <string name="setting_token_timing">Today\'s Token timing</string>
     <string name="setting_issue_token_from">Issue token from</string>
     <string name="setting_stop_issuing_token">Stop issuing token after</string>
-    <string name="setting_q_timing">Queue timing</string>
+    <string name="setting_q_timing">Today\'s Queue timing</string>
     <string name="setting_q_start_time">Queue start time</string>
     <string name="setting_q_close_time">Queue close time</string>
+    <string name="setting_q_lunch_timing">Today\'s Queue lunch timing</string>
+    <string name="setting_q_lunch_start_time">Queue lunch start time</string>
+    <string name="setting_q_lunch_close_time">Queue lunch close time</string>
     <string name="screen_queue_history">Queue History</string>
     <string name="history_alert">There is no history for Queue available</string>
     <string name="todayclosed">Is closed only for today?</string>
