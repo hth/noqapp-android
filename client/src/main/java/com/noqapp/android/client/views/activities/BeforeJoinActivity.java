@@ -397,7 +397,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else if (!AppUtils.isValidStoreDistanceForUser(jsonQueue)) {
             new CustomToast().showToast(this, getString(R.string.business_too_far_from_location));
-        }else {
+        } else {
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
             in.putExtra(IBConstant.KEY_FROM_LIST, false);
