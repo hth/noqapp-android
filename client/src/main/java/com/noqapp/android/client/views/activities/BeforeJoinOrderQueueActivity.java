@@ -67,6 +67,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     private BizStoreElastic bizStoreElastic;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean isCategoryData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -168,7 +169,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             tv_queue_name.setText(jsonQueue.getDisplayName());
             tv_address.setText(jsonQueue.getStoreAddress());
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-            if(jsonQueue.getAvailableTokenCount() != 0) {
+            if (jsonQueue.getAvailableTokenCount() != 0) {
                 fl_token_available.setVisibility(View.VISIBLE);
                 int tokenAlreadyIssued = jsonQueue.getServingNumber() + jsonQueue.getPeopleInQueue();
                 int tokenAvailableForDay = Math.max(jsonQueue.getAvailableTokenCount() - tokenAlreadyIssued, 0);
@@ -178,13 +179,12 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
             tv_people_in_q_text.setText(getResources().getQuantityString(R.plurals.people_in_queue, jsonQueue.getPeopleInQueue()));
 
-            if(jsonQueue.getAvailableTokenCount() != 0) {
+            if (jsonQueue.getAvailableTokenCount() != 0) {
                 tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), jsonQueue.getAvailableTokenCount()));
                 tv_daily_token_limit.setVisibility(View.VISIBLE);
             }
-            if(jsonQueue.getLimitServiceByDays() != 0) {
-                tv_revisit_restriction.setText(String.format(getResources().getString(R.string.revisit_restriction),
-                        jsonQueue.getLimitServiceByDays()+ " days"));
+            if (jsonQueue.getLimitServiceByDays() != 0) {
+                tv_revisit_restriction.setText(String.format(getResources().getString(R.string.revisit_restriction), jsonQueue.getLimitServiceByDays() + " days"));
                 tv_revisit_restriction.setVisibility(View.VISIBLE);
             }
             if (jsonQueue.getPriorityAccess().getDescription().equalsIgnoreCase("ON")) {
@@ -249,7 +249,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             } else {
                 // Check if user is already in queue for this store
                 SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                if(prefs.contains(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, jsonQueue.getCodeQR()))) {
+                if (prefs.contains(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, jsonQueue.getCodeQR()))) {
                     btn_joinQueue.setText(getResources().getString(R.string.view_token_status));
                 }
                 btn_joinQueue.setVisibility(View.VISIBLE);
@@ -341,7 +341,8 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                     in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
                     in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
                     in.putExtra("qUserId", null == NoQueueBaseActivity.getUserProfile().getQueueUserId()
-                            ? "" : NoQueueBaseActivity.getUserProfile().getQueueUserId());
+                            ? ""
+                            : NoQueueBaseActivity.getUserProfile().getQueueUserId());
                     in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
                     startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
@@ -357,8 +358,8 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
 
                 }
             });
-            showCustomDialog.displayDialog(getString(R.string.alert),getString(R.string.business_too_far_from_location));
-        }else {
+            showCustomDialog.displayDialog(getString(R.string.alert), getString(R.string.business_too_far_from_location));
+        } else {
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
             in.putExtra(IBConstant.KEY_FROM_LIST, false);
@@ -366,7 +367,8 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
             in.putExtra("qUserId", null == NoQueueBaseActivity.getUserProfile().getQueueUserId()
-                    ? "" : NoQueueBaseActivity.getUserProfile().getQueueUserId());
+                    ? ""
+                    : NoQueueBaseActivity.getUserProfile().getQueueUserId());
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
