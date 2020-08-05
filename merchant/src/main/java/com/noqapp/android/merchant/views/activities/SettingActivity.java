@@ -735,10 +735,10 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     DateTime start = DateTime.now().withTimeAtStartOfDay();
                     DateTime delay = DateTime.now().withTimeAtStartOfDay();
 
-                    int delayHour = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[0]);
-                    int delayMinutes = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[1]);
-                    int startHour = Integer.valueOf(tv_store_start.getText().toString().split(":")[0]);
-                    int startMinutes = Integer.valueOf(tv_store_start.getText().toString().split(":")[1]);
+                    int delayHour = Integer.parseInt(tv_delay_in_minute.getText().toString().split(":")[0]);
+                    int delayMinutes = Integer.parseInt(tv_delay_in_minute.getText().toString().split(":")[1]);
+                    int startHour = Integer.parseInt(tv_store_start.getText().toString().split(":")[0]);
+                    int startMinutes = Integer.parseInt(tv_store_start.getText().toString().split(":")[1]);
 
                     Duration duration = new Duration(delay.plusHours(startHour).plusMinutes(startMinutes), start.plusHours(delayHour).plusMinutes(delayMinutes));
                     storeSetting.setDelayedInMinutes((int) duration.getStandardMinutes());
