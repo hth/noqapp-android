@@ -144,7 +144,7 @@ public class StoreSettingApiCalls {
                         }
                     } else if (response.body() != null && response.body().getError() != null) {
                         ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                        Log.e(TAG, "Got errorserviceCost" + errorEncounteredJson.getReason());
+                        Log.e(TAG, "Got error serviceCost" + errorEncounteredJson.getReason());
                         storeSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {

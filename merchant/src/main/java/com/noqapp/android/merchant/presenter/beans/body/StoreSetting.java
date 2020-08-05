@@ -174,16 +174,18 @@ public class StoreSetting implements Serializable {
         return lunchTimeStart;
     }
 
-    public void setLunchTimeStart(int lunchTimeStart) {
+    public StoreSetting setLunchTimeStart(int lunchTimeStart) {
         this.lunchTimeStart = lunchTimeStart;
+        return this;
     }
 
     public int getLunchTimeEnd() {
         return lunchTimeEnd;
     }
 
-    public void setLunchTimeEnd(int lunchTimeEnd) {
+    public StoreSetting setLunchTimeEnd(int lunchTimeEnd) {
         this.lunchTimeEnd = lunchTimeEnd;
+        return this;
     }
 
     public int getDelayedInMinutes() {

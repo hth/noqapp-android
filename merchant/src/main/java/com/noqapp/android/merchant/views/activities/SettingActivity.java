@@ -310,11 +310,11 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
                     ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Stop issuing token after' should be before 'Queue close time'.");
                 } else if (isEndTimeBeforeStartTime(tv_store_lunch_start, tv_store_lunch_close)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue lunch start time' should be before 'Queue lunch close time'.");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Lunch start time' should be before 'Lunch close time'.");
                 }else if (isEndTimeBeforeStartTime(tv_store_start, tv_store_lunch_start)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue lunch start time' should be after 'Queue start time'.");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Lunch start time' should be after 'Queue start time'.");
                 } else if (isEndTimeBeforeStartTime(tv_store_lunch_close, tv_store_close)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue lunch close time' should be before 'Queue close time'.");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Lunch close time' should be before 'Queue close time'.");
                 } else {
                     callUpdate(getString(R.string.setting_token_q_timing));
                 }
