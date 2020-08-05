@@ -411,11 +411,11 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             showProgress();
             setProgressMessage("Validating token...");
             authenticateClientInQueueApiCalls.clientInQueue(
-                    UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth(),
-                    scanData[0],
-                    scanData[1]);
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
+                scanData[0],
+                scanData[1]);
         }
     }
 
