@@ -169,7 +169,7 @@
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/screen_padding_home"
                     android:paddingRight="@dimen/screen_padding_home"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -181,15 +181,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:text="Events &amp; Offers"
+                            android:text="@string/screen_all_events"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/text_size_fourteen" />
 
                         <View
-                            android:layout_width="50dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="@dimen/bottom_view_height"
                             android:layout_below="@+id/tv_merchant_title1"
+                            android:layout_alignLeft="@+id/tv_merchant_title1"
+                            android:layout_alignRight="@+id/tv_merchant_title1"
                             android:background="@color/theme_aqua" />
 
                         <TextView
@@ -201,7 +202,7 @@
                             android:text="@string/view_all"
                             android:textColor="@android:color/darker_gray"
                             android:textSize="@dimen/text_size_twelve"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                     </RelativeLayout>
 
