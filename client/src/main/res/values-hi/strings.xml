@@ -466,5 +466,5 @@
     <string name="lang_indian_language">Indian Language</string>
     <string name="lang_foreign_language">Foreign Language</string>
     <string name="french">French</string>
-    <string name="business_too_far_from_location">Business is too far from your location. Do you want to join the queue</string>
+    <string name="business_too_far_from_location">Business is too far from your location. Click OK to continue joining the queue.</string>
 </resources>
