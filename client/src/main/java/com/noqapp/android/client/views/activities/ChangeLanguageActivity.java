@@ -25,12 +25,10 @@ public class ChangeLanguageActivity extends BaseActivity implements LanguageAdap
         rv_indian_language.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv_indian_language.setItemAnimator(new DefaultItemAnimator());
 
-
         RecyclerView rv_foreign_language = findViewById(R.id.rv_foreign_language);
         rv_foreign_language.setHasFixedSize(true);
         rv_foreign_language.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv_foreign_language.setItemAnimator(new DefaultItemAnimator());
-
 
         LanguageAdapter indianLanguageAdapter = new LanguageAdapter(this, getEnabledIndianLanguage(), this, true);
         rv_indian_language.setAdapter(indianLanguageAdapter);
@@ -38,7 +36,6 @@ public class ChangeLanguageActivity extends BaseActivity implements LanguageAdap
         LanguageAdapter foreignLanguageAdapter = new LanguageAdapter(this, getEnabledForeignLanguage(), this, false);
         rv_foreign_language.setAdapter(foreignLanguageAdapter);
     }
-
 
     @Override
     public void onLanguageSelected(LanguageInfo languageInfo) {
