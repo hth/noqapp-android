@@ -67,8 +67,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     private boolean arrivalTextChange = false;
     private StoreSettingApiCalls storeSettingApiCalls;
     private StoreSetting storeSettingTemp;
-    private String YES = "Yes";
-    private String NO = "No";
     private EditText edt_deduction_amount, edt_fees;
     private EditText edt_follow_up_in_days, edt_discounted_followup_price, edt_limited_followup_days;
     private EditText edt_appointment_accepting_week, edt_appointment_duration;
@@ -166,8 +164,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         cv_appointment = findViewById(R.id.cv_appointment);
         codeQR = getIntent().getStringExtra("codeQR");
 
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile() &&
-                BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile()
+                && BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()
         ) {
             ll_follow_up.setVisibility(View.VISIBLE);
             cv_payment.setVisibility(View.VISIBLE);
@@ -178,9 +176,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             isFollowUpAllow = false;
         }
 
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile() &&
-                (BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() ||
-                        BusinessTypeEnum.HS == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile()
+                && (BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()
+                        || BusinessTypeEnum.HS == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())
         ) {
             cv_appointment.setVisibility(View.VISIBLE);
         } else {
@@ -188,8 +186,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         }
 
         yes_no_list.clear();
-        yes_no_list.add(YES);
-        yes_no_list.add(NO);
+        yes_no_list.add("Yes");
+        yes_no_list.add("No");
         sc_prevent_join.addSegments(yes_no_list);
         sc_today_closed.addSegments(yes_no_list);
         sc_day_closed.addSegments(yes_no_list);
@@ -199,7 +197,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         actionbarBack.setOnClickListener(v -> onBackPressed());
         iv_delete_scheduling.setOnClickListener(v -> {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-
                 ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
@@ -219,7 +216,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_settings));
-
         cb_enable_payment = findViewById(R.id.cb_enable_payment);
         cb_enable_payment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -232,19 +228,16 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             }
         });
         cb_limit = findViewById(R.id.cb_limit);
-        cb_limit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    edt_token_no.setVisibility(View.INVISIBLE);
-                    tv_limited_label.setText(getString(R.string.unlimited_token));
-                    edt_token_no.setText("");
-                    AppUtils.hideKeyBoard(SettingActivity.this);
-                } else {
-                    edt_token_no.setVisibility(View.VISIBLE);
-                    edt_token_no.setText("");
-                    tv_limited_label.setText(getString(R.string.limited_token));
-                }
+        cb_limit.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                edt_token_no.setVisibility(View.INVISIBLE);
+                tv_limited_label.setText(getString(R.string.unlimited_token));
+                edt_token_no.setText("");
+                AppUtils.hideKeyBoard(SettingActivity.this);
+            } else {
+                edt_token_no.setVisibility(View.VISIBLE);
+                edt_token_no.setText("");
+                tv_limited_label.setText(getString(R.string.limited_token));
             }
         });
         edt_token_no = findViewById(R.id.edt_token_no);
@@ -298,7 +291,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 edt_appointment_duration.setText("0");
                 updateAppointmentSettings();
             }
-
         });
 
         btn_update_time.setOnClickListener(view -> {
@@ -436,10 +428,15 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 updatePaymentSettings();
             }
         });
-        setSelectAllOnFocus(edt_deduction_amount, edt_fees, edt_follow_up_in_days,
-                edt_discounted_followup_price, edt_limited_followup_days, edt_appointment_accepting_week,
-                edt_appointment_duration, edt_token_no);
-
+        setSelectAllOnFocus(
+                edt_deduction_amount,
+                edt_fees,
+                edt_follow_up_in_days,
+                edt_discounted_followup_price,
+                edt_limited_followup_days,
+                edt_appointment_accepting_week,
+                edt_appointment_duration,
+                edt_token_no);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             showProgress();
             storeSettingApiCalls.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
@@ -447,7 +444,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
     }
-
 
     private void setSelectAllOnFocus(EditText... views) {
         for (EditText v : views) {
@@ -477,7 +473,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         }
         return isValid;
     }
-
 
     private void updateDiscountLabel() {
         if (!TextUtils.isEmpty(edt_fees.getText().toString())) {
@@ -515,7 +510,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             BaseLaunchActivity.merchantListFragment.onRefresh();
         }
     }
-
 
     @Override
     public void queueSettingResponse(StoreSetting storeSetting) {
@@ -596,7 +590,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     public void queueSettingModifyResponse(StoreSetting storeSetting) {
         new CustomToast().showToast(this, "Settings updated successfully!!!");
         queueSettingResponse(storeSetting);
-
     }
 
     @Override
@@ -790,7 +783,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                         storeSetting.setDiscountedFollowupDays(Integer.parseInt(edt_limited_followup_days.getText().toString()));
                     }
 
-
                     if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
                         storeSetting.setDiscountedFollowupProductPrice(0);
                     } else {
@@ -845,7 +837,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                             storeSetting.setAppointmentState(AppointmentStateEnum.F);
                             break;
                     }
-
                     storeSettingApiCalls.appointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
                 } else {
                     ShowAlertInformation.showNetworkDialog(SettingActivity.this);
