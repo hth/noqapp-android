@@ -13,6 +13,7 @@ import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -392,7 +393,33 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         if (jsonQueue.isEnabledPayment() && !NoQueueBaseActivity.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else if (!AppUtils.isValidStoreDistanceForUser(jsonQueue)) {
-            new CustomToast().showToast(this, getString(R.string.business_too_far_from_location));
+            ShowCustomDialog showCustomDialog = new ShowCustomDialog(this, true);
+            showCustomDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    Intent in = new Intent(BeforeJoinActivity.this, JoinActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+                    in.putExtra(IBConstant.KEY_FROM_LIST, false);
+                    in.putExtra(IBConstant.KEY_IS_PAYMENT_ENABLE, jsonQueue.isEnabledPayment());
+                    in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                    in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+                    in.putExtra("qUserId", ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
+                    in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
+                    startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+
+                    if (AppUtils.isRelease()) {
+                        Bundle params = new Bundle();
+                        params.putString("Queue_Name", jsonQueue.getDisplayName());
+                        LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
+                    }
+                }
+
+                @Override
+                public void btnNegativeClick() {
+
+                }
+            });
+            showCustomDialog.displayDialog(getString(R.string.alert),getString(R.string.business_too_far_from_location));
         } else {
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
