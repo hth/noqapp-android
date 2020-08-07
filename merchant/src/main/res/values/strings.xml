@@ -150,6 +150,7 @@
     <string name="hint_verification_code">Verification Code</string>
     <string name="status_code_sent">Code sent to above mobile number</string>
     <string name="status_verification_failed">Verification failed</string>
+    <string name="status_too_many_request">Exceeded OTP request limit</string>
     <string name="status_verification_succeeded">Verification succeeded</string>
     <string name="status_sign_in_failed">Sign-in failed</string>
     <string name="instant_validation">Enter OTP</string>

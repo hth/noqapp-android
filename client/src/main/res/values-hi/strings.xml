@@ -140,6 +140,7 @@
     <string name="hint_verification_code">पुष्टि कोड</string>
     <string name="status_code_sent">कोड भेज दिया गया</string>
     <string name="status_verification_failed">सत्यापन असफल</string>
+    <string name="status_too_many_request">Exceeded OTP request limit</string>
     <string name="status_verification_succeeded">सत्यापन सफल हुआ</string>
     <string name="status_sign_in_failed">साइन इन विफल हुआ</string>
     <string name="instant_validation">ओटीपी दर्ज करें</string>
