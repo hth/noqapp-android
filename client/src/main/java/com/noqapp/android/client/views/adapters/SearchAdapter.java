@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -34,7 +35,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-
 public class SearchAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final int VIEW_ITEM = 1;
@@ -43,8 +43,13 @@ public class SearchAdapter extends RecyclerView.Adapter {
     private ArrayList<BizStoreElastic> dataSet;
     private double lat, log;
 
-    public SearchAdapter(ArrayList<BizStoreElastic> data, Context context,
-                         OnItemClickListener listener, double lat, double log) {
+    public SearchAdapter(
+            ArrayList<BizStoreElastic> data,
+            Context context,
+            OnItemClickListener listener,
+            double lat,
+            double log
+    ) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -61,13 +66,10 @@ public class SearchAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.rcv_item_search, parent, false);
-
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_search, parent, false);
             vh = new MyViewHolder(v);
         } else {
-            View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.progressbar, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.progressbar, parent, false);
             vh = new ProgressViewHolder(v);
         }
         return vh;
@@ -82,12 +84,22 @@ public class SearchAdapter extends RecyclerView.Adapter {
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtils.round(bizStoreElastic.getRating())));
-            holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
-                    (float) lat,
-                    (float) log,
-                    (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
-                    (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
-            holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
+            switch (bizStoreElastic.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    holder.tv_distance.setVisibility(View.INVISIBLE);
+                    holder.tv_distance_unit.setVisibility(View.INVISIBLE);
+                    holder.tv_distance_away.setVisibility(View.INVISIBLE);
+                    holder.rl_distance.setVisibility(View.INVISIBLE);
+                    break;
+                default:
+                    holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
+                            (float) lat,
+                            (float) log,
+                            (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+                            (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
+                    holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
+            }
             holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
             AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), holder.tv_store_review);
@@ -113,9 +125,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
             } else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
-            holder.btn_join.setOnClickListener((View v) -> {
-                listener.onStoreItemClick(dataSet.get(listPosition));
-            });
+            holder.btn_join.setOnClickListener((View v) -> listener.onStoreItemClick(dataSet.get(listPosition)));
             if (holder.tv_store_rating.getText().toString().equals("0.0")) {
                 holder.tv_store_rating.setVisibility(View.INVISIBLE);
             } else {
@@ -170,13 +180,11 @@ public class SearchAdapter extends RecyclerView.Adapter {
         return dataSet.size();
     }
 
-
     public interface OnItemClickListener {
         void onStoreItemClick(BizStoreElastic item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tv_name;
         private TextView tv_bussiness_name;
         private TextView tv_business_category;
@@ -185,8 +193,10 @@ public class SearchAdapter extends RecyclerView.Adapter {
         private TextView tv_store_rating;
         private TextView tv_store_review;
         private TextView tv_store_special;
+        private RelativeLayout rl_distance;
         private TextView tv_distance;
         private TextView tv_distance_unit;
+        private TextView tv_distance_away;
         private TextView tv_store_timing;
         private Button btn_join;
         private Button btn_book_appointment;
@@ -203,8 +213,10 @@ public class SearchAdapter extends RecyclerView.Adapter {
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
             this.tv_store_review = itemView.findViewById(R.id.tv_store_review);
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
+            this.rl_distance = itemView.findViewById(R.id.rl_distance);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.tv_distance_unit = itemView.findViewById(R.id.tv_distance_unit);
+            this.tv_distance_away = itemView.findViewById(R.id.tv_distance_away);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.btn_join = itemView.findViewById(R.id.btn_join);
             this.btn_book_appointment = itemView.findViewById(R.id.btn_book_appointment);
