@@ -140,6 +140,7 @@
     <string name="hint_verification_code">ಪರಿಶೀಲನಾ ಕೋಡ್</string>
     <string name="status_code_sent">ಕೋಡ್ ಕಳುಹಿಸಲಾಗಿದೆ</string>
     <string name="status_verification_failed">ಪರಿಶೀಲನೆ ವಿಫಲವಾಗಿದೆ</string>
+    <string name="status_too_many_request">Exceeded OTP request limit</string>
     <string name="status_verification_succeeded">ಪರಿಶೀಲನೆ ಯಶಸ್ವಿಯಾಗಿದೆ</string>
     <string name="status_sign_in_failed">ಸೈನ್ ಇನ್ ವಿಫಲವಾಗಿದೆ</string>
     <string name="instant_validation">ಒಟಿಪಿ ನಮೂದಿಸಿ</string>

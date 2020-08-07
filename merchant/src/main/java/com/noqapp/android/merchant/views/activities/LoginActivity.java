@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 /**
  * Created by chandra on 5/7/17.
  */
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -44,21 +43,23 @@ import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import java.util.concurrent.TimeUnit;
 
-
 public class LoginActivity extends BaseActivity implements ProfilePresenter {
-
     public interface LoginCallBack {
         void userFound(JsonProfile jsonProfile);
     }
 
     public static LoginCallBack loginCallBack;
     private final String TAG = LoginActivity.class.getSimpleName();
-    private final int STATE_INITIALIZED = 1;
-    private final int STATE_CODE_SENT = 2;
-    private final int STATE_VERIFY_FAILED = 3;
-    private final int STATE_VERIFY_SUCCESS = 4;
-    private final int STATE_SIGN_IN_FAILED = 5;
-    private final int STATE_SIGN_IN_SUCCESS = 6;
+
+    protected enum STATE {
+        STATE_INITIALIZED,
+        STATE_CODE_SENT,
+        STATE_VERIFY_FAILED,
+        STATE_TOO_MANY_REQUEST,
+        STATE_VERIFY_SUCCESS,
+        STATE_SIGN_IN_FAILED,
+        STATE_SIGN_IN_SUCCESS
+    }
 
     private EditText edt_phoneNo;
     private Button btn_login;
@@ -87,12 +88,9 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         btn_verify_phone = findViewById(R.id.btn_verify_phone);
         edt_verification_code = findViewById(R.id.edt_verification_code);
         ccp = findViewById(R.id.ccp);
-        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                countryCode = ccp.getSelectedCountryCodeWithPlus();
-                countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
-            }
+        ccp.setOnCountryChangeListener(() -> {
+            countryCode = ccp.getSelectedCountryCodeWithPlus();
+            countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
         });
         tv_detail = findViewById(R.id.tv_detail);
         btn_login.setOnClickListener(view -> {
@@ -111,7 +109,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         });
         setProgressMessage("Login in progress");
         mAuth = FirebaseAuth.getInstance();
-        updateUI(STATE_INITIALIZED);
+        updateUI(STATE.STATE_INITIALIZED);
         String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         Log.v("country code", "" + c_code);
@@ -122,19 +120,18 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
         edt_phoneNo.setText(getIntent().getStringExtra("phone_no"));
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 // This callback will be invoked in two situations:
                 // 1 - Instant verification. In some cases the phone number can be instantly
                 //     verified without needing to send or enter a verification code.
                 // 2 - Auto-retrieval. On some devices Google Play services can automatically
-                //     detect the incoming verification SMS and perform verificaiton without
+                //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:" + credential);
                 dismissProgress();
                 // Update the UI and attempt sign in with the phone credential
-                updateUI(STATE_VERIFY_SUCCESS, credential);
+                updateUI(STATE.STATE_VERIFY_SUCCESS, credential);
                 signInWithPhoneAuthCredential(credential);
             }
 
@@ -147,23 +144,19 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 dismissProgress();
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
-
-                    // mPhoneNumberField.setError("Invalid phone number.");
-
+                    Log.e("OTP process: ", "Invalid phone number.");
+                    updateUI(STATE.STATE_VERIFY_FAILED);
                 } else if (e instanceof FirebaseTooManyRequestsException) {
                     // The SMS quota for the project has been exceeded
-
-//                    Snackbar.make(findViewById(android.R.id.content), "Quota exceeded.",
-//                            Snackbar.LENGTH_SHORT).show();
+                    Log.e("OTP process: ", "Quota exceeded.");
+                    updateUI(STATE.STATE_TOO_MANY_REQUEST);
+                } else {
+                    updateUI(STATE.STATE_VERIFY_FAILED);
                 }
-                // Show a message and update the UI
-                updateUI(STATE_VERIFY_FAILED);
-
             }
 
             @Override
-            public void onCodeSent(String verificationId,
-                                   PhoneAuthProvider.ForceResendingToken token) {
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
                 // The SMS verification code has been sent to the provided phone number, we
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
@@ -177,14 +170,12 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 // Update UI
-                updateUI(STATE_CODE_SENT);
+                updateUI(STATE.STATE_CODE_SENT);
                 //setProgressMessage("OTP Generated and sent to the above mobile number");
                 dismissProgress();
-
             }
         };
     }
-
 
     private void action_Login() {
         if (validate()) {
@@ -242,28 +233,25 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         setProgressMessage("Validating OTP");
         showProgress();
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = task.getResult().getUser();
-                            Log.v(TAG, user.toString() + "mobile :" + user.getPhoneNumber());
-                            verifiedMobileNo = user.getPhoneNumber();
-                            updateUI(STATE_SIGN_IN_SUCCESS, user);
-                        } else {
-                            // Sign in failed, display a message and update the UI
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                                edt_verification_code.setError("Invalid code.");
-                            }
-                            // Update UI
-                            updateUI(STATE_SIGN_IN_FAILED);
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = task.getResult().getUser();
+                        Log.v(TAG, user.toString() + "mobile :" + user.getPhoneNumber());
+                        verifiedMobileNo = user.getPhoneNumber();
+                        updateUI(STATE.STATE_SIGN_IN_SUCCESS, user);
+                    } else {
+                        // Sign in failed, display a message and update the UI
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
+                            edt_verification_code.setError("Invalid code.");
                         }
-                        dismissProgress();
+                        // Update UI
+                        updateUI(STATE.STATE_SIGN_IN_FAILED);
                     }
+                    dismissProgress();
                 });
     }
 
@@ -297,7 +285,6 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         }
     }
 
-
     public void btnVerifyClick() {
         edt_verification_code.setError(null);
         String code = edt_verification_code.getText().toString();
@@ -315,19 +302,19 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         }
     }
 
-    private void updateUI(int uiState) {
+    private void updateUI(STATE uiState) {
         updateUI(uiState, mAuth.getCurrentUser(), null);
     }
 
-    private void updateUI(int uiState, FirebaseUser user) {
+    private void updateUI(STATE uiState, FirebaseUser user) {
         updateUI(uiState, user, null);
     }
 
-    private void updateUI(int uiState, PhoneAuthCredential cred) {
+    private void updateUI(STATE uiState, PhoneAuthCredential cred) {
         updateUI(uiState, null, cred);
     }
 
-    private void updateUI(int uiState, FirebaseUser user, PhoneAuthCredential cred) {
+    private void updateUI(STATE uiState, FirebaseUser user, PhoneAuthCredential cred) {
         switch (uiState) {
             case STATE_INITIALIZED:
                 // Initialized state, show only the phone number field and start button
@@ -344,6 +331,9 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 // Verification has failed, show all options
                 //enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_verification_code);
                 tv_detail.setText(R.string.status_verification_failed);
+                break;
+            case STATE_TOO_MANY_REQUEST:
+                tv_detail.setText(R.string.status_too_many_request);
                 break;
             case STATE_VERIFY_SUCCESS:
                 // Verification has succeeded, proceed to firebase sign in

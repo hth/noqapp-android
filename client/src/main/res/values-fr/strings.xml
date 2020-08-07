@@ -140,6 +140,7 @@
     <string name="hint_verification_code">le code vérifications</string>
     <string name="status_code_sent">un code envoyé</string>
     <string name="status_verification_failed">Échec de la vérification</string>
+    <string name="status_too_many_request">Exceeded OTP request limit</string>
     <string name="status_verification_succeeded">Si la vérification d\'identité a réusi</string>
     <string name="status_sign_in_failed">échecs de connexion</string>
     <string name="instant_validation">Saisissez OTP (le code)</string>
