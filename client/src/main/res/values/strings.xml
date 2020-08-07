@@ -461,8 +461,8 @@
     <string name="thanku">Thank you for visiting</string>
 
     <!-- 07/04 -->
-    <string name="location_search_hint">Enter city name</string>
-    <string name="search_hint">Enter to search</string>
+    <string name="location_search_hint">Find City</string>
+    <string name="search_hint">Search Business on NoQueue</string>
     <string name="lang_indian_language">Indian Language</string>
     <string name="lang_foreign_language">Foreign Language</string>
     <string name="french">French</string>
