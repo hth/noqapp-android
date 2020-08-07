@@ -67,21 +67,23 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         animationView.setAnimation("data.json");
         animationView.playAnimation();
         animationView.setRepeatCount(10);
-
-        gpsTracker = new GPSTracker(this, null);
-        if (gpsTracker.isLocationEnabled()) {
-            callLocationManager();
-        } else {
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setTitle("Enable Location")
-                    .setMessage("Location is disabled, in order to use the application you need to enable location in your device")
-                    .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
-                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
-                    })
-                    .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> finish());
-            dialog.show();
-        }
+        location = new Location("");
+        location.setLatitude(Constants.DEFAULT_LATITUDE);
+        location.setLongitude(Constants.DEFAULT_LONGITUDE);
+       // gpsTracker = new GPSTracker(this, null);
+//        if (gpsTracker.isLocationEnabled()) {
+//            callLocationManager();
+//        } else {
+//            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+//            dialog.setTitle("Enable Location")
+//                    .setMessage("Location is disabled, in order to use the application you need to enable location in your device")
+//                    .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+//                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                        startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
+//                    })
+//                    .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> finish());
+//            dialog.show();
+//        }
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashScreen.this, instanceIdResult -> {
             tokenFCM = instanceIdResult.getToken();

@@ -23,6 +23,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -197,6 +198,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void queueResponse(JsonQueue jsonQueueTemp) {
         swipeRefreshLayout.setRefreshing(false);

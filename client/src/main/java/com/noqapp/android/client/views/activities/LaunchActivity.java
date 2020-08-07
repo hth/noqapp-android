@@ -67,6 +67,8 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.utils.LocationReader;
+import com.noqapp.android.client.utils.MyLocationService;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
@@ -231,7 +233,8 @@ public class LaunchActivity
             locale = Locale.ENGLISH;
             language = "en_US";
         }
-        callLocationManager();
+        // @TODO revert this location changes
+        //callLocationManager();
         ((MyApplication) getApplication()).setLocale(this);
         iv_search.setOnClickListener(this);
         tv_location.setOnClickListener(this);
@@ -260,7 +263,9 @@ public class LaunchActivity
         tv_email.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
         tv_version.setOnClickListener(this);
-
+        LocationReader locationReader = new LocationReader();
+        locationReader.getLocation(this);
+        startService(new Intent(this, MyLocationService.class));
         ((TextView) findViewById(R.id.tv_version)).setText(
                 AppUtils.isRelease()
                         ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
