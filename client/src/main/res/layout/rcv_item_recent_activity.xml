@@ -16,7 +16,6 @@
         card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,8 +33,8 @@
                     android:layout_height="match_parent"
                     android:scaleType="fitXY" />
 
-
                 <RelativeLayout
+                    android:id="@+id/rl_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -65,8 +64,8 @@
                         android:textColor="@color/theme_aqua"
                         android:textSize="@dimen/text_size_ten" />
 
-
                     <TextView
+                        android:id="@+id/tv_distance_away"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -76,7 +75,6 @@
                         android:textSize="@dimen/text_size_ten" />
                 </RelativeLayout>
             </FrameLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,7 +95,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_fourteen" />
 
-
                 <TextView
                     android:id="@+id/tv_address"
                     android:layout_width="match_parent"
@@ -108,8 +105,6 @@
                     android:text=""
                     android:textColor="@color/text_header_color"
                     android:textSize="@dimen/text_size_ten" />
-
-
 
                 <RelativeLayout
                     android:layout_width="match_parent"

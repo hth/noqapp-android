@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -29,6 +30,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.noqapp.android.common.model.types.BusinessTypeEnum.CD;
+import static com.noqapp.android.common.model.types.BusinessTypeEnum.CDQ;
 
 public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final Context context;
@@ -73,12 +76,22 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtils.round(bizStoreElastic.getRating())));
-            holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
-                    (float) lat,
-                    (float) log,
-                    (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
-                    (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
-            holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
+            switch (bizStoreElastic.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    holder.tv_distance.setVisibility(View.INVISIBLE);
+                    holder.tv_distance_unit.setVisibility(View.INVISIBLE);
+                    holder.tv_distance_away.setVisibility(View.INVISIBLE);
+                    holder.rl_distance.setVisibility(View.INVISIBLE);
+                    break;
+                default:
+                    holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
+                            (float) lat,
+                            (float) log,
+                            (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+                            (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
+                    holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
+            }
             AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), holder.tv_store_review);
 
             holder.tv_store_review.setOnClickListener((View v) -> {
@@ -101,9 +114,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
-            holder.card_view.setOnClickListener((View v) -> {
-                listener.onStoreItemClick(dataSet.get(listPosition));
-            });
+            holder.card_view.setOnClickListener((View v) -> listener.onStoreItemClick(dataSet.get(listPosition)));
             if (holder.tv_store_rating.getText().toString().equals("0.0")) {
                 holder.tv_store_rating.setVisibility(View.INVISIBLE);
             } else {
@@ -146,7 +157,6 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tv_name;
         private TextView tv_address;
         private TextView tv_phoneno;
@@ -156,11 +166,12 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         private TextView tv_store_special;
         private TextView tv_status;
         private TextView tv_business_category;
+        private RelativeLayout rl_distance;
         private TextView tv_distance;
         private TextView tv_distance_unit;
+        private TextView tv_distance_away;
         private ImageView iv_main;
         private CardView card_view;
-
 
         private MyViewHolder(View itemView) {
             super(itemView);
@@ -173,8 +184,10 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
             this.tv_status = itemView.findViewById(R.id.tv_status);
             this.tv_business_category = itemView.findViewById(R.id.tv_business_category);
+            this.rl_distance = itemView.findViewById(R.id.rl_distance);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.tv_distance_unit = itemView.findViewById(R.id.tv_distance_unit);
+            this.tv_distance_away = itemView.findViewById(R.id.tv_distance_away);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }

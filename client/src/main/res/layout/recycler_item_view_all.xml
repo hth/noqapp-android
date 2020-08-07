@@ -29,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true">
 
-
                 <FrameLayout
                     android:id="@+id/cv_main"
                     android:layout_width="120dp"
@@ -42,8 +41,8 @@
                         android:layout_height="match_parent"
                         android:scaleType="fitXY" />
 
-
                     <RelativeLayout
+                        android:id="@+id/rl_distance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
@@ -73,8 +72,8 @@
                             android:textColor="@color/theme_aqua"
                             android:textSize="@dimen/text_size_eight" />
 
-
                         <TextView
+                            android:id="@+id/tv_distance_away"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -85,7 +84,6 @@
                     </RelativeLayout>
                 </FrameLayout>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,7 +91,6 @@
                     android:layout_toLeftOf="@+id/tv_store_rating"
                     android:layout_toRightOf="@+id/cv_main"
                     android:orientation="vertical">
-
 
                     <TextView
                         android:id="@+id/tv_name"
@@ -125,7 +122,6 @@
                         android:layout_marginTop="3dp"
                         android:textSize="@dimen/text_size_ten" />
 
-
                     <TextView
                         android:id="@+id/tv_category_name"
                         android:layout_width="match_parent"
@@ -149,7 +145,6 @@
                         android:text=""
                         android:textSize="@dimen/text_size_ten"
                         android:visibility="gone" />
-
                 </LinearLayout>
 
                 <include
@@ -166,7 +161,6 @@
                     android:gravity="center"
                     android:textSize="@dimen/text_size_ten" />
             </RelativeLayout>
-
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

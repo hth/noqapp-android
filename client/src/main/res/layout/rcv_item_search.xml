@@ -42,8 +42,8 @@
                         android:layout_height="match_parent"
                         android:scaleType="fitXY" />
 
-
                     <RelativeLayout
+                        android:id="@+id/rl_distance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
@@ -73,8 +73,8 @@
                             android:textColor="@color/theme_aqua"
                             android:textSize="@dimen/text_size_eight" />
 
-
                         <TextView
+                            android:id="@+id/tv_distance_away"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -94,7 +94,6 @@
                     android:layout_toRightOf="@+id/cv_main"
                     android:orientation="vertical">
 
-
                     <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="match_parent"
@@ -102,7 +101,6 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />
-
 
                     <TextView
                         android:id="@+id/tv_business_category"
@@ -161,14 +159,12 @@
                     android:textSize="@dimen/text_size_ten" />
             </RelativeLayout>
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rl_top"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp">
-
 
                 <TextView
                     android:id="@+id/tv_store_special"
@@ -179,7 +175,6 @@
                     android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_ten" />
-
 
                 <Button
                     android:id="@+id/btn_book_appointment"
@@ -213,7 +208,6 @@
                     android:textSize="@dimen/text_size_twelve"
                     android:textStyle="bold" />
             </RelativeLayout>
-
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
