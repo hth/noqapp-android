@@ -1405,6 +1405,7 @@ public class LaunchActivity
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
+                return "IN";
             }
             return getCountry(launchActivity);
         }
