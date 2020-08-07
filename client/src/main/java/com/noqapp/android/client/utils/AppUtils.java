@@ -42,6 +42,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.GeoIP;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
@@ -314,10 +315,10 @@ public class AppUtils extends CommonHelper {
         return null;
     }
 
-    public static LatLng getLocationFromAddress(Context context, String strAddress) {
+    public static GeoIP getLocationFromAddress(Context context, String strAddress) {
         Geocoder coder = new Geocoder(context);
         List<Address> address;
-        LatLng latLng = null;
+        GeoIP latLng = null;
         try {
             // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
@@ -326,7 +327,7 @@ public class AppUtils extends CommonHelper {
                 //TODO @Chandra get proper lat long
             }
             Address location = address.get(0);
-            latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            latLng = new GeoIP(location.getLatitude(), location.getLongitude());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

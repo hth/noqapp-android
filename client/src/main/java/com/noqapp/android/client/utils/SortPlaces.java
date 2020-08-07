@@ -1,15 +1,15 @@
 package com.noqapp.android.client.utils;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.common.primitives.Doubles;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.common.utils.GeoIP;
 
 import java.util.Comparator;
 
 public class SortPlaces implements Comparator<BizStoreElastic> {
-    private LatLng currentLoc;
+    private GeoIP currentLoc;
 
-    public SortPlaces(LatLng current) {
+    public SortPlaces(GeoIP current) {
         currentLoc = current;
     }
 
@@ -20,8 +20,8 @@ public class SortPlaces implements Comparator<BizStoreElastic> {
         double lat2 = GeoHashUtils.decodeLatitude(place2.getGeoHash());
         double lon2 = GeoHashUtils.decodeLongitude(place2.getGeoHash());
 
-        double distanceToPlace1 = distance(currentLoc.latitude, currentLoc.longitude, lat1, lon1);
-        double distanceToPlace2 = distance(currentLoc.latitude, currentLoc.longitude, lat2, lon2);
+        double distanceToPlace1 = distance(currentLoc.getLatitude(), currentLoc.getLongitude(), lat1, lon1);
+        double distanceToPlace2 = distance(currentLoc.getLatitude(), currentLoc.getLongitude(), lat2, lon2);
         return Doubles.compare(distanceToPlace1, distanceToPlace2);
     }
 
