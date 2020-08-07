@@ -268,8 +268,8 @@ public class LaunchActivity
         tv_email.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
         tv_version.setOnClickListener(this);
-        LocationReader locationReader = new LocationReader();
-        locationReader.getLocation(this);
+//        LocationReader locationReader = new LocationReader();
+//        locationReader.getLocation(this);
         startService(new Intent(this, MyLocationService.class));
         ((TextView) findViewById(R.id.tv_version)).setText(
                 AppUtils.isRelease()
