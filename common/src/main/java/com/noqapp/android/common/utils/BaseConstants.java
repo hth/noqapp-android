@@ -25,8 +25,8 @@ public class BaseConstants {
 
     public static final int ACTIVITY_RESULT_BACK = 23;
 
-    public static double DEFAULT_LATITUDE = 19.0760;
-    public static double DEFAULT_LONGITUDE = 72.8777;
+    public static double DEFAULT_LATITUDE = 18.9067;
+    public static double DEFAULT_LONGITUDE = 72.8147;
     public static String DEFAULT_CITY = "Mumbai";
     public static String DEFAULT_COUNTRY_CODE = "IN";
 }
