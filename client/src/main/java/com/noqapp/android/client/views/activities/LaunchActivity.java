@@ -181,7 +181,7 @@ public class LaunchActivity
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
         } else {
-            COUNTRY_CODE = getCountryCode();
+            COUNTRY_CODE = "IN";
         }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
@@ -213,19 +213,24 @@ public class LaunchActivity
         languagePref.registerOnSharedPreferenceChangeListener(this);
         language = languagePref.getString("pref_language", "");
 
-        if (!language.equals("")) {
-            if (language.equals("hi")) {
-                language = "hi";
-                locale = new Locale("hi");
-            } else if (language.equals("kn")) {
-                language = "kn";
-                locale = new Locale("kn");
-            }  else if (language.equals("fr")) {
-                language = "fr";
-                locale = new Locale("fr");
-            } else {
-                locale = Locale.ENGLISH;
-                language = "en_US";
+        if (StringUtils.isNotBlank(language)) {
+            switch (language) {
+                case "hi":
+                    language = "hi";
+                    locale = new Locale("hi");
+                    break;
+                case "kn":
+                    language = "kn";
+                    locale = new Locale("kn");
+                    break;
+                case "fr":
+                    language = "fr";
+                    locale = new Locale("fr");
+                    break;
+                default:
+                    locale = Locale.ENGLISH;
+                    language = "en_US";
+                    break;
             }
         } else {
             locale = Locale.ENGLISH;
