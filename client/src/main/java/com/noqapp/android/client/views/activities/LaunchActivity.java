@@ -277,7 +277,6 @@ public class LaunchActivity
                         : getString(R.string.version_no, "Not for release"));
         setUpExpandableList(UserUtils.isLogin());
 
-
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceApiCall deviceModel = new DeviceApiCall();
@@ -1405,7 +1404,6 @@ public class LaunchActivity
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
-                return "IN";
             }
             return getCountry(launchActivity);
         }

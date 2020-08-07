@@ -24,14 +24,13 @@ public class LocationReader {
     private GsmCellLocation cellLocation;
     private int myLatitude, myLongitude;
 
-
     public void getLocation(Activity context) {
-
         //retrieve a reference to an instance of TelephonyManager
         telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+        ) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -46,32 +45,21 @@ public class LocationReader {
         final int lac = cellLocation.getLac();
         Log.e("gsm cell id: ", String.valueOf(cid));
         Log.e("gsm location area code:", String.valueOf(lac));
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final Boolean result = RqsLocation(cid, lac);
-                context.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (result) {
-                            Log.e("Location",
-                                    String.valueOf((float) myLatitude / 1000000)
-                                            + " : "
-                                            + String.valueOf((float) myLongitude / 1000000));
-                        } else {
-                            Log.e("Location", "Can't find Location!");
-                        }
-                    }
-                });
-            }
+        new Thread(() -> {
+            final Boolean result = RqsLocation(cid, lac);
+            context.runOnUiThread(() -> {
+                if (result) {
+                    Log.e("Location", (float) myLatitude / 1000000 + " : " + (float) myLongitude / 1000000);
+                } else {
+                    Log.e("Location", "Can't find Location!");
+                }
+            });
         }).start();
     }
 
     private Boolean RqsLocation(int cid, int lac) {
-        Boolean result = false;
-
+        boolean result = false;
         String urlmmap = "https://www.google.com/glm/mmap";
-
         try {
             URL url = new URL(urlmmap);
             URLConnection conn = url.openConnection();
@@ -90,7 +78,7 @@ public class LocationReader {
             dataInputStream.readShort();
             dataInputStream.readByte();
             int code = dataInputStream.readInt();
-            if (code == 0) {
+            if (0 == code) {
                 myLatitude = dataInputStream.readInt();
                 myLongitude = dataInputStream.readInt();
                 result = true;
@@ -100,13 +88,10 @@ public class LocationReader {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
         return result;
-
     }
 
-    private void WriteData(OutputStream out, int cid, int lac)
-            throws IOException {
+    private void WriteData(OutputStream out, int cid, int lac) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(out);
         dataOutputStream.writeShort(21);
         dataOutputStream.writeLong(0);
