@@ -341,6 +341,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <service android:enabled="true" android:name="com.noqapp.android.client.utils.MyLocationService" />
 
         <receiver android:name=".views.receivers.AlarmReceiver" /> <!-- File Provider -->
         <provider

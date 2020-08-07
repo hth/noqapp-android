@@ -351,7 +351,8 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             switch (jsonProfile.getUserLevel()) {
                 case S_MANAGER:
                 case Q_SUPERVISOR:
-                    frame_scan.setVisibility(View.VISIBLE);
+                    // @TODO revert this changes after silent location feature removed
+                    frame_scan.setVisibility(View.GONE);
                     break;
                 default:
                     frame_scan.setVisibility(View.GONE);

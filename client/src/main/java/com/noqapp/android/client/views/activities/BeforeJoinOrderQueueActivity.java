@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -159,6 +160,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void queueResponse(JsonQueue jsonQueueTemp) {
         swipeRefreshLayout.setRefreshing(false);
