@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
@@ -104,6 +103,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.GeoIP;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -457,7 +457,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             }
         }
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(lat, lng)));
+        Collections.sort(nearMeData, new SortPlaces(new GeoIP(lat, lng)));
         StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, lng);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
@@ -501,7 +501,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             }
         }
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeHospital, new SortPlaces(new LatLng(lat, lng)));
+        Collections.sort(nearMeHospital, new SortPlaces(new GeoIP(lat, lng)));
         StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeHospital, getActivity(), storeListener, lat, lng);
         rv_health_care.setAdapter(storeInfoAdapter);
         Log.v("NearMe Hospital", bizStoreElasticList.toString());

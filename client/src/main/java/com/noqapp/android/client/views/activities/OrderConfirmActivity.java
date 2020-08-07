@@ -25,9 +25,9 @@ import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -354,7 +354,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
                 btn_cancel_order.setVisibility(View.GONE);
                 break;
-
             default:
                 tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
         }

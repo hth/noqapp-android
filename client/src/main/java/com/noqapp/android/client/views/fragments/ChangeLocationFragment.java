@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -23,6 +22,7 @@ import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
+import com.noqapp.android.common.utils.GeoIP;
 
 public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
     private double lat, lng;
@@ -70,10 +70,10 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
         autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
             try {
                 String city_name = (String) parent.getItemAtPosition(position);
-                LatLng latLng = AppUtils.getLocationFromAddress(getActivity(), city_name);
+                GeoIP latLng = AppUtils.getLocationFromAddress(getActivity(), city_name);
                 if (null != latLng) {
-                    lat = latLng.latitude;
-                    lng = latLng.longitude;
+                    lat = latLng.getLatitude();
+                    lng = latLng.getLongitude();
                     LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city_name);
                     //finish();
                 } else {

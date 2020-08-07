@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
@@ -36,6 +35,7 @@ import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.GeoIP;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -122,10 +122,10 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             String city_name = (String) parent.getItemAtPosition(position);
-            LatLng latLng = AppUtils.getLocationFromAddress(SearchActivity.this, city_name);
+            GeoIP latLng = AppUtils.getLocationFromAddress(SearchActivity.this, city_name);
             if (null != latLng) {
-                lat = String.valueOf(latLng.latitude);
-                lng = String.valueOf(latLng.longitude);
+                lat = String.valueOf(latLng.getLatitude());
+                lng = String.valueOf(latLng.getLongitude());
             }
             city = city_name;
             AppUtils.hideKeyBoard(SearchActivity.this);
