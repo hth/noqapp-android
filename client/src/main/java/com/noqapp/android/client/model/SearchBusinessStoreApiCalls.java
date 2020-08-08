@@ -80,7 +80,7 @@ public class SearchBusinessStoreApiCalls {
      * @param searchStoreQuery
      */
     public void canteenNearMe(String did, SearchStoreQuery searchStoreQuery) {
-        searchBusinessStoreApiUrls.otherMerchant(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+        searchBusinessStoreApiUrls.canteen(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
