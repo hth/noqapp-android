@@ -305,6 +305,26 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         dismissProgress();
     }
 
+    @Override
+    public void nearMeCanteenResponse(BizStoreElasticList bizStoreElasticList) {
+        // Do nothing
+    }
+
+    @Override
+    public void nearMeCanteenError() {
+        // Do nothing
+    }
+
+    @Override
+    public void nearMeTempleResponse(BizStoreElasticList bizStoreElasticList) {
+        // Do nothing
+    }
+
+    @Override
+    public void nearMeTempleError() {
+        // Do nothing
+    }
+
 
     private void applySearch(){
         if (LaunchActivity.isLockMode) {

@@ -202,7 +202,7 @@
                             android:text="@string/view_all"
                             android:textColor="@android:color/darker_gray"
                             android:textSize="@dimen/text_size_twelve"
-                            android:visibility="visible" />
+                            android:visibility="invisible" />
 
                     </RelativeLayout>
 
@@ -361,6 +361,146 @@
 
                         <ProgressBar
                             android:id="@+id/pb_health_care"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="gone" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rl_canteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/cell_size"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/screen_padding_home"
+                    android:paddingRight="@dimen/screen_padding_home">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/tv_canteen_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="@string/canteen_near"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_fourteen" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/bottom_view_height"
+                            android:layout_below="@+id/tv_canteen_title"
+                            android:layout_alignLeft="@+id/tv_canteen_title"
+                            android:layout_alignRight="@+id/tv_canteen_title"
+                            android:background="@color/theme_aqua" />
+
+                        <TextView
+                            android:id="@+id/tv_canteen_view_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:padding="5dp"
+                            android:text="@string/view_all"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="@dimen/text_size_twelve"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_canteen_around_you"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="5dp"
+                            android:scrollbarSize="2dp"
+                            android:scrollbarStyle="outsideInset"
+                            android:scrollbarThumbHorizontal="@color/colorPrimary"
+                            android:scrollbars="horizontal" />
+
+                        <ProgressBar
+                            android:id="@+id/pb_canteen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="gone" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rl_temple_around_you"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/cell_size"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/screen_padding_home"
+                    android:paddingRight="@dimen/screen_padding_home">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/tv_temple_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="@string/temple_near"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_fourteen" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/bottom_view_height"
+                            android:layout_below="@+id/tv_temple_title"
+                            android:layout_alignLeft="@+id/tv_temple_title"
+                            android:layout_alignRight="@+id/tv_temple_title"
+                            android:background="@color/theme_aqua" />
+
+                        <TextView
+                            android:id="@+id/tv_temple_view_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:padding="5dp"
+                            android:text="@string/view_all"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="@dimen/text_size_twelve"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_temple_around_you"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="5dp"
+                            android:scrollbarSize="2dp"
+                            android:scrollbarStyle="outsideInset"
+                            android:scrollbarThumbHorizontal="@color/colorPrimary"
+                            android:scrollbars="horizontal" />
+
+                        <ProgressBar
+                            android:id="@+id/pb_temple"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

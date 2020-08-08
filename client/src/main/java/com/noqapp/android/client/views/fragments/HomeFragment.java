@@ -127,13 +127,20 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private RecyclerView rv_feed;
     private TextView tv_active_title;
     private TextView tv_deviceId;
+    private RecyclerView rv_temple_around_you;
+    private RecyclerView rv_canteen_around_you;
     private RecyclerView rv_merchant_around_you, rv_events;
+    private LinearLayout rl_canteen, rl_temple_around_you;
     private TextView tv_health_care_view_all;
     private TextView tv_near_view_all;
     private TextView tv_feed_view_all;
     private TextView tv_events_view_all;
+    private TextView tv_canteen_view_all;
+    private TextView tv_temple_view_all;
     private ProgressBar pb_current;
     private ProgressBar pb_health_care;
+    private ProgressBar pb_canteen;
+    private ProgressBar pb_temple;
     private ProgressBar pb_near;
     private ProgressBar pb_feed;
     private ProgressBar pb_events;
@@ -145,6 +152,8 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private boolean fromList = false;
     private ArrayList<BizStoreElastic> nearMeData;
     private ArrayList<BizStoreElastic> nearMeHospital;
+    private ArrayList<BizStoreElastic> nearMeTemple;
+    private ArrayList<BizStoreElastic> nearMeCanteen;
     private CurrentActivityAdapter.OnItemClickListener currentClickListener;
     private StoreInfoAdapter.OnItemClickListener storeListener;
     private String scrollId = "";
@@ -213,23 +222,33 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         tv_active_title = view.findViewById(R.id.tv_active_title);
         tv_deviceId = view.findViewById(R.id.tv_deviceId);
         rv_merchant_around_you = view.findViewById(R.id.rv_merchant_around_you);
+        rv_canteen_around_you = view.findViewById(R.id.rv_canteen_around_you);
+        rv_temple_around_you = view.findViewById(R.id.rv_temple_around_you);
         rv_events = view.findViewById(R.id.rv_events);
 
         tv_health_care_view_all = view.findViewById(R.id.tv_health_care_view_all);
         tv_near_view_all = view.findViewById(R.id.tv_near_view_all);
+        tv_canteen_view_all = view.findViewById(R.id.tv_canteen_view_all);
+        tv_temple_view_all = view.findViewById(R.id.tv_temple_view_all);
         tv_feed_view_all = view.findViewById(R.id.tv_feed_view_all);
         tv_events_view_all = view.findViewById(R.id.tv_events_view_all);
         pb_current = view.findViewById(R.id.pb_current);
         pb_health_care = view.findViewById(R.id.pb_health_care);
         pb_near = view.findViewById(R.id.pb_near);
+        pb_canteen = view.findViewById(R.id.pb_canteen);
+        pb_temple = view.findViewById(R.id.pb_temple);
         pb_feed = view.findViewById(R.id.pb_feed);
         pb_events = view.findViewById(R.id.pb_events);
         cv_update_location = view.findViewById(R.id.cv_update_location);
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
+        rl_canteen = view.findViewById(R.id.rl_canteen);
+        rl_temple_around_you = view.findViewById(R.id.rl_temple_around_you);
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
         tv_update = view.findViewById(R.id.tv_update);
         tv_health_care_view_all.setOnClickListener(this);
         tv_near_view_all.setOnClickListener(this);
+        tv_temple_view_all.setOnClickListener(this);
+        tv_canteen_view_all.setOnClickListener(this);
         tv_feed_view_all.setOnClickListener(this);
         tv_events_view_all.setOnClickListener(this);
 
@@ -280,6 +299,14 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         rv_merchant_around_you.setHasFixedSize(true);
         rv_merchant_around_you.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
+
+        rv_canteen_around_you.setHasFixedSize(true);
+        rv_canteen_around_you.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rv_canteen_around_you.setItemAnimator(new DefaultItemAnimator());
+
+        rv_temple_around_you.setHasFixedSize(true);
+        rv_temple_around_you.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rv_temple_around_you.setItemAnimator(new DefaultItemAnimator());
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             callCurrentAndHistoryQueue();
@@ -441,6 +468,14 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             SearchBusinessStoreApiCalls searchBusinessStoreApiCalls = new SearchBusinessStoreApiCalls(this);
             searchBusinessStoreApiCalls.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
             searchBusinessStoreApiCalls.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
+            // Applicable for INDIA only
+            if (LaunchActivity.COUNTRY_CODE.equalsIgnoreCase("IN")) {
+                searchBusinessStoreApiCalls.templeNearMe(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreApiCalls.canteenNearMe(UserUtils.getDeviceId(), searchStoreQuery);
+            }else{
+                rl_canteen.setVisibility(View.GONE);
+                rl_temple_around_you.setVisibility(View.GONE);
+            }
         } else {
             if (isAdded()) {
                 ShowAlertInformation.showNetworkDialog(getActivity());
@@ -452,7 +487,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
         nearMeData = new ArrayList<>();
         for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.DO) {
+            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.DO
+                    && BusinessTypeEnum.CD != bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType()
+                    && BusinessTypeEnum.CDQ != bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType()) {
                 nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
             }
         }
@@ -513,6 +550,53 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     @Override
     public void nearMeHospitalError() {
         pb_health_care.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void nearMeCanteenResponse(BizStoreElasticList bizStoreElasticList) {
+        nearMeCanteen = new ArrayList<>();
+        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
+            if (BusinessTypeEnum.CD == bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType()||
+                    BusinessTypeEnum.CDQ == bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType()) {
+                nearMeCanteen.add(bizStoreElasticList.getBizStoreElastics().get(i));
+            }
+        }
+        //sort the list, give the Comparator the current location
+        Collections.sort(nearMeCanteen, new SortPlaces(new GeoIP(lat, lng)));
+        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeCanteen, getActivity(), storeListener, lat, lng);
+        rv_canteen_around_you.setAdapter(storeInfoAdapter);
+        Log.v("NearMe Canteen", bizStoreElasticList.toString());
+        scrollId = bizStoreElasticList.getScrollId();
+        pb_canteen.setVisibility(View.GONE);
+        tv_canteen_view_all.setVisibility(nearMeCanteen.size() == 0 ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void nearMeCanteenError() {
+        pb_canteen.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void nearMeTempleResponse(BizStoreElasticList bizStoreElasticList) {
+        nearMeTemple = new ArrayList<>();
+        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
+            if (BusinessTypeEnum.PW == bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType()) {
+                nearMeTemple.add(bizStoreElasticList.getBizStoreElastics().get(i));
+            }
+        }
+        //sort the list, give the Comparator the current location
+        Collections.sort(nearMeTemple, new SortPlaces(new GeoIP(lat, lng)));
+        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeTemple, getActivity(), storeListener, lat, lng);
+        rv_temple_around_you.setAdapter(storeInfoAdapter);
+        Log.v("NearMe Temple", bizStoreElasticList.toString());
+        scrollId = bizStoreElasticList.getScrollId();
+        pb_temple.setVisibility(View.GONE);
+        tv_temple_view_all.setVisibility(nearMeTemple.size() == 0 ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void nearMeTempleError() {
+        pb_temple.setVisibility(View.GONE);
     }
 
     @Override
@@ -618,7 +702,27 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 
     private void nearClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
-        intent.putExtra("list", (Serializable) nearMeData);
+        intent.putExtra("list", nearMeData);
+        intent.putExtra("scrollId", scrollId);
+        intent.putExtra("lat", "" + lat);
+        intent.putExtra("lng", "" + lng);
+        intent.putExtra("city", city);
+        startActivity(intent);
+    }
+
+    private void allTempleClick() {
+        Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
+        intent.putExtra("list", nearMeTemple);
+        intent.putExtra("scrollId", scrollId);
+        intent.putExtra("lat", "" + lat);
+        intent.putExtra("lng", "" + lng);
+        intent.putExtra("city", city);
+        startActivity(intent);
+    }
+
+    private void allCanteenClick() {
+        Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
+        intent.putExtra("list", nearMeCanteen);
         intent.putExtra("scrollId", scrollId);
         intent.putExtra("lat", "" + lat);
         intent.putExtra("lng", "" + lng);
@@ -879,6 +983,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 break;
             case R.id.tv_events_view_all:
                 allEventsClick();
+                break;
+            case R.id.tv_canteen_view_all:
+                allCanteenClick();
+                break;
+            case R.id.tv_temple_view_all:
+                allTempleClick();
                 break;
 //            case R.id.iv_event:
 //                Intent in = new Intent(getActivity(), ImageViewerActivity.class);
