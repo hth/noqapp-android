@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.model.response.api;
 
 import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.StoreHours;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -137,5 +138,23 @@ public interface StoreSettingApiUrls {
 
         @Body
         StoreSetting storeSetting
+    );
+
+    @GET("api/m/ss/storeHours.json")
+    Call<StoreSetting> storeHours(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt,
+
+        @Header("X-R-MAIL")
+        String mail,
+
+        @Header("X-R-AUTH")
+        String auth,
+
+        @Body
+        StoreHours storeHours
     );
 }

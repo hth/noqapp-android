@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,8 +32,8 @@ public class StoreHours implements Serializable {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("shs")
-    private List<StoreHourDaily> storeHourDaily;
+    @JsonProperty("jhs")
+    private List<JsonStore> jsonStores;
 
     public String getCodeQR() {
         return codeQR;
@@ -43,12 +44,11 @@ public class StoreHours implements Serializable {
         return this;
     }
 
-    public List<StoreHourDaily> getStoreHourDaily() {
-        return storeHourDaily;
+    public List<JsonStore> getJsonStores() {
+        return jsonStores;
     }
 
-    public StoreHours setStoreHourDaily(List<StoreHourDaily> storeHourDaily) {
-        this.storeHourDaily = storeHourDaily;
-        return this;
+    public void setJsonStores(List<JsonStore> jsonStores) {
+        this.jsonStores = jsonStores;
     }
 }
