@@ -468,6 +468,6 @@
     <string name="lang_foreign_language">Foreign Language</string>
     <string name="french">ಫ್ರೆಂಚ್</string>
     <string name="business_too_far_from_location">Business is too far from your location. Click OK to continue joining the queue.</string>
-    <string name="canteen_near">Canteen</string>
-    <string name="temple_near">Temple</string>
+    <string name="canteen_near">CSD/URC</string>
+    <string name="place_of_worship">Place of Worship</string>
 </resources>
