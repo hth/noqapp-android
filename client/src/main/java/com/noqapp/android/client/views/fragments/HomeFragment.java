@@ -470,8 +470,8 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             searchBusinessStoreApiCalls.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
             // Applicable for INDIA only
             if (LaunchActivity.COUNTRY_CODE.equalsIgnoreCase("IN")) {
-                searchBusinessStoreApiCalls.templeNearMe(UserUtils.getDeviceId(), searchStoreQuery);
-                searchBusinessStoreApiCalls.canteenNearMe(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreApiCalls.placeOfWorship(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreApiCalls.canteen(UserUtils.getDeviceId(), searchStoreQuery);
             }else{
                 rl_canteen.setVisibility(View.GONE);
                 rl_temple_around_you.setVisibility(View.GONE);
