@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model.response.api;
 
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.StoreHours;
 
@@ -142,6 +143,24 @@ public interface StoreSettingApiUrls {
 
     @GET("api/m/ss/storeHours.json")
     Call<StoreSetting> storeHours(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt,
+
+        @Header("X-R-MAIL")
+        String mail,
+
+        @Header("X-R-AUTH")
+        String auth,
+
+        @Body
+        StoreHours storeHours
+    );
+
+    @POST("api/m/ss/storeHours.json")
+    Call<JsonResponse> storeHoursUpdate(
         @Header("X-R-DID")
         String did,
 
