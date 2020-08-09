@@ -9,11 +9,19 @@ import com.noqapp.android.common.presenter.ResponseErrorPresenter;
  */
 public interface SearchBusinessStorePresenter extends ResponseErrorPresenter {
 
-    void nearMeResponse(BizStoreElasticList bizStoreElasticList);
+    void nearMeMerchant(BizStoreElasticList bizStoreElasticList);
 
-    void nearMeError();
+    void nearMeMerchantError();
 
     void nearMeHospitalResponse(BizStoreElasticList bizStoreElasticList);
 
     void nearMeHospitalError();
+
+    void nearMeCanteenResponse(BizStoreElasticList bizStoreElasticList);
+
+    void nearMeCanteenError();
+
+    void nearMeTempleResponse(BizStoreElasticList bizStoreElasticList);
+
+    void nearMeTempleError();
 }

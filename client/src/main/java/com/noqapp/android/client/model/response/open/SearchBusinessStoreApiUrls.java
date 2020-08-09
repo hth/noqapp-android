@@ -78,4 +78,36 @@ public interface SearchBusinessStoreApiUrls {
             @Body
             SearchStoreQuery searchStoreQuery
     );
+
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
+    @POST("open/search/canteen.json")
+    Call<BizStoreElasticList> canteen(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Body
+            SearchStoreQuery searchStoreQuery
+    );
+
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
+    @POST("open/search/placeOfWorship.json")
+    Call<BizStoreElasticList> placeOfWorship(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt,
+
+        @Body
+        SearchStoreQuery searchStoreQuery
+    );
 }

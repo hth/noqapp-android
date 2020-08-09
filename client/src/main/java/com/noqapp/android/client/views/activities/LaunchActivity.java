@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,8 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,13 +21,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,11 +58,8 @@ import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.LocationReader;
-import com.noqapp.android.client.utils.MyLocationService;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
@@ -268,9 +259,7 @@ public class LaunchActivity
         tv_email.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
         tv_version.setOnClickListener(this);
-//        LocationReader locationReader = new LocationReader();
-//        locationReader.getLocation(this);
-        startService(new Intent(this, MyLocationService.class));
+
         ((TextView) findViewById(R.id.tv_version)).setText(
                 AppUtils.isRelease()
                         ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
@@ -728,64 +717,6 @@ public class LaunchActivity
         }
     }
 
-    public void showChangeLangDialog() {
-        final Dialog dialog = new Dialog(launchActivity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_language);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCanceledOnTouchOutside(true);
-        final LinearLayout ll_hindi = dialog.findViewById(R.id.ll_hindi);
-        final LinearLayout ll_kannada = dialog.findViewById(R.id.ll_kannada);
-        ll_kannada.setVisibility(View.GONE);
-
-        final LinearLayout ll_english = dialog.findViewById(R.id.ll_english);
-        final RadioButton rb_hi = dialog.findViewById(R.id.rb_hi);
-        final RadioButton rb_ka = dialog.findViewById(R.id.rb_ka);
-        final RadioButton rb_en = dialog.findViewById(R.id.rb_en);
-
-        if (language.equals("hi")) {
-            rb_hi.setChecked(true);
-            rb_ka.setChecked(false);
-            rb_en.setChecked(false);
-        } else if (language.equals("kn")) {
-            rb_hi.setChecked(false);
-            rb_ka.setChecked(true);
-            rb_en.setChecked(false);
-        } else {
-            rb_hi.setChecked(false);
-            rb_ka.setChecked(false);
-            rb_en.setChecked(true);
-        }
-        ll_hindi.setOnClickListener((View v) -> {
-            AppUtils.changeLanguage("hi");
-            dialog.dismiss();
-            if (AppUtils.isRelease()) {
-                Bundle params = new Bundle();
-                params.putString("Language", "HINDI");
-                fireBaseAnalytics.logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
-            }
-        });
-        ll_kannada.setOnClickListener((View v) -> {
-            AppUtils.changeLanguage("kn");
-            dialog.dismiss();
-            if (AppUtils.isRelease()) {
-                Bundle params = new Bundle();
-                params.putString("Language", "KANNADA");
-                fireBaseAnalytics.logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
-            }
-        });
-        ll_english.setOnClickListener((View v) -> {
-            AppUtils.changeLanguage("en");
-            dialog.dismiss();
-            if (AppUtils.isRelease()) {
-                Bundle params = new Bundle();
-                params.putString("Language", "ENGLISH");
-                fireBaseAnalytics.logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
-            }
-        });
-        dialog.show();
-    }
-
     @Override
     public void authenticationFailure() {
         AppUtils.authenticationProcessing(this);
@@ -1129,7 +1060,6 @@ public class LaunchActivity
                 break;
             }
             case R.drawable.language:
-               // showChangeLangDialog();
                 Intent claIntent = new Intent(LaunchActivity.this, ChangeLanguageActivity.class);
                 startActivity(claIntent);
                 break;

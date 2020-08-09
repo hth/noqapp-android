@@ -101,7 +101,7 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.tv_near_view_all), withText("View All"),
+                allOf(withId(R.id.tv_merchant_view_all), withText("View All"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.rl_business_around_you),
