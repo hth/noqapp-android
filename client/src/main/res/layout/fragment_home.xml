@@ -333,7 +333,7 @@
                             android:background="@color/theme_aqua" />
 
                         <TextView
-                            android:id="@+id/tv_near_view_all"
+                            android:id="@+id/tv_merchant_view_all"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -360,7 +360,7 @@
                             android:scrollbars="horizontal" />
 
                         <ProgressBar
-                            android:id="@+id/pb_near"
+                            android:id="@+id/pb_merchant"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

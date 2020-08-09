@@ -268,7 +268,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
-    public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
+    public void nearMeMerchant(BizStoreElasticList bizStoreElasticList) {
         ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         scrollId = bizStoreElasticList.getScrollId();
@@ -291,7 +291,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
-    public void nearMeError() {
+    public void nearMeMerchantError() {
         dismissProgress();
     }
 

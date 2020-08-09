@@ -52,7 +52,7 @@ public class SearchBusinessStoreApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response NearMe", String.valueOf(response.body()));
-                        searchBusinessStorePresenter.nearMeResponse(response.body());
+                        searchBusinessStorePresenter.nearMeMerchant(response.body());
                         bizStoreElasticList = response.body();
                     } else {
                         searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
@@ -70,7 +70,7 @@ public class SearchBusinessStoreApiCalls {
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("NearMe failed", t.getLocalizedMessage(), t);
-                searchBusinessStorePresenter.nearMeError();
+                searchBusinessStorePresenter.nearMeMerchantError();
             }
         });
     }
@@ -182,7 +182,7 @@ public class SearchBusinessStoreApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response search", String.valueOf(response.body()));
-                        searchBusinessStorePresenter.nearMeResponse(response.body());
+                        searchBusinessStorePresenter.nearMeMerchant(response.body());
                         bizStoreElasticList = response.body();
                     } else {
                         searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
@@ -200,7 +200,7 @@ public class SearchBusinessStoreApiCalls {
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("onFailure search", t.getLocalizedMessage(), t);
-                searchBusinessStorePresenter.nearMeError();
+                searchBusinessStorePresenter.nearMeMerchantError();
             }
         });
     }
@@ -213,7 +213,7 @@ public class SearchBusinessStoreApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response search", String.valueOf(response.body()));
-                        searchBusinessStorePresenter.nearMeResponse(response.body());
+                        searchBusinessStorePresenter.nearMeMerchant(response.body());
                         bizStoreElasticList = response.body();
                     } else {
                         searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
@@ -231,7 +231,7 @@ public class SearchBusinessStoreApiCalls {
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("onFailure search", t.getLocalizedMessage(), t);
-                searchBusinessStorePresenter.nearMeError();
+                searchBusinessStorePresenter.nearMeMerchantError();
             }
         });
     }
