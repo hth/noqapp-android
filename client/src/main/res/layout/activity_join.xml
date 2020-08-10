@@ -458,7 +458,6 @@
                             android:textColor="@color/colorAddress"
                             android:textSize="@dimen/text_size_sixteen" />
 
-
                         <TextView
                             android:id="@+id/tv_address"
                             style="@style/style_join_queue_tv"
@@ -469,9 +468,7 @@
                             android:paddingRight="10dp"
                             android:textColor="#606060"
                             android:textSize="@dimen/text_size_fourteen" />
-
                     </LinearLayout>
-
                 </LinearLayout>
             </LinearLayout>
 
