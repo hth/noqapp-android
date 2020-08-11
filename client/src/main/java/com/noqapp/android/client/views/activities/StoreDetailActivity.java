@@ -208,7 +208,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         } else if (jsonQueue.getReviewCount() == 1) {
             tv_rating_review.setText("1 Review");
         } else {
-            tv_rating_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
+            tv_rating_review.setText(jsonQueue.getReviewCount() + " Reviews");
         }
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.get()

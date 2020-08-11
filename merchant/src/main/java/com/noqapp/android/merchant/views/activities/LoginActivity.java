@@ -258,8 +258,9 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        if (null != loginCallBack)
+        if (null != loginCallBack) {
             loginCallBack.userFound(profile);
+        }
         finish();//close the current activity
         dismissProgress();
     }
