@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'net.danlew:android.joda:2.10.6'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.6'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.7'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'com.itextpdf:itextg:5.5.10'
@@ -46,12 +46,12 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0-rc01', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0-rc02', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'org.mockito:mockito-android:3.4.4'
+    androidTestImplementation 'org.mockito:mockito-android:3.4.6'
 
-    testImplementation 'org.mockito:mockito-core:3.4.4'
+    testImplementation 'org.mockito:mockito-core:3.4.6'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
 
