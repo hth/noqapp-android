@@ -1,11 +1,13 @@
 package com.noqapp.android.client.utils;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
 public class AnalyticsEvents {
+    private static final String TAG = AnalyticsEvents.class.getSimpleName();
 
     public static final String EVENT_REVIEW_SCREEN = "Review_Screen";
     public static final String EVENT_FEED = "Feed_Dec_18";
@@ -27,9 +29,13 @@ public class AnalyticsEvents {
     public static final String EVENT_ERROR = "Log_Error";
     public static final String EVENT_SCAN_STORE_CODE_QR_SCREEN = "Scan_Store_CodeQR";
 
-    public static void logContentEvent(String event){
-        Bundle params = new Bundle();
-        params.putString(FirebaseAnalytics.Param.CONTENT, event);
-        LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(event, params);
+    public static void logContentEvent(String event) {
+        try {
+            Bundle params = new Bundle();
+            params.putString(FirebaseAnalytics.Param.CONTENT, event);
+            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(event, params);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed logging event " + e.getLocalizedMessage());
+        }
     }
 }
