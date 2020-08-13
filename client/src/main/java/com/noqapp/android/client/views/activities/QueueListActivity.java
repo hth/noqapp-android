@@ -133,6 +133,7 @@ public class QueueListActivity extends BaseActivity implements
             case CD:
             case CDQ:
             case BK:
+            case PW:
                 // open hospital profile
                 if (LaunchActivity.isLockMode) {
                     in = new Intent(this, KioskJoinActivity.class);

@@ -330,6 +330,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     tv_toolbar_title.setText(getString(R.string.health_service));
                     title = getString(R.string.select_a_service);
                     break;
+                case PW:
+                    btn_join_queues.setText(getString(R.string.get_token));
+                    tv_toolbar_title.setText(getString(R.string.place_of_worship));
+                    title = getString(R.string.select_a_queue);
+                    break;
                 // TODO(hth)
                 default:
                     btn_join_queues.setText(getString(R.string.get_token));

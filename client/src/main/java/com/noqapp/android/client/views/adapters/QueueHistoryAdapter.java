@@ -71,6 +71,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                 case CD:
                 case CDQ:
                 case BK:
+                case PW:
                     // open hospital/Bank profile
                     in = new Intent(context, BeforeJoinActivity.class);
                     in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
@@ -80,14 +81,13 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                     context.startActivity(in);
                     break;
                 case HS:
-                case PH: {
+                case PH:
                     // open order screen
                     in = new Intent(context, StoreDetailActivity.class);
                     b.putSerializable("BizStoreElastic", AppUtils.getStoreElastic(jsonQueueHistorical));
                     in.putExtras(b);
                     context.startActivity(in);
-                }
-                break;
+                    break;
                 case RSQ:
                 case GSQ:
                 case BAQ:

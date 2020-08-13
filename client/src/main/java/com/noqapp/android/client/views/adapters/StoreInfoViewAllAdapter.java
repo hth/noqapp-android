@@ -125,6 +125,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                 case CDQ:
                 case BK:
                 case HS:
+                case PW:
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.GONE);
                     holder.tv_category_name.setText("");

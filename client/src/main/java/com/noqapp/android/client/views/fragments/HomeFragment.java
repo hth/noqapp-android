@@ -609,6 +609,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             case CDQ:
             case BK:
             case HS:
+            case PW:
                 // open hospital/Bank profile
                 b.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                 b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
