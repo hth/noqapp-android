@@ -138,16 +138,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(true);
         queueApiAuthenticCall = new QueueApiAuthenticCall();
-        tv_mobile.setOnClickListener((View v) -> {
-            AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
-        });
-
-        btn_join_queues.setOnClickListener((View v) -> {
-            joinClick();
-        });
-        btn_register.setOnClickListener((View v) -> {
-            register();
-        });
+        tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));
+        btn_join_queues.setOnClickListener((View v) -> joinClick());
+        btn_register.setOnClickListener((View v) -> register());
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);

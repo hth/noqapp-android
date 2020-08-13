@@ -174,7 +174,6 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 }
             }
 
-
             int timeIn24HourFormat = AppUtils.getTimeIn24HourFormat();
             if (!storeHourElastic.isDayClosed()) {
                 // Before Token Available Time
