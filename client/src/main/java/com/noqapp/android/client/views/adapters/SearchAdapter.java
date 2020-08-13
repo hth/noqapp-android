@@ -149,9 +149,9 @@ public class SearchAdapter extends RecyclerView.Adapter {
 
             switch (bizStoreElastic.getBusinessType().getBusinessSupport()) {
                 case QQ:
+                case OQ:
                     holder.btn_join.setText("View Queue");
                     break;
-                case OQ:
                 case OD:
                 default:
                     holder.btn_join.setText("View Store");
