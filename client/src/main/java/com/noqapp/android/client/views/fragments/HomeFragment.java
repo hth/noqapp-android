@@ -770,7 +770,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             }
         });
 
-
         pb_current.setVisibility(View.GONE);
     }
 
@@ -1058,7 +1057,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                     dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
                     dbPresenter.getCurrentTokenQueueListFromDB();
                     break;
-
                 case MSG_HISTORY_QUEUE:
                     dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
                     dbPresenter.getHistoryTokenQueueListFromDB();
@@ -1137,9 +1135,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         tv_user_status.setText(jsonInQueuePerson.getQueueUserState().getDescription());
         tv_user_time_slot.setText(TokenStatusUtils.timeSlot(jsonInQueuePerson.getExpectedServiceBegin()));
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
-        btnPositive.setOnClickListener((View v) -> {
-            dialog.dismiss();
-        });
+        btnPositive.setOnClickListener((View v) -> dialog.dismiss());
         //dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

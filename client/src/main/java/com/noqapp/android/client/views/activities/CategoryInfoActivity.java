@@ -138,16 +138,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(true);
         queueApiAuthenticCall = new QueueApiAuthenticCall();
-        tv_mobile.setOnClickListener((View v) -> {
-            AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
-        });
-
-        btn_join_queues.setOnClickListener((View v) -> {
-            joinClick();
-        });
-        btn_register.setOnClickListener((View v) -> {
-            register();
-        });
+        tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));
+        btn_join_queues.setOnClickListener((View v) -> joinClick());
+        btn_register.setOnClickListener((View v) -> register());
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
@@ -203,7 +196,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         dismissProgress();
     }
 
-
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
         dismissProgress();
@@ -254,11 +246,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             codeQR = bizStoreElastic.getCodeQR();
 
             //TODO: This information need to come from bizStoreElastic along with formatted announcement text
-            if (BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() ||
-                    BusinessTypeEnum.CD == bizStoreElastic.getBusinessType()) {
-                tv_announcement_text.setText(R.string.announcement_message_csd);
-            } else {
-                tv_announcement_text.setText(R.string.announcement_message_covid);
+            switch (bizStoreElastic.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    tv_announcement_text.setText(R.string.announcement_message_csd);
+                    break;
+                default:
+                    tv_announcement_text.setText(R.string.announcement_message_covid);
             }
 
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
