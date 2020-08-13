@@ -69,6 +69,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                 case CD:
                 case CDQ:
                 case BK:
+                case PW:
                     // open hospital/Bank profile
                     in = new Intent(QueueHistoryDetailActivity.this, BeforeJoinActivity.class);
                     in.putExtra(IBConstant.KEY_IS_DO,jsonQueueHistorical.getBusinessType()== BusinessTypeEnum.DO);
@@ -78,14 +79,13 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                     startActivity(in);
                     break;
                 case HS:
-                case PH: {
+                case PH:
                     // open order screen
                     in = new Intent(this, StoreDetailActivity.class);
                     b.putSerializable("BizStoreElastic",AppUtils.getStoreElastic(jsonQueueHistorical));
                     in.putExtras(b);
                     startActivity(in);
-                }
-                break;
+                    break;
                 default: {
                     // open order screen
                     in = new Intent(this, StoreWithMenuActivity.class);

@@ -31,8 +31,12 @@ public class CategoryGridAdapter extends RecyclerView.Adapter {
     private Map<String, ArrayList<BizStoreElastic>> queueMap;
     private Context context;
 
-    public CategoryGridAdapter(Context context, List<JsonCategory> categories,
-                               Map<String, ArrayList<BizStoreElastic>> queueMap, OnItemClickListener listener) {
+    public CategoryGridAdapter(
+        Context context,
+        List<JsonCategory> categories,
+        Map<String, ArrayList<BizStoreElastic>> queueMap,
+        OnItemClickListener listener
+    ) {
         this.categories = categories;
         this.queueMap = queueMap;
         this.context = context;
@@ -57,6 +61,7 @@ public class CategoryGridAdapter extends RecyclerView.Adapter {
                 case CD:
                 case CDQ:
                 case BK:
+                case PW:
                     Vholder.iv_main.setBackground(ContextCompat.getDrawable(context, R.drawable.bank_bg));
                     break;
                 default:
@@ -67,14 +72,12 @@ public class CategoryGridAdapter extends RecyclerView.Adapter {
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
         if (!TextUtils.isEmpty(jsonCategory.getDisplayImage())) {
             Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonCategory.getDisplayImage()))
-                    .placeholder(ImageUtils.getThumbPlaceholder(context))
-                    .error(ImageUtils.getThumbErrorPlaceholder(context))
-                    .into(Vholder.iv_main);
+                .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonCategory.getDisplayImage()))
+                .placeholder(ImageUtils.getThumbPlaceholder(context))
+                .error(ImageUtils.getThumbErrorPlaceholder(context))
+                .into(Vholder.iv_main);
         }
-        Vholder.card_view.setOnClickListener((View v) -> {
-            listener.onCategoryItemClick(jsonCategory, position);
-        });
+        Vholder.card_view.setOnClickListener((View v) -> listener.onCategoryItemClick(jsonCategory, position));
     }
 
     @Override
@@ -98,6 +101,4 @@ public class CategoryGridAdapter extends RecyclerView.Adapter {
             card_view = v.findViewById(R.id.card_view);
         }
     }
-
-
 }

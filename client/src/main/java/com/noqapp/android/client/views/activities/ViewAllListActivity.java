@@ -32,8 +32,9 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
         RecyclerView rv_merchant_around_you = findViewById(R.id.rv_merchant_around_you);
         tv_toolbar_title.setText(getString(R.string.screen_view_all));
         ArrayList<BizStoreElastic> listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
-        if (null == listData)
+        if (null == listData) {
             listData = new ArrayList<>();
+        }
         String city = getIntent().getStringExtra("city");
         String lat = getIntent().getStringExtra("lat");
         String lng = getIntent().getStringExtra("lng");
@@ -58,7 +59,7 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
             case CDQ:
             case BK:
             case HS:
-
+            case PW:
                 // open hospital/Bank profile
                 b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(IBConstant.KEY_FROM_LIST, false);

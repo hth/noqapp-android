@@ -137,6 +137,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
                 case CD:
                 case CDQ:
                 case BK:
+                case PW:
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
@@ -145,9 +146,17 @@ public class SearchAdapter extends RecyclerView.Adapter {
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
             }
-            if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.DO) {
-                holder.btn_join.setText("View Store");
+
+            switch (bizStoreElastic.getBusinessType().getBusinessSupport()) {
+                case QQ:
+                    holder.btn_join.setText("View Queue");
+                    break;
+                case OQ:
+                case OD:
+                default:
+                    holder.btn_join.setText("View Store");
             }
+
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                 switch (bizStoreElastic.getAppointmentState()) {
                     case O:

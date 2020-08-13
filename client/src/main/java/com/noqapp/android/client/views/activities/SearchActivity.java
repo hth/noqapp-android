@@ -218,6 +218,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             case CDQ:
             case BK:
             case HS:
+            case PW:
                 if (LaunchActivity.isLockMode) {
                     in = new Intent(this, KioskJoinActivity.class);
                 } else {
