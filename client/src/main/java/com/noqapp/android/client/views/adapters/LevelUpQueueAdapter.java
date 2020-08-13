@@ -50,9 +50,12 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
         void onCategoryItemClick(BizStoreElastic item);
     }
 
-    public LevelUpQueueAdapter(Context context, List<JsonCategory> listDataHeader,
-                               Map<String, ArrayList<BizStoreElastic>> listDataChild,
-                               OnItemClickListener listener) {
+    public LevelUpQueueAdapter(
+            Context context,
+            List<JsonCategory> listDataHeader,
+            Map<String, ArrayList<BizStoreElastic>> listDataChild,
+            OnItemClickListener listener
+    ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -75,8 +78,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getBizCategoryId())
-                .get(childPosition);
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getBizCategoryId()).get(childPosition);
     }
 
     @Override
@@ -273,10 +275,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             } else {
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_inactive));
                 childViewHolder.tv_join.setTextColor(Color.BLACK);
-                childViewHolder.tv_join.setOnClickListener((View v) -> {
-                    new CustomToast().showToast(context, bizStoreElastic.getDisplayName() + " "
-                            + context.getResources().getString(R.string.no_walkin));
-                });
+                childViewHolder.tv_join.setOnClickListener((View v) -> new CustomToast().showToast(context, bizStoreElastic.getDisplayName() + " " + context.getResources().getString(R.string.no_walkin)));
             }
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                 switch (bizStoreElastic.getAppointmentState()) {

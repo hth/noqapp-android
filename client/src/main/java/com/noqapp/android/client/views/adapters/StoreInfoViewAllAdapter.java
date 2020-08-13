@@ -30,9 +30,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.noqapp.android.common.model.types.BusinessTypeEnum.CD;
-import static com.noqapp.android.common.model.types.BusinessTypeEnum.CDQ;
-
 public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final int VIEW_ITEM = 1;
