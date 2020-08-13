@@ -196,7 +196,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         dismissProgress();
     }
 
-
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
         dismissProgress();
@@ -247,11 +246,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             codeQR = bizStoreElastic.getCodeQR();
 
             //TODO: This information need to come from bizStoreElastic along with formatted announcement text
-            if (BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() ||
-                    BusinessTypeEnum.CD == bizStoreElastic.getBusinessType()) {
-                tv_announcement_text.setText(R.string.announcement_message_csd);
-            } else {
-                tv_announcement_text.setText(R.string.announcement_message_covid);
+            switch (bizStoreElastic.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    tv_announcement_text.setText(R.string.announcement_message_csd);
+                    break;
+                default:
+                    tv_announcement_text.setText(R.string.announcement_message_covid);
             }
 
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
