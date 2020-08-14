@@ -174,7 +174,7 @@ public class LaunchActivity
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
         } else {
-            COUNTRY_CODE = "IN";
+            COUNTRY_CODE = getCountryCode();
         }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
@@ -454,7 +454,6 @@ public class LaunchActivity
         }
     }
 
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.requestCodeJoinQActivity) {
@@ -550,10 +549,10 @@ public class LaunchActivity
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(iv_profile);
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
+                    .placeholder(ImageUtils.getProfilePlaceholder(this))
+                    .error(ImageUtils.getProfileErrorPlaceholder(this))
+                    .into(iv_profile);
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -588,7 +587,6 @@ public class LaunchActivity
         }
     }
 
-
     @Override
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
@@ -612,7 +610,6 @@ public class LaunchActivity
             drawer.closeDrawer(GravityCompat.START);
         }
     }
-
 
     private void callReviewActivity(String codeQR, String token) {
         try {
@@ -695,10 +692,10 @@ public class LaunchActivity
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
                         ShowAlertInformation.showThemePlayStoreDialog(
-                                this,
-                                getString(R.string.playstore_update_title),
-                                getString(R.string.playstore_update_msg),
-                                true);
+                            this,
+                            getString(R.string.playstore_update_title),
+                            getString(R.string.playstore_update_msg),
+                            true);
                     }
                 } catch (Exception e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -867,9 +864,9 @@ public class LaunchActivity
             deviceModel.register(
                 deviceId,
                 new DeviceToken(
-                        NoQueueBaseActivity.getTokenFCM(),
-                        Constants.appVersion(),
-                        CommonHelper.getLocation(latitude, longitude)));
+                    NoQueueBaseActivity.getTokenFCM(),
+                    Constants.appVersion(),
+                    CommonHelper.getLocation(latitude, longitude)));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -1143,33 +1140,33 @@ public class LaunchActivity
                 } else if (jsonData instanceof JsonTopicAppointmentData) {
                     Log.e("JsonTopicAppointData", jsonData.toString());
                     NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            "",
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            BusinessTypeEnum.PA.getName(),
-                            jsonData.getImageURL());
+                        NotificationDB.KEY_NOTIFY,
+                        "",
+                        jsonData.getBody(),
+                        jsonData.getTitle(),
+                        BusinessTypeEnum.PA.getName(),
+                        jsonData.getImageURL());
                 } else if (jsonData instanceof JsonMedicalFollowUp) {
                     Log.e("JsonMedicalFollowUp", jsonData.toString());
                     NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonMedicalFollowUp) jsonData).getCodeQR(),
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            BusinessTypeEnum.PA.getName(),
-                            jsonData.getImageURL());
+                        NotificationDB.KEY_NOTIFY,
+                        ((JsonMedicalFollowUp) jsonData).getCodeQR(),
+                        jsonData.getBody(),
+                        jsonData.getTitle(),
+                        BusinessTypeEnum.PA.getName(),
+                        jsonData.getImageURL());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     if (jsonData instanceof JsonAlertData) {
                         NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonAlertData) jsonData).getCodeQR(),
-                                jsonData.getBody(),
-                                jsonData.getTitle(),
-                                ((JsonAlertData) jsonData).getBusinessType() == null
-                                        ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonAlertData) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            ((JsonAlertData) jsonData).getBusinessType() == null
+                                ? BusinessTypeEnum.PA.getName()
+                                : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
@@ -1276,12 +1273,12 @@ public class LaunchActivity
                             TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
                         }
                         NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
-                                jsonData.getBody(),
-                                jsonData.getTitle(),
-                                BusinessTypeEnum.PA.getName(),
-                                jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            jsonData.getImageURL());
 
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                             NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
@@ -1294,13 +1291,13 @@ public class LaunchActivity
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     if (jsonData instanceof JsonAlertData) {
                         NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonAlertData) jsonData).getCodeQR(),
-                                jsonData.getBody(),
-                                jsonData.getTitle(),
-                                ((JsonAlertData) jsonData).getBusinessType() == null
-                                        ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonAlertData) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            ((JsonAlertData) jsonData).getBusinessType() == null
+                                ? BusinessTypeEnum.PA.getName()
+                                : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
                         /* Show some meaningful msg to the end user */
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
