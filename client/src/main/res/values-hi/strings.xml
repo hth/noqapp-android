@@ -240,6 +240,7 @@
     <string name="whole_day">चौबीसो घंटे</string>
     <string name="lunch_time">लंच टाइम</string>
     <string name="error_patient_name_missing">कृपया एक रोगी का नाम चुनें</string>
+    <string name="error_person_name_missing">Please select a person name</string>
     <string name="dependent_list">परिवार के सदस्य</string>
     <string name="personal_info">व्यक्तिगत जानकारी</string>
     <string name="location_change">स्थान अद्यतन</string>

@@ -24,7 +24,10 @@ import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
+import java.util.Objects;
 
 public class CurrentActivityAdapter extends RecyclerView.Adapter {
     private static final String TAG = CurrentActivityAdapter.class.getSimpleName();
@@ -126,18 +129,22 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             holder.ll_queue.setVisibility(View.GONE);
             holder.ll_appointment.setVisibility(View.VISIBLE);
             holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
-            holder.tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+            switch (jsonSchedule.getJsonQueueDisplay().getBusinessType()) {
+                case DO:
+                    holder.tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                    break;
+                default:
+                    holder.tv_degree.setText(jsonSchedule.getJsonQueueDisplay().getBusinessType().getDescription());
+            }
             holder.tv_store_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
             holder.tv_schedule_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
             try {
-                String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
+                String date = CommonHelper.SDF_DOB_FROM_UI.format(Objects.requireNonNull(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())));
                 holder.tv_schedule_date.setText(date);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            holder.card_view.setOnClickListener((View v) -> {
-                listener.currentAppointmentClick(jsonSchedule);
-            });
+            holder.card_view.setOnClickListener((View v) -> listener.currentAppointmentClick(jsonSchedule));
         }
     }
 
@@ -150,11 +157,11 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.getCodeQR()), 0);
             }
             return TokenStatusUtils.calculateEstimatedWaitTime(
-                    avgServiceTime,
-                    jsonTokenAndQueue.afterHowLong(),
-                    jsonTokenAndQueue.getQueueStatus(),
-                    jsonTokenAndQueue.getStartHour(),
-                    this.context);
+                avgServiceTime,
+                jsonTokenAndQueue.afterHowLong(),
+                jsonTokenAndQueue.getQueueStatus(),
+                jsonTokenAndQueue.getStartHour(),
+                this.context);
         } catch (Exception e) {
             Log.e(TAG, "Error setting wait time reason: " + e.getLocalizedMessage(), e);
         }
@@ -168,7 +175,6 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
 
     public interface OnItemClickListener {
         void currentQorOrderItemClick(JsonTokenAndQueue item);
-
         void currentAppointmentClick(JsonSchedule jsonSchedule);
     }
 
@@ -208,5 +214,4 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
-
 }

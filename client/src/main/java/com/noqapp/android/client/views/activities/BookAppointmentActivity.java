@@ -37,6 +37,7 @@ import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.AppointmentStateEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
@@ -45,6 +46,7 @@ import com.noqapp.android.common.utils.Formatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
@@ -53,6 +55,7 @@ import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 public class BookAppointmentActivity
         extends BaseActivity
         implements AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter {
+    private TextView tv_name;
     private Spinner sp_name_list;
     private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
@@ -104,15 +107,16 @@ public class BookAppointmentActivity
         startDate.add(Calendar.DAY_OF_MONTH, 1); // start date of appointment
 
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
-                .range(startDate, endDate)
-                .datesNumberOnScreen(5)
-                .configure()
-                .formatBottomText("EEE")
-                .formatMiddleText("dd")
-                .formatTopText("MMM")
-                .textSize(14f, 24f, 14f)
-                .end()
-                .build();
+            .range(startDate, endDate)
+            .datesNumberOnScreen(5)
+            .configure()
+            .formatBottomText("EEE")
+            .formatMiddleText("dd")
+            .formatTopText("MMM")
+            .textSize(14f, 24f, 14f)
+            .end()
+            .build();
+
         TextView tv_doctor_category = findViewById(R.id.tv_doctor_category);
         TextView tv_doctor_name = findViewById(R.id.tv_doctor_name);
         ll_sector = findViewById(R.id.ll_sector);
@@ -122,7 +126,11 @@ public class BookAppointmentActivity
         tv_slot_count = findViewById(R.id.tv_slot_count);
         tv_slot_count_empty = findViewById(R.id.tv_slot_count_empty);
         tv_doctor_name.setText(bizStoreElastic.getDisplayName());
-        tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
+        if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType()) {
+            tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
+        } else {
+            tv_doctor_category.setText(bizStoreElastic.getBusinessType().getDescription());
+        }
         TextView tv_title = findViewById(R.id.tv_title);
         btn_book_appointment = findViewById(R.id.btn_book_appointment);
         tv_empty_slots = findViewById(R.id.tv_empty_slots);
@@ -131,6 +139,7 @@ public class BookAppointmentActivity
         rv_available_date = findViewById(R.id.rv_available_date);
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
+        tv_name = findViewById(R.id.tv_name);
         sp_name_list = findViewById(R.id.sp_name_list);
         if (isAppointmentBooking) {
             tv_title.setText("Available times");
@@ -152,16 +161,37 @@ public class BookAppointmentActivity
         });
         horizontalCalendarView.refresh();
 
-        List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
-        profileList.add(0, NoQueueBaseActivity.getUserProfile());
-        profileList.add(0, new JsonProfile().setName("Select Patient"));
-        DependentAdapter adapter = new DependentAdapter(this, profileList);
-        sp_name_list.setAdapter(adapter);
+        if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType()) {
+            List<JsonProfile> profileList = new LinkedList<>();
+            DependentAdapter adapter = new DependentAdapter(this, profileList);
+            if (NoQueueBaseActivity.getUserProfile().getDependents().size() > 0) {
+                profileList.add(new JsonProfile().setName("Select Patient"));
+                profileList.add(NoQueueBaseActivity.getUserProfile());
+                profileList.addAll(NoQueueBaseActivity.getUserProfile().getDependents());
+            } else {
+                profileList.add(new JsonProfile().setName("Select Patient"));
+                profileList.add(NoQueueBaseActivity.getUserProfile());
+            }
+            tv_name.setVisibility(View.INVISIBLE);
+            sp_name_list.setAdapter(adapter);
+            tv_name.setText(getText(R.string.patient_name));
+        } else {
+            List<JsonProfile> profileList = new ArrayList<>();
+            profileList.add(new JsonProfile().setName("Select Person"));
+            profileList.add(NoQueueBaseActivity.getUserProfile());
+            DependentAdapter adapter = new DependentAdapter(this, profileList);
+            sp_name_list.setAdapter(adapter);
+            tv_name.setText("Booking Person");
+        }
 
         btn_book_appointment.setOnClickListener(v -> {
             sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
             if (sp_name_list.getSelectedItemPosition() == 0) {
-                new CustomToast().showToast(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing));
+                if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType()) {
+                    new CustomToast().showToast(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing));
+                } else {
+                    new CustomToast().showToast(BookAppointmentActivity.this, getString(R.string.error_person_name_missing));
+                }
                 sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
             } else {
                 if (isAppointmentBooking) {

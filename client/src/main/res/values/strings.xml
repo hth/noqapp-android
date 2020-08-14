@@ -240,6 +240,7 @@
     <string name="whole_day">24 Hours</string>
     <string name="lunch_time">Lunch time</string>
     <string name="error_patient_name_missing">Please select a patient name</string>
+    <string name="error_person_name_missing">Please select a person name</string>
     <string name="dependent_list">Family Members</string>
     <string name="personal_info">Personal Information</string>
     <string name="location_change">Location update</string>

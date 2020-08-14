@@ -26,6 +26,8 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
+import java.util.Objects;
+
 public class AppointmentDetailActivity extends BaseActivity implements AppointmentPresenter {
     private boolean isNavigateHome = false;
 
@@ -53,20 +55,20 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             TextView tv_msg = findViewById(R.id.tv_msg);
             tv_title.setText(jsonQueueDisplay.getDisplayName());
             tv_address.setText(AppUtils.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
-            tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(
-                    jsonSchedule.getJsonQueueDisplay().getCountryShortName(),
-                    jsonSchedule.getJsonQueueDisplay().getStorePhone()));
-
-            tv_mobile.setOnClickListener((View v) ->
-                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));
-
+            switch (jsonSchedule.getJsonQueueDisplay().getBusinessType()) {
+                case DO:
+                    tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                    break;
+                default:
+                    tv_degree.setText(jsonSchedule.getJsonQueueDisplay().getBusinessType().getDescription());
+            }
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonSchedule.getJsonQueueDisplay().getCountryShortName(), jsonSchedule.getJsonQueueDisplay().getStorePhone()));
+            tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));
             tv_patient_name.setText(jsonSchedule.getJsonProfile().getName());
-            tv_address.setOnClickListener((View v) ->
-                    AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress()));
+            tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress()));
 
             try {
-                String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
+                String date = CommonHelper.SDF_DOB_FROM_UI.format(Objects.requireNonNull(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())));
                 tv_schedule_date.setText("Date: " + date);
                 tv_schedule_time.setText("Time: " + Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime()));
             } catch (Exception e) {
@@ -90,10 +92,10 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                             setProgressMessage("Canceling appointment...");
                             showProgress();
                             appointmentApiCalls.cancelAppointment(
-                                    UserUtils.getDeviceId(),
-                                    UserUtils.getEmail(),
-                                    UserUtils.getAuth(),
-                                    jsonSchedule);
+                                UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(),
+                                jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(AppointmentDetailActivity.this);
                         }

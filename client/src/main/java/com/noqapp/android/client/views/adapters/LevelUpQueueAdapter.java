@@ -276,19 +276,25 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_join.setTextColor(Color.BLACK);
                 childViewHolder.tv_join.setOnClickListener((View v) -> new CustomToast().showToast(context, bizStoreElastic.getDisplayName() + " " + context.getResources().getString(R.string.no_walkin)));
             }
-            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                switch (bizStoreElastic.getAppointmentState()) {
-                    case O:
-                        childViewHolder.btn_book_appointment.setVisibility(View.GONE);
-                        break;
-                    case A:
-                    case S:
-                        childViewHolder.btn_book_appointment.setVisibility(View.VISIBLE);
-                        break;
-                }
-            } else {
-                childViewHolder.btn_book_appointment.setVisibility(View.GONE);
+
+            /* Booking of Appointment. */
+            switch (bizStoreElastic.getBusinessType()) {
+                case DO:
+                case PW:
+                    switch (bizStoreElastic.getAppointmentState()) {
+                        case O:
+                            childViewHolder.btn_book_appointment.setVisibility(View.GONE);
+                            break;
+                        case A:
+                        case S:
+                            childViewHolder.btn_book_appointment.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                    break;
+                default:
+                    childViewHolder.btn_book_appointment.setVisibility(View.GONE);
             }
+
             childViewHolder.btn_book_appointment.setOnClickListener((View v) -> {
                 if (UserUtils.isLogin()) {
                     Intent in = new Intent(context, BookAppointmentActivity.class);
