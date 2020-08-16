@@ -46,6 +46,39 @@ public class DeviceApiCalls {
     /**
      * Register device.
      *
+     * @param deviceToken
+     */
+    public void register(DeviceToken deviceToken) {
+        deviceApiUrls.register(DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+            @Override
+            public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d(TAG, "Registered device " + response.body());
+                        deviceRegisterPresenter.deviceRegisterResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Empty body");
+                        deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        deviceRegisterPresenter.authenticationFailure();
+                    } else {
+                        deviceRegisterPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
+                Log.e(TAG, "register " + t.getLocalizedMessage(), t);
+            }
+        });
+    }
+
+    /**
+     * Register device.
+     *
      * @param did
      * @param deviceToken
      */
