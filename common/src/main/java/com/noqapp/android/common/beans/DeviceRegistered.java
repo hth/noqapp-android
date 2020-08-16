@@ -3,6 +3,7 @@ package com.noqapp.android.common.beans;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.body.GeoPointOfQ;
 
 /**
  * User: hitender
@@ -25,6 +26,9 @@ public class DeviceRegistered {
     @JsonProperty("did")
     private String deviceId;
 
+    @JsonProperty("cor")
+    private GeoPointOfQ geoPointOfQ;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -42,6 +46,14 @@ public class DeviceRegistered {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public GeoPointOfQ getGeoPointOfQ() {
+        return geoPointOfQ;
+    }
+
+    public void setGeoPointOfQ(GeoPointOfQ geoPointOfQ) {
+        this.geoPointOfQ = geoPointOfQ;
     }
 
     public ErrorEncounteredJson getError() {

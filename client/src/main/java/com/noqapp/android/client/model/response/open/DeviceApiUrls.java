@@ -37,7 +37,7 @@ public interface DeviceApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @Deprecated 
+    @Deprecated
     @POST("open/device/register.json")
     Call<DeviceRegistered> register(
             @Header("X-R-DID")
