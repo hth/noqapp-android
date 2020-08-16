@@ -151,7 +151,6 @@
             </LinearLayout>
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -171,7 +170,6 @@
                     android:text="@string/create_case"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_ten" />
-
 
                 <TextView
                     android:id="@+id/tv_upload_document"
@@ -196,11 +194,10 @@
                     android:background="@drawable/bg_nogradient_round"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Payment Status"
+                    android:text="@string/payment_status"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_ten" />
             </LinearLayout>
-
 
             <TextView
                 android:id="@+id/tv_last_visit"
