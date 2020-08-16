@@ -20,7 +20,7 @@ public interface DeviceApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/device/register.json")
+    @POST("open/device/v1/register.json")
     Call<DeviceRegistered> register(
             @Header("X-R-DT")
             String dt,
@@ -37,6 +37,7 @@ public interface DeviceApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
+    @Deprecated 
     @POST("open/device/register.json")
     Call<DeviceRegistered> register(
             @Header("X-R-DID")
