@@ -22,6 +22,9 @@ public class DeviceRegistered {
     @JsonProperty("r")
     private int registered;
 
+    @JsonProperty("did")
+    private String deviceId;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -31,6 +34,14 @@ public class DeviceRegistered {
 
     public void setRegistered(int registered) {
         this.registered = registered;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public ErrorEncounteredJson getError() {

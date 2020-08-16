@@ -139,7 +139,8 @@
     <string name="followup_alert">There are no followup scheduled</string>
     <string name="error_account_block">Account is blocked. Contact support.</string>
     <string name="mds_medicine_allergies">Medicine Allergies:</string>
-    <string name="upload_document">Upload Document</string>
+    <string name="upload_document">Add Document</string>
+    <string name="payment_status">Payment Status</string>
     <string name="privacy_bydefault">Privacy by default and by design</string>
     <string name="transgender">Transgender</string>
     <string name="empty_price">Please enter product price</string>
