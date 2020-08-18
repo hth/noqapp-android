@@ -93,6 +93,7 @@ public class AfterJoinActivity
         CFClientInterface, CashFreeNotifyQPresenter {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
     private TextView tv_address;
+    private TextView tv_business_name;
     private TextView tv_mobile;
     //private TextView tv_serving_no; // No longer displayed, to be deleted
     private TextView tv_token;
@@ -139,6 +140,7 @@ public class AfterJoinActivity
         new InitPaymentGateway().execute();
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
+        tv_business_name = findViewById(R.id.tv_business_name_label);
         TextView tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         ImageView iv_right_bg = findViewById(R.id.iv_right_bg);
         ImageView iv_left_bg = findViewById(R.id.iv_left_bg);
@@ -271,6 +273,7 @@ public class AfterJoinActivity
             topic = jsonTokenAndQueue.getTopic();
             tokenValue = String.valueOf(jsonTokenAndQueue.getToken());
             tv_queue_name.setText(jsonTokenAndQueue.getDisplayName());
+            tv_business_name.setText(jsonTokenAndQueue.getBusinessName());
             tv_address.setText(jsonTokenAndQueue.getStoreAddress());
             queueUserId = bundle.getStringExtra("qUserId");
             List<JsonProfile> profileList = new ArrayList<>();
@@ -286,8 +289,8 @@ public class AfterJoinActivity
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
-                        placeholder(getResources().getDrawable(R.drawable.profile_theme)).
-                        error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
+                    placeholder(getResources().getDrawable(R.drawable.profile_theme)).
+                    error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
@@ -330,8 +333,7 @@ public class AfterJoinActivity
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
             tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString()));
-            tv_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this,
-                    tv_address.getText().toString()));
+            tv_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this, tv_address.getText().toString()));
             gotoPerson = (null != ReviewDB.getValue(codeQR, tokenValue)) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             //tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
@@ -352,11 +354,11 @@ public class AfterJoinActivity
                     setProgressMessage("Fetching Queue data...");
                     showProgress();
                     queueApiAuthenticCall.purchaseOrder(
-                            UserUtils.getDeviceId(),
-                            UserUtils.getEmail(),
-                            UserUtils.getAuth(),
-                            String.valueOf(jsonTokenAndQueue.getToken()),
-                            codeQR);
+                        UserUtils.getDeviceId(),
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        String.valueOf(jsonTokenAndQueue.getToken()),
+                        codeQR);
                 }
             } else {
                 queueJsonPurchaseOrderResponse(jsonTokenAndQueue.getJsonPurchaseOrder());
@@ -526,11 +528,11 @@ public class AfterJoinActivity
                     break;
                 default:
                     String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
-                            avgServiceTime,
-                            jsonTokenAndQueue.afterHowLong(),
-                            jsonTokenAndQueue.getQueueStatus(),
-                            jsonTokenAndQueue.getStartHour(),
-                            this);
+                        avgServiceTime,
+                        jsonTokenAndQueue.afterHowLong(),
+                        jsonTokenAndQueue.getQueueStatus(),
+                        jsonTokenAndQueue.getStartHour(),
+                        this);
                     if (!TextUtils.isEmpty(waitTime)) {
                         tv_estimated_time.setText(waitTime);
                         tv_left.setText(R.string.wait_time);
