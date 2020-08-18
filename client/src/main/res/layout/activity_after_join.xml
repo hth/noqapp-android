@@ -360,7 +360,6 @@
                             android:drawablePadding="5dp"
                             android:textColor="@color/text_header_color"
                             android:textSize="@dimen/text_size_fourteen" />
-
                     </LinearLayout>
 
                     <FrameLayout
