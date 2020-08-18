@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -57,7 +58,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     private long lastPress;
     private Toast backPressToast;
     private LinearLayout ll_fill_review, ll_thank_u;
-
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -173,6 +174,10 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 //                }
                 else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         /* New instance of progressbar because it is a new activity. */
                         setProgressCancel(true);
                         setProgressMessage("Submitting review...");
@@ -241,6 +246,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
     @Override
     public void reviewResponse(JsonResponse jsonResponse) {
+        mLastClickTime = 0;
         if (null != jsonResponse) {
             //success
             Log.v("Review response", jsonResponse.toString());
