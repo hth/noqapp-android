@@ -51,7 +51,6 @@ public class DeviceToken {
     @JsonProperty("lat")
     private String latitude;
 
-
     public DeviceToken(String tokenFCM, String appVersion, Location location) {
         this.tokenFCM = tokenFCM;
         this.model = Build.MODEL;
