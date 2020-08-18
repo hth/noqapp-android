@@ -44,6 +44,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
@@ -67,6 +68,7 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.HomeFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
@@ -241,10 +243,11 @@ public class LaunchActivity
         homeFragment = new HomeFragment();
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
         drawer = findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -261,9 +264,9 @@ public class LaunchActivity
         tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
-                AppUtils.isRelease()
-                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                        : getString(R.string.version_no, "Not for release"));
+            AppUtils.isRelease()
+                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                : getString(R.string.version_no, "Not for release"));
         setUpExpandableList(UserUtils.isLogin());
 
         /* Call to check if the current version of app blacklist or old. */
@@ -276,7 +279,8 @@ public class LaunchActivity
             try {
                 latitude = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
                 longitude = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
-                getAddress(latitude, longitude);
+                cityName = CommonHelper.getAddress(latitude, longitude, this);
+                Log.d(TAG, "Launch Activity City Name =" + cityName);
                 //updateLocationUI();
                 tv_location.setText(cityName);
             } catch (Exception e) {
@@ -328,6 +332,11 @@ public class LaunchActivity
         longitude = lng;
         cityName = city;
         tv_location.setText(cityName);
+        LocationPref locationPref = MyApplication.getLocationPreference()
+            .setCity(cityName)
+            .setLatitude(latitude)
+            .setLongitude(longitude);
+        MyApplication.setLocationPreference(locationPref);
         updateLocationUI();
     }
 
@@ -344,45 +353,23 @@ public class LaunchActivity
         LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
 
         LocationParams.Builder builder = new LocationParams.Builder()
-                .setAccuracy(trackingAccuracy)
-                .setDistance(trackingDistance)
-                .setInterval(mLocTrackingInterval);
+            .setAccuracy(trackingAccuracy)
+            .setDistance(trackingDistance)
+            .setInterval(mLocTrackingInterval);
 
         SmartLocation.with(this)
-                .location()
-                .continuous()
-                .config(builder.build())
-                .start(location -> {
-                    if (null != location) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                        getAddress(latitude, longitude);
-                        updateLocationUI();
-                    }
-                });
-    }
-
-    public void getAddress(double lat, double lng) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            Address obj = addresses.get(0);
-            cityName = addresses.get(0).getAddressLine(0);
-            if (!TextUtils.isEmpty(obj.getLocality()) && !TextUtils.isEmpty(obj.getSubLocality())) {
-                cityName = obj.getSubLocality() + ", " + obj.getLocality();
-            } else {
-                if (!TextUtils.isEmpty(obj.getSubLocality())) {
-                    cityName = obj.getSubLocality();
-                } else if (!TextUtils.isEmpty(obj.getLocality())) {
-                    cityName = obj.getLocality();
-                } else {
-                    cityName = addresses.get(0).getAddressLine(0);
+            .location()
+            .continuous()
+            .config(builder.build())
+            .start(location -> {
+                if (null != location) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
+                    cityName = CommonHelper.getAddress(latitude, longitude, this);
+                    updateLocationUI();
                 }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            });
     }
 
     @Override
@@ -683,7 +670,6 @@ public class LaunchActivity
         }
     }
 
-
     @Override
     public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
         if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
@@ -704,7 +690,6 @@ public class LaunchActivity
             }
         }
     }
-
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -862,7 +847,6 @@ public class LaunchActivity
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(
-                deviceId,
                 new DeviceToken(
                     NoQueueBaseActivity.getTokenFCM(),
                     Constants.appVersion(),
@@ -910,6 +894,19 @@ public class LaunchActivity
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Device register", "deviceRegister Success");
+            cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
+            Log.d(TAG, "Launch device register City Name=" + cityName);
+
+            LocationPref locationPref = MyApplication.getLocationPreference()
+                .setCity(cityName)
+                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+            MyApplication.setLocationPreference(locationPref);
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
+            sharedPreferences.edit().putString(APIConstant.Key.XR_DID, deviceRegistered.getDeviceId()).apply();
+            latitude = locationPref.getLatitude();
+            longitude = locationPref.getLongitude();
+            tv_location.setText(cityName);
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
             new CustomToast().showToast(this, "Device register error: ");
@@ -940,14 +937,12 @@ public class LaunchActivity
         settingList.add(new MenuDrawer(getString(R.string.language_setting), false, false, R.drawable.language));
         if (isLogin) {
             settingList.add(new MenuDrawer(getString(R.string.preference_settings), false, false, R.drawable.settings));
+            settingList.add(new MenuDrawer(getString(R.string.logout), false, false, R.drawable.ic_logout));
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
         menuDrawerItems.add(new MenuDrawer(getString(R.string.title_activity_contact_us), true, false, R.drawable.contact_us));
         if(!AppUtils.isRelease()) {
             menuDrawerItems.add(new MenuDrawer(getString(R.string.noqueue_apps), true, false, R.drawable.apps));
-        }
-        if (isLogin) {
-            menuDrawerItems.add(new MenuDrawer(getString(R.string.logout), true, false, R.drawable.ic_logout));
         }
 
         DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, menuDrawerItems);

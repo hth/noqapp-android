@@ -79,6 +79,7 @@ import com.noqapp.android.client.views.activities.FeedActivity;
 import com.noqapp.android.client.views.activities.ImageViewerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.LoginActivity;
+import com.noqapp.android.client.views.activities.MyApplication;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.OrderConfirmActivity;
 import com.noqapp.android.client.views.activities.SearchActivity;
@@ -91,6 +92,7 @@ import com.noqapp.android.client.views.adapters.FeedAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
@@ -326,10 +328,11 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 
             AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
             advertisementApiCalls.setAdvertisementPresenter(this);
-            Location location = new Location();
-            location.setCityName(Constants.DEFAULT_CITY);
-            location.setLatitude(String.valueOf(Constants.DEFAULT_LATITUDE));
-            location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
+            LocationPref locationPref = MyApplication.getLocationPreference();
+            Location location = new Location()
+                .setCityName(locationPref.getCity())
+                .setLatitude(String.valueOf(locationPref.getLatitude()))
+                .setLongitude(String.valueOf(locationPref.getLongitude()));
             advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
         } else {
@@ -339,9 +342,10 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         }
 
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-            lat = Constants.DEFAULT_LATITUDE;
-            lng = Constants.DEFAULT_LONGITUDE;
-            city = Constants.DEFAULT_CITY;
+            LocationPref locationPref = MyApplication.getLocationPreference();
+            lat = locationPref.getLatitude();
+            lng = locationPref.getLongitude();
+            city = locationPref.getCity();
         } else {
             lat = LaunchActivity.getLaunchActivity().latitude;
             lng = LaunchActivity.getLaunchActivity().longitude;

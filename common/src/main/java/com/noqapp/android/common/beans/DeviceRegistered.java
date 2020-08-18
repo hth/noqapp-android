@@ -68,6 +68,8 @@ public class DeviceRegistered {
     public String toString() {
         return "DeviceRegistered{" +
                 "registered=" + registered +
+                ", deviceId='" + deviceId + '\'' +
+                ", geoPointOfQ=" + geoPointOfQ +
                 ", error=" + error +
                 '}';
     }

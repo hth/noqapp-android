@@ -5,10 +5,14 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.google.gson.Gson;
+import com.noqapp.android.client.views.pojos.KioskModeInfo;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.utils.FontsOverride;
 
 import java.util.Locale;
@@ -21,7 +25,8 @@ public class MyApplication extends MultiDexApplication {
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
-
+    private static final String KEY_LOCATION_PREFERENCE= "locationPreference";
+    public static String APP_PREF = "splashPref";
     public MyApplication() {
         super();
     }
@@ -86,5 +91,21 @@ public class MyApplication extends MultiDexApplication {
 
     public static void setNotificationReceiveEnable(boolean check) {
         preferences.edit().putBoolean(PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE, check).apply();
+    }
+
+    public static LocationPref getLocationPreference() {
+        String json = preferences.getString(KEY_LOCATION_PREFERENCE, "");
+        if (TextUtils.isEmpty(json)) {
+            return new LocationPref();
+        } else {
+            return new Gson().fromJson(json, LocationPref.class);
+        }
+    }
+
+    public static void setLocationPreference(LocationPref locationPreference) {
+        SharedPreferences.Editor editor = preferences.edit();
+        String json = new Gson().toJson(locationPreference);
+        editor.putString(KEY_LOCATION_PREFERENCE, json);
+        editor.apply();
     }
 }

@@ -5,6 +5,8 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -479,5 +481,29 @@ public class CommonHelper {
      * */
     public static String capitalizeEachWordFirstLetter(String input){
         return WordUtils.capitalizeFully(input);
+    }
+
+    public static String getAddress(double lat, double lng, Context context) {
+        String cityName = "";
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+            cityName = addresses.get(0).getAddressLine(0);
+            if (!TextUtils.isEmpty(obj.getLocality()) && !TextUtils.isEmpty(obj.getSubLocality())) {
+                cityName = obj.getSubLocality() + ", " + obj.getLocality();
+            } else {
+                if (!TextUtils.isEmpty(obj.getSubLocality())) {
+                    cityName = obj.getSubLocality();
+                } else if (!TextUtils.isEmpty(obj.getLocality())) {
+                    cityName = obj.getLocality();
+                } else {
+                    cityName = addresses.get(0).getAddressLine(0);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cityName;
     }
 }

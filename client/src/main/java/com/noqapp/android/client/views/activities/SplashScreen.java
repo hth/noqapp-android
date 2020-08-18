@@ -6,11 +6,13 @@ import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.GPSTracker;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 
@@ -51,12 +53,12 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     static SplashScreen splashScreen;
     private String TAG = SplashScreen.class.getSimpleName();
     private static String tokenFCM = "";
-    private String APP_PREF = "splashPref";
     private static String deviceId = "";
     private final int REQUEST_PERMISSION_SETTING = 23;
     public final int GPS_ENABLE_REQUEST = 24;
     private Location location;
     private GPSTracker gpsTracker;
+    private LocationPref locationPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         animationView.playAnimation();
         animationView.setRepeatCount(10);
         location = new Location("");
-        location.setLatitude(Constants.DEFAULT_LATITUDE);
-        location.setLongitude(Constants.DEFAULT_LONGITUDE);
+        locationPref = MyApplication.getLocationPreference();
+        location.setLatitude(locationPref.getLatitude());
+        location.setLongitude(locationPref.getLongitude());
        // gpsTracker = new GPSTracker(this, null);
 //        if (gpsTracker.isLocationEnabled()) {
 //            callLocationManager();
@@ -127,6 +130,21 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Launch", "launching from deviceRegisterResponse");
+            deviceId = deviceRegistered.getDeviceId();
+            Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: "+deviceRegistered);
+            String cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
+            Log.d(TAG, "Splash City Name =" + cityName);
+
+            LocationPref locationPref = MyApplication.getLocationPreference()
+                .setCity(cityName)
+                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+            MyApplication.setLocationPreference(locationPref);
+
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
+            sharedPreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
+            location.setLatitude(locationPref.getLatitude());
+            location.setLongitude(locationPref.getLongitude());
             callLaunchScreen();
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
@@ -137,16 +155,16 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     private void sendRegistrationToServer(String refreshToken) {
         if (new NetworkUtil(this).isOnline()) {
             DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(),location);
-            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
             deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
             if (StringUtils.isBlank(deviceId)) {
-                deviceId = UUID.randomUUID().toString().toUpperCase();
-                Log.d(TAG, "Created deviceId=" + deviceId);
-                sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
+                //deviceId = UUID.randomUUID().toString().toUpperCase();
+                //Log.d(TAG, "Created deviceId=" + deviceId);
+                //sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
                 //Call this api only once in life time
                 DeviceApiCall deviceModel = new DeviceApiCall();
                 deviceModel.setDeviceRegisterPresenter(this);
-                deviceModel.register(deviceId, deviceToken);
+                deviceModel.register(deviceToken);
             } else {
                 Log.e("Launch", "launching from sendRegistrationToServer");
                 Log.d(TAG, "Exist deviceId=" + deviceId);
