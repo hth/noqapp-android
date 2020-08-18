@@ -44,6 +44,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
@@ -277,7 +278,8 @@ public class LaunchActivity
             try {
                 latitude = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
                 longitude = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
-                getAddress(latitude, longitude);
+                cityName = CommonHelper.getAddress(latitude, longitude, this);
+                Log.d(TAG, "Launch Activity City Name =" + cityName);
                 //updateLocationUI();
                 tv_location.setText(cityName);
             } catch (Exception e) {
@@ -363,32 +365,10 @@ public class LaunchActivity
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
                         Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                        getAddress(latitude, longitude);
+                        cityName = CommonHelper.getAddress(latitude, longitude, this);
                         updateLocationUI();
                     }
                 });
-    }
-
-    public void getAddress(double lat, double lng) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            Address obj = addresses.get(0);
-            cityName = addresses.get(0).getAddressLine(0);
-            if (!TextUtils.isEmpty(obj.getLocality()) && !TextUtils.isEmpty(obj.getSubLocality())) {
-                cityName = obj.getSubLocality() + ", " + obj.getLocality();
-            } else {
-                if (!TextUtils.isEmpty(obj.getSubLocality())) {
-                    cityName = obj.getSubLocality();
-                } else if (!TextUtils.isEmpty(obj.getLocality())) {
-                    cityName = obj.getLocality();
-                } else {
-                    cityName = addresses.get(0).getAddressLine(0);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -868,7 +848,6 @@ public class LaunchActivity
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(
-                deviceId,
                 new DeviceToken(
                     NoQueueBaseActivity.getTokenFCM(),
                     Constants.appVersion(),
@@ -916,6 +895,19 @@ public class LaunchActivity
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Device register", "deviceRegister Success");
+            LocationPref locationPref = MyApplication.getLocationPreference();
+            cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(),
+                    deviceRegistered.getGeoPointOfQ().getLon(), this);
+            Log.d(TAG, "Launch device register City Name =" + cityName);
+            locationPref.setCity(cityName);
+            locationPref.setLatitude(deviceRegistered.getGeoPointOfQ().getLat());
+            locationPref.setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+            MyApplication.setLocationPreference(locationPref);
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
+            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceRegistered.getDeviceId()).apply();
+            latitude = locationPref.getLatitude();
+            longitude = locationPref.getLongitude();
+            tv_location.setText(cityName);
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
             new CustomToast().showToast(this, "Device register error: ");
