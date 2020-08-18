@@ -329,10 +329,10 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
             advertisementApiCalls.setAdvertisementPresenter(this);
             LocationPref locationPref = MyApplication.getLocationPreference();
-            Location location = new Location();
-            location.setCityName(locationPref.getCity());
-            location.setLatitude(String.valueOf(locationPref.getLatitude()));
-            location.setLongitude(String.valueOf(locationPref.getLongitude()));
+            Location location = new Location()
+                .setCityName(locationPref.getCity())
+                .setLatitude(String.valueOf(locationPref.getLatitude()))
+                .setLongitude(String.valueOf(locationPref.getLongitude()));
             advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
         } else {

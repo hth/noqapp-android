@@ -243,10 +243,11 @@ public class LaunchActivity
         homeFragment = new HomeFragment();
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
         drawer = findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -263,9 +264,9 @@ public class LaunchActivity
         tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
-                AppUtils.isRelease()
-                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                        : getString(R.string.version_no, "Not for release"));
+            AppUtils.isRelease()
+                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                : getString(R.string.version_no, "Not for release"));
         setUpExpandableList(UserUtils.isLogin());
 
         /* Call to check if the current version of app blacklist or old. */
@@ -331,10 +332,10 @@ public class LaunchActivity
         longitude = lng;
         cityName = city;
         tv_location.setText(cityName);
-        LocationPref locationPref = MyApplication.getLocationPreference();
-        locationPref.setCity(cityName);
-        locationPref.setLatitude(latitude);
-        locationPref.setLongitude(longitude);
+        LocationPref locationPref = MyApplication.getLocationPreference()
+            .setCity(cityName)
+            .setLatitude(latitude)
+            .setLongitude(longitude);
         MyApplication.setLocationPreference(locationPref);
         updateLocationUI();
     }
@@ -352,23 +353,23 @@ public class LaunchActivity
         LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
 
         LocationParams.Builder builder = new LocationParams.Builder()
-                .setAccuracy(trackingAccuracy)
-                .setDistance(trackingDistance)
-                .setInterval(mLocTrackingInterval);
+            .setAccuracy(trackingAccuracy)
+            .setDistance(trackingDistance)
+            .setInterval(mLocTrackingInterval);
 
         SmartLocation.with(this)
-                .location()
-                .continuous()
-                .config(builder.build())
-                .start(location -> {
-                    if (null != location) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                        cityName = CommonHelper.getAddress(latitude, longitude, this);
-                        updateLocationUI();
-                    }
-                });
+            .location()
+            .continuous()
+            .config(builder.build())
+            .start(location -> {
+                if (null != location) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
+                    cityName = CommonHelper.getAddress(latitude, longitude, this);
+                    updateLocationUI();
+                }
+            });
     }
 
     @Override
@@ -669,7 +670,6 @@ public class LaunchActivity
         }
     }
 
-
     @Override
     public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
         if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
@@ -690,7 +690,6 @@ public class LaunchActivity
             }
         }
     }
-
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -895,16 +894,16 @@ public class LaunchActivity
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Device register", "deviceRegister Success");
-            LocationPref locationPref = MyApplication.getLocationPreference();
-            cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(),
-                    deviceRegistered.getGeoPointOfQ().getLon(), this);
-            Log.d(TAG, "Launch device register City Name =" + cityName);
-            locationPref.setCity(cityName);
-            locationPref.setLatitude(deviceRegistered.getGeoPointOfQ().getLat());
-            locationPref.setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+            cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
+            Log.d(TAG, "Launch device register City Name=" + cityName);
+
+            LocationPref locationPref = MyApplication.getLocationPreference()
+                .setCity(cityName)
+                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             MyApplication.setLocationPreference(locationPref);
-            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
-            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceRegistered.getDeviceId()).apply();
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
+            sharedPreferences.edit().putString(APIConstant.Key.XR_DID, deviceRegistered.getDeviceId()).apply();
             latitude = locationPref.getLatitude();
             longitude = locationPref.getLongitude();
             tv_location.setText(cityName);

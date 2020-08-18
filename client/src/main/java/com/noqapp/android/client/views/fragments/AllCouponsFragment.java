@@ -66,29 +66,29 @@ public class AllCouponsFragment
             Location location = new Location();
             if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
                 LocationPref locationPref = MyApplication.getLocationPreference();
-                location.setLatitude(String.valueOf(locationPref.getLatitude()));
-                location.setLongitude(String.valueOf(locationPref.getLongitude()));
-                location.setCityName(locationPref.getCity());
+                location.setLatitude(String.valueOf(locationPref.getLatitude()))
+                    .setLongitude(String.valueOf(locationPref.getLongitude()))
+                    .setCityName(locationPref.getCity());
                 tv_location_enable.setVisibility(View.VISIBLE);
             } else {
-                location.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().latitude));
-                location.setLongitude(String.valueOf(LaunchActivity.getLaunchActivity().longitude));
-                location.setCityName(LaunchActivity.getLaunchActivity().cityName);
+                location.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().latitude))
+                    .setLongitude(String.valueOf(LaunchActivity.getLaunchActivity().longitude))
+                    .setCityName(LaunchActivity.getLaunchActivity().cityName);
                 tv_location_enable.setVisibility(View.GONE);
             }
             String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);
             if (TextUtils.isEmpty(codeQR)) {
                 clientCouponApiCalls.globalCoupon(
-                        UserUtils.getDeviceId(),
-                        UserUtils.getEmail(),
-                        UserUtils.getAuth(),
-                        location);
+                    UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(),
+                    location);
             } else {
                 clientCouponApiCalls.filterCoupon(
-                        UserUtils.getDeviceId(),
-                        UserUtils.getEmail(),
-                        UserUtils.getAuth(),
-                        codeQR);
+                    UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(),
+                    codeQR);
             }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());

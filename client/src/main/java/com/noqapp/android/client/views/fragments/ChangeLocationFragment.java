@@ -66,7 +66,6 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
             } else {
                 gpsTracker.showSettingsAlert();
             }
-
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));

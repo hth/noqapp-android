@@ -132,17 +132,17 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             Log.e("Launch", "launching from deviceRegisterResponse");
             deviceId = deviceRegistered.getDeviceId();
             Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: "+deviceRegistered);
-
-            LocationPref locationPref = MyApplication.getLocationPreference();
-            String cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(),
-                    deviceRegistered.getGeoPointOfQ().getLon(), this);
+            String cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
             Log.d(TAG, "Splash City Name =" + cityName);
-            locationPref.setCity(cityName);
-            locationPref.setLatitude(deviceRegistered.getGeoPointOfQ().getLat());
-            locationPref.setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+
+            LocationPref locationPref = MyApplication.getLocationPreference()
+                .setCity(cityName)
+                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             MyApplication.setLocationPreference(locationPref);
-            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
-            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
+
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
+            sharedPreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
             location.setLatitude(locationPref.getLatitude());
             location.setLongitude(locationPref.getLongitude());
             callLaunchScreen();
