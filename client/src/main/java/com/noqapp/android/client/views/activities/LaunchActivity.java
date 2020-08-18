@@ -940,14 +940,12 @@ public class LaunchActivity
         settingList.add(new MenuDrawer(getString(R.string.language_setting), false, false, R.drawable.language));
         if (isLogin) {
             settingList.add(new MenuDrawer(getString(R.string.preference_settings), false, false, R.drawable.settings));
+            settingList.add(new MenuDrawer(getString(R.string.logout), false, false, R.drawable.ic_logout));
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
         menuDrawerItems.add(new MenuDrawer(getString(R.string.title_activity_contact_us), true, false, R.drawable.contact_us));
         if(!AppUtils.isRelease()) {
             menuDrawerItems.add(new MenuDrawer(getString(R.string.noqueue_apps), true, false, R.drawable.apps));
-        }
-        if (isLogin) {
-            menuDrawerItems.add(new MenuDrawer(getString(R.string.logout), true, false, R.drawable.ic_logout));
         }
 
         DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, menuDrawerItems);
