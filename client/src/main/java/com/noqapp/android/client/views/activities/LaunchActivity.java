@@ -67,6 +67,7 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.HomeFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
@@ -328,6 +329,11 @@ public class LaunchActivity
         longitude = lng;
         cityName = city;
         tv_location.setText(cityName);
+        LocationPref locationPref = MyApplication.getLocationPreference();
+        locationPref.setCity(cityName);
+        locationPref.setLatitude(latitude);
+        locationPref.setLongitude(longitude);
+        MyApplication.setLocationPreference(locationPref);
         updateLocationUI();
     }
 

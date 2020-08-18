@@ -21,7 +21,9 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.MyApplication;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.utils.GeoIP;
 
 public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
@@ -45,9 +47,10 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
         autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         actionbarBack.setOnClickListener((View v) -> {
             if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-                lat = Constants.DEFAULT_LATITUDE;
-                lng = Constants.DEFAULT_LONGITUDE;
-                city = Constants.DEFAULT_CITY;
+                LocationPref locationPref = MyApplication.getLocationPreference();
+                lat = locationPref.getLatitude();
+                lng = locationPref.getLongitude();
+                city = locationPref.getCity();
             } else {
                 lat = LaunchActivity.getLaunchActivity().latitude;
                 lng = LaunchActivity.getLaunchActivity().longitude;
@@ -128,9 +131,10 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
     public void updateLocationUI() {
         // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
         if (gpsTracker.getLatitude() == 0) {
-            lat = Constants.DEFAULT_LATITUDE;
-            lng = Constants.DEFAULT_LONGITUDE;
-            city = Constants.DEFAULT_CITY;
+            LocationPref locationPref = MyApplication.getLocationPreference();
+            lat = locationPref.getLatitude();
+            lng = locationPref.getLongitude();
+            city = locationPref.getCity();
         } else {
             lat = gpsTracker.getLatitude();
             lng = gpsTracker.getLongitude();

@@ -6,6 +6,7 @@ import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.GPSTracker;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
@@ -57,6 +58,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     public final int GPS_ENABLE_REQUEST = 24;
     private Location location;
     private GPSTracker gpsTracker;
+    private LocationPref locationPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         animationView.playAnimation();
         animationView.setRepeatCount(10);
         location = new Location("");
-        location.setLatitude(Constants.DEFAULT_LATITUDE);
-        location.setLongitude(Constants.DEFAULT_LONGITUDE);
+        locationPref = MyApplication.getLocationPreference();
+        location.setLatitude(locationPref.getLatitude());
+        location.setLongitude(locationPref.getLongitude());
        // gpsTracker = new GPSTracker(this, null);
 //        if (gpsTracker.isLocationEnabled()) {
 //            callLocationManager();

@@ -33,6 +33,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.GeoIP;
@@ -161,9 +162,10 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     private void initDefaultLatLng() {
         if (null == lat || lng == null) {
-            lat = String.valueOf(Constants.DEFAULT_LATITUDE);
-            lng = String.valueOf(Constants.DEFAULT_LONGITUDE);
-            city = Constants.DEFAULT_CITY;
+            LocationPref locationPref = MyApplication.getLocationPreference();
+            lat = String.valueOf(locationPref.getLatitude());
+            lng = String.valueOf(locationPref.getLongitude());
+            city = locationPref.getCity();
         }
     }
 
@@ -340,9 +342,10 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
         double latitude, longitude;
         if (gpsTracker.getLatitude() == 0) {
-            latitude = Constants.DEFAULT_LATITUDE;
-            longitude = Constants.DEFAULT_LONGITUDE;
-            city = Constants.DEFAULT_CITY;
+            LocationPref locationPref = MyApplication.getLocationPreference();
+            latitude = locationPref.getLatitude();
+            longitude = locationPref.getLongitude();
+            city = locationPref.getCity();
         } else {
             latitude = gpsTracker.getLatitude();
             longitude = gpsTracker.getLongitude();

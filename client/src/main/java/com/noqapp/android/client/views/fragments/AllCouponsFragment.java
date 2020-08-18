@@ -23,7 +23,9 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.MyApplication;
 import com.noqapp.android.client.views.adapters.AllCouponsAdapter;
+import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonCouponList;
 import com.noqapp.android.common.presenter.CouponPresenter;
@@ -63,9 +65,10 @@ public class AllCouponsFragment
             clientCouponApiCalls.setCouponPresenter(this);
             Location location = new Location();
             if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-                location.setLatitude(String.valueOf(Constants.DEFAULT_LATITUDE));
-                location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
-                location.setCityName(Constants.DEFAULT_CITY);
+                LocationPref locationPref = MyApplication.getLocationPreference();
+                location.setLatitude(String.valueOf(locationPref.getLatitude()));
+                location.setLongitude(String.valueOf(locationPref.getLongitude()));
+                location.setCityName(locationPref.getCity());
                 tv_location_enable.setVisibility(View.VISIBLE);
             } else {
                 location.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().latitude));
