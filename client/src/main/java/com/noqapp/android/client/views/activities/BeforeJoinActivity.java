@@ -128,13 +128,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
 
         initActionsViews(true);
 
-        tv_mobile.setOnClickListener((View v) -> {
-            AppUtils.makeCall(BeforeJoinActivity.this, tv_mobile.getText().toString());
-        });
-
-        tv_address.setOnClickListener((View v) -> {
-            AppUtils.openAddressInMap(BeforeJoinActivity.this, tv_address.getText().toString());
-        });
+        tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(BeforeJoinActivity.this, tv_mobile.getText().toString()));
+        tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(BeforeJoinActivity.this, tv_address.getText().toString()));
         tv_add.setOnClickListener((View v) -> {
             if (UserUtils.isLogin()) {
                 Intent loginIntent = new Intent(BeforeJoinActivity.this, UserProfileActivity.class);
@@ -152,8 +147,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
-                        placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
-                        error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                    placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
+                    error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }

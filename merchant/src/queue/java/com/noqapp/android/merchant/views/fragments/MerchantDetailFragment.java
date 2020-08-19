@@ -71,7 +71,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
@@ -112,8 +111,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 ShowAlertInformation.showThemeDialog(context, "Unauthorized access", "You are not allowed to use this feature");
             }
         });
-        if (!LaunchActivity.isTablet)
+
+        if (!LaunchActivity.isTablet) {
             rv_queue_people.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        }
         return view;
     }
 
@@ -185,16 +186,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
             purchaseOrders = jsonPurchaseOrderList.getPurchaseOrders();
-            Collections.sort(
-                    purchaseOrders,
-                    new Comparator<JsonPurchaseOrder>() {
-                        public int compare(JsonPurchaseOrder lhs, JsonPurchaseOrder rhs) {
-                            return Integer.compare(lhs.getToken(), rhs.getToken());
-                        }
-                    }
-            );
-            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
-                    this, jsonTopic.getServingNumber(), jsonTopic.getJsonPaymentPermission());
+            Collections.sort(purchaseOrders, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
+            peopleInQOrderAdapter = new PeopleInQOrderAdapter(
+                purchaseOrders,
+                context,
+                jsonTopic.getCodeQR(),
+                this,
+                jsonTopic.getServingNumber(),
+                jsonTopic.getJsonPaymentPermission());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
             if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
@@ -209,7 +208,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         // do nothing
     }
 
-
     @Override
     public void purchaseOrderError() {
         dismissProgress();
@@ -220,11 +218,11 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         if (QueueOrderTypeEnum.O == jsonTopic.getBusinessType().getQueueOrderType()) {
             purchaseOrders = new ArrayList<>();
             peopleInQOrderAdapter = new PeopleInQOrderAdapter(
-                    purchaseOrders,
-                    context,
-                    jsonTopic.getCodeQR(),
-                    this,
-                    jsonTopic.getJsonPaymentPermission());
+                purchaseOrders,
+                context,
+                jsonTopic.getCodeQR(),
+                this,
+                jsonTopic.getJsonPaymentPermission());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
         } else {
             super.resetList();
@@ -244,7 +242,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, boolean isPaymentNotAllowed) {
 
     }
-
 
     @Override
     public void orderDoneClick(int position) {
@@ -290,7 +287,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
-
     }
 
     @Override
@@ -353,8 +349,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             tv_skip.setVisibility(View.GONE);
 
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
-                    || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
-                    || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+                || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
+                || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
                 // TODO(hth) Implement further settings for merchant topic
             }
 
@@ -431,6 +427,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     }
                 }
             });
+
             btn_start.setOnClickListener(v -> {
                 mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (jsonTopic.getToken() == 0) {
@@ -487,8 +484,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             });
 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                if (isNewCall) // show progressbar only first time
+                if (isNewCall) { // show progressbar only first time
                     showProgress();
+                }
                 getAllPeopleInQ(jsonTopic);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
@@ -513,8 +511,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 }
             }
         }
-        peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
-                this, jsonTopic.getServingNumber(), jsonTopic.getJsonPaymentPermission());
+
+        peopleInQOrderAdapter = new PeopleInQOrderAdapter(
+            purchaseOrders,
+            context,
+            jsonTopic.getCodeQR(),
+            this,
+            jsonTopic.getServingNumber(),
+            jsonTopic.getJsonPaymentPermission());
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
         if (jsonTopic.getServingNumber() > 0) {
             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
@@ -545,7 +549,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
     }
 
-
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -562,7 +565,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         sp_patient_list = view.findViewById(R.id.sp_patient_list);
         tv_select_patient = view.findViewById(R.id.tv_select_patient);
         btn_create_token = view.findViewById(R.id.btn_create_token);
-
 
         final EditText edt_id = view.findViewById(R.id.edt_id);
         final RadioGroup rg_token_type = view.findViewById(R.id.rg_token_type);
@@ -627,18 +629,18 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode() + edt_mobile_unregistered.getText().toString());
                         jsonBusinessCustomer.setRegisteredUser(false);
                         manageQueueApiCalls.dispenseTokenWithClientInfo(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                jsonBusinessCustomer);
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            jsonBusinessCustomer);
                     }
 
                     if (BuildConfig.TOKEN_WITHOUT_USER_INFO.equalsIgnoreCase("ON")) {
                         manageQueueApiCalls.dispenseToken(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                codeQR);
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            codeQR);
                     }
                 });
             } else {
@@ -687,10 +689,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         businessCustomerApiCalls = new BusinessCustomerApiCalls();
                         businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
                         businessCustomerApiCalls.findCustomer(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
                         btn_create_token.setClickable(false);
                         //  mAlertDialog.dismiss();
                     }
@@ -737,24 +739,23 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
                     }
 
-                    JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
-                            setQueueUserId(jsonProfile.getQueueUserId());
+                    JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer()
+                        .setQueueUserId(jsonProfile.getQueueUserId());
                     jsonBusinessCustomer
-                            .setCodeQR(topicsList.get(currentPosition).getCodeQR())
-                            .setCustomerPhone(phoneNoWithCode)
-                            .setBusinessCustomerId(cid)
-                            .setRegisteredUser(true);
+                        .setCodeQR(topicsList.get(currentPosition).getCodeQR())
+                        .setCustomerPhone(phoneNoWithCode)
+                        .setBusinessCustomerId(cid)
+                        .setRegisteredUser(true);
                     manageQueueApiCalls.dispenseTokenWithClientInfo(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            jsonBusinessCustomer);
+                        BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(),
+                        jsonBusinessCustomer);
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }
             });
         }
-
     }
 
     @Override
