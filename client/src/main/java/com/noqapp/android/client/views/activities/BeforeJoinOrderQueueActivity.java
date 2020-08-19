@@ -94,24 +94,21 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         btn_pay_and_joinQueue = findViewById(R.id.btn_pay_and_joinQueue);
         btn_joinQueue = findViewById(R.id.btn_joinQueue);
         btn_joinQueue.setOnClickListener((View v) -> {
-            if (null != jsonQueue)
+            if (null != jsonQueue) {
                 joinQueue(false);
+            }
         });
         btn_pay_and_joinQueue.setOnClickListener((View v) -> {
-            if (null != jsonQueue)
+            if (null != jsonQueue) {
                 joinQueue(false);
+            }
         });
         tv_rating = findViewById(R.id.tv_rating);
 
         initActionsViews(true);
 
-        tv_mobile.setOnClickListener((View v) -> {
-            AppUtils.makeCall(BeforeJoinOrderQueueActivity.this, tv_mobile.getText().toString());
-        });
-
-        tv_address.setOnClickListener((View v) -> {
-            AppUtils.openAddressInMap(BeforeJoinOrderQueueActivity.this, tv_address.getText().toString());
-        });
+        tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(BeforeJoinOrderQueueActivity.this, tv_mobile.getText().toString()));
+        tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(BeforeJoinOrderQueueActivity.this, tv_address.getText().toString()));
         swipeRefreshLayout.setOnRefreshListener(this);
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
@@ -122,10 +119,10 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrl))
-                        .placeholder(ImageUtils.getThumbPlaceholder(this))
-                        .error(ImageUtils.getThumbErrorPlaceholder(this))
-                        .into(iv_category_banner);
+                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrl))
+                    .placeholder(ImageUtils.getThumbPlaceholder(this))
+                    .error(ImageUtils.getThumbErrorPlaceholder(this))
+                    .into(iv_category_banner);
             } else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(iv_category_banner);
             }
@@ -267,7 +264,6 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         dismissProgress();
     }
 
-
     private void joinQueue(boolean validateView) {
         setColor(true);
         if (isJoinNotPossible) {
@@ -278,7 +274,6 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 if (validateView) {
                     btn_joinQueue.setText(getString(R.string.login_to_join));
                     btn_pay_and_joinQueue.setText(getString(R.string.login_to_join));
-
                 } else {
                     Intent loginIntent = new Intent(BeforeJoinOrderQueueActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
@@ -342,7 +337,8 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                     in.putExtra(IBConstant.KEY_IS_PAYMENT_ENABLE, jsonQueue.isEnabledPayment());
                     in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
                     in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
-                    in.putExtra("qUserId", null == NoQueueBaseActivity.getUserProfile().getQueueUserId()
+                    in.putExtra("qUserId",
+                        null == NoQueueBaseActivity.getUserProfile().getQueueUserId()
                             ? ""
                             : NoQueueBaseActivity.getUserProfile().getQueueUserId());
                     in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
@@ -368,9 +364,10 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             in.putExtra(IBConstant.KEY_IS_PAYMENT_ENABLE, jsonQueue.isEnabledPayment());
             in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
-            in.putExtra("qUserId", null == NoQueueBaseActivity.getUserProfile().getQueueUserId()
-                    ? ""
-                    : NoQueueBaseActivity.getUserProfile().getQueueUserId());
+            in.putExtra("qUserId",
+                    null == NoQueueBaseActivity.getUserProfile().getQueueUserId()
+                        ? ""
+                        : NoQueueBaseActivity.getUserProfile().getQueueUserId());
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
@@ -382,9 +379,8 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         }
     }
 
-
     /*
-     *If user navigate to AfterJoinActivity screen from here &
+     * If user navigate to AfterJoinActivity screen from here &
      * he press back from that screen Join screen should removed from activity stack
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -418,12 +414,18 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     }
 
     private void setColor(boolean isEnable) {
-        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient :
-                R.drawable.btn_bg_inactive));
-        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable ? R.drawable.orange_gradient :
-                R.drawable.btn_bg_inactive));
-        btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
-        btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable ? R.color.white : R.color.btn_color));
+        btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable
+                ? R.drawable.orange_gradient
+                : R.drawable.btn_bg_inactive));
+        btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable
+                ? R.drawable.orange_gradient
+                : R.drawable.btn_bg_inactive));
+        btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable
+                ? R.color.white
+                : R.color.btn_color));
+        btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable
+                ? R.color.white
+                : R.color.btn_color));
     }
 
     @Override
@@ -431,7 +433,6 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         if (isCategoryData) {
             swipeRefreshLayout.setRefreshing(false);
         } else {
-
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 setProgressMessage("Loading queue details...");
                 swipeRefreshLayout.setRefreshing(true);
