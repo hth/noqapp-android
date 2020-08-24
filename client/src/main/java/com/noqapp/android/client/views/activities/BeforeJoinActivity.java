@@ -219,7 +219,14 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
             tv_people_in_q_text.setText(getResources().getQuantityString(R.plurals.people_in_queue, jsonQueue.getPeopleInQueue()));
 
-            tv_estimated_time.setText(getResources().getString(R.string.estimated_wait, jsonQueue.getTimeSlotMessage()));
+            switch (jsonQueue.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_timeslot, jsonQueue.getTimeSlotMessage()));
+                    break;
+                default:
+                    tv_estimated_time.setText(getResources().getString(R.string.estimated_wait, jsonQueue.getTimeSlotMessage()));
+            }
             if (0 == jsonQueue.getServingNumber()) {
                 tv_currently_serving.setText(getResources().getString(R.string.serving_not_started, "Not Started"));
             } else {
