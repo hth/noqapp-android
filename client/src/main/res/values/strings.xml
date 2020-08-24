@@ -73,12 +73,15 @@
     <string name="offline">Network unavailable. Please connect your device to network.</string>
 
     <!--- Join Screen -->
-    <string name="serving_now">Now Serving </string>
+    <string name="serving_now">Now Serving</string>
     <string name="your_token">Token</string>
     <string name="position_in_queue_label">Position in queue</string>
     <string name="position_in_queue">Position in queue: %1$d</string>
     <string name="your_are_next_label">You are next!</string>
     <string name="daily_token_limit">Daily token limit: %1$d</string>
+    <string name="estimated_wait">Estimated Wait: %1$s</string>
+    <string name="serving_now_in_queue">Serving now: %1$d</string>
+    <string name="serving_not_started">Serving: %1$s</string>
     <string name="revisit_restriction">Repeat service restriction: %1$s</string>
     <string name="referral_code_required">One time identification code required to get token</string>
 

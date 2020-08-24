@@ -221,6 +221,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("fa")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
+    @JsonProperty("sl")
+    private String timeSlotMessage;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -687,6 +690,14 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
+    public String getTimeSlotMessage() {
+        return timeSlotMessage;
+    }
+
+    public void setTimeSlotMessage(String timeSlotMessage) {
+        this.timeSlotMessage = timeSlotMessage;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -697,28 +708,28 @@ public class JsonQueue implements Serializable {
 
     public JsonTokenAndQueue getJsonTokenAndQueue() {
         JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue()
-                .setCodeQR(codeQR)
-                .setGeoHash(geoHash)
-                .setBusinessName(businessName)
-                .setDisplayName(displayName)
-                .setStoreAddress(storeAddress)
-                .setArea(area)
-                .setTown(town)
-                .setCountryShortName(countryShortName)
-                .setStorePhone(storePhone)
-                .setTokenAvailableFrom(tokenAvailableFrom)
-                .setStartHour(startHour)
-                .setEndHour(endHour)
-                .setDelayedInMinutes(delayedInMinutes)
-                .setTopic(topic)
-                .setServingNumber(servingNumber)
-                .setLastNumber(lastNumber)
-                .setQueueStatus(queueStatus)
-                .setServiceEndTime(serviceEndTime)
-                .setAverageServiceTime(averageServiceTime)
-                .setCreateDate(created)
-                .setBusinessType(businessType)
-                .setPurchaseOrderState(PurchaseOrderStateEnum.IN);
+            .setCodeQR(codeQR)
+            .setGeoHash(geoHash)
+            .setBusinessName(businessName)
+            .setDisplayName(displayName)
+            .setStoreAddress(storeAddress)
+            .setArea(area)
+            .setTown(town)
+            .setCountryShortName(countryShortName)
+            .setStorePhone(storePhone)
+            .setTokenAvailableFrom(tokenAvailableFrom)
+            .setStartHour(startHour)
+            .setEndHour(endHour)
+            .setDelayedInMinutes(delayedInMinutes)
+            .setTopic(topic)
+            .setServingNumber(servingNumber)
+            .setLastNumber(lastNumber)
+            .setQueueStatus(queueStatus)
+            .setServiceEndTime(serviceEndTime)
+            .setAverageServiceTime(averageServiceTime)
+            .setCreateDate(created)
+            .setBusinessType(businessType)
+            .setPurchaseOrderState(PurchaseOrderStateEnum.IN);
         return jsonTokenAndQueue;
     }
 

@@ -61,6 +61,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
     private TextView tv_delay_in_time;
     private TextView tv_consult_fees, tv_cancellation_fees;
     private TextView tv_add, add_person;
+    private TextView tv_estimated_time;
+    private TextView tv_currently_serving;
     private TextView tv_daily_token_limit;
     private TextView tv_revisit_restriction;
     private TextView tv_identification_code;
@@ -99,6 +101,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
         tv_people_in_q_text = findViewById(R.id.tv_people_in_q_text);
         tv_store_timing = findViewById(R.id.tv_store_timing);
+        tv_estimated_time = findViewById(R.id.tv_estimated_time);
+        tv_currently_serving = findViewById(R.id.tv_currently_serving);
         tv_daily_token_limit = findViewById(R.id.tv_daily_token_limit);
         tv_revisit_restriction = findViewById(R.id.tv_revisit_restriction);
         tv_identification_code = findViewById(R.id.tv_identification_code);
@@ -214,6 +218,13 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
 
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
             tv_people_in_q_text.setText(getResources().getQuantityString(R.plurals.people_in_queue, jsonQueue.getPeopleInQueue()));
+
+            tv_estimated_time.setText(getResources().getString(R.string.estimated_wait, jsonQueue.getTimeSlotMessage()));
+            if (0 == jsonQueue.getServingNumber()) {
+                tv_currently_serving.setText(getResources().getString(R.string.serving_not_started, "Not Started"));
+            } else {
+                tv_currently_serving.setText(getResources().getString(R.string.serving_now_in_queue, jsonQueue.getServingNumber()));
+            }
 
             if (jsonQueue.getAvailableTokenCount() != 0) {
                 tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), jsonQueue.getAvailableTokenCount()));
