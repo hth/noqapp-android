@@ -276,6 +276,7 @@
                         android:visibility="gone" />
 
                     <LinearLayout
+                        android:id="@+id/ll_announcement"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -299,7 +300,6 @@
                             android:text="@string/announcement_message_covid"
                             android:textColor="@android:color/holo_red_dark"
                             android:textSize="@dimen/text_size_twelve" />
-
                     </LinearLayout>
 
                 </LinearLayout>
