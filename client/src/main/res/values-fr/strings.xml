@@ -80,6 +80,7 @@
     <string name="your_are_next_label">C\'est vous le porchain</string>
     <string name="daily_token_limit">limite du jeton</string>
     <string name="estimated_wait">Estimated Wait: %1$s</string>
+    <string name="expected_service_timeslot">Expected Service Time Slot: %1$s</string>
     <string name="serving_now_in_queue">Serving now: %1$d</string>
     <string name="serving_not_started">Serving: %1$s</string>
     <string name="revisit_restriction">Répéter la restriction de service</string>
