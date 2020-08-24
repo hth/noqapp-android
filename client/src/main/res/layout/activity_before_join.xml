@@ -345,7 +345,7 @@
                         <TextView
                             android:id="@+id/tv_live_status"
                             style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
+                            android:layout_marginBottom="0dp"
                             android:drawablePadding="5dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
