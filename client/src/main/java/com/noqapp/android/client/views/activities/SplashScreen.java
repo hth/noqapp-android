@@ -154,14 +154,11 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
 
     private void sendRegistrationToServer(String refreshToken) {
         if (new NetworkUtil(this).isOnline()) {
-            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(),location);
+            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(), location);
             SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
             deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
             if (StringUtils.isBlank(deviceId)) {
-                //deviceId = UUID.randomUUID().toString().toUpperCase();
-                //Log.d(TAG, "Created deviceId=" + deviceId);
-                //sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
-                //Call this api only once in life time
+                /* Call this api only once in life time. */
                 DeviceApiCall deviceModel = new DeviceApiCall();
                 deviceModel.setDeviceRegisterPresenter(this);
                 deviceModel.register(deviceToken);

@@ -189,6 +189,17 @@ public class LaunchActivity
         }
 
         //NoQueueBaseActivity.saveMailAuth("","");
+        if (null == getDeviceID()) {
+            Log.v("Device id check", getDeviceID());
+            DeviceApiCall deviceModel = new DeviceApiCall();
+            deviceModel.setAppBlacklistPresenter(this);
+            deviceModel.register(
+                new DeviceToken(
+                    NoQueueBaseActivity.getTokenFCM(),
+                    Constants.appVersion(),
+                    CommonHelper.getLocation(latitude, longitude)));
+        }
+
         if (null != getIntent().getExtras()) {
             if (!TextUtils.isEmpty(getIntent().getStringExtra(NoQueueBaseActivity.TOKEN_FCM))) {
                 NoQueueBaseActivity.setTokenFCM(getIntent().getStringExtra(NoQueueBaseActivity.TOKEN_FCM));
@@ -198,11 +209,11 @@ public class LaunchActivity
                 NoQueueBaseActivity.setDeviceID(getIntent().getStringExtra("deviceId"));
             }
         }
-        Log.v("Device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
         fcmNotificationReceiver = new FcmNotificationReceiver();
         fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
+
         //Language setup
         languagePref = PreferenceManager.getDefaultSharedPreferences(this);
         languagePref.registerOnSharedPreferenceChangeListener(this);
@@ -841,9 +852,6 @@ public class LaunchActivity
 
     public void reCreateDeviceID() {
         if (new NetworkUtil(this).isOnline()) {
-            String deviceId = UUID.randomUUID().toString().toUpperCase();
-            Log.d(TAG, "Re-Created deviceId=" + deviceId);
-            NoQueueBaseActivity.setDeviceID(deviceId);
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(
