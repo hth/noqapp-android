@@ -63,6 +63,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
     private TextView tv_add, add_person;
     private TextView tv_estimated_time;
     private TextView tv_currently_serving;
+    private TextView tv_live_status;
     private TextView tv_daily_token_limit;
     private TextView tv_revisit_restriction;
     private TextView tv_identification_code;
@@ -103,6 +104,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         tv_store_timing = findViewById(R.id.tv_store_timing);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
         tv_currently_serving = findViewById(R.id.tv_currently_serving);
+        tv_live_status = findViewById(R.id.tv_live_status);
         tv_daily_token_limit = findViewById(R.id.tv_daily_token_limit);
         tv_revisit_restriction = findViewById(R.id.tv_revisit_restriction);
         tv_identification_code = findViewById(R.id.tv_identification_code);
@@ -232,6 +234,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             } else {
                 tv_currently_serving.setText(getResources().getString(R.string.serving_now_in_queue, jsonQueue.getServingNumber()));
             }
+            tv_live_status.setText(Html.fromHtml("&#8857 live status"));
 
             if (jsonQueue.getAvailableTokenCount() != 0) {
                 tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), jsonQueue.getAvailableTokenCount()));
