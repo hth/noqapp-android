@@ -99,6 +99,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private ImageView iv_category_banner;
     private Button btn_join_queues;
     private Button btn_register;
+    private LinearLayout ll_announcement;
+    private TextView tv_announcement_label;
     private TextView tv_announcement_text;
     private RecyclerView rcv_amenities;
     private RecyclerView rcv_facility;
@@ -129,6 +131,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         iv_category_banner = findViewById(R.id.iv_category_banner);
         btn_join_queues = findViewById(R.id.btn_join_queues);
         btn_register = findViewById(R.id.btn_pre_approve);
+        ll_announcement = findViewById(R.id.ll_announcement);
+        tv_announcement_label = findViewById(R.id.tv_announcement_label);
         tv_announcement_text = findViewById(R.id.tv_announcement_text);
         rcv_amenities = findViewById(R.id.rcv_amenities);
         rcv_facility = findViewById(R.id.rcv_facility);
@@ -253,6 +257,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     break;
                 default:
                     tv_announcement_text.setText(R.string.announcement_message_covid);
+                    tv_announcement_text.setVisibility(View.GONE);
+                    tv_announcement_label.setVisibility(View.GONE);
+                    ll_announcement.setVisibility(View.GONE);
             }
 
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();

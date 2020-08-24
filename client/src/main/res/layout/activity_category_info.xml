@@ -207,6 +207,7 @@
                             card_view:cardCornerRadius="4dp">
 
                             <LinearLayout
+                                android:id="@+id/ll_announcement"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
@@ -229,7 +230,6 @@
                                     android:layout_marginBottom="5dp"
                                     android:textColor="@android:color/holo_red_dark"
                                     android:textSize="@dimen/text_size_twelve" />
-
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
@@ -278,7 +278,6 @@
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold" />
 
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rcv_facility"
                             android:layout_width="match_parent"
@@ -313,7 +312,6 @@
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold" />
 
-
                         <TextView
                             android:id="@+id/tv_complete_address"
                             style="@style/style_join_queue_tv"
@@ -321,7 +319,6 @@
                             android:drawablePadding="5dp"
                             android:textColor="@color/text_header_color"
                             android:textSize="@dimen/text_size_fourteen" />
-
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -331,7 +328,6 @@
                         android:layout_below="@+id/ll_dep_info"
                         android:scrollbars="vertical"
                         android:visibility="gone" />
-
                 </RelativeLayout>
 
 

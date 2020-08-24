@@ -78,7 +78,6 @@ public class QueueApiUnAuthenticCall {
                         Log.d("Response getQueueState", String.valueOf(response.body()));
                         queuePresenter.queueResponse(response.body());
                     } else {
-
                         Log.e(TAG, "Get state of queue upon scan");
                         queuePresenter.responseErrorPresenter(response.body().getError());
                     }

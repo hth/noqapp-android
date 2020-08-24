@@ -144,7 +144,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getDeviceID() {
-        return sharedPreferences.getString(APIConstant.Key.XR_DID, "");
+        if (null != sharedPreferences) {
+            return sharedPreferences.getString(APIConstant.Key.XR_DID, "");
+        }
+
+        return null;
     }
 
     /* Previous QID helps keeps track if new user has logged in. */
