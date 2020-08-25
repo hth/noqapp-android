@@ -236,7 +236,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             } else {
                 tv_currently_serving.setText(getResources().getString(R.string.serving_now_in_queue, jsonQueue.getServingNumber()));
             }
-            tv_live_status.setText(Html.fromHtml("&#8857 live status"));
+            tv_live_status.setText(Html.fromHtml("&#8857 live"));
             tv_live_status.startAnimation(addAnimation());
 
             if (jsonQueue.getAvailableTokenCount() != 0) {
