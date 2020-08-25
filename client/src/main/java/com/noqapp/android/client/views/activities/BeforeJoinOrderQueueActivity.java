@@ -40,7 +40,6 @@ import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
@@ -209,21 +208,21 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 case CD:
                 case CDQ:
                     tv_announcement_text.setText(R.string.announcement_message_csd);
-                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_timeslot, jsonQueue.getTimeSlotMessage()));
+                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_around, jsonQueue.getTimeSlotMessage()));
                     break;
                 default:
                     tv_announcement_text.setText(R.string.announcement_message_covid);
                     tv_announcement_text.setVisibility(View.GONE);
                     tv_announcement_label.setVisibility(View.GONE);
                     ll_announcement.setVisibility(View.GONE);
-                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_timeslot, jsonQueue.getTimeSlotMessage()));
+                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_around, jsonQueue.getTimeSlotMessage()));
             }
             if (0 == jsonQueue.getServingNumber()) {
                 tv_currently_serving.setText(getResources().getString(R.string.serving_not_started, "Not Started"));
             } else {
                 tv_currently_serving.setText(getResources().getString(R.string.serving_now_in_queue, jsonQueue.getServingNumber()));
             }
-            tv_live_status.setText(Html.fromHtml("&#8857 live status"));
+            tv_live_status.setText(Html.fromHtml("&#8857 live"));
             tv_live_status.startAnimation(addAnimation());
 
             if (jsonQueue.getDelayedInMinutes() > 0) {
