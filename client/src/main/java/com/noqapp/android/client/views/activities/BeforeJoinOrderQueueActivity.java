@@ -10,9 +10,12 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -60,6 +63,12 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     private TextView tv_identification_code;
     private TextView tv_mobile;
     private TextView tv_address;
+    private TextView tv_estimated_time;
+    private TextView tv_currently_serving;
+    private TextView tv_live_status;
+    private LinearLayout ll_announcement;
+    private TextView tv_announcement_label;
+    private TextView tv_announcement_text;
     private String codeQR;
     private JsonQueue jsonQueue;
     private boolean isJoinNotPossible = false;
@@ -78,6 +87,12 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
+        tv_estimated_time = findViewById(R.id.tv_estimated_time);
+        tv_currently_serving = findViewById(R.id.tv_currently_serving);
+        tv_live_status = findViewById(R.id.tv_live_status);
+        ll_announcement = findViewById(R.id.ll_announcement);
+        tv_announcement_label = findViewById(R.id.tv_announcement_label);
+        tv_announcement_text = findViewById(R.id.tv_announcement_text);
         tv_mobile = findViewById(R.id.tv_mobile);
         fl_token_available = findViewById(R.id.fl_token_available);
         tv_token_available = findViewById(R.id.tv_token_available);
@@ -137,7 +152,6 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                         QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
                         queueApiAuthenticCall.setQueuePresenter(this);
                         queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-
                     } else {
                         QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
                         queueApiUnAuthenticCall.setQueuePresenter(this);
@@ -189,6 +203,28 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             if (jsonQueue.getPriorityAccess().getDescription().equalsIgnoreCase("ON")) {
                 tv_identification_code.setVisibility(View.VISIBLE);
             }
+
+            //TODO: This information need to come from bizStoreElastic along with formatted announcement text
+            switch (bizStoreElastic.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    tv_announcement_text.setText(R.string.announcement_message_csd);
+                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_timeslot, jsonQueue.getTimeSlotMessage()));
+                    break;
+                default:
+                    tv_announcement_text.setText(R.string.announcement_message_covid);
+                    tv_announcement_text.setVisibility(View.GONE);
+                    tv_announcement_label.setVisibility(View.GONE);
+                    ll_announcement.setVisibility(View.GONE);
+                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_timeslot, jsonQueue.getTimeSlotMessage()));
+            }
+            if (0 == jsonQueue.getServingNumber()) {
+                tv_currently_serving.setText(getResources().getString(R.string.serving_not_started, "Not Started"));
+            } else {
+                tv_currently_serving.setText(getResources().getString(R.string.serving_now_in_queue, jsonQueue.getServingNumber()));
+            }
+            tv_live_status.setText(Html.fromHtml("&#8857 live status"));
+            tv_live_status.startAnimation(addAnimation());
 
             if (jsonQueue.getDelayedInMinutes() > 0) {
                 int hours = jsonQueue.getDelayedInMinutes() / 60;
@@ -256,6 +292,15 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             }
         }
         dismissProgress();
+    }
+
+    private Animation addAnimation() {
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(500); //You can manage the blinking time with this parameter
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        return anim;
     }
 
     @Override
