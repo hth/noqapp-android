@@ -80,7 +80,7 @@
     <string name="your_are_next_label">You are next!</string>
     <string name="daily_token_limit">Daily token limit: %1$d</string>
     <string name="estimated_wait">Estimated Wait: %1$s</string>
-    <string name="expected_service_timeslot">Expected Service Time Slot: %1$s</string>
+    <string name="expected_service_timeslot">Expected Service Around: %1$s</string>
     <string name="serving_now_in_queue">Serving now: %1$d</string>
     <string name="serving_not_started">Serving: %1$s</string>
     <string name="revisit_restriction">Repeat service restriction: %1$s</string>
