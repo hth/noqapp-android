@@ -237,12 +237,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                 tv_currently_serving.setText(getResources().getString(R.string.serving_now_in_queue, jsonQueue.getServingNumber()));
             }
             tv_live_status.setText(Html.fromHtml("&#8857 live status"));
-            Animation anim = new AlphaAnimation(0.0f, 1.0f);
-            anim.setDuration(500); //You can manage the blinking time with this parameter
-            anim.setStartOffset(20);
-            anim.setRepeatMode(Animation.REVERSE);
-            anim.setRepeatCount(Animation.INFINITE);
-            tv_live_status.startAnimation(anim);
+            tv_live_status.startAnimation(addAnimation());
 
             if (jsonQueue.getAvailableTokenCount() != 0) {
                 tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), jsonQueue.getAvailableTokenCount()));
@@ -335,6 +330,15 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             }
         }
         dismissProgress();
+    }
+
+    private Animation addAnimation() {
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(500); //You can manage the blinking time with this parameter
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        return anim;
     }
 
     @Override
