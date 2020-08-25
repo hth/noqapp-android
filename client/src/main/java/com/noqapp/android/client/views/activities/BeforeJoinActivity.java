@@ -226,7 +226,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             switch (jsonQueue.getBusinessType()) {
                 case CD:
                 case CDQ:
-                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_timeslot, jsonQueue.getTimeSlotMessage()));
+                    tv_estimated_time.setText(getResources().getString(R.string.expected_service_around, jsonQueue.getTimeSlotMessage()));
                     break;
                 default:
                     tv_estimated_time.setText(getResources().getString(R.string.estimated_wait, jsonQueue.getTimeSlotMessage()));
