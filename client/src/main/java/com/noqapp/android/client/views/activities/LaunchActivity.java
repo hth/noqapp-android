@@ -106,7 +106,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
@@ -189,8 +188,8 @@ public class LaunchActivity
         }
 
         //NoQueueBaseActivity.saveMailAuth("","");
-        if (null == getDeviceID()) {
-            Log.v("Device id check", getDeviceID());
+        if (null == getDeviceId()) {
+            Log.v("Device id check", getDeviceId());
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.register(

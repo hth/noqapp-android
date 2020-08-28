@@ -143,7 +143,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
     }
 
-    public static String getDeviceID() {
+    public static String getDeviceId() {
         if (null != sharedPreferences) {
             return sharedPreferences.getString(APIConstant.Key.XR_DID, "");
         }
