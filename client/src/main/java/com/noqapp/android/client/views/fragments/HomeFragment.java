@@ -206,9 +206,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                     LaunchActivity.getLaunchActivity().tv_location.setText(cityName);
                     cv_update_location.setVisibility(View.GONE);
                 });
-                tv_no_thanks.setOnClickListener((View v) -> {
-                    cv_update_location.setVisibility(View.GONE);
-                });
+                tv_no_thanks.setOnClickListener((View v) -> cv_update_location.setVisibility(View.GONE));
             }
         } else {
             cv_update_location.setVisibility(View.GONE);
