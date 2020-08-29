@@ -259,7 +259,7 @@
     <string name="patient_name">Nom de patint/e</string>
     <string name="add_dependent">Ajoutez membres du famaille</string>
     <string name="queue_details">Les détailles  de queues</string>
-    <string name="will_be_served">Vous serez servi dans</string>
+    <string name="will_be_served">Vous serez servi dans %1$s</string>
     <string name="ack">Reconnaître</string>
     <string name="your_turn">C\'est votre tourn</string>
     <string name="pre_approve">Pré-approuvé</string>
@@ -416,7 +416,7 @@
     <string name="message_enable_gps">Le GPS est désactivé. Afin d\'utiliser correctement l\'application</string>
     <string name="btn_location_setting">Les paramètres de localisation</string>
     <string name="select_patient">Sélectionnez un/e  patient/e</string>
-    <string name="logout_warning">Vous serez déconnecté dans% 1 $ d secondes</string>
+    <string name="logout_warning">Vous serez déconnecté dans %1$d secondes</string>
     <string name="try_again">Réessayer</string>
 
     <!-- Strings from Code 06202020 -->
