@@ -21,6 +21,7 @@ public class DatabaseTable {
         public static final String SERVING_NUMBER = "servingNumber";
         public static final String LAST_NUMBER = "lastNumber";
         public static final String TOKEN = "token";
+        public static final String DISPLAY_TOKEN = "displayToken";
         public static final String QUEUE_STATUS = "queueStatus";
         public static final String SERVICE_END_TIME = "serviceEndTime";
         public static final String RATING_COUNT = "ratingCount";
