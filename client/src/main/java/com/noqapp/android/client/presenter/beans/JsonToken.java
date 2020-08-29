@@ -47,6 +47,9 @@ public class JsonToken {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty("n")
     private String customerName;
 
@@ -109,6 +112,14 @@ public class JsonToken {
 
     public void setToken(int token) {
         this.token = token;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public String getCustomerName() {

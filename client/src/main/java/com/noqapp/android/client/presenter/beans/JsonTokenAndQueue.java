@@ -101,6 +101,9 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty("qid")
     private String queueUserId;
 
@@ -325,6 +328,14 @@ public class JsonTokenAndQueue implements Serializable {
     public JsonTokenAndQueue setToken(int token) {
         this.token = token;
         return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public String getQueueUserId() {

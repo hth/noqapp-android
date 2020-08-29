@@ -32,6 +32,9 @@ public class JsonInQueuePerson extends AbstractDomain implements Serializable {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty("n")
     private String customerName = "";
 
@@ -71,6 +74,14 @@ public class JsonInQueuePerson extends AbstractDomain implements Serializable {
 
     public void setToken(int token) {
         this.token = token;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public String getCustomerName() {
