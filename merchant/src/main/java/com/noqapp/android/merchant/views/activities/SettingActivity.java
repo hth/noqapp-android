@@ -271,10 +271,14 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         cb_lunch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 tv_store_lunch_start.setOnClickListener(new TextViewClick(tv_store_lunch_start));
+                tv_store_lunch_start.setVisibility(View.VISIBLE);
                 tv_store_lunch_close.setOnClickListener(new TextViewClick(tv_store_lunch_close));
+                tv_store_lunch_close.setVisibility(View.VISIBLE);
             } else {
                 tv_store_lunch_start.setOnClickListener(disableClick);
+                tv_store_lunch_start.setVisibility(View.GONE);
                 tv_store_lunch_close.setOnClickListener(disableClick);
+                tv_store_lunch_close.setVisibility(View.GONE);
             }
         });
         cb_lunch.setChecked(true);
@@ -724,13 +728,13 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
 
                 if (cb_lunch.isChecked() && StringUtils.isNotBlank(tv_store_lunch_start.getText().toString())) {
                     storeSetting.setLunchTimeStart(Integer.parseInt(tv_store_lunch_start.getText().toString().replace(":", "")));
-                }else{
+                } else {
                     storeSetting.setLunchTimeStart(storeSettingTemp.getLunchTimeStart());
                 }
 
                 if (cb_lunch.isChecked() && StringUtils.isNotBlank(tv_store_lunch_close.getText().toString())) {
                     storeSetting.setLunchTimeEnd(Integer.parseInt(tv_store_lunch_close.getText().toString().replace(":", "")));
-                }else {
+                } else {
                     storeSetting.setLunchTimeEnd(storeSettingTemp.getLunchTimeEnd());
                 }
 
