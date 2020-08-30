@@ -177,6 +177,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         switch (businessType) {
             case DO:
             case HS:
+            case PW:
                 cv_appointment.setVisibility(View.VISIBLE);
                 break;
             default:
