@@ -62,7 +62,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription() + " @ "
                 + CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getServiceBeginTime()));
         holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());
-        holder.tv_token_assigned.setText(String.valueOf(jsonQueueHistorical.getTokenNumber()));
+        holder.tv_token_assigned.setText(jsonQueueHistorical.getDisplayToken());
         holder.btn_rejoin.setOnClickListener((View v) -> {
             Intent in;
             Bundle b = new Bundle();

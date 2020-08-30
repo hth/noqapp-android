@@ -357,7 +357,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             default:
                 tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
         }
-        tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
+        tv_token.setText(jsonPurchaseOrder.getDisplayToken());
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
 
         //TODO   Revert After Corona crisis

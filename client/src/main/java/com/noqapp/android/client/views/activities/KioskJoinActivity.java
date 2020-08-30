@@ -140,7 +140,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
-
         }
     }
 
@@ -298,7 +297,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
             kioskApiCalls.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
 
-
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Queue_Name", jsonQueue.getDisplayName());
@@ -340,6 +338,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             }
             joinQueue(true);
         }
+
         if (UserUtils.isLogin()) {
             List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
             profileList.add(0, NoQueueBaseActivity.getUserProfile());
@@ -374,7 +373,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         sp_name_list.setVisibility(View.GONE);
         tv_add.setVisibility(View.GONE);
         btn_joinQueue.setVisibility(View.GONE);
-        new CustomToast().showToast(this, "Token generated successfully. Your token no is: " + token.getToken());
+        new CustomToast().showToast(this, "Token generated successfully. Your token no is: " + token.getDisplayToken());
         logoutFromKiosk();
         dismissProgress();
     }
@@ -393,7 +392,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         tv_timer.setVisibility(View.VISIBLE);
         tv_timer.setText(String.format(getString(R.string.logout_warning), time));
         waitTimer = new CountDownTimer(30000, 1000) {
-
             public void onTick(long millisUntilFinished) {
                 tv_timer.setText(String.format(getString(R.string.logout_warning), time));
                 time--;
@@ -402,7 +400,6 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             public void onFinish() {
                 tv_timer.setText(getString(R.string.try_again));
             }
-
         }.start();
         Handler handler = new Handler();
         handler.postDelayed(() -> {

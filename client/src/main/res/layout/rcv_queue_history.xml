@@ -118,7 +118,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_fourteen" />
 
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

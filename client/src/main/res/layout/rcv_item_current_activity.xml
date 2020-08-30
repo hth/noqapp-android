@@ -81,7 +81,7 @@
                             android:paddingBottom="5dp"
                             android:background="@drawable/blue_gradient"
                             android:gravity="center"
-                            android:text="sdsf"
+                            android:text=""
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_fourteen" />
 

@@ -412,7 +412,7 @@ public class OrderDetailActivity
         try {
             btn_refund.setVisibility(View.GONE);
             tv_customer_name.setText(jsonPurchaseOrder.getCustomerName());
-            tv_token.setText("Token/Order No. " + jsonPurchaseOrder.getToken());
+            tv_token.setText("Token/Order No. " + jsonPurchaseOrder.getDisplayToken());
             tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
             tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
             cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);

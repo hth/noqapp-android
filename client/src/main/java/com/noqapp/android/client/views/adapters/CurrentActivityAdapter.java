@@ -121,7 +121,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 }
             }
 
-            holder.tv_token_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+            holder.tv_token_value.setText(jsonTokenAndQueue.getDisplayToken());
         } else if (object instanceof JsonSchedule) {
             JsonSchedule jsonSchedule = (JsonSchedule) object;
             holder.ll_queue.setVisibility(View.GONE);

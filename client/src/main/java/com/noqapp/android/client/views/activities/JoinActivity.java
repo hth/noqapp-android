@@ -423,6 +423,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         btn_cancel_queue.setEnabled(true);
         jsonTokenAndQueue.setServingNumber(token.getServingNumber());
         jsonTokenAndQueue.setToken(token.getToken());
+        jsonTokenAndQueue.setDisplayToken(token.getDisplayToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
         jsonTokenAndQueue.setTimeSlotMessage(jsonToken.getTimeSlotMessage());
         dismissProgress();
@@ -442,6 +443,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private void navigateToAfterJoinScreen(JsonToken jsonToken) {
         jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
         jsonTokenAndQueue.setToken(jsonToken.getToken());
+        jsonTokenAndQueue.setDisplayToken(jsonToken.getDisplayToken());
         jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
         jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
         jsonTokenAndQueue.setJsonPurchaseOrder(jsonToken.getJsonPurchaseOrder());

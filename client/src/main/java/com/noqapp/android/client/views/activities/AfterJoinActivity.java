@@ -336,7 +336,7 @@ public class AfterJoinActivity
             tv_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this, tv_address.getText().toString()));
             gotoPerson = (null != ReviewDB.getValue(codeQR, tokenValue)) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             //tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-            tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+            tv_token.setText(jsonTokenAndQueue.getDisplayToken());
             tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
             // Store the currently serving and avg wait time in the app preference
             SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
@@ -506,7 +506,7 @@ public class AfterJoinActivity
         jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
         jsonTokenAndQueue.setToken(jq.getToken());
         //tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-        tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+        tv_token.setText(jsonTokenAndQueue.getDisplayToken());
         tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
         updateEstimatedTime();
         setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
@@ -835,6 +835,7 @@ public class AfterJoinActivity
         NoQueueMessagingService.subscribeTopics(topic);
         jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
         jsonTokenAndQueue.setToken(jsonToken.getToken());
+        jsonTokenAndQueue.setDisplayToken(jsonToken.getDisplayToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);

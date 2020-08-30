@@ -358,7 +358,7 @@ public class OrderDetailActivity
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
-        tv_token.setText("Token/Order No. " + jsonQueuedPerson.getToken());
+        tv_token.setText("Token/Order No. " + jsonQueuedPerson.getDisplayToken());
         tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress())
                 ? getApplicationContext().getString(R.string.name_unavailable)
