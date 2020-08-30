@@ -263,10 +263,11 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         tv_close_day_of_week.setText(getResources().getString(R.string.dayclosed, dayLongName));
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
         cb_lunch = findViewById(R.id.cb_lunch);
-        View.OnClickListener disableClick = v -> {
-            ShowAlertInformation.showThemeDialog(SettingActivity.this,
-                    "Alert", "Lunch time disabled for the day. Select checkbox  to enable the lunch time.");
-        };
+        View.OnClickListener disableClick = v -> ShowAlertInformation.showThemeDialog(
+                SettingActivity.this,
+                "Alert",
+                "Lunch time disabled for the day. Select checkbox  to enable the lunch time.");
+
         cb_lunch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 tv_store_lunch_start.setOnClickListener(new TextViewClick(tv_store_lunch_start));
