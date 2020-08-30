@@ -729,13 +729,13 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 if (cb_lunch.isChecked() && StringUtils.isNotBlank(tv_store_lunch_start.getText().toString())) {
                     storeSetting.setLunchTimeStart(Integer.parseInt(tv_store_lunch_start.getText().toString().replace(":", "")));
                 } else {
-                    storeSetting.setLunchTimeStart(storeSettingTemp.getLunchTimeStart());
+                    storeSetting.setLunchTimeStart(0);
                 }
 
                 if (cb_lunch.isChecked() && StringUtils.isNotBlank(tv_store_lunch_close.getText().toString())) {
                     storeSetting.setLunchTimeEnd(Integer.parseInt(tv_store_lunch_close.getText().toString().replace(":", "")));
                 } else {
-                    storeSetting.setLunchTimeEnd(storeSettingTemp.getLunchTimeEnd());
+                    storeSetting.setLunchTimeEnd(0);
                 }
 
                 if (StringUtils.isNotBlank(tv_scheduling_from.getText().toString())) {
