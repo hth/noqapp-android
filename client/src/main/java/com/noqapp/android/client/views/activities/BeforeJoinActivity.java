@@ -374,10 +374,14 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                     if (UserUtils.isLogin()) {
                         btn_joinQueue.setText(getString(R.string.join));
                         btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
-                        if (jsonQueue.getBusinessType() != BusinessTypeEnum.HS) {
-                            // Set the primary account holder selected if not related to Health-care service
-                            // TODO(pth): Fix another way to set primary by default
-                            sp_name_list.setSelection(1);
+                        switch (jsonQueue.getBusinessType()) {
+                            case HS:
+                            case DO:
+                                break;
+                            default:
+                                // Set the primary account holder selected if not related to Health-care service
+                                // TODO(pth): Fix another way to set primary by default
+                                sp_name_list.setSelection(1);
                         }
                         if (validateView) {
                             //setColor(false);  skip due to view validation
@@ -406,6 +410,15 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                     // any user can join
                     btn_joinQueue.setText(getString(R.string.join));
                     btn_pay_and_joinQueue.setText(getString(R.string.pay_and_join));
+                    switch (jsonQueue.getBusinessType()) {
+                        case HS:
+                        case DO:
+                            break;
+                        default:
+                            // Set the primary account holder selected if not related to Health-care service
+                            // TODO(pth): Fix another way to set primary by default
+                            sp_name_list.setSelection(1);
+                    }
                     callAfterJoin();
                 }
             } else {

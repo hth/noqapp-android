@@ -396,6 +396,7 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
             edt_prod_unit_value.setText(String.valueOf(jsonStoreProduct.getDisplayUnitValue()));
             tv_category_type.setText(categories.get(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList)));
+            selectionPos = getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList);
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
             sc_product_type.setSelectedSegment(getItemPosition(prodTypesSegment, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {

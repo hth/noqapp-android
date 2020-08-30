@@ -194,14 +194,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 jsonBusinessCustomer);
                     }
-
-                    if (BuildConfig.TOKEN_WITHOUT_USER_INFO.equalsIgnoreCase("ON")) {
-                        manageQueueApiCalls.dispenseToken(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                codeQR);
-                    }
                 });
             } else {
                 businessCustomerId = "";

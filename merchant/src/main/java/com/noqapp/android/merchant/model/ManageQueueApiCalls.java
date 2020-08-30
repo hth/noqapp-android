@@ -246,39 +246,6 @@ public class ManageQueueApiCalls {
         });
     }
 
-    @Deprecated
-    public void dispenseToken(String did, String mail, String auth, String codeQR) {
-        queueApiUrls.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("dispTokenWithoutCInfo", String.valueOf(response.body()));
-                        dispenseTokenPresenter.dispenseTokenResponse(response.body());
-                    } else {
-                        Log.e(TAG, "Found error while dispenseTokenWithoutClientInfo");
-                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                        dispenseTokenPresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        dispenseTokenPresenter.authenticationFailure();
-                    } else {
-                        dispenseTokenPresenter.responseErrorPresenter(response.code());
-                    }
-                }
-            }
-
-
-            @Override
-            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("dispTokenWithoutCInfo", t.getLocalizedMessage(), t);
-                dispenseTokenPresenter.responseErrorPresenter(null);
-            }
-        });
-    }
-
-
     public void dispenseTokenWithClientInfo(String did, String mail, String auth, JsonBusinessCustomer jsonBusinessCustomer) {
         queueApiUrls.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonToken>() {
             @Override
