@@ -62,7 +62,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     private TextView tv_store_close, tv_store_start, tv_store_lunch_start, tv_store_lunch_close,
             tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
-    private CheckBox cb_limit, cb_enable_payment;
+    private CheckBox cb_limit, cb_enable_payment, cb_lunch;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
     private StoreSettingApiCalls storeSettingApiCalls;
@@ -178,7 +178,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
 
         if (null != LaunchActivity.getLaunchActivity().getUserProfile()
                 && (BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()
-                        || BusinessTypeEnum.HS == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())
+                || BusinessTypeEnum.HS == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())
         ) {
             cv_appointment.setVisibility(View.VISIBLE);
         } else {
@@ -264,7 +264,24 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         String dayLongName = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
         tv_close_day_of_week.setText(getResources().getString(R.string.dayclosed, dayLongName));
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
-
+        cb_lunch = findViewById(R.id.cb_lunch);
+        View.OnClickListener disableClick = v -> {
+            ShowAlertInformation.showThemeDialog(SettingActivity.this,
+                    "Alert", "Lunch time disabled for the day. Select checkbox  to enable the lunch time.");
+        };
+        cb_lunch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    tv_store_lunch_start.setOnClickListener(new TextViewClick(tv_store_lunch_start));
+                    tv_store_lunch_close.setOnClickListener(new TextViewClick(tv_store_lunch_close));
+                } else {
+                    tv_store_lunch_start.setOnClickListener(disableClick);
+                    tv_store_lunch_close.setOnClickListener(disableClick);
+                }
+            }
+        });
+        cb_lunch.setChecked(true);
         if (!isSpecificSettingEditAllowed()) {
             //disable the fields for unauthorized user
             tv_store_start.setEnabled(false);
@@ -273,6 +290,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             tv_token_not_available.setEnabled(false);
             tv_store_lunch_start.setEnabled(false);
             tv_store_lunch_close.setEnabled(false);
+            cb_lunch.setEnabled(false);
         }
 
         Button btn_update_deduction = findViewById(R.id.btn_update_deduction);
@@ -296,19 +314,18 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         btn_update_time.setOnClickListener(view -> {
             if (isSpecificSettingEditAllowed()) {
                 if (isEndTimeBeforeStartTime(tv_store_start, tv_store_close)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue start time' should be before 'Queue close time'.");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this,
+                            "Alert", "'Queue start time' should be before 'Queue close time'.");
                 } else if (isEndTimeBeforeStartTime(tv_token_available, tv_token_not_available)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Issue token from' should be before 'Stop issuing token after'.");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                            "'Issue token from' should be before 'Stop issuing token after'.");
                 } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Stop issuing token after' should be before 'Queue close time'.");
-                } else if (isEndTimeBeforeStartTime(tv_store_lunch_start, tv_store_lunch_close)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Lunch start time' should be before 'Lunch close time'.");
-                }else if (isEndTimeBeforeStartTime(tv_store_start, tv_store_lunch_start)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Lunch start time' should be after 'Queue start time'.");
-                } else if (isEndTimeBeforeStartTime(tv_store_lunch_close, tv_store_close)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Lunch close time' should be before 'Queue close time'.");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                            "'Stop issuing token after' should be before 'Queue close time'.");
                 } else {
-                    callUpdate(getString(R.string.setting_token_q_timing));
+                    if (validateLunchTime()) {
+                        callUpdate(getString(R.string.setting_token_q_timing));
+                    }
                 }
             } else {
                 ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
@@ -570,6 +587,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     AppUtils.hideKeyBoard(this);
                 }
             }
+
+            cb_lunch.setChecked(storeSetting.getLunchTimeStart() != storeSetting.getLunchTimeEnd());
             edt_appointment_duration.setText(String.valueOf(storeSetting.getAppointmentDuration()));
             edt_appointment_accepting_week.setText(String.valueOf(storeSetting.getAppointmentOpenHowFar()));
 
@@ -702,12 +721,16 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     storeSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
                 }
 
-                if (StringUtils.isNotBlank(tv_store_lunch_start.getText().toString())) {
+                if (cb_lunch.isChecked() && StringUtils.isNotBlank(tv_store_lunch_start.getText().toString())) {
                     storeSetting.setLunchTimeStart(Integer.parseInt(tv_store_lunch_start.getText().toString().replace(":", "")));
+                }else{
+                    storeSetting.setLunchTimeStart(storeSettingTemp.getLunchTimeStart());
                 }
 
-                if (StringUtils.isNotBlank(tv_store_lunch_close.getText().toString())) {
+                if (cb_lunch.isChecked() && StringUtils.isNotBlank(tv_store_lunch_close.getText().toString())) {
                     storeSetting.setLunchTimeEnd(Integer.parseInt(tv_store_lunch_close.getText().toString().replace(":", "")));
+                }else {
+                    storeSetting.setLunchTimeEnd(storeSettingTemp.getLunchTimeEnd());
                 }
 
                 if (StringUtils.isNotBlank(tv_scheduling_from.getText().toString())) {
@@ -950,6 +973,29 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     }
 
     private boolean isSpecificSettingEditAllowed() {
-        return (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) || (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR);
+        return (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) ||
+                (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR);
+    }
+
+    private boolean validateLunchTime() {
+        if (cb_lunch.isChecked()) {
+            boolean isValid = true;
+            if (isEndTimeBeforeStartTime(tv_store_lunch_start, tv_store_lunch_close)) {
+                ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                        "'Lunch start time' should be before 'Lunch close time'.");
+                isValid = false;
+            } else if (isEndTimeBeforeStartTime(tv_store_start, tv_store_lunch_start)) {
+                ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                        "'Lunch start time' should be after 'Queue start time'.");
+                isValid = false;
+            } else if (isEndTimeBeforeStartTime(tv_store_lunch_close, tv_store_close)) {
+                ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                        "'Lunch close time' should be before 'Queue close time'.");
+                isValid = false;
+            }
+            return isValid;
+        } else {
+            return true;
+        }
     }
 }
