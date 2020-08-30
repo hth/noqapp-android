@@ -267,16 +267,13 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             ShowAlertInformation.showThemeDialog(SettingActivity.this,
                     "Alert", "Lunch time disabled for the day. Select checkbox  to enable the lunch time.");
         };
-        cb_lunch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    tv_store_lunch_start.setOnClickListener(new TextViewClick(tv_store_lunch_start));
-                    tv_store_lunch_close.setOnClickListener(new TextViewClick(tv_store_lunch_close));
-                } else {
-                    tv_store_lunch_start.setOnClickListener(disableClick);
-                    tv_store_lunch_close.setOnClickListener(disableClick);
-                }
+        cb_lunch.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                tv_store_lunch_start.setOnClickListener(new TextViewClick(tv_store_lunch_start));
+                tv_store_lunch_close.setOnClickListener(new TextViewClick(tv_store_lunch_close));
+            } else {
+                tv_store_lunch_start.setOnClickListener(disableClick);
+                tv_store_lunch_close.setOnClickListener(disableClick);
             }
         });
         cb_lunch.setChecked(true);
@@ -312,13 +309,19 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         btn_update_time.setOnClickListener(view -> {
             if (isSpecificSettingEditAllowed()) {
                 if (isEndTimeBeforeStartTime(tv_store_start, tv_store_close)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this,
-                            "Alert", "'Queue start time' should be before 'Queue close time'.");
+                    ShowAlertInformation.showThemeDialog(
+                            SettingActivity.this,
+                            "Alert",
+                            "'Queue start time' should be before 'Queue close time'.");
                 } else if (isEndTimeBeforeStartTime(tv_token_available, tv_token_not_available)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                    ShowAlertInformation.showThemeDialog(
+                            SettingActivity.this,
+                            "Alert",
                             "'Issue token from' should be before 'Stop issuing token after'.");
                 } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                    ShowAlertInformation.showThemeDialog(
+                            SettingActivity.this,
+                            "Alert",
                             "'Stop issuing token after' should be before 'Queue close time'.");
                 } else {
                     if (validateLunchTime()) {
@@ -384,7 +387,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                     tv_fee_after_discounted_followup.setText("");
                     tv_fee_after_discounted_followup.setVisibility(View.GONE);
                 }
-
             }
         });
         btn_update_deduction.setOnClickListener(view -> {
