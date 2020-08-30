@@ -981,15 +981,21 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         if (cb_lunch.isChecked()) {
             boolean isValid = true;
             if (isEndTimeBeforeStartTime(tv_store_lunch_start, tv_store_lunch_close)) {
-                ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                ShowAlertInformation.showThemeDialog(
+                        SettingActivity.this,
+                        "Alert",
                         "'Lunch start time' should be before 'Lunch close time'.");
                 isValid = false;
             } else if (isEndTimeBeforeStartTime(tv_store_start, tv_store_lunch_start)) {
-                ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                ShowAlertInformation.showThemeDialog(
+                        SettingActivity.this,
+                        "Alert",
                         "'Lunch start time' should be after 'Queue start time'.");
                 isValid = false;
             } else if (isEndTimeBeforeStartTime(tv_store_lunch_close, tv_store_close)) {
-                ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert",
+                ShowAlertInformation.showThemeDialog(
+                        SettingActivity.this,
+                        "Alert",
                         "'Lunch close time' should be before 'Queue close time'.");
                 isValid = false;
             }
