@@ -266,7 +266,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         View.OnClickListener disableClick = v -> ShowAlertInformation.showThemeDialog(
                 SettingActivity.this,
                 "Alert",
-                "Lunch time disabled for the day. Select checkbox  to enable the lunch time.");
+                "Lunch time disabled for the day. Select checkbox to enable the lunch time.");
 
         cb_lunch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
