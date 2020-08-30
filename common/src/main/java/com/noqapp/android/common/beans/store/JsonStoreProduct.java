@@ -203,7 +203,7 @@ public class JsonStoreProduct implements Serializable {
     }
 
     public String getDisplayUnitValue() {
-        return new BigDecimal(unitValue).movePointLeft(2).toString();
+        return new BigDecimal(unitValue).movePointLeft(2).stripTrailingZeros().toString();
     }
 
     public String getDisplayPrice() {
