@@ -106,7 +106,6 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         setProgressMessage("Loading Queue Settings...");
 
         if (!LaunchActivity.isTablet) {
-
             iv_today_settings = findViewById(R.id.iv_today_settings);
             ll_today_settings = findViewById(R.id.ll_today_settings);
 
@@ -164,9 +163,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         cv_appointment = findViewById(R.id.cv_appointment);
         codeQR = getIntent().getStringExtra("codeQR");
 
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile()
-                && BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()
-        ) {
+        BusinessTypeEnum businessType = BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType();
+        if (BusinessTypeEnum.DO == businessType) {
             ll_follow_up.setVisibility(View.VISIBLE);
             cv_payment.setVisibility(View.VISIBLE);
             isFollowUpAllow = true;
@@ -176,13 +174,13 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             isFollowUpAllow = false;
         }
 
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile()
-                && (BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()
-                || BusinessTypeEnum.HS == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())
-        ) {
-            cv_appointment.setVisibility(View.VISIBLE);
-        } else {
-            cv_appointment.setVisibility(View.GONE);
+        switch (businessType) {
+            case DO:
+            case HS:
+                cv_appointment.setVisibility(View.VISIBLE);
+                break;
+            default:
+                cv_appointment.setVisibility(View.GONE);
         }
 
         yes_no_list.clear();
