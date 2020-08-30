@@ -209,6 +209,7 @@ android {
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
             buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "1"
+            buildConfigField STRING, "INVENTORY_STATE", inventoryState
         }
 
         sandbox {
@@ -254,6 +255,7 @@ android {
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
             buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "1"
+            buildConfigField STRING, "INVENTORY_STATE", inventoryState
         }
 
         release {
@@ -297,6 +299,7 @@ android {
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeProd
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdProd
             buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "5"
+            buildConfigField STRING, "INVENTORY_STATE", inventoryState
         }
     }
 
