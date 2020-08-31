@@ -75,6 +75,7 @@
     <!--- Join Screen -->
     <string name="serving_now">maintenant au service</string>
     <string name="your_token">votre numéro de jeton</string>
+    <string name="your_order">Order</string>
     <string name="position_in_queue_label">la position dans la file d\'attente</string>
     <string name="position_in_queue">la position dans la file d\'attente</string>
     <string name="your_are_next_label">C\'est vous le porchain</string>

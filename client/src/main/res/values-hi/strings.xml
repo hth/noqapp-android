@@ -75,6 +75,7 @@
     <!--- Join Screen -->
     <string name="serving_now">सेवा में</string>
     <string name="your_token">टोकन</string>
+    <string name="your_order">Order</string>
     <string name="position_in_queue_label">कतार में स्थिति</string>
     <string name="your_are_next_label">आप अगले हैं!</string>
     <string name="position_in_queue">कतार में स्थिति: %1$d</string>
