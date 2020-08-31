@@ -77,8 +77,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_people_order_queue_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_people_order_queue_item, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -88,7 +87,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         final JsonPurchaseOrder jsonPurchaseOrder = dataSet.get(position);
         final String phoneNo = jsonPurchaseOrder.getCustomerPhone();
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonPurchaseOrder.getCreated()));
-        recordHolder.tv_sequence_number.setText(String.valueOf(jsonPurchaseOrder.getToken()));
+        recordHolder.tv_sequence_number.setText(jsonPurchaseOrder.getDisplayToken());
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonPurchaseOrder.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonPurchaseOrder.getCustomerName());
         // recordHolder.iv_new.setVisibility(jsonPurchaseOrder.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
         // if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
@@ -185,7 +184,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
                 peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, true);
             }
         });
-        if(!LaunchActivity.isTablet) {
+        
+        if (!LaunchActivity.isTablet) {
             recordHolder.tv_item_count.setPaintFlags(recordHolder.tv_item_count.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             recordHolder.tv_item_count.setOnClickListener(v -> {
                 if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
@@ -196,6 +196,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
                 }
             });
         }
+
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RP ||
                 jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RD) {
             recordHolder.tv_order_done.setVisibility(View.VISIBLE);
@@ -239,6 +240,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         });
 
         switch (jsonPurchaseOrder.getBusinessType()) {
+            case DO:
             case HS:
                 recordHolder.tv_order_done.setText("Service Completed");
                 recordHolder.tv_order_cancel.setText("Cancel Service");

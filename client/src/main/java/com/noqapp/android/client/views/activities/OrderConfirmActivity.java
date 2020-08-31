@@ -253,8 +253,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     public void checkProductWithZeroPrice() {
         isProductWithoutPrice = false;
         if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getPurchaseOrderProducts() && jsonPurchaseOrder.getPurchaseOrderProducts().size() > 0) {
-            for (JsonPurchaseOrderProduct jpop :
-                    jsonPurchaseOrder.getPurchaseOrderProducts()) {
+            for (JsonPurchaseOrderProduct jpop : jsonPurchaseOrder.getPurchaseOrderProducts()) {
                 if (jpop.getProductPrice() == 0) {
                     isProductWithoutPrice = true;
                     break;

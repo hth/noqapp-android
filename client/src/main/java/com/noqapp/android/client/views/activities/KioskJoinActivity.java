@@ -368,7 +368,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         tv_left.setText(getString(R.string.serving_now));
         tv_right.setText(getString(R.string.your_token));
         tv_serving_no.setText(String.valueOf(token.getServingNumber()));
-        tv_people_in_q.setText(String.valueOf(token.getToken()));
+        tv_people_in_q.setText(token.getDisplayToken());
         tv_name.setVisibility(View.VISIBLE);
         sp_name_list.setVisibility(View.GONE);
         tv_add.setVisibility(View.GONE);
