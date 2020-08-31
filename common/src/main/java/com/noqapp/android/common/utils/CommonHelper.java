@@ -237,7 +237,7 @@ public class CommonHelper {
                         + " / "
                         + jsonStoreProduct.getDisplayUnitValue()
                         + " "
-                        + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getDescription());
+                        + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription());
             } else {
                 return "";
             }
