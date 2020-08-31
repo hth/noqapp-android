@@ -108,7 +108,7 @@
                         <TextView
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
-                            android:text="@string/your_token"
+                            android:text="@string/your_order"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/join_section_small_text" />
                     </LinearLayout>

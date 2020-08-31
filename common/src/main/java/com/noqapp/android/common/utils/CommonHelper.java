@@ -237,7 +237,7 @@ public class CommonHelper {
                         + " / "
                         + jsonStoreProduct.getDisplayUnitValue()
                         + " "
-                        + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getDescription());
+                        + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription());
             } else {
                 return "";
             }
@@ -291,11 +291,9 @@ public class CommonHelper {
         return input.substring(0, index + 1) + ":" + input.substring(index + 1);
     }
 
-    public static ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
-        ArrayList<String> timeSlot = new ArrayList<>();
-        if (slotMinute == 0) {
-            return timeSlot;
-        } else {
+    public static List<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
+        List<String> timeSlot = new ArrayList<>();
+        if (slotMinute != 0) {
             try {
                 int fromHour, fromMinute, toHour, toMinute;
                 fromHour = Integer.parseInt(strFromTime.split(":")[0]);
@@ -331,8 +329,8 @@ public class CommonHelper {
                 FirebaseCrashlytics.getInstance().log("Failed time slot " + slotMinute + ":" + strFromTime + ":" + strToTime);
                 e.printStackTrace();
             }
-            return timeSlot;
         }
+        return timeSlot;
     }
 
     public static int removeColon(String input) {

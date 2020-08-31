@@ -7,28 +7,30 @@ import java.util.List;
  * Created by hitender on 4/1/18.
  */
 public enum UnitOfMeasurementEnum {
-    CN("CN", "count (nos)"),
-    DZ("DZ", "dozen"),
-    HD("HD", "1/2 dozen"),
-    MG("MG", "mg"),
-    GM("GM", "gm"),
-    KG("KG", "kg"),
-    ML("ML", "ml"),
-    LT("LT", "lt"),
+    CN("CN", "count (nos)", "count"),
+    DZ("DZ", "dozen", "dz"),
+    HD("HD", "1/2 dozen", "1/2 dz"),
+    MG("MG", "mg", "mg"),
+    GM("GM", "gm", "gm"),
+    KG("KG", "kg", "kg"),
+    ML("ML", "ml", "ml"),
+    LT("LT", "lt", "lt"),
 
-    CM("CM", "cm"),
-    LA("LA", "Large"),
-    XL("XL", "Extra Large"),
-    ME("ME", "Medium"),
-    SM("SM", "Small"),
-    KT("KT", "Kit");
+    CM("CM", "cm", "cm"),
+    LA("LA", "Large", "L"),
+    XL("XL", "Extra Large", "XL"),
+    ME("ME", "Medium", "M"),
+    SM("SM", "Small", "S"),
+    KT("KT", "Kit", "kit");
 
     private final String name;
     private final String description;
+    private final String friendlyDescription;
 
-    UnitOfMeasurementEnum(String name, String description) {
+    UnitOfMeasurementEnum(String name, String description, String friendlyDescription) {
         this.name = name;
         this.description = description;
+        this.friendlyDescription = friendlyDescription;
     }
 
     public String getName() {
@@ -37,6 +39,10 @@ public enum UnitOfMeasurementEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getFriendlyDescription() {
+        return friendlyDescription;
     }
 
     @Override

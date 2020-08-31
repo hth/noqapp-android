@@ -75,6 +75,7 @@
     <!--- Join Screen -->
     <string name="serving_now">ಈಗ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ </string>
     <string name="your_token">ನಿಮ್ಮ ಟೋಕನ್ ಸಂ</string>
+    <string name="your_order">Order</string>
     <string name="position_in_queue_label">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ</string>
     <string name="position_in_queue">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ: %1$d</string>
     <string name="your_are_next_label">ಮುಂದಿನದು ನಿಮ್ಮ ಸರದಿ!</string>
