@@ -218,7 +218,7 @@ public class AppointmentActivityNew extends BaseActivity implements
             // set to keep track the actual assign slot in case of splitting the slot to show in appointment UI
             js.setMultipleSlotStartTiming(js.getStartTime());
             js.setMultipleSlotEndTiming(js.getEndTime());
-            ArrayList<String> timeSlot = AppUtils.getTimeSlots(
+            List<String> timeSlot = AppUtils.getTimeSlots(
                     appointmentDuration,
                     AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
                     AppUtils.getTimeFourDigitWithColon(js.getEndTime()),

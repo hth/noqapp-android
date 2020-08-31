@@ -294,6 +294,7 @@ public class BookAppointmentActivity
                 if (!filledTimes.contains(timeSlot.get(i)) && null == firstAvailableAppointment) {
                     firstAvailableAppointment = listData.get(i);
                 }
+
                 if (!filledTimes.contains(timeSlot.get(i))) {
                     ++totalAvailableCount;
                 }

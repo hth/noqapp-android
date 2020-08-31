@@ -229,10 +229,12 @@ public class BookAppointmentActivity extends BaseActivity implements
             List<AppointmentSlot> listData = new ArrayList<>();
             String from = Formatter.convertMilitaryTo24HourFormat(jsonHour.getAppointmentStartHour());
             String to = Formatter.convertMilitaryTo24HourFormat(jsonHour.getAppointmentEndHour());
-            ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to, true);
+            List<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to, true);
             for (int i = 0; i < timeSlot.size() - 1; i++) {
-                listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).
-                        setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i+1))));
+                listData.add(
+                    new AppointmentSlot()
+                        .setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1))
+                        .setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i+1))));
                 times.add(timeSlot.get(i));
             }
             appointmentSlotAdapter = new AppointmentSlotAdapter(listData, this, this);
