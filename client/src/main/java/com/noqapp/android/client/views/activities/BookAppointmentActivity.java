@@ -284,10 +284,12 @@ public class BookAppointmentActivity
             List<AppointmentSlot> listData = new ArrayList<>();
             String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
             String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-            ArrayList<String> timeSlot = AppUtils.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
+            List<String> timeSlot = AppUtils.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
             for (int i = 0; i < timeSlot.size() - 1; i++) {
-                listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).
-                        setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i + 1))));
+                listData.add(
+                    new AppointmentSlot()
+                        .setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1))
+                        .setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i + 1))));
 
                 if (!filledTimes.contains(timeSlot.get(i)) && null == firstAvailableAppointment) {
                     firstAvailableAppointment = listData.get(i);
@@ -295,7 +297,6 @@ public class BookAppointmentActivity
                 if (!filledTimes.contains(timeSlot.get(i))) {
                     ++totalAvailableCount;
                 }
-
             }
             appointmentSlotAdapter = new AppointmentSlotAdapter(listData, this, this);
             rv_available_date.setAdapter(appointmentSlotAdapter);
@@ -355,11 +356,17 @@ public class BookAppointmentActivity
         Log.e("appointments", jsonScheduleList.toString());
         ArrayList<String> filledTimes = new ArrayList<>();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
+            List<String> appointmentSlots = new ArrayList<>();
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                filledTimes.addAll(AppUtils.getTimeSlots(bizStoreElastic.getAppointmentDuration(),
+                appointmentSlots.addAll(
+                    AppUtils.getTimeSlots(
+                        bizStoreElastic.getAppointmentDuration(),
                         AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
-                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), true));
+                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()),
+                        true)
+                );
             }
+            filledTimes.addAll(appointmentSlots);
         }
         int dayOfWeek = AppUtils.getDayOfWeek(selectedDate);
         StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
