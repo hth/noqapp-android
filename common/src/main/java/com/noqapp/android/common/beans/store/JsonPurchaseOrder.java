@@ -99,6 +99,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty("n")
     private String customerName;
 
@@ -312,6 +315,14 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     public JsonPurchaseOrder setToken(int token) {
         this.token = token;
         return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public String getExpectedServiceBegin() {

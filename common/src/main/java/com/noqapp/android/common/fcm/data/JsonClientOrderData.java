@@ -44,6 +44,9 @@ public class JsonClientOrderData extends JsonData implements Serializable {
     @JsonProperty("on")
     private int orderNumber;
 
+    @JsonProperty("dt")
+    private String displayToken;
+
     @JsonProperty("ps")
     private PurchaseOrderStateEnum purchaseOrderState;
 
@@ -84,6 +87,14 @@ public class JsonClientOrderData extends JsonData implements Serializable {
     public JsonClientOrderData setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
         return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public PurchaseOrderStateEnum getPurchaseOrderState() {

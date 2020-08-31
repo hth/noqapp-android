@@ -120,6 +120,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             jsonTokenAndQueue.setBusinessType(jsonPurchaseOrder.getBusinessType());
             jsonTokenAndQueue.setCodeQR(jsonPurchaseOrder.getCodeQR());
             jsonTokenAndQueue.setToken(jsonPurchaseOrder.getTokenNumber());
+            jsonTokenAndQueue.setDisplayToken(jsonPurchaseOrder.getDisplayToken());
             Intent in = new Intent(OrderHistoryDetailActivity.this, ReviewActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("object", jsonTokenAndQueue);
@@ -149,7 +150,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         }
         tv_delivery_address.setText(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress());
         tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
-        tv_order_number.setText("ORDER NO.  " + String.valueOf(jsonPurchaseOrder.getTokenNumber()));
+        tv_order_number.setText("ORDER NO.  " + jsonPurchaseOrder.getDisplayToken());
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonPurchaseOrder.getCreated()));
         tv_additional_info.setText("Additional Note: " + jsonPurchaseOrder.getAdditionalNote());
         tv_additional_info.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);

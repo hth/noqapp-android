@@ -45,6 +45,9 @@ public class JsonClientData extends JsonData implements Serializable{
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty("u")
     private QueueUserStateEnum queueUserState;
 
@@ -85,6 +88,14 @@ public class JsonClientData extends JsonData implements Serializable{
     public JsonClientData setToken(int token) {
         this.token = token;
         return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public QueueUserStateEnum getQueueUserState() {

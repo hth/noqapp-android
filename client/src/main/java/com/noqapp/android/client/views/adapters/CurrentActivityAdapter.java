@@ -56,9 +56,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             holder.ll_appointment.setVisibility(View.GONE);
             final JsonTokenAndQueue jsonTokenAndQueue = (JsonTokenAndQueue) object;
             holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
-            holder.card_view.setOnClickListener((View v) -> {
-                listener.currentQorOrderItemClick(jsonTokenAndQueue);
-            });
+            holder.card_view.setOnClickListener((View v) -> listener.currentQorOrderItemClick(jsonTokenAndQueue));
             holder.tv_position_in_queue_value.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
             if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
                 holder.tv_token_label.setText(context.getString(R.string.token));
@@ -123,7 +121,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 }
             }
 
-            holder.tv_token_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+            holder.tv_token_value.setText(jsonTokenAndQueue.getDisplayToken());
         } else if (object instanceof JsonSchedule) {
             JsonSchedule jsonSchedule = (JsonSchedule) object;
             holder.ll_queue.setVisibility(View.GONE);

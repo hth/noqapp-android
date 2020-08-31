@@ -42,6 +42,9 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
     @JsonProperty ("tn")
     private int tokenNumber;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty ("dn")
     private String displayName;
 
@@ -127,6 +130,14 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
     public JsonQueueHistorical setTokenNumber(int tokenNumber) {
         this.tokenNumber = tokenNumber;
         return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public String getDisplayName() {

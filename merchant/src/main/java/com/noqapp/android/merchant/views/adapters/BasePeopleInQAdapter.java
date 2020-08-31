@@ -243,7 +243,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(position);
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
 
-        recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
+        recordHolder.tv_sequence_number.setText(jsonQueuedPerson.getDisplayToken());
         recordHolder.tv_last_visit.setText(TextUtils.isEmpty(
                 jsonQueuedPerson.getClientVisitedThisStoreDate())
                 ? ""
@@ -358,7 +358,11 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
                     ((RadioButton) recordHolder.account_type.getChildAt(lastChildPos)).setError("Please select one of the choices");
                 } else {
                     peopleInQAdapterClick.actionOnBusinessCustomer(
-                            context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.APPROVE, this.codeQR);
+                            context,
+                            jsonQueuedPerson,
+                            customerPriorityLevelEnum,
+                            ActionTypeEnum.APPROVE,
+                            this.codeQR);
                 }
             });
             recordHolder.authenticate_reject.setOnClickListener(v -> peopleInQAdapterClick.actionOnBusinessCustomer(context, jsonQueuedPerson, customerPriorityLevelEnum, ActionTypeEnum.REJECT, this.codeQR));

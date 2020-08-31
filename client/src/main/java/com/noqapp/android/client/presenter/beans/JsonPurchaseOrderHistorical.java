@@ -78,6 +78,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     @JsonProperty("tn")
     private int tokenNumber;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     /* Locked when being served. */
     @JsonProperty("sn")
     private String serverName;
@@ -234,6 +237,14 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     public JsonPurchaseOrderHistorical setTokenNumber(int tokenNumber) {
         this.tokenNumber = tokenNumber;
         return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public String getServerName() {
