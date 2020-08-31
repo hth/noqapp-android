@@ -44,8 +44,7 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
         rcv_appointments = view.findViewById(R.id.rcv_appointments);
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
-        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
-                RecyclerView.VERTICAL, false));
+        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
         if (jsonSchedules.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
@@ -59,10 +58,7 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
             showProgress();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allAppointments(
-                    UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth());
+            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -81,20 +77,17 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
             rl_empty.setVisibility(View.GONE);
         }
 
-        Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
-            public int compare(JsonSchedule o1, JsonSchedule o2) {
-                try {
-                    return CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()).
-                            compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
+        Collections.sort(jsonSchedules, (o1, o2) -> {
+            try {
+                return CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()).
+                        compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
             }
         });
 
-        MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(
-                jsonSchedules, getActivity(), this);
+        MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(jsonSchedules, getActivity(), this);
         rcv_appointments.setAdapter(appointmentListAdapter);
         dismissProgress();
     }

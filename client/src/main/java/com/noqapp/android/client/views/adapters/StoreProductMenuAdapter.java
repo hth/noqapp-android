@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ImageUtils;
@@ -33,7 +34,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
     private HashMap<String, StoreCartItem> orders = new HashMap<>();
-    private boolean isStoreOpen = true;
+    private boolean isStoreOpen;
     private BusinessTypeEnum businessType;
 
     public StoreProductMenuAdapter(
@@ -127,7 +128,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             switch (businessType) {
                 case RS:
                 case FT:
-                    if (jsonStoreProduct.getInventoryCurrent() > 0) {
+                    if (jsonStoreProduct.getInventoryCurrent() > 0 || BuildConfig.INVENTORY_STATE.equalsIgnoreCase("OFF")) {
                         childViewHolder.view_disable.setVisibility(View.GONE);
                         childViewHolder.ll_btns.setVisibility(View.VISIBLE);
                         childViewHolder.tv_sold_out.setVisibility(View.GONE);
