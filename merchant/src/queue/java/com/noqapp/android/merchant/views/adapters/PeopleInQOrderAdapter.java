@@ -184,7 +184,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
                 peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, true);
             }
         });
-        
+
         if (!LaunchActivity.isTablet) {
             recordHolder.tv_item_count.setPaintFlags(recordHolder.tv_item_count.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             recordHolder.tv_item_count.setOnClickListener(v -> {
@@ -240,7 +240,6 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         });
 
         switch (jsonPurchaseOrder.getBusinessType()) {
-            case DO:
             case HS:
                 recordHolder.tv_order_done.setText("Service Completed");
                 recordHolder.tv_order_cancel.setText("Cancel Service");
