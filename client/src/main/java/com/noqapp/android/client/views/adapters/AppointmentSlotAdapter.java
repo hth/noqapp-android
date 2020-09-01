@@ -35,8 +35,7 @@ public class AppointmentSlotAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_appointment_date, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_appointment_date, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -56,7 +55,6 @@ public class AppointmentSlotAdapter extends RecyclerView.Adapter {
                 holder.tv_time.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_appointment_available));
                 holder.tv_time.setTextColor(Color.BLACK);
             }
-
         }
 
         holder.tv_time.setOnClickListener((View v) -> {
