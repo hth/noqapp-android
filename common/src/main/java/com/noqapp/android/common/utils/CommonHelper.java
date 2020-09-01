@@ -29,6 +29,8 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
 import org.joda.time.Years;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
 import java.net.InetAddress;
@@ -56,6 +58,7 @@ public class CommonHelper {
     public static final SimpleDateFormat SDF_YYYY_MM_DD_KK_MM = new SimpleDateFormat("yyyy-MM-dd kk:mm", Locale.getDefault());
     public static final SimpleDateFormat SDF_DD_MMM_YY_HH_MM_A = new SimpleDateFormat("dd MMM yy, hh:mm a", Locale.getDefault());
     public static final SimpleDateFormat SDF_ISO8601_FMT = new SimpleDateFormat(ISO8601_FMT, Locale.getDefault());
+    private static final DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HH:mm");
     public static final String CURRENCY_SYMBOL = "currencySymbol";
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
 
@@ -306,23 +309,24 @@ public class CommonHelper {
                 Calendar calendar2 = Calendar.getInstance();
                 calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
                 calendar2.set(Calendar.MINUTE, fromMinute);
+                long startTime = calendar2.getTimeInMillis();
 
-                long currentTime = calendar2.getTimeInMillis();
                 Calendar calendar1 = Calendar.getInstance();
                 calendar1.set(Calendar.HOUR_OF_DAY, toHour);
                 calendar1.set(Calendar.MINUTE, toMinute);
                 long endTime = calendar1.getTimeInMillis();
+
                 if (isEqual) {
-                    while (currentTime <= endTime) {
+                    while (startTime <= endTime) {
                         DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        timeSlot.add(sdfTime.format(new Date(currentTime)));
-                        currentTime = currentTime + slot;
+                        timeSlot.add(sdfTime.format(new Date(startTime)));
+                        startTime = startTime + slot;
                     }
                 } else {
-                    while (currentTime < endTime) {
+                    while (startTime < endTime) {
                         DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        timeSlot.add(sdfTime.format(new Date(currentTime)));
-                        currentTime = currentTime + slot;
+                        timeSlot.add(sdfTime.format(new Date(startTime)));
+                        startTime = startTime + slot;
                     }
                 }
             } catch (Exception e) {
@@ -374,7 +378,6 @@ public class CommonHelper {
         return context.getResources().getIdentifier(val, "drawable", context.getPackageName());
     }
 
-
     /**
      * Method checks if the app is in background or not
      */
@@ -397,7 +400,6 @@ public class CommonHelper {
     public static boolean isTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
-
 
     public static void showViews(View... views) {
         for (View v : views) {

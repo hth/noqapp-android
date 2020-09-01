@@ -207,7 +207,6 @@ public class AppointmentActivityNew extends BaseActivity implements
         startActivityForResult(in, BOOKING_SUCCESS);
     }
 
-
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
@@ -219,10 +218,10 @@ public class AppointmentActivityNew extends BaseActivity implements
             js.setMultipleSlotStartTiming(js.getStartTime());
             js.setMultipleSlotEndTiming(js.getEndTime());
             List<String> timeSlot = AppUtils.getTimeSlots(
-                    appointmentDuration,
-                    AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
-                    AppUtils.getTimeFourDigitWithColon(js.getEndTime()),
-                    false);
+                appointmentDuration,
+                AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
+                AppUtils.getTimeFourDigitWithColon(js.getEndTime()),
+                false);
 
             Log.e("Number of time slots", "" + timeSlot.size());
             if (timeSlot.size() == 0 || timeSlot.size() == 1) {
