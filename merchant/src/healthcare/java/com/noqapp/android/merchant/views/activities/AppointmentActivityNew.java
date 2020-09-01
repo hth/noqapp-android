@@ -18,6 +18,7 @@ import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.AppointmentStatusEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
@@ -217,11 +218,11 @@ public class AppointmentActivityNew extends BaseActivity implements
             // set to keep track the actual assign slot in case of splitting the slot to show in appointment UI
             js.setMultipleSlotStartTiming(js.getStartTime());
             js.setMultipleSlotEndTiming(js.getEndTime());
-            List<String> timeSlot = AppUtils.getTimeSlots(
+            List<String> timeSlot = AppUtils.computeTimeSlot(
                 appointmentDuration,
                 AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
                 AppUtils.getTimeFourDigitWithColon(js.getEndTime()),
-                false);
+                CommonHelper.AppointmentComputationEnum.FILLED);
 
             Log.e("Number of time slots", "" + timeSlot.size());
             if (timeSlot.size() == 0 || timeSlot.size() == 1) {

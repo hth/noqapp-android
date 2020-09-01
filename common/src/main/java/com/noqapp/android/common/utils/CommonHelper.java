@@ -27,7 +27,9 @@ import org.apache.commons.text.WordUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.Months;
+import org.joda.time.Seconds;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -61,6 +63,7 @@ public class CommonHelper {
     private static final DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HH:mm");
     public static final String CURRENCY_SYMBOL = "currencySymbol";
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+    public static enum AppointmentComputationEnum {FILLED, TOTAL_SLOTS};
 
     public static String convertDOBToValidFormat(String dob) {
         try {
@@ -90,8 +93,7 @@ public class CommonHelper {
     public static void shareTheApp(Context context) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT,
-                "Hey check out my app at: https://play.google.com/store/apps/details?id=" + context.getPackageName());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey check out my app at: https://play.google.com/store/apps/details?id=" + context.getPackageName());
         sendIntent.setType("text/plain");
         context.startActivity(sendIntent);
     }
@@ -294,6 +296,8 @@ public class CommonHelper {
         return input.substring(0, index + 1) + ":" + input.substring(index + 1);
     }
 
+    /** Since 1.2.590. */
+    @Deprecated
     public static List<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
         List<String> timeSlot = new ArrayList<>();
         if (slotMinute != 0) {
@@ -327,6 +331,33 @@ public class CommonHelper {
                         DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
                         timeSlot.add(sdfTime.format(new Date(startTime)));
                         startTime = startTime + slot;
+                    }
+                }
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().log("Failed time slot " + slotMinute + ":" + strFromTime + ":" + strToTime);
+                e.printStackTrace();
+            }
+        }
+        return timeSlot;
+    }
+
+    public static List<String> computeTimeSlot(int slotMinute, String strFromTime, String strToTime, AppointmentComputationEnum appointmentComputation) {
+        List<String> timeSlot = new ArrayList<>();
+        if (slotMinute != 0) {
+            try {
+                int slotInSeconds = slotMinute * 60;
+                LocalTime startTime = inputFormatter.parseLocalTime(strFromTime);
+                LocalTime endTime = inputFormatter.parseLocalTime(strToTime);
+                int numberOfSlots = Seconds.secondsBetween(startTime, endTime).getSeconds() / slotInSeconds;
+                if (AppointmentComputationEnum.TOTAL_SLOTS == appointmentComputation) {
+                    for (int i = 0; i <= numberOfSlots; i++) {
+                        timeSlot.add(inputFormatter.print(startTime));
+                        startTime = startTime.plusSeconds(slotInSeconds);
+                    }
+                } else {
+                    for (int i = 0; i < numberOfSlots; i++) {
+                        timeSlot.add(inputFormatter.print(startTime));
+                        startTime = startTime.plusSeconds(slotInSeconds);
                     }
                 }
             } catch (Exception e) {

@@ -41,6 +41,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
 import java.util.ArrayList;
@@ -281,15 +282,20 @@ public class BookAppointmentActivity
         } else {
             tv_empty_slots.setVisibility(View.GONE);
             enableDisableBtn(true);
+
+            /* Number of appointment slots available. */
+            List<String> timeSlot = AppUtils.computeTimeSlot(
+                bizStoreElastic.getAppointmentDuration(),
+                Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour()),
+                Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour()),
+                CommonHelper.AppointmentComputationEnum.TOTAL_SLOTS);
+
             List<AppointmentSlot> listData = new ArrayList<>();
-            String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
-            String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-            List<String> timeSlot = AppUtils.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
             for (int i = 0; i < timeSlot.size() - 1; i++) {
                 listData.add(
                     new AppointmentSlot()
                         .setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1))
-                        .setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i + 1))));
+                        .setBooked(filledTimes.contains(timeSlot.get(i))));
 
                 if (!filledTimes.contains(timeSlot.get(i)) && null == firstAvailableAppointment) {
                     firstAvailableAppointment = listData.get(i);
@@ -339,7 +345,6 @@ public class BookAppointmentActivity
         }
     }
 
-
     private void enableDisableBtn(boolean isEnable) {
         btn_book_appointment.setEnabled(isEnable);
         if (isEnable) {
@@ -360,12 +365,11 @@ public class BookAppointmentActivity
             List<String> appointmentSlots = new ArrayList<>();
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
                 appointmentSlots.addAll(
-                    AppUtils.getTimeSlots(
+                    AppUtils.computeTimeSlot(
                         bizStoreElastic.getAppointmentDuration(),
                         AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
                         AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()),
-                        true)
-                );
+                        CommonHelper.AppointmentComputationEnum.FILLED));
             }
             filledTimes.addAll(appointmentSlots);
         }
@@ -404,7 +408,6 @@ public class BookAppointmentActivity
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }
-
 
     private void fetchAppointments(String day) {
         firstAvailableAppointment = null;

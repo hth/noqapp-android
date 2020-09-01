@@ -39,6 +39,7 @@ import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
@@ -226,15 +227,18 @@ public class BookAppointmentActivity extends BaseActivity implements
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
             tv_empty_slots.setVisibility(View.GONE);
+            List<String> timeSlot = AppUtils.computeTimeSlot(
+                appointmentDuration,
+                Formatter.convertMilitaryTo24HourFormat(jsonHour.getAppointmentStartHour()),
+                Formatter.convertMilitaryTo24HourFormat(jsonHour.getAppointmentEndHour()),
+                CommonHelper.AppointmentComputationEnum.TOTAL_SLOTS);
+
             List<AppointmentSlot> listData = new ArrayList<>();
-            String from = Formatter.convertMilitaryTo24HourFormat(jsonHour.getAppointmentStartHour());
-            String to = Formatter.convertMilitaryTo24HourFormat(jsonHour.getAppointmentEndHour());
-            List<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to, true);
             for (int i = 0; i < timeSlot.size() - 1; i++) {
                 listData.add(
                     new AppointmentSlot()
                         .setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1))
-                        .setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i+1))));
+                        .setBooked(filledTimes.contains(timeSlot.get(i))));
                 times.add(timeSlot.get(i));
             }
             appointmentSlotAdapter = new AppointmentSlotAdapter(listData, this, this);
@@ -255,9 +259,22 @@ public class BookAppointmentActivity extends BaseActivity implements
         ArrayList<String> filledTimes = new ArrayList<>();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                filledTimes.addAll(AppUtils.getTimeSlots(appointmentDuration,
-                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
-                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), true));
+                JsonSchedule jsonSchedule = jsonScheduleList.getJsonSchedules().get(i);
+                switch (jsonSchedule.getAppointmentStatus()) {
+                    case U:
+                    case A:
+                    case S:
+                    case W:
+                        filledTimes.addAll(
+                            AppUtils.computeTimeSlot(
+                                appointmentDuration,
+                                AppUtils.getTimeFourDigitWithColon(jsonSchedule.getStartTime()),
+                                AppUtils.getTimeFourDigitWithColon(jsonSchedule.getEndTime()),
+                                CommonHelper.AppointmentComputationEnum.FILLED));
+                        break;
+                    default:
+                        /* Skip for other conditions to allow booking of appointment. */
+                }
             }
         }
         int dayOfWeek = AppUtils.getDayOfWeek(selectedDate);
