@@ -460,8 +460,9 @@ public class AfterJoinActivity
         if (!isResumeFirst) {
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, tokenValue);
             if (null != jtk) {
-                if (TextUtils.isEmpty(gotoPerson))
+                if (TextUtils.isEmpty(gotoPerson)) {
                     gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
+                }
                 setObject(jtk, gotoPerson);
             }
         }
