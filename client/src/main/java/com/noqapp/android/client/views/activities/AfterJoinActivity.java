@@ -461,7 +461,9 @@ public class AfterJoinActivity
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, tokenValue);
             if (null != jtk) {
                 if (TextUtils.isEmpty(gotoPerson)) {
-                    gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
+                    gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue)
+                            ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter()
+                            : "";
                 }
                 setObject(jtk, gotoPerson);
             }
