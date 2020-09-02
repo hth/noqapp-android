@@ -473,7 +473,7 @@
                                     android:layout_alignParentLeft="true"
                                     android:gravity="left"
                                     android:paddingLeft="5dp"
-                                    android:text="Coupon discount"
+                                    android:text="Coupon Discount"
                                     android:textColor="@android:color/black"
                                     android:textSize="@dimen/text_size_twelve"
                                     android:textStyle="bold" />
@@ -751,7 +751,7 @@
                                         android:background="@drawable/bg_nogradient_round"
                                         android:paddingLeft="10dp"
                                         android:paddingRight="10dp"
-                                        android:text="Remove discount"
+                                        android:text="Remove Discount"
                                         android:textColor="@android:color/white"
                                         android:textSize="@dimen/text_size_fourteen" />
 

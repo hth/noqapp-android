@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:gravity="left"
-                        android:text="Coupon discount"
+                        android:text="Coupon Discount"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/store_info" />
 

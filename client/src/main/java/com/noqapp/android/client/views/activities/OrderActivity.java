@@ -287,7 +287,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         if (requestCode == Constants.ACTIVITY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
                 jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
-                Log.e("data recieve", jsonCoupon.toString());
+                Log.e("data receive", jsonCoupon.toString());
                 rl_coupon_applied.setVisibility(View.VISIBLE);
                 rl_apply_coupon.setVisibility(View.GONE);
                 tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
