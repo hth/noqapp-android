@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable",
-        "unused"
 })
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
