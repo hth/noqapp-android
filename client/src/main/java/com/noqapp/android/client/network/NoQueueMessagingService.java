@@ -466,20 +466,18 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                             case CD:
                                             case CDQ:
                                                 String slot = jtk.getTimeSlotMessage();
-                                                notificationMessage =
-                                                        notificationMessage + String.format(getApplicationContext().getString(R.string.time_slot_formatted_newline), slot);
+                                                notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.time_slot_formatted_newline), slot);
                                                 break;
                                             default:
                                                 long avgServiceTime = jtk.getAverageServiceTime() != 0
                                                         ? jtk.getAverageServiceTime()
                                                         : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
-                                                String waitTime =
-                                                        TokenStatusUtils.calculateEstimatedWaitTime(avgServiceTime,
-                                                                jtk.afterHowLong(), QueueStatusEnum.N,
-                                                                jtk.getStartHour(), getApplicationContext());
+                                                String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
+                                                        avgServiceTime,
+                                                        jtk.afterHowLong(), QueueStatusEnum.N,
+                                                        jtk.getStartHour(), getApplicationContext());
                                                 if (!TextUtils.isEmpty(waitTime)) {
-                                                    notificationMessage =
-                                                            notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
+                                                    notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
                                                 }
                                         }
                                     } catch (Exception e) {
