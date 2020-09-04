@@ -253,9 +253,7 @@
                                     android:textColor="#505050"
                                     android:textSize="@dimen/text_size_twelve" />
                             </LinearLayout>
-
                         </FrameLayout>
-
 
                         <FrameLayout
                             android:layout_width="0dp"
