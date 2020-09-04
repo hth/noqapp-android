@@ -253,9 +253,7 @@
                                     android:textColor="#505050"
                                     android:textSize="@dimen/text_size_twelve" />
                             </LinearLayout>
-
                         </FrameLayout>
-
 
                         <FrameLayout
                             android:layout_width="0dp"
@@ -452,7 +450,6 @@
                             </LinearLayout>
 
                             <LinearLayout
-
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"

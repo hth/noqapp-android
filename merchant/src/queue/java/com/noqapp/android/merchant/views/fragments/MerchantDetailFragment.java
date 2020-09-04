@@ -164,13 +164,16 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
+
+                JsonPurchaseOrder jsonPurchaseOrder = purchaseOrders.get(position);
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
-                orderServed.setServedNumber(purchaseOrders.get(position).getToken());
-                orderServed.setQueueUserId(purchaseOrders.get(position).getQueueUserId());
+                orderServed.setServedNumber(jsonPurchaseOrder.getToken());
+                orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
                 orderServed.setGoTo(tv_counter_name.getText().toString());
                 orderServed.setQueueStatus(QueueStatusEnum.N);
-                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
+                orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
+                orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
 
                 PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                 purchaseOrderApiCalls.setAcquireOrderPresenter(this);

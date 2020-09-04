@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -41,9 +42,13 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static com.noqapp.android.common.model.types.QueueOrderTypeEnum.Q;
 
 public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
@@ -75,6 +80,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         ratingBar = findViewById(R.id.ratingBar);
         tv_hr_saved = findViewById(R.id.tv_hr_saved);
         TextView tv_details = findViewById(R.id.tv_details);
+        TextView tv_title = findViewById(R.id.tv_title);
         edt_review = findViewById(R.id.edt_review);
 
         ll_fill_review = findViewById(R.id.ll_fill_review);
@@ -118,17 +124,20 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                     ll_thank_u.setVisibility(View.GONE);
                     ll_fill_review.setVisibility(View.VISIBLE);
                 }
-                tv_store_name.setText(jtk.getBusinessName());
+                tv_store_name.setText(Html.fromHtml("<u>" + jtk.getBusinessName() + "</u>"));
                 tv_queue_name.setText(jtk.getDisplayName());
                 tv_address.setText(jtk.getStoreAddress());
                 String datetime = DateFormat.getDateTimeInstance().format(new Date());
                 tv_mobile.setText(datetime);
                 edt_review.setHint("Please provide review for " + jtk.getDisplayName());
+                String queueOrderType = jtk.getBusinessType().getQueueOrderType() == Q ? "queue" : "order";
+                tv_title.setText(StringUtils.capitalize(queueOrderType + " Detail"));
+
                 if (UserUtils.isLogin()) {
                     List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
-                    tv_details.setText(AppUtils.getNameFromQueueUserID(jtk.getQueueUserId(), profileList) + " with token #" + jtk.getToken());
+                    tv_details.setText(AppUtils.getNameFromQueueUserID(jtk.getQueueUserId(), profileList) + " with " + queueOrderType + " #" + jtk.getDisplayToken());
                 } else {
-                    tv_details.setText("Guest user with token #" + jtk.getToken());
+                    tv_details.setText("Guest user with " + queueOrderType + " #" + jtk.getDisplayToken());
                 }
 
                 try {

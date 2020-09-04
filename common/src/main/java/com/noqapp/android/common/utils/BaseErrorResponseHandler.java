@@ -93,6 +93,7 @@ public abstract class BaseErrorResponseHandler {
                     case ORDER_PAYMENT_PAID_ALREADY_FAILED:
                     case PURCHASE_ORDER_PRODUCT_NOT_FOUND:
                     case FAILED_PLACING_MEDICAL_ORDER_AS_INCORRECT_BUSINESS:
+                    case PURCHASE_ORDER_NEGATIVE:
 
                     case QUEUE_JOIN_FAILED_PAYMENT_CALL_REQUEST:
                     case QUEUE_JOIN_PAYMENT_FAILED:
