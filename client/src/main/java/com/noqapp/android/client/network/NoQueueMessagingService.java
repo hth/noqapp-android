@@ -474,8 +474,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                                         : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
                                                 String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
                                                         avgServiceTime,
-                                                        jtk.afterHowLong(), QueueStatusEnum.N,
-                                                        jtk.getStartHour(), getApplicationContext());
+                                                        jtk.afterHowLong(),
+                                                        QueueStatusEnum.N,
+                                                        jtk.getStartHour(),
+                                                        getApplicationContext());
                                                 if (!TextUtils.isEmpty(waitTime)) {
                                                     notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
                                                 }
