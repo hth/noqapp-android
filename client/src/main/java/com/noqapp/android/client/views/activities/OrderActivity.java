@@ -52,6 +52,7 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.DiscountTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentMethodEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
@@ -103,7 +104,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private LinearLayout ll_address;
     private RadioGroup rg_delivery;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
@@ -137,15 +137,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             acrb_cash.setChecked(false);
             acrb_online.setChecked(true);
         }
-        rg_delivery.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                if (checkedId == R.id.acrb_home_delivery) {
-                    ll_address.setVisibility(View.VISIBLE);
-                } else if (checkedId == R.id.acrb_take_away) {
-                    ll_address.setVisibility(View.GONE);
-                }
+        rg_delivery.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.acrb_home_delivery) {
+                ll_address.setVisibility(View.VISIBLE);
+            } else if (checkedId == R.id.acrb_take_away) {
+                ll_address.setVisibility(View.GONE);
             }
         });
 
@@ -166,7 +162,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         });
         edt_optional = findViewById(R.id.edt_optional);
         edt_optional.setOnTouchListener((view, event) -> {
-
             if (view.getId() == R.id.edt_optional) {
                 view.getParent().requestDisallowInterceptTouchEvent(true);
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -234,7 +229,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         StoreProductFinalOrderAdapter storeProductFinalOrderAdapter = new StoreProductFinalOrderAdapter(
-                this, jsonPurchaseOrder.getPurchaseOrderProducts(), this, currencySymbol);
+                this,
+                jsonPurchaseOrder.getPurchaseOrderProducts(),
+                this,
+                currencySymbol);
+
         lv_product.setAdapter(storeProductFinalOrderAdapter);
         checkProductWithZeroPrice();
         tv_place_order.setOnClickListener((View v) -> {
@@ -290,9 +289,15 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 Log.e("data receive", jsonCoupon.toString());
                 rl_coupon_applied.setVisibility(View.VISIBLE);
                 rl_apply_coupon.setVisibility(View.GONE);
-                tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
+                if (DiscountTypeEnum.F == jsonCoupon.getDiscountType()) {
+                    tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
+                    jsonPurchaseOrder.setStoreDiscount(jsonCoupon.getDiscountAmount());
+                } else {
+                    int computedDiscount = Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) * jsonCoupon.getDiscountAmount() / 100;
+                    tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(computedDiscount));
+                    jsonPurchaseOrder.setStoreDiscount(computedDiscount);
+                }
                 tv_coupon_name.setText(jsonCoupon.getDiscountName());
-                jsonPurchaseOrder.setStoreDiscount(jsonCoupon.getDiscountAmount());
                 jsonPurchaseOrder.setCouponId(jsonCoupon.getCouponId());
                 updateDiscountUI();
             }
@@ -311,8 +316,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     public void checkProductWithZeroPrice() {
         isProductWithoutPrice = false;
         if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getPurchaseOrderProducts() && jsonPurchaseOrder.getPurchaseOrderProducts().size() > 0) {
-            for (JsonPurchaseOrderProduct jpop :
-                    jsonPurchaseOrder.getPurchaseOrderProducts()) {
+            for (JsonPurchaseOrderProduct jpop : jsonPurchaseOrder.getPurchaseOrderProducts()) {
                 if (jpop.getProductPrice() == 0) {
                     isProductWithoutPrice = true;
                     break;

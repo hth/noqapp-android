@@ -61,6 +61,7 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.DiscountTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
@@ -635,8 +636,10 @@ public class AfterJoinActivity
                 tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
                 tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
                 tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-                if (null != jsonPurchaseOrder.getJsonCoupon())
+                if (null != jsonPurchaseOrder.getJsonCoupon()) {
+                    /* This condition works but this elements is not displayed. */
                     tv_coupon_name.setText(jsonPurchaseOrder.getJsonCoupon().getDiscountName());
+                }
                 if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
                     rl_discount.setVisibility(View.GONE);
                 } else {

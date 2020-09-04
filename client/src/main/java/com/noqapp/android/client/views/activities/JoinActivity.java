@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -49,7 +48,6 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.QueueAuthorize;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
@@ -738,8 +736,10 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-        if (null != jsonPurchaseOrder.getJsonCoupon())
+        if (null != jsonPurchaseOrder.getJsonCoupon()) {
+            //TODO(chandra) this is null and hence no name is being set
             tv_coupon_name.setText(jsonPurchaseOrder.getJsonCoupon().getDiscountName());
+        }
         ll_order_details.removeAllViews();
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
@@ -773,8 +773,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             }
         }
 
-        if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) ||
-                Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) == 0) {
+        if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) || Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) == 0) {
             frame_coupon.setVisibility(View.GONE);
             rl_discount.setVisibility(View.GONE);
             btn_pay.setText("Confirm");
@@ -784,12 +783,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     private LinearLayout.LayoutParams setLayoutWidthParams(boolean isMatchParent) {
         if (isMatchParent) {
-            return new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    120, 1.0f);
+            return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 120, 1.0f);
         } else {
-            return new LinearLayout.LayoutParams(0,
-                    120, 0.49f);
+            return new LinearLayout.LayoutParams(0, 120, 0.49f);
         }
     }
 
@@ -973,12 +969,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
         try {
             dialog.show();
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    finish();
-                }
-            });
+            dialog.setOnDismissListener(dialogInterface -> finish());
         } catch (Exception e) {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
