@@ -109,7 +109,7 @@
                         android:layout_toRightOf="@+id/tv_position_in_queue_label"
                         android:gravity="center"
                         android:textColor="@color/theme_color_red"
-                        android:textSize="@dimen/text_size_twenty"
+                        android:textSize="@dimen/text_size_sixteen"
                         android:textStyle="bold" />
 
                     <TextView
@@ -224,7 +224,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text=" 3:30 pm"
+                        android:text="3:30 pm"
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
                         android:textStyle="bold" />
