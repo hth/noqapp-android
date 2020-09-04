@@ -434,6 +434,11 @@ public class JsonTokenAndQueue implements Serializable {
     }
 
     @JsonIgnoreProperties
+    public String afterHowLongForDisplay() {
+        return displayToken.substring(0, 1) + (Integer.parseInt(displayToken.substring(1)) - (Integer.parseInt(displayToken.substring(1)) - (100 + servingNumber)));
+    }
+
+    @JsonIgnoreProperties
     public boolean isTokenExpired() {
         return afterHowLong() <= 0;
     }
