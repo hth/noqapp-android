@@ -77,7 +77,7 @@
     <string name="your_token">votre numéro de jeton</string>
     <string name="your_order">Order</string>
     <string name="position_in_queue_label">la position dans la file d\'attente</string>
-    <string name="position_in_queue">la position dans la file d\'attente</string>
+    <string name="position_in_queue">la position dans la file d\'attente: %1$d</string>
     <string name="your_are_next_label">C\'est vous le porchain</string>
     <string name="daily_token_limit">limite du jeton</string>
     <string name="estimated_wait">Estimated Wait: %1$s</string>
