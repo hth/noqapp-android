@@ -407,7 +407,7 @@
     <string name="cancel_button">ರದ್ದುಮಾಡಿ</string>
 
     <!-- Temp String -->
-    <string name="announcement_message_csd">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed\n* Only for dependent on this URC</string>
+    <string name="announcement_message_csd">* Green status on Aarogya Setu app is mandatory\n* Gloves &amp; Mask are mandatory\n* One Card, One Token &amp; One Person will be allowed\n* Only for dependent on this URC\n* Customers to bring their own bags\n* Trolley are not permitted outside the premises</string>
     <string name="announcement_message_covid">* Mask is mandatory during visit\n* Maintain Social distancing at all times\n* Wash hands frequently</string>
 
     <!-- Strings from Code 06062020 -->
