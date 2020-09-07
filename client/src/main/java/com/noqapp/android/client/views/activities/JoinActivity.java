@@ -168,7 +168,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick() {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (isOnline()) {
                         showProgress();
                         setProgressMessage("Removing discount..");
                         // progressDialog.setCancelable(false);
@@ -319,7 +319,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             tv_address.setOnClickListener((View v) -> {
                 AppUtils.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
             });
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 if (isResumeFirst) {
                     setProgressMessage("Joining Queue..");
                     showProgress();
@@ -516,7 +516,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     }
 
     private void cancelQueue() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (isOnline()) {
             setProgressMessage("Canceling process...");
             showProgress();
             queueApiAuthenticCall.setResponsePresenter(this);
@@ -665,7 +665,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
             // do nothing
         } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 setProgressMessage("Canceling token...");
                 showProgress();
                 queueApiAuthenticCall.setResponsePresenter(this);
@@ -818,7 +818,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
                 Log.e("Data receive", jsonCoupon.toString());
 
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     showProgress();
                     setProgressMessage("Applying discount..");
                     // progressDialog.setCancelable(false);

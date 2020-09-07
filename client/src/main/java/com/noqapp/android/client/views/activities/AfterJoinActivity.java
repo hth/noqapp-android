@@ -192,7 +192,7 @@ public class AfterJoinActivity
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick() {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (isOnline()) {
                         showProgress();
                         setProgressMessage("Removing discount..");
                         // progressDialog.setCancelable(false);
@@ -408,7 +408,7 @@ public class AfterJoinActivity
     }
 
     private void cancelQueue() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (isOnline()) {
             setProgressMessage("Cancel Queue");
             showProgress();
             if (UserUtils.isLogin()) {
@@ -423,7 +423,7 @@ public class AfterJoinActivity
                     String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
                     Bundle params = new Bundle();
                     params.putString("Queue_Name", displayName);
-                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_QUEUE, params);
+                    MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_QUEUE, params);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -739,7 +739,7 @@ public class AfterJoinActivity
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
                 Log.e("Data received", jsonCoupon.toString());
 
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     showProgress();
                     setProgressMessage("Applying discount..");
                     // progressDialog.setCancelable(false);

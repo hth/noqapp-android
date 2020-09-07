@@ -98,7 +98,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (validate()) {
             btnRegistration.setBackgroundResource(R.drawable.blue_gradient_or);
             btnRegistration.setTextColor(Color.WHITE);
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 setProgressMessage("Registration in progress...");
                 showProgress();
                 setProgressCancel(false);

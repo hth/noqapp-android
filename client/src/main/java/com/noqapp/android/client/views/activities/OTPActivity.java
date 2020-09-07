@@ -260,7 +260,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             case STATE_SIGN_IN_SUCCESS:
                 // Np-op, handled by sign-in check
                 // Call login or migration API
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     callApi(user.getPhoneNumber());
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);
@@ -298,7 +298,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
     private void actionLogin() {
         if (validate()) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 showProgress();
                 setProgressMessage("Generating OTP");
                 //countryCode = edt_phone_code.getText().toString();
@@ -307,7 +307,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
                 Bundle params = new Bundle();
                 params.putBoolean("Phone", true);
-                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
+                MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
 
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

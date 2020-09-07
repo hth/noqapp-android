@@ -249,7 +249,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     if (isProductWithoutPrice) {
                         new CustomToast().showToast(OrderActivity.this, "Cannot process as merchant has not set product price");
                     } else {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (isOnline()) {
                             showProgress();
                             setProgressMessage("Order placing in progress..");
                             jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
@@ -481,7 +481,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     public void onNavigateBack() {
         Log.e("User Navigate Back", "Back without payment");
         enableDisableOrderButton(false);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (isOnline()) {
             showProgress();
             purchaseOrderApiCall.setResponsePresenter(this);
             purchaseOrderApiCall.cancelPayBeforeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);

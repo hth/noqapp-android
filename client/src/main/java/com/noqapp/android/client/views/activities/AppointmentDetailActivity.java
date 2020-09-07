@@ -88,7 +88,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
                     public void btnPositiveClick() {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (isOnline()) {
                             setProgressMessage("Canceling appointment...");
                             showProgress();
                             appointmentApiCalls.cancelAppointment(

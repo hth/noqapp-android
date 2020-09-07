@@ -25,6 +25,7 @@ import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +54,7 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();

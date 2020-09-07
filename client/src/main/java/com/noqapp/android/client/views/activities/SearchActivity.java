@@ -155,7 +155,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         if (AppUtils.isRelease()) {
             Bundle params = new Bundle();
             params.putString(FirebaseAnalytics.Param.SEARCH_TERM, AnalyticsEvents.EVENT_SEARCH);
-            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
+            MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
         }
         edt_search.requestFocus();
     }
@@ -171,7 +171,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     private void performSearch() {
         if (StringUtils.isNotBlank(edt_search.getText().toString())) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
                         .setCityName(city)
@@ -190,7 +190,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     private void performKioskSearch() {
         if (StringUtils.isNotBlank(edt_search.getText().toString())) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
                         .setCityName(city)

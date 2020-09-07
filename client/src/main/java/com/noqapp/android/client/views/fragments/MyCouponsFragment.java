@@ -24,6 +24,7 @@ import com.noqapp.android.client.views.adapters.MyCouponsAdapter;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonCouponList;
 import com.noqapp.android.common.presenter.CouponPresenter;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("Fetching coupons...");
             showProgress();
             ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();

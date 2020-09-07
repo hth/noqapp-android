@@ -144,7 +144,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             if (isCategoryData) {
                 queueResponse(jsonQueue);
             } else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     setProgressMessage("Loading queue details...");
                     showProgress();
                     if (UserUtils.isLogin()) {
@@ -391,7 +391,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                     if (AppUtils.isRelease()) {
                         Bundle params = new Bundle();
                         params.putString("Queue_Name", jsonQueue.getDisplayName());
-                        LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
+                        MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
                     }
                 }
 
@@ -418,7 +418,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Queue_Name", jsonQueue.getDisplayName());
-                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
+                MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
             }
         }
     }
@@ -477,7 +477,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         if (isCategoryData) {
             swipeRefreshLayout.setRefreshing(false);
         } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 setProgressMessage("Loading queue details...");
                 swipeRefreshLayout.setRefreshing(true);
                 showProgress();

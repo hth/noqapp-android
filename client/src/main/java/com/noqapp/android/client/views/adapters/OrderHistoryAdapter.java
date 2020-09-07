@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +34,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +110,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
 
         });
         holder.btn_activate.setOnClickListener((View v) -> {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil((Activity) context).isOnline()) {
                 progressDialog = new ProgressDialog(context);
                 progressDialog.setIndeterminate(true);
                 progressDialog.setMessage("Activating order in progress...");

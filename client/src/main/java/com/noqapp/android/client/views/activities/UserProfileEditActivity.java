@@ -301,7 +301,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         if (validate()) {
             btn_update.setBackgroundResource(R.drawable.btn_bg_enable);
             btn_update.setTextColor(Color.WHITE);
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 showProgress();
                 clientProfileApiCall.setProfilePresenter(this);
                 //   String phoneNo = edt_phoneNo.getText().toString();

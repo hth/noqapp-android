@@ -160,7 +160,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 if (AppUtils.isRelease()) {
                     Bundle params = new Bundle();
                     params.putString("Business_Type", jtk.getBusinessType().getName());
-                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_REVIEW_SCREEN, params);
+                    MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_REVIEW_SCREEN, params);
                 }
             }
         } else {
@@ -182,7 +182,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 //                    Toast.makeText(ReviewActivity.this, getString(R.string.error_timesaved), Toast.LENGTH_LONG).show();
 //                }
                 else {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (isOnline()) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                             return;
                         }
