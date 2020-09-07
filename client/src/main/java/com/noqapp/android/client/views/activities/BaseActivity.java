@@ -19,17 +19,20 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 import com.noqapp.android.common.utils.CustomProgressBar;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter {
     private CustomProgressBar customProgressBar;
     protected ImageView iv_home;
     protected ImageView actionbarBack;
     protected TextView tv_toolbar_title;
+    private NetworkUtil networkUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         customProgressBar = new CustomProgressBar(this);
+        networkUtil = new NetworkUtil(this);
     }
 
     protected void dismissProgress() {
@@ -125,5 +128,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
                 }
             });
         }
+    }
+
+    protected boolean isOnline() {
+        return networkUtil.isOnline();
     }
 }

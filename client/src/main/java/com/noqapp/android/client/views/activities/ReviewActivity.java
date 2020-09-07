@@ -182,7 +182,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 //                    Toast.makeText(ReviewActivity.this, getString(R.string.error_timesaved), Toast.LENGTH_LONG).show();
 //                }
                 else {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (isOnline()) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                             return;
                         }

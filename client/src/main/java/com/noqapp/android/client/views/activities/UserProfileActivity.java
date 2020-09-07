@@ -94,7 +94,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             startActivity(in);
         });
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (isOnline()) {
             showProgress();
             ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
             clientProfileApiCall.setProfilePresenter(this);

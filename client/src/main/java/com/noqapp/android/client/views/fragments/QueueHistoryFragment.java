@@ -24,6 +24,7 @@ import com.noqapp.android.client.views.activities.QueueHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.QueueHistoryAdapter;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +42,7 @@ public class QueueHistoryFragment extends BaseFragment implements
         View view = inflater.inflate(R.layout.fragment_queue, container, false);
         rcv_order_history = view.findViewById(R.id.rcv_order_history);
         rl_empty = view.findViewById(R.id.rl_empty);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             if (UserUtils.isLogin()) {
                 setProgressMessage("Fetching Queue history...");
                 showProgress();

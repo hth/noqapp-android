@@ -24,6 +24,7 @@ import com.noqapp.android.client.views.activities.OrderHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.OrderHistoryAdapter;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +43,7 @@ public class OrderHistoryFragment extends BaseFragment implements
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         rcv_order_history = view.findViewById(R.id.rcv_order_history);
         rl_empty = view.findViewById(R.id.rl_empty);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             if (UserUtils.isLogin()) {
                 setProgressMessage("Fetching order history...");
                 showProgress();

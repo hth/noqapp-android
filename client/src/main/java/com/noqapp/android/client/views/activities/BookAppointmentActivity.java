@@ -200,7 +200,7 @@ public class BookAppointmentActivity
                         new CustomToast().showToast(BookAppointmentActivity.this, "Please select appointment date & time");
                     } else {
                         // Process
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (isOnline()) {
                             // setProgressMessage("Booking appointment...");
                             //  showProgress();
                             String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
@@ -225,7 +225,7 @@ public class BookAppointmentActivity
                     if (null == firstAvailableAppointment || totalAvailableCount == 0) {
                         new CustomToast().showToast(BookAppointmentActivity.this, "No walk-in appointment available");
                     } else {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (isOnline()) {
                             //  setProgressMessage("Booking appointment...");
                             // showProgress();
                             String[] temp = firstAvailableAppointment.getTimeSlot().split("-");
@@ -417,7 +417,7 @@ public class BookAppointmentActivity
         ll_sector.setVisibility(View.GONE);
         appointmentSlotAdapter = new AppointmentSlotAdapter(new ArrayList<>(), this, this);
         rv_available_date.setAdapter(appointmentSlotAdapter);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();
             appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),

@@ -29,6 +29,7 @@ import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonCouponList;
 import com.noqapp.android.common.presenter.CouponPresenter;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class AllCouponsFragment
             rl_empty.setVisibility(View.GONE);
         }
         TextView tv_location_enable = view.findViewById(R.id.tv_location_enable);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("Fetching all coupons...");
             showProgress();
             ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();

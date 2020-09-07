@@ -54,7 +54,7 @@ public class AddressBookActivity
                 edt_add_address.setError(getString(R.string.error_field_required));
             } else {
                 AppUtils.hideKeyBoard(AddressBookActivity.this);
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     showProgress();
                     setProgressMessage("Adding address in progress...");
                     clientProfileApiCall.addProfileAddress(
@@ -120,7 +120,7 @@ public class AddressBookActivity
 
     @Override
     public void removeAddress(JsonUserAddress jsonUserAddress) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (isOnline()) {
             showProgress();
             setProgressMessage("Deleting address...");
             clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress);
@@ -131,7 +131,7 @@ public class AddressBookActivity
 
     @Override
     public void setPrimaryAddress(JsonUserAddress jsonUserAddress) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (isOnline()) {
             showProgress();
             setProgressMessage("Updating address...");
             ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();

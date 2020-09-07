@@ -175,7 +175,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             if (isCategoryData) {
                 queueResponse(jsonQueue);
             } else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     setProgressMessage("Loading queue details...");
                     showProgress();
                     if (UserUtils.isLogin()) {
@@ -544,7 +544,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         if (isCategoryData) {
             swipeRefreshLayout.setRefreshing(false);
         } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 swipeRefreshLayout.setRefreshing(true);
                 setProgressMessage("Loading queue details...");
                 showProgress();

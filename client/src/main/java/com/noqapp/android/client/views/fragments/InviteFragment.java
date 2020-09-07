@@ -20,6 +20,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.WebViewActivity;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -97,7 +98,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
     }
 
     private void howItWorks() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             Intent in = new Intent(getActivity(), WebViewActivity.class);
             in.putExtra(IBConstant.KEY_URL, Constants.URL_HOW_IT_WORKS);
             getActivity().startActivity(in);

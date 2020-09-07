@@ -40,7 +40,7 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
         int id = v.getId();
         switch (id) {
             case R.id.btn_privacy:
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
                     in.putExtra(IBConstant.KEY_URL, Constants.URL_PRIVACY_POLICY);
                     in.putExtra("title","Privacy In Detail");
@@ -50,7 +50,7 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
             case R.id.btn_term_condition:
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
                     in.putExtra(IBConstant.KEY_URL, Constants.URL_TERM_CONDITION);
                     in.putExtra("title","Terms & Conditions");

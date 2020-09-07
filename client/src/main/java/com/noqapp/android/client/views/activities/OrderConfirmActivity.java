@@ -141,7 +141,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             "Merchant have not set the price of the product. Hence payment cannot be proceed");
                 } else {
                     if (NoQueueBaseActivity.isEmailVerified()) {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (isOnline()) {
                             showProgress();
                             setProgressMessage("Starting payment process..");
                             setProgressCancel(false);
@@ -175,7 +175,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         currentServing = getIntent().getExtras().getInt("currentServing");
         if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
             tv_toolbar_title.setText(getString(R.string.order_details));
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 showProgress();
                 setProgressMessage("Fetching order details in progress...");
                 int token = getIntent().getExtras().getInt("token");
@@ -233,7 +233,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     }
 
     private void cancelOrder() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (isOnline()) {
             showProgress();
             setProgressMessage("Order cancel in progress...");
             purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);

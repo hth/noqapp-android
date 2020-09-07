@@ -144,7 +144,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             if (isCategoryData) {
                 queueResponse(jsonQueue);
             } else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     setProgressMessage("Loading queue details...");
                     showProgress();
                     if (UserUtils.isLogin()) {
@@ -477,7 +477,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         if (isCategoryData) {
             swipeRefreshLayout.setRefreshing(false);
         } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 setProgressMessage("Loading queue details...");
                 swipeRefreshLayout.setRefreshing(true);
                 showProgress();

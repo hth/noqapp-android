@@ -125,7 +125,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                 iv_profile.setVisibility(View.GONE);
             }
 
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 setProgressMessage(getString(R.string.loading_queue_details));
                 showProgress();
                 if (UserUtils.isLogin()) {

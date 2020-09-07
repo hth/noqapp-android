@@ -171,7 +171,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     private void performSearch() {
         if (StringUtils.isNotBlank(edt_search.getText().toString())) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
                         .setCityName(city)
@@ -190,7 +190,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     private void performKioskSearch() {
         if (StringUtils.isNotBlank(edt_search.getText().toString())) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
                         .setCityName(city)

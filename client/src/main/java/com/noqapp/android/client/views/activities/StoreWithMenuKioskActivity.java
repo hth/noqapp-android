@@ -258,7 +258,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
 
         tv_place_order.setOnClickListener((View v) -> {
             if (UserUtils.isLogin()) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isOnline()) {
                     HashMap<String, StoreCartItem> getOrder = expandableListAdapter.getOrders();
                     List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                     int price = 0;
