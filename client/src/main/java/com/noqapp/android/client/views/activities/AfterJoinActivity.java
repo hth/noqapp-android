@@ -423,7 +423,7 @@ public class AfterJoinActivity
                     String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
                     Bundle params = new Bundle();
                     params.putString("Queue_Name", displayName);
-                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_QUEUE, params);
+                    MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_QUEUE, params);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

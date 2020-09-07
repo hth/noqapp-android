@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
@@ -30,7 +31,11 @@ public class MyApplication extends MultiDexApplication {
     public MyApplication() {
         super();
     }
+    public static FirebaseAnalytics getFireBaseAnalytics() {
+        return fireBaseAnalytics;
+    }
 
+    private static FirebaseAnalytics fireBaseAnalytics;
     /**
      * On application startup, override system default locale to which user set
      * in application preference.
@@ -44,6 +49,7 @@ public class MyApplication extends MultiDexApplication {
         FontsOverride.overrideFont(this, "SANS_SERIF", "fonts/roboto_regular.ttf");
         setLocale(this);
         preferences = getSharedPreferences( getPackageName() + "_preferences", MODE_PRIVATE);
+        fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     private Locale getLocaleFromPref() {

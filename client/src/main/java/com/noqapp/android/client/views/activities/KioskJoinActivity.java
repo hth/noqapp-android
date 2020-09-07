@@ -300,7 +300,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Queue_Name", jsonQueue.getDisplayName());
-                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_KIOSK_SCREEN, params);
+                MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_KIOSK_SCREEN, params);
             }
         }
     }

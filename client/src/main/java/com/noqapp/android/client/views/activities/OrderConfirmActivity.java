@@ -184,7 +184,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                         Bundle params = new Bundle();
                         params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
-                        LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_PLACE_ORDER, params);
+                        MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_PLACE_ORDER, params);
                     }
                 }
             } else {
@@ -242,7 +242,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                     Bundle params = new Bundle();
                     params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
-                    LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_ORDER, params);
+                    MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_ORDER, params);
                 }
             }
         } else {

@@ -40,7 +40,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.common.cache.Cache;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
@@ -146,12 +145,6 @@ public class LaunchActivity
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
 
-    public FirebaseAnalytics getFireBaseAnalytics() {
-        return fireBaseAnalytics;
-    }
-
-    private FirebaseAnalytics fireBaseAnalytics;
-
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -159,7 +152,6 @@ public class LaunchActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
         JodaTimeAndroid.init(this);
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);

@@ -155,7 +155,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         if (AppUtils.isRelease()) {
             Bundle params = new Bundle();
             params.putString(FirebaseAnalytics.Param.SEARCH_TERM, AnalyticsEvents.EVENT_SEARCH);
-            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
+            MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
         }
         edt_search.requestFocus();
     }

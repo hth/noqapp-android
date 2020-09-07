@@ -72,7 +72,7 @@ public class FeedActivity extends AppCompatActivity {
             params.putString(FirebaseAnalytics.Param.CONTENT, jsonFeed.getTitle());
             params.putString(FirebaseAnalytics.Param.ITEM_ID, jsonFeed.getContentId());
             params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, jsonFeed.getContentType());
-            LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_FEED, params);
+            MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_FEED, params);
         }
     }
 

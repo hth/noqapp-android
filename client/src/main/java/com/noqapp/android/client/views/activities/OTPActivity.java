@@ -307,7 +307,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
                 Bundle params = new Bundle();
                 params.putBoolean("Phone", true);
-                LaunchActivity.getLaunchActivity().getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
+                MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
 
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
