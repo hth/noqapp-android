@@ -115,6 +115,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("s")
     private int servingNumber;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty("l")
     private int lastNumber;
 
@@ -421,6 +424,14 @@ public class JsonQueue implements Serializable {
     public JsonQueue setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
         return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public void setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
     }
 
     public int getLastNumber() {
