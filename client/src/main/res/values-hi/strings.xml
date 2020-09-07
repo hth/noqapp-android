@@ -82,7 +82,7 @@
     <string name="daily_token_limit">स्टोर प्रतिदिन टोकन सीमा: %1$d</string>
     <string name="estimated_wait">Estimated Wait: %1$s</string>
     <string name="expected_service_around">Expected Service: %1$s</string>
-    <string name="serving_now_in_queue">सेवा में: %1$d</string>
+    <string name="serving_now_in_queue">सेवा में: %1$s</string>
     <string name="serving_not_started">सेवा में: %1$s</string>
     <string name="revisit_restriction">अगली सेवा प्रतिबंध: %1$s</string>
     <string name="referral_code_required">टोकन प्राप्त करने के लिए एक बार पहचान कोड की आवश्यकता</string>
