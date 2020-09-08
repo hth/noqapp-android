@@ -56,7 +56,7 @@ public class MigrateActivity extends OTPActivity {
             isValid = false;
         } else {
             if (PhoneFormatterUtil.phoneNumberWithCountryCode(edt_phoneNo.getText().toString(), countryShortName).
-                    equals(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(), NoQueueBaseActivity.getCountryShortName()))) {
+                    equals(PhoneFormatterUtil.phoneNumberWithCountryCode(MyApplication.getPhoneNo(), MyApplication.getCountryShortName()))) {
                 edt_phoneNo.setError(getString(R.string.error_mobile_no_same));
                 isValid = false;
             }
@@ -67,7 +67,7 @@ public class MigrateActivity extends OTPActivity {
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        NoQueueBaseActivity.commitProfile(profile, email, auth);
+        MyApplication.commitProfile(profile, email, auth);
         finish();//close the current activity
         dismissProgress();
     }

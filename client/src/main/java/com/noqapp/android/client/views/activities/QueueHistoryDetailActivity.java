@@ -105,7 +105,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
             tv_add_review.setVisibility(View.GONE);
             tv_store_rating.setVisibility(View.VISIBLE);
         }
-        List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
+        List<JsonProfile> profileList = MyApplication.getAllProfileList();
         tv_name.setText(AppUtils.getNameFromQueueUserID(jsonQueueHistorical.getQueueUserId(), profileList));
         if (tv_name.getText().toString().equals("")) {
             tv_name.setText("Guest User");

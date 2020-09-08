@@ -77,7 +77,7 @@ public class AddressBookActivity
         clientProfileApiCall = new ClientProfileApiCall();
         clientProfileApiCall.setProfileAddressPresenter(this);
         JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
-        jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
+        jsonUserAddressList.setJsonUserAddresses(MyApplication.getUserProfile().getJsonUserAddresses());
         profileAddressResponse(jsonUserAddressList);
     }
 
@@ -85,9 +85,9 @@ public class AddressBookActivity
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
         edt_add_address.setText("");
         final List<JsonUserAddress> addressList = jsonUserAddressList.getJsonUserAddresses();
-        JsonProfile jp = LaunchActivity.getUserProfile();
+        JsonProfile jp = MyApplication.getUserProfile();
         jp.setJsonUserAddresses(addressList);
-        LaunchActivity.setUserProfile(jp);
+        MyApplication.setUserProfile(jp);
         Log.e("address list: ", addressList.toString());
         lv_address.setAdapter(
                 new AddressListAdapter(
@@ -136,7 +136,7 @@ public class AddressBookActivity
             setProgressMessage("Updating address...");
             ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();
             clientProfileApiCall.setClientPreferencePresenter(this);
-            JsonUserPreference jsonUserPreference = LaunchActivity.getUserProfile().getJsonUserPreference();
+            JsonUserPreference jsonUserPreference = MyApplication.getUserProfile().getJsonUserPreference();
             if (null != jsonUserAddress) {
                 jsonUserPreference.setUserAddressId(jsonUserAddress.getId());
             }
@@ -149,11 +149,11 @@ public class AddressBookActivity
     @Override
     public void clientPreferencePresenterResponse(JsonUserPreference jsonUserPreference) {
         if (null != jsonUserPreference) {
-            JsonProfile jp = LaunchActivity.getUserProfile();
+            JsonProfile jp = MyApplication.getUserProfile();
             jp.setJsonUserPreference(jsonUserPreference);
-            LaunchActivity.setUserProfile(jp);
+            MyApplication.setUserProfile(jp);
             JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
-            jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
+            jsonUserAddressList.setJsonUserAddresses(MyApplication.getUserProfile().getJsonUserAddresses());
             for (int i = 0; i < jsonUserAddressList.getJsonUserAddresses().size(); i++) {
                 if (jsonUserAddressList.getJsonUserAddresses().get(i).getId().equals(jsonUserPreference.getUserAddressId())) {
                     jsonUserAddressList.getJsonUserAddresses().get(i).setId(jsonUserPreference.getUserAddressId());

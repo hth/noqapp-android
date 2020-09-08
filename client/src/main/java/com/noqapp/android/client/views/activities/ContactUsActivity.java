@@ -43,7 +43,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             }
         }
         if (UserUtils.isLogin()) {
-            if (NoQueueBaseActivity.getUserProfile().isAccountValidated()) {
+            if (MyApplication.getUserProfile().isAccountValidated()) {
                 btn_submit.setEnabled(true);
                 edt_body.setEnabled(true);
                 edt_subject.setEnabled(true);

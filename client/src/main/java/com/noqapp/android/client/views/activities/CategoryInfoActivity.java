@@ -373,16 +373,16 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
                     kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
                     kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
-                    NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
+                    MyApplication.setKioskModeInfo(kioskModeInfo);
 
-                    if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                    if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
                         Intent in = new Intent(CategoryInfoActivity.this, SurveyKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     } else {
-                        NoQueueBaseActivity.clearPreferences();
+                        MyApplication.clearPreferences();
                         Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     }
                     finish();
@@ -393,7 +393,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     //Do nothing
                 }
             });
-            showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
+            showKioskModeDialog.displayDialog(MyApplication.getUserProfile().getUserLevel().getDescription());
         });
     }
 

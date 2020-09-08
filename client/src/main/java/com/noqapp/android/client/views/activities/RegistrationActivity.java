@@ -113,13 +113,13 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "Profile: " + profile.toString());
-            NoQueueBaseActivity.commitProfile(profile, email, auth);
-            if (!TextUtils.isEmpty(NoQueueBaseActivity.getPreviousUserQID()) && !NoQueueBaseActivity.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+            MyApplication.commitProfile(profile, email, auth);
+            if (!TextUtils.isEmpty(MyApplication.getPreviousUserQID()) && !MyApplication.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
                 NotificationDB.clearNotificationTable();
                 ReviewDB.clearReviewTable();
                 LaunchActivity.getLaunchActivity().reCreateDeviceID();
             }
-            NoQueueBaseActivity.setPreviousUserQID(profile.getQueueUserId());
+            MyApplication.setPreviousUserQID(profile.getQueueUserId());
             finish();
         } else {
             //Rejected from  server

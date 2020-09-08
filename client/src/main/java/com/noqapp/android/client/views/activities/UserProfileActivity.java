@@ -105,7 +105,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        AppUtils.loadProfilePic(iv_profile, NoQueueBaseActivity.getUserProfileUri(), this);
+        AppUtils.loadProfilePic(iv_profile, MyApplication.getUserProfileUri(), this);
     }
 
 
@@ -130,7 +130,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             case R.id.tv_modify_email:
                 Intent changeEmail = new Intent(this, ChangeEmailActivity.class);
                 changeEmail.putExtra("email", edt_Mail.getText().toString());
-                changeEmail.putExtra("isValidated", NoQueueBaseActivity.getUserProfile().isAccountValidated());
+                changeEmail.putExtra("isValidated", MyApplication.getUserProfile().isAccountValidated());
                 startActivity(changeEmail);
                 break;
 
@@ -141,7 +141,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
-        NoQueueBaseActivity.commitProfile(profile, email, auth);
+        MyApplication.commitProfile(profile, email, auth);
         dismissProgress();
         updateUI();
     }
@@ -158,7 +158,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
                 new CustomToast().showToast(this, getString(R.string.error_account_block));
-                NoQueueBaseActivity.clearPreferences();
+                MyApplication.clearPreferences();
                 dismissProgress();
                 finish();//close the current activity
             } else {
@@ -168,8 +168,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void updateUI() {
-        if (NoQueueBaseActivity.getUserProfile() != null && NoQueueBaseActivity.getUserProfile().getUserLevel() != null) {
-            if (NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+        if (MyApplication.getUserProfile() != null && MyApplication.getUserProfile().getUserLevel() != null) {
+            if (MyApplication.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 tv_info.setText("Max 10 allowed");
             } else {
                 tv_info.setText("Max 5 allowed");
@@ -179,13 +179,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             authenticationFailure();
         }
 
-        edt_Name.setText(NoQueueBaseActivity.getUserName());
-        tv_name.setText(NoQueueBaseActivity.getUserName());
-        edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
-        edt_Mail.setText(NoQueueBaseActivity.getActualMail());
-        tv_email_verification.setVisibility(NoQueueBaseActivity.showEmailVerificationField() ? View.VISIBLE : View.GONE);
-        tv_modify_email.setVisibility(NoQueueBaseActivity.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
-        if (NoQueueBaseActivity.getMail().endsWith(Constants.MAIL_NOQAPP_COM)) {
+        edt_Name.setText(MyApplication.getUserName());
+        tv_name.setText(MyApplication.getUserName());
+        edt_phoneNo.setText(MyApplication.getPhoneNo());
+        edt_Mail.setText(MyApplication.getActualMail());
+        tv_email_verification.setVisibility(MyApplication.showEmailVerificationField() ? View.VISIBLE : View.GONE);
+        tv_modify_email.setVisibility(MyApplication.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
+        if (MyApplication.getMail().endsWith(Constants.MAIL_NOQAPP_COM)) {
             tv_email_verification.setVisibility(View.VISIBLE);
             tv_email_verification.setText("Please add your Email Id");
         }
@@ -195,11 +195,11 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         edt_Name.setEnabled(false);
         tv_birthday.setEnabled(false);
         edt_address.setEnabled(false);
-        edt_address.setText(NoQueueBaseActivity.getAddress());
+        edt_address.setText(MyApplication.getAddress());
         int id;
-        if (NoQueueBaseActivity.getGender().equals("M")) {
+        if (MyApplication.getGender().equals("M")) {
             id = R.id.tv_male;
-        } else if (NoQueueBaseActivity.getGender().equals("T")) {
+        } else if (MyApplication.getGender().equals("T")) {
             id = R.id.tv_transgender;
         } else {
             id = R.id.tv_female;
@@ -237,13 +237,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 break;
         }
         try {
-            tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
+            tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(MyApplication.getUserDOB())));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<JsonProfile> jsonProfiles = NoQueueBaseActivity.getUserProfile().getDependents();
+        List<JsonProfile> jsonProfiles = MyApplication.getUserProfile().getDependents();
         nameList.clear();
-        nameList.add(NoQueueBaseActivity.getUserName().toUpperCase());
+        nameList.add(MyApplication.getUserName().toUpperCase());
         ll_dependent.removeAllViews();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
             for (int j = 0; j < jsonProfiles.size(); j++) {
@@ -265,7 +265,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             }
         }
         loadProfilePic();
-        tv_age.setText(CommonHelper.calculateAge(NoQueueBaseActivity.getUserDOB()) + " (" + gender + ")");
+        tv_age.setText(CommonHelper.calculateAge(MyApplication.getUserDOB()) + " (" + gender + ")");
     }
 
     @Override

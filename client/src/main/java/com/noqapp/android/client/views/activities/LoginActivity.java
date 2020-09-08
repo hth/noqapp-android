@@ -70,14 +70,14 @@ public class LoginActivity extends OTPActivity {
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        NoQueueBaseActivity.commitProfile(profile, email, auth);
-        if (!TextUtils.isEmpty(NoQueueBaseActivity.getPreviousUserQID())
-                && !NoQueueBaseActivity.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+        MyApplication.commitProfile(profile, email, auth);
+        if (!TextUtils.isEmpty(MyApplication.getPreviousUserQID())
+                && !MyApplication.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
             NotificationDB.clearNotificationTable();
             ReviewDB.clearReviewTable();
             LaunchActivity.getLaunchActivity().reCreateDeviceID();
         }
-        NoQueueBaseActivity.setPreviousUserQID(profile.getQueueUserId());
+        MyApplication.setPreviousUserQID(profile.getQueueUserId());
 
         if (getIntent().getBooleanExtra("fromLogin", false)) {
             // To refresh the launch activity

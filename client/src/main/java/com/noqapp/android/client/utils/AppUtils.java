@@ -34,6 +34,7 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.MyApplication;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -495,7 +496,7 @@ public class AppUtils extends CommonHelper {
     }
 
     public static void authenticationProcessing(Context context) {
-        NoQueueBaseActivity.clearPreferences();
+        MyApplication.clearPreferences();
         ShowAlertInformation.showAuthenticErrorDialog(context);
     }
 
@@ -605,7 +606,7 @@ public class AppUtils extends CommonHelper {
     }
 
     public static boolean showKioskMode(BizStoreElastic bizStoreElastic) {
-        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
+        JsonProfile jsonProfile = MyApplication.getUserProfile();
         if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                 return Q_SUPERVISOR == jsonProfile.getUserLevel();

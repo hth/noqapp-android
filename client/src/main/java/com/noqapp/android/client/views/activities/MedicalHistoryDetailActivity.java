@@ -117,7 +117,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         }
         tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecord.getRecordAccess().size());
 
-        List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
+        List<JsonProfile> profileList = MyApplication.getAllProfileList();
         tv_patient_name.setText(AppUtils.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
 
         if (StringUtils.isBlank(tv_complaints.getText())) {

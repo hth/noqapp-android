@@ -371,7 +371,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             }
         }
         try {
-            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getTokenFCM());
+            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + MyApplication.getTokenFCM());
             // tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().log("On Resume " + e.getLocalizedMessage());
@@ -383,7 +383,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     }
 
     private void showScannerWhenMatchingRole() {
-        JsonProfile jsonProfile = LaunchActivity.getUserProfile();
+        JsonProfile jsonProfile = MyApplication.getUserProfile();
         if (null == jsonProfile) {
             frame_scan.setVisibility(View.GONE);
         } else {
@@ -513,7 +513,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         tv_merchant_view_all.setVisibility(nearMeMerchant.size() == 0 ? View.GONE : View.VISIBLE);
         isProgressFirstTime = false;
         if (isAdded()) {
-            if (NoQueueBaseActivity.getShowHelper()) {
+            if (MyApplication.getShowHelper()) {
 //                if (AppUtils.isRelease()) {
 //                    presentShowcaseSequence();
 //                }
@@ -524,7 +524,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                     Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(loginIntent);
                 });
-                NoQueueBaseActivity.setShowHelper(false);
+                MyApplication.setShowHelper(false);
             } else {
                 if (isRateUsFirstTime && null != getActivity()) {
                     new RateTheAppManager().appLaunched(getActivity());
@@ -923,7 +923,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                     Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                     blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().getApplicationContext().startActivity(blinker);
-                    if (LaunchActivity.isMsgAnnouncementEnable()) {
+                    if (MyApplication.isMsgAnnouncementEnable()) {
                         LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
                     }
                 } else {
@@ -936,7 +936,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                             blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getActivity().getApplicationContext().startActivity(blinker);
-                            if (LaunchActivity.isMsgAnnouncementEnable()) {
+                            if (MyApplication.isMsgAnnouncementEnable()) {
                                 LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
                             }
                             break;

@@ -165,13 +165,13 @@ public class BookAppointmentActivity
         if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType()) {
             List<JsonProfile> profileList = new LinkedList<>();
             DependentAdapter adapter = new DependentAdapter(this, profileList);
-            if (NoQueueBaseActivity.getUserProfile().getDependents().size() > 0) {
+            if (MyApplication.getUserProfile().getDependents().size() > 0) {
                 profileList.add(new JsonProfile().setName("Select Patient"));
-                profileList.add(NoQueueBaseActivity.getUserProfile());
-                profileList.addAll(NoQueueBaseActivity.getUserProfile().getDependents());
+                profileList.add(MyApplication.getUserProfile());
+                profileList.addAll(MyApplication.getUserProfile().getDependents());
             } else {
                 profileList.add(new JsonProfile().setName("Select Patient"));
-                profileList.add(NoQueueBaseActivity.getUserProfile());
+                profileList.add(MyApplication.getUserProfile());
             }
             tv_name.setVisibility(View.INVISIBLE);
             sp_name_list.setAdapter(adapter);
@@ -179,7 +179,7 @@ public class BookAppointmentActivity
         } else {
             List<JsonProfile> profileList = new ArrayList<>();
             profileList.add(new JsonProfile().setName("Select Person"));
-            profileList.add(NoQueueBaseActivity.getUserProfile());
+            profileList.add(MyApplication.getUserProfile());
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);
             tv_name.setText("Booking Person");

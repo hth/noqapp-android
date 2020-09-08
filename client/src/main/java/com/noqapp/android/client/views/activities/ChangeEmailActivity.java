@@ -121,7 +121,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(ChangeEmailActivity.class.getSimpleName(), "profile :" + profile.toString());
-            NoQueueBaseActivity.commitProfile(profile, email, auth);
+            MyApplication.commitProfile(profile, email, auth);
             finish();
         } else {
             //Rejected from  server

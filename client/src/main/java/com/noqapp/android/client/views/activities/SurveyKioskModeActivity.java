@@ -52,7 +52,7 @@ public class SurveyKioskModeActivity
         initActionsViews(false);
         actionbarBack.setVisibility(View.INVISIBLE);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
-        tv_store_name.setText(NoQueueBaseActivity.getKioskModeInfo().getBizName());
+        tv_store_name.setText(MyApplication.getKioskModeInfo().getBizName());
         String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         if (!TextUtils.isEmpty(codeQR)) {
             if (NetworkUtils.isConnectingToInternet(this)) {

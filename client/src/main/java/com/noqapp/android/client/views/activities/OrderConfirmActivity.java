@@ -140,7 +140,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             OrderConfirmActivity.this,
                             "Merchant have not set the price of the product. Hence payment cannot be proceed");
                 } else {
-                    if (NoQueueBaseActivity.isEmailVerified()) {
+                    if (MyApplication.isEmailVerified()) {
                         if (isOnline()) {
                             showProgress();
                             setProgressMessage("Starting payment process..");
@@ -469,9 +469,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         String orderId = jsonPurchaseOrder.getTransactionId();
         String orderAmount = jsonPurchaseOrder.getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";
-        String customerName = LaunchActivity.getCustomerNameWithQid(LaunchActivity.getUserName(), LaunchActivity.getUserProfile().getQueueUserId());
-        String customerPhone = LaunchActivity.getOfficePhoneNo();
-        String customerEmail = LaunchActivity.getOfficeMail();
+        String customerName = MyApplication.getCustomerNameWithQid(MyApplication.getUserName(), MyApplication.getUserProfile().getQueueUserId());
+        String customerPhone = MyApplication.getOfficePhoneNo();
+        String customerEmail = MyApplication.getOfficeMail();
 
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_APP_ID, appId);

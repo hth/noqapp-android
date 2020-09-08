@@ -433,7 +433,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
     }
 
     private void callAfterJoin() {
-        if (jsonQueue.isEnabledPayment() && !NoQueueBaseActivity.isEmailVerified()) {
+        if (jsonQueue.isEnabledPayment() && !MyApplication.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else if (!AppUtils.isValidStoreDistanceForUser(jsonQueue)) {
             ShowCustomDialog showCustomDialog = new ShowCustomDialog(this, true);
@@ -515,8 +515,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             joinQueue(true);
         }
         if (UserUtils.isLogin()) {
-            List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
-            profileList.add(0, NoQueueBaseActivity.getUserProfile());
+            List<JsonProfile> profileList = MyApplication.getUserProfile().getDependents();
+            profileList.add(0, MyApplication.getUserProfile());
             profileList.add(0, new JsonProfile().setName("Select Patient"));
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);

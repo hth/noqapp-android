@@ -279,7 +279,7 @@ public class AfterJoinActivity
             queueUserId = bundle.getStringExtra("qUserId");
             List<JsonProfile> profileList = new ArrayList<>();
             if (UserUtils.isLogin()) {
-                profileList = NoQueueBaseActivity.getAllProfileList();
+                profileList = MyApplication.getAllProfileList();
             }
 
             if (!TextUtils.isEmpty(queueUserId)) {
@@ -708,16 +708,16 @@ public class AfterJoinActivity
     }
 
     private void triggerOnlinePayment() {
-        if (NoQueueBaseActivity.isEmailVerified()) {
+        if (MyApplication.isEmailVerified()) {
             String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
             String stage = BuildConfig.CASHFREE_STAGE;
             String appId = BuildConfig.CASHFREE_APP_ID;
             String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
             String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
             String orderNote = "Order: " + queueUserId;
-            String customerName = LaunchActivity.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
-            String customerPhone = LaunchActivity.getOfficePhoneNo();
-            String customerEmail = LaunchActivity.getOfficeMail();
+            String customerName = MyApplication.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
+            String customerPhone = MyApplication.getOfficePhoneNo();
+            String customerEmail = MyApplication.getOfficeMail();
             Map<String, String> params = new HashMap<>();
             params.put(PARAM_APP_ID, appId);
             params.put(PARAM_ORDER_ID, orderId);
