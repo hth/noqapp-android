@@ -158,7 +158,7 @@ public class DetailFragment extends Fragment {
                     TextView textView = customView.findViewById(R.id.tv_name);
                     TextView tv_seq = customView.findViewById(R.id.tv_seq);
                     TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
-                    tv_seq.setText(String.valueOf((data.get(i).getToken())));
+                    tv_seq.setText(String.valueOf((data.get(i).getDisplayToken())));
                     textView.setText(data.get(i).getCustomerName());
                     String phoneNo = data.get(i).getCustomerPhone();
                     tv_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));

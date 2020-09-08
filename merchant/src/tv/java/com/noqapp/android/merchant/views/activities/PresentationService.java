@@ -412,14 +412,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     LayoutInflater inflater = LayoutInflater.from(this.context);
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
                         List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
-                        Collections.sort(
-                                data,
-                                new Comparator<JsonQueuedPersonTV>() {
-                                    public int compare(JsonQueuedPersonTV lhs, JsonQueuedPersonTV rhs) {
-                                        return Integer.compare(lhs.getToken(), rhs.getToken());
-                                    }
-                                }
-                        );
+                        Collections.sort(data, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
                        // if (data.size() > 0) {
                             View v = inflater.inflate(R.layout.lay_header, null, false);
                             ll_list.addView(v);
@@ -430,7 +423,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             TextView tv_name = customView.findViewById(R.id.tv_name);
                             TextView tv_seq = customView.findViewById(R.id.tv_seq);
                             TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
-                            tv_seq.setText(String.valueOf((data.get(i).getToken())));
+                            tv_seq.setText(String.valueOf((data.get(i).getDisplayToken())));
                             tv_name.setText(data.get(i).getCustomerName());
                             String phoneNo = data.get(i).getCustomerPhone();
                             tv_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
