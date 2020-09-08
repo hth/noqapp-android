@@ -186,7 +186,7 @@ public class LaunchActivity
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.register(
                 new DeviceToken(
-                        MyApplication.getTokenFCM(),
+                    MyApplication.getTokenFCM(),
                     Constants.appVersion(),
                     CommonHelper.getLocation(latitude, longitude)));
         }
