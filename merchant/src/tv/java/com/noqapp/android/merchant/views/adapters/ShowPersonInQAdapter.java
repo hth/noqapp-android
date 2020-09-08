@@ -71,7 +71,7 @@ public class ShowPersonInQAdapter extends RecyclerView.Adapter<ShowPersonInQAdap
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(position);
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
 
-        recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
+        recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getDisplayToken()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
