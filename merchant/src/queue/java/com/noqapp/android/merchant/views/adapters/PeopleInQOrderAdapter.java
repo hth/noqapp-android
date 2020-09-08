@@ -54,9 +54,13 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder, boolean isPaymentNotAllowed);
     }
 
-    public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String codeQR,
-                                 PeopleInQOrderAdapterClick peopleInQOrderAdapterClick,
-                                 JsonPaymentPermission jsonPaymentPermission) {
+    public PeopleInQOrderAdapter(
+            List<JsonPurchaseOrder> data,
+            Context context,
+            String codeQR,
+            PeopleInQOrderAdapterClick peopleInQOrderAdapterClick,
+            JsonPaymentPermission jsonPaymentPermission
+    ) {
         this.dataSet = data;
         this.context = context;
         this.codeQR = codeQR;
@@ -64,9 +68,14 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         this.jsonPaymentPermission = jsonPaymentPermission;
     }
 
-    public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String codeQR,
-                                 PeopleInQOrderAdapterClick peopleInQOrderAdapterClick,
-                                 int glowPosition, JsonPaymentPermission jsonPaymentPermission) {
+    public PeopleInQOrderAdapter(
+            List<JsonPurchaseOrder> data,
+            Context context,
+            String codeQR,
+            PeopleInQOrderAdapterClick peopleInQOrderAdapterClick,
+            int glowPosition,
+            JsonPaymentPermission jsonPaymentPermission
+    ) {
         this.dataSet = data;
         this.context = context;
         this.codeQR = codeQR;
@@ -197,8 +206,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             });
         }
 
-        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RP ||
-                jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RD) {
+        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RP
+                || jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RD) {
             recordHolder.tv_order_done.setVisibility(View.VISIBLE);
         } else {
             recordHolder.tv_order_done.setVisibility(View.GONE);

@@ -79,12 +79,10 @@ public class ShowPersonInQAdapter extends RecyclerView.Adapter<ShowPersonInQAdap
 
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
-
                 recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
                 break;
             case A:
-                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
-                        context, R.color.disable_list));
+                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
                 break;
             case N:
                 recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));

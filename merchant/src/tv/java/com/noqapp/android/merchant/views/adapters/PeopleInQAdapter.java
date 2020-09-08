@@ -22,8 +22,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         super(data, context, peopleInQAdapterClick, codeQR, jsonDataVisibility, jsonPaymentPermission);
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-            PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
         super(data, context, peopleInQAdapterClick, jsonTopic);
     }
 
