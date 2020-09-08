@@ -28,8 +28,7 @@ public class StoreMenuGridAdapter extends RecyclerView.Adapter {
     private CartOrderUpdate cartOrderUpdate;
 
 
-    public StoreMenuGridAdapter(List<StoreCartItem> menuItemsList,
-                                StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate) {
+    public StoreMenuGridAdapter(List<StoreCartItem> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate) {
         this.menuItemsList = menuItemsList;
         this.storeMenuActivity = storeMenuActivity;
         this.cartOrderUpdate = cartOrderUpdate;
