@@ -368,7 +368,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     }
 
     private void callJoinScreen() {
-        if (jsonQueue.isEnabledPayment() && !NoQueueBaseActivity.isEmailVerified()) {
+        if (jsonQueue.isEnabledPayment() && !MyApplication.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else if (!AppUtils.isValidStoreDistanceForUser(jsonQueue)) {
             ShowCustomDialog showCustomDialog = new ShowCustomDialog(this, true);
@@ -382,9 +382,9 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                     in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
                     in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
                     in.putExtra("qUserId",
-                        null == NoQueueBaseActivity.getUserProfile().getQueueUserId()
+                        null == MyApplication.getUserProfile().getQueueUserId()
                             ? ""
-                            : NoQueueBaseActivity.getUserProfile().getQueueUserId());
+                            : MyApplication.getUserProfile().getQueueUserId());
                     in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
                     startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
@@ -409,9 +409,9 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
             in.putExtra("qUserId",
-                    null == NoQueueBaseActivity.getUserProfile().getQueueUserId()
+                    null == MyApplication.getUserProfile().getQueueUserId()
                         ? ""
-                        : NoQueueBaseActivity.getUserProfile().getQueueUserId());
+                        : MyApplication.getUserProfile().getQueueUserId());
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 

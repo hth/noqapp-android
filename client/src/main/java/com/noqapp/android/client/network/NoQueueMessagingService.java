@@ -499,7 +499,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     Intent buzzerIntent = new Intent(this, BlinkerActivity.class);
                                     buzzerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(buzzerIntent);
-                                    if (LaunchActivity.isMsgAnnouncementEnable()) {
+                                    if (MyApplication.isMsgAnnouncementEnable()) {
                                         LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData.getJsonTextToSpeeches(), mappedData.get("mi"));
                                     }
                                 }

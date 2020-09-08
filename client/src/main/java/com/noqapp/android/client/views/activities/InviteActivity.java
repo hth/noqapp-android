@@ -18,7 +18,7 @@ public class InviteActivity extends BaseActivity {
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_invite));
         Bundle b = new Bundle();
-        b.putString("invite_code", NoQueueBaseActivity.getInviteCode());
+        b.putString("invite_code", MyApplication.getInviteCode());
         InviteFragment inf = new InviteFragment();
         inf.setArguments(b);
 

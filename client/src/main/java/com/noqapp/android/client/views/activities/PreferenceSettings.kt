@@ -76,7 +76,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
         btn_update.setOnClickListener {
             showProgress()
-            val jsonUserPreference: JsonUserPreference = LaunchActivity.getUserProfile().jsonUserPreference
+            val jsonUserPreference: JsonUserPreference = MyApplication.getUserProfile().jsonUserPreference
             if (isHomeDelivery) {
                 jsonUserPreference.deliveryMode = DeliveryModeEnum.HD
             } else {
@@ -89,9 +89,9 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             }
             clientPreferenceApiCalls.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
         }
-        sc_msg_announce.isChecked = LaunchActivity.isMsgAnnouncementEnable()
+        sc_msg_announce.isChecked = MyApplication.isMsgAnnouncementEnable()
 
-        val jsonUserPreference: JsonUserPreference? = LaunchActivity.getUserProfile().jsonUserPreference
+        val jsonUserPreference: JsonUserPreference? = MyApplication.getUserProfile().jsonUserPreference
         if (null == jsonUserPreference) {
             sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
             sc_sound.isChecked = MyApplication.isNotificationSoundEnable()
@@ -137,7 +137,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
 
         sc_msg_announce.setOnCheckedChangeListener { _, isChecked ->
-            LaunchActivity.setMsgAnnouncementEnable(isChecked)
+            MyApplication.setMsgAnnouncementEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@PreferenceSettings, "Message Announcement Enabled")
@@ -150,9 +150,9 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
 
     override fun clientPreferencePresenterResponse(jsonUserPreference: JsonUserPreference?) {
         dismissProgress()
-        val jsonProfile: JsonProfile = LaunchActivity.getUserProfile()
+        val jsonProfile: JsonProfile = MyApplication.getUserProfile()
         jsonProfile.jsonUserPreference = jsonUserPreference
-        LaunchActivity.setUserProfile(jsonProfile)
+        MyApplication.setUserProfile(jsonProfile)
         CustomToast().showToast(this@PreferenceSettings, "Settings updated successfully")
     }
 }

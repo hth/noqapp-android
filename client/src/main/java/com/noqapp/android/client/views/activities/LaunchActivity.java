@@ -157,7 +157,7 @@ public class LaunchActivity
         MapsInitializer.initialize(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
-        isLockMode = NoQueueBaseActivity.getKioskModeInfo().isKioskModeEnable();
+        isLockMode = MyApplication.getKioskModeInfo().isKioskModeEnable();
         tv_badge = findViewById(R.id.tv_badge);
         tv_location = findViewById(R.id.tv_location);
         ImageView iv_search = findViewById(R.id.iv_search);
@@ -180,27 +180,27 @@ public class LaunchActivity
         }
 
         //NoQueueBaseActivity.saveMailAuth("","");
-        if (null == getDeviceId()) {
-            Log.v("Device id check", getDeviceId());
+        if (null == MyApplication.getDeviceId()) {
+           // Log.v("Device id check", MyApplication.getDeviceId());
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.register(
                 new DeviceToken(
-                    NoQueueBaseActivity.getTokenFCM(),
+                        MyApplication.getTokenFCM(),
                     Constants.appVersion(),
                     CommonHelper.getLocation(latitude, longitude)));
         }
 
         if (null != getIntent().getExtras()) {
-            if (!TextUtils.isEmpty(getIntent().getStringExtra(NoQueueBaseActivity.TOKEN_FCM))) {
-                NoQueueBaseActivity.setTokenFCM(getIntent().getStringExtra(NoQueueBaseActivity.TOKEN_FCM));
+            if (!TextUtils.isEmpty(getIntent().getStringExtra(MyApplication.TOKEN_FCM))) {
+                MyApplication.setTokenFCM(getIntent().getStringExtra(MyApplication.TOKEN_FCM));
             }
 
             if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
-                NoQueueBaseActivity.setDeviceID(getIntent().getStringExtra("deviceId"));
+                MyApplication.setDeviceID(getIntent().getStringExtra("deviceId"));
             }
         }
-        setReviewShown(false);//Reset the flag when app is killed
+        MyApplication.setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
         fcmNotificationReceiver = new FcmNotificationReceiver();
         fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
@@ -294,26 +294,26 @@ public class LaunchActivity
 
     private void setKioskMode() {
         if (isLockMode) {
-            if (NoQueueBaseActivity.getKioskModeInfo().isLevelUp()) {
-                if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+            if (MyApplication.getKioskModeInfo().isLevelUp()) {
+                if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
                     Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 } else {
-                    clearPreferences();
+                    MyApplication.clearPreferences();
                     Intent in = new Intent(LaunchActivity.this, CategoryInfoKioskModeActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 }
             } else {
-                if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
                     Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 } else {
-                    clearPreferences();
+                    MyApplication.clearPreferences();
                     Intent in = new Intent(LaunchActivity.this, StoreWithMenuKioskActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                    in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 }
             }
@@ -513,7 +513,7 @@ public class LaunchActivity
 
         ReviewData reviewData = ReviewDB.getPendingReview();
         /* Shown only one time if the review is canceled */
-        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown() && !NoQueueBaseActivity.getShowHelper()) {
+        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !MyApplication.isReviewShown() && !MyApplication.getShowHelper()) {
             callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
             Log.d("onResume review screen","review screen called");
         }
@@ -528,17 +528,17 @@ public class LaunchActivity
 
     public void updateDrawerUI() {
         if (UserUtils.isLogin()) {
-            tv_email.setText(NoQueueBaseActivity.getActualMail());
-            tv_name.setText(NoQueueBaseActivity.getUserName());
+            tv_email.setText(MyApplication.getActualMail());
+            tv_name.setText(MyApplication.getUserName());
         } else {
             tv_email.setText("Please login");
             tv_name.setText("Guest User");
         }
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
-            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
+            if (!TextUtils.isEmpty(MyApplication.getUserProfileUri())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, MyApplication.getUserProfileUri()))
                     .placeholder(ImageUtils.getProfilePlaceholder(this))
                     .error(ImageUtils.getProfileErrorPlaceholder(this))
                     .into(iv_profile);
@@ -790,7 +790,7 @@ public class LaunchActivity
                                     Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
                                     blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     getApplicationContext().startActivity(blinker);
-                                    if (isMsgAnnouncementEnable()) {
+                                    if (MyApplication.isMsgAnnouncementEnable()) {
                                         makeAnnouncement(jsonTextToSpeeches, msgId);
                                     }
                                 } else {
@@ -811,7 +811,7 @@ public class LaunchActivity
                                 Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
                                 blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getApplicationContext().startActivity(blinker);
-                                if (isMsgAnnouncementEnable()) {
+                                if (MyApplication.isMsgAnnouncementEnable()) {
                                     makeAnnouncement(jsonTextToSpeeches, msgId);
                                 }
                             }
@@ -847,7 +847,7 @@ public class LaunchActivity
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(
                 new DeviceToken(
-                    NoQueueBaseActivity.getTokenFCM(),
+                        MyApplication.getTokenFCM(),
                     Constants.appVersion(),
                     CommonHelper.getLocation(latitude, longitude)));
         } else {
@@ -1011,7 +1011,7 @@ public class LaunchActivity
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
                     public void btnPositiveClick() {
-                        NoQueueBaseActivity.clearPreferences();
+                        MyApplication.clearPreferences();
                         Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                         startActivity(loginIntent);
                     }
@@ -1307,7 +1307,7 @@ public class LaunchActivity
 
     public static String getCountryCode() {
         if (UserUtils.isLogin()) {
-            return getCountryShortName();
+            return MyApplication.getCountryShortName();
         } else {
             try {
                 final TelephonyManager tm = (TelephonyManager) launchActivity.getSystemService(Context.TELEPHONY_SERVICE);

@@ -379,14 +379,14 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
                     kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
                     kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
-                    NoQueueBaseActivity.setKioskModeInfo(kioskModeInfo);
+                    MyApplication.setKioskModeInfo(kioskModeInfo);
 
-                    if (NoQueueBaseActivity.getKioskModeInfo().isFeedbackScreen()) {
+                    if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
                         Intent in = new Intent(StoreWithMenuActivity.this, SurveyKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, NoQueueBaseActivity.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     } else {
-                        NoQueueBaseActivity.clearPreferences();
+                        MyApplication.clearPreferences();
                         Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
                         in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                         startActivity(in);
@@ -399,7 +399,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     //Do nothing
                 }
             });
-            showKioskModeDialog.displayDialog(LaunchActivity.getUserProfile().getUserLevel().getDescription());
+            showKioskModeDialog.displayDialog(MyApplication.getUserProfile().getUserLevel().getDescription());
         });
         // Added temporary due to textview click issue 
         tv_enable_kiosk.performClick();

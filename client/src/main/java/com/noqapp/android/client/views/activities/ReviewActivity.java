@@ -134,7 +134,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 tv_title.setText(StringUtils.capitalize(queueOrderType + " Detail"));
 
                 if (UserUtils.isLogin()) {
-                    List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
+                    List<JsonProfile> profileList = MyApplication.getAllProfileList();
                     tv_details.setText(AppUtils.getNameFromQueueUserID(jtk.getQueueUserId(), profileList) + " with " + queueOrderType + " #" + jtk.getDisplayToken());
                 } else {
                     tv_details.setText("Guest user with " + queueOrderType + " #" + jtk.getDisplayToken());
@@ -246,7 +246,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             finish();
         }*/
         // @TODO revert all 3 below line
-        NoQueueBaseActivity.setReviewShown(true);
+        MyApplication.setReviewShown(true);
         ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         super.onBackPressed();
@@ -270,7 +270,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     }
 
     private void returnResultBack() {
-        NoQueueBaseActivity.setReviewShown(true);
+        MyApplication.setReviewShown(true);
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
         intent.putExtra(Constants.TOKEN, String.valueOf(jtk.getToken()));

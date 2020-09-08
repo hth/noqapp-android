@@ -277,7 +277,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             queueUserId = bundle.getStringExtra("qUserId");
             List<JsonProfile> profileList = new ArrayList<>();
             if (UserUtils.isLogin()) {
-                profileList = NoQueueBaseActivity.getAllProfileList();
+                profileList = MyApplication.getAllProfileList();
             }
             if (!TextUtils.isEmpty(queueUserId)) {
                 jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
@@ -529,7 +529,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private void callQueue() {
         if (codeQR != null) {
             if (UserUtils.isLogin()) {
-                JsonProfile jp = NoQueueBaseActivity.getUserProfile();
+                JsonProfile jp = MyApplication.getUserProfile();
                 String qUserId;
                 String guardianId = null;
                 if (jp.getQueueUserId().equalsIgnoreCase(queueUserId)) {
@@ -677,7 +677,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     }
 
     private void triggerOnlinePayment() {
-        if (NoQueueBaseActivity.isEmailVerified()) {
+        if (MyApplication.isEmailVerified()) {
             String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
             String stage = BuildConfig.CASHFREE_STAGE;
             String appId = BuildConfig.CASHFREE_APP_ID;
@@ -685,9 +685,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
             // String orderAmount = CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonToken.getJsonPurchaseOrder().getOrderPrice())));
             String orderNote = "Order: " + queueUserId;
-            String customerName = LaunchActivity.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
-            String customerPhone = LaunchActivity.getOfficePhoneNo();
-            String customerEmail = LaunchActivity.getOfficeMail();
+            String customerName = MyApplication.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
+            String customerPhone = MyApplication.getOfficePhoneNo();
+            String customerEmail = MyApplication.getOfficeMail();
             Map<String, String> params = new HashMap<>();
             params.put(PARAM_APP_ID, appId);
             params.put(PARAM_ORDER_ID, orderId);
