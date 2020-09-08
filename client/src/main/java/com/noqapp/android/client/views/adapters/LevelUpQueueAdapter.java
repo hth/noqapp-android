@@ -3,7 +3,6 @@ package com.noqapp.android.client.views.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
