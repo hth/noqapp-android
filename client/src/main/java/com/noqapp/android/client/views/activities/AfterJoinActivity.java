@@ -61,7 +61,6 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.DiscountTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
@@ -347,7 +346,10 @@ public class AfterJoinActivity
             }
             updateEstimatedTime();
             setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
-            tv_name.setText(jsonProfile.getName());
+            if (null != jsonProfile) {
+                //TODO(chandra) this is not required as this is set above
+                tv_name.setText(jsonProfile.getName());
+            }
             tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
             generateQRCode();
             if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {

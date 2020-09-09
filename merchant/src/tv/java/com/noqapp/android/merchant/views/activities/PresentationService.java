@@ -75,7 +75,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private final String LOOP_TIME = "9";
     private final String SERVER_LOOP_TIME = "5";
     private final int MILLI_SECONDS = 1000;
-    private final int SECONDS = LaunchActivity.getTvRefreshTime()*60;
+    private final int SECONDS = LaunchActivity.getTvRefreshTime() * 60;
     private final int MINUTE = SECONDS * MILLI_SECONDS;
     private boolean callAdvertisement = true;
     private boolean callFirstTime = true;
@@ -243,9 +243,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     public class DetailPresentation extends CastPresentation {
         private ImageView image, image1, iv_advertisement;
         private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1,
-                tv_info1, tv_category, tv_category1,tv_experience;
+                tv_info1, tv_category, tv_category1, tv_experience;
         ;
-        private LinearLayout ll_list, ll_no_list,ll_left;
+        private LinearLayout ll_list, ll_no_list, ll_left;
         private Context context;
 
 
@@ -282,7 +282,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.35f);
                 ll_left.setLayoutParams(lp1);
                 ll_no_list.setLayoutParams(lp0);
-            }else{
+            } else {
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                 LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
                 ll_left.setLayoutParams(lp1);
@@ -413,10 +413,10 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
                         List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
                         Collections.sort(data, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
-                       // if (data.size() > 0) {
-                            View v = inflater.inflate(R.layout.lay_header, null, false);
-                            ll_list.addView(v);
-                      //  }
+                        // if (data.size() > 0) {
+                        View v = inflater.inflate(R.layout.lay_header, null, false);
+                        ll_list.addView(v);
+                        //  }
                         for (int i = 0; i < data.size(); i++) {
                             View customView = inflater.inflate(R.layout.lay_text, null, false);
                             View cardview = customView.findViewById(R.id.cardview);
