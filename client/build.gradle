@@ -199,10 +199,11 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointSandbox
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityStaging
-            buildConfigField STRING, "AWSS3", sandboxEndpointAwsS3
+            buildConfigField STRING, "AWSS3", debugEndpointAwsS3
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
@@ -249,6 +250,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
@@ -293,6 +295,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""

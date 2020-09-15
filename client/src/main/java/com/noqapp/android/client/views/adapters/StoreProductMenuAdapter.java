@@ -23,6 +23,8 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +115,9 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_temp.setVisibility(View.VISIBLE);
         }
         Picasso.get()
-                .load(jsonStoreProduct.getProductImage())
+                .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
+                        ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + jsonStoreProduct.getProductImage()
+                        : "")
                 .placeholder(ImageUtils.getThumbPlaceholder(context))
                 .error(ImageUtils.getThumbErrorPlaceholder(context))
                 .into(childViewHolder.iv_product_image);
