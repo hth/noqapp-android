@@ -115,12 +115,12 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_temp.setVisibility(View.VISIBLE);
         }
         Picasso.get()
-                .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
-                        ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + jsonStoreProduct.getProductImage()
-                        : "")
-                .placeholder(ImageUtils.getThumbPlaceholder(context))
-                .error(ImageUtils.getThumbErrorPlaceholder(context))
-                .into(childViewHolder.iv_product_image);
+            .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
+                ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + jsonStoreProduct.getProductImage()
+                : BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + "")
+            .placeholder(ImageUtils.getThumbPlaceholder(context))
+            .error(ImageUtils.getThumbErrorPlaceholder(context))
+            .into(childViewHolder.iv_product_image);
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
