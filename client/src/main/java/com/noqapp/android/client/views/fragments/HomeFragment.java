@@ -339,15 +339,15 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             }
         }
 
-        if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+        if (TextUtils.isEmpty(MyApplication.cityName)) {
             LocationPref locationPref = MyApplication.getLocationPreference();
             lat = locationPref.getLatitude();
             lng = locationPref.getLongitude();
             city = locationPref.getCity();
         } else {
-            lat = LaunchActivity.getLaunchActivity().latitude;
-            lng = LaunchActivity.getLaunchActivity().longitude;
-            city = LaunchActivity.getLaunchActivity().cityName;
+            lat = MyApplication.location.getLatitude();
+            lng = MyApplication.location.getLongitude();
+            city = MyApplication.cityName;
         }
         getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
 //        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());

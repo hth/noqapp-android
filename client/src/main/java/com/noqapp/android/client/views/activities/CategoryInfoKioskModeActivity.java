@@ -115,9 +115,9 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         AppUtils.hideKeyBoard(CategoryInfoKioskModeActivity.this);
         Intent in_search = new Intent(CategoryInfoKioskModeActivity.this, SearchActivity.class);
         in_search.putExtra("scrollId", "");
-        in_search.putExtra("lat", "" + LaunchActivity.getLaunchActivity().latitude);
-        in_search.putExtra("lng", "" + LaunchActivity.getLaunchActivity().longitude);
-        in_search.putExtra("city", LaunchActivity.getLaunchActivity().cityName);
+        in_search.putExtra("lat", "" + MyApplication.location.getLatitude());
+        in_search.putExtra("lng", "" + MyApplication.location.getLongitude());
+        in_search.putExtra("city", MyApplication.cityName);
         in_search.putExtra("searchString", searchString);
         in_search.putExtra("codeQR", bizStoreElastic.getCodeQR());
         startActivity(in_search);

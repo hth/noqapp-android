@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.location.Location;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,9 +54,12 @@ public class MyApplication extends MultiDexApplication {
     /* Secured Shared Preference. */
     static final String TOKEN_FCM = "tokenFCM";
     public static ActivityCommunicator activityCommunicator;
+    public static Location location;
+    public static String cityName = "";
     public MyApplication() {
         super();
     }
+
     public static FirebaseAnalytics getFireBaseAnalytics() {
         return fireBaseAnalytics;
     }
@@ -75,6 +79,7 @@ public class MyApplication extends MultiDexApplication {
         setLocale(this);
         preferences = getSharedPreferences( getPackageName() + "_preferences", MODE_PRIVATE);
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
+        location = new Location("");
     }
 
     private Locale getLocaleFromPref() {
@@ -230,7 +235,10 @@ public class MyApplication extends MultiDexApplication {
     }
 
     public static String getAuth() {
-        return preferences.getString(APIConstant.Key.XR_AUTH, "");
+        if (null != preferences) {
+            return preferences.getString(APIConstant.Key.XR_AUTH, "");
+        }
+        return null;
     }
 
     public static String getDeviceId() {

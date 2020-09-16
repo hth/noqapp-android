@@ -363,7 +363,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         //TODO   Revert After Corona crisis
         tv_estimated_time.setVisibility(View.INVISIBLE);
         //
-        LatLng source = new LatLng(LaunchActivity.getLaunchActivity().latitude, LaunchActivity.getLaunchActivity().longitude);
+        LatLng source = new LatLng(MyApplication.location.getLatitude(), MyApplication.location.getLongitude());
         String geoHash = getIntent().getStringExtra("GeoHash");
         LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(geoHash), GeoHashUtils.decodeLongitude(geoHash));
         replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
