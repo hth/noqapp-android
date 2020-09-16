@@ -156,7 +156,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 }
             }
         });
-        LaunchActivity.getLaunchActivity().activityCommunicator = this;
+        MyApplication.activityCommunicator = this;
         initActionsViews(true);
         iv_home.setOnClickListener((View v) -> {
             Intent goToA = new Intent(OrderConfirmActivity.this, LaunchActivity.class);
@@ -196,7 +196,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             updateUI();
         }
         actionbarBack.setOnClickListener((View v) -> {
-            LaunchActivity.getLaunchActivity().activityCommunicator = null;
+            MyApplication.activityCommunicator = null;
             iv_home.performClick();
         });
         btn_cancel_order.setOnClickListener((View v) -> {
@@ -378,7 +378,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     public void onBackPressed() {
         super.onBackPressed();
         iv_home.performClick();
-        LaunchActivity.getLaunchActivity().activityCommunicator = null;
+        MyApplication.activityCommunicator = null;
     }
 
     @Override
@@ -427,7 +427,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LaunchActivity.getLaunchActivity().activityCommunicator = null;
+        MyApplication.activityCommunicator = null;
     }
 
     @Override

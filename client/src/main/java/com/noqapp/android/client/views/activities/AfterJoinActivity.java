@@ -261,7 +261,7 @@ public class AfterJoinActivity
         queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
         queueApiAuthenticCall = new QueueApiAuthenticCall();
         queueApiAuthenticCall.setQueueJsonPurchaseOrderPresenter(this);
-        LaunchActivity.getLaunchActivity().activityCommunicator = this;
+        MyApplication.activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
@@ -296,7 +296,7 @@ public class AfterJoinActivity
             }
             actionbarBack.setOnClickListener((View v) -> iv_home.performClick());
             iv_home.setOnClickListener((View v) -> {
-                LaunchActivity.getLaunchActivity().activityCommunicator = null;
+                MyApplication.activityCommunicator = null;
                 Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
                 if (LaunchActivity.isLockMode) {
                     goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -552,7 +552,7 @@ public class AfterJoinActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LaunchActivity.getLaunchActivity().activityCommunicator = null;
+        MyApplication.activityCommunicator = null;
     }
 
     @Override

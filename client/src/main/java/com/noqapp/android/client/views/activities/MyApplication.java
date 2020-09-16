@@ -14,6 +14,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -51,7 +52,7 @@ public class MyApplication extends MultiDexApplication {
     private static final String KEY_USER_PROFILE = "userProfile";
     /* Secured Shared Preference. */
     static final String TOKEN_FCM = "tokenFCM";
-
+    public static ActivityCommunicator activityCommunicator;
     public MyApplication() {
         super();
     }

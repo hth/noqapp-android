@@ -66,7 +66,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.HomeFragment;
-import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -124,7 +123,6 @@ public class LaunchActivity
     private static LaunchActivity launchActivity;
     public TextView tv_location;
     public NetworkUtil networkUtil;
-    public ActivityCommunicator activityCommunicator;
     public double latitude = 0;
     public double longitude = 0;
     public String cityName = "";
@@ -449,8 +447,8 @@ public class LaunchActivity
             if (resultCode == RESULT_OK) {
                 String intent_qrCode = data.getExtras().getString(Constants.QRCODE);
                 String token = data.getExtras().getString(Constants.TOKEN);
-                if (activityCommunicator != null) {
-                    activityCommunicator.requestProcessed(intent_qrCode, token);
+                if (MyApplication.activityCommunicator != null) {
+                    MyApplication.activityCommunicator.requestProcessed(intent_qrCode, token);
                 }
             }
         }
@@ -777,8 +775,8 @@ public class LaunchActivity
                         NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                     }
 
-                    if (activityCommunicator != null) {
-                        boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+                    if (MyApplication.activityCommunicator != null) {
+                        boolean isUpdated = MyApplication.activityCommunicator.updateUI(codeQR, jtk, go_to);
 
                         if (isUpdated || (jtk.getServingNumber() == jtk.getToken())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
@@ -1198,8 +1196,8 @@ public class LaunchActivity
 
                             callReviewActivity(codeQR, token);
                             /* this code is added to close the join & after join screen if the request is processed */
-                            if (activityCommunicator != null) {
-                                activityCommunicator.requestProcessed(codeQR, token);
+                            if (MyApplication.activityCommunicator != null) {
+                                MyApplication.activityCommunicator.requestProcessed(codeQR, token);
                             }
                         } else if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, token);
@@ -1253,8 +1251,8 @@ public class LaunchActivity
                              * this code is added to close the join & after join screen if the request is processed
                              * Update the order screen/ Join Screen if open
                              */
-                            if (activityCommunicator != null) {
-                                activityCommunicator.requestProcessed(codeQR, token);
+                            if (MyApplication.activityCommunicator != null) {
+                                MyApplication.activityCommunicator.requestProcessed(codeQR, token);
                             }
                         }
                     } else if (jsonData instanceof JsonTopicOrderData) {
