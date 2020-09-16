@@ -347,7 +347,7 @@ public class AfterJoinActivity
             }
             updateEstimatedTime();
             setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
-            if (null != jsonProfile) {
+            if (null != jsonProfile && null != jsonProfile.getName()) {
                 //TODO(chandra) this is not required as this is set above
                 tv_name.setText(jsonProfile.getName());
             }
