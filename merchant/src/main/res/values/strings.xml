@@ -28,6 +28,7 @@
     <string name="next">Next</string>
     <string name="done">Done </string>
     <string name="closed">Closed </string>
+    <string name="create_another">Create another token </string>
 
     <string name="error_start">Queue has not started, you cannot skip.</string>
     <string name="error_done">No one in the queue. you cannot skip</string>

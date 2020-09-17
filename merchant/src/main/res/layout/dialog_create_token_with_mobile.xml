@@ -286,38 +286,49 @@
                         android:padding="5dp"
                         android:visibility="gone" />
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp">
 
-                        <Button
-                            android:id="@+id/btn_create_order"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/btn_height"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/bg_gradient_round"
-                            android:text="@string/create_token"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:visibility="gone" />
-
-                        <Button
-                            android:id="@+id/btn_create_token"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/btn_height"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/bg_gradient_round"
-                            android:text="@string/search_registered_customer"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:visibility="gone" />
-
-
-                    </FrameLayout>
                 </LinearLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp">
+
+                    <Button
+                        android:id="@+id/btn_create_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_gradient_round"
+                        android:text="@string/create_token"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_create_token"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_gradient_round"
+                        android:text="@string/search_registered_customer"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:visibility="gone" />
+                    <Button
+                        android:id="@+id/btn_create_another"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_gradient_round"
+                        android:text="@string/create_another"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:visibility="gone" />
+
+                </FrameLayout>
             </LinearLayout>
         </RelativeLayout>
 
