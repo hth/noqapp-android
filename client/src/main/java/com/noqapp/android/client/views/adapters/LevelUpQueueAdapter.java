@@ -44,6 +44,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     private Map<String, ArrayList<BizStoreElastic>> listDataChild;
     private final OnItemClickListener listener;
     private boolean isSingleEntry = false;
+    private boolean isTemple = false;
 
     public interface OnItemClickListener {
         void onCategoryItemClick(BizStoreElastic item);
@@ -59,6 +60,10 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
         this.listener = listener;
+        if (listDataChild.size() > 0) {
+            BizStoreElastic bizStoreElastic = (BizStoreElastic) getChild(0, 0);
+            isTemple = bizStoreElastic.getBusinessType() == BusinessTypeEnum.PW;
+        }
     }
 
     public LevelUpQueueAdapter(
@@ -283,6 +288,16 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             /* Booking of Appointment. */
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
+                    switch (bizStoreElastic.getAppointmentState()) {
+                        case O:
+                            childViewHolder.btn_book_appointment.setVisibility(View.GONE);
+                            break;
+                        case A:
+                        case S:
+                            childViewHolder.btn_book_appointment.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                    break;
                 case PW:
                     childViewHolder.tv_specialization.setVisibility(View.GONE);
                     childViewHolder.tv_store_rating.setVisibility(View.GONE);
@@ -358,7 +373,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (isSingleEntry) {
+        if (isSingleEntry || isTemple) {
             convertView = layoutInflater.inflate(R.layout.blank_group_view, null);
         } else {
             String headerTitle = ((JsonCategory) getGroup(groupPosition)).getCategoryName();
