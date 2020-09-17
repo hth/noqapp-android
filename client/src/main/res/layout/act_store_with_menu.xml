@@ -4,6 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:childDivider="@android:color/darker_gray"
+        android:clipToPadding="true"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0.5dp"
+        android:groupIndicator="@null"
+        android:paddingBottom="50dp" />
+
     <FrameLayout
         android:id="@+id/frame_collapsible"
         android:layout_width="match_parent"
@@ -117,18 +128,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </FrameLayout>
-
-    <ExpandableListView
-        android:id="@+id/expandableListView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:childDivider="@android:color/darker_gray"
-        android:clipToPadding="true"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp"
-        android:groupIndicator="@null"
-        android:paddingBottom="50dp" />
-
+    
     <LinearLayout
         android:id="@+id/ll_header"
         android:layout_width="match_parent"
