@@ -29,6 +29,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.noqapp.android.client.BuildConfig.MISSING_PRODUCT_IMAGE;
+
 public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<JsonStoreCategory> listDataHeader;
@@ -117,7 +119,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         Picasso.get()
             .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
                 ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + jsonStoreProduct.getProductImage()
-                : BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + "")
+                : MISSING_PRODUCT_IMAGE)
             .placeholder(ImageUtils.getThumbPlaceholder(context))
             .error(ImageUtils.getThumbErrorPlaceholder(context))
             .into(childViewHolder.iv_product_image);
