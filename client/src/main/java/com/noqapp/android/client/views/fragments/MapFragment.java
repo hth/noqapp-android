@@ -28,6 +28,7 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.TravelMode;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.Constants;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -65,6 +66,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         GoogleMap mMap = googleMap;
         source = (LatLng) getArguments().get("source");
+        if (null == source) {
+            source = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
+        }
         destination = (LatLng) getArguments().get("destination");
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
