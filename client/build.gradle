@@ -211,6 +211,7 @@ android {
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
             buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "1"
             buildConfigField STRING, "INVENTORY_STATE", inventoryState
+            buildConfigField STRING, "MISSING_PRODUCT_IMAGE", missingProductImage
         }
 
         sandbox {
@@ -258,6 +259,7 @@ android {
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
             buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "1"
             buildConfigField STRING, "INVENTORY_STATE", inventoryState
+            buildConfigField STRING, "MISSING_PRODUCT_IMAGE", missingProductImage
         }
 
         release {
@@ -303,6 +305,7 @@ android {
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdProd
             buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "5"
             buildConfigField STRING, "INVENTORY_STATE", inventoryState
+            buildConfigField STRING, "MISSING_PRODUCT_IMAGE", missingProductImage
         }
     }
 

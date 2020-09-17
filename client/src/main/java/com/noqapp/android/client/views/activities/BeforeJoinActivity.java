@@ -154,9 +154,10 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             String imageUrl = bundle.getString(IBConstant.KEY_IMAGE_URL);
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.get().load(imageUrl).
-                    placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
-                    error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                Picasso.get()
+                        .load(imageUrl)
+                        .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
+                        .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
