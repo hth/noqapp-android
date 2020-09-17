@@ -52,6 +52,7 @@ import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppointmentActivity;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.HCSMenuActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -115,6 +116,17 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         if (!LaunchActivity.isTablet) {
             rv_queue_people.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         }
+        iv_appointment.setOnClickListener(v1 -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+            intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
+            intent.putExtra("displayName",jsonTopic.getDisplayName());
+            intent.putExtra("bizCategoryId",jsonTopic.getBizCategoryId());
+            ((Activity) context).startActivity(intent);
+        });
         return view;
     }
 
@@ -542,13 +554,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.findItem(R.id.menu_appointment).setVisible(false);
         menu.findItem(R.id.menu_followup).setVisible(false);
         MenuItem menuItem = menu.findItem(R.id.menu_add);
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             menuItem.setTitle("Create Order");
+            menu.findItem(R.id.menu_appointment).setVisible(false);
         } else {
             menuItem.setTitle("Create Token");
+            menu.findItem(R.id.menu_product_list).setVisible(false);
         }
     }
 

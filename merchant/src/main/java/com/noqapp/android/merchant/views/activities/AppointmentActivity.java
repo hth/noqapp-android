@@ -13,7 +13,6 @@ import android.widget.ScrollView;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,10 +26,10 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
+import com.noqapp.android.merchant.utils.OnFlingGestureListener;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.EventListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
-import com.noqapp.android.merchant.views.utils.OnFlingGestureListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -235,18 +234,15 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         fab_increase.hide();
         fab_decrease.hide();
 
-        fh_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent in = new Intent(AppointmentActivity.this, AppointmentActivityNew.class);
-                in.putExtra("selectedDate", ((JsonSchedule) adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
-                in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
-                in.putExtra("appointmentDuration", jsonScheduleList.getAppointmentDuration());
-                in.putExtra("displayName", getIntent().getStringExtra("displayName"));
-                in.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
-                in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
-                startActivity(in);
-            }
+        fh_list_view.setOnItemClickListener((AdapterView.OnItemClickListener) (parent, view, position, id) -> {
+            Intent in = new Intent(AppointmentActivity.this, AppointmentActivityNew.class);
+            in.putExtra("selectedDate", ((JsonSchedule) adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
+            in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
+            in.putExtra("appointmentDuration", jsonScheduleList.getAppointmentDuration());
+            in.putExtra("displayName", getIntent().getStringExtra("displayName"));
+            in.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
+            in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
+            startActivity(in);
         });
 
         Calendar min = Calendar.getInstance();
@@ -272,19 +268,9 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
             }
         });
 
-        calendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
-            @Override
-            public void onChange() {
-                fetchEvents(calendarView.getCurrentPageDate());
-            }
-        });
+        calendarView.setOnPreviousPageChangeListener(() -> fetchEvents(calendarView.getCurrentPageDate()));
 
-        calendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
-            @Override
-            public void onChange() {
-                fetchEvents(calendarView.getCurrentPageDate());
-            }
-        });
+        calendarView.setOnForwardPageChangeListener(() -> fetchEvents(calendarView.getCurrentPageDate()));
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             fetchEvents(Calendar.getInstance());
