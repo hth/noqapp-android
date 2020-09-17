@@ -128,7 +128,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </FrameLayout>
-    
+
     <LinearLayout
         android:id="@+id/ll_header"
         android:layout_width="match_parent"

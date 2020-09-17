@@ -32,6 +32,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,9 +141,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                 .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             MyApplication.setLocationPreference(locationPref);
-
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
-            sharedPreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
+            MyApplication.setDeviceID(deviceId);
             location.setLatitude(locationPref.getLatitude());
             location.setLongitude(locationPref.getLongitude());
             callLaunchScreen();
@@ -155,9 +154,8 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     private void sendRegistrationToServer(String refreshToken) {
         if (new NetworkUtil(this).isOnline()) {
             DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(), location);
-            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
-            deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
-            if (StringUtils.isBlank(deviceId)) {
+            deviceId = MyApplication.getDeviceId();
+            if (TextUtils.isEmpty(deviceId)) {
                 /* Call this api only once in life time. */
                 DeviceApiCall deviceModel = new DeviceApiCall();
                 deviceModel.setDeviceRegisterPresenter(this);

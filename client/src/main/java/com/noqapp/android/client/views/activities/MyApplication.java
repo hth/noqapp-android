@@ -34,7 +34,6 @@ public class MyApplication extends MultiDexApplication {
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
     private static final String KEY_LOCATION_PREFERENCE= "locationPreference";
-    public static String APP_PREF = "splashPref";
 
     private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
     private static final String PREKEY_PHONE = "phone";
