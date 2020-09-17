@@ -175,7 +175,7 @@ public class LaunchActivity
         }
 
         //NoQueueBaseActivity.saveMailAuth("","");
-        if (null == MyApplication.getDeviceId()) {
+        if (TextUtils.isEmpty(MyApplication.getDeviceId())) {
            // Log.v("Device id check", MyApplication.getDeviceId());
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setAppBlacklistPresenter(this);
@@ -901,8 +901,7 @@ public class LaunchActivity
                 .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                 .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             MyApplication.setLocationPreference(locationPref);
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
-            sharedPreferences.edit().putString(APIConstant.Key.XR_DID, deviceRegistered.getDeviceId()).apply();
+            MyApplication.setDeviceID(deviceRegistered.getDeviceId());
             MyApplication.location.setLatitude(locationPref.getLatitude());
             MyApplication.location.setLongitude(locationPref.getLongitude());
             tv_location.setText(MyApplication.cityName);

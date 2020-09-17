@@ -26,6 +26,7 @@
     <string name="next">अगला</string>
     <string name="done">समाप्त </string>
     <string name="closed">बन्द </string>
+    <string name="create_another">Create another token </string>
 
 
     <string name="error_start">कतार शुरू नहीं हुई है, आप छोड़ नहीं सकते </string>

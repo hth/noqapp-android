@@ -67,4 +67,5 @@
 
     <dimen name="dialog_min_height">300dp</dimen>
     <dimen name="create_token_dialog_min_height">400dp</dimen>
+    <dimen name="segment_margin_r">0dp</dimen>
 </resources>

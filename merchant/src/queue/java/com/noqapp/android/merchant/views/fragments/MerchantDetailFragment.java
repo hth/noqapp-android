@@ -52,6 +52,7 @@ import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppointmentActivity;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.HCSMenuActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -115,6 +116,17 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         if (!LaunchActivity.isTablet) {
             rv_queue_people.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         }
+        iv_appointment.setOnClickListener(v1 -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+            intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
+            intent.putExtra("displayName",jsonTopic.getDisplayName());
+            intent.putExtra("bizCategoryId",jsonTopic.getBizCategoryId());
+            ((Activity) context).startActivity(intent);
+        });
         return view;
     }
 
@@ -542,13 +554,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.findItem(R.id.menu_appointment).setVisible(false);
         menu.findItem(R.id.menu_followup).setVisible(false);
         MenuItem menuItem = menu.findItem(R.id.menu_add);
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             menuItem.setTitle("Create Order");
+            menu.findItem(R.id.menu_appointment).setVisible(false);
         } else {
             menuItem.setTitle("Create Token");
+            menu.findItem(R.id.menu_product_list).setVisible(false);
         }
     }
 
@@ -568,7 +581,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         sp_patient_list = view.findViewById(R.id.sp_patient_list);
         tv_select_patient = view.findViewById(R.id.tv_select_patient);
         btn_create_token = view.findViewById(R.id.btn_create_token);
-
+        btn_create_another = view.findViewById(R.id.btn_create_another);
+        
         final EditText edt_id = view.findViewById(R.id.edt_id);
         final RadioGroup rg_token_type = view.findViewById(R.id.rg_token_type);
         final RadioButton rb_mobile = view.findViewById(R.id.rb_mobile);
@@ -696,6 +710,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         });
 
         actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_create_another.setOnClickListener(v -> {
+            mAlertDialog.dismiss();
+            showCreateTokenDialogWithMobile(context, codeQR);
+        });
         mAlertDialog.show();
     }
 

@@ -28,6 +28,7 @@
     <string name="next">Next</string>
     <string name="done">Done </string>
     <string name="closed">Closed </string>
+    <string name="create_another">Create another token </string>
 
     <string name="error_start">Queue has not started, you cannot skip.</string>
     <string name="error_done">No one in the queue. you cannot skip</string>
@@ -284,5 +285,5 @@
     <string name="search_registered_patient">Search Registered Patient</string>
 
     <string name="time_slot">Time slot: %1$s</string>
-
+    <string name="menu_appointments">Appointments</string>
 </resources>

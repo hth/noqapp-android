@@ -125,6 +125,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         sp_patient_list = view.findViewById(R.id.sp_patient_list);
         tv_select_patient = view.findViewById(R.id.tv_select_patient);
         btn_create_token = view.findViewById(R.id.btn_create_token);
+        btn_create_another = view.findViewById(R.id.btn_create_another);
 
 
         final EditText edt_id = view.findViewById(R.id.edt_id);
@@ -253,6 +254,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         });
 
         actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_create_another.setOnClickListener(v -> {
+            mAlertDialog.dismiss();
+            showCreateTokenDialogWithMobile(context, codeQR);
+        });
         mAlertDialog.show();
     }
 

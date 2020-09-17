@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.views.utils;
+package com.noqapp.android.merchant.utils;
 
 import android.content.Context;
 import android.view.GestureDetector;

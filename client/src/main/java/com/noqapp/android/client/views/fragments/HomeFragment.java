@@ -101,6 +101,7 @@ import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -433,6 +434,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             Bundle b = new Bundle();
             b.putString(IBConstant.KEY_CODE_QR, codeQR);
             b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
+            b.putBoolean(IBConstant.KEY_IS_TEMPLE, false);
             in.putExtra("bundle", b);
             getActivity().startActivity(in);
         } else {
@@ -618,6 +620,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
                 b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
                 b.putSerializable("BizStoreElastic", bizStoreElastic);
+                b.putBoolean(IBConstant.KEY_IS_TEMPLE, bizStoreElastic.getBusinessType() == BusinessTypeEnum.PW);
                 in = new Intent(getActivity(), CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
                 startActivity(in);

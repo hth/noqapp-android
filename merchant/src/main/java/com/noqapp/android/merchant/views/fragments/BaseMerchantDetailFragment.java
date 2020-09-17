@@ -86,7 +86,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
 
     protected Context context;
     protected TextView tv_create_token;
-    protected Button btn_create_token;
+    protected Button btn_create_token, btn_create_another;
     protected TextView tvCount;
     private PeopleInQAdapter peopleInQAdapter;
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList = new ArrayList<>();
@@ -323,6 +323,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                     tvCount.setText(String.valueOf(token.getToken()));
                     tvCount.setVisibility(View.VISIBLE);
                     btn_create_token.setClickable(true);
+                    btn_create_another.setVisibility(View.VISIBLE);
                     for (int i = 0; i < jsonQueuedPersonArrayList.size(); i++) {
                         JsonQueuedPerson jt = jsonQueuedPersonArrayList.get(i);
                         if (jt.getToken() == token.getToken()) {

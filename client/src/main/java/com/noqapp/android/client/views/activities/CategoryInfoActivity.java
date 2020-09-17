@@ -119,7 +119,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(LaunchActivity.isLockMode);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_info);
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        if (null != bundle  && bundle.getBoolean(IBConstant.KEY_IS_TEMPLE,false)) {
+            setContentView(R.layout.activity_category_info_temple);
+        }else{
+            setContentView(R.layout.activity_category_info);
+        }
         tv_store_name = findViewById(R.id.tv_store_name);
         tv_address = findViewById(R.id.tv_address);
         tv_mobile = findViewById(R.id.tv_mobile);
@@ -145,7 +150,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));
         btn_join_queues.setOnClickListener((View v) -> joinClick());
         btn_register.setOnClickListener((View v) -> register());
-        Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");

@@ -44,6 +44,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     private Map<String, ArrayList<BizStoreElastic>> listDataChild;
     private final OnItemClickListener listener;
     private boolean isSingleEntry = false;
+    private boolean isTemple = false;
 
     public interface OnItemClickListener {
         void onCategoryItemClick(BizStoreElastic item);
@@ -59,6 +60,10 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
         this.listener = listener;
+        if (listDataChild.size() > 0) {
+            BizStoreElastic bizStoreElastic = (BizStoreElastic) getChild(0, 0);
+            isTemple = bizStoreElastic.getBusinessType() == BusinessTypeEnum.PW;
+        }
     }
 
     public LevelUpQueueAdapter(
@@ -131,6 +136,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_name.setText(bizStoreElastic.getDisplayName());
             childViewHolder.tv_store_rating.setText(String.valueOf(AppUtils.round(bizStoreElastic.getRating())));
             childViewHolder.tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+            childViewHolder.tv_address.setVisibility(View.GONE);
             AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), childViewHolder.tv_store_review);
             childViewHolder.tv_store_review.setOnClickListener((View v) -> {
                 if (bizStoreElastic.getReviewCount() > 0) {
@@ -143,7 +149,9 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     context.startActivity(in);
                 }
             });
-            childViewHolder.tv_specialization.setText(bizStoreElastic.getCompleteEducation());
+            String specialization = bizStoreElastic.getCompleteEducation();
+            childViewHolder.tv_specialization.setText(specialization);
+            childViewHolder.tv_specialization.setVisibility(TextUtils.isEmpty(specialization) ? View.GONE : View.VISIBLE);
             StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
             childViewHolder.tv_join.setEnabled(!storeHourElastic.isDayClosed());
             if (storeHourElastic.isDayClosed()) {
@@ -247,7 +255,6 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
             }
             AppUtils.loadProfilePic(childViewHolder.iv_main, bizStoreElastic.getDisplayImage(), context);
-            childViewHolder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE : View.VISIBLE);
             if (bizStoreElastic.getProductPrice() == 0) {
                 childViewHolder.tv_consult_fees.setVisibility(View.GONE);
                 childViewHolder.tv_consult_fees_header.setVisibility(View.GONE);
@@ -258,7 +265,9 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_consult_fees.setVisibility(View.VISIBLE);
                 childViewHolder.tv_consult_fees_header.setVisibility(View.VISIBLE);
             }
-            childViewHolder.tv_store_special.setText(bizStoreElastic.getFamousFor());
+            String special = bizStoreElastic.getFamousFor();
+            childViewHolder.tv_store_special.setText(special);
+            childViewHolder.tv_store_special.setVisibility(TextUtils.isEmpty(special) ? View.GONE : View.VISIBLE);
             // for safety null check added for walking state
             if (null == bizStoreElastic.getWalkInState() || bizStoreElastic.getWalkInState() == WalkInStateEnum.E) {
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.orange_gradient));
@@ -279,7 +288,23 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             /* Booking of Appointment. */
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
+                    switch (bizStoreElastic.getAppointmentState()) {
+                        case O:
+                            childViewHolder.btn_book_appointment.setVisibility(View.GONE);
+                            break;
+                        case A:
+                        case S:
+                            childViewHolder.btn_book_appointment.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                    break;
                 case PW:
+                    childViewHolder.tv_specialization.setVisibility(View.GONE);
+                    childViewHolder.tv_store_rating.setVisibility(View.GONE);
+                    childViewHolder.tv_store_review.setVisibility(View.GONE);
+                    childViewHolder.tv_store_special.setVisibility(View.GONE);
+                    childViewHolder.tv_consult_fees.setVisibility(View.GONE);
+                    childViewHolder.tv_consult_fees_header.setVisibility(View.GONE);
                     switch (bizStoreElastic.getAppointmentState()) {
                         case O:
                             childViewHolder.btn_book_appointment.setVisibility(View.GONE);
@@ -348,7 +373,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (isSingleEntry) {
+        if (isSingleEntry || isTemple) {
             convertView = layoutInflater.inflate(R.layout.blank_group_view, null);
         } else {
             String headerTitle = ((JsonCategory) getGroup(groupPosition)).getCategoryName();

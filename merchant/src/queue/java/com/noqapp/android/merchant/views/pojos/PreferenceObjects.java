@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.pojos;
 
 import com.google.gson.annotations.SerializedName;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.utils.Constants;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public class PreferenceObjects {
 
     @SerializedName("SPEC")
     private ArrayList<HCSMenuObject> specList = new ArrayList<>();
+
+    @SerializedName(Constants.SYMPTOMS)
+    private ArrayList<DataObj> symptomsList = new ArrayList<>();
 
     @SerializedName("LASTUPDATE")
     private String lastUpdateDate = "";
@@ -84,6 +88,15 @@ public class PreferenceObjects {
 
     public PreferenceObjects setSpecList(ArrayList<HCSMenuObject> specList) {
         this.specList = specList;
+        return this;
+    }
+
+    public ArrayList<DataObj> getSymptomsList() {
+        return symptomsList;
+    }
+
+    public PreferenceObjects setSymptomsList(ArrayList<DataObj> symptomsList) {
+        this.symptomsList = symptomsList;
         return this;
     }
 
