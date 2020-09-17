@@ -644,8 +644,8 @@ public class AppUtils extends CommonHelper {
         if (!TextUtils.isEmpty(jsonQueue.getGeoHash())) {
             float lat_s = (float) GeoHashUtils.decodeLatitude(jsonQueue.getGeoHash());
             float long_s = (float) GeoHashUtils.decodeLongitude(jsonQueue.getGeoHash());
-            float lat_d = (float) LaunchActivity.getLaunchActivity().latitude;
-            float long_d = (float) LaunchActivity.getLaunchActivity().longitude;
+            float lat_d = (float) MyApplication.location.getLatitude();
+            float long_d = (float) MyApplication.location.getLongitude();
             float distance = (float) calculateDistance(lat_s, long_s, lat_d, long_d);
             switch (jsonQueue.getBusinessType()) {
                 case DO:

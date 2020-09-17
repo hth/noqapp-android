@@ -46,15 +46,15 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
         tv_toolbar_title.setText(getString(R.string.screen_change_location));
         autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         actionbarBack.setOnClickListener((View v) -> {
-            if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+            if (TextUtils.isEmpty(MyApplication.cityName)) {
                 LocationPref locationPref = MyApplication.getLocationPreference();
                 lat = locationPref.getLatitude();
                 lng = locationPref.getLongitude();
                 city = locationPref.getCity();
             } else {
-                lat = LaunchActivity.getLaunchActivity().latitude;
-                lng = LaunchActivity.getLaunchActivity().longitude;
-                city = LaunchActivity.getLaunchActivity().cityName;
+                lat = MyApplication.location.getLatitude();
+                lng = MyApplication.location.getLongitude();
+                city = MyApplication.cityName;
                 AppUtils.hideKeyBoard(getActivity());
             }
             LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city);

@@ -65,16 +65,16 @@ public class AllCouponsFragment
             ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
             clientCouponApiCalls.setCouponPresenter(this);
             Location location = new Location();
-            if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+            if (TextUtils.isEmpty(MyApplication.cityName)) {
                 LocationPref locationPref = MyApplication.getLocationPreference();
                 location.setLatitude(String.valueOf(locationPref.getLatitude()))
                     .setLongitude(String.valueOf(locationPref.getLongitude()))
                     .setCityName(locationPref.getCity());
                 tv_location_enable.setVisibility(View.VISIBLE);
             } else {
-                location.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().latitude))
-                    .setLongitude(String.valueOf(LaunchActivity.getLaunchActivity().longitude))
-                    .setCityName(LaunchActivity.getLaunchActivity().cityName);
+                location.setLatitude(String.valueOf(MyApplication.location.getLatitude()))
+                    .setLongitude(String.valueOf(MyApplication.location.getLongitude()))
+                    .setCityName(MyApplication.cityName);
                 tv_location_enable.setVisibility(View.GONE);
             }
             String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);

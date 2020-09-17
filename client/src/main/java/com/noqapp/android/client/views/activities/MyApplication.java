@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.location.Location;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,6 +15,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -51,10 +53,13 @@ public class MyApplication extends MultiDexApplication {
     private static final String KEY_USER_PROFILE = "userProfile";
     /* Secured Shared Preference. */
     static final String TOKEN_FCM = "tokenFCM";
-
+    public static ActivityCommunicator activityCommunicator;
+    public static Location location;
+    public static String cityName = "";
     public MyApplication() {
         super();
     }
+
     public static FirebaseAnalytics getFireBaseAnalytics() {
         return fireBaseAnalytics;
     }
@@ -74,6 +79,7 @@ public class MyApplication extends MultiDexApplication {
         setLocale(this);
         preferences = getSharedPreferences( getPackageName() + "_preferences", MODE_PRIVATE);
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
+        location = new Location("");
     }
 
     private Locale getLocaleFromPref() {
@@ -229,7 +235,10 @@ public class MyApplication extends MultiDexApplication {
     }
 
     public static String getAuth() {
-        return preferences.getString(APIConstant.Key.XR_AUTH, "");
+        if (null != preferences) {
+            return preferences.getString(APIConstant.Key.XR_AUTH, "");
+        }
+        return null;
     }
 
     public static String getDeviceId() {

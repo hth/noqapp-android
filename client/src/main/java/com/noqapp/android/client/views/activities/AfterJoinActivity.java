@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -261,7 +262,7 @@ public class AfterJoinActivity
         queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
         queueApiAuthenticCall = new QueueApiAuthenticCall();
         queueApiAuthenticCall.setQueueJsonPurchaseOrderPresenter(this);
-        LaunchActivity.getLaunchActivity().activityCommunicator = this;
+        MyApplication.activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
@@ -289,14 +290,14 @@ public class AfterJoinActivity
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
-                    placeholder(getResources().getDrawable(R.drawable.profile_theme)).
-                    error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
+                    placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
+                    error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
             actionbarBack.setOnClickListener((View v) -> iv_home.performClick());
             iv_home.setOnClickListener((View v) -> {
-                LaunchActivity.getLaunchActivity().activityCommunicator = null;
+                MyApplication.activityCommunicator = null;
                 Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
                 if (LaunchActivity.isLockMode) {
                     goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -346,7 +347,7 @@ public class AfterJoinActivity
             }
             updateEstimatedTime();
             setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
-            if (null != jsonProfile) {
+            if (null != jsonProfile && null != jsonProfile.getName()) {
                 //TODO(chandra) this is not required as this is set above
                 tv_name.setText(jsonProfile.getName());
             }
@@ -552,7 +553,7 @@ public class AfterJoinActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LaunchActivity.getLaunchActivity().activityCommunicator = null;
+        MyApplication.activityCommunicator = null;
     }
 
     @Override

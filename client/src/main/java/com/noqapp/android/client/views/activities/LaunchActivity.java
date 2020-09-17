@@ -66,7 +66,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.HomeFragment;
-import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -124,10 +123,6 @@ public class LaunchActivity
     private static LaunchActivity launchActivity;
     public TextView tv_location;
     public NetworkUtil networkUtil;
-    public ActivityCommunicator activityCommunicator;
-    public double latitude = 0;
-    public double longitude = 0;
-    public String cityName = "";
     protected ExpandableListView expandable_drawer_listView;
     private TextView tv_badge;
     private long lastPress;
@@ -188,7 +183,7 @@ public class LaunchActivity
                 new DeviceToken(
                     MyApplication.getTokenFCM(),
                     Constants.appVersion(),
-                    CommonHelper.getLocation(latitude, longitude)));
+                    CommonHelper.getLocation(MyApplication.location.getLatitude(), MyApplication.location.getLongitude())));
         }
 
         if (null != getIntent().getExtras()) {
@@ -279,12 +274,13 @@ public class LaunchActivity
         }
         if (null != getIntent().getExtras()) {
             try {
-                latitude = getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE);
-                longitude = getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE);
-                cityName = CommonHelper.getAddress(latitude, longitude, this);
-                Log.d(TAG, "Launch Activity City Name =" + cityName);
+                MyApplication.location.setLatitude(getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE));
+                MyApplication.location.setLongitude(getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE));
+                MyApplication.cityName = CommonHelper.getAddress(MyApplication.location.getLatitude(),
+                        MyApplication.location.getLongitude(), this);
+                Log.d(TAG, "Launch Activity City Name =" + MyApplication.cityName);
                 //updateLocationUI();
-                tv_location.setText(cityName);
+                tv_location.setText(MyApplication.cityName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -322,7 +318,8 @@ public class LaunchActivity
 
     public void updateLocationUI() {
         if (null != homeFragment) {
-            homeFragment.updateUIWithNewLocation(latitude, longitude, cityName);
+            homeFragment.updateUIWithNewLocation(MyApplication.location.getLatitude(),
+                    MyApplication.location.getLongitude(), MyApplication.cityName);
             //tv_location.setText(cityName);
         }
     }
@@ -330,14 +327,14 @@ public class LaunchActivity
     public void updateLocationInfo(double lat, double lng, String city) {
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
         getSupportActionBar().show();
-        latitude = lat;
-        longitude = lng;
-        cityName = city;
-        tv_location.setText(cityName);
+        MyApplication.location.setLatitude(lat);
+        MyApplication.location.setLongitude(lng);
+        MyApplication.cityName = city;
+        tv_location.setText(MyApplication.cityName);
         LocationPref locationPref = MyApplication.getLocationPreference()
-            .setCity(cityName)
-            .setLatitude(latitude)
-            .setLongitude(longitude);
+            .setCity(MyApplication.cityName)
+            .setLatitude(lat)
+            .setLongitude(lng);
         MyApplication.setLocationPreference(locationPref);
         updateLocationUI();
     }
@@ -365,10 +362,11 @@ public class LaunchActivity
             .config(builder.build())
             .start(location -> {
                 if (null != location) {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
+                    MyApplication.location.setLatitude(location.getLatitude());
+                    MyApplication.location.setLongitude(location.getLongitude());
                     Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                    cityName = CommonHelper.getAddress(latitude, longitude, this);
+                    MyApplication.cityName = CommonHelper.getAddress(MyApplication.location.getLatitude(),
+                            MyApplication.location.getLongitude(), this);
                     updateLocationUI();
                 }
             });
@@ -449,8 +447,8 @@ public class LaunchActivity
             if (resultCode == RESULT_OK) {
                 String intent_qrCode = data.getExtras().getString(Constants.QRCODE);
                 String token = data.getExtras().getString(Constants.TOKEN);
-                if (activityCommunicator != null) {
-                    activityCommunicator.requestProcessed(intent_qrCode, token);
+                if (MyApplication.activityCommunicator != null) {
+                    MyApplication.activityCommunicator.requestProcessed(intent_qrCode, token);
                 }
             }
         }
@@ -580,7 +578,8 @@ public class LaunchActivity
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (f instanceof ChangeLocationFragment) {
-            updateLocationInfo(latitude, longitude, cityName);
+            updateLocationInfo(MyApplication.location.getLatitude(),
+                    MyApplication.location.getLongitude(), MyApplication.cityName);
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -777,8 +776,8 @@ public class LaunchActivity
                         NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                     }
 
-                    if (activityCommunicator != null) {
-                        boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+                    if (MyApplication.activityCommunicator != null) {
+                        boolean isUpdated = MyApplication.activityCommunicator.updateUI(codeQR, jtk, go_to);
 
                         if (isUpdated || (jtk.getServingNumber() == jtk.getToken())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
@@ -849,7 +848,8 @@ public class LaunchActivity
                 new DeviceToken(
                         MyApplication.getTokenFCM(),
                     Constants.appVersion(),
-                    CommonHelper.getLocation(latitude, longitude)));
+                    CommonHelper.getLocation(MyApplication.location.getLatitude(),
+                            MyApplication.location.getLongitude())));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -893,19 +893,19 @@ public class LaunchActivity
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Device register", "deviceRegister Success");
-            cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
-            Log.d(TAG, "Launch device register City Name=" + cityName);
+            MyApplication.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
+            Log.d(TAG, "Launch device register City Name=" + MyApplication.cityName);
 
             LocationPref locationPref = MyApplication.getLocationPreference()
-                .setCity(cityName)
+                .setCity(MyApplication.cityName)
                 .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                 .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             MyApplication.setLocationPreference(locationPref);
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(MyApplication.APP_PREF, Context.MODE_PRIVATE);
             sharedPreferences.edit().putString(APIConstant.Key.XR_DID, deviceRegistered.getDeviceId()).apply();
-            latitude = locationPref.getLatitude();
-            longitude = locationPref.getLongitude();
-            tv_location.setText(cityName);
+            MyApplication.location.setLatitude(locationPref.getLatitude());
+            MyApplication.location.setLongitude(locationPref.getLongitude());
+            tv_location.setText(MyApplication.cityName);
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
             new CustomToast().showToast(this, "Device register error: ");
@@ -1198,8 +1198,8 @@ public class LaunchActivity
 
                             callReviewActivity(codeQR, token);
                             /* this code is added to close the join & after join screen if the request is processed */
-                            if (activityCommunicator != null) {
-                                activityCommunicator.requestProcessed(codeQR, token);
+                            if (MyApplication.activityCommunicator != null) {
+                                MyApplication.activityCommunicator.requestProcessed(codeQR, token);
                             }
                         } else if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, token);
@@ -1253,8 +1253,8 @@ public class LaunchActivity
                              * this code is added to close the join & after join screen if the request is processed
                              * Update the order screen/ Join Screen if open
                              */
-                            if (activityCommunicator != null) {
-                                activityCommunicator.requestProcessed(codeQR, token);
+                            if (MyApplication.activityCommunicator != null) {
+                                MyApplication.activityCommunicator.requestProcessed(codeQR, token);
                             }
                         }
                     } else if (jsonData instanceof JsonTopicOrderData) {

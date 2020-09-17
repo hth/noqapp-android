@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -287,8 +288,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
-                        placeholder(getResources().getDrawable(R.drawable.profile_theme)).
-                        error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
+                        placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
+                        error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
