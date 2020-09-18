@@ -688,25 +688,20 @@ public class MedicalDataStatic {
             tempList.addAll(preferenceObjects.getSymptomsList());
         }
         switch (MedicalDepartmentEnum.valueOf(bizCategoryId)) {
-            case OGY: {
+            case OGY:
                 tempList.addAll(MedicalDataStatic.Gynae.getSymptoms());
-            }
-            break;
-            case PAE: {
+                break;
+            case PAE:
                 tempList.addAll(MedicalDataStatic.Pediatrician.getSymptoms());
-            }
-            break;
-            case ORT: {
+                break;
+            case ORT:
                 tempList.addAll(MedicalDataStatic.Ortho.getSymptoms());
-            }
-            break;
-            case DNT: {
+                break;
+            case DNT:
                 tempList.addAll(MedicalDataStatic.Dental.getSymptoms());
-            }
-            break;
-            case GSR: {
+                break;
+            case GSR:
                 tempList.addAll(MedicalDataStatic.Surgeon.getSymptoms());
-            }
         }
         return tempList;
     }
