@@ -38,6 +38,7 @@ import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
@@ -127,11 +128,17 @@ public class BookAppointmentActivity
         tv_slot_count = findViewById(R.id.tv_slot_count);
         tv_slot_count_empty = findViewById(R.id.tv_slot_count_empty);
         tv_doctor_name.setText(bizStoreElastic.getDisplayName());
-        if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType()) {
-            tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
-        } else {
-            tv_doctor_category.setText(bizStoreElastic.getBusinessType().getDescription());
+        switch (bizStoreElastic.getBusinessType()) {
+            case DO:
+                tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
+                break;
+            case CDQ:
+                tv_doctor_category.setText(CanteenStoreDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
+                break;
+            default:
+                tv_doctor_category.setVisibility(View.GONE);
         }
+
         TextView tv_title = findViewById(R.id.tv_title);
         btn_book_appointment = findViewById(R.id.btn_book_appointment);
         tv_empty_slots = findViewById(R.id.tv_empty_slots);
