@@ -20,6 +20,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -54,13 +55,19 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             TextView tv_appointment_status = findViewById(R.id.tv_appointment_status);
             TextView tv_msg = findViewById(R.id.tv_msg);
             tv_title.setText(jsonQueueDisplay.getDisplayName());
-            tv_address.setText(AppUtils.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
             switch (jsonSchedule.getJsonQueueDisplay().getBusinessType()) {
                 case DO:
                     tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                    tv_address.setText(AppUtils.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
+                    break;
+                case CDQ:
+                    tv_degree.setText(CanteenStoreDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                    tv_address.setVisibility(View.GONE);
                     break;
                 default:
                     tv_degree.setText(jsonSchedule.getJsonQueueDisplay().getBusinessType().getDescription());
+                    tv_degree.setVisibility(View.GONE);
+                    tv_address.setText(AppUtils.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
             }
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonSchedule.getJsonQueueDisplay().getCountryShortName(), jsonSchedule.getJsonQueueDisplay().getStorePhone()));
             tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));

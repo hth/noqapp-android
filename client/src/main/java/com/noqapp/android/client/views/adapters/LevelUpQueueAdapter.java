@@ -188,17 +188,23 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     if (bizStoreElastic.getBusinessType() != null) {
                         switch (bizStoreElastic.getBusinessType()) {
                             case DO:
-                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.closed_now_booking_start_at)
-                                        + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                                childViewHolder.tv_status.setText(
+                                        context.getResources().getString(R.string.closed_now_booking_start_at)
+                                        + " "
+                                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                                 break;
                             default:
-                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.closed_now_token_available_after)
-                                        + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                                childViewHolder.tv_status.setText(
+                                        context.getResources().getString(R.string.closed_now_token_available_after)
+                                        + " "
+                                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText(context.getResources().getString(R.string.closed_now_token_available_after)
-                                + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                        childViewHolder.tv_status.setText(
+                                context.getResources().getString(R.string.closed_now_token_available_after)
+                                + " "
+                                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                     }
                 }
 
@@ -210,13 +216,17 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                                 childViewHolder.tv_status.setText(context.getResources().getString(R.string.accepting_today_appointment));
                                 break;
                             default:
-                                childViewHolder.tv_status.setText(context.getResources().getString(R.string.open_serving_at)
-                                        + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
+                                childViewHolder.tv_status.setText(
+                                        context.getResources().getString(R.string.open_serving_at)
+                                        + " "
+                                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                                 break;
                         }
                     } else {
-                        childViewHolder.tv_status.setText(context.getResources().getString(R.string.open_serving_at)
-                                + " " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
+                        childViewHolder.tv_status.setText(
+                                context.getResources().getString(R.string.open_serving_at)
+                                + " "
+                                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                     }
                     childViewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
                 }
