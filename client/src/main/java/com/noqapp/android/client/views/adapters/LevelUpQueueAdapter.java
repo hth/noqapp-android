@@ -32,6 +32,7 @@ import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.WalkInStateEnum;
+import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
 import com.noqapp.android.common.utils.Formatter;
 
 import java.util.ArrayList;
@@ -298,6 +299,25 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             /* Booking of Appointment. */
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
+                    switch (bizStoreElastic.getAppointmentState()) {
+                        case O:
+                            childViewHolder.btn_book_appointment.setVisibility(View.GONE);
+                            break;
+                        case A:
+                        case S:
+                            childViewHolder.btn_book_appointment.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                    break;
+                case CDQ:
+                    childViewHolder.tv_specialization.setText(CanteenStoreDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
+                    childViewHolder.tv_specialization.setVisibility(View.VISIBLE);
+
+                    childViewHolder.tv_store_rating.setVisibility(View.GONE);
+                    childViewHolder.tv_store_review.setVisibility(View.GONE);
+                    childViewHolder.tv_store_special.setVisibility(View.GONE);
+                    childViewHolder.tv_consult_fees.setVisibility(View.GONE);
+                    childViewHolder.tv_consult_fees_header.setVisibility(View.GONE);
                     switch (bizStoreElastic.getAppointmentState()) {
                         case O:
                             childViewHolder.btn_book_appointment.setVisibility(View.GONE);
