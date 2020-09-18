@@ -289,9 +289,9 @@ public class AfterJoinActivity
 
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.get().load(imageUrl).
-                    placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
-                    error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                Picasso.get().load(imageUrl)
+                        .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
+                        .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
