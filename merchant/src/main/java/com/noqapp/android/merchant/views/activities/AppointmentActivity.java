@@ -38,7 +38,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 public class AppointmentActivity extends BaseActivity implements AppointmentPresenter {
     private FixedHeightListView fh_list_view;
     private CalendarView calendarView;
@@ -70,7 +69,6 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
             RelativeLayout rl_parent = findViewById(R.id.rl_parent);
             LinearLayout ll_right = findViewById(R.id.ll_right);
             rl_parent.setOnTouchListener(new OnFlingGestureListener(this) {
-
                 @Override
                 public void onTopToBottom() {
                     new CustomToast().showToast(AppointmentActivity.this, "Top swipe");
@@ -81,31 +79,22 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
                     // new CustomToast().showToast(AppointmentActivity.this, "Right swipe");
                     //close it
                     if (isOpen) {
-
                         ValueAnimator m2 = ValueAnimator.ofFloat(6, 10); //fromWeight, toWeight
                         m2.setDuration(200);
                         m2.setStartDelay(100); //Optional Delay
                         m2.setInterpolator(new LinearInterpolator());
-                        m2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                ((LinearLayout.LayoutParams) ll_right.getLayoutParams()).weight = (float) animation.getAnimatedValue();
-                                ll_right.requestLayout();
-                            }
-
+                        m2.addUpdateListener(animation -> {
+                            ((LinearLayout.LayoutParams) ll_right.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                            ll_right.requestLayout();
                         });
                         m2.start();
                         ValueAnimator m1 = ValueAnimator.ofFloat(4, 0); //fromWeight, toWeight
                         m1.setDuration(100);
                         m1.setStartDelay(100); //Optional Delay
                         m1.setInterpolator(new LinearInterpolator());
-                        m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
-                                calendarView.requestLayout();
-                            }
-
+                        m1.addUpdateListener(animation -> {
+                            ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                            calendarView.requestLayout();
                         });
                         m1.start();
                         isOpen = false;
@@ -121,13 +110,9 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
                         m2.setDuration(100);
                         m2.setStartDelay(100); //Optional Delay
                         m2.setInterpolator(new LinearInterpolator());
-                        m2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                ((LinearLayout.LayoutParams) ll_right.getLayoutParams()).weight = (float) animation.getAnimatedValue();
-                                ll_right.requestLayout();
-                            }
-
+                        m2.addUpdateListener(animation -> {
+                            ((LinearLayout.LayoutParams) ll_right.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                            ll_right.requestLayout();
                         });
                         m2.start();
 
@@ -135,13 +120,9 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
                         m1.setDuration(200);
                         m1.setStartDelay(100); //Optional Delay
                         m1.setInterpolator(new LinearInterpolator());
-                        m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
-                                calendarView.requestLayout();
-                            }
-
+                        m1.addUpdateListener(animation -> {
+                            ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                            calendarView.requestLayout();
                         });
                         m1.start();
                         isOpen = true;
@@ -181,8 +162,6 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 
                 });
                 m1.start();
-
-
 //                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
 //                    lp.weight = weight;
 //                    calendarView.setLayoutParams(lp);
@@ -202,8 +181,6 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
             //
             if (weight >= 2 && weight < 5) {
                 //++weight;
-
-
                 ValueAnimator m1 = ValueAnimator.ofFloat(weight, ++weight); //fromWeight, toWeight
                 m1.setDuration(400);
                 m1.setStartDelay(100); //Optional Delay
@@ -277,7 +254,6 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-
     }
 
     @Override
@@ -340,24 +316,23 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         showProgress();
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
-        scheduleApiCalls.scheduleForMonth(BaseLaunchActivity.getDeviceID(),
+        scheduleApiCalls.scheduleForMonth(
+                BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), AppUtils.dateFormatAsYYYY_MM_DD(calendar), codeRQ);
+                LaunchActivity.getLaunchActivity().getAuth(),
+                AppUtils.dateFormatAsYYYY_MM_DD(calendar), codeRQ);
     }
-
 
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
         this.jsonScheduleList = jsonScheduleList;
-        Collections.sort(jsonScheduleList.getJsonSchedules(), new Comparator<JsonSchedule>() {
-            public int compare(JsonSchedule o1, JsonSchedule o2) {
-                try {
-                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
+        Collections.sort(jsonScheduleList.getJsonSchedules(), (o1, o2) -> {
+            try {
+                return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
             }
         });
         List<EventDay> events = parseEventList(jsonScheduleList);
@@ -382,5 +357,4 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }
-
 }
