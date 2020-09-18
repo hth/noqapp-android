@@ -20,6 +20,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
@@ -131,8 +132,12 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                 case DO:
                     holder.tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
                     break;
+                case CDQ:
+                    holder.tv_degree.setText(CanteenStoreDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                    break;
                 default:
                     holder.tv_degree.setText(jsonSchedule.getJsonQueueDisplay().getBusinessType().getDescription());
+                    holder.tv_degree.setVisibility(View.GONE);
             }
             holder.tv_store_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
             holder.tv_schedule_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
