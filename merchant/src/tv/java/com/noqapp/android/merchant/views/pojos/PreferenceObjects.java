@@ -18,4 +18,8 @@ public class PreferenceObjects {
         this.symptomsList = symptomsList;
         return this;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c3a0d3c4d080075901fc9efa236f5965ee98f2bb
