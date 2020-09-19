@@ -185,7 +185,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
 
         List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
         StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
-                this, currencySymbol, AppUtils.isStoreOpenToday(jsonStore), jsonQueue.getBusinessType());
+                this, currencySymbol, AppUtils.isStoreOpenToday(jsonStore), jsonQueue.getBusinessType(), jsonQueue.getBizStoreId());
         expandableListView.setAdapter(expandableListAdapter);
 
         for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)

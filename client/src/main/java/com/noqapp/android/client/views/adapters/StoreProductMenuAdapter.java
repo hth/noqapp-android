@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private HashMap<String, StoreCartItem> orders = new HashMap<>();
     private boolean isStoreOpen;
     private BusinessTypeEnum businessType;
+    private String bizStoreId;
 
     public StoreProductMenuAdapter(
             Context context,
@@ -48,7 +50,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             CartOrderUpdate cartOrderUpdate,
             String currencySymbol,
             boolean isStoreOpen,
-            BusinessTypeEnum businessType) {
+            BusinessTypeEnum businessType,
+            String bizStoreId) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -56,6 +59,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         this.currencySymbol = currencySymbol;
         this.isStoreOpen = isStoreOpen;
         this.businessType = businessType;
+        this.bizStoreId = bizStoreId;
         orders.clear();
     }
 
@@ -118,7 +122,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         }
         Picasso.get()
             .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
-                ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + jsonStoreProduct.getProductImage()
+                ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + bizStoreId + File.separator +jsonStoreProduct.getProductImage()
                 : MISSING_PRODUCT_IMAGE)
             .placeholder(ImageUtils.getThumbPlaceholder(context))
             .error(ImageUtils.getThumbErrorPlaceholder(context))
