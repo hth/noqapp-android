@@ -266,7 +266,8 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                 this,
                 currencySymbol,
                 AppUtils.isStoreOpenToday(jsonStore),
-                jsonQueue.getBusinessType());
+                jsonQueue.getBusinessType(),
+                jsonQueue.getBizStoreId());
         expandableListView.setAdapter(expandableListAdapter);
         for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
             expandableListView.expandGroup(i);

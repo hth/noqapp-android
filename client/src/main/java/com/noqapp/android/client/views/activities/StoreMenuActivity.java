@@ -59,7 +59,7 @@ public class StoreMenuActivity extends BaseActivity implements
 
         List<JsonStoreCategory> expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
         StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail,
-                this, currencySymbol,getIntent().getBooleanExtra("isStoreOpen",true), jsonQueue.getBusinessType());
+                this, currencySymbol,getIntent().getBooleanExtra("isStoreOpen",true), jsonQueue.getBusinessType(), jsonQueue.getBizStoreId());
         expandableListView.setAdapter(expandableListAdapter);
 
 
