@@ -122,7 +122,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         }
         Picasso.get()
             .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
-                ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + bizStoreId + File.separator +jsonStoreProduct.getProductImage()
+                ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + bizStoreId + File.separator + jsonStoreProduct.getProductImage()
                 : MISSING_PRODUCT_IMAGE)
             .placeholder(ImageUtils.getThumbPlaceholder(context))
             .error(ImageUtils.getThumbErrorPlaceholder(context))
