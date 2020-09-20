@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.core.content.ContextCompat;
 
@@ -45,13 +44,13 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
     protected ImageView actionbarBack;
     private String codeQR;
     private StoreSettingApiCalls storeSettingApiCalls;
-    private StoreHours storeSettingTemp;
+    private StoreHours updatedStoreHours;
     boolean is_token_timing[];
     private TextView tvStoreClose[], tvStoreStart[], tvStoreLunchStart[], tvStoreLunchClose[],
             tvTokenAvailable[], tvTokenNotAvailable[];
     private CheckBox[] cbLunch;
     private ImageView[] imageViewsOpenClose;
-    private LinearLayout[] llCollapase;
+    private LinearLayout[] llCollapse;
     private Button btnUpdate;
 
     @Override
@@ -62,7 +61,7 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
         setContentView(R.layout.activity_all_days_setting);
         cbLunch = new CheckBox[7];
         imageViewsOpenClose = new ImageView[7];
-        llCollapase = new LinearLayout[7];
+        llCollapse = new LinearLayout[7];
         tvStoreStart = new TextView[7];
         tvStoreClose = new TextView[7];
         tvStoreLunchStart = new TextView[7];
@@ -101,7 +100,7 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
             imageViewsOpenClose[i].setOnClickListener(this::onClick);
 
             int id8 = res.getIdentifier("ll_token_timing" + resCount, "id", getPackageName());
-            llCollapase[i] = findViewById(id8);
+            llCollapse[i] = findViewById(id8);
 
             final int pos = i;
             tvTokenAvailable[i].setOnClickListener(new TextViewClick(tvTokenAvailable[i]));
@@ -167,10 +166,10 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
     @Override
     public void queueStoreHoursSettingResponse(StoreHours storeHours) {
         if (null != storeHours) {
-            storeSettingTemp = storeHours;
+            updatedStoreHours = storeHours;
             for (int i = 0; i < 7; i++) {
                 //  The int value follows the ISO-8601 standard, from 1 (Monday) to 7 (Sunday).
-                JsonHour jsonHour = getStoreHour(storeSettingTemp.getJsonHours(), i + 1);
+                JsonHour jsonHour = getStoreHour(updatedStoreHours.getJsonHours(), i + 1);
                 tvTokenAvailable[i].setText(Formatter.convertMilitaryTo24HourFormat(jsonHour.getTokenAvailableFrom()));
                 tvStoreStart[i].setText(Formatter.convertMilitaryTo24HourFormat(jsonHour.getStartHour()));
                 tvTokenNotAvailable[i].setText(Formatter.convertMilitaryTo24HourFormat(jsonHour.getTokenNotAvailableFrom()));
@@ -201,16 +200,16 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
     public void queueStoreHoursSettingError() {
         dismissProgress();
         // to make sure the data is not changed in case of error
-        if (null != storeSettingTemp) {
-            queueStoreHoursSettingResponse(storeSettingTemp);
+        if (null != updatedStoreHours) {
+            queueStoreHoursSettingResponse(updatedStoreHours);
         }
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if (null != storeSettingTemp) {
-            queueStoreHoursSettingResponse(storeSettingTemp);
+        if (null != updatedStoreHours) {
+            queueStoreHoursSettingResponse(updatedStoreHours);
         }
         new ErrorResponseHandler().processError(this, eej);
     }
@@ -286,7 +285,7 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
             default: {
                 int tag = Integer.parseInt((String) v.getTag());
                 is_token_timing[tag] = !is_token_timing[tag];
-                expandCollapseViewWithArrow(is_token_timing[tag], llCollapase[tag], imageViewsOpenClose[tag]);
+                expandCollapseViewWithArrow(is_token_timing[tag], llCollapse[tag], imageViewsOpenClose[tag]);
             }
         }
     }
@@ -298,10 +297,10 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
             public void btnPositiveClick() {
                 showProgress();
                 setProgressMessage("Updating Queue Settings...");
-                storeSettingTemp.setCodeQR(codeQR);
+                updatedStoreHours.setCodeQR(codeQR);
                 List<JsonHour> jsonHours = new ArrayList<>();
                 for (int i = 0; i < 7; i++) {
-                    JsonHour jsonHour = getStoreHour(storeSettingTemp.getJsonHours(), i + 1);
+                    JsonHour jsonHour = getStoreHour(updatedStoreHours.getJsonHours(), i + 1);
                     if (StringUtils.isNotBlank(tvTokenAvailable[i].getText().toString())) {
                         jsonHour.setTokenAvailableFrom(Integer.parseInt(tvTokenAvailable[i].getText().toString().replace(":", "")));
                     }
@@ -331,8 +330,8 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
                     }
                     jsonHours.add(jsonHour);
                 }
-                storeSettingTemp.setJsonHours(jsonHours);
-                storeSettingApiCalls.storeHoursUpdate(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSettingTemp);
+                updatedStoreHours.setJsonHours(jsonHours);
+                storeSettingApiCalls.storeHoursUpdate(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), updatedStoreHours);
             }
 
             @Override
@@ -357,14 +356,11 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(AllDaysSettingActivity.this, R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                    if (selectedHour == 0 && selectedMinute == 0) {
-                        new CustomToast().showToast(AllDaysSettingActivity.this, getString(R.string.error_time));
-                    } else {
-                        textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
-                    }
+            mTimePicker = new TimePickerDialog(AllDaysSettingActivity.this, R.style.TimePickerTheme, (timePicker, selectedHour, selectedMinute) -> {
+                if (selectedHour == 0 && selectedMinute == 0) {
+                    new CustomToast().showToast(AllDaysSettingActivity.this, getString(R.string.error_time));
+                } else {
+                    textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                 }
             }, hour, minute, false);//Yes 24 hour time
             //mTimePicker.setTitle("Select Time");
