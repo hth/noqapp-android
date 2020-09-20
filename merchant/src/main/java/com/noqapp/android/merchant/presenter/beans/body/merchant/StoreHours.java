@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
-import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -65,5 +64,14 @@ public class StoreHours implements Serializable {
     public StoreHours setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "StoreHours{" +
+                "codeQR='" + codeQR + '\'' +
+                ", jsonHours=" + jsonHours +
+                ", error=" + error +
+                '}';
     }
 }

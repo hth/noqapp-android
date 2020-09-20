@@ -155,8 +155,8 @@ public interface StoreSettingApiUrls {
         @Header("X-R-AUTH")
         String auth,
 
-        @Body
-        StoreHours storeHours
+        @Path("codeQR")
+        String codeQR
     );
 
     @POST("api/m/ss/storeHours.json")

@@ -1,0 +1,1790 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout_home" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="@color/default_bg_color"
+            android:fadeScrollbars="false"
+            android:overScrollMode="never"
+            android:padding="3dp"
+            android:scrollbarSize="5dip"
+            android:layout_above="@+id/btn_update_time"
+            android:scrollbarThumbVertical="@android:color/darker_gray">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/setting_mon_token_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/iv_token_timing1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/arrow_up"
+                                android:backgroundTint="@color/colorAccent"
+                                android:padding="5dp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_token_timing1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/screen_padding"
+                            android:paddingRight="@dimen/screen_padding"
+                            android:paddingBottom="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_issue_token_from"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_available1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_stop_issuing_token"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_not_available1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/setting_mon_q_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_start1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_close1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/cb_lunch1"
+                                    android:text="@string/setting_mon_q_lunch_timing"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <CheckBox
+                                    android:id="@+id/cb_lunch1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:gravity="center" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_start1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_close1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/setting_tue_token_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/iv_token_timing2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/arrow_up"
+                                android:backgroundTint="@color/colorAccent"
+                                android:padding="5dp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_token_timing2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/screen_padding"
+                            android:paddingRight="@dimen/screen_padding"
+                            android:paddingBottom="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_issue_token_from"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_available2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_stop_issuing_token"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_not_available2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/setting_tue_q_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_start2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_close2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/cb_lunch2"
+                                    android:text="@string/setting_tue_q_lunch_timing"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <CheckBox
+                                    android:id="@+id/cb_lunch2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:gravity="center" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_start2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_close2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/setting_wed_token_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/iv_token_timing3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/arrow_up"
+                                android:backgroundTint="@color/colorAccent"
+                                android:padding="5dp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_token_timing3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/screen_padding"
+                            android:paddingRight="@dimen/screen_padding"
+                            android:paddingBottom="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_issue_token_from"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_available3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_stop_issuing_token"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_not_available3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/setting_wed_q_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_start3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_close3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/cb_lunch3"
+                                    android:text="@string/setting_wed_q_lunch_timing"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <CheckBox
+                                    android:id="@+id/cb_lunch3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:gravity="center" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_start3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_close3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/setting_thu_token_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/iv_token_timing4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/arrow_up"
+                                android:backgroundTint="@color/colorAccent"
+                                android:padding="5dp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_token_timing4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/screen_padding"
+                            android:paddingRight="@dimen/screen_padding"
+                            android:paddingBottom="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_issue_token_from"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_available4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_stop_issuing_token"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_not_available4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/setting_thu_q_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_start4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_close4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/cb_lunch4"
+                                    android:text="@string/setting_thu_q_lunch_timing"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <CheckBox
+                                    android:id="@+id/cb_lunch4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:gravity="center" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_start4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_close4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/setting_fri_token_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/iv_token_timing5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/arrow_up"
+                                android:backgroundTint="@color/colorAccent"
+                                android:padding="5dp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_token_timing5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/screen_padding"
+                            android:paddingRight="@dimen/screen_padding"
+                            android:paddingBottom="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_issue_token_from"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_available5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_stop_issuing_token"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_not_available5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/setting_fri_q_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_start5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_close5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/cb_lunch5"
+                                    android:text="@string/setting_fri_q_lunch_timing"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <CheckBox
+                                    android:id="@+id/cb_lunch5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:gravity="center" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_start5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_close5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/setting_sat_token_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/iv_token_timing6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/arrow_up"
+                                android:backgroundTint="@color/colorAccent"
+                                android:padding="5dp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_token_timing6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/screen_padding"
+                            android:paddingRight="@dimen/screen_padding"
+                            android:paddingBottom="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_issue_token_from"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_available6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_stop_issuing_token"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_not_available6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/setting_sat_q_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_start6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_close6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/cb_lunch6"
+                                    android:text="@string/setting_sat_q_lunch_timing"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <CheckBox
+                                    android:id="@+id/cb_lunch6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:gravity="center" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_start6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_close6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/setting_sun_token_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/iv_token_timing7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/arrow_up"
+                                android:backgroundTint="@color/colorAccent"
+                                android:padding="5dp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_token_timing7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/screen_padding"
+                            android:paddingRight="@dimen/screen_padding"
+                            android:paddingBottom="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_issue_token_from"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_available7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_stop_issuing_token"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_token_not_available7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/setting_sun_q_timing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_start7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_close7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/cb_lunch7"
+                                    android:text="@string/setting_sun_q_lunch_timing"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <CheckBox
+                                    android:id="@+id/cb_lunch7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:gravity="center" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_start_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_start7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/setting_q_lunch_close_time"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_store_lunch_close7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_update_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_gravity="right"
+            android:layout_margin="15dp"
+            android:background="@drawable/bg_gradient_round"
+            android:layout_alignParentBottom="true"
+            android:padding="5dp"
+            android:text=" Update All Day's Hours "
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_fourteen" />
+
+    </RelativeLayout>
+</LinearLayout>
+

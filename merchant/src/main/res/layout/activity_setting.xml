@@ -478,19 +478,42 @@
                                 android:textColor="@android:color/black"
                                 android:textSize="@dimen/text_size_fourteen" />
                         </LinearLayout>
-                        <Button
-                            android:id="@+id/btn_update_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/btn_height"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/bg_gradient_round"
-                            android:padding="5dp"
-                            android:text="  Update Hours  "
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_fourteen" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:id="@+id/btn_all_update_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/btn_height"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_alignParentLeft="true"
+                                android:background="@drawable/bg_gradient_round"
+                                android:padding="5dp"
+                                android:text="  Update Hours for all days "
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                            <Button
+                                android:id="@+id/btn_update_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/btn_height"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/bg_gradient_round"
+                                android:padding="5dp"
+                                android:text="  Update Hours  "
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/white"
+                                android:layout_alignParentRight="true"
+                                android:textSize="@dimen/text_size_fourteen" />
+                        </RelativeLayout>
+
 
                     </LinearLayout>
                 </LinearLayout>

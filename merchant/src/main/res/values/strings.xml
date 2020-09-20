@@ -39,6 +39,7 @@
     <string name="screen_queue">Queues</string>
     <string name="screen_queue_detail">Queue Detail </string>
     <string name="screen_settings">Queue Settings</string>
+    <string name="screen_settings_all_days">All Day Queue Settings</string>
     <string name="screen_out_of_sequence">People in Queue</string>
     <string name="screen_notification">Notifications</string>
 
@@ -177,12 +178,39 @@
     <string name="error_customer_id_input">Only letters or numbers are allowed</string>
     <string name="give_discount">Applicable discount</string>
     <string name="setting_token_timing">Today\'s Token timing</string>
+
+    <string name="setting_sun_token_timing">Sunday\'s Token timing</string>
+    <string name="setting_mon_token_timing">Monday\'s Token timing</string>
+    <string name="setting_tue_token_timing">Tuesday\'s Token timing</string>
+    <string name="setting_wed_token_timing">Wednesday\'s Token timing</string>
+    <string name="setting_thu_token_timing">Thursday\'s Token timing</string>
+    <string name="setting_fri_token_timing">Friday\'s Token timing</string>
+    <string name="setting_sat_token_timing">Saturday\'s Token timing</string>
+
     <string name="setting_issue_token_from">Issue token from</string>
     <string name="setting_stop_issuing_token">Stop issuing token after</string>
     <string name="setting_q_timing">Today\'s Queue timing</string>
+
+    <string name="setting_sun_q_timing">Sunday\'s Queue timing</string>
+    <string name="setting_mon_q_timing">Monday\'s Queue timing</string>
+    <string name="setting_tue_q_timing">Tuesday\'s Queue timing</string>
+    <string name="setting_wed_q_timing">Wednesday\'s Queue timing</string>
+    <string name="setting_thu_q_timing">Thursday\'s Queue timing</string>
+    <string name="setting_fri_q_timing">Friday\'s Queue timing</string>
+    <string name="setting_sat_q_timing">Saturday\'s Queue timing</string>
+
     <string name="setting_q_start_time">Queue start time</string>
     <string name="setting_q_close_time">Queue close time</string>
     <string name="setting_q_lunch_timing">Today\'s lunch timing</string>
+
+    <string name="setting_sun_q_lunch_timing">Sunday\'s lunch timing</string>
+    <string name="setting_mon_q_lunch_timing">Monday\'s lunch timing</string>
+    <string name="setting_tue_q_lunch_timing">Tuesday\'s lunch timing</string>
+    <string name="setting_wed_q_lunch_timing">Wednesday\'s lunch timing</string>
+    <string name="setting_thu_q_lunch_timing">Thursday\'s lunch timing</string>
+    <string name="setting_fri_q_lunch_timing">Friday\'s lunch timing</string>
+    <string name="setting_sat_q_lunch_timing">Saturday\'s lunch timing</string>
+
     <string name="setting_q_lunch_start_time">Lunch start time</string>
     <string name="setting_q_lunch_close_time">Lunch end time</string>
     <string name="screen_queue_history">Queue History</string>
