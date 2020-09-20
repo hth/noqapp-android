@@ -185,6 +185,7 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
 
     @Override
     public void queueStoreHoursSettingModifyResponse(JsonResponse jsonResponse) {
+        dismissProgress();
         if (null != jsonResponse) {
             if (jsonResponse.getResponse() == Constants.SUCCESS) {
                 new CustomToast().showToast(this, "Settings updated successfully!!!");
@@ -297,11 +298,10 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
             public void btnPositiveClick() {
                 showProgress();
                 setProgressMessage("Updating Queue Settings...");
-                StoreHours storeHours = new StoreHours();
-                storeHours.setCodeQR(codeQR);
+                storeSettingTemp.setCodeQR(codeQR);
                 List<JsonHour> jsonHours = new ArrayList<>();
                 for (int i = 0; i < 7; i++) {
-                    JsonHour jsonHour = new JsonHour();
+                    JsonHour jsonHour = getStoreHour(storeSettingTemp.getJsonHours(), i + 1);
                     if (StringUtils.isNotBlank(tvTokenAvailable[i].getText().toString())) {
                         jsonHour.setTokenAvailableFrom(Integer.parseInt(tvTokenAvailable[i].getText().toString().replace(":", "")));
                     }
@@ -331,8 +331,8 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
                     }
                     jsonHours.add(jsonHour);
                 }
-                storeHours.setJsonHours(jsonHours);
-                storeSettingApiCalls.storeHoursUpdate(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeHours);
+                storeSettingTemp.setJsonHours(jsonHours);
+                storeSettingApiCalls.storeHoursUpdate(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSettingTemp);
             }
 
             @Override
