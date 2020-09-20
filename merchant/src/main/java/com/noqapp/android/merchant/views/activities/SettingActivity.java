@@ -300,6 +300,18 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         Button btn_update_scheduling = findViewById(R.id.btn_update_scheduling);
         Button btn_update_appointment = findViewById(R.id.btn_update_appointment);
         Button btn_update_permanent_setting = findViewById(R.id.btn_update_permanent_setting);
+        Button btn_all_update_time = findViewById(R.id.btn_all_update_time);
+        btn_all_update_time.setOnClickListener(v -> {
+            if (isSpecificSettingEditAllowed()) {
+                Intent intent = new Intent(SettingActivity.this, AllDaysSettingActivity.class);
+                intent.putExtra("codeQR", codeQR);
+                startActivity(intent);
+                finish();
+            } else {
+                ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
+            }
+        });
+
         btn_update_appointment.setOnClickListener(v -> {
             if (sc_enable_appointment.getLastSelectedAbsolutePosition() != 0) {
                 if (validateAppointmentSetting()) {

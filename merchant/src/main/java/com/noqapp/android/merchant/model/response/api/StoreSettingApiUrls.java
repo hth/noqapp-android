@@ -141,7 +141,7 @@ public interface StoreSettingApiUrls {
         StoreSetting storeSetting
     );
 
-    @GET("api/m/ss/storeHours.json")
+    @GET("api/m/ss/storeHours/{codeQR}.json")
     Call<StoreHours> storeHours(
         @Header("X-R-DID")
         String did,
@@ -155,8 +155,8 @@ public interface StoreSettingApiUrls {
         @Header("X-R-AUTH")
         String auth,
 
-        @Body
-        StoreHours storeHours
+        @Path("codeQR")
+        String codeQR
     );
 
     @POST("api/m/ss/storeHours.json")

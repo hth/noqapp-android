@@ -5,10 +5,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.model.response.api.StoreSettingApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.StoreHours;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.interfaces.StoreHoursSettingPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,9 +29,14 @@ public class StoreSettingApiCalls {
     private static final String TAG = StoreSettingApiCalls.class.getSimpleName();
     private static final StoreSettingApiUrls storeSettingApiUrls;
     private StoreSettingPresenter storeSettingPresenter;
+    private StoreHoursSettingPresenter storeHoursSettingPresenter;
 
     public StoreSettingApiCalls(StoreSettingPresenter storeSettingPresenter) {
         this.storeSettingPresenter = storeSettingPresenter;
+    }
+
+    public StoreSettingApiCalls(StoreHoursSettingPresenter storeHoursSettingPresenter) {
+        this.storeHoursSettingPresenter = storeHoursSettingPresenter;
     }
 
     static {
@@ -195,6 +203,76 @@ public class StoreSettingApiCalls {
             public void onFailure(@NonNull Call<StoreSetting> call, @NonNull Throwable t) {
                 Log.e("fail appointment", t.getLocalizedMessage(), t);
                 storeSettingPresenter.queueSettingError();
+            }
+        });
+    }
+
+    public void storeHours(String did, String mail, String auth, String codeQR) {
+        storeSettingApiUrls.storeHours(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<StoreHours>() {
+            @Override
+            public void onResponse(@NonNull Call<StoreHours> call, @NonNull Response<StoreHours> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        if (StringUtils.isNotBlank(response.body().getCodeQR())) {
+                            Log.d(TAG, "storeHours setting, response " + response.body().toString());
+                            storeHoursSettingPresenter.queueStoreHoursSettingResponse(response.body());
+                        } else {
+                            Log.e(TAG, "Failed to storeHours setting");
+                            storeHoursSettingPresenter.queueStoreHoursSettingError();
+                        }
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
+                        storeHoursSettingPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        storeHoursSettingPresenter.authenticationFailure();
+                    } else {
+                        storeHoursSettingPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<StoreHours> call, @NonNull Throwable t) {
+                Log.e("fail storeHours", t.getLocalizedMessage(), t);
+                storeHoursSettingPresenter.queueStoreHoursSettingError();
+            }
+        });
+    }
+
+    public void storeHoursUpdate(String did, String mail, String auth, StoreHours storeHours) {
+        storeSettingApiUrls.storeHoursUpdate(did, Constants.DEVICE_TYPE, mail, auth, storeHours).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                       // if (StringUtils.isNotBlank(response.body().getCodeQR())) {
+                            Log.d(TAG, "Modify setting, response " + response.body().toString());
+                            storeHoursSettingPresenter.queueStoreHoursSettingModifyResponse(response.body());
+//                        } else {
+//                            Log.e(TAG, "Failed to modify setting");
+//                            storeHoursSettingPresenter.queueStoreHoursSettingError();
+//                        }
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
+                        storeHoursSettingPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        storeHoursSettingPresenter.authenticationFailure();
+                    } else {
+                        storeHoursSettingPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("fail modify", t.getLocalizedMessage(), t);
+                storeHoursSettingPresenter.queueStoreHoursSettingError();
             }
         });
     }
