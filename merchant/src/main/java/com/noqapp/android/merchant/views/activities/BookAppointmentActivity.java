@@ -174,7 +174,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                         showProgress();
                         setProgressCancel(false);
 
-                        long diffInMinutes = calculateAppointmentSlot(AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotStartTiming()),
+                        long diffInMinutes = calculateAppointmentSlot(
+                                AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotStartTiming()),
                                 AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotEndTiming()));
                         String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                         String endTime = getEndTime((int) diffInMinutes, temp[0].trim());
@@ -185,7 +186,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                                 .setBusinessCustomer(null)
                                 .setJsonSchedule(jsonScheduleTemp)
                                 .setBookActionType(ActionTypeEnum.EDIT);
-                        scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
+                        scheduleApiCalls.bookSchedule(
+                                BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 bookSchedule);
