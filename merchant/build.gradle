@@ -429,7 +429,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.8.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'net.danlew:android.joda:2.10.6'
     implementation 'com.google.guava:guava:29.0-android'
@@ -466,22 +466,22 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'org.mockito:mockito-android:3.5.10'
+    androidTestImplementation 'org.mockito:mockito-android:3.5.11'
 
-    testImplementation 'org.mockito:mockito-core:3.5.10'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.mockito:mockito-core:3.5.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
 
     // (Required) Writing and executing Unit Tests on the JUnit Platform
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
     // (Optional) If you need "Parameterized Tests"
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
 
     // (Optional) If you also have JUnit 4-based tests
     testImplementation "junit:junit:4.13"
-    testImplementation 'org.junit.vintage:junit-vintage-engine:5.6.2'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.0'
     testImplementation 'org.awaitility:awaitility:4.0.3'
 }
 
