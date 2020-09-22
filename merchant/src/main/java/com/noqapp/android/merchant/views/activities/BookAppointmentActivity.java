@@ -71,8 +71,8 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class BookAppointmentActivity extends BaseActivity implements
-        AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter
-        , RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
+        AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter,
+        RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
     private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
     private List<JsonHour> jsonHours;
@@ -347,11 +347,12 @@ public class BookAppointmentActivity extends BaseActivity implements
             showProgress();
             scheduleApiCalls = new ScheduleApiCalls();
             scheduleApiCalls.setAppointmentPresenter(this);
-            scheduleApiCalls.scheduleForDay(BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),
-                    day,
-                    codeQR);
+            scheduleApiCalls.scheduleForDay(
+                BaseLaunchActivity.getDeviceID(),
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(),
+                day,
+                codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -382,8 +383,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         actv_chief_complaints.setThreshold(1);
         actv_chief_complaints.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
-        ArrayAdapter<String> sp_adapter = new ArrayAdapter<String>(BookAppointmentActivity.this,
-                R.layout.spinner_item, times);
+        ArrayAdapter<String> sp_adapter = new ArrayAdapter<>(BookAppointmentActivity.this, R.layout.spinner_item, times);
         sp_end_time.setAdapter(sp_adapter);
         sp_start_time.setAdapter(sp_adapter);
         String[] split = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
@@ -461,10 +461,10 @@ public class BookAppointmentActivity extends BaseActivity implements
                 businessCustomerApiCalls = new BusinessCustomerApiCalls();
                 businessCustomerApiCalls.setFindCustomerPresenter(BookAppointmentActivity.this);
                 businessCustomerApiCalls.findCustomer(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
-                        new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                    BaseLaunchActivity.getDeviceID(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(),
+                    new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
                 btn_create_token.setClickable(false);
                 //  mAlertDialog.dismiss();
             }
