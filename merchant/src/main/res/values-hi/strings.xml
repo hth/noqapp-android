@@ -102,13 +102,13 @@
     <string name="give_discount">Applicable discount</string>
     <string name="setting_token_timing">Token timing</string>
 
-    <string name="setting_sun_token_timing">Sunday\'s Token timing</string>
-    <string name="setting_mon_token_timing">Monday\'s Token timing</string>
-    <string name="setting_tue_token_timing">Tuesday\'s Token timing</string>
-    <string name="setting_wed_token_timing">Wednesday\'s Token timing</string>
-    <string name="setting_thu_token_timing">Thursday\'s Token timing</string>
-    <string name="setting_fri_token_timing">Friday\'s Token timing</string>
-    <string name="setting_sat_token_timing">Saturday\'s Token timing</string>
+    <string name="setting_sun_token_timing">Sunday</string>
+    <string name="setting_mon_token_timing">Monday</string>
+    <string name="setting_tue_token_timing">Tuesday</string>
+    <string name="setting_wed_token_timing">Wednesday</string>
+    <string name="setting_thu_token_timing">Thursday</string>
+    <string name="setting_fri_token_timing">Friday</string>
+    <string name="setting_sat_token_timing">Saturday</string>
 
     <string name="setting_issue_token_from">Issue token from</string>
     <string name="setting_stop_issuing_token">Stop issuing token after</string>
