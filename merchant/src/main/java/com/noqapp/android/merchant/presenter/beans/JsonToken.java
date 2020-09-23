@@ -49,6 +49,9 @@ public class JsonToken implements Serializable {
     @JsonProperty("s")
     private int servingNumber;
 
+    @JsonProperty("ds")
+    private String displayServingNumber;
+
     @JsonProperty("t")
     private int token;
 
@@ -118,6 +121,15 @@ public class JsonToken implements Serializable {
 
     public void setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
+    }
+
+    public String getDisplayServingNumber() {
+        return displayServingNumber;
+    }
+
+    public JsonToken setDisplayServingNumber(String displayServingNumber) {
+        this.displayServingNumber = displayServingNumber;
+        return this;
     }
 
     public int getToken() {

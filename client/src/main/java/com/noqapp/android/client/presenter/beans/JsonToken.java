@@ -44,6 +44,9 @@ public class JsonToken {
     @JsonProperty("s")
     private int servingNumber;
 
+    @JsonProperty("ds")
+    private String displayServingNumber;
+
     @JsonProperty("t")
     private int token;
 
@@ -104,6 +107,15 @@ public class JsonToken {
 
     public void setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
+    }
+
+    public String getDisplayServingNumber() {
+        return displayServingNumber;
+    }
+
+    public JsonToken setDisplayServingNumber(String displayServingNumber) {
+        this.displayServingNumber = displayServingNumber;
+        return this;
     }
 
     public int getToken() {
@@ -190,6 +202,7 @@ public class JsonToken {
         jsonTokenAndQueue.setDisplayName(displayName);
         jsonTokenAndQueue.setQueueStatus(queueStatus);
         jsonTokenAndQueue.setServingNumber(servingNumber);
+        jsonTokenAndQueue.setDisplayServingNumber(displayServingNumber);
         jsonTokenAndQueue.setToken(token);
         return jsonTokenAndQueue;
     }

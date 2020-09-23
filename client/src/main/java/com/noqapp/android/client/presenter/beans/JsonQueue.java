@@ -115,6 +115,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("s")
     private int servingNumber;
 
+    @JsonProperty("ds")
+    private String displayServingNumber;
+
     @JsonProperty ("dt")
     private String displayToken;
 
@@ -426,6 +429,15 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
+    public String getDisplayServingNumber() {
+        return displayServingNumber;
+    }
+
+    public JsonQueue setDisplayServingNumber(String displayServingNumber) {
+        this.displayServingNumber = displayServingNumber;
+        return this;
+    }
+
     public String getDisplayToken() {
         return displayToken;
     }
@@ -734,6 +746,7 @@ public class JsonQueue implements Serializable {
             .setDelayedInMinutes(delayedInMinutes)
             .setTopic(topic)
             .setServingNumber(servingNumber)
+            .setDisplayServingNumber(displayServingNumber)
             .setLastNumber(lastNumber)
             .setQueueStatus(queueStatus)
             .setServiceEndTime(serviceEndTime)

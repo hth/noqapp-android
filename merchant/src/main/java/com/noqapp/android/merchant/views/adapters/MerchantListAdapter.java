@@ -64,7 +64,7 @@ public class MerchantListAdapter extends BaseAdapter {
         } else if (jsonTopic.getToken() == 0) {
             recordHolder.tv_serving_no.setText("Not Started");
         } else {
-            recordHolder.tv_serving_no.setText("Serving Now: " + String.valueOf(jsonTopic.getServingNumber()));
+            recordHolder.tv_serving_no.setText("Serving Now: " + jsonTopic.getServingNumber());
         }
         recordHolder.tv_inqueue.setText(String.valueOf(jsonTopic.getRemaining()));
         if (jsonTopic.getHour().isDayClosed()) {
