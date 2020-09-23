@@ -19,6 +19,7 @@ public class DatabaseTable {
         public static final String END_HOUR = "endHour";
         public static final String TOPIC = "topic";
         public static final String SERVING_NUMBER = "servingNumber";
+        public static final String DISPLAY_SERVING_NUMBER = "displayServingNumber";
         public static final String LAST_NUMBER = "lastNumber";
         public static final String TOKEN = "token";
         public static final String DISPLAY_TOKEN = "displayToken";
