@@ -476,4 +476,5 @@
     <string name="business_too_far_from_location">Business is too far from your location. Click OK to continue joining the queue.</string>
     <string name="canteen_near">CSD/URC</string>
     <string name="place_of_worship">Place of Worship</string>
+    <string name="appointment">Appointment</string>
 </resources>

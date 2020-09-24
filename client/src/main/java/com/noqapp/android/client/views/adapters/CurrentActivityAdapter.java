@@ -136,8 +136,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     holder.tv_degree.setText(CanteenStoreDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
                     break;
                 default:
-                    holder.tv_degree.setText(jsonSchedule.getJsonQueueDisplay().getBusinessType().getDescription());
-                    holder.tv_degree.setVisibility(View.GONE);
+                    holder.tv_degree.setText(jsonSchedule.getJsonQueueDisplay().getBusinessName());
             }
             holder.tv_store_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
             holder.tv_schedule_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
