@@ -63,7 +63,7 @@ public class CommonHelper {
     private static final DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HH:mm");
     public static final String CURRENCY_SYMBOL = "currencySymbol";
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
-    public static enum AppointmentComputationEnum {FILLED, TOTAL_SLOTS};
+    public enum AppointmentComputationEnum {FILLED, TOTAL_SLOTS}
 
     public static String convertDOBToValidFormat(String dob) {
         try {
@@ -239,10 +239,10 @@ public class CommonHelper {
             if (null != jsonStoreProduct) {
                 Log.d(TAG, jsonStoreProduct.toString());
                 return jsonStoreProduct.getDisplayPrice()
-                        + " / "
-                        + jsonStoreProduct.getDisplayUnitValue()
-                        + " "
-                        + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription());
+                    + " / "
+                    + jsonStoreProduct.getDisplayUnitValue()
+                    + " "
+                    + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription());
             } else {
                 return "";
             }
@@ -296,7 +296,9 @@ public class CommonHelper {
         return input.substring(0, index + 1) + ":" + input.substring(index + 1);
     }
 
-    /** Since 1.2.590. */
+    /**
+     * Since 1.2.590.
+     */
     @Deprecated
     public static List<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
         List<String> timeSlot = new ArrayList<>();
@@ -467,7 +469,7 @@ public class CommonHelper {
         return "";
     }
 
-    public static android.location.Location getLocation(double lat, double lng){
+    public static android.location.Location getLocation(double lat, double lng) {
         android.location.Location location = new android.location.Location("");
         location.setLatitude(lat);
         location.setLongitude(lng);
@@ -509,8 +511,8 @@ public class CommonHelper {
 
     /**
      * Method to make the first letter CAP of each word of given string
-     * */
-    public static String capitalizeEachWordFirstLetter(String input){
+     */
+    public static String capitalizeEachWordFirstLetter(String input) {
         return WordUtils.capitalizeFully(input);
     }
 
@@ -538,8 +540,8 @@ public class CommonHelper {
         return cityName;
     }
 
-    public static boolean isHealthCare(Context context){
-    return context.getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare");
+    public static boolean isHealthCare(Context context) {
+        return context.getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare");
     }
 
 }

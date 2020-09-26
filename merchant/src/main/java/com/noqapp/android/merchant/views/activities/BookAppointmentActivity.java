@@ -71,8 +71,8 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class BookAppointmentActivity extends BaseActivity implements
-        AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter,
-        RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
+    AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter,
+    RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
     private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
     private List<JsonHour> jsonHours;
@@ -140,15 +140,15 @@ public class BookAppointmentActivity extends BaseActivity implements
         startDate.add(Calendar.DAY_OF_MONTH, 1); // start date of appointment
 
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
-                .range(startDate, endDate)
-                .datesNumberOnScreen(5)
-                .configure()
-                .formatBottomText("EEE")
-                .formatMiddleText("dd")
-                .formatTopText("MMM")
-                .textSize(14f, 24f, 14f)
-                .end()
-                .build();
+            .range(startDate, endDate)
+            .datesNumberOnScreen(5)
+            .configure()
+            .formatBottomText("EEE")
+            .formatMiddleText("dd")
+            .formatTopText("MMM")
+            .textSize(14f, 24f, 14f)
+            .end()
+            .build();
         TextView tv_doctor_category = findViewById(R.id.tv_doctor_category);
         TextView tv_doctor_name = findViewById(R.id.tv_doctor_name);
 //        tv_doctor_name.setText(bizStoreElastic.getDisplayName());
@@ -177,22 +177,22 @@ public class BookAppointmentActivity extends BaseActivity implements
                         setProgressCancel(false);
 
                         long diffInMinutes = calculateAppointmentSlot(
-                                AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotStartTiming()),
-                                AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotEndTiming()));
+                            AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotStartTiming()),
+                            AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotEndTiming()));
                         String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                         String endTime = getEndTime((int) diffInMinutes, temp[0].trim());
                         jsonScheduleTemp.setStartTime(AppUtils.removeColon(temp[0].trim()));
                         jsonScheduleTemp.setEndTime(AppUtils.removeColon(endTime));
                         jsonScheduleTemp.setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate));
                         BookSchedule bookSchedule = new BookSchedule()
-                                .setBusinessCustomer(null)
-                                .setJsonSchedule(jsonScheduleTemp)
-                                .setBookActionType(ActionTypeEnum.EDIT);
+                            .setBusinessCustomer(null)
+                            .setJsonSchedule(jsonScheduleTemp)
+                            .setBookActionType(ActionTypeEnum.EDIT);
                         scheduleApiCalls.bookSchedule(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                bookSchedule);
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            bookSchedule);
                     } else {
                         ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                     }
@@ -286,9 +286,9 @@ public class BookAppointmentActivity extends BaseActivity implements
         if (null != jsonScheduleList.getAppointmentState() && AppointmentStateEnum.O == jsonScheduleList.getAppointmentState()) {
             /* When schedule closed for a specific duration. */
             JsonHour notAcceptingAppointment = new JsonHour()
-                    .setDayClosed(true)
-                    .setAppointmentStartHour(0)
-                    .setAppointmentEndHour(0);
+                .setDayClosed(true)
+                .setAppointmentStartHour(0)
+                .setAppointmentEndHour(0);
             setAppointmentSlots(notAcceptingAppointment, filledTimes);
         } else {
             setAppointmentSlots(storeHourElastic, filledTimes);
@@ -373,7 +373,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
         tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
         actv_chief_complaints = customDialogView.findViewById(R.id.actv_chief_complaints);
-        if(isHealthcare) {
+        if (isHealthcare) {
             final ArrayList<String> data = new ArrayList<>();
             ArrayList<DataObj> temp = MedicalDataStatic.getSymptomsOnCategoryType(getIntent().getStringExtra("bizCategoryId"));
             if (temp.size() > 0) {
@@ -385,7 +385,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             actv_chief_complaints.setAdapter(adapter1);
             actv_chief_complaints.setThreshold(1);
             actv_chief_complaints.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
-        }else{
+        } else {
             TextView tv_chief_complaints_title = customDialogView.findViewById(R.id.tv_chief_complaints_title);
             tv_chief_complaints_title.setVisibility(View.GONE);
             actv_chief_complaints.setVisibility(View.GONE);
@@ -497,7 +497,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             sp_patient_list.setVisibility(View.VISIBLE);
             edt_mobile.setEnabled(false);
             tv_select_patient.setVisibility(View.VISIBLE);
-            if(!isHealthcare){
+            if (!isHealthcare) {
                 tv_select_patient.setText("Booking for customer");
                 sp_patient_list.setClickable(false);
                 sp_patient_list.setEnabled(false);
@@ -524,28 +524,28 @@ public class BookAppointmentActivity extends BaseActivity implements
                                 phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
                             }
 
-                            JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
-                                    setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                            JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer()
+                                .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                             jsonBusinessCustomer
-                                    .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
-                                    .setCustomerPhone(phoneNoWithCode)
-                                    .setBusinessCustomerId(cid);
+                                .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
+                                .setCustomerPhone(phoneNoWithCode)
+                                .setBusinessCustomerId(cid);
                             String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
-                                    .setCodeQR(codeQR)
-                                    .setStartTime(start)
-                                    .setEndTime(end)
-                                    .setChiefComplain(isHealthcare ? actv_chief_complaints.getText().toString() : "")
-                                    .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate)).
-                                            setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                                .setCodeQR(codeQR)
+                                .setStartTime(start)
+                                .setEndTime(end)
+                                .setChiefComplain(isHealthcare ? actv_chief_complaints.getText().toString() : "")
+                                .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate)).
+                                    setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                             BookSchedule bookSchedule = new BookSchedule()
-                                    .setBusinessCustomer(jsonBusinessCustomer)
-                                    .setJsonSchedule(jsonSchedule)
-                                    .setBookActionType(ActionTypeEnum.ADD);
+                                .setBusinessCustomer(jsonBusinessCustomer)
+                                .setJsonSchedule(jsonSchedule)
+                                .setBookActionType(ActionTypeEnum.ADD);
                             scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    bookSchedule);
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                bookSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
