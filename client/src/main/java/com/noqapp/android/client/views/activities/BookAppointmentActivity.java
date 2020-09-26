@@ -55,8 +55,8 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class BookAppointmentActivity
-        extends BaseActivity
-        implements AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter {
+    extends BaseActivity
+    implements AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter {
     private TextView tv_name;
     private Spinner sp_name_list;
     private TextView tv_empty_slots;
@@ -212,18 +212,18 @@ public class BookAppointmentActivity
                             //  showProgress();
                             String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
-                                    .setCodeQR(bizStoreElastic.getCodeQR())
-                                    .setStartTime(AppUtils.removeColon(temp[0].trim()))
-                                    .setEndTime(AppUtils.removeColon(temp[1].trim()))
-                                    .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate))
-                                    .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
+                                .setCodeQR(bizStoreElastic.getCodeQR())
+                                .setStartTime(AppUtils.removeColon(temp[0].trim()))
+                                .setEndTime(AppUtils.removeColon(temp[1].trim()))
+                                .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate))
+                                .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                             // appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
                             showConfirmationDialog(
-                                    BookAppointmentActivity.this,
-                                    ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
-                                    AppUtils.dateFormatAsYYYY_MM_DD(selectedDate),
-                                    appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(),
-                                    jsonSchedule);
+                                BookAppointmentActivity.this,
+                                ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
+                                AppUtils.dateFormatAsYYYY_MM_DD(selectedDate),
+                                appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot(),
+                                jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -237,19 +237,19 @@ public class BookAppointmentActivity
                             // showProgress();
                             String[] temp = firstAvailableAppointment.getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
-                                    .setCodeQR(bizStoreElastic.getCodeQR())
-                                    .setStartTime(AppUtils.removeColon(temp[0].trim()))
-                                    .setEndTime(AppUtils.removeColon(temp[1].trim()))
-                                    .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate))
-                                    .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
+                                .setCodeQR(bizStoreElastic.getCodeQR())
+                                .setStartTime(AppUtils.removeColon(temp[0].trim()))
+                                .setEndTime(AppUtils.removeColon(temp[1].trim()))
+                                .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate))
+                                .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                             //appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
 
                             showConfirmationDialog(
-                                    BookAppointmentActivity.this,
-                                    ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
-                                    AppUtils.dateFormatAsYYYY_MM_DD(selectedDate),
-                                    "",
-                                    jsonSchedule);
+                                BookAppointmentActivity.this,
+                                ((JsonProfile) sp_name_list.getSelectedItem()).getName(),
+                                AppUtils.dateFormatAsYYYY_MM_DD(selectedDate),
+                                "",
+                                jsonSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
@@ -385,9 +385,9 @@ public class BookAppointmentActivity
         if (null != jsonScheduleList.getAppointmentState() && AppointmentStateEnum.O == jsonScheduleList.getAppointmentState()) {
             /* When schedule closed for a specific duration. */
             StoreHourElastic notAcceptingAppointment = new StoreHourElastic()
-                    .setDayClosed(true)
-                    .setAppointmentStartHour(0)
-                    .setAppointmentEndHour(0);
+                .setDayClosed(true)
+                .setAppointmentStartHour(0)
+                .setAppointmentEndHour(0);
             setAppointmentSlots(notAcceptingAppointment, filledTimes);
         } else {
             setAppointmentSlots(storeHourElastic, filledTimes);
@@ -428,10 +428,10 @@ public class BookAppointmentActivity
             setProgressMessage("Fetching appointments...");
             showProgress();
             appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth(),
-                    day,
-                    bizStoreElastic.getCodeQR());
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
+                day,
+                bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }

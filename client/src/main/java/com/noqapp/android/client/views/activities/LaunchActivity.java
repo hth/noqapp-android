@@ -178,7 +178,7 @@ public class LaunchActivity
         if (TextUtils.isEmpty(MyApplication.getDeviceId())) {
            // Log.v("Device id check", MyApplication.getDeviceId());
             DeviceApiCall deviceModel = new DeviceApiCall();
-            deviceModel.setAppBlacklistPresenter(this);
+            deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(
                 new DeviceToken(
                     MyApplication.getTokenFCM(),
@@ -924,7 +924,9 @@ public class LaunchActivity
             menuDrawerItems.add(new MenuDrawer(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.order_history), true, false, R.drawable.purchase_order));
-        menuDrawerItems.add(new MenuDrawer(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
+        if (isLogin) {
+            menuDrawerItems.add(new MenuDrawer(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
+        }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers));
 
         List<MenuDrawer> settingList = new ArrayList<>();
