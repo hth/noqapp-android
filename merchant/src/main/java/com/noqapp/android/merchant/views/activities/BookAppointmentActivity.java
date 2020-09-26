@@ -101,6 +101,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     private int count = 3;
     private boolean isEdit = false;
     private JsonSchedule jsonScheduleTemp;
+    private boolean isHealthcare = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(false);
         tv_toolbar_title.setText("Book Appointment");
+        isHealthcare = CommonHelper.isHealthCare(this);
         tv_empty_slots = findViewById(R.id.tv_empty_slots);
         rv_available_date = findViewById(R.id.rv_available_date);
         rv_available_date.setLayoutManager(new GridLayoutManager(this, count));
@@ -371,17 +373,23 @@ public class BookAppointmentActivity extends BaseActivity implements
         sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
         tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
         actv_chief_complaints = customDialogView.findViewById(R.id.actv_chief_complaints);
-        final ArrayList<String> data = new ArrayList<>();
-        ArrayList<DataObj> temp = MedicalDataStatic.getSymptomsOnCategoryType(getIntent().getStringExtra("bizCategoryId"));
-        if (temp.size() > 0) {
-            for (int i = 0; i < temp.size(); i++) {
-                data.add(temp.get(i).getShortName());
+        if(isHealthcare) {
+            final ArrayList<String> data = new ArrayList<>();
+            ArrayList<DataObj> temp = MedicalDataStatic.getSymptomsOnCategoryType(getIntent().getStringExtra("bizCategoryId"));
+            if (temp.size() > 0) {
+                for (int i = 0; i < temp.size(); i++) {
+                    data.add(temp.get(i).getShortName());
+                }
             }
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+            actv_chief_complaints.setAdapter(adapter1);
+            actv_chief_complaints.setThreshold(1);
+            actv_chief_complaints.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
+        }else{
+            TextView tv_chief_complaints_title = customDialogView.findViewById(R.id.tv_chief_complaints_title);
+            tv_chief_complaints_title.setVisibility(View.GONE);
+            actv_chief_complaints.setVisibility(View.GONE);
         }
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
-        actv_chief_complaints.setAdapter(adapter1);
-        actv_chief_complaints.setThreshold(1);
-        actv_chief_complaints.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
         ArrayAdapter<String> sp_adapter = new ArrayAdapter<>(BookAppointmentActivity.this, R.layout.spinner_item, times);
         sp_end_time.setAdapter(sp_adapter);
@@ -419,7 +427,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
         btn_create_order = customDialogView.findViewById(R.id.btn_create_order);
         btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
-        btn_create_token.setText("Search Patient");
+        btn_create_token.setText(isHealthcare ? "Search Patient" : "Search Customer");
         btn_create_token.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                 return;
@@ -444,7 +452,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             }
 
             if (isValid) {
-                setProgressMessage("Searching patient...");
+                setProgressMessage(isHealthcare ? "Searching patient..." : "Searching customer...");
                 showProgress();
                 setProgressCancel(false);
                 String phone = "";
@@ -489,6 +497,11 @@ public class BookAppointmentActivity extends BaseActivity implements
             sp_patient_list.setVisibility(View.VISIBLE);
             edt_mobile.setEnabled(false);
             tv_select_patient.setVisibility(View.VISIBLE);
+            if(!isHealthcare){
+                tv_select_patient.setText("Booking for customer");
+                sp_patient_list.setClickable(false);
+                sp_patient_list.setEnabled(false);
+            }
             btn_create_order.setText("Book Appointment");
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
@@ -522,7 +535,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                                     .setCodeQR(codeQR)
                                     .setStartTime(start)
                                     .setEndTime(end)
-                                    .setChiefComplain(actv_chief_complaints.getText().toString())
+                                    .setChiefComplain(isHealthcare ? actv_chief_complaints.getText().toString() : "")
                                     .setScheduleDate(AppUtils.dateFormatAsYYYY_MM_DD(selectedDate)).
                                             setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                             BookSchedule bookSchedule = new BookSchedule()

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
@@ -65,6 +66,10 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         calendarView.setSwipeEnabled(false);
         fh_list_view = findViewById(R.id.fh_list_view);
         scroll_view = findViewById(R.id.scroll_view);
+        if (!CommonHelper.isHealthCare(this)) {
+            TextView tv_list_header = findViewById(R.id.tv_list_header);
+            tv_list_header.setText("No of customer Date wise");
+        }
         if (LaunchActivity.isTablet) {
             RelativeLayout rl_parent = findViewById(R.id.rl_parent);
             LinearLayout ll_right = findViewById(R.id.ll_right);

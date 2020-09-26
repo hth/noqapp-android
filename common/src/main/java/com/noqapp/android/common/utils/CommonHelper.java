@@ -537,4 +537,9 @@ public class CommonHelper {
         }
         return cityName;
     }
+
+    public static boolean isHealthCare(Context context){
+    return context.getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare");
+    }
+
 }
