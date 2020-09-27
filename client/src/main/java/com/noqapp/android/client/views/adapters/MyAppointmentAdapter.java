@@ -46,14 +46,14 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         JsonSchedule jsonSchedule = dataSet.get(position);
         holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
         holder.tv_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
-       try {
-           holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
-       }catch (IllegalArgumentException exp){
-           holder.tv_category.setText("");
-           Log.e("MyAppointmentAdapter", exp.toString());
-       }
+        try {
+            holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+        } catch (IllegalArgumentException exp) {
+            holder.tv_category.setText("");
+            Log.e("MyAppointmentAdapter", exp.toString());
+        }
 
-       try {
+        try {
             Date date = CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate());
             holder.tv_appointment_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(date));
         } catch (Exception e) {
