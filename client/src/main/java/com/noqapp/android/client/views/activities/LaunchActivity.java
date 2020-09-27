@@ -38,14 +38,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.common.cache.Cache;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
-import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
@@ -97,8 +94,6 @@ import com.noqapp.android.common.views.activities.AppsLinksActivity;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.squareup.picasso.Picasso;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -146,9 +141,6 @@ public class LaunchActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JodaTimeAndroid.init(this);
-        //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
-        MapsInitializer.initialize(this);
         setContentView(R.layout.activity_launch);
         isLockMode = MyApplication.getKioskModeInfo().isKioskModeEnable();
         tv_badge = findViewById(R.id.tv_badge);

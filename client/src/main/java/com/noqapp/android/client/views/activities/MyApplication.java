@@ -11,6 +11,7 @@ import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
@@ -21,6 +22,8 @@ import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.FontsOverride;
+
+import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +85,9 @@ public class MyApplication extends MultiDexApplication {
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
         location = new Location("");
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+        JodaTimeAndroid.init(this);
+        //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
+        MapsInitializer.initialize(this);
     }
 
     private Locale getLocaleFromPref() {
