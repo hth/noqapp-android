@@ -81,8 +81,8 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseMerchantDetailFragment extends BaseFragment implements ManageQueuePresenter,
-        DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,
-        RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack, ApproveCustomerPresenter {
+    DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,
+    RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack, ApproveCustomerPresenter {
 
     protected final int MIN_LIST_SIZE = 1;
     protected Context context;
@@ -312,12 +312,12 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
                 peopleInQAdapter = new PeopleInQAdapter(
-                        jsonQueuedPersonArrayList,
-                        context,
-                        this,
-                        jsonTopic.getCodeQR(),
-                        jsonTopic.getJsonDataVisibility(),
-                        jsonTopic.getJsonPaymentPermission());
+                    jsonQueuedPersonArrayList,
+                    context,
+                    this,
+                    jsonTopic.getCodeQR(),
+                    jsonTopic.getJsonDataVisibility(),
+                    jsonTopic.getJsonPaymentPermission());
                 rv_queue_people.setAdapter(peopleInQAdapter);
                 if (null != jsonQueuedPersonArrayList) {
                     fab_top_bottom.setVisibility(jsonQueuedPersonArrayList.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
@@ -467,7 +467,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         }
 
         tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
-                + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
+            + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
 
         tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
         /* Add to show only remaining people in queue */
@@ -478,8 +478,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         btn_start.setBackgroundResource(R.drawable.start);
 
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
-                || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
-                || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+            || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
+            || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
             // TODO(hth) Implement further settings for merchant topic
         }
 
@@ -558,10 +558,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                     served.setGoTo(tv_counter_name.getText().toString());
                     setPresenter();
                     manageQueueApiCalls.served(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            served);
+                        BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(),
+                        served);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }
@@ -588,10 +588,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                                 served.setGoTo(tv_counter_name.getText().toString());
                                 setPresenter();
                                 manageQueueApiCalls.served(
-                                        BaseLaunchActivity.getDeviceID(),
-                                        LaunchActivity.getLaunchActivity().getEmail(),
-                                        LaunchActivity.getLaunchActivity().getAuth(),
-                                        served);
+                                    BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    served);
                                 chronometer.stop();
                                 chronometer.setBase(SystemClock.elapsedRealtime());
                             } else {
@@ -641,10 +641,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                                     served.setGoTo(tv_counter_name.getText().toString());
                                     setPresenter();
                                     manageQueueApiCalls.served(
-                                            BaseLaunchActivity.getDeviceID(),
-                                            LaunchActivity.getLaunchActivity().getEmail(),
-                                            LaunchActivity.getLaunchActivity().getAuth(),
-                                            served);
+                                        BaseLaunchActivity.getDeviceID(),
+                                        LaunchActivity.getLaunchActivity().getEmail(),
+                                        LaunchActivity.getLaunchActivity().getAuth(),
+                                        served);
                                 } else {
                                     ShowAlertInformation.showNetworkDialog(context);
                                 }
@@ -669,10 +669,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             served.setGoTo(tv_counter_name.getText().toString());
                             setPresenter();
                             manageQueueApiCalls.served(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    served);
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                served);
                             chronometer.stop();
                             chronometer.setBase(SystemClock.elapsedRealtime());
                             chronometer.start();
@@ -698,12 +698,12 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     protected void resetList() {
         jsonQueuedPersonArrayList = new ArrayList<>();
         peopleInQAdapter = new PeopleInQAdapter(
-                jsonQueuedPersonArrayList,
-                context,
-                this,
-                jsonTopic.getCodeQR(),
-                jsonTopic.getJsonDataVisibility(),
-                jsonTopic.getJsonPaymentPermission());
+            jsonQueuedPersonArrayList,
+            context,
+            this,
+            jsonTopic.getCodeQR(),
+            jsonTopic.getJsonDataVisibility(),
+            jsonTopic.getJsonPaymentPermission());
         rv_queue_people.setAdapter(peopleInQAdapter);
         if (null != jsonQueuedPersonArrayList) {
             fab_top_bottom.setVisibility(jsonQueuedPersonArrayList.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
@@ -731,10 +731,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             served.setGoTo(tv_counter_name.getText().toString());
                             served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
                             manageQueueApiCalls.acquire(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    served);
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                served);
                         } else {
                             ShowAlertInformation.showNetworkDialog(getActivity());
                         }
@@ -758,11 +758,11 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     // Calls businessCustomerApiCalls to update priority and customer attribute
     @Override
     public void actionOnBusinessCustomer(
-            Context context,
-            JsonQueuedPerson jsonQueuedPerson,
-            CustomerPriorityLevelEnum customerPriorityLevel,
-            ActionTypeEnum action,
-            String codeQR
+        Context context,
+        JsonQueuedPerson jsonQueuedPerson,
+        CustomerPriorityLevelEnum customerPriorityLevel,
+        ActionTypeEnum action,
+        String codeQR
     ) {
         CustomerPriority customerPriority = new CustomerPriority();
         customerPriority.setActionType(action);
@@ -774,10 +774,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
         businessCustomerApiCalls.setApproveCustomerPresenter(this);
         businessCustomerApiCalls.accessCustomer(
-                BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(),
-                customerPriority
+            BaseLaunchActivity.getDeviceID(),
+            LaunchActivity.getLaunchActivity().getEmail(),
+            LaunchActivity.getLaunchActivity().getAuth(),
+            customerPriority
         );
     }
 
@@ -817,14 +817,14 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
 
         JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonProfile.getQueueUserId());
         jsonBusinessCustomer
-                .setCodeQR(topicsList.get(currentPosition).getCodeQR())
-                .setCustomerPhone(phoneNoWithCode);
+            .setCodeQR(topicsList.get(currentPosition).getCodeQR())
+            .setCustomerPhone(phoneNoWithCode);
 
         manageQueueApiCalls.dispenseTokenWithClientInfo(
-                BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(),
-                jsonBusinessCustomer);
+            BaseLaunchActivity.getDeviceID(),
+            LaunchActivity.getLaunchActivity().getEmail(),
+            LaunchActivity.getLaunchActivity().getAuth(),
+            jsonBusinessCustomer);
     }
 
     protected void counterNameEmpty() {
@@ -836,7 +836,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        if(menu instanceof MenuBuilder) {
+        if (menu instanceof MenuBuilder) {
             MenuBuilder m = (MenuBuilder) menu;
             //noinspection RestrictedApi
             m.setOptionalIconsVisible(true);
