@@ -25,6 +25,8 @@ import com.noqapp.android.common.utils.FontsOverride;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -32,12 +34,11 @@ import java.util.Locale;
 /**
  * Created by chandra on 5/20/17.
  */
-
 public class MyApplication extends MultiDexApplication {
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
-    private static final String KEY_LOCATION_PREFERENCE= "locationPreference";
+    private static final String KEY_LOCATION_PREFERENCE = "locationPreference";
 
     private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
     private static final String PREKEY_PHONE = "phone";
@@ -61,6 +62,7 @@ public class MyApplication extends MultiDexApplication {
     public static String cityName = "";
     public static DatabaseHelper dbHandler;
     public static boolean isLockMode = false;
+
     public MyApplication() {
         super();
     }
@@ -70,6 +72,7 @@ public class MyApplication extends MultiDexApplication {
     }
 
     private static FirebaseAnalytics fireBaseAnalytics;
+
     /**
      * On application startup, override system default locale to which user set
      * in application preference.
@@ -82,7 +85,8 @@ public class MyApplication extends MultiDexApplication {
         FontsOverride.overrideFont(this, "SERIF", "fonts/roboto_regular.ttf");
         FontsOverride.overrideFont(this, "SANS_SERIF", "fonts/roboto_regular.ttf");
         setLocale(this);
-        preferences = getSharedPreferences( getPackageName() + "_preferences", MODE_PRIVATE);
+
+        preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
         location = new Location("");
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
@@ -95,7 +99,7 @@ public class MyApplication extends MultiDexApplication {
     private Locale getLocaleFromPref() {
         Locale locale = Locale.getDefault();
         String language = getPreferences().getString("pref_language", "");
-        if (!language.equals("")) {
+        if (StringUtils.isNotBlank(language)) {
             locale = new Locale(language);
             Locale.setDefault(locale);
         }
@@ -113,17 +117,15 @@ public class MyApplication extends MultiDexApplication {
         Resources applicationRes = getBaseContext().getResources();
         Configuration applicationConf = applicationRes.getConfiguration();
         applicationConf.setLocale(newLocale);
-        applicationRes.updateConfiguration(applicationConf,
-                applicationRes.getDisplayMetrics());
+        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
     }
 
     private SharedPreferences getPreferences() {
-        return PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
+        return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     public static boolean isNotificationSoundEnable() {
-        Log.e("Sound enable",String.valueOf(preferences.getBoolean(PREKEY_IS_NOTIFICATION_SOUND_ENABLE, true)));
+        Log.e("Sound enable", String.valueOf(preferences.getBoolean(PREKEY_IS_NOTIFICATION_SOUND_ENABLE, true)));
         return preferences.getBoolean(PREKEY_IS_NOTIFICATION_SOUND_ENABLE, true);
     }
 
@@ -218,7 +220,6 @@ public class MyApplication extends MultiDexApplication {
     public static String getActualMail() {
         return getMail().endsWith(Constants.MAIL_NOQAPP_COM) ? "" : getMail();
     }
-
 
     public static String getCustomerNameWithQid(String customerName, String queueUserId) {
         return customerName + " " + queueUserId;
