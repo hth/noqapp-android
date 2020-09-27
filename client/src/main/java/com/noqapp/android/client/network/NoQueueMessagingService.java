@@ -269,8 +269,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     String payload = mappedData.get(FIREBASE_TYPE);
                     String codeQR = mappedData.get(CODE_QR);
 
-                    if (null == LaunchActivity.dbHandler) {
-                        LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+                    if (null == MyApplication.dbHandler) {
+                        MyApplication.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                     }
                     /*
                      * When u==S then it is re-view

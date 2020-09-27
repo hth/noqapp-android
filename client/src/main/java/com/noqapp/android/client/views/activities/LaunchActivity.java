@@ -116,7 +116,6 @@ public class LaunchActivity
         implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter,
         SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
-    public static DatabaseHelper dbHandler;
     public static Locale locale;
     public static SharedPreferences languagePref;
     public static String language;
@@ -150,7 +149,6 @@ public class LaunchActivity
         JodaTimeAndroid.init(this);
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
-        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
         isLockMode = MyApplication.getKioskModeInfo().isKioskModeEnable();
         tv_badge = findViewById(R.id.tv_badge);

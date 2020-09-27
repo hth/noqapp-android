@@ -8,7 +8,7 @@ import android.util.Log;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 
-import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
+import static com.noqapp.android.client.views.activities.MyApplication.dbHandler;
 
 /**
  * User: hitender

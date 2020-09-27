@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model.database.utils;
 
-import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
+import static com.noqapp.android.client.views.activities.MyApplication.dbHandler;
 
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;

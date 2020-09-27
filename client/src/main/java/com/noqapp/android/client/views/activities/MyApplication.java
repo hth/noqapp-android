@@ -14,6 +14,7 @@ import androidx.multidex.MultiDexApplication;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
@@ -55,6 +56,7 @@ public class MyApplication extends MultiDexApplication {
     public static ActivityCommunicator activityCommunicator;
     public static Location location;
     public static String cityName = "";
+    public static DatabaseHelper dbHandler;
     public MyApplication() {
         super();
     }
@@ -79,6 +81,7 @@ public class MyApplication extends MultiDexApplication {
         preferences = getSharedPreferences( getPackageName() + "_preferences", MODE_PRIVATE);
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
         location = new Location("");
+        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
     }
 
     private Locale getLocaleFromPref() {
