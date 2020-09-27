@@ -19,7 +19,7 @@ import java.util.List;
 public class AllUsersProfileActivity extends BaseActivity implements ProfileAdapter.OnItemClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_users_profile);
         initActionsViews(false);
@@ -30,8 +30,8 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
         rv_user_profile.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv_user_profile.setItemAnimator(new DefaultItemAnimator());
         if (UserUtils.isLogin()) {
-            List<JsonProfile> profileList = MyApplication.getUserProfile().getDependents();
-            profileList.add(0, MyApplication.getUserProfile());
+            List<JsonProfile> profileList = AppInitialize.getUserProfile().getDependents();
+            profileList.add(0, AppInitialize.getUserProfile());
             ProfileAdapter profileAdapter = new ProfileAdapter(this, profileList, this);
             rv_user_profile.setAdapter(profileAdapter);
         } else {
@@ -44,10 +44,10 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
     public void onProfileItemClick(JsonProfile jsonProfile) {
         MedicalProfile medicalProfile = new MedicalProfile();
         medicalProfile.setMedicalProfileOfQueueUserId(jsonProfile.getQueueUserId());
-        if (MyApplication.getUserProfile().getQueueUserId().equalsIgnoreCase(jsonProfile.getQueueUserId())) {
+        if (AppInitialize.getUserProfile().getQueueUserId().equalsIgnoreCase(jsonProfile.getQueueUserId())) {
             medicalProfile.setGuardianQueueUserId("");
         } else {
-            medicalProfile.setGuardianQueueUserId(MyApplication.getUserProfile().getQueueUserId());
+            medicalProfile.setGuardianQueueUserId(AppInitialize.getUserProfile().getQueueUserId());
         }
         Intent in = new Intent(this, MedicalProfileActivity.class);
         in.putExtra("medicalProfile", medicalProfile);
@@ -59,10 +59,10 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
     public void onHospitalVisitClick(JsonProfile jsonProfile) {
         MedicalProfile medicalProfile = new MedicalProfile();
         medicalProfile.setMedicalProfileOfQueueUserId(jsonProfile.getQueueUserId());
-        if (MyApplication.getUserProfile().getQueueUserId().equalsIgnoreCase(jsonProfile.getQueueUserId())) {
+        if (AppInitialize.getUserProfile().getQueueUserId().equalsIgnoreCase(jsonProfile.getQueueUserId())) {
             medicalProfile.setGuardianQueueUserId("");
         } else {
-            medicalProfile.setGuardianQueueUserId(MyApplication.getUserProfile().getQueueUserId());
+            medicalProfile.setGuardianQueueUserId(AppInitialize.getUserProfile().getQueueUserId());
         }
         Intent in = new Intent(this, HospitalVisitScheduleActivity.class);
         in.putExtra("medicalProfile", medicalProfile);

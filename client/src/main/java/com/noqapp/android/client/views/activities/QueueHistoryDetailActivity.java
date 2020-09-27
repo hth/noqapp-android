@@ -26,7 +26,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_history_detail);
         initActionsViews(false);
@@ -105,7 +105,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
             tv_add_review.setVisibility(View.GONE);
             tv_store_rating.setVisibility(View.VISIBLE);
         }
-        List<JsonProfile> profileList = MyApplication.getAllProfileList();
+        List<JsonProfile> profileList = AppInitialize.getAllProfileList();
         tv_name.setText(AppUtils.getNameFromQueueUserID(jsonQueueHistorical.getQueueUserId(), profileList));
         if (tv_name.getText().toString().equals("")) {
             tv_name.setText("Guest User");

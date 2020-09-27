@@ -3,7 +3,6 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 5/7/17.
  */
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -30,7 +29,7 @@ public class LoginActivity extends OTPActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         activity = this;
         tv_toolbar_title.setText("Login");
@@ -70,14 +69,14 @@ public class LoginActivity extends OTPActivity {
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        MyApplication.commitProfile(profile, email, auth);
-        if (!TextUtils.isEmpty(MyApplication.getPreviousUserQID())
-                && !MyApplication.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+        AppInitialize.commitProfile(profile, email, auth);
+        if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID())
+            && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
             NotificationDB.clearNotificationTable();
             ReviewDB.clearReviewTable();
             LaunchActivity.getLaunchActivity().reCreateDeviceID();
         }
-        MyApplication.setPreviousUserQID(profile.getQueueUserId());
+        AppInitialize.setPreviousUserQID(profile.getQueueUserId());
 
         if (getIntent().getBooleanExtra("fromLogin", false)) {
             // To refresh the launch activity

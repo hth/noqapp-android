@@ -36,7 +36,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verify);
         tv_header = findViewById(R.id.tv_header);
@@ -121,7 +121,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(ChangeEmailActivity.class.getSimpleName(), "profile :" + profile.toString());
-            MyApplication.commitProfile(profile, email, auth);
+            AppInitialize.commitProfile(profile, email, auth);
             finish();
         } else {
             //Rejected from  server

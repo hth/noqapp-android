@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -37,10 +36,8 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
@@ -68,7 +65,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu_kiosk);
         initActionsViews(false);

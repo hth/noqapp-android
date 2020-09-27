@@ -129,7 +129,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         new InitPaymentGateway().execute();
@@ -278,7 +278,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             queueUserId = bundle.getStringExtra("qUserId");
             List<JsonProfile> profileList = new ArrayList<>();
             if (UserUtils.isLogin()) {
-                profileList = MyApplication.getAllProfileList();
+                profileList = AppInitialize.getAllProfileList();
             }
             if (!TextUtils.isEmpty(queueUserId)) {
                 jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
@@ -530,7 +530,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private void callQueue() {
         if (codeQR != null) {
             if (UserUtils.isLogin()) {
-                JsonProfile jp = MyApplication.getUserProfile();
+                JsonProfile jp = AppInitialize.getUserProfile();
                 String qUserId;
                 String guardianId = null;
                 if (jp.getQueueUserId().equalsIgnoreCase(queueUserId)) {
@@ -678,7 +678,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     }
 
     private void triggerOnlinePayment() {
-        if (MyApplication.isEmailVerified()) {
+        if (AppInitialize.isEmailVerified()) {
             String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
             String stage = BuildConfig.CASHFREE_STAGE;
             String appId = BuildConfig.CASHFREE_APP_ID;
@@ -686,9 +686,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
             // String orderAmount = CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonToken.getJsonPurchaseOrder().getOrderPrice())));
             String orderNote = "Order: " + queueUserId;
-            String customerName = MyApplication.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
-            String customerPhone = MyApplication.getOfficePhoneNo();
-            String customerEmail = MyApplication.getOfficeMail();
+            String customerName = AppInitialize.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
+            String customerPhone = AppInitialize.getOfficePhoneNo();
+            String customerEmail = AppInitialize.getOfficeMail();
             Map<String, String> params = new HashMap<>();
             params.put(PARAM_APP_ID, appId);
             params.put(PARAM_ORDER_ID, orderId);

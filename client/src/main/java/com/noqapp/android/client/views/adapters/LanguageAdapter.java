@@ -1,12 +1,10 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,10 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.MyApplication;
+import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.pojos.LanguageInfo;
-import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.List;
@@ -61,7 +57,7 @@ public class LanguageAdapter extends RecyclerView.Adapter {
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Language", languageInfo.getLanguageTitle());
-                MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
+                AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
             }
             notifyDataSetChanged();
             new CustomToast().showToast(context, " Language changed successfully");

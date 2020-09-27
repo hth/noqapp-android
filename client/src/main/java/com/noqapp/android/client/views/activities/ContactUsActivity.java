@@ -26,7 +26,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
         initActionsViews(false);
@@ -43,7 +43,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             }
         }
         if (UserUtils.isLogin()) {
-            if (MyApplication.getUserProfile().isAccountValidated()) {
+            if (AppInitialize.getUserProfile().isAccountValidated()) {
                 btn_submit.setEnabled(true);
                 edt_body.setEnabled(true);
                 edt_subject.setEnabled(true);

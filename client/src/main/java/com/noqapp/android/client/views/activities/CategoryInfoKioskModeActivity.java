@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.cache.Cache;
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -23,12 +22,10 @@ import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CategoryGridAdapter;
-import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,15 +38,15 @@ import java.util.Set;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class CategoryInfoKioskModeActivity extends BaseActivity implements QueuePresenter,
-        CategoryGridAdapter.OnItemClickListener {
+    CategoryGridAdapter.OnItemClickListener {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
-            .maximumSize(1)
-            .build();
+        .maximumSize(1)
+        .build();
     private final Cache<String, Map<String, ArrayList<BizStoreElastic>>> cacheQueue = newBuilder()
-            .maximumSize(1)
-            .build();
+        .maximumSize(1)
+        .build();
 
     private final String QUEUE = "queue";
     private final String CATEGORY = "category";
@@ -64,7 +61,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info_kiosk);
         rv_categories = findViewById(R.id.rv_categories);
@@ -115,9 +112,9 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         AppUtils.hideKeyBoard(CategoryInfoKioskModeActivity.this);
         Intent in_search = new Intent(CategoryInfoKioskModeActivity.this, SearchActivity.class);
         in_search.putExtra("scrollId", "");
-        in_search.putExtra("lat", "" + MyApplication.location.getLatitude());
-        in_search.putExtra("lng", "" + MyApplication.location.getLongitude());
-        in_search.putExtra("city", MyApplication.cityName);
+        in_search.putExtra("lat", String.valueOf(AppInitialize.location.getLatitude()));
+        in_search.putExtra("lng", String.valueOf(AppInitialize.location.getLongitude()));
+        in_search.putExtra("city", AppInitialize.cityName);
         in_search.putExtra("searchString", searchString);
         in_search.putExtra("codeQR", bizStoreElastic.getCodeQR());
         startActivity(in_search);
@@ -178,10 +175,10 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
 
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
             CategoryGridAdapter recyclerView_Adapter = new CategoryGridAdapter(
-                    this,
-                    getCategoryThatArePopulated(),
-                    queueMap,
-                    listener);
+                this,
+                getCategoryThatArePopulated(),
+                queueMap,
+                listener);
             rv_categories.setAdapter(recyclerView_Adapter);
         } else {
             //TODO(chandra) when its empty do something nice

@@ -38,7 +38,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history_details);
 
@@ -117,7 +117,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         }
         tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecord.getRecordAccess().size());
 
-        List<JsonProfile> profileList = MyApplication.getAllProfileList();
+        List<JsonProfile> profileList = AppInitialize.getAllProfileList();
         tv_patient_name.setText(AppUtils.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
 
         if (StringUtils.isBlank(tv_complaints.getText())) {

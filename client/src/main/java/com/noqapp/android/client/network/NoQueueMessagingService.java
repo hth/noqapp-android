@@ -22,8 +22,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.MyApplication;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.receivers.AlarmReceiver;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
@@ -271,8 +270,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     String payload = mappedData.get(FIREBASE_TYPE);
                     String codeQR = mappedData.get(CODE_QR);
 
-                    if (null == MyApplication.dbHandler) {
-                        MyApplication.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+                    if (null == AppInitialize.dbHandler) {
+                        AppInitialize.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                     }
                     /*
                      * When u==S then it is re-view
@@ -501,7 +500,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     Intent buzzerIntent = new Intent(this, BlinkerActivity.class);
                                     buzzerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(buzzerIntent);
-                                    if (MyApplication.isMsgAnnouncementEnable()) {
+                                    if (AppInitialize.isMsgAnnouncementEnable()) {
                                         LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData.getJsonTextToSpeeches(), mappedData.get("mi"));
                                     }
                                 }
@@ -728,7 +727,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
-                int importance = MyApplication.isNotificationSoundEnable()
+                int importance = AppInitialize.isNotificationSoundEnable()
                         ? NotificationManager.IMPORTANCE_HIGH
                         : NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
@@ -744,7 +743,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     .setAutoCancel(true)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                     .setLights(Color.parseColor("#ffb400"), 50, 10);
-            if (MyApplication.isNotificationSoundEnable()) {
+            if (AppInitialize.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri);
             } else {
                 mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
@@ -826,7 +825,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             String channelId = "channel-01";
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
-                int importance = MyApplication.isNotificationSoundEnable()
+                int importance = AppInitialize.isNotificationSoundEnable()
                         ? NotificationManager.IMPORTANCE_HIGH
                         : NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
@@ -842,7 +841,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     .setAutoCancel(true)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                     .setLights(Color.parseColor("#ffb400"), 50, 10);
-            if (MyApplication.isNotificationSoundEnable()) {
+            if (AppInitialize.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri);
             } else {
                 mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);

@@ -24,7 +24,7 @@
         android:required="false" />
 
     <application
-        android:name=".views.activities.MyApplication"
+        android:name=".views.activities.AppInitialize"
         android:allowBackup="false"
         android:icon="@mipmap/launcher"
         android:label="@string/app_name"

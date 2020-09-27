@@ -42,10 +42,8 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.ProductUtils;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
@@ -75,7 +73,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu);
         initActionsViews(false);
@@ -372,7 +370,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick(boolean isFeedBackScreen) {
-                    MyApplication.isLockMode = true;
+                    AppInitialize.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
                     kioskModeInfo.setKioskCodeQR(bizStoreElastic.getCodeQR());
                     kioskModeInfo.setKioskModeEnable(true);
@@ -380,14 +378,14 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
                     kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
                     kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
-                    MyApplication.setKioskModeInfo(kioskModeInfo);
+                    AppInitialize.setKioskModeInfo(kioskModeInfo);
 
-                    if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
+                    if (AppInitialize.getKioskModeInfo().isFeedbackScreen()) {
                         Intent in = new Intent(StoreWithMenuActivity.this, SurveyKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, AppInitialize.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     } else {
-                        MyApplication.clearPreferences();
+                        AppInitialize.clearPreferences();
                         Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
                         in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                         startActivity(in);
@@ -400,7 +398,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     //Do nothing
                 }
             });
-            showKioskModeDialog.displayDialog(MyApplication.getUserProfile().getUserLevel().getDescription());
+            showKioskModeDialog.displayDialog(AppInitialize.getUserProfile().getUserLevel().getDescription());
         });
         // Added temporary due to textview click issue 
         tv_enable_kiosk.performClick();

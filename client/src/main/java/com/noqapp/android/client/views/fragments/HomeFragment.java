@@ -79,8 +79,7 @@ import com.noqapp.android.client.views.activities.FeedActivity;
 import com.noqapp.android.client.views.activities.ImageViewerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.LoginActivity;
-import com.noqapp.android.client.views.activities.MyApplication;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.activities.OrderConfirmActivity;
 import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
@@ -327,7 +326,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 
             AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
             advertisementApiCalls.setAdvertisementPresenter(this);
-            LocationPref locationPref = MyApplication.getLocationPreference();
+            LocationPref locationPref = AppInitialize.getLocationPreference();
             Location location = new Location()
                 .setCityName(locationPref.getCity())
                 .setLatitude(String.valueOf(locationPref.getLatitude()))
@@ -340,15 +339,15 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             }
         }
 
-        if (TextUtils.isEmpty(MyApplication.cityName)) {
-            LocationPref locationPref = MyApplication.getLocationPreference();
+        if (TextUtils.isEmpty(AppInitialize.cityName)) {
+            LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = locationPref.getLatitude();
             lng = locationPref.getLongitude();
             city = locationPref.getCity();
         } else {
-            lat = MyApplication.location.getLatitude();
-            lng = MyApplication.location.getLongitude();
-            city = MyApplication.cityName;
+            lat = AppInitialize.location.getLatitude();
+            lng = AppInitialize.location.getLongitude();
+            city = AppInitialize.cityName;
         }
         getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
 //        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());
@@ -372,7 +371,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             }
         }
         try {
-            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + MyApplication.getTokenFCM());
+            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + AppInitialize.getTokenFCM());
             // tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().log("On Resume " + e.getLocalizedMessage());
@@ -384,7 +383,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     }
 
     private void showScannerWhenMatchingRole() {
-        JsonProfile jsonProfile = MyApplication.getUserProfile();
+        JsonProfile jsonProfile = AppInitialize.getUserProfile();
         if (null == jsonProfile) {
             frame_scan.setVisibility(View.GONE);
         } else {
@@ -515,7 +514,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         tv_merchant_view_all.setVisibility(nearMeMerchant.size() == 0 ? View.GONE : View.VISIBLE);
         isProgressFirstTime = false;
         if (isAdded()) {
-            if (MyApplication.getShowHelper()) {
+            if (AppInitialize.getShowHelper()) {
 //                if (AppUtils.isRelease()) {
 //                    presentShowcaseSequence();
 //                }
@@ -526,7 +525,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                     Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(loginIntent);
                 });
-                MyApplication.setShowHelper(false);
+                AppInitialize.setShowHelper(false);
             } else {
                 if (isRateUsFirstTime && null != getActivity()) {
                     new RateTheAppManager().appLaunched(getActivity());
@@ -926,7 +925,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                     Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                     blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().getApplicationContext().startActivity(blinker);
-                    if (MyApplication.isMsgAnnouncementEnable()) {
+                    if (AppInitialize.isMsgAnnouncementEnable()) {
                         LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
                     }
                 } else {
@@ -939,7 +938,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                             blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getActivity().getApplicationContext().startActivity(blinker);
-                            if (MyApplication.isMsgAnnouncementEnable()) {
+                            if (AppInitialize.isMsgAnnouncementEnable()) {
                                 LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId);
                             }
                             break;

@@ -15,7 +15,6 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.CustomCalendar;
-import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.common.views.activities.helper.CapitalizeEachWordFirstLetterTextWatcher;
 
 import android.app.Activity;
@@ -54,7 +53,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
@@ -113,13 +112,13 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "Profile: " + profile.toString());
-            MyApplication.commitProfile(profile, email, auth);
-            if (!TextUtils.isEmpty(MyApplication.getPreviousUserQID()) && !MyApplication.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+            AppInitialize.commitProfile(profile, email, auth);
+            if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID()) && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
                 NotificationDB.clearNotificationTable();
                 ReviewDB.clearReviewTable();
                 LaunchActivity.getLaunchActivity().reCreateDeviceID();
             }
-            MyApplication.setPreviousUserQID(profile.getQueueUserId());
+            AppInitialize.setPreviousUserQID(profile.getQueueUserId());
             finish();
         } else {
             //Rejected from  server
