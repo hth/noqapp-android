@@ -42,8 +42,8 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
 
         val jsonUserPreference: JsonUserPreference? = BaseLaunchActivity.getLaunchActivity().getUserProfile().jsonUserPreference
         if (null == jsonUserPreference) {
-            sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
-            sc_sound.isChecked = MyApplication.isNotificationSoundEnable()
+            sc_sms.isChecked = AppInitialize.isNotificationReceiveEnable()
+            sc_sound.isChecked = AppInitialize.isNotificationSoundEnable()
         } else {
             sc_sms.isChecked = jsonUserPreference.promotionalSMS == CommunicationModeEnum.R
             sc_sound.isChecked = jsonUserPreference.firebaseNotification == CommunicationModeEnum.R
@@ -98,7 +98,7 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
             cv_tv_refresh_time.visibility = View.GONE
         }
         sc_sms.setOnCheckedChangeListener { buttonView, isChecked ->
-            MyApplication.setNotificationReceiveEnable(isChecked)
+            AppInitialize.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@NotificationSettings, "Promotional SMS Enabled")
@@ -111,7 +111,7 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
         }
 
         sc_sound.setOnCheckedChangeListener { _buttonView, isChecked ->
-            MyApplication.setNotificationSoundEnable(isChecked)
+            AppInitialize.setNotificationSoundEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@NotificationSettings, "Notification Sound Enabled")
