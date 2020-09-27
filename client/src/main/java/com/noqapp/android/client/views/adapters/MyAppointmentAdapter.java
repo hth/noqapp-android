@@ -21,12 +21,10 @@ import com.noqapp.android.common.utils.Formatter;
 import java.util.Date;
 import java.util.List;
 
-
 public class MyAppointmentAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<JsonSchedule> dataSet;
-
 
     public MyAppointmentAdapter(List<JsonSchedule> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
