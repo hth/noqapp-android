@@ -477,7 +477,6 @@ public abstract class BaseLaunchActivity
         sharedpreferences.edit().putString(KEY_COUNTER_NAME_LIST, strInput).apply();
     }
 
-
     public UserLevelEnum getUserLevel() {
         return UserLevelEnum.valueOf(sharedpreferences.getString(KEY_USER_LEVEL, ""));
     }
