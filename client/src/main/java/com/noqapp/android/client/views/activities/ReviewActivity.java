@@ -66,7 +66,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
         initActionsViews(false);

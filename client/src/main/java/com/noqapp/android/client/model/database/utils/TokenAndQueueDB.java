@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueue;
-import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
+import static com.noqapp.android.client.views.activities.MyApplication.dbHandler;
 
 /**
  * User: omkar

@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,10 @@ import com.noqapp.android.common.utils.Formatter;
 import java.util.Date;
 import java.util.List;
 
-
 public class MyAppointmentAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<JsonSchedule> dataSet;
-
 
     public MyAppointmentAdapter(List<JsonSchedule> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
@@ -45,7 +44,13 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         JsonSchedule jsonSchedule = dataSet.get(position);
         holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
         holder.tv_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
-        holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+        try {
+            holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+        } catch (IllegalArgumentException exp) {
+            holder.tv_category.setText("");
+            Log.e("MyAppointmentAdapter", exp.toString());
+        }
+
         try {
             Date date = CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate());
             holder.tv_appointment_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(date));

@@ -23,7 +23,7 @@ public class MigrateActivity extends OTPActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         activity = this;
         tv_toolbar_title.setText("Migrate Number");

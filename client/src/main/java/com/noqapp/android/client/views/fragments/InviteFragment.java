@@ -72,9 +72,12 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
             ShowAlertInformation.showThemeDialog(getActivity(), getString(R.string.alert), getString(R.string.empty_invite_code));
         } else {
             try {
+                String shareMessage= "\"I am inviting you to join NoQueue app. A simple and secure app developed by NoQueue Technologies. " +
+                        "Check out my app at: https://play.google.com/store/apps/details?id=" + getActivity().getPackageName() +"\n Use my invite code - "+selectedText;
+
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, selectedText);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 

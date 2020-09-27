@@ -22,7 +22,7 @@ import com.noqapp.android.common.model.types.order.PaymentMethodEnum
 class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        hideSoftKeys(LaunchActivity.isLockMode)
+        hideSoftKeys(MyApplication.isLockMode)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_settings)
         initActionsViews(true)

@@ -77,7 +77,7 @@ public class BookAppointmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(true);
@@ -169,7 +169,7 @@ public class BookAppointmentActivity
         });
         horizontalCalendarView.refresh();
 
-        if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType()) {
+        if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType() || BusinessTypeEnum.HS == bizStoreElastic.getBusinessType()) {
             List<JsonProfile> profileList = new LinkedList<>();
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             if (MyApplication.getUserProfile().getDependents().size() > 0) {
@@ -190,6 +190,11 @@ public class BookAppointmentActivity
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);
             tv_name.setText("Booking Person");
+            if (profileList.size() >= 2) {
+                sp_name_list.setSelection(1);
+                sp_name_list.setEnabled(false);
+                sp_name_list.setClickable(false);
+            }
         }
 
         btn_book_appointment.setOnClickListener(v -> {

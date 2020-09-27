@@ -11,15 +11,19 @@ import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.FontsOverride;
+
+import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,8 @@ public class MyApplication extends MultiDexApplication {
     public static ActivityCommunicator activityCommunicator;
     public static Location location;
     public static String cityName = "";
+    public static DatabaseHelper dbHandler;
+    public static boolean isLockMode = false;
     public MyApplication() {
         super();
     }
@@ -79,6 +85,11 @@ public class MyApplication extends MultiDexApplication {
         preferences = getSharedPreferences( getPackageName() + "_preferences", MODE_PRIVATE);
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
         location = new Location("");
+        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+        JodaTimeAndroid.init(this);
+        //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
+        MapsInitializer.initialize(this);
+        isLockMode = getKioskModeInfo().isKioskModeEnable();
     }
 
     private Locale getLocaleFromPref() {

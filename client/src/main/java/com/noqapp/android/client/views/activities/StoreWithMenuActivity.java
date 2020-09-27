@@ -75,7 +75,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu);
         initActionsViews(false);
@@ -372,7 +372,7 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
             showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick(boolean isFeedBackScreen) {
-                    LaunchActivity.isLockMode = true;
+                    MyApplication.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
                     kioskModeInfo.setKioskCodeQR(bizStoreElastic.getCodeQR());
                     kioskModeInfo.setKioskModeEnable(true);

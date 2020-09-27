@@ -113,9 +113,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             }
         });
 
-        if (!LaunchActivity.isTablet) {
-            rv_queue_people.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        }
         iv_appointment.setOnClickListener(v1 -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                 return;
@@ -213,6 +210,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
             }
+            if (null != purchaseOrders) {
+                fab_top_bottom.setVisibility(purchaseOrders.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
+            }
         }
         dismissProgress();
     }
@@ -239,6 +239,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 this,
                 jsonTopic.getJsonPaymentPermission());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
+            if (null != purchaseOrders) {
+                fab_top_bottom.setVisibility(purchaseOrders.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
+            }
         } else {
             super.resetList();
         }
@@ -537,6 +540,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
         if (jsonTopic.getServingNumber() > 0) {
             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
+        }
+        if (null != purchaseOrders) {
+            fab_top_bottom.setVisibility(purchaseOrders.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
         }
         dismissProgress();
     }

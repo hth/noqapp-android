@@ -38,14 +38,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.common.cache.Cache;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
-import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
@@ -97,8 +94,6 @@ import com.noqapp.android.common.views.activities.AppsLinksActivity;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.squareup.picasso.Picasso;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -116,7 +111,6 @@ public class LaunchActivity
         implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter,
         SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
-    public static DatabaseHelper dbHandler;
     public static Locale locale;
     public static SharedPreferences languagePref;
     public static String language;
@@ -135,7 +129,6 @@ public class LaunchActivity
     private List<MenuDrawer> menuDrawerItems = new ArrayList<>();
     public static String COUNTRY_CODE = Constants.DEFAULT_COUNTRY_CODE;
     public static String DISTANCE_UNIT = "km";
-    public static boolean isLockMode = false;
     private TextToSpeechHelper textToSpeechHelper;
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
@@ -147,12 +140,7 @@ public class LaunchActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JodaTimeAndroid.init(this);
-        //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
-        MapsInitializer.initialize(this);
-        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
-        isLockMode = MyApplication.getKioskModeInfo().isKioskModeEnable();
         tv_badge = findViewById(R.id.tv_badge);
         tv_location = findViewById(R.id.tv_location);
         ImageView iv_search = findViewById(R.id.iv_search);
@@ -289,7 +277,7 @@ public class LaunchActivity
     }
 
     private void setKioskMode() {
-        if (isLockMode) {
+        if (MyApplication.isLockMode) {
             if (MyApplication.getKioskModeInfo().isLevelUp()) {
                 if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
                     Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
@@ -1069,11 +1057,12 @@ public class LaunchActivity
                 AppUtils.openPlayStore(launchActivity);
                 break;
             case R.drawable.ic_menu_share:
-                if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
+                // @TODO revert the permission changes when permission enabled in manifest
+                //if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
                     AppUtils.shareTheApp(launchActivity);
-                } else {
-                    PermissionUtils.requestStoragePermission(launchActivity);
-                }
+//                } else {
+//                    PermissionUtils.requestStoragePermission(launchActivity);
+//                }
                 break;
             case R.drawable.legal: {
                 Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);

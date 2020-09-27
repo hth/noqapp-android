@@ -30,7 +30,7 @@ public class LoginActivity extends OTPActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         activity = this;
         tv_toolbar_title.setText("Login");

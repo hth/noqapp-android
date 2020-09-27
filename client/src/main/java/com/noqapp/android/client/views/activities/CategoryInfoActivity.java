@@ -117,7 +117,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle  && bundle.getBoolean(IBConstant.KEY_IS_TEMPLE,false)) {
@@ -147,7 +147,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(true);
         queueApiAuthenticCall = new QueueApiAuthenticCall();
-        tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));
+        tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(this, tv_mobile.getText().toString()));
         btn_join_queues.setOnClickListener((View v) -> joinClick());
         btn_register.setOnClickListener((View v) -> register());
         if (null != bundle) {
@@ -227,7 +227,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
-            tv_complete_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString()));
+            tv_complete_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(this, tv_complete_address.getText().toString()));
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             tv_rating.setText(AppUtils.round(rating) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
@@ -369,7 +369,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick(boolean isFeedBackScreen) {
-                    LaunchActivity.isLockMode = true;
+                    MyApplication.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
                     kioskModeInfo.setKioskCodeQR(bizStoreElastic.getCodeQR());
                     kioskModeInfo.setKioskModeEnable(true);

@@ -95,7 +95,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     // Clears notification tray messages
     public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+        if (notificationManager != null) {
+            notificationManager.cancelAll();
+        }
     }
 
     public static void subscribeTopics(String topic) {
@@ -124,7 +126,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
         }
-        clearNotifications(this);
+        clearNotifications(getApplicationContext());
         // Check if message contains a notification payload.
 
         Map<String, String> mappedData = remoteMessage.getData();
@@ -269,8 +271,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     String payload = mappedData.get(FIREBASE_TYPE);
                     String codeQR = mappedData.get(CODE_QR);
 
-                    if (null == LaunchActivity.dbHandler) {
-                        LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+                    if (null == MyApplication.dbHandler) {
+                        MyApplication.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                     }
                     /*
                      * When u==S then it is re-view

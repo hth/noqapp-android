@@ -321,7 +321,6 @@ public class BookAppointmentActivity extends BaseActivity implements
         dismissProgress();
     }
 
-
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
@@ -381,7 +380,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                     data.add(temp.get(i).getShortName());
                 }
             }
-            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
             actv_chief_complaints.setAdapter(adapter1);
             actv_chief_complaints.setThreshold(1);
             actv_chief_complaints.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
@@ -482,7 +481,6 @@ public class BookAppointmentActivity extends BaseActivity implements
         mAlertDialog.show();
     }
 
-
     @Override
     public void findCustomerResponse(JsonProfile jsonProfile) {
         dismissProgress();
@@ -559,7 +557,6 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
     }
 
-
     @Override
     public void userFound(JsonProfile jsonProfile) {
         findCustomerResponse(jsonProfile);
@@ -579,7 +576,6 @@ public class BookAppointmentActivity extends BaseActivity implements
             toHour = Integer.parseInt(strToTime.split(":")[0]);
             toMinute = Integer.parseInt(strToTime.split(":")[1]);
 
-
             Calendar calendar2 = Calendar.getInstance();
             calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
             calendar2.set(Calendar.MINUTE, fromMinute);
@@ -598,7 +594,6 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
         return 0;
     }
-
 
     private String getEndTime(int slotMinute, String strFromTime) {
         try {
