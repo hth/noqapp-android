@@ -29,13 +29,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.CustomerPriorityLevelEnum;
@@ -66,7 +67,6 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
-import com.noqapp.android.merchant.views.adapters.BasePeopleInQAdapter;
 import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.ApproveCustomerPresenter;
@@ -84,6 +84,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,
         RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack, ApproveCustomerPresenter {
 
+    protected final int MIN_LIST_SIZE = 1;
     protected Context context;
     protected TextView tv_create_token;
     protected Button btn_create_token, btn_create_another;
@@ -115,6 +116,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     protected FrameLayout fl_appointment;
     private ImageView iv_settings;
     private BusinessCustomerApiCalls businessCustomerApiCalls;
+    protected FloatingActionButton fab_top_bottom;
+    protected boolean isScrollToBottom = true;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -148,12 +151,41 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         tv_appointment_count = itemView.findViewById(R.id.tv_appointment_count);
         fl_appointment = itemView.findViewById(R.id.fl_appointment);
         chronometer = itemView.findViewById(R.id.chronometer);
+        fab_top_bottom = itemView.findViewById(R.id.fab_top_bottom);
+        fab_top_bottom.setOnClickListener(v -> {
+            if(isScrollToBottom) {
+                rv_queue_people.smoothScrollToPosition(rv_queue_people.getAdapter().getItemCount() - 1);
+                isScrollToBottom = false;
+                fab_top_bottom.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.arrow_up_float));
+            }else{
+                rv_queue_people.smoothScrollToPosition(0);
+                isScrollToBottom = true;
+                fab_top_bottom.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.arrow_down_float));
+            }
+        });
 
         rv_queue_people = itemView.findViewById(R.id.rv_queue_people);
         tv_counter_name = itemView.findViewById(R.id.tv_counter_name);
         rv_queue_people.setHasFixedSize(true);
         rv_queue_people.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rv_queue_people.setItemAnimator(new DefaultItemAnimator());
+        rv_queue_people.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                    Log.d("-----","end");
+                    isScrollToBottom = false;
+                    fab_top_bottom.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.arrow_up_float));
+                }
+                if (!recyclerView.canScrollVertically(-1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                    Log.d("-----","top");
+                    isScrollToBottom = true;
+                    fab_top_bottom.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.arrow_down_float));
+                }
+            }
+        });
         btn_skip = itemView.findViewById(R.id.btn_skip);
         btn_next = itemView.findViewById(R.id.btn_next);
         btn_start = itemView.findViewById(R.id.btn_start);
@@ -287,6 +319,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                         jsonTopic.getJsonDataVisibility(),
                         jsonTopic.getJsonPaymentPermission());
                 rv_queue_people.setAdapter(peopleInQAdapter);
+                if (null != jsonQueuedPersonArrayList) {
+                    fab_top_bottom.setVisibility(jsonQueuedPersonArrayList.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
+                }
             }
         } else {
             new ErrorResponseHandler().processError(getActivity(), eej);
@@ -403,6 +438,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             // if (null == peopleInQAdapter) {
                  peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
                  rv_queue_people.setAdapter(peopleInQAdapter);
+            if (null != jsonQueuedPersonArrayList) {
+                fab_top_bottom.setVisibility(jsonQueuedPersonArrayList.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
+            }
 //            } else {
 //                peopleInQAdapter.updateDataSet(jsonQueuedPersonArrayList,jsonTopic);
 //            }
@@ -667,6 +705,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 jsonTopic.getJsonDataVisibility(),
                 jsonTopic.getJsonPaymentPermission());
         rv_queue_people.setAdapter(peopleInQAdapter);
+        if (null != jsonQueuedPersonArrayList) {
+            fab_top_bottom.setVisibility(jsonQueuedPersonArrayList.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
