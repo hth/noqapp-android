@@ -86,7 +86,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
@@ -160,7 +160,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         initActionsViews(true);
         iv_home.setOnClickListener((View v) -> {
             Intent goToA = new Intent(OrderConfirmActivity.this, LaunchActivity.class);
-            if (LaunchActivity.isLockMode) {
+            if (MyApplication.isLockMode) {
                 goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             } else {
                 goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -536,7 +536,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     }
 
     private void closeKioskScreen() {
-        if (LaunchActivity.isLockMode) {
+        if (MyApplication.isLockMode) {
             Handler handler = new Handler();
 
             handler.postDelayed(() -> {

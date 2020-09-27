@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class ChangeLanguageActivity extends BaseActivity implements LanguageAdapter.OnItemClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_change_language);
         initActionsViews(false);

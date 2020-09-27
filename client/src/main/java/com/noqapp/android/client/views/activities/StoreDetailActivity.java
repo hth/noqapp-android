@@ -74,7 +74,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
         tv_address = findViewById(R.id.tv_address);
@@ -180,8 +180,8 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_toolbar_title.setText(jsonQueue.getDisplayName());
         tv_contact_no.setText(jsonQueue.getStorePhone());
         tv_address.setText(jsonQueue.getStoreAddress());
-        tv_address.setOnClickListener(v -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString()));
-        tv_address_title.setOnClickListener(v -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString()));
+        tv_address.setOnClickListener(v -> AppUtils.openAddressInMap(this, tv_address.getText().toString()));
+        tv_address_title.setOnClickListener(v -> AppUtils.openAddressInMap(this, tv_address.getText().toString()));
         tv_store_address.setText(AppUtils.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_known_for.setText(jsonQueue.getFamousFor());

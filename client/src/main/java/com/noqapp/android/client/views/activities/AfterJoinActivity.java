@@ -135,7 +135,7 @@ public class AfterJoinActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
         new InitPaymentGateway().execute();
@@ -299,7 +299,7 @@ public class AfterJoinActivity
             iv_home.setOnClickListener((View v) -> {
                 MyApplication.activityCommunicator = null;
                 Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
-                if (LaunchActivity.isLockMode) {
+                if (MyApplication.isLockMode) {
                     goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 } else {
                     goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

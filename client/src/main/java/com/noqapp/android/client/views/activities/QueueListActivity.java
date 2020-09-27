@@ -37,7 +37,7 @@ public class QueueListActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_list);
         initActionsViews(true);
@@ -135,7 +135,7 @@ public class QueueListActivity extends BaseActivity implements
             case BK:
             case PW:
                 // open hospital profile
-                if (LaunchActivity.isLockMode) {
+                if (MyApplication.isLockMode) {
                     in = new Intent(this, KioskJoinActivity.class);
                 } else {
                     in = new Intent(this, BeforeJoinActivity.class);

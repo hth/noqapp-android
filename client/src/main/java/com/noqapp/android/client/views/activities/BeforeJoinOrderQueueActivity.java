@@ -79,7 +79,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_join_order_q);
         swipeRefreshLayout = findViewById(R.id.refresh);

@@ -21,7 +21,7 @@ public class NotificationActivity extends BaseActivity implements NotificationLi
     private ListView listview;
     private RelativeLayout rl_empty;
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         initActionsViews(false);

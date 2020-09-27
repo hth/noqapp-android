@@ -34,7 +34,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
         initActionsViews(true);
@@ -70,9 +70,9 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                     tv_address.setText(AppUtils.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
             }
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonSchedule.getJsonQueueDisplay().getCountryShortName(), jsonSchedule.getJsonQueueDisplay().getStorePhone()));
-            tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString()));
+            tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(this, tv_mobile.getText().toString()));
             tv_patient_name.setText(jsonSchedule.getJsonProfile().getName());
-            tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress()));
+            tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(this, jsonQueueDisplay.getStoreAddress()));
 
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(Objects.requireNonNull(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())));

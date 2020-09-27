@@ -62,7 +62,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private GPSTracker gpsTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         RecyclerView rv_search = findViewById(R.id.rv_search);
@@ -146,7 +146,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             }
             return false;
         });
-        if (LaunchActivity.isLockMode) {
+        if (MyApplication.isLockMode) {
             tv_auto.setVisibility(View.GONE);
             autoCompleteTextView.setVisibility(View.GONE);
             edt_search.setText(getIntent().getStringExtra("searchString"));
@@ -221,7 +221,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             case BK:
             case HS:
             case PW:
-                if (LaunchActivity.isLockMode) {
+                if (MyApplication.isLockMode) {
                     in = new Intent(this, KioskJoinActivity.class);
                 } else {
                     in = new Intent(this, BeforeJoinActivity.class);
@@ -330,7 +330,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
 
     private void applySearch(){
-        if (LaunchActivity.isLockMode) {
+        if (MyApplication.isLockMode) {
             performKioskSearch();
         } else {
             performSearch();

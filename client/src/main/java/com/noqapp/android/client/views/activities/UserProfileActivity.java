@@ -53,7 +53,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         tv_name = findViewById(R.id.tv_name);

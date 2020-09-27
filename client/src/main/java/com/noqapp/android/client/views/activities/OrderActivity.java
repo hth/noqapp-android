@@ -106,7 +106,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);

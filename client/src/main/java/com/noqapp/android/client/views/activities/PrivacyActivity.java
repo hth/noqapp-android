@@ -16,7 +16,7 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy);
         TextView tv_security_info = findViewById(R.id.tv_security_info);

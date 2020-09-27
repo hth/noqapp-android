@@ -67,7 +67,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kiosk_join);
         tv_timer = findViewById(R.id.tv_timer);

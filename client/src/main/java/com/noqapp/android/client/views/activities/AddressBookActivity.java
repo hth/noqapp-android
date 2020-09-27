@@ -39,7 +39,7 @@ public class AddressBookActivity
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addressbook);
         initActionsViews(true);

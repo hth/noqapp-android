@@ -19,7 +19,7 @@ import java.util.List;
 public class AllUsersProfileActivity extends BaseActivity implements ProfileAdapter.OnItemClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_users_profile);
         initActionsViews(false);

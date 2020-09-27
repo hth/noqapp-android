@@ -48,7 +48,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(LaunchActivity.isLockMode);
+        hideSoftKeys(MyApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_survey);
         initActionsViews(false);
