@@ -169,8 +169,7 @@ public class BookAppointmentActivity
         });
         horizontalCalendarView.refresh();
 
-        if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType() ||
-                BusinessTypeEnum.HS == bizStoreElastic.getBusinessType()) {
+        if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType() || BusinessTypeEnum.HS == bizStoreElastic.getBusinessType()) {
             List<JsonProfile> profileList = new LinkedList<>();
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             if (MyApplication.getUserProfile().getDependents().size() > 0) {
