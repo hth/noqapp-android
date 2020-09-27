@@ -1057,11 +1057,12 @@ public class LaunchActivity
                 AppUtils.openPlayStore(launchActivity);
                 break;
             case R.drawable.ic_menu_share:
-                if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
+                // @TODO revert the permission changes when permission enabled in manifest
+                //if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
                     AppUtils.shareTheApp(launchActivity);
-                } else {
-                    PermissionUtils.requestStoragePermission(launchActivity);
-                }
+//                } else {
+//                    PermissionUtils.requestStoragePermission(launchActivity);
+//                }
                 break;
             case R.drawable.legal: {
                 Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);

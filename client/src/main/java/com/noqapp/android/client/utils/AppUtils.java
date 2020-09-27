@@ -536,33 +536,46 @@ public class AppUtils extends CommonHelper {
     }
 
     public static void shareTheApp(Context context) {
-        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
-        if (drawable instanceof BitmapDrawable) {
-            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            Uri bitmapUri = null;
-            try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
-                file.getParentFile().mkdirs();
-                FileOutputStream out = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-                out.close();
-                if (Build.VERSION.SDK_INT < 24) {
-                    bitmapUri = Uri.fromFile(file);
-                } else {
-                    bitmapUri = Uri.parse(file.getPath()); // Work-around for new SDKs, doesn't work on older ones.
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (bitmapUri != null) {
-                Intent shareIntent = new Intent();
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "I am inviting you to join our app. A simple and secure app developed by us. Check out my app at: https://play.google.com/store/apps/details?id=" + context.getPackageName());
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
-                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                shareIntent.setType("image/*");
-                context.startActivity(Intent.createChooser(shareIntent, "Share my app"));
-            }
+        // @TODO revert the below changes when permission enabled in manifest
+//        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
+//        if (drawable instanceof BitmapDrawable) {
+//            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+//            Uri bitmapUri = null;
+//            try {
+//                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+//                file.getParentFile().mkdirs();
+//                FileOutputStream out = new FileOutputStream(file);
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+//                out.close();
+//                if (Build.VERSION.SDK_INT < 24) {
+//                    bitmapUri = Uri.fromFile(file);
+//                } else {
+//                    bitmapUri = Uri.parse(file.getPath()); // Work-around for new SDKs, doesn't work on older ones.
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            if (bitmapUri != null) {
+//                Intent shareIntent = new Intent();
+//                shareIntent.putExtra(Intent.EXTRA_TEXT, "I am inviting you to join our app. A simple and secure app developed by us. Check out my app at: https://play.google.com/store/apps/details?id=" + context.getPackageName());
+//                shareIntent.setAction(Intent.ACTION_SEND);
+//                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+//                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                shareIntent.setType("image/*");
+//                context.startActivity(Intent.createChooser(shareIntent, "Share my app"));
+//            }
+//        }
+        // @TODO revert the below changes when permission enabled in manifest
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NoQueue App");
+            String shareMessage= "\"I am inviting you to join NoQueue app. A simple and secure app developed by NoQueue Technologies. Check out my app at: https://play.google.com/store/apps/details?id=" + context.getPackageName();
+            Log.d("Share app", shareMessage);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
