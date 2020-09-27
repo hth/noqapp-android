@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'net.danlew:android.joda:2.10.6'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.9'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.10'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'com.itextpdf:itextg:5.5.10'
@@ -49,9 +49,9 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'org.mockito:mockito-android:3.5.11'
+    androidTestImplementation 'org.mockito:mockito-android:3.5.13'
 
-    testImplementation 'org.mockito:mockito-core:3.5.11'
+    testImplementation 'org.mockito:mockito-core:3.5.13'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
 
