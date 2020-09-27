@@ -153,11 +153,11 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         chronometer = itemView.findViewById(R.id.chronometer);
         fab_top_bottom = itemView.findViewById(R.id.fab_top_bottom);
         fab_top_bottom.setOnClickListener(v -> {
-            if(isScrollToBottom) {
+            if (isScrollToBottom) {
                 rv_queue_people.smoothScrollToPosition(rv_queue_people.getAdapter().getItemCount() - 1);
                 isScrollToBottom = false;
                 fab_top_bottom.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.arrow_up_float));
-            }else{
+            } else {
                 rv_queue_people.smoothScrollToPosition(0);
                 isScrollToBottom = true;
                 fab_top_bottom.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.arrow_down_float));
@@ -174,13 +174,13 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
-                    Log.d("-----","end");
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Log.d("-----", "end");
                     isScrollToBottom = false;
                     fab_top_bottom.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.arrow_up_float));
                 }
-                if (!recyclerView.canScrollVertically(-1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
-                    Log.d("-----","top");
+                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Log.d("-----", "top");
                     isScrollToBottom = true;
                     fab_top_bottom.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.arrow_down_float));
                 }
@@ -436,8 +436,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             tv_appointment_count.setText(String.valueOf(jsonQueuePersonList.getAppointmentCountForToday()));
             Collections.sort(jsonQueuedPersonArrayList, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
             // if (null == peopleInQAdapter) {
-                 peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
-                 rv_queue_people.setAdapter(peopleInQAdapter);
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic);
+            rv_queue_people.setAdapter(peopleInQAdapter);
             if (null != jsonQueuedPersonArrayList) {
                 fab_top_bottom.setVisibility(jsonQueuedPersonArrayList.size() > MIN_LIST_SIZE ? View.VISIBLE : View.GONE);
             }
