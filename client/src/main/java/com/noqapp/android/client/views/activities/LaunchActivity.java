@@ -107,9 +107,9 @@ import io.nlopez.smartlocation.location.config.LocationParams;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class LaunchActivity
-        extends NoQueueBaseActivity
-        implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+    extends NoQueueBaseActivity
+    implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter,
+    SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static Locale locale;
     public static SharedPreferences languagePref;
@@ -150,7 +150,7 @@ public class LaunchActivity
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
         } else {
-            COUNTRY_CODE = "IN";
+            COUNTRY_CODE = getCountryCode();
         }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
@@ -163,27 +163,27 @@ public class LaunchActivity
         }
 
         //NoQueueBaseActivity.saveMailAuth("","");
-        if (TextUtils.isEmpty(MyApplication.getDeviceId())) {
-           // Log.v("Device id check", MyApplication.getDeviceId());
+        if (TextUtils.isEmpty(AppInitialize.getDeviceId())) {
+            // Log.v("Device id check", MyApplication.getDeviceId());
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(
                 new DeviceToken(
-                    MyApplication.getTokenFCM(),
+                    AppInitialize.getTokenFCM(),
                     Constants.appVersion(),
-                    CommonHelper.getLocation(MyApplication.location.getLatitude(), MyApplication.location.getLongitude())));
+                    CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
         }
 
         if (null != getIntent().getExtras()) {
-            if (!TextUtils.isEmpty(getIntent().getStringExtra(MyApplication.TOKEN_FCM))) {
-                MyApplication.setTokenFCM(getIntent().getStringExtra(MyApplication.TOKEN_FCM));
+            if (!TextUtils.isEmpty(getIntent().getStringExtra(AppInitialize.TOKEN_FCM))) {
+                AppInitialize.setTokenFCM(getIntent().getStringExtra(AppInitialize.TOKEN_FCM));
             }
 
             if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
-                MyApplication.setDeviceID(getIntent().getStringExtra("deviceId"));
+                AppInitialize.setDeviceID(getIntent().getStringExtra("deviceId"));
             }
         }
-        MyApplication.setReviewShown(false);//Reset the flag when app is killed
+        AppInitialize.setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
         fcmNotificationReceiver = new FcmNotificationReceiver();
         fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
@@ -218,7 +218,7 @@ public class LaunchActivity
         }
         // @TODO revert this location changes
         //callLocationManager();
-        ((MyApplication) getApplication()).setLocale(this);
+        ((AppInitialize) getApplication()).setLocale(this);
         iv_search.setOnClickListener(this);
         tv_location.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
@@ -262,13 +262,16 @@ public class LaunchActivity
         }
         if (null != getIntent().getExtras()) {
             try {
-                MyApplication.location.setLatitude(getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE));
-                MyApplication.location.setLongitude(getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE));
-                MyApplication.cityName = CommonHelper.getAddress(MyApplication.location.getLatitude(),
-                        MyApplication.location.getLongitude(), this);
-                Log.d(TAG, "Launch Activity City Name =" + MyApplication.cityName);
+                AppInitialize.location.setLatitude(getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE));
+                AppInitialize.location.setLongitude(getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE));
+                AppInitialize.cityName = CommonHelper.getAddress(
+                    AppInitialize.location.getLatitude(),
+                    AppInitialize.location.getLongitude(),
+                    this);
+
+                Log.d(TAG, "Launch Activity City Name =" + AppInitialize.cityName);
                 //updateLocationUI();
-                tv_location.setText(MyApplication.cityName);
+                tv_location.setText(AppInitialize.cityName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -277,27 +280,27 @@ public class LaunchActivity
     }
 
     private void setKioskMode() {
-        if (MyApplication.isLockMode) {
-            if (MyApplication.getKioskModeInfo().isLevelUp()) {
-                if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
+        if (AppInitialize.isLockMode) {
+            if (AppInitialize.getKioskModeInfo().isLevelUp()) {
+                if (AppInitialize.getKioskModeInfo().isFeedbackScreen()) {
                     Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
+                    in.putExtra(IBConstant.KEY_CODE_QR, AppInitialize.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 } else {
-                    MyApplication.clearPreferences();
+                    AppInitialize.clearPreferences();
                     Intent in = new Intent(LaunchActivity.this, CategoryInfoKioskModeActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
+                    in.putExtra(IBConstant.KEY_CODE_QR, AppInitialize.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 }
             } else {
-                if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
+                if (AppInitialize.getKioskModeInfo().isFeedbackScreen()) {
                     Intent in = new Intent(LaunchActivity.this, SurveyKioskModeActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
+                    in.putExtra(IBConstant.KEY_CODE_QR, AppInitialize.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 } else {
-                    MyApplication.clearPreferences();
+                    AppInitialize.clearPreferences();
                     Intent in = new Intent(LaunchActivity.this, StoreWithMenuKioskActivity.class);
-                    in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
+                    in.putExtra(IBConstant.KEY_CODE_QR, AppInitialize.getKioskModeInfo().getKioskCodeQR());
                     startActivity(in);
                 }
             }
@@ -306,8 +309,8 @@ public class LaunchActivity
 
     public void updateLocationUI() {
         if (null != homeFragment) {
-            homeFragment.updateUIWithNewLocation(MyApplication.location.getLatitude(),
-                    MyApplication.location.getLongitude(), MyApplication.cityName);
+            homeFragment.updateUIWithNewLocation(AppInitialize.location.getLatitude(),
+                AppInitialize.location.getLongitude(), AppInitialize.cityName);
             //tv_location.setText(cityName);
         }
     }
@@ -315,21 +318,21 @@ public class LaunchActivity
     public void updateLocationInfo(double lat, double lng, String city) {
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
         getSupportActionBar().show();
-        MyApplication.location.setLatitude(lat);
-        MyApplication.location.setLongitude(lng);
-        MyApplication.cityName = city;
-        tv_location.setText(MyApplication.cityName);
-        LocationPref locationPref = MyApplication.getLocationPreference()
-            .setCity(MyApplication.cityName)
+        AppInitialize.location.setLatitude(lat);
+        AppInitialize.location.setLongitude(lng);
+        AppInitialize.cityName = city;
+        tv_location.setText(AppInitialize.cityName);
+        LocationPref locationPref = AppInitialize.getLocationPreference()
+            .setCity(AppInitialize.cityName)
             .setLatitude(lat)
             .setLongitude(lng);
-        MyApplication.setLocationPreference(locationPref);
+        AppInitialize.setLocationPreference(locationPref);
         updateLocationUI();
     }
 
     private void callLocationManager() {
         if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         ) {
             ActivityCompat.requestPermissions(this, new String[]{PermissionUtils.LOCATION_PERMISSION}, PermissionUtils.PERMISSION_REQUEST_LOCATION);
             return;
@@ -350,11 +353,13 @@ public class LaunchActivity
             .config(builder.build())
             .start(location -> {
                 if (null != location) {
-                    MyApplication.location.setLatitude(location.getLatitude());
-                    MyApplication.location.setLongitude(location.getLongitude());
+                    AppInitialize.location.setLatitude(location.getLatitude());
+                    AppInitialize.location.setLongitude(location.getLongitude());
                     Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                    MyApplication.cityName = CommonHelper.getAddress(MyApplication.location.getLatitude(),
-                            MyApplication.location.getLongitude(), this);
+                    AppInitialize.cityName = CommonHelper.getAddress(
+                        AppInitialize.location.getLatitude(),
+                        AppInitialize.location.getLongitude(),
+                        this);
                     updateLocationUI();
                 }
             });
@@ -435,8 +440,8 @@ public class LaunchActivity
             if (resultCode == RESULT_OK) {
                 String intent_qrCode = data.getExtras().getString(Constants.QRCODE);
                 String token = data.getExtras().getString(Constants.TOKEN);
-                if (MyApplication.activityCommunicator != null) {
-                    MyApplication.activityCommunicator.requestProcessed(intent_qrCode, token);
+                if (AppInitialize.activityCommunicator != null) {
+                    AppInitialize.activityCommunicator.requestProcessed(intent_qrCode, token);
                 }
             }
         }
@@ -499,9 +504,9 @@ public class LaunchActivity
 
         ReviewData reviewData = ReviewDB.getPendingReview();
         /* Shown only one time if the review is canceled */
-        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !MyApplication.isReviewShown() && !MyApplication.getShowHelper()) {
+        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !AppInitialize.isReviewShown() && !AppInitialize.getShowHelper()) {
             callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
-            Log.d("onResume review screen","review screen called");
+            Log.d("onResume review screen", "review screen called");
         }
 
         ReviewData reviewDataSkip = ReviewDB.getSkippedQueue();
@@ -514,17 +519,17 @@ public class LaunchActivity
 
     public void updateDrawerUI() {
         if (UserUtils.isLogin()) {
-            tv_email.setText(MyApplication.getActualMail());
-            tv_name.setText(MyApplication.getUserName());
+            tv_email.setText(AppInitialize.getActualMail());
+            tv_name.setText(AppInitialize.getUserName());
         } else {
             tv_email.setText("Please login");
             tv_name.setText("Guest User");
         }
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
-            if (!TextUtils.isEmpty(MyApplication.getUserProfileUri())) {
+            if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, MyApplication.getUserProfileUri()))
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
                     .placeholder(ImageUtils.getProfilePlaceholder(this))
                     .error(ImageUtils.getProfileErrorPlaceholder(this))
                     .into(iv_profile);
@@ -551,7 +556,7 @@ public class LaunchActivity
 //        if(null != fcmNotificationReceiver)
 //            fcmNotificationReceiver.unregister(this);
         super.onPause();
-       // languagePref.unregisterOnSharedPreferenceChangeListener(this);
+        // languagePref.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -566,8 +571,10 @@ public class LaunchActivity
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (f instanceof ChangeLocationFragment) {
-            updateLocationInfo(MyApplication.location.getLatitude(),
-                    MyApplication.location.getLongitude(), MyApplication.cityName);
+            updateLocationInfo(
+                AppInitialize.location.getLatitude(),
+                AppInitialize.location.getLongitude(),
+                AppInitialize.cityName);
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -683,7 +690,7 @@ public class LaunchActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("pref_language")) {
-            ((MyApplication) getApplication()).setLocale(this);
+            ((AppInitialize) getApplication()).setLocale(this);
             this.recreate();
         }
     }
@@ -764,8 +771,8 @@ public class LaunchActivity
                         NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                     }
 
-                    if (MyApplication.activityCommunicator != null) {
-                        boolean isUpdated = MyApplication.activityCommunicator.updateUI(codeQR, jtk, go_to);
+                    if (AppInitialize.activityCommunicator != null) {
+                        boolean isUpdated = AppInitialize.activityCommunicator.updateUI(codeQR, jtk, go_to);
 
                         if (isUpdated || (jtk.getServingNumber() == jtk.getToken())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
@@ -777,7 +784,7 @@ public class LaunchActivity
                                     Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
                                     blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     getApplicationContext().startActivity(blinker);
-                                    if (MyApplication.isMsgAnnouncementEnable()) {
+                                    if (AppInitialize.isMsgAnnouncementEnable()) {
                                         makeAnnouncement(jsonTextToSpeeches, msgId);
                                     }
                                 } else {
@@ -798,7 +805,7 @@ public class LaunchActivity
                                 Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
                                 blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getApplicationContext().startActivity(blinker);
-                                if (MyApplication.isMsgAnnouncementEnable()) {
+                                if (AppInitialize.isMsgAnnouncementEnable()) {
                                     makeAnnouncement(jsonTextToSpeeches, msgId);
                                 }
                             }
@@ -834,10 +841,9 @@ public class LaunchActivity
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(
                 new DeviceToken(
-                        MyApplication.getTokenFCM(),
+                    AppInitialize.getTokenFCM(),
                     Constants.appVersion(),
-                    CommonHelper.getLocation(MyApplication.location.getLatitude(),
-                            MyApplication.location.getLongitude())));
+                    CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -881,18 +887,18 @@ public class LaunchActivity
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Device register", "deviceRegister Success");
-            MyApplication.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
-            Log.d(TAG, "Launch device register City Name=" + MyApplication.cityName);
+            AppInitialize.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
+            Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
 
-            LocationPref locationPref = MyApplication.getLocationPreference()
-                .setCity(MyApplication.cityName)
+            LocationPref locationPref = AppInitialize.getLocationPreference()
+                .setCity(AppInitialize.cityName)
                 .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                 .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
-            MyApplication.setLocationPreference(locationPref);
-            MyApplication.setDeviceID(deviceRegistered.getDeviceId());
-            MyApplication.location.setLatitude(locationPref.getLatitude());
-            MyApplication.location.setLongitude(locationPref.getLongitude());
-            tv_location.setText(MyApplication.cityName);
+            AppInitialize.setLocationPreference(locationPref);
+            AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
+            AppInitialize.location.setLatitude(locationPref.getLatitude());
+            AppInitialize.location.setLongitude(locationPref.getLongitude());
+            tv_location.setText(AppInitialize.cityName);
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
             new CustomToast().showToast(this, "Device register error: ");
@@ -929,7 +935,7 @@ public class LaunchActivity
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
         menuDrawerItems.add(new MenuDrawer(getString(R.string.title_activity_contact_us), true, false, R.drawable.contact_us));
-        if(!AppUtils.isRelease()) {
+        if (!AppUtils.isRelease()) {
             menuDrawerItems.add(new MenuDrawer(getString(R.string.noqueue_apps), true, false, R.drawable.apps));
         }
 
@@ -1000,7 +1006,7 @@ public class LaunchActivity
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
                     public void btnPositiveClick() {
-                        MyApplication.clearPreferences();
+                        AppInitialize.clearPreferences();
                         Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                         startActivity(loginIntent);
                     }
@@ -1059,7 +1065,7 @@ public class LaunchActivity
             case R.drawable.ic_menu_share:
                 // @TODO revert the permission changes when permission enabled in manifest
                 //if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
-                    AppUtils.shareTheApp(launchActivity);
+                AppUtils.shareTheApp(launchActivity);
 //                } else {
 //                    PermissionUtils.requestStoragePermission(launchActivity);
 //                }
@@ -1188,8 +1194,8 @@ public class LaunchActivity
 
                             callReviewActivity(codeQR, token);
                             /* this code is added to close the join & after join screen if the request is processed */
-                            if (MyApplication.activityCommunicator != null) {
-                                MyApplication.activityCommunicator.requestProcessed(codeQR, token);
+                            if (AppInitialize.activityCommunicator != null) {
+                                AppInitialize.activityCommunicator.requestProcessed(codeQR, token);
                             }
                         } else if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                             ReviewData reviewData = ReviewDB.getValue(codeQR, token);
@@ -1243,8 +1249,8 @@ public class LaunchActivity
                              * this code is added to close the join & after join screen if the request is processed
                              * Update the order screen/ Join Screen if open
                              */
-                            if (MyApplication.activityCommunicator != null) {
-                                MyApplication.activityCommunicator.requestProcessed(codeQR, token);
+                            if (AppInitialize.activityCommunicator != null) {
+                                AppInitialize.activityCommunicator.requestProcessed(codeQR, token);
                             }
                         }
                     } else if (jsonData instanceof JsonTopicOrderData) {
@@ -1297,7 +1303,7 @@ public class LaunchActivity
 
     public static String getCountryCode() {
         if (UserUtils.isLogin()) {
-            return MyApplication.getCountryShortName();
+            return AppInitialize.getCountryShortName();
         } else {
             try {
                 final TelephonyManager tm = (TelephonyManager) launchActivity.getSystemService(Context.TELEPHONY_SERVICE);

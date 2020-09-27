@@ -34,7 +34,7 @@ import java.util.Locale;
 /**
  * Created by chandra on 5/20/17.
  */
-public class MyApplication extends MultiDexApplication {
+public class AppInitialize extends MultiDexApplication {
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
@@ -63,7 +63,7 @@ public class MyApplication extends MultiDexApplication {
     public static DatabaseHelper dbHandler;
     public static boolean isLockMode = false;
 
-    public MyApplication() {
+    public AppInitialize() {
         super();
     }
 

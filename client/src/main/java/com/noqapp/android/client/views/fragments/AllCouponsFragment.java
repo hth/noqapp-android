@@ -18,12 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
 import com.noqapp.android.client.presenter.beans.body.Location;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.MyApplication;
+import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.adapters.AllCouponsAdapter;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.JsonCoupon;
@@ -65,16 +63,16 @@ public class AllCouponsFragment
             ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
             clientCouponApiCalls.setCouponPresenter(this);
             Location location = new Location();
-            if (TextUtils.isEmpty(MyApplication.cityName)) {
-                LocationPref locationPref = MyApplication.getLocationPreference();
+            if (TextUtils.isEmpty(AppInitialize.cityName)) {
+                LocationPref locationPref = AppInitialize.getLocationPreference();
                 location.setLatitude(String.valueOf(locationPref.getLatitude()))
                     .setLongitude(String.valueOf(locationPref.getLongitude()))
                     .setCityName(locationPref.getCity());
                 tv_location_enable.setVisibility(View.VISIBLE);
             } else {
-                location.setLatitude(String.valueOf(MyApplication.location.getLatitude()))
-                    .setLongitude(String.valueOf(MyApplication.location.getLongitude()))
-                    .setCityName(MyApplication.cityName);
+                location.setLatitude(String.valueOf(AppInitialize.location.getLatitude()))
+                    .setLongitude(String.valueOf(AppInitialize.location.getLongitude()))
+                    .setCityName(AppInitialize.cityName);
                 tv_location_enable.setVisibility(View.GONE);
             }
             String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);

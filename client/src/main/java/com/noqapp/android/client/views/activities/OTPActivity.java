@@ -69,7 +69,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         actionbarBack = findViewById(R.id.actionbarBack);
@@ -307,7 +307,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
                 Bundle params = new Bundle();
                 params.putBoolean("Phone", true);
-                MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
+                AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
 
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

@@ -74,6 +74,7 @@ import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.io.Serializable;
@@ -85,8 +86,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public abstract class BaseLaunchActivity
-        extends AppCompatActivity
-        implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+    extends AppCompatActivity
+    implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
     private static SharedPreferences sharedpreferences;
     protected List<MenuDrawer> menuDrawerItems = new ArrayList<>();
@@ -171,7 +172,7 @@ public abstract class BaseLaunchActivity
         deviceApiCalls = new DeviceApiCalls();
         deviceApiCalls.setAppBlacklistPresenter(this);
 
-        if (!language.equals("")) {
+        if (StringUtils.isNotBlank(language)) {
             if (language.equals("hi")) {
                 language = "hi";
                 locale = new Locale("hi");
@@ -183,7 +184,7 @@ public abstract class BaseLaunchActivity
             locale = Locale.ENGLISH;
             language = "en_US";
         }
-        ((MyApplication) getApplication()).setLocale(this);
+        ((AppInitialize) getApplication()).setLocale(this);
         fcmNotificationReceiver = new FcmNotificationReceiver();
         fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
@@ -390,9 +391,9 @@ public abstract class BaseLaunchActivity
             return false;
         });
         ((TextView) findViewById(R.id.tv_version)).setText(
-                AppUtils.isRelease()
-                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                        : getString(R.string.version_no, "Not for release"));
+            AppUtils.isRelease()
+                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                : getString(R.string.version_no, "Not for release"));
     }
 
     public boolean isOnline() {
@@ -646,11 +647,11 @@ public abstract class BaseLaunchActivity
             String lastno = intent.getStringExtra(Constants.LASTNO);
             String payload = intent.getStringExtra(Constants.FIREBASE_TYPE);
             Log.v("Notify msg background",
-                    "Push notification: " + message + "\n" + "qrcode : " + qrcode
-                            + "\n" + "status : " + status
-                            + "\n" + "current_serving : " + current_serving
-                            + "\n" + "lastno : " + lastno
-                            + "\n" + "payload : " + payload
+                "Push notification: " + message + "\n" + "qrcode : " + qrcode
+                    + "\n" + "status : " + status
+                    + "\n" + "current_serving : " + current_serving
+                    + "\n" + "lastno : " + lastno
+                    + "\n" + "payload : " + payload
             );
 
             JsonData jsonData = (JsonData) intent.getSerializableExtra("jsonData");
@@ -706,12 +707,12 @@ public abstract class BaseLaunchActivity
                 try {
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.
-                            parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
+                        parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
                         ShowAlertInformation.showThemePlayStoreDialog(
-                                this,
-                                getString(R.string.playstore_update_title),
-                                getString(R.string.playstore_update_msg),
-                                true);
+                            this,
+                            getString(R.string.playstore_update_title),
+                            getString(R.string.playstore_update_msg),
+                            true);
                     }
                 } catch (Exception e) {
                     Log.e(BaseLaunchActivity.class.getSimpleName(), "Compare version check reason=" + e.getLocalizedMessage(), e);
@@ -873,7 +874,7 @@ public abstract class BaseLaunchActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("pref_language")) {
-            ((MyApplication) getApplication()).setLocale(this);
+            ((AppInitialize) getApplication()).setLocale(this);
             this.recreate();
         }
     }

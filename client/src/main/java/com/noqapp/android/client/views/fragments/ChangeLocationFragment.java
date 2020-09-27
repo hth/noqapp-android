@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,11 +16,10 @@ import androidx.fragment.app.Fragment;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.MyApplication;
+import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.utils.GeoIP;
@@ -46,15 +44,15 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
         tv_toolbar_title.setText(getString(R.string.screen_change_location));
         autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         actionbarBack.setOnClickListener((View v) -> {
-            if (TextUtils.isEmpty(MyApplication.cityName)) {
-                LocationPref locationPref = MyApplication.getLocationPreference();
+            if (TextUtils.isEmpty(AppInitialize.cityName)) {
+                LocationPref locationPref = AppInitialize.getLocationPreference();
                 lat = locationPref.getLatitude();
                 lng = locationPref.getLongitude();
                 city = locationPref.getCity();
             } else {
-                lat = MyApplication.location.getLatitude();
-                lng = MyApplication.location.getLongitude();
-                city = MyApplication.cityName;
+                lat = AppInitialize.location.getLatitude();
+                lng = AppInitialize.location.getLongitude();
+                city = AppInitialize.cityName;
                 AppUtils.hideKeyBoard(getActivity());
             }
             LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city);
@@ -130,7 +128,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
     public void updateLocationUI() {
         // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
         if (gpsTracker.getLatitude() == 0) {
-            LocationPref locationPref = MyApplication.getLocationPreference();
+            LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = locationPref.getLatitude();
             lng = locationPref.getLongitude();
             city = locationPref.getCity();

@@ -14,8 +14,7 @@ import android.widget.Toast;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.MyApplication;
+import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.PermissionUtils;
 
@@ -130,7 +129,7 @@ public class ScannerFragment extends BaseFragment {
                                     }
                                     Bundle params = new Bundle();
                                     params.putString("codeQR", codeQR[3]);
-                                    MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SCAN_STORE_CODE_QR_SCREEN, params);
+                                    AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SCAN_STORE_CODE_QR_SCREEN, params);
                                 }
                             } catch (Exception e) {
                                 Log.e(TAG, "Failed parsing codeQR reason=" + e.getLocalizedMessage(), e);

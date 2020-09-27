@@ -18,7 +18,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
@@ -66,7 +65,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
         initActionsViews(false);
@@ -134,7 +133,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 tv_title.setText(StringUtils.capitalize(queueOrderType + " Detail"));
 
                 if (UserUtils.isLogin()) {
-                    List<JsonProfile> profileList = MyApplication.getAllProfileList();
+                    List<JsonProfile> profileList = AppInitialize.getAllProfileList();
                     tv_details.setText(AppUtils.getNameFromQueueUserID(jtk.getQueueUserId(), profileList) + " with " + queueOrderType + " #" + jtk.getDisplayToken());
                 } else {
                     tv_details.setText("Guest user with " + queueOrderType + " #" + jtk.getDisplayToken());
@@ -160,7 +159,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 if (AppUtils.isRelease()) {
                     Bundle params = new Bundle();
                     params.putString("Business_Type", jtk.getBusinessType().getName());
-                    MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_REVIEW_SCREEN, params);
+                    AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_REVIEW_SCREEN, params);
                 }
             }
         } else {
@@ -246,7 +245,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             finish();
         }*/
         // @TODO revert all 3 below line
-        MyApplication.setReviewShown(true);
+        AppInitialize.setReviewShown(true);
         ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         super.onBackPressed();
@@ -270,7 +269,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     }
 
     private void returnResultBack() {
-        MyApplication.setReviewShown(true);
+        AppInitialize.setReviewShown(true);
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
         intent.putExtra(Constants.TOKEN, String.valueOf(jtk.getToken()));

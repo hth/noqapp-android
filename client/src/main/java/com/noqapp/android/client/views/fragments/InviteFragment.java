@@ -17,8 +17,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.MyApplication;
+import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.activities.WebViewActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.NetworkUtil;
@@ -83,7 +82,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
 
                 Bundle params = new Bundle();
                 params.putString("Code", selectedText);
-                MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_INVITE, params);
+                AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_INVITE, params);
             } catch (ActivityNotFoundException e) {
                 new CustomToast().showToast(getActivity(), getString(R.string.app_missing));
             }

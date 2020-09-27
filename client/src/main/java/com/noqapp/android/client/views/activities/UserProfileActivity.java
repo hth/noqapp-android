@@ -25,6 +25,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.GenderEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -53,7 +54,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         tv_name = findViewById(R.id.tv_name);
@@ -105,9 +106,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        AppUtils.loadProfilePic(iv_profile, MyApplication.getUserProfileUri(), this);
+        AppUtils.loadProfilePic(iv_profile, AppInitialize.getUserProfileUri(), this);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -130,7 +130,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             case R.id.tv_modify_email:
                 Intent changeEmail = new Intent(this, ChangeEmailActivity.class);
                 changeEmail.putExtra("email", edt_Mail.getText().toString());
-                changeEmail.putExtra("isValidated", MyApplication.getUserProfile().isAccountValidated());
+                changeEmail.putExtra("isValidated", AppInitialize.getUserProfile().isAccountValidated());
                 startActivity(changeEmail);
                 break;
 
@@ -141,7 +141,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
-        MyApplication.commitProfile(profile, email, auth);
+        AppInitialize.commitProfile(profile, email, auth);
         dismissProgress();
         updateUI();
     }
@@ -158,7 +158,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
                 new CustomToast().showToast(this, getString(R.string.error_account_block));
-                MyApplication.clearPreferences();
+                AppInitialize.clearPreferences();
                 dismissProgress();
                 finish();//close the current activity
             } else {
@@ -168,8 +168,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void updateUI() {
-        if (MyApplication.getUserProfile() != null && MyApplication.getUserProfile().getUserLevel() != null) {
-            if (MyApplication.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+        if (AppInitialize.getUserProfile() != null && AppInitialize.getUserProfile().getUserLevel() != null) {
+            if (AppInitialize.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 tv_info.setText("Max 10 allowed");
             } else {
                 tv_info.setText("Max 5 allowed");
@@ -179,13 +179,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             authenticationFailure();
         }
 
-        edt_Name.setText(MyApplication.getUserName());
-        tv_name.setText(MyApplication.getUserName());
-        edt_phoneNo.setText(MyApplication.getPhoneNo());
-        edt_Mail.setText(MyApplication.getActualMail());
-        tv_email_verification.setVisibility(MyApplication.showEmailVerificationField() ? View.VISIBLE : View.GONE);
-        tv_modify_email.setVisibility(MyApplication.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
-        if (MyApplication.getMail().endsWith(Constants.MAIL_NOQAPP_COM)) {
+        edt_Name.setText(AppInitialize.getUserName());
+        tv_name.setText(AppInitialize.getUserName());
+        edt_phoneNo.setText(AppInitialize.getPhoneNo());
+        edt_Mail.setText(AppInitialize.getActualMail());
+        tv_email_verification.setVisibility(AppInitialize.showEmailVerificationField() ? View.VISIBLE : View.GONE);
+        tv_modify_email.setVisibility(AppInitialize.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
+        if (AppInitialize.getMail().endsWith(Constants.MAIL_NOQAPP_COM)) {
             tv_email_verification.setVisibility(View.VISIBLE);
             tv_email_verification.setText("Please add your Email Id");
         }
@@ -195,18 +195,18 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         edt_Name.setEnabled(false);
         tv_birthday.setEnabled(false);
         edt_address.setEnabled(false);
-        edt_address.setText(MyApplication.getAddress());
+        edt_address.setText(AppInitialize.getAddress());
         int id;
-        if (MyApplication.getGender().equals("M")) {
+        if (AppInitialize.getGender().equals(GenderEnum.M.name())) {
             id = R.id.tv_male;
-        } else if (MyApplication.getGender().equals("T")) {
+        } else if (AppInitialize.getGender().equals(GenderEnum.T.name())) {
             id = R.id.tv_transgender;
         } else {
             id = R.id.tv_female;
         }
         switch (id) {
             case R.id.tv_male:
-                gender = "M";
+                gender = GenderEnum.M.name();
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.review_color));
@@ -216,7 +216,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 tv_transgender.setTextColor(Color.BLACK);
                 break;
             case R.id.tv_female:
-                gender = "F";
+                gender = GenderEnum.F.name();
                 tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.review_color));
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
@@ -226,7 +226,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 tv_female.setText(getString(R.string.female));
                 break;
             case R.id.tv_transgender:
-                gender = "T";
+                gender = GenderEnum.T.name();
                 tv_transgender.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.review_color));
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
@@ -237,13 +237,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 break;
         }
         try {
-            tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(MyApplication.getUserDOB())));
+            tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(AppInitialize.getUserDOB())));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<JsonProfile> jsonProfiles = MyApplication.getUserProfile().getDependents();
+        List<JsonProfile> jsonProfiles = AppInitialize.getUserProfile().getDependents();
         nameList.clear();
-        nameList.add(MyApplication.getUserName().toUpperCase());
+        nameList.add(AppInitialize.getUserName().toUpperCase());
         ll_dependent.removeAllViews();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
             for (int j = 0; j < jsonProfiles.size(); j++) {
@@ -265,7 +265,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             }
         }
         loadProfilePic();
-        tv_age.setText(CommonHelper.calculateAge(MyApplication.getUserDOB()) + " (" + gender + ")");
+        tv_age.setText(CommonHelper.calculateAge(AppInitialize.getUserDOB()) + " (" + gender + ")");
     }
 
     @Override

@@ -30,7 +30,6 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SurveyActivity extends BaseActivity implements ResponsePresenter, View.OnClickListener {
@@ -48,7 +47,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_survey);
         initActionsViews(false);
@@ -146,8 +145,8 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                     Survey survey = new Survey();
                     survey.setBizNameId(jsonQuestionnaire.getBizNameId());
                     survey.setQuestionnaireId(jsonQuestionnaire.getQuestionnaireId());
-                    survey.setCodeQR(MyApplication.getKioskModeInfo().getKioskCodeQR());
-                    survey.setBizStoreId(MyApplication.getUserProfile().getCodeQRAndBizStoreIds().get(MyApplication.getKioskModeInfo().getKioskCodeQR()));
+                    survey.setCodeQR(AppInitialize.getKioskModeInfo().getKioskCodeQR());
+                    survey.setBizStoreId(AppInitialize.getUserProfile().getCodeQRAndBizStoreIds().get(AppInitialize.getKioskModeInfo().getKioskCodeQR()));
                     survey.setOverallRating(selectPos);
                     survey.setDetailedResponse(getFormData());
                     surveyResponseApiCalls.surveyResponse(UserUtils.getDeviceId(), survey);

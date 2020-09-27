@@ -25,7 +25,6 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.utils.IBConstant;
@@ -62,7 +61,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private GPSTracker gpsTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         RecyclerView rv_search = findViewById(R.id.rv_search);
@@ -146,7 +145,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             }
             return false;
         });
-        if (MyApplication.isLockMode) {
+        if (AppInitialize.isLockMode) {
             tv_auto.setVisibility(View.GONE);
             autoCompleteTextView.setVisibility(View.GONE);
             edt_search.setText(getIntent().getStringExtra("searchString"));
@@ -155,14 +154,14 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         if (AppUtils.isRelease()) {
             Bundle params = new Bundle();
             params.putString(FirebaseAnalytics.Param.SEARCH_TERM, AnalyticsEvents.EVENT_SEARCH);
-            MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
+            AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
         }
         edt_search.requestFocus();
     }
 
     private void initDefaultLatLng() {
         if (null == lat || lng == null) {
-            LocationPref locationPref = MyApplication.getLocationPreference();
+            LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = String.valueOf(locationPref.getLatitude());
             lng = String.valueOf(locationPref.getLongitude());
             city = locationPref.getCity();
@@ -221,7 +220,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             case BK:
             case HS:
             case PW:
-                if (MyApplication.isLockMode) {
+                if (AppInitialize.isLockMode) {
                     in = new Intent(this, KioskJoinActivity.class);
                 } else {
                     in = new Intent(this, BeforeJoinActivity.class);
@@ -330,7 +329,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
 
     private void applySearch(){
-        if (MyApplication.isLockMode) {
+        if (AppInitialize.isLockMode) {
             performKioskSearch();
         } else {
             performSearch();
@@ -342,7 +341,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
         double latitude, longitude;
         if (gpsTracker.getLatitude() == 0) {
-            LocationPref locationPref = MyApplication.getLocationPreference();
+            LocationPref locationPref = AppInitialize.getLocationPreference();
             latitude = locationPref.getLatitude();
             longitude = locationPref.getLongitude();
             city = locationPref.getCity();

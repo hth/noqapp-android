@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SurveyApiCalls;
-import com.noqapp.android.client.model.types.QuestionTypeEnum;
 import com.noqapp.android.client.presenter.SurveyPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
 import com.noqapp.android.client.presenter.beans.SurveyQuestion;
@@ -26,10 +25,8 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.LanguageGridAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class SurveyKioskModeActivity
         extends BaseActivity
@@ -40,7 +37,7 @@ public class SurveyKioskModeActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_kiosk);
         rv_languages = findViewById(R.id.rv_languages);
@@ -52,7 +49,7 @@ public class SurveyKioskModeActivity
         initActionsViews(false);
         actionbarBack.setVisibility(View.INVISIBLE);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
-        tv_store_name.setText(MyApplication.getKioskModeInfo().getBizName());
+        tv_store_name.setText(AppInitialize.getKioskModeInfo().getBizName());
         String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         if (!TextUtils.isEmpty(codeQR)) {
             if (NetworkUtils.isConnectingToInternet(this)) {

@@ -23,7 +23,7 @@ public class MigrateActivity extends OTPActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         activity = this;
         tv_toolbar_title.setText("Migrate Number");
@@ -55,8 +55,8 @@ public class MigrateActivity extends OTPActivity {
             edt_phoneNo.setError(getString(R.string.error_mobile_no_length));
             isValid = false;
         } else {
-            if (PhoneFormatterUtil.phoneNumberWithCountryCode(edt_phoneNo.getText().toString(), countryShortName).
-                    equals(PhoneFormatterUtil.phoneNumberWithCountryCode(MyApplication.getPhoneNo(), MyApplication.getCountryShortName()))) {
+            if (PhoneFormatterUtil.phoneNumberWithCountryCode(edt_phoneNo.getText().toString(), countryShortName)
+                .equals(PhoneFormatterUtil.phoneNumberWithCountryCode(AppInitialize.getPhoneNo(), AppInitialize.getCountryShortName()))) {
                 edt_phoneNo.setError(getString(R.string.error_mobile_no_same));
                 isValid = false;
             }
@@ -67,7 +67,7 @@ public class MigrateActivity extends OTPActivity {
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        MyApplication.commitProfile(profile, email, auth);
+        AppInitialize.commitProfile(profile, email, auth);
         finish();//close the current activity
         dismissProgress();
     }

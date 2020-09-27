@@ -106,7 +106,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
@@ -120,7 +120,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         acrb_online = findViewById(R.id.acrb_online);
         acrb_home_delivery = findViewById(R.id.acrb_home_delivery);
         acrb_take_away = findViewById(R.id.acrb_take_away);
-        JsonUserPreference jsonUserPreference = MyApplication.getUserProfile().getJsonUserPreference();
+        JsonUserPreference jsonUserPreference = AppInitialize.getUserProfile().getJsonUserPreference();
         if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
             acrb_home_delivery.setChecked(true);
             acrb_take_away.setChecked(false);
@@ -145,8 +145,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             }
         });
 
-        if (null != MyApplication.getUserProfile() && null != MyApplication.getUserProfile().getJsonUserAddresses()) {
-            List<JsonUserAddress> jsonUserAddressList = MyApplication.getUserProfile().getJsonUserAddresses();
+        if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().getJsonUserAddresses()) {
+            List<JsonUserAddress> jsonUserAddressList = AppInitialize.getUserProfile().getJsonUserAddresses();
             for (int i = 0; i < jsonUserAddressList.size(); i++) {
                 if (jsonUserAddressList.get(i).getId().equals(jsonUserPreference.getUserAddressId())) {
                     jsonUserAddress = jsonUserAddressList.get(i);
@@ -237,7 +237,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         lv_product.setAdapter(storeProductFinalOrderAdapter);
         checkProductWithZeroPrice();
         tv_place_order.setOnClickListener((View v) -> {
-            if (MyApplication.getUserProfile().isAccountValidated()) {
+            if (AppInitialize.getUserProfile().isAccountValidated()) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                     return;
                 }
@@ -255,7 +255,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
                                     .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                     .setPaymentMode(null) //not required here
-                                    .setCustomerPhone(MyApplication.getPhoneNo())
+                                    .setCustomerPhone(AppInitialize.getPhoneNo())
                                     .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
                             purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
@@ -332,7 +332,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private boolean validateForm() {
         boolean isValid = true;
         tv_address.setError(null);
-        if (!MyApplication.isEmailVerified()) {
+        if (!AppInitialize.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
             isValid = false;
         }
@@ -384,15 +384,15 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     triggerCashPayment();
                 }
                 clientProfileApiCall.setProfilePresenter(this);
-                if (TextUtils.isEmpty(MyApplication.getAddress())) {
+                if (TextUtils.isEmpty(AppInitialize.getAddress())) {
                     String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
                     updateProfile.setAddress(address);
-                    updateProfile.setFirstName(MyApplication.getUserName());
-                    updateProfile.setBirthday(MyApplication.getUserDOB());
-                    updateProfile.setGender(MyApplication.getGender());
+                    updateProfile.setFirstName(AppInitialize.getUserName());
+                    updateProfile.setBirthday(AppInitialize.getUserDOB());
+                    updateProfile.setGender(AppInitialize.getGender());
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                    updateProfile.setQueueUserId(MyApplication.getUserProfile().getQueueUserId());
+                    updateProfile.setQueueUserId(AppInitialize.getUserProfile().getQueueUserId());
                     clientProfileApiCall.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
@@ -442,7 +442,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
-        MyApplication.commitProfile(profile, email, auth);
+        AppInitialize.commitProfile(profile, email, auth);
     }
 
     @Override
@@ -529,9 +529,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         String orderId = jsonPurchaseOrderServer.getTransactionId();
         String orderAmount = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";
-        String customerName = MyApplication.getCustomerNameWithQid(MyApplication.getUserName(), MyApplication.getUserProfile().getQueueUserId());
-        String customerPhone = MyApplication.getOfficePhoneNo();
-        String customerEmail = MyApplication.getOfficeMail();
+        String customerName = AppInitialize.getCustomerNameWithQid(AppInitialize.getUserName(), AppInitialize.getUserProfile().getQueueUserId());
+        String customerPhone = AppInitialize.getOfficePhoneNo();
+        String customerEmail = AppInitialize.getOfficeMail();
 
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_APP_ID, appId);
@@ -604,7 +604,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private void callAddressPreference() {
         ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();
         clientProfileApiCall.setClientPreferencePresenter(this);
-        JsonUserPreference jsonUserPreference = MyApplication.getUserProfile().getJsonUserPreference();
+        JsonUserPreference jsonUserPreference = AppInitialize.getUserProfile().getJsonUserPreference();
         jsonUserPreference.setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO);
         jsonUserPreference.setPaymentMethod(acrb_cash.isChecked() ? PaymentMethodEnum.CA : PaymentMethodEnum.EL);
         if (null != jsonUserAddress) {
@@ -616,9 +616,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void clientPreferencePresenterResponse(JsonUserPreference jsonUserPreference) {
         if (null != jsonUserPreference) {
-            JsonProfile jp = MyApplication.getUserProfile();
+            JsonProfile jp = AppInitialize.getUserProfile();
             jp.setJsonUserPreference(jsonUserPreference);
-            MyApplication.setUserProfile(jp);
+            AppInitialize.setUserProfile(jp);
         }
     }
 }

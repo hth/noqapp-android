@@ -135,7 +135,7 @@ public class AfterJoinActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
         new InitPaymentGateway().execute();
@@ -262,7 +262,7 @@ public class AfterJoinActivity
         queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
         queueApiAuthenticCall = new QueueApiAuthenticCall();
         queueApiAuthenticCall.setQueueJsonPurchaseOrderPresenter(this);
-        MyApplication.activityCommunicator = this;
+        AppInitialize.activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
@@ -279,7 +279,7 @@ public class AfterJoinActivity
             queueUserId = bundle.getStringExtra("qUserId");
             List<JsonProfile> profileList = new ArrayList<>();
             if (UserUtils.isLogin()) {
-                profileList = MyApplication.getAllProfileList();
+                profileList = AppInitialize.getAllProfileList();
             }
 
             if (!TextUtils.isEmpty(queueUserId)) {
@@ -297,9 +297,9 @@ public class AfterJoinActivity
             }
             actionbarBack.setOnClickListener((View v) -> iv_home.performClick());
             iv_home.setOnClickListener((View v) -> {
-                MyApplication.activityCommunicator = null;
+                AppInitialize.activityCommunicator = null;
                 Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
-                if (MyApplication.isLockMode) {
+                if (AppInitialize.isLockMode) {
                     goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 } else {
                     goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -426,7 +426,7 @@ public class AfterJoinActivity
                     String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
                     Bundle params = new Bundle();
                     params.putString("Queue_Name", displayName);
-                    MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_QUEUE, params);
+                    AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_QUEUE, params);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -553,7 +553,7 @@ public class AfterJoinActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApplication.activityCommunicator = null;
+        AppInitialize.activityCommunicator = null;
     }
 
     @Override
@@ -711,16 +711,16 @@ public class AfterJoinActivity
     }
 
     private void triggerOnlinePayment() {
-        if (MyApplication.isEmailVerified()) {
+        if (AppInitialize.isEmailVerified()) {
             String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
             String stage = BuildConfig.CASHFREE_STAGE;
             String appId = BuildConfig.CASHFREE_APP_ID;
             String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
             String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
             String orderNote = "Order: " + queueUserId;
-            String customerName = MyApplication.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
-            String customerPhone = MyApplication.getOfficePhoneNo();
-            String customerEmail = MyApplication.getOfficeMail();
+            String customerName = AppInitialize.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
+            String customerPhone = AppInitialize.getOfficePhoneNo();
+            String customerEmail = AppInitialize.getOfficeMail();
             Map<String, String> params = new HashMap<>();
             params.put(PARAM_APP_ID, appId);
             params.put(PARAM_ORDER_ID, orderId);

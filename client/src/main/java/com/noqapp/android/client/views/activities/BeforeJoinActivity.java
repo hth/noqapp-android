@@ -18,7 +18,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
@@ -85,7 +84,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_join);
         swipeRefreshLayout = findViewById(R.id.refresh);
@@ -434,7 +433,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
     }
 
     private void callAfterJoin() {
-        if (jsonQueue.isEnabledPayment() && !MyApplication.isEmailVerified()) {
+        if (jsonQueue.isEnabledPayment() && !AppInitialize.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else if (!AppUtils.isValidStoreDistanceForUser(jsonQueue)) {
             ShowCustomDialog showCustomDialog = new ShowCustomDialog(this, true);
@@ -454,7 +453,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                     if (AppUtils.isRelease()) {
                         Bundle params = new Bundle();
                         params.putString("Queue_Name", jsonQueue.getDisplayName());
-                        MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
+                        AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
                     }
                 }
 
@@ -478,7 +477,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Queue_Name", jsonQueue.getDisplayName());
-                MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
+                AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
             }
         }
     }
@@ -516,8 +515,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             joinQueue(true);
         }
         if (UserUtils.isLogin()) {
-            List<JsonProfile> profileList = MyApplication.getUserProfile().getDependents();
-            profileList.add(0, MyApplication.getUserProfile());
+            List<JsonProfile> profileList = AppInitialize.getUserProfile().getDependents();
+            profileList.add(0, AppInitialize.getUserProfile());
             profileList.add(0, new JsonProfile().setName("Select Patient"));
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);

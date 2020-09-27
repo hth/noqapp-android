@@ -86,7 +86,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
@@ -140,7 +140,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             OrderConfirmActivity.this,
                             "Merchant have not set the price of the product. Hence payment cannot be proceed");
                 } else {
-                    if (MyApplication.isEmailVerified()) {
+                    if (AppInitialize.isEmailVerified()) {
                         if (isOnline()) {
                             showProgress();
                             setProgressMessage("Starting payment process..");
@@ -156,11 +156,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 }
             }
         });
-        MyApplication.activityCommunicator = this;
+        AppInitialize.activityCommunicator = this;
         initActionsViews(true);
         iv_home.setOnClickListener((View v) -> {
             Intent goToA = new Intent(OrderConfirmActivity.this, LaunchActivity.class);
-            if (MyApplication.isLockMode) {
+            if (AppInitialize.isLockMode) {
                 goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             } else {
                 goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -184,7 +184,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                         Bundle params = new Bundle();
                         params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
-                        MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_PLACE_ORDER, params);
+                        AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_PLACE_ORDER, params);
                     }
                 }
             } else {
@@ -196,7 +196,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             updateUI();
         }
         actionbarBack.setOnClickListener((View v) -> {
-            MyApplication.activityCommunicator = null;
+            AppInitialize.activityCommunicator = null;
             iv_home.performClick();
         });
         btn_cancel_order.setOnClickListener((View v) -> {
@@ -242,7 +242,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                     Bundle params = new Bundle();
                     params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
-                    MyApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_ORDER, params);
+                    AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_ORDER, params);
                 }
             }
         } else {
@@ -363,7 +363,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         //TODO   Revert After Corona crisis
         tv_estimated_time.setVisibility(View.INVISIBLE);
         //
-        LatLng source = new LatLng(MyApplication.location.getLatitude(), MyApplication.location.getLongitude());
+        LatLng source = new LatLng(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude());
         String geoHash = getIntent().getStringExtra("GeoHash");
         LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(geoHash), GeoHashUtils.decodeLongitude(geoHash));
         replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
@@ -378,7 +378,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     public void onBackPressed() {
         super.onBackPressed();
         iv_home.performClick();
-        MyApplication.activityCommunicator = null;
+        AppInitialize.activityCommunicator = null;
     }
 
     @Override
@@ -427,7 +427,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApplication.activityCommunicator = null;
+        AppInitialize.activityCommunicator = null;
     }
 
     @Override
@@ -469,9 +469,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         String orderId = jsonPurchaseOrder.getTransactionId();
         String orderAmount = jsonPurchaseOrder.getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";
-        String customerName = MyApplication.getCustomerNameWithQid(MyApplication.getUserName(), MyApplication.getUserProfile().getQueueUserId());
-        String customerPhone = MyApplication.getOfficePhoneNo();
-        String customerEmail = MyApplication.getOfficeMail();
+        String customerName = AppInitialize.getCustomerNameWithQid(AppInitialize.getUserName(), AppInitialize.getUserProfile().getQueueUserId());
+        String customerPhone = AppInitialize.getOfficePhoneNo();
+        String customerEmail = AppInitialize.getOfficeMail();
 
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_APP_ID, appId);
@@ -536,7 +536,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     }
 
     private void closeKioskScreen() {
-        if (MyApplication.isLockMode) {
+        if (AppInitialize.isLockMode) {
             Handler handler = new Handler();
 
             handler.postDelayed(() -> {

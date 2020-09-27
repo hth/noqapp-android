@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -77,15 +76,15 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
  * Created by chandra on 5/7/17.
  */
 public class CategoryInfoActivity extends BaseActivity implements QueuePresenter,
-        LevelUpQueueAdapter.OnItemClickListener, AuthorizeResponsePresenter {
+    LevelUpQueueAdapter.OnItemClickListener, AuthorizeResponsePresenter {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
-            .maximumSize(1)
-            .build();
+        .maximumSize(1)
+        .build();
     private final Cache<String, Map<String, ArrayList<BizStoreElastic>>> cacheQueue = newBuilder()
-            .maximumSize(1)
-            .build();
+        .maximumSize(1)
+        .build();
 
     private final String QUEUE = "queue";
     private final String CATEGORY = "category";
@@ -117,12 +116,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getBundleExtra("bundle");
-        if (null != bundle  && bundle.getBoolean(IBConstant.KEY_IS_TEMPLE,false)) {
+        if (null != bundle && bundle.getBoolean(IBConstant.KEY_IS_TEMPLE, false)) {
             setContentView(R.layout.activity_category_info_temple);
-        }else{
+        } else {
             setContentView(R.layout.activity_category_info);
         }
         tv_store_name = findViewById(R.id.tv_store_name);
@@ -280,10 +279,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             rcv_facility.setLayoutManager(getFlexBoxLayoutManager());
             rcv_facility.setAdapter(new StaggeredGridAdapter(facilities));
             Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getBannerPlaceholder(this))
-                    .error(ImageUtils.getBannerErrorPlaceholder(this))
-                    .into(iv_category_banner);
+                .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                .placeholder(ImageUtils.getBannerPlaceholder(this))
+                .error(ImageUtils.getBannerErrorPlaceholder(this))
+                .into(iv_category_banner);
             rv_thumb_images.setHasFixedSize(true);
             rv_thumb_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             List<String> storeServiceImages = new ArrayList<>();
@@ -292,10 +291,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
                 // load first image default
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
-                        .placeholder(ImageUtils.getBannerPlaceholder(this))
-                        .error(ImageUtils.getBannerErrorPlaceholder(this))
-                        .into(iv_category_banner);
+                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
+                    .placeholder(ImageUtils.getBannerPlaceholder(this))
+                    .error(ImageUtils.getBannerErrorPlaceholder(this))
+                    .into(iv_category_banner);
             }
 
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
@@ -369,7 +368,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick(boolean isFeedBackScreen) {
-                    MyApplication.isLockMode = true;
+                    AppInitialize.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
                     kioskModeInfo.setKioskCodeQR(bizStoreElastic.getCodeQR());
                     kioskModeInfo.setKioskModeEnable(true);
@@ -377,16 +376,16 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
                     kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
                     kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
-                    MyApplication.setKioskModeInfo(kioskModeInfo);
+                    AppInitialize.setKioskModeInfo(kioskModeInfo);
 
-                    if (MyApplication.getKioskModeInfo().isFeedbackScreen()) {
+                    if (AppInitialize.getKioskModeInfo().isFeedbackScreen()) {
                         Intent in = new Intent(CategoryInfoActivity.this, SurveyKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, AppInitialize.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     } else {
-                        MyApplication.clearPreferences();
+                        AppInitialize.clearPreferences();
                         Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, MyApplication.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, AppInitialize.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     }
                     finish();
@@ -397,7 +396,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     //Do nothing
                 }
             });
-            showKioskModeDialog.displayDialog(MyApplication.getUserProfile().getUserLevel().getDescription());
+            showKioskModeDialog.displayDialog(AppInitialize.getUserProfile().getUserLevel().getDescription());
         });
     }
 
@@ -470,7 +469,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
             in.putExtra("title", title);
             in.putExtra("position", 0);
-            in.putExtra("isCanteenStore",(BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() || BusinessTypeEnum.CD == bizStoreElastic.getBusinessType()));
+            in.putExtra("isCanteenStore", (BusinessTypeEnum.CDQ == bizStoreElastic.getBusinessType() || BusinessTypeEnum.CD == bizStoreElastic.getBusinessType()));
             startActivity(in);
         }
     }
@@ -611,9 +610,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
                 if (!TextUtils.isEmpty(gCard) || !TextUtils.isEmpty(lCard)) {
                     QueueAuthorize queueAuthorize = new QueueAuthorize()
-                            .setCodeQR(codeQR)
-                            .setFirstCustomerId(gCard)
-                            .setAdditionalCustomerId(lCard);
+                        .setCodeQR(codeQR)
+                        .setFirstCustomerId(gCard)
+                        .setAdditionalCustomerId(lCard);
                     queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
                     queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);

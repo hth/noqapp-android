@@ -12,13 +12,13 @@ public class InviteActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_invite));
         Bundle b = new Bundle();
-        b.putString("invite_code", MyApplication.getInviteCode());
+        b.putString("invite_code", AppInitialize.getInviteCode());
         InviteFragment inf = new InviteFragment();
         inf.setArguments(b);
 

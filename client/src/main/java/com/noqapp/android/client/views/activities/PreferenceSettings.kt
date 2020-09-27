@@ -22,7 +22,7 @@ import com.noqapp.android.common.model.types.order.PaymentMethodEnum
 class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        hideSoftKeys(MyApplication.isLockMode)
+        hideSoftKeys(AppInitialize.isLockMode)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_settings)
         initActionsViews(true)
@@ -76,7 +76,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
         btn_update.setOnClickListener {
             showProgress()
-            val jsonUserPreference: JsonUserPreference = MyApplication.getUserProfile().jsonUserPreference
+            val jsonUserPreference: JsonUserPreference = AppInitialize.getUserProfile().jsonUserPreference
             if (isHomeDelivery) {
                 jsonUserPreference.deliveryMode = DeliveryModeEnum.HD
             } else {
@@ -89,12 +89,12 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             }
             clientPreferenceApiCalls.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
         }
-        sc_msg_announce.isChecked = MyApplication.isMsgAnnouncementEnable()
+        sc_msg_announce.isChecked = AppInitialize.isMsgAnnouncementEnable()
 
-        val jsonUserPreference: JsonUserPreference? = MyApplication.getUserProfile().jsonUserPreference
+        val jsonUserPreference: JsonUserPreference? = AppInitialize.getUserProfile().jsonUserPreference
         if (null == jsonUserPreference) {
-            sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
-            sc_sound.isChecked = MyApplication.isNotificationSoundEnable()
+            sc_sms.isChecked = AppInitialize.isNotificationReceiveEnable()
+            sc_sound.isChecked = AppInitialize.isNotificationSoundEnable()
         } else {
             sc_sms.isChecked = jsonUserPreference.promotionalSMS == CommunicationModeEnum.R
             sc_sound.isChecked = jsonUserPreference.firebaseNotification == CommunicationModeEnum.R
@@ -111,7 +111,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             tv_online.performClick()
         }
         sc_sms.setOnCheckedChangeListener { _, isChecked ->
-            MyApplication.setNotificationReceiveEnable(isChecked)
+            AppInitialize.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@PreferenceSettings, "Promotional SMS Enabled")
@@ -124,7 +124,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
 
         sc_sound.setOnCheckedChangeListener { _, isChecked ->
-            MyApplication.setNotificationSoundEnable(isChecked)
+            AppInitialize.setNotificationSoundEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@PreferenceSettings, "Notification Sound Enabled")
@@ -137,7 +137,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
 
         sc_msg_announce.setOnCheckedChangeListener { _, isChecked ->
-            MyApplication.setMsgAnnouncementEnable(isChecked)
+            AppInitialize.setMsgAnnouncementEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@PreferenceSettings, "Message Announcement Enabled")
@@ -150,9 +150,9 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
 
     override fun clientPreferencePresenterResponse(jsonUserPreference: JsonUserPreference?) {
         dismissProgress()
-        val jsonProfile: JsonProfile = MyApplication.getUserProfile()
+        val jsonProfile: JsonProfile = AppInitialize.getUserProfile()
         jsonProfile.jsonUserPreference = jsonUserPreference
-        MyApplication.setUserProfile(jsonProfile)
+        AppInitialize.setUserProfile(jsonProfile)
         CustomToast().showToast(this@PreferenceSettings, "Settings updated successfully")
     }
 }

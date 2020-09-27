@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -24,9 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -45,8 +42,6 @@ import androidx.core.app.ActivityCompat;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
-
-import java.util.UUID;
 
 ///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
 public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
@@ -71,7 +66,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         animationView.playAnimation();
         animationView.setRepeatCount(10);
         location = new Location("");
-        locationPref = MyApplication.getLocationPreference();
+        locationPref = AppInitialize.getLocationPreference();
         location.setLatitude(locationPref.getLatitude());
         location.setLongitude(locationPref.getLongitude());
        // gpsTracker = new GPSTracker(this, null);
@@ -136,12 +131,12 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             String cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
             Log.d(TAG, "Splash City Name =" + cityName);
 
-            LocationPref locationPref = MyApplication.getLocationPreference()
+            LocationPref locationPref = AppInitialize.getLocationPreference()
                 .setCity(cityName)
                 .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                 .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
-            MyApplication.setLocationPreference(locationPref);
-            MyApplication.setDeviceID(deviceId);
+            AppInitialize.setLocationPreference(locationPref);
+            AppInitialize.setDeviceID(deviceId);
             location.setLatitude(locationPref.getLatitude());
             location.setLongitude(locationPref.getLongitude());
             callLaunchScreen();
@@ -154,7 +149,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     private void sendRegistrationToServer(String refreshToken) {
         if (new NetworkUtil(this).isOnline()) {
             DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(), location);
-            deviceId = MyApplication.getDeviceId();
+            deviceId = AppInitialize.getDeviceId();
             if (TextUtils.isEmpty(deviceId)) {
                 /* Call this api only once in life time. */
                 DeviceApiCall deviceModel = new DeviceApiCall();
@@ -305,7 +300,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         if (!StringUtils.isBlank(deviceId) && null != location) {
             Intent i = new Intent(splashScreen, LaunchActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            i.putExtra(MyApplication.TOKEN_FCM, tokenFCM);
+            i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
             i.putExtra("latitude", location.getLatitude());
             i.putExtra("longitude", location.getLongitude());

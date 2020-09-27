@@ -4,18 +4,13 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
@@ -34,8 +29,7 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.MyApplication;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -51,14 +45,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,8 +61,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -496,7 +482,7 @@ public class AppUtils extends CommonHelper {
     }
 
     public static void authenticationProcessing(Context context) {
-        MyApplication.clearPreferences();
+        AppInitialize.clearPreferences();
         ShowAlertInformation.showAuthenticErrorDialog(context);
     }
 
@@ -619,7 +605,7 @@ public class AppUtils extends CommonHelper {
     }
 
     public static boolean showKioskMode(BizStoreElastic bizStoreElastic) {
-        JsonProfile jsonProfile = MyApplication.getUserProfile();
+        JsonProfile jsonProfile = AppInitialize.getUserProfile();
         if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                 return Q_SUPERVISOR == jsonProfile.getUserLevel();
@@ -657,8 +643,8 @@ public class AppUtils extends CommonHelper {
         if (!TextUtils.isEmpty(jsonQueue.getGeoHash())) {
             float lat_s = (float) GeoHashUtils.decodeLatitude(jsonQueue.getGeoHash());
             float long_s = (float) GeoHashUtils.decodeLongitude(jsonQueue.getGeoHash());
-            float lat_d = (float) MyApplication.location.getLatitude();
-            float long_d = (float) MyApplication.location.getLongitude();
+            float lat_d = (float) AppInitialize.location.getLatitude();
+            float long_d = (float) AppInitialize.location.getLongitude();
             float distance = (float) calculateDistance(lat_s, long_s, lat_d, long_d);
             switch (jsonQueue.getBusinessType()) {
                 case DO:

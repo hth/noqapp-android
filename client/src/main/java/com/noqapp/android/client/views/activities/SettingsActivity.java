@@ -10,7 +10,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(MyApplication.isLockMode);
+        hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         initActionsViews(false);

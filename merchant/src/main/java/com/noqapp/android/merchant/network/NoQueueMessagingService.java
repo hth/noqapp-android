@@ -39,7 +39,7 @@ import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MyApplication;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -237,7 +237,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         String channelId = "channel-01";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelName = "Channel Name";
-            int importance = MyApplication.isNotificationSoundEnable()
+            int importance = AppInitialize.isNotificationSoundEnable()
                     ? NotificationManager.IMPORTANCE_HIGH
                     : NotificationManager.IMPORTANCE_LOW;
             NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
@@ -252,7 +252,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setLights(Color.parseColor("#ffb400"), 50, 10);
-        if (MyApplication.isNotificationSoundEnable()) {
+        if (AppInitialize.isNotificationSoundEnable()) {
             mBuilder.setSound(defaultSoundUri);
         } else {
             mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
