@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Created by chandra on 4/9/17.
  */
-public class InviteFragment extends NoQueueBaseFragment implements View.OnClickListener{
+public class InviteFragment extends NoQueueBaseFragment implements View.OnClickListener {
     private String selectedText;
 
     @Override
@@ -71,12 +71,17 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
             ShowAlertInformation.showThemeDialog(getActivity(), getString(R.string.alert), getString(R.string.empty_invite_code));
         } else {
             try {
-                String shareMessage= "\"I am inviting you to join NoQueue app. A simple and secure app developed by NoQueue Technologies. " +
-                        "Check out my app at: https://play.google.com/store/apps/details?id=" + getActivity().getPackageName() +"\n Use my invite code - "+selectedText;
+                String shareMessage = "\"Hi, I am using a new and wonderful app, called NoQueue. " +
+                    "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, " +
+                    "it is real time. Get the status update on your phone quickly and immediately. " +
+                    "I am sending you an invite so you too enjoy the experience and avoid standing in queues.\n\n" +
+                    "Download it here: https://play.google.com/store/apps/details?id=" + getActivity().getPackageName()
+                    + "\n\n Use my invite code - " + selectedText;
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "NoQueue App");
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 
