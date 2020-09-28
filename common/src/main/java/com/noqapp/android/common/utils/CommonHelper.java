@@ -63,6 +63,7 @@ public class CommonHelper {
     private static final DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HH:mm");
     public static final String CURRENCY_SYMBOL = "currencySymbol";
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+
     public enum AppointmentComputationEnum {FILLED, TOTAL_SLOTS}
 
     public static String convertDOBToValidFormat(String dob) {
@@ -543,5 +544,4 @@ public class CommonHelper {
     public static boolean isHealthCare(Context context) {
         return context.getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare");
     }
-
 }

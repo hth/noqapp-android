@@ -125,7 +125,6 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-
     private static void setRatingStarColor(Drawable drawable, @ColorInt int color) {
         DrawableCompat.setTint(drawable, color);
     }
@@ -182,8 +181,8 @@ public class AppUtils extends CommonHelper {
         double dLat = Math.toRadians(lat2 - lat1);
         double dLng = Math.toRadians(lng2 - lng1);
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         float dist = (float) (earthRadius * c);
         if (LaunchActivity.DISTANCE_UNIT.equals("km")) {
@@ -235,19 +234,19 @@ public class AppUtils extends CommonHelper {
         } else if (getTimeIn24HourFormat() >= storeHourElastic.getStartHour() && getTimeIn24HourFormat() < storeHourElastic.getEndHour()) {
             //Based on location let them know in how much time they will reach or suggest the next queue.
             additionalText = bizStoreElastic.getDisplayName()
-                    + " is open & can service you now. Click to join the queue.";
+                + " is open & can service you now. Click to join the queue.";
         } else {
             if (getTimeIn24HourFormat() >= storeHourElastic.getTokenAvailableFrom()) {
                 additionalText = bizStoreElastic.getDisplayName()
-                        + " opens at "
-                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                        + ". Join queue now to save time.";
+                    + " opens at "
+                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                    + ". Join queue now to save time.";
             } else {
                 additionalText = bizStoreElastic.getDisplayName()
-                        + " can service you at "
-                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                        + ". You can join this queue at "
-                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom());
+                    + " can service you at "
+                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                    + ". You can join this queue at "
+                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom());
             }
         }
         return additionalText;
@@ -326,18 +325,18 @@ public class AppUtils extends CommonHelper {
         String url;
         try {
             url = Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON +
-                    "?key=" + Constants.GOOGLE_PLACE_API_KEY +
-                    "&components=country:" + LaunchActivity.COUNTRY_CODE +
-                    "&types=(regions)" +
-                    "&input=" + URLEncoder.encode(input, "utf8");
+                "?key=" + Constants.GOOGLE_PLACE_API_KEY +
+                "&components=country:" + LaunchActivity.COUNTRY_CODE +
+                "&types=(regions)" +
+                "&input=" + URLEncoder.encode(input, "utf8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
         }
 
         Request request = new Request.Builder()
-                .url(url)
-                .build();
+            .url(url)
+            .build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -556,11 +555,15 @@ public class AppUtils extends CommonHelper {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NoQueue App");
-            String shareMessage= "\"I am inviting you to join NoQueue app. A simple and secure app developed by NoQueue Technologies. Check out my app at: https://play.google.com/store/apps/details?id=" + context.getPackageName();
+            String shareMessage = "\"Hi, I am using a new and wonderful app, called NoQueue. " +
+                "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, it is real time. " +
+                "Get the status update on your phone quickly and immediately. I am sending you an invite so you too " +
+                "enjoy the experience and avoid standing in queues.\n\n" +
+                "Download it here: https://play.google.com/store/apps/details?id=" + context.getPackageName();
             Log.d("Share app", shareMessage);
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -574,10 +577,10 @@ public class AppUtils extends CommonHelper {
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
-                        .placeholder(ImageUtils.getProfilePlaceholder(context))
-                        .error(ImageUtils.getProfileErrorPlaceholder(context))
-                        .into(iv_profile);
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
+                    .placeholder(ImageUtils.getProfilePlaceholder(context))
+                    .error(ImageUtils.getProfileErrorPlaceholder(context))
+                    .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -586,9 +589,9 @@ public class AppUtils extends CommonHelper {
 
     public static int generateRandomColor() {
         String[] colors = new String[]{
-                "#90C978", "#AFD5AA", "#83C6DD", "#5DB1D1", "#8DA290", "#BEC7B4", "#769ECB", "#9DBAD5",
-                "#C8D6B9", "#8FC1A9", "#7CAA98", "#58949C", "#DF9881", "#D4B59D", "#CE9C6F", "#D3EEFF",
-                "#836853", "#988270", "#4F9EC4", "#3A506B", "#606E79", "#804040", "#AF6E4D", "#567192"};
+            "#90C978", "#AFD5AA", "#83C6DD", "#5DB1D1", "#8DA290", "#BEC7B4", "#769ECB", "#9DBAD5",
+            "#C8D6B9", "#8FC1A9", "#7CAA98", "#58949C", "#DF9881", "#D4B59D", "#CE9C6F", "#D3EEFF",
+            "#836853", "#988270", "#4F9EC4", "#3A506B", "#606E79", "#804040", "#AF6E4D", "#567192"};
 
         int rnd = new Random().nextInt(colors.length);
         return Color.parseColor(colors[rnd]);
@@ -632,7 +635,7 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public static BizStoreElastic getStoreElastic(JsonQueueHistorical jsonQueueHistorical ){
+    public static BizStoreElastic getStoreElastic(JsonQueueHistorical jsonQueueHistorical) {
         BizStoreElastic bizStoreElastic = new BizStoreElastic();
         bizStoreElastic.setCodeQR(jsonQueueHistorical.getCodeQR());
         bizStoreElastic.setBusinessName(jsonQueueHistorical.getBusinessName());
