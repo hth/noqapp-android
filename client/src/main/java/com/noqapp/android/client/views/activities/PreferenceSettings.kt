@@ -91,7 +91,10 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
         sc_msg_announce.isChecked = AppInitialize.isMsgAnnouncementEnable()
 
-        val jsonUserPreference: JsonUserPreference? = AppInitialize.getUserProfile().jsonUserPreference
+       var jsonUserPreference: JsonUserPreference? = null
+        if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().jsonUserPreference) {
+            jsonUserPreference = AppInitialize.getUserProfile().jsonUserPreference
+        }
         if (null == jsonUserPreference) {
             sc_sms.isChecked = AppInitialize.isNotificationReceiveEnable()
             sc_sound.isChecked = AppInitialize.isNotificationSoundEnable()
