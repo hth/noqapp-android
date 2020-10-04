@@ -46,7 +46,7 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         holder.tv_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
         try {
             holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
-        } catch (IllegalArgumentException exp) {
+        } catch (Exception exp) {
             holder.tv_category.setText("");
             Log.e("MyAppointmentAdapter", exp.toString());
         }
