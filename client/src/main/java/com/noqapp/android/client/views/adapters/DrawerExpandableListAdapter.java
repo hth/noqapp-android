@@ -40,9 +40,9 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final MenuDrawer child = getChild(groupPosition, childPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
+            LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group_child, null);
+            convertView = layoutInflater.inflate(R.layout.list_group_child, null);
         }
         TextView tv_child_title = convertView
                 .findViewById(R.id.tv_child_title);
@@ -81,9 +81,9 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         MenuDrawer headerItem = getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
+            LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group_header, null);
+            convertView = layoutInflater.inflate(R.layout.list_group_header, null);
         }
         TextView tv_header_title = convertView.findViewById(R.id.tv_header_title);
         if (headerItem.isHasChildren()) {

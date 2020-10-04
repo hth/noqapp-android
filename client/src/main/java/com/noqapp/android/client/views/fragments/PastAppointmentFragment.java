@@ -89,7 +89,7 @@ public class PastAppointmentFragment extends BaseFragment implements Appointment
             }
         });
 
-        MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(jsonSchedules, getActivity(), this);
+        MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(jsonSchedules, this);
         rcv_appointments.setAdapter(appointmentListAdapter);
         dismissProgress();
     }

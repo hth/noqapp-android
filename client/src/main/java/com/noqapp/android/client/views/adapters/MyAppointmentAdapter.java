@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +21,11 @@ import java.util.Date;
 import java.util.List;
 
 public class MyAppointmentAdapter extends RecyclerView.Adapter {
-    private final Context context;
     private final OnItemClickListener listener;
     private List<JsonSchedule> dataSet;
 
-    public MyAppointmentAdapter(List<JsonSchedule> data, Context context, OnItemClickListener listener) {
+    public MyAppointmentAdapter(List<JsonSchedule> data, OnItemClickListener listener) {
         this.dataSet = data;
-        this.context = context;
         this.listener = listener;
     }
 

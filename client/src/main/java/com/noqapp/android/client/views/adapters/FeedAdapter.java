@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,22 +17,19 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter {
-    private final Context context;
     private final OnItemClickListener listener;
     private List<JsonFeed> dataSet;
     private boolean increaseCardWidth;
 
-    public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener) {
+    public FeedAdapter(List<JsonFeed> data, OnItemClickListener listener) {
         this.dataSet = data;
-        this.context = context;
         this.listener = listener;
 
     }
 
-    public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener,
+    public FeedAdapter(List<JsonFeed> data, OnItemClickListener listener,
                        boolean increaseCardWidth) {
         this.dataSet = data;
-        this.context = context;
         this.listener = listener;
         this.increaseCardWidth = increaseCardWidth;
     }
