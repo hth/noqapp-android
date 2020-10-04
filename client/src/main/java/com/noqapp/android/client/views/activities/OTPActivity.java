@@ -166,37 +166,37 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         setProgressMessage("Validating OTP");
         showProgress();
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success");
-                        FirebaseUser user = task.getResult().getUser();
-                        Log.v(TAG, user.toString() + "mobile :" + user.getPhoneNumber());
-                        verifiedMobileNo = user.getPhoneNumber();
-                        updateUI(STATE.STATE_SIGN_IN_SUCCESS, user);
-                    } else {
-                        // Sign in failed, display a message and update the UI
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            // The verification code entered was invalid
-                            new CustomToast().showToast(activity, "Invalid code.");
-                        }
-                        // Update UI
-                        updateUI(STATE.STATE_SIGN_IN_FAILED);
-                        dismissProgress();
+            .addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success");
+                    FirebaseUser user = task.getResult().getUser();
+                    Log.v(TAG, user.toString() + "mobile :" + user.getPhoneNumber());
+                    verifiedMobileNo = user.getPhoneNumber();
+                    updateUI(STATE.STATE_SIGN_IN_SUCCESS, user);
+                } else {
+                    // Sign in failed, display a message and update the UI
+                    Log.w(TAG, "signInWithCredential:failure", task.getException());
+                    if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                        // The verification code entered was invalid
+                        new CustomToast().showToast(activity, "Invalid code.");
                     }
-                });
+                    // Update UI
+                    updateUI(STATE.STATE_SIGN_IN_FAILED);
+                    dismissProgress();
+                }
+            });
     }
 
     protected void startPhoneNumberVerification(String phoneNumber) {
         try {
             // [START start_phone_auth]
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                    phoneNumber,        // Phone number to verify
-                    60,              // Timeout duration
-                    TimeUnit.SECONDS,   // Unit of timeout
-                    this,       // Activity (for callback binding)
-                    mCallbacks);        // OnVerificationStateChangedCallbacks
+                phoneNumber,        // Phone number to verify
+                60,              // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,       // Activity (for callback binding)
+                mCallbacks);        // OnVerificationStateChangedCallbacks
             // [END start_phone_auth]
         } catch (Exception e) {
             e.printStackTrace();
@@ -287,7 +287,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             return;
         }
         if (TextUtils.isEmpty(mVerificationId)) {
-            new CustomToast().showToast(this, "Please retry again. Firebase server is not able to register this number");
+            new CustomToast().showToast(this, "Please retry again. System was not able to generate OTP.");
         } else {
             showProgress();
             AppUtils.hideKeyBoard(this);
