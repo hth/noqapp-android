@@ -114,6 +114,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
+            android:name=".views.activities.ProductSliderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
             android:name=".views.activities.CouponsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
