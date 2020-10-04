@@ -82,7 +82,6 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         private ImageView iv_main;
         private CardView card_view;
 
-
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_title = itemView.findViewById(R.id.tv_title);
