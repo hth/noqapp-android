@@ -192,11 +192,11 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         try {
             // [START start_phone_auth]
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,        // Phone number to verify
-                60,              // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,       // Activity (for callback binding)
-                mCallbacks);        // OnVerificationStateChangedCallbacks
+                phoneNumber,            // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,       // Unit of timeout
+                this,          // Activity (for callback binding)
+                mCallbacks);            // OnVerificationStateChangedCallbacks
             // [END start_phone_auth]
         } catch (Exception e) {
             e.printStackTrace();
