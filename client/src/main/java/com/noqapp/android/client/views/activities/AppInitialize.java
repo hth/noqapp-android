@@ -397,9 +397,9 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
 
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                    .setCity(AppInitialize.cityName)
-                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                .setCity(AppInitialize.cityName)
+                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             AppInitialize.setLocationPreference(locationPref);
             AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
             AppInitialize.location.setLatitude(locationPref.getLatitude());
@@ -439,10 +439,10 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         DeviceApiCall deviceModel = new DeviceApiCall();
         deviceModel.setDeviceRegisterPresenter(appInitialize);
         deviceModel.register(
-                new DeviceToken(
-                        AppInitialize.getTokenFCM(),
-                        Constants.appVersion(),
-                        CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
+            new DeviceToken(
+                AppInitialize.getTokenFCM(),
+                Constants.appVersion(),
+                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
     }
 
 }

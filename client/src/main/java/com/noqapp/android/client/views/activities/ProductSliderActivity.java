@@ -15,13 +15,11 @@ import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ProductSliderActivity extends BaseActivity {
 
     private LinearLayout ll_dots;
     private List<JsonStoreProduct> slider_product_list = null;
     private int page_position = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +35,11 @@ public class ProductSliderActivity extends BaseActivity {
         ViewPager vp_slider = findViewById(R.id.vp_slider);
         ll_dots = findViewById(R.id.ll_dots);
         Bundle b = getIntent().getExtras();
-        if (null != b)
+        if (null != b) {
             slider_product_list = (List<JsonStoreProduct>) b.getSerializable("storeProduct");
-        else
+        } else {
             slider_product_list = new ArrayList<>();
+        }
         ProductSliderPagerAdapter sliderPagerAdapter = new ProductSliderPagerAdapter(this, slider_product_list);
         vp_slider.setAdapter(sliderPagerAdapter);
         vp_slider.setCurrentItem(page_position);
@@ -56,7 +55,8 @@ public class ProductSliderActivity extends BaseActivity {
             dots[i].setTextColor(Color.parseColor("#ffffff"));
             ll_dots.addView(dots[i]);
         }
-        if (dots.length > 0)
+        if (dots.length > 0) {
             dots[currentPage].setTextColor(Color.parseColor("#b71c1c"));
+        }
     }
 }

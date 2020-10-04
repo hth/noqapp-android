@@ -28,7 +28,6 @@
             android:textSize="@dimen/text_size_eighteen"
             android:textStyle="bold" />
 
-
         <TextView
             android:id="@+id/tv_product_details"
             android:layout_width="match_parent"

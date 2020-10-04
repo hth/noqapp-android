@@ -9,5 +9,4 @@ public interface DisplayCasePresenter extends ResponseErrorPresenter {
     void displayCaseResponse(JsonStoreProductList jsonStoreProductList);
 
     void displayCaseErrorPresenter(ErrorEncounteredJson eej);
-
 }
