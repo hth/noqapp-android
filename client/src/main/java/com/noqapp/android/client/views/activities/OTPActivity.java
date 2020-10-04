@@ -286,13 +286,13 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         if (!validateOTP(edt_phone_code)) {
             return;
         }
-        if (mVerificationId != null) {
+        if (TextUtils.isEmpty(mVerificationId)) {
+            new CustomToast().showToast(this, "Please retry again. Firebase server is not able to register this number");
+        } else {
             showProgress();
             AppUtils.hideKeyBoard(this);
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edt_phone_code.getText().toString());
             signInWithPhoneAuthCredential(credential);
-        } else {
-            //Toast.makeText(this,"mVerificationId is null: ", Toast.LENGTH_LONG).show();
         }
     }
 
