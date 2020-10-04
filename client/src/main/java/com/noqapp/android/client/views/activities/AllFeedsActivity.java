@@ -30,7 +30,7 @@ public class AllFeedsActivity extends BaseActivity implements FeedAdapter.OnItem
         ArrayList<JsonFeed> listData = getIntent().getExtras().getParcelableArrayList("list");
         if (null == listData)
             listData = new ArrayList<>();
-        FeedAdapter feedAdapter = new FeedAdapter(listData, this, this, true);
+        FeedAdapter feedAdapter = new FeedAdapter(listData,this, true);
         rv_feed.setAdapter(feedAdapter);
     }
 
