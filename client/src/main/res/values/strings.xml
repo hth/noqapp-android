@@ -395,7 +395,7 @@
 
     <!-- ID dialog -->
     <string name="authorization_dialog_title">Pre-Approval</string>
-    <string name="authorization_dialog_message">* One time entry\n* Final approval @CSD\n* For approval choose token from correct category (Officer/Serving/Retired)</string>
+    <string name="authorization_dialog_message">* One time entry\n* One card one account\n* Final approval @CSD\n* For approval choose token from correct category (Officer/Serving/Retired)</string>
     <string name="grocery_card_number">Grocery card number</string>
     <string name="liquor_card_number">Liquor card number</string>
     <string name="grocery_card_number_hint">19-characters grocery card</string>
