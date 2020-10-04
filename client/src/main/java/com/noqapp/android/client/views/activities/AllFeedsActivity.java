@@ -28,9 +28,10 @@ public class AllFeedsActivity extends BaseActivity implements FeedAdapter.OnItem
         rv_feed.setItemAnimator(new DefaultItemAnimator());
         tv_toolbar_title.setText(getString(R.string.screen_all_feeds));
         ArrayList<JsonFeed> listData = getIntent().getExtras().getParcelableArrayList("list");
-        if (null == listData)
+        if (null == listData) {
             listData = new ArrayList<>();
-        FeedAdapter feedAdapter = new FeedAdapter(listData,this, true);
+        }
+        FeedAdapter feedAdapter = new FeedAdapter(listData, this, true);
         rv_feed.setAdapter(feedAdapter);
     }
 
