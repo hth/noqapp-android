@@ -17,6 +17,7 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
 public class ProductSliderPagerAdapter extends PagerAdapter {
@@ -37,7 +38,7 @@ public class ProductSliderPagerAdapter extends PagerAdapter {
         TextView tv_product_name = view.findViewById(R.id.tv_product_name);
         TextView tv_product_details = view.findViewById(R.id.tv_product_details);
         Picasso.get()
-            .load(AppUtils.getImageUrls(BuildConfig.PRODUCT_BUCKET, jsonStoreProduct.getProductImage()))
+            .load(AppUtils.getImageUrls(BuildConfig.PRODUCT_BUCKET, jsonStoreProduct.getBizStoreId() + File.separator + jsonStoreProduct.getProductImage()))
             .placeholder(ImageUtils.getThumbPlaceholder(activity))  // optional
             .error(ImageUtils.getThumbErrorPlaceholder(activity))   // optional
             .into(im_slider);

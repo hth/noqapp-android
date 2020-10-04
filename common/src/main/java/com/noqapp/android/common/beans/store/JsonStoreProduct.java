@@ -73,6 +73,9 @@ public class JsonStoreProduct implements Serializable {
     @JsonProperty("pr")
     private String productReference;
 
+    @JsonProperty("bs")
+    private String bizStoreId;
+
     @JsonProperty("a")
     private boolean active = true;
 
@@ -211,6 +214,15 @@ public class JsonStoreProduct implements Serializable {
 
     public String getDisplayDiscount() {
         return new BigDecimal(productDiscount).movePointLeft(2).toString();
+    }
+
+    public String getBizStoreId() {
+        return bizStoreId;
+    }
+
+    public JsonStoreProduct setBizStoreId(String bizStoreId) {
+        this.bizStoreId = bizStoreId;
+        return this;
     }
 
     public boolean isActive() {
