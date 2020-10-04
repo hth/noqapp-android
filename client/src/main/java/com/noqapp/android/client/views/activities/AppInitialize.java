@@ -444,5 +444,4 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
                 Constants.appVersion(),
                 CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
     }
-
 }
