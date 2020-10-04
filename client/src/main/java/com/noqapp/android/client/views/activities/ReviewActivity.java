@@ -171,7 +171,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> tv_rating_value.setText(rating + ""));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener((View v) -> {
-            if (jtk.getBusinessType() == BusinessTypeEnum.DO) {
+            if (null == jtk || jtk.getBusinessType() == BusinessTypeEnum.DO) {
                 onBackPressed();
             } else {
                 if (ratingBar.getRating() == 0) {
