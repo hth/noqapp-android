@@ -43,10 +43,10 @@ public class DisplayCaseAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder Vholder, int position) {
         MyViewHolder holder = (MyViewHolder) Vholder;
         Picasso.get()
-                .load(AppUtils.getImageUrls(BuildConfig.PRODUCT_BUCKET, jsonStoreProducts.get(position).getProductImage()))
-                .placeholder(ImageUtils.getThumbPlaceholder(context))
-                .error(ImageUtils.getThumbErrorPlaceholder(context))
-                .into(holder.iv_photo);
+            .load(AppUtils.getImageUrls(BuildConfig.PRODUCT_BUCKET, jsonStoreProducts.get(position).getProductImage()))
+            .placeholder(ImageUtils.getThumbPlaceholder(context))
+            .error(ImageUtils.getThumbErrorPlaceholder(context))
+            .into(holder.iv_photo);
         holder.tv_product_name.setText(jsonStoreProducts.get(position).getProductName());
         if (position < 3 || jsonStoreProducts.size() == 4) {
             holder.tv_more.setVisibility(View.GONE);
