@@ -18,6 +18,7 @@ import com.noqapp.android.client.views.activities.ProductSliderActivity;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class DisplayCaseAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder Vholder, int position) {
         MyViewHolder holder = (MyViewHolder) Vholder;
         Picasso.get()
-            .load(AppUtils.getImageUrls(BuildConfig.PRODUCT_BUCKET, jsonStoreProducts.get(position).getProductImage()))
+            .load(AppUtils.getImageUrls(BuildConfig.PRODUCT_BUCKET, jsonStoreProducts.get(position).getBizStoreId() + File.separator + jsonStoreProducts.get(position).getProductImage()))
             .placeholder(ImageUtils.getThumbPlaceholder(context))
             .error(ImageUtils.getThumbErrorPlaceholder(context))
             .into(holder.iv_photo);
