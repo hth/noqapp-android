@@ -284,7 +284,7 @@ public class AfterJoinActivity
 
             if (!TextUtils.isEmpty(queueUserId)) {
                 jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
-                tv_name.setText(jsonProfile.getName());
+                tv_name.setText(TextUtils.isEmpty(jsonProfile.getName()) ? "" : jsonProfile.getName());
             }
 
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
