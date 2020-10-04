@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
@@ -127,6 +128,9 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             .placeholder(ImageUtils.getThumbPlaceholder(context))
             .error(ImageUtils.getThumbErrorPlaceholder(context))
             .into(childViewHolder.iv_product_image);
+        childViewHolder.iv_product_image.setOnClickListener(v ->
+                showProductImageDialog(jsonStoreProduct, storeCartItem, childViewHolder.btn_increase,
+                childViewHolder.btn_decrease, childViewHolder.tv_value));
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -204,6 +208,118 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         });
 
         return convertView;
+    }
+    private void showProductImageDialog(JsonStoreProduct jsonStoreProduct, StoreCartItem storeCartItem,
+                                        Button list_btn_increase, Button list_btn_decrease, TextView list_tv_value) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.FullScreenDialogTheme);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        builder.setTitle(null);
+        View view = inflater.inflate(R.layout.dialog_show_product, null, false);
+        TextView tv_title = view.findViewById(R.id.tv_title);
+        TextView tv_product_details = view.findViewById(R.id.tv_product_details);
+        TextView tv_price = view.findViewById(R.id.tv_price);
+        TextView tv_value = view.findViewById(R.id.tv_value);
+        TextView tv_discounted_price = view.findViewById(R.id.tv_discounted_price);
+        TextView tv_cat = view.findViewById(R.id.tv_cat);
+        TextView tv_sold_out = view.findViewById(R.id.tv_sold_out);
+        LinearLayout ll_btns = view.findViewById(R.id.ll_btns);
+        TextView tv_temp = view.findViewById(R.id.tv_temp);
+        ImageView iv_product_image = view.findViewById(R.id.iv_product_image);
+        Button btn_decrease = view.findViewById(R.id.btn_decrease);
+        Button btn_increase = view.findViewById(R.id.btn_increase);
+        Button btn_place_order = view.findViewById(R.id.btn_place_order);
+        btn_place_order.setText("Done");
+        btn_place_order.setVisibility(View.VISIBLE);
+        tv_title.setText(jsonStoreProduct.getProductName());
+        tv_product_details.setText(jsonStoreProduct.getProductInfo());
+        tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
+        tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
+        tv_discounted_price.setText(currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
+        if (!AppUtils.isRelease()) {
+            tv_temp.setText("Inventory " + jsonStoreProduct.getInventoryCurrent() + " out of " + jsonStoreProduct.getInventoryLimit());
+            tv_temp.setVisibility(View.VISIBLE);
+        }
+        Picasso.get()
+                .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
+                        ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + bizStoreId + File.separator + jsonStoreProduct.getProductImage()
+                        : MISSING_PRODUCT_IMAGE)
+                .placeholder(ImageUtils.getThumbPlaceholder(context))
+                .error(ImageUtils.getThumbErrorPlaceholder(context))
+                .into(iv_product_image);
+
+        if (jsonStoreProduct.getProductDiscount() > 0) {
+            tv_price.setPaintFlags(tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            tv_discounted_price.setVisibility(View.VISIBLE);
+        } else {
+            tv_price.setPaintFlags(tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            tv_discounted_price.setVisibility(View.INVISIBLE);
+        }
+        if (isStoreOpen) {
+            switch (businessType) {
+                case RS:
+                case FT:
+                    if (jsonStoreProduct.getInventoryCurrent() > 0 || BuildConfig.INVENTORY_STATE.equalsIgnoreCase("OFF")) {
+                        ll_btns.setVisibility(View.VISIBLE);
+                        tv_sold_out.setVisibility(View.GONE);
+                    } else {
+                        ll_btns.setVisibility(View.GONE);
+                        tv_sold_out.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                default: {
+                    ll_btns.setVisibility(View.VISIBLE);
+                    tv_sold_out.setVisibility(View.GONE);
+                }
+            }
+        } else {
+            ll_btns.setVisibility(View.GONE);
+            tv_sold_out.setVisibility(View.GONE);
+        }
+        switch (jsonStoreProduct.getProductType()) {
+            case NV:
+                tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
+                break;
+            default:
+                tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
+        }
+        btn_increase.setOnClickListener((View v) -> {
+            String val = tv_value.getText().toString();
+            int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
+            tv_value.setText(String.valueOf(number));
+            int list_number = (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
+            list_tv_value.setText(String.valueOf(list_number));
+            list_btn_increase.performClick();
+            BigDecimal amountString = showCartAmount();
+            if (amountString.compareTo(new BigDecimal(0)) > 0) {
+               // btn_place_order.setVisibility(View.VISIBLE);
+                btn_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString.toString());
+            } else {
+               // btn_place_order.setVisibility(View.GONE);
+                btn_place_order.setText("Done");
+            }
+        });
+        btn_decrease.setOnClickListener((View v) -> {
+            String val = tv_value.getText().toString();
+            int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
+            tv_value.setText(String.valueOf(number));
+            int list_number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val)));
+            list_tv_value.setText(String.valueOf(list_number));
+            list_btn_decrease.performClick();
+            BigDecimal amountString = showCartAmount();
+            if (amountString.compareTo(new BigDecimal(0)) > 0) {
+               // btn_place_order.setVisibility(View.VISIBLE);
+                btn_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString.toString());
+            } else {
+               // btn_place_order.setVisibility(View.GONE);
+                btn_place_order.setText("Done");
+            }
+            notifyDataSetChanged();
+        });
+        builder.setView(view);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        btn_place_order.setOnClickListener(v -> mAlertDialog.dismiss());
+        mAlertDialog.show();
     }
 
     @Override
