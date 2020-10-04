@@ -197,7 +197,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     btn_register.setVisibility(View.VISIBLE);
                 }
                 DisplayCaseApiCalls displayCaseApiCalls = new DisplayCaseApiCalls(this);
-                displayCaseApiCalls.storeDisplayCase(UserUtils.getDeviceId(),UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                displayCaseApiCalls.storeDisplayCase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             }
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
