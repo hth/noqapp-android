@@ -24,7 +24,6 @@ public class DisplayCaseApiCalls {
         this.displayCasePresenter = displayCasePresenter;
     }
 
-
     static {
         displayCaseAPIUrls = RetrofitClient.getClient().create(DisplayCaseAPIUrls.class);
     }
@@ -61,5 +60,4 @@ public class DisplayCaseApiCalls {
             }
         });
     }
-
 }
