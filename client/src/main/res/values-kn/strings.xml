@@ -266,6 +266,7 @@
     <string name="pre_approve">ಪೂರ್ವ ಅನುಮೋದನೆ</string>
     <string name="biz_announcement">ಗಮನ: ಕೋವಿಡ್-19 ನವೀಕರಣ</string>
     <string name="photo">ಫೋಟೋಗಳು</string>
+    <string name="display_case_product">Available Products</string>
     <string name="amenities">ಸೌಲಭ್ಯಗಳು</string>
     <string name="facility">ಸೌಲಭ್ಯ</string>
     <string name="skip_msg">ನಿಮಗೆ ಸೇವೆ ನೀಡಲಾಗಿಲ್ಲ. \nಮತ್ತೆ ಸರದಿಯಲ್ಲಿ ಸೇರಲು ಹೌದೆಂದು ಒತ್ತಿ.</string>
@@ -394,7 +395,7 @@
 
     <!-- ID dialog -->
     <string name="authorization_dialog_title">ಪೂರ್ವ ಅನುಮೋದನೆ</string>
-    <string name="authorization_dialog_message">* ಒಂದು ಬಾರಿಯ ಪ್ರವೇಶ \n* ಅಂತಿಮ ಅನುಮೋದನೆ @CSD\n* ಅನುಮೋದನೆಗಾಗಿ ಸರಿಯಾದ ವರ್ಗದಿಂದ ಟೋಕನ್ ಆಯ್ಕೆಮಾಡಿ (ಅಧಿಕಾರಿ / ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿರುವವರು / ನಿವೃತ್ತರು)</string>
+    <string name="authorization_dialog_message">* ಒಂದು ಬಾರಿಯ ಪ್ರವೇಶ\n* ಒಂದು ಕಾರ್ಡ್ ಒಂದು ಖಾತೆ\n* ಅಂತಿಮ ಅನುಮೋದನೆ @CSD\n* ಅನುಮೋದನೆಗಾಗಿ ಸರಿಯಾದ ವರ್ಗದಿಂದ ಟೋಕನ್ ಆಯ್ಕೆಮಾಡಿ (ಅಧಿಕಾರಿ / ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿರುವವರು / ನಿವೃತ್ತರು)</string>
     <string name="grocery_card_number">ದಿನಸಿ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ</string>
     <string name="liquor_card_number">ಮದ್ಯ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ</string>
     <string name="grocery_card_number_hint">19 ಅಕ್ಷರಗಳ ಕಿರಾಣಿ ಕಾರ್ಡ್</string>

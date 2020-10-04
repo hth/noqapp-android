@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +21,11 @@ import java.util.Date;
 import java.util.List;
 
 public class MyAppointmentAdapter extends RecyclerView.Adapter {
-    private final Context context;
     private final OnItemClickListener listener;
     private List<JsonSchedule> dataSet;
 
-    public MyAppointmentAdapter(List<JsonSchedule> data, Context context, OnItemClickListener listener) {
+    public MyAppointmentAdapter(List<JsonSchedule> data, OnItemClickListener listener) {
         this.dataSet = data;
-        this.context = context;
         this.listener = listener;
     }
 
@@ -46,7 +43,7 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         holder.tv_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
         try {
             holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
-        } catch (IllegalArgumentException exp) {
+        } catch (Exception exp) {
             holder.tv_category.setText("");
             Log.e("MyAppointmentAdapter", exp.toString());
         }
@@ -84,7 +81,6 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         private TextView tv_appointment_status;
         private ImageView iv_main;
         private CardView card_view;
-
 
         private MyViewHolder(View itemView) {
             super(itemView);

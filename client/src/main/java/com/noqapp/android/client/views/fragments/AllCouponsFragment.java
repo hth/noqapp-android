@@ -119,7 +119,7 @@ public class AllCouponsFragment
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        AllCouponsAdapter offersAdapter = new AllCouponsAdapter(getActivity(), jsonCoupons, this);
+        AllCouponsAdapter offersAdapter = new AllCouponsAdapter(jsonCoupons, this);
         rcv_appointments.setAdapter(offersAdapter);
         dismissProgress();
     }

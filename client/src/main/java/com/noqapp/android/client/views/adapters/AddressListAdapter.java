@@ -34,7 +34,7 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (convertView == null) {
             convertView = inflator.inflate(R.layout.list_item_selected, null);
             holder = new ViewHolder();

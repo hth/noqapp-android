@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBookActivity
@@ -77,7 +78,11 @@ public class AddressBookActivity
         clientProfileApiCall = new ClientProfileApiCall();
         clientProfileApiCall.setProfileAddressPresenter(this);
         JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
-        jsonUserAddressList.setJsonUserAddresses(AppInitialize.getUserProfile().getJsonUserAddresses());
+        if (null == AppInitialize.getUserProfile()) {
+            jsonUserAddressList.setJsonUserAddresses(new ArrayList<>());
+        } else {
+            jsonUserAddressList.setJsonUserAddresses(AppInitialize.getUserProfile().getJsonUserAddresses());
+        }
         profileAddressResponse(jsonUserAddressList);
     }
 

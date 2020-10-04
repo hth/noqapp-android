@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,30 +17,24 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter {
-    private final Context context;
     private final OnItemClickListener listener;
     private List<JsonFeed> dataSet;
     private boolean increaseCardWidth;
 
-    public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener) {
+    public FeedAdapter(List<JsonFeed> data, OnItemClickListener listener) {
         this.dataSet = data;
-        this.context = context;
         this.listener = listener;
-
     }
 
-    public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener,
-                       boolean increaseCardWidth) {
+    public FeedAdapter(List<JsonFeed> data, OnItemClickListener listener, boolean increaseCardWidth) {
         this.dataSet = data;
-        this.context = context;
         this.listener = listener;
         this.increaseCardWidth = increaseCardWidth;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_feed, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_feed, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -58,8 +51,9 @@ public class FeedAdapter extends RecyclerView.Adapter {
         Picasso.get().load(item.getImageUrl()).into(holder.iv_bg);
         holder.tv_title.setText(item.getTitle());
         holder.card_view.setOnClickListener((View v) -> {
-            if (null != listener)
+            if (null != listener) {
                 listener.onFeedItemClick(dataSet.get(listPosition));
+            }
         });
     }
 
@@ -73,7 +67,6 @@ public class FeedAdapter extends RecyclerView.Adapter {
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tv_title;
         private ImageView iv_bg;
         private CardView card_view;
@@ -83,9 +76,6 @@ public class FeedAdapter extends RecyclerView.Adapter {
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.iv_bg = itemView.findViewById(R.id.iv_bg);
             this.card_view = itemView.findViewById(R.id.card_view);
-
         }
     }
-
-
 }

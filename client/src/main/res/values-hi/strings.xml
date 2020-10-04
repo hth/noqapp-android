@@ -266,6 +266,7 @@
     <string name="pre_approve"> प्रि-अप्रुव </string>
     <string name="biz_announcement">ध्यान: कोविड-१९ अपडेट</string>
     <string name="photo">तस्वीरें</string>
+    <string name="display_case_product">Available Products</string>
     <string name="amenities">सुविधाएँ</string>
     <string name="facility">फसिलिटीज़</string>
     <string name="skip_msg">आपकी सेवा नहीं हुई।\nफिर से कतार में शामिल होने के लिए हाँ दबाएं।</string>
@@ -394,7 +395,7 @@
 
     <!-- ID dialog -->
     <string name="authorization_dialog_title">पूर्व अनुमोदन</string>
-    <string name="authorization_dialog_message">* एक बार की एंट्री\n* अंतिम स्वीकृति @सी ऎस ङि \n* अनुमोदन के लिए सही श्रेणी से टोकन चुनें (अफ़सर/सर्विंग/सेवानिवृत्त)</string>
+    <string name="authorization_dialog_message">* एक बार की एंट्री\n* एक कार्ड एक खाता\n* अंतिम स्वीकृति @सी ऎस ङि \n* अनुमोदन के लिए सही श्रेणी से टोकन चुनें (अफ़सर/सर्विंग/सेवानिवृत्त)</string>
     <string name="grocery_card_number">किराने कार्ड नंबर</string>
     <string name="liquor_card_number">शराब/मदिरा कार्ड नंबर</string>
     <string name="grocery_card_number_hint">किराने कार्ड के १९-वर्णों</string>

@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +20,10 @@ public class MyCouponsAdapter extends RecyclerView.Adapter {
 
     private final OnItemClickListener listener;
     private List<JsonCoupon> jsonCoupons;
-    private Context context;
 
-    public MyCouponsAdapter(Context context, List<JsonCoupon> jsonCoupons, OnItemClickListener listener) {
+    public MyCouponsAdapter(List<JsonCoupon> jsonCoupons, OnItemClickListener listener) {
         this.jsonCoupons = jsonCoupons;
         this.listener = listener;
-        this.context = context;
     }
 
     @Override

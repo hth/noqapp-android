@@ -1,6 +1,7 @@
 package com.noqapp.android.client.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,9 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +41,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.GeoIP;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
@@ -408,6 +413,9 @@ public class AppUtils extends CommonHelper {
             case BuildConfig.ADVERTISEMENT_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + url;
                 break;
+            case BuildConfig.PRODUCT_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + url;
+                break;
             default:
                 Log.e(TAG, "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
@@ -663,5 +671,30 @@ public class AppUtils extends CommonHelper {
             }
         }
         return true;
+    }
+
+    public static void reCreateDeviceID(Activity context) {
+        if (new NetworkUtil(context).isOnline()) {
+            AppInitialize.fetchDeviceId();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+            tvTitle.setText(context.getString(R.string.networkerror));
+            tv_msg.setText(context.getString(R.string.offline));
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                context.finish();
+            });
+            mAlertDialog.show();
+            Log.w(TAG, "No network found");
+        }
     }
 }

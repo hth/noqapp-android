@@ -1005,7 +1005,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     public void allActiveFeedResponse(JsonFeedList jsonFeedList) {
         if (null != jsonFeedList && jsonFeedList.getJsonFeeds().size() > 0) {
             jsonFeeds = jsonFeedList.getJsonFeeds();
-            FeedAdapter feedAdapter = new FeedAdapter(jsonFeedList.getJsonFeeds(), getActivity(), this);
+            FeedAdapter feedAdapter = new FeedAdapter(jsonFeedList.getJsonFeeds(), this);
             rv_feed.setAdapter(feedAdapter);
             tv_feed_view_all.setVisibility(jsonFeedList.getJsonFeeds().size() == 0 ? View.GONE : View.VISIBLE);
         }

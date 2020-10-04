@@ -266,6 +266,7 @@
     <string name="pre_approve">Pré-approuvé</string>
     <string name="biz_announcement">Attention: COVID-19 Actualiser</string>
     <string name="photo">Les photos</string>
+    <string name="display_case_product">Available Products</string>
     <string name="amenities">Les commodités</string>
     <string name="facility">Facilité</string>
     <string name="skip_msg">Vous n’avez pas été servi. Appuyez sur oui pour rejoindre la file d’attente à nouveau.</string>
@@ -394,7 +395,7 @@
 
     <!-- ID dialog -->
     <string name="authorization_dialog_title">une autorisation préalable</string>
-    <string name="authorization_dialog_message">* One time entry\n* Final approval @CSD\n* For approval choose token from correct category (Officer/Serving/Retired)</string>
+    <string name="authorization_dialog_message">* One time entry\n* One card one account\n* Final approval @CSD\n* For approval choose token from correct category (Officer/Serving/Retired)</string>
     <string name="grocery_card_number">Une carte d\'épicerie</string>
     <string name="liquor_card_number">Une carte d\'alcoole</string>
     <string name="grocery_card_number_hint">Une carte d\'épicerie de 19 caractères</string>

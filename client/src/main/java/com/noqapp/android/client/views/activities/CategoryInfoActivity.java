@@ -32,11 +32,13 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.DisplayCaseApiCalls;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.client.presenter.AuthorizeResponsePresenter;
+import com.noqapp.android.client.presenter.DisplayCasePresenter;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -52,11 +54,14 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowKioskModeDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AccreditionAdapter;
+import com.noqapp.android.client.views.adapters.DisplayCaseAdapter;
 import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.store.JsonStoreProductList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -76,7 +81,7 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
  * Created by chandra on 5/7/17.
  */
 public class CategoryInfoActivity extends BaseActivity implements QueuePresenter,
-    LevelUpQueueAdapter.OnItemClickListener, AuthorizeResponsePresenter {
+    LevelUpQueueAdapter.OnItemClickListener, AuthorizeResponsePresenter, DisplayCasePresenter {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -95,6 +100,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private TextView tv_rating_review;
     private TextView tv_rating;
     private RecyclerView rv_thumb_images;
+    private RecyclerView rv_upcoming_images;
     private ImageView iv_category_banner;
     private Button btn_join_queues;
     private Button btn_register;
@@ -113,6 +119,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private LinearLayout ll_top_header;
     private ExpandableListView expandableListView;
     private QueueApiAuthenticCall queueApiAuthenticCall;
+    private TextView tv_upcoming_photos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +139,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         tv_rating = findViewById(R.id.tv_rating);
         RecyclerView rv_categories = findViewById(R.id.rv_categories);
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
+        rv_upcoming_images = findViewById(R.id.rv_upcoming_images);
+        tv_upcoming_photos = findViewById(R.id.tv_upcoming_photos);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         btn_join_queues = findViewById(R.id.btn_join_queues);
         btn_register = findViewById(R.id.btn_pre_approve);
@@ -187,6 +196,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 } else {
                     btn_register.setVisibility(View.VISIBLE);
                 }
+                DisplayCaseApiCalls displayCaseApiCalls = new DisplayCaseApiCalls(this);
+                displayCaseApiCalls.storeDisplayCase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             }
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
@@ -652,5 +663,22 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void authorizePresenterError() {
         Log.d("CategoryInfoActivity", "ERROR");
+    }
+
+    @Override
+    public void displayCaseResponse(JsonStoreProductList jsonStoreProductList) {
+        Log.e("data", jsonStoreProductList.toString());
+        tv_upcoming_photos.setVisibility(View.VISIBLE);
+        rv_upcoming_images.setVisibility(View.VISIBLE);
+        DisplayCaseAdapter adapter = new DisplayCaseAdapter(this, jsonStoreProductList.getJsonStoreProducts());
+        rv_upcoming_images.setAdapter(adapter);
+        rv_upcoming_images.setHasFixedSize(true);
+        rv_upcoming_images.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+    }
+
+    @Override
+    public void displayCaseErrorPresenter(ErrorEncounteredJson eej) {
+        tv_upcoming_photos.setVisibility(View.GONE);
+        rv_upcoming_images.setVisibility(View.GONE);
     }
 }

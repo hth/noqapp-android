@@ -101,6 +101,7 @@
     <dimen name="profile_pic_height">50dp</dimen>
     <dimen name="action_bar_icon_size">35dp</dimen>
     <dimen name="thumbnail_height">50dp</dimen>
+    <dimen name="product_thumbnail_height">100dp</dimen>
     <dimen name="current_q_width">220dp</dimen>
     <dimen name="current_q_height">120dp</dimen>
 

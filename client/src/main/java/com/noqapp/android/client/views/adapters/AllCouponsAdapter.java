@@ -21,12 +21,10 @@ public class AllCouponsAdapter extends RecyclerView.Adapter {
 
     private final OnItemClickListener listener;
     private List<JsonCoupon> jsonCoupons;
-    private Context context;
 
-    public AllCouponsAdapter(Context context, List<JsonCoupon> jsonCoupons, OnItemClickListener listener) {
+    public AllCouponsAdapter(List<JsonCoupon> jsonCoupons, OnItemClickListener listener) {
         this.jsonCoupons = jsonCoupons;
         this.listener = listener;
-        this.context = context;
     }
 
     @Override

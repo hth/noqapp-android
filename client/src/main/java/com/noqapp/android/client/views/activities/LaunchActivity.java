@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,7 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -64,10 +62,8 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.HomeFragment;
 import com.noqapp.android.client.views.pojos.LocationPref;
-import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
-import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
@@ -85,13 +81,12 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.pojos.MenuDrawer;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.utils.TextToSpeechHelper;
-import com.noqapp.android.common.views.activities.AppsLinksActivity;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
+import com.noqapp.android.common.views.activities.AppsLinksActivity;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
@@ -107,9 +102,9 @@ import io.nlopez.smartlocation.location.config.LocationParams;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class LaunchActivity
-    extends NoQueueBaseActivity
-    implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+        extends NoQueueBaseActivity
+        implements OnClickListener, AppBlacklistPresenter,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static Locale locale;
     public static SharedPreferences languagePref;
@@ -165,13 +160,7 @@ public class LaunchActivity
         //NoQueueBaseActivity.saveMailAuth("","");
         if (TextUtils.isEmpty(AppInitialize.getDeviceId())) {
             // Log.v("Device id check", MyApplication.getDeviceId());
-            DeviceApiCall deviceModel = new DeviceApiCall();
-            deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(
-                new DeviceToken(
-                    AppInitialize.getTokenFCM(),
-                    Constants.appVersion(),
-                    CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
+            AppInitialize.fetchDeviceId();
         }
 
         if (null != getIntent().getExtras()) {
@@ -249,9 +238,9 @@ public class LaunchActivity
         tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
-            AppUtils.isRelease()
-                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                : getString(R.string.version_no, "Not for release"));
+                AppUtils.isRelease()
+                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                        : getString(R.string.version_no, "Not for release"));
         setUpExpandableList(UserUtils.isLogin());
 
         /* Call to check if the current version of app blacklist or old. */
@@ -265,9 +254,9 @@ public class LaunchActivity
                 AppInitialize.location.setLatitude(getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE));
                 AppInitialize.location.setLongitude(getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE));
                 AppInitialize.cityName = CommonHelper.getAddress(
-                    AppInitialize.location.getLatitude(),
-                    AppInitialize.location.getLongitude(),
-                    this);
+                        AppInitialize.location.getLatitude(),
+                        AppInitialize.location.getLongitude(),
+                        this);
 
                 Log.d(TAG, "Launch Activity City Name =" + AppInitialize.cityName);
                 //updateLocationUI();
@@ -310,7 +299,7 @@ public class LaunchActivity
     public void updateLocationUI() {
         if (null != homeFragment) {
             homeFragment.updateUIWithNewLocation(AppInitialize.location.getLatitude(),
-                AppInitialize.location.getLongitude(), AppInitialize.cityName);
+                    AppInitialize.location.getLongitude(), AppInitialize.cityName);
             //tv_location.setText(cityName);
         }
     }
@@ -323,16 +312,16 @@ public class LaunchActivity
         AppInitialize.cityName = city;
         tv_location.setText(AppInitialize.cityName);
         LocationPref locationPref = AppInitialize.getLocationPreference()
-            .setCity(AppInitialize.cityName)
-            .setLatitude(lat)
-            .setLongitude(lng);
+                .setCity(AppInitialize.cityName)
+                .setLatitude(lat)
+                .setLongitude(lng);
         AppInitialize.setLocationPreference(locationPref);
         updateLocationUI();
     }
 
     private void callLocationManager() {
         if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         ) {
             ActivityCompat.requestPermissions(this, new String[]{PermissionUtils.LOCATION_PERMISSION}, PermissionUtils.PERMISSION_REQUEST_LOCATION);
             return;
@@ -343,26 +332,26 @@ public class LaunchActivity
         LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
 
         LocationParams.Builder builder = new LocationParams.Builder()
-            .setAccuracy(trackingAccuracy)
-            .setDistance(trackingDistance)
-            .setInterval(mLocTrackingInterval);
+                .setAccuracy(trackingAccuracy)
+                .setDistance(trackingDistance)
+                .setInterval(mLocTrackingInterval);
 
         SmartLocation.with(this)
-            .location()
-            .continuous()
-            .config(builder.build())
-            .start(location -> {
-                if (null != location) {
-                    AppInitialize.location.setLatitude(location.getLatitude());
-                    AppInitialize.location.setLongitude(location.getLongitude());
-                    Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                    AppInitialize.cityName = CommonHelper.getAddress(
-                        AppInitialize.location.getLatitude(),
-                        AppInitialize.location.getLongitude(),
-                        this);
-                    updateLocationUI();
-                }
-            });
+                .location()
+                .continuous()
+                .config(builder.build())
+                .start(location -> {
+                    if (null != location) {
+                        AppInitialize.location.setLatitude(location.getLatitude());
+                        AppInitialize.location.setLongitude(location.getLongitude());
+                        Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
+                        AppInitialize.cityName = CommonHelper.getAddress(
+                                AppInitialize.location.getLatitude(),
+                                AppInitialize.location.getLongitude(),
+                                this);
+                        updateLocationUI();
+                    }
+                });
     }
 
     @Override
@@ -529,10 +518,10 @@ public class LaunchActivity
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
-                    .placeholder(ImageUtils.getProfilePlaceholder(this))
-                    .error(ImageUtils.getProfileErrorPlaceholder(this))
-                    .into(iv_profile);
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(iv_profile);
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -572,9 +561,9 @@ public class LaunchActivity
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (f instanceof ChangeLocationFragment) {
             updateLocationInfo(
-                AppInitialize.location.getLatitude(),
-                AppInitialize.location.getLongitude(),
-                AppInitialize.cityName);
+                    AppInitialize.location.getLatitude(),
+                    AppInitialize.location.getLongitude(),
+                    AppInitialize.cityName);
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -674,10 +663,10 @@ public class LaunchActivity
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
                         ShowAlertInformation.showThemePlayStoreDialog(
-                            this,
-                            getString(R.string.playstore_update_title),
-                            getString(R.string.playstore_update_msg),
-                            true);
+                                this,
+                                getString(R.string.playstore_update_title),
+                                getString(R.string.playstore_update_msg),
+                                true);
                     }
                 } catch (Exception e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -835,42 +824,6 @@ public class LaunchActivity
         }
     }
 
-    public void reCreateDeviceID() {
-        if (new NetworkUtil(this).isOnline()) {
-            DeviceApiCall deviceModel = new DeviceApiCall();
-            deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(
-                new DeviceToken(
-                    AppInitialize.getTokenFCM(),
-                    Constants.appVersion(),
-                    CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            builder.setTitle(null);
-            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
-            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-            tvTitle.setText(getString(R.string.networkerror));
-            tv_msg.setText(getString(R.string.offline));
-            builder.setView(customDialogView);
-            final AlertDialog mAlertDialog = builder.create();
-            mAlertDialog.setCanceledOnTouchOutside(false);
-            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-            btn_yes.setOnClickListener(v -> {
-                mAlertDialog.dismiss();
-                finish();
-            });
-            mAlertDialog.show();
-            Log.w(TAG, "No network found");
-        }
-    }
-
-    @Override
-    public void deviceRegisterError() {
-
-    }
-
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         /* dismissProgress(); no progress bar silent call here */
@@ -881,28 +834,6 @@ public class LaunchActivity
     public void responseErrorPresenter(int errorCode) {
         /* dismissProgress(); no progress bar silent call here */
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
-        if (deviceRegistered.getRegistered() == 1) {
-            Log.e("Device register", "deviceRegister Success");
-            AppInitialize.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
-            Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
-
-            LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setCity(AppInitialize.cityName)
-                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
-            AppInitialize.setLocationPreference(locationPref);
-            AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
-            AppInitialize.location.setLatitude(locationPref.getLatitude());
-            AppInitialize.location.setLongitude(locationPref.getLongitude());
-            tv_location.setText(AppInitialize.cityName);
-        } else {
-            Log.e("Device register error: ", deviceRegistered.toString());
-            new CustomToast().showToast(this, "Device register error: ");
-        }
     }
 
     private void setUpExpandableList(boolean isLogin) {
@@ -1130,33 +1061,33 @@ public class LaunchActivity
                 } else if (jsonData instanceof JsonTopicAppointmentData) {
                     Log.e("JsonTopicAppointData", jsonData.toString());
                     NotificationDB.insertNotification(
-                        NotificationDB.KEY_NOTIFY,
-                        "",
-                        jsonData.getBody(),
-                        jsonData.getTitle(),
-                        BusinessTypeEnum.PA.getName(),
-                        jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            "",
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            jsonData.getImageURL());
                 } else if (jsonData instanceof JsonMedicalFollowUp) {
                     Log.e("JsonMedicalFollowUp", jsonData.toString());
                     NotificationDB.insertNotification(
-                        NotificationDB.KEY_NOTIFY,
-                        ((JsonMedicalFollowUp) jsonData).getCodeQR(),
-                        jsonData.getBody(),
-                        jsonData.getTitle(),
-                        BusinessTypeEnum.PA.getName(),
-                        jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonMedicalFollowUp) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            jsonData.getImageURL());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     if (jsonData instanceof JsonAlertData) {
                         NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonAlertData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            ((JsonAlertData) jsonData).getBusinessType() == null
-                                ? BusinessTypeEnum.PA.getName()
-                                : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonAlertData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                ((JsonAlertData) jsonData).getBusinessType() == null
+                                        ? BusinessTypeEnum.PA.getName()
+                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
@@ -1263,12 +1194,12 @@ public class LaunchActivity
                             TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
                         }
                         NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            BusinessTypeEnum.PA.getName(),
-                            jsonData.getImageURL());
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                BusinessTypeEnum.PA.getName(),
+                                jsonData.getImageURL());
 
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                             NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
@@ -1281,13 +1212,13 @@ public class LaunchActivity
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     if (jsonData instanceof JsonAlertData) {
                         NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonAlertData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            ((JsonAlertData) jsonData).getBusinessType() == null
-                                ? BusinessTypeEnum.PA.getName()
-                                : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonAlertData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                ((JsonAlertData) jsonData).getBusinessType() == null
+                                        ? BusinessTypeEnum.PA.getName()
+                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
                         /* Show some meaningful msg to the end user */
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();

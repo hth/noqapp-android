@@ -84,8 +84,7 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        MyCouponsAdapter myCouponsAdapter = new MyCouponsAdapter(
-                getActivity(), jsonCoupons, this);
+        MyCouponsAdapter myCouponsAdapter = new MyCouponsAdapter(jsonCoupons, this);
         rcv_appointments.setAdapter(myCouponsAdapter);
         dismissProgress();
     }
