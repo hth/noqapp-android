@@ -3,7 +3,7 @@ package com.noqapp.android.client.model.database;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.AppInitialize;
 
 import static com.noqapp.android.client.model.database.DatabaseTable.Notification;
 import static com.noqapp.android.client.model.database.DatabaseTable.Review;
@@ -141,7 +141,7 @@ public class CreateTable {
         db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + Notification.TABLE_NAME + "'");
         createAllTable(db);
-        LaunchActivity.getLaunchActivity().reCreateDeviceID();
+        AppInitialize.fetchDeviceId();
     }
 
     static void alterTable(SQLiteDatabase db) {

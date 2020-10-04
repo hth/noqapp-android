@@ -74,7 +74,7 @@ public class LoginActivity extends OTPActivity {
             && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
             NotificationDB.clearNotificationTable();
             ReviewDB.clearReviewTable();
-            LaunchActivity.getLaunchActivity().reCreateDeviceID();
+            AppUtils.reCreateDeviceID(this);
         }
         AppInitialize.setPreviousUserQID(profile.getQueueUserId());
 

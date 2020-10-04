@@ -116,7 +116,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID()) && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
                 NotificationDB.clearNotificationTable();
                 ReviewDB.clearReviewTable();
-                LaunchActivity.getLaunchActivity().reCreateDeviceID();
+                AppUtils.reCreateDeviceID(this);
             }
             AppInitialize.setPreviousUserQID(profile.getQueueUserId());
             finish();

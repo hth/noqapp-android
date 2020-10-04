@@ -15,12 +15,20 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
+import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.FontsOverride;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -34,7 +42,8 @@ import java.util.Locale;
 /**
  * Created by chandra on 5/20/17.
  */
-public class AppInitialize extends MultiDexApplication {
+public class AppInitialize extends MultiDexApplication implements DeviceRegisterPresenter {
+    private final String TAG = AppInitialize.class.getSimpleName();
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
@@ -62,6 +71,7 @@ public class AppInitialize extends MultiDexApplication {
     public static String cityName = "";
     public static DatabaseHelper dbHandler;
     public static boolean isLockMode = false;
+    private static AppInitialize appInitialize;
 
     public AppInitialize() {
         super();
@@ -94,6 +104,7 @@ public class AppInitialize extends MultiDexApplication {
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
         isLockMode = getKioskModeInfo().isKioskModeEnable();
+        appInitialize = this;
     }
 
     private Locale getLocaleFromPref() {
@@ -377,4 +388,61 @@ public class AppInitialize extends MultiDexApplication {
     public static boolean isMsgAnnouncementEnable() {
         return preferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
     }
+
+    @Override
+    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
+        if (deviceRegistered.getRegistered() == 1) {
+            Log.e("Device register", "deviceRegister Success");
+            AppInitialize.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
+            Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
+
+            LocationPref locationPref = AppInitialize.getLocationPreference()
+                    .setCity(AppInitialize.cityName)
+                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+            AppInitialize.setLocationPreference(locationPref);
+            AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
+            AppInitialize.location.setLatitude(locationPref.getLatitude());
+            AppInitialize.location.setLongitude(locationPref.getLongitude());
+            if (null != LaunchActivity.getLaunchActivity().tv_location) {
+                LaunchActivity.getLaunchActivity().tv_location.setText(AppInitialize.cityName);
+            }
+        } else {
+            Log.e("Device register error: ", deviceRegistered.toString());
+            new CustomToast().showToast(this, "Device register error: ");
+        }
+    }
+
+    @Override
+    public void authenticationFailure() {
+        /* dismissProgress(); no progress bar silent call here */
+    }
+
+    @Override
+    public void deviceRegisterError() {
+        /* dismissProgress(); no progress bar silent call here */
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        /* dismissProgress(); no progress bar silent call here */
+        new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        /* dismissProgress(); no progress bar silent call here */
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    public static void fetchDeviceId() {
+        DeviceApiCall deviceModel = new DeviceApiCall();
+        deviceModel.setDeviceRegisterPresenter(appInitialize);
+        deviceModel.register(
+                new DeviceToken(
+                        AppInitialize.getTokenFCM(),
+                        Constants.appVersion(),
+                        CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
+    }
+
 }
