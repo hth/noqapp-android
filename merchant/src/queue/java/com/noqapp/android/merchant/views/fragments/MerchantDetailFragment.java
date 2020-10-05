@@ -562,12 +562,19 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.menu_followup).setVisible(false);
         MenuItem menuItem = menu.findItem(R.id.menu_add);
-        if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-            menuItem.setTitle("Create Order");
-            menu.findItem(R.id.menu_appointment).setVisible(false);
-        } else {
-            menuItem.setTitle("Create Token");
-            menu.findItem(R.id.menu_product_list).setVisible(false);
+        switch (jsonTopic.getBusinessType().getBusinessSupport()) {
+            case OD:
+                menuItem.setTitle("Create Order");
+                menu.findItem(R.id.menu_appointment).setVisible(false);
+                break;
+            case OQ:
+                menuItem.setTitle("Create Token");
+                //Menu shows appointment and product list
+                break;
+            case QQ:
+                menuItem.setTitle("Create Token");
+                menu.findItem(R.id.menu_product_list).setVisible(false);
+                break;
         }
     }
 
