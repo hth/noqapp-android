@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.TaxEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
@@ -37,6 +38,9 @@ public class JsonStoreProduct implements Serializable {
 
     @JsonProperty("p")
     private int productPrice;
+
+    @JsonProperty("ta")
+    private TaxEnum tax;
 
     @JsonProperty("d")
     private int productDiscount;
@@ -112,6 +116,15 @@ public class JsonStoreProduct implements Serializable {
 
     public JsonStoreProduct setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public JsonStoreProduct setTax(TaxEnum tax) {
+        this.tax = tax;
         return this;
     }
 
