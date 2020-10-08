@@ -73,6 +73,15 @@ public class JsonStoreProduct implements Serializable {
     @JsonProperty("pr")
     private String productReference;
 
+    @JsonProperty ("ad")
+    private String availableDate;
+
+    @JsonProperty ("an")
+    private boolean availableNow;
+
+    @JsonProperty ("dc")
+    private boolean displayCaseTurnedOn;
+
     @JsonProperty("bs")
     private String bizStoreId;
 
@@ -204,16 +213,31 @@ public class JsonStoreProduct implements Serializable {
         return this;
     }
 
-    public String getDisplayUnitValue() {
-        return new BigDecimal(unitValue).movePointLeft(2).stripTrailingZeros().toString();
+    public String getAvailableDate() {
+        return availableDate;
     }
 
-    public String getDisplayPrice() {
-        return new BigDecimal(productPrice).movePointLeft(2).toString();
+    public JsonStoreProduct setAvailableDate(String availableDate) {
+        this.availableDate = availableDate;
+        return this;
     }
 
-    public String getDisplayDiscount() {
-        return new BigDecimal(productDiscount).movePointLeft(2).toString();
+    public boolean isAvailableNow() {
+        return availableNow;
+    }
+
+    public JsonStoreProduct setAvailableNow(boolean availableNow) {
+        this.availableNow = availableNow;
+        return this;
+    }
+
+    public boolean isDisplayCaseTurnedOn() {
+        return displayCaseTurnedOn;
+    }
+
+    public JsonStoreProduct setDisplayCaseTurnedOn(boolean displayCaseTurnedOn) {
+        this.displayCaseTurnedOn = displayCaseTurnedOn;
+        return this;
     }
 
     public String getBizStoreId() {
@@ -232,6 +256,18 @@ public class JsonStoreProduct implements Serializable {
     public JsonStoreProduct setActive(boolean active) {
         this.active = active;
         return this;
+    }
+
+    public String getDisplayUnitValue() {
+        return new BigDecimal(unitValue).movePointLeft(2).stripTrailingZeros().toString();
+    }
+
+    public String getDisplayPrice() {
+        return new BigDecimal(productPrice).movePointLeft(2).toString();
+    }
+
+    public String getDisplayDiscount() {
+        return new BigDecimal(productDiscount).movePointLeft(2).toString();
     }
 
     @Override
