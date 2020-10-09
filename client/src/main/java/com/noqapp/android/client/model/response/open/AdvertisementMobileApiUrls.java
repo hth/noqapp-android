@@ -2,7 +2,6 @@ package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
-import com.noqapp.android.common.beans.body.DeviceToken;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
