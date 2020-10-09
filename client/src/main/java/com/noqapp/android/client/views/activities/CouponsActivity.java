@@ -27,15 +27,15 @@ public class CouponsActivity extends TabbedActivity {
         AllCouponsFragment allCouponsFragment = new AllCouponsFragment();
         MyCouponsFragment myCouponsFragment = new MyCouponsFragment();
         Bundle b = new Bundle();
-        b.putString(IBConstant.KEY_CODE_QR,codeQr);
+        b.putString(IBConstant.KEY_CODE_QR, codeQr);
         allCouponsFragment.setArguments(b);
         myCouponsFragment.setArguments(b);
-        if(TextUtils.isEmpty(codeQr)){
+        if (TextUtils.isEmpty(codeQr)) {
             adapter.addFragment(allCouponsFragment, "New Coupons");
             if (UserUtils.isLogin()) {
                 adapter.addFragment(myCouponsFragment, "My Coupons");
             }
-        }else{
+        } else {
             //Coming from order or Q screen
             adapter.addFragment(allCouponsFragment, "All Coupons");
         }

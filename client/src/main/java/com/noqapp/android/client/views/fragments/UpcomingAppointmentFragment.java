@@ -33,7 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class UpcomingAppointmentFragment extends BaseFragment implements AppointmentPresenter,
-        MyAppointmentAdapter.OnItemClickListener {
+    MyAppointmentAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
@@ -81,7 +81,7 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
         Collections.sort(jsonSchedules, (o1, o2) -> {
             try {
                 return CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()).
-                        compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()));
+                    compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()));
             } catch (Exception e) {
                 e.printStackTrace();
                 return 0;

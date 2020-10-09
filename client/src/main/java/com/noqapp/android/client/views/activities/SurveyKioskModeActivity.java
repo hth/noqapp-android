@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class SurveyKioskModeActivity
-        extends BaseActivity
-        implements SurveyPresenter, LanguageGridAdapter.OnItemClickListener {
+    extends BaseActivity
+    implements SurveyPresenter, LanguageGridAdapter.OnItemClickListener {
     private RecyclerView rv_languages;
     private JsonQuestionnaire jsonQuestionnaire;
     private LanguageGridAdapter recyclerView_Adapter;

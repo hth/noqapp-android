@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class QueueHistoryFragment extends BaseFragment implements
-        QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
+    QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
     private RecyclerView rcv_order_history;
     private ArrayList<JsonQueueHistorical> listData;
     private RelativeLayout rl_empty;
@@ -77,7 +77,7 @@ public class QueueHistoryFragment extends BaseFragment implements
         Collections.sort(listData, (o1, o2) -> {
             try {
                 return Objects.requireNonNull(CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated())).
-                        compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
+                    compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
             } catch (Exception e) {
                 e.printStackTrace();
                 return 0;

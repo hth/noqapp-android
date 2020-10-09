@@ -52,8 +52,7 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
         tv_review_label = findViewById(R.id.tv_review_label);
         toggleShowAll = findViewById(R.id.toggleShowAll);
         toggleShowAll.setVisibility(View.INVISIBLE);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_all_review.setLayoutManager(horizontalLayoutManagaer);
         rv_all_review.setItemAnimator(new DefaultItemAnimator());
         Intent bundle = getIntent();
@@ -136,8 +135,7 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
             rl_empty.setVisibility(View.GONE);
             tv_review_label.setText("" + jsonReviews.size() + " Ratings");
             try {
-                float f = ratingCount * 1.0f /
-                        listSize;
+                float f = ratingCount * 1.0f / listSize;
                 ratingBar.setRating(f);
                 TextView tv_rating = findViewById(R.id.tv_rating);
                 tv_rating.setText(String.valueOf(AppUtils.round(f)));

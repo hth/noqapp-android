@@ -35,10 +35,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
@@ -69,7 +71,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         locationPref = AppInitialize.getLocationPreference();
         location.setLatitude(locationPref.getLatitude());
         location.setLongitude(locationPref.getLongitude());
-       // gpsTracker = new GPSTracker(this, null);
+        // gpsTracker = new GPSTracker(this, null);
 //        if (gpsTracker.isLocationEnabled()) {
 //            callLocationManager();
 //        } else {
@@ -127,7 +129,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Launch", "launching from deviceRegisterResponse");
             deviceId = deviceRegistered.getDeviceId();
-            Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: "+deviceRegistered);
+            Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: " + deviceRegistered);
             String cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
             Log.d(TAG, "Splash City Name =" + cityName);
 
@@ -195,9 +197,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     private void callLocationManager() {
         if (hasAccessTo(Manifest.permission.ACCESS_FINE_LOCATION) && hasAccessTo(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{PermissionUtils.LOCATION_PERMISSION},
-                    PermissionUtils.PERMISSION_REQUEST_LOCATION);
+                this,
+                new String[]{PermissionUtils.LOCATION_PERMISSION},
+                PermissionUtils.PERMISSION_REQUEST_LOCATION);
             return;
         }
 
@@ -206,27 +208,27 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
 
         LocationParams.Builder builder = new LocationParams.Builder()
-                .setAccuracy(trackingAccuracy)
-                .setDistance(trackingDistance)
-                .setInterval(mLocTrackingInterval);
+            .setAccuracy(trackingAccuracy)
+            .setDistance(trackingDistance)
+            .setInterval(mLocTrackingInterval);
 
         SmartLocation.with(this)
-                .location()
-                // .continuous()
-                .config(builder.build())
-                .start(location -> {
-                    if (null != location) {
-                        this.location = location;
-                        callLaunchScreen();
-                        try { // pseudo code
-                            SmartLocation.with(splashScreen).location().stop();
-                            Log.e("SmartLocation: ", "Stopped");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
+            .location()
+            // .continuous()
+            .config(builder.build())
+            .start(location -> {
+                if (null != location) {
+                    this.location = location;
+                    callLaunchScreen();
+                    try { // pseudo code
+                        SmartLocation.with(splashScreen).location().stop();
+                        Log.e("SmartLocation: ", "Stopped");
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
+                    Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
+                }
+            });
     }
 
     private boolean hasAccessTo(String permissionType) {
@@ -245,27 +247,27 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                     if (ActivityCompat.shouldShowRequestPermissionRationale(SplashScreen.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Permission needed")
-                                .setMessage(getString(R.string.gps_error_msg))
-                                .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
-                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                    Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
-                                    intent.setData(uri);
-                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                                })
-                                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
+                            .setMessage(getString(R.string.gps_error_msg))
+                            .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
+                                intent.setData(uri);
+                                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                            })
+                            .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
                         builder.show();
                     } else {
                         // user selected Don't ask again checkbox show proper msg
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Permission needed")
-                                .setMessage(getString(R.string.gps_error_msg_final))
-                                .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
-                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                    Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
-                                    intent.setData(uri);
-                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                                })
-                                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
+                            .setMessage(getString(R.string.gps_error_msg_final))
+                            .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
+                                intent.setData(uri);
+                                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                            })
+                            .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
                         builder.show();
                     }
                 }

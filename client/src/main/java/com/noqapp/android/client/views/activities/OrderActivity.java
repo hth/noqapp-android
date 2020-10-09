@@ -77,8 +77,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter,
-        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter,
-        StoreProductFinalOrderAdapter.CartOrderUpdate, ClientPreferencePresenter {
+    ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter,
+    StoreProductFinalOrderAdapter.CartOrderUpdate, ClientPreferencePresenter {
     private TextView tv_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -229,10 +229,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         StoreProductFinalOrderAdapter storeProductFinalOrderAdapter = new StoreProductFinalOrderAdapter(
-                this,
-                jsonPurchaseOrder.getPurchaseOrderProducts(),
-                this,
-                currencySymbol);
+            this,
+            jsonPurchaseOrder.getPurchaseOrderProducts(),
+            this,
+            currencySymbol);
 
         lv_product.setAdapter(storeProductFinalOrderAdapter);
         checkProductWithZeroPrice();
@@ -253,10 +253,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             showProgress();
                             setProgressMessage("Order placing in progress..");
                             jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
-                                    .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
-                                    .setPaymentMode(null) //not required here
-                                    .setCustomerPhone(AppInitialize.getPhoneNo())
-                                    .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
+                                .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
+                                .setPaymentMode(null) //not required here
+                                .setCustomerPhone(AppInitialize.getPhoneNo())
+                                .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
                             purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
                         } else {

@@ -38,7 +38,7 @@ public class AllEventsActivity extends BaseActivity implements EventsAdapter.OnI
     }
 
     @Override
-    public void onEventItemClick(JsonAdvertisement item ) {
+    public void onEventItemClick(JsonAdvertisement item) {
         switch (item.getAdvertisementViewerType()) {
             case JBA: {
                 Intent in = new Intent(this, ImageViewerActivity.class);

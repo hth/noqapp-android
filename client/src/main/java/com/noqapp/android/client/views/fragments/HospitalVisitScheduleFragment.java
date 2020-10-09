@@ -18,7 +18,7 @@ import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import java.util.List;
 
 public class HospitalVisitScheduleFragment extends BaseFragment
-        implements HospitalVisitScheduleListAdapter.OnItemClickListener {
+    implements HospitalVisitScheduleListAdapter.OnItemClickListener {
 
 
     @Override
@@ -29,13 +29,13 @@ public class HospitalVisitScheduleFragment extends BaseFragment
         RelativeLayout rl_empty = view.findViewById(R.id.rl_empty);
         rcv_order_history.setHasFixedSize(true);
         rcv_order_history.setLayoutManager(new LinearLayoutManager(getActivity(),
-                RecyclerView.HORIZONTAL, false));
+            RecyclerView.HORIZONTAL, false));
         rcv_order_history.setItemAnimator(new DefaultItemAnimator());
 
 
         List<JsonHospitalVisitSchedule> listData = (List<JsonHospitalVisitSchedule>) getArguments().getSerializable("data");
         HospitalVisitScheduleAdapter hospitalVisitScheduleAdapter = new HospitalVisitScheduleAdapter(getActivity(), listData,
-                this);
+            this);
         rcv_order_history.setAdapter(hospitalVisitScheduleAdapter);
 
         if (null != listData && listData.size() == 0 && null != getActivity()) {
@@ -49,7 +49,7 @@ public class HospitalVisitScheduleFragment extends BaseFragment
 
     @Override
     public void onImmuneItemClick() {
-       // new CustomToast().showToast(getActivity(), "Do some action");
+        // new CustomToast().showToast(getActivity(), "Do some action");
     }
 
 }

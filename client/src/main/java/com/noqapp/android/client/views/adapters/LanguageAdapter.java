@@ -27,8 +27,11 @@ public class LanguageAdapter extends RecyclerView.Adapter {
     private Activity context;
     private boolean isIndian;
 
-    public LanguageAdapter(Activity context, List<LanguageInfo> languageInfos,
-                           OnItemClickListener listener, boolean isIndian) {
+    public LanguageAdapter(
+        Activity context,
+        List<LanguageInfo> languageInfos,
+        OnItemClickListener listener,
+        boolean isIndian) {
         this.languageInfos = languageInfos;
         this.context = context;
         this.listener = listener;
@@ -62,7 +65,7 @@ public class LanguageAdapter extends RecyclerView.Adapter {
             notifyDataSetChanged();
             new CustomToast().showToast(context, " Language changed successfully");
             context.finish();
-            if(null != listener){
+            if (null != listener) {
                 listener.onLanguageSelected(languageInfo);
             }
         });
@@ -94,7 +97,7 @@ public class LanguageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void resetSelection(){
+    private void resetSelection() {
         for (int i = 0; i < languageInfos.size(); i++) {
             languageInfos.get(i).setLanguageSelected(false);
         }

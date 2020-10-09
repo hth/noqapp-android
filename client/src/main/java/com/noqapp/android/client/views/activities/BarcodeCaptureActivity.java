@@ -123,21 +123,13 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
         final String[] permissions = new String[]{Manifest.permission.CAMERA};
 
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.CAMERA)) {
+            Manifest.permission.CAMERA)) {
             ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM);
             return;
         }
 
         final Activity thisActivity = this;
-
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCompat.requestPermissions(thisActivity, permissions,
-                        RC_HANDLE_CAMERA_PERM);
-            }
-        };
-
+        View.OnClickListener listener = view -> ActivityCompat.requestPermissions(thisActivity, permissions, RC_HANDLE_CAMERA_PERM);
         findViewById(R.id.topLayout).setOnClickListener(listener);
     }
 
@@ -168,8 +160,7 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
         // create a separate tracker instance for each barcode.
         BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).build();
         BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, this);
-        barcodeDetector.setProcessor(
-                new MultiProcessor.Builder<>(barcodeFactory).build());
+        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
 
         if (!barcodeDetector.isOperational()) {
             // Note: The first time that an app using the barcode or face API is installed on a
@@ -198,19 +189,19 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
         // to other detection examples to enable the barcode detector to detect small barcodes
         // at long distances.
         CameraSource.Builder builder = new CameraSource.Builder(getApplicationContext(), barcodeDetector)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedPreviewSize(1600, 1024)
-                .setRequestedFps(15.0f);
+            .setFacing(CameraSource.CAMERA_FACING_BACK)
+            .setRequestedPreviewSize(1600, 1024)
+            .setRequestedFps(15.0f);
 
         // make sure that auto focus is an available option
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             builder = builder.setFocusMode(
-                    autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
+                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
         }
 
         mCameraSource = builder
-                .setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null)
-                .build();
+            .setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null)
+            .build();
     }
 
     /**
@@ -281,7 +272,7 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
         }
 
         Log.e(TAG, "Permission not granted: results len = " + grantResults.length +
-                " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
+            " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -291,9 +282,9 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Multitracker sample")
-                .setMessage(R.string.no_camera_permission)
-                .setPositiveButton(R.string.ok, listener)
-                .show();
+            .setMessage(R.string.no_camera_permission)
+            .setPositiveButton(R.string.ok, listener)
+            .show();
     }
 
     /**
@@ -304,10 +295,10 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
     private void startCameraSource() throws SecurityException {
         // check that the device has play services available.
         int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
-                getApplicationContext());
+            getApplicationContext());
         if (code != ConnectionResult.SUCCESS) {
             Dialog dlg =
-                    GoogleApiAvailability.getInstance().getErrorDialog(this, code, RC_HANDLE_GMS);
+                GoogleApiAvailability.getInstance().getErrorDialog(this, code, RC_HANDLE_GMS);
             dlg.show();
         }
 

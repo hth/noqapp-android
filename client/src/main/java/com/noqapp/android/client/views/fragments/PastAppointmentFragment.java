@@ -33,7 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class PastAppointmentFragment extends BaseFragment implements AppointmentPresenter,
-        MyAppointmentAdapter.OnItemClickListener {
+    MyAppointmentAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();

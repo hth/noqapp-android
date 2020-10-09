@@ -15,7 +15,7 @@ public class ProfileActivity extends BaseActivity {
 
     protected final int STORAGE_PERMISSION_CODE = 102;
     protected final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     protected final int SELECT_PICTURE = 110;
 
@@ -46,10 +46,7 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
+        ActivityCompat.requestPermissions(this, STORAGE_PERMISSION_PERMS, STORAGE_PERMISSION_CODE);
     }
 
     protected String getMimeType(Context context, Uri uri) {

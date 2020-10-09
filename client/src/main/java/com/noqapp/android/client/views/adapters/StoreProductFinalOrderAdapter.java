@@ -73,9 +73,9 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         childViewHolder.tv_title.setText(storeCartItem.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getProductQuantity()));
         childViewHolder.tv_product_count.setText(String.valueOf(storeCartItem.getProductQuantity()));
-        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct())+ " x " + storeCartItem.getProductQuantity());
+        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct()) + " x " + storeCartItem.getProductQuantity());
         childViewHolder.tv_total_product_price.setText(currencySymbol + " " + CommonHelper.
-                displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
+            displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
 
 
         switch (storeCartItem.getProductType()) {

@@ -58,19 +58,19 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter {
         if (isDocument) {
             if (imageUrls.get(position).endsWith(".pdf")) {
                 Picasso.get()
-                        .load(R.drawable.pdf_thumb)
-                        .into(holder.iv_photo);
+                    .load(R.drawable.pdf_thumb)
+                    .into(holder.iv_photo);
             } else {
                 Picasso.get()
-                        .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrls.get(position))
-                        .into(holder.iv_photo);
+                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrls.get(position))
+                    .into(holder.iv_photo);
             }
         } else {
             Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
-                    .placeholder(ImageUtils.getThumbPlaceholder(context))
-                    .error(ImageUtils.getThumbErrorPlaceholder(context))
-                    .into(holder.iv_photo);
+                .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
+                .placeholder(ImageUtils.getThumbPlaceholder(context))
+                .error(ImageUtils.getThumbErrorPlaceholder(context))
+                .into(holder.iv_photo);
         }
         if (position < 3 || imageUrls.size() == 4) {
             holder.tv_title.setVisibility(View.GONE);

@@ -61,12 +61,12 @@ public class KioskModeInfo implements Serializable {
     @Override
     public String toString() {
         return "KioskModeInfo{" +
-                "isKioskModeEnable=" + isKioskModeEnable +
-                ", isLevelUp=" + isLevelUp +
-                ", isFeedbackScreen=" + isFeedbackScreen +
-                ", kioskCodeQR='" + kioskCodeQR + '\'' +
-                ", bizNameId='" + bizNameId + '\'' +
-                ", bizName='" + bizName + '\'' +
-                '}';
+            "isKioskModeEnable=" + isKioskModeEnable +
+            ", isLevelUp=" + isLevelUp +
+            ", isFeedbackScreen=" + isFeedbackScreen +
+            ", kioskCodeQR='" + kioskCodeQR + '\'' +
+            ", bizNameId='" + bizNameId + '\'' +
+            ", bizName='" + bizName + '\'' +
+            '}';
     }
 }

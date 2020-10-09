@@ -63,6 +63,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     private Toast backPressToast;
     private LinearLayout ll_fill_review, ll_thank_u;
     private long mLastClickTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
@@ -200,21 +201,21 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                                 new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
                             } else {
                                 QueueReview rr = new QueueReview()
-                                        .setCodeQR(jtk.getCodeQR())
-                                        .setToken(jtk.getToken())
-                                        .setHoursSaved(selectedRadio) // update according select radio
-                                        .setRatingCount(Math.round(ratingBar.getRating()))
-                                        .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
-                                        .setQueueUserId(jtk.getQueueUserId());
-                                new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
-                            }
-                        } else {
-                            QueueReview rr = new QueueReview()
                                     .setCodeQR(jtk.getCodeQR())
                                     .setToken(jtk.getToken())
                                     .setHoursSaved(selectedRadio) // update according select radio
                                     .setRatingCount(Math.round(ratingBar.getRating()))
-                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
+                                    .setQueueUserId(jtk.getQueueUserId());
+                                new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                            }
+                        } else {
+                            QueueReview rr = new QueueReview()
+                                .setCodeQR(jtk.getCodeQR())
+                                .setToken(jtk.getToken())
+                                .setHoursSaved(selectedRadio) // update according select radio
+                                .setRatingCount(Math.round(ratingBar.getRating()))
+                                .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
 
                             ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
                             reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);

@@ -47,7 +47,7 @@ public class UserProfileFragment extends Fragment {
                     tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
                     try {
                         double dd = AppUtils.round(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount() * 1.0f /
-                                jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getJsonReviews().size());
+                            jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getJsonReviews().size());
                         tv_store_rating.setText(String.valueOf(dd));
                     } catch (Exception e) {
                         e.printStackTrace();

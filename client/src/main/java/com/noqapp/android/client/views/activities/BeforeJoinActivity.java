@@ -154,9 +154,9 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(imageUrl)
-                        .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
-                        .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                    .load(imageUrl)
+                    .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
+                    .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
@@ -462,7 +462,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
 
                 }
             });
-            showCustomDialog.displayDialog(getString(R.string.alert),getString(R.string.business_too_far_from_location));
+            showCustomDialog.displayDialog(getString(R.string.alert), getString(R.string.business_too_far_from_location));
         } else {
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());

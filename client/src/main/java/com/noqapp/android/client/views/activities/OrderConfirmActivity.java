@@ -60,7 +60,7 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter,
-        ActivityCommunicator, CFClientInterface, CashFreeNotifyPresenter {
+    ActivityCommunicator, CFClientInterface, CashFreeNotifyPresenter {
 
     private PurchaseOrderApiCall purchaseOrderApiCall;
     private TextView tv_total_order_amt;
@@ -137,8 +137,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             if (null != jsonPurchaseOrder && (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB || jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO)) {
                 if (isProductWithoutPrice) {
                     new CustomToast().showToast(
-                            OrderConfirmActivity.this,
-                            "Merchant have not set the price of the product. Hence payment cannot be proceed");
+                        OrderConfirmActivity.this,
+                        "Merchant have not set the price of the product. Hence payment cannot be proceed");
                 } else {
                     if (AppInitialize.isEmailVerified()) {
                         if (isOnline()) {
@@ -150,8 +150,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                         }
                     } else {
                         new CustomToast().showToast(
-                                OrderConfirmActivity.this,
-                                "To pay, email is mandatory. In your profile add and verify email");
+                            OrderConfirmActivity.this,
+                            "To pay, email is mandatory. In your profile add and verify email");
                     }
                 }
             }

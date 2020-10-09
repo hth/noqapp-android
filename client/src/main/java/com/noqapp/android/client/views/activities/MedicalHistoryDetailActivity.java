@@ -200,7 +200,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             }
         }
         if (null == jsonMedicalRecord.getMedicalPathologiesLists() || jsonMedicalRecord.getMedicalPathologiesLists().size() == 0
-                || jsonMedicalRecord.getMedicalPathologiesLists().get(0).getJsonMedicalPathologies().isEmpty()) {
+            || jsonMedicalRecord.getMedicalPathologiesLists().get(0).getJsonMedicalPathologies().isEmpty()) {
             ll_pathology.setVisibility(View.GONE);
         } else {
             for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologiesLists().get(0).getJsonMedicalPathologies()) {
@@ -246,8 +246,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         TextView tv_observation_mri_label = findViewById(R.id.tv_observation_mri_label);
 
         if (null != jsonMedicalRecord.getMedicalPathologiesLists() && jsonMedicalRecord.getMedicalPathologiesLists().size() > 0
-                && jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages() != null &&
-                jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size() > 0) {
+            && jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages() != null &&
+            jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size() > 0) {
             tv_attachment_pathology.setText("" + jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size());
             if (TextUtils.isEmpty(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation())) {
                 tv_observation_pathology_label.setText("N/A");
@@ -351,8 +351,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     private LinearLayout getView(String label) {
         LinearLayout childLayout = new LinearLayout(this);
         LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
         childLayout.setLayoutParams(linearParams);
         TextView mType = new TextView(this);
         mType.setTextSize(16);

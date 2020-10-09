@@ -17,9 +17,10 @@ import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
-public class NotificationActivity extends BaseActivity implements NotificationListAdapter.DeleteRecord{
+public class NotificationActivity extends BaseActivity implements NotificationListAdapter.DeleteRecord {
     private ListView listview;
     private RelativeLayout rl_empty;
+
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class NotificationActivity extends BaseActivity implements NotificationLi
         NotificationDB.updateNotification();
     }
 
-    private void loadListData(){
+    private void loadListData() {
         List<DisplayNotification> notificationsList = NotificationDB.getNotificationsList();
         NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList, this);
         listview.setAdapter(adapter);

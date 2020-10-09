@@ -89,9 +89,9 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
  * Created by chandra on 5/7/17.
  */
 public class AfterJoinActivity
-        extends BaseActivity
-        implements ResponsePresenter, ActivityCommunicator, QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter,
-        CFClientInterface, CashFreeNotifyQPresenter {
+    extends BaseActivity
+    implements ResponsePresenter, ActivityCommunicator, QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter,
+    CFClientInterface, CashFreeNotifyQPresenter {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_business_name;
@@ -201,14 +201,14 @@ public class AfterJoinActivity
                         clientCouponApiCalls.setCouponApplyRemovePresenter(AfterJoinActivity.this);
 
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
-                                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                                // .setCouponId(jsonCoupon.getCouponId())
-                                .setTransactionId(jsonTokenAndQueue.getTransactionId());
+                            .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                            // .setCouponId(jsonCoupon.getCouponId())
+                            .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
                         clientCouponApiCalls.remove(UserUtils.getDeviceId(),
-                                UserUtils.getEmail(),
-                                UserUtils.getAuth(),
-                                couponOnOrder);
+                            UserUtils.getEmail(),
+                            UserUtils.getAuth(),
+                            couponOnOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(AfterJoinActivity.this);
                     }
@@ -290,8 +290,8 @@ public class AfterJoinActivity
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl)
-                        .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
-                        .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                    .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
+                    .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
@@ -466,8 +466,8 @@ public class AfterJoinActivity
             if (null != jtk) {
                 if (TextUtils.isEmpty(gotoPerson)) {
                     gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue)
-                            ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter()
-                            : "";
+                        ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter()
+                        : "";
                 }
                 setObject(jtk, gotoPerson);
             }
@@ -656,14 +656,14 @@ public class AfterJoinActivity
                     TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
                     TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
                     tv_title.setText(jsonPurchaseOrderProduct.getProductName()
-                            + " "
-                            + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())
-                            + " " + currencySymbol
-                            + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice())
-                            + " x "
-                            + jsonPurchaseOrderProduct.getProductQuantity());
+                        + " "
+                        + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())
+                        + " " + currencySymbol
+                        + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice())
+                        + " x "
+                        + jsonPurchaseOrderProduct.getProductQuantity());
                     tv_total_price.setText(currencySymbol
-                            + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
+                        + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
                     ll_order_details.addView(inflatedLayout);
                 }
                 if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
@@ -750,14 +750,14 @@ public class AfterJoinActivity
                     ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
                     clientCouponApiCalls.setCouponApplyRemovePresenter(this);
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
-                            .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                            .setCouponId(jsonCoupon.getCouponId())
-                            .setTransactionId(jsonTokenAndQueue.getTransactionId());
+                        .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                        .setCouponId(jsonCoupon.getCouponId())
+                        .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
                     clientCouponApiCalls.apply(UserUtils.getDeviceId(),
-                            UserUtils.getEmail(),
-                            UserUtils.getAuth(),
-                            couponOnOrder);
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        couponOnOrder);
                 } else {
                     ShowAlertInformation.showNetworkDialog(AfterJoinActivity.this);
                 }
@@ -779,9 +779,9 @@ public class AfterJoinActivity
             showProgress();
             setProgressCancel(false);
             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                    .setCodeQR(codeQR)
-                    .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                    .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
+                .setCodeQR(codeQR)
+                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
             queueApiAuthenticCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
         }
     }

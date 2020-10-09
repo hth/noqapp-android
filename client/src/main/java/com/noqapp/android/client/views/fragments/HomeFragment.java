@@ -116,10 +116,10 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class HomeFragment extends NoQueueBaseFragment implements View.OnClickListener,
-        FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
-        CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
-        StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
-        FeedPresenter, AdvertisementPresenter, ScannerFragment.ScanResult, ClientInQueuePresenter {
+    FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
+    CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
+    StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
+    FeedPresenter, AdvertisementPresenter, ScannerFragment.ScanResult, ClientInQueuePresenter {
 
     private final String TAG = HomeFragment.class.getSimpleName();
     private FrameLayout frame_scan;
@@ -1087,13 +1087,13 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             });
             sequence.setConfig(config);
             sequence.addSequenceItem(
-                    //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
-                    new MaterialShowcaseView.Builder(getActivity())
-                            .setTarget(LaunchActivity.getLaunchActivity().tv_location)
-                            .setDismissText("GOT IT")
-                            .setContentText("Search your preferred location")
-                            .withRectangleShape(true)
-                            .build()
+                //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
+                new MaterialShowcaseView.Builder(getActivity())
+                    .setTarget(LaunchActivity.getLaunchActivity().tv_location)
+                    .setDismissText("GOT IT")
+                    .setContentText("Search your preferred location")
+                    .withRectangleShape(true)
+                    .build()
             );
 //            sequence.addSequenceItem(
 //                    new MaterialShowcaseView.Builder(getActivity())
@@ -1104,12 +1104,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //                            .build()
 //            );
             sequence.addSequenceItem(
-                    new MaterialShowcaseView.Builder(getActivity())
-                            .setTarget(rl_current_activity)
-                            .setDismissText("DONE")
-                            .setContentText("Your current join queue or order will be visible here")
-                            .withRectangleShape(true)
-                            .build()
+                new MaterialShowcaseView.Builder(getActivity())
+                    .setTarget(rl_current_activity)
+                    .setDismissText("DONE")
+                    .setContentText("Your current join queue or order will be visible here")
+                    .withRectangleShape(true)
+                    .build()
             );
             sequence.start();
         } catch (Exception e) {

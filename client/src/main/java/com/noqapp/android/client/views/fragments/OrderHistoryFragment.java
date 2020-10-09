@@ -32,7 +32,7 @@ import java.util.Comparator;
 
 
 public class OrderHistoryFragment extends BaseFragment implements
-        OrderHistoryAdapter.OnItemClickListener, OrderHistoryPresenter {
+    OrderHistoryAdapter.OnItemClickListener, OrderHistoryPresenter {
     private RecyclerView rcv_order_history;
     private ArrayList<JsonPurchaseOrderHistorical> listData;
     private RelativeLayout rl_empty;
@@ -59,7 +59,7 @@ public class OrderHistoryFragment extends BaseFragment implements
         listData = new ArrayList<>();
         rcv_order_history.setHasFixedSize(true);
         rcv_order_history.setLayoutManager(new LinearLayoutManager(getActivity(),
-                RecyclerView.VERTICAL, false));
+            RecyclerView.VERTICAL, false));
         rcv_order_history.setItemAnimator(new DefaultItemAnimator());
         return view;
     }
@@ -80,7 +80,7 @@ public class OrderHistoryFragment extends BaseFragment implements
             public int compare(JsonPurchaseOrderHistorical o1, JsonPurchaseOrderHistorical o2) {
                 try {
                     return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated()).
-                            compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
+                        compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     return 0;

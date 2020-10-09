@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 5/7/17.
  */
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;

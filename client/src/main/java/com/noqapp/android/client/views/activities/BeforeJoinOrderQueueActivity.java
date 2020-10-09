@@ -409,9 +409,9 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
             in.putExtra("qUserId",
-                    null == AppInitialize.getUserProfile().getQueueUserId()
-                        ? ""
-                        : AppInitialize.getUserProfile().getQueueUserId());
+                null == AppInitialize.getUserProfile().getQueueUserId()
+                    ? ""
+                    : AppInitialize.getUserProfile().getQueueUserId());
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
@@ -459,17 +459,17 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
 
     private void setColor(boolean isEnable) {
         btn_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable
-                ? R.drawable.orange_gradient
-                : R.drawable.btn_bg_inactive));
+            ? R.drawable.orange_gradient
+            : R.drawable.btn_bg_inactive));
         btn_pay_and_joinQueue.setBackground(ContextCompat.getDrawable(this, isEnable
-                ? R.drawable.orange_gradient
-                : R.drawable.btn_bg_inactive));
+            ? R.drawable.orange_gradient
+            : R.drawable.btn_bg_inactive));
         btn_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable
-                ? R.color.white
-                : R.color.btn_color));
+            ? R.color.white
+            : R.color.btn_color));
         btn_pay_and_joinQueue.setTextColor(ContextCompat.getColor(this, isEnable
-                ? R.color.white
-                : R.color.btn_color));
+            ? R.color.white
+            : R.color.btn_color));
     }
 
     @Override

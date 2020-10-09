@@ -114,8 +114,8 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             boolean isDoctor = bundle.getBooleanExtra(IBConstant.KEY_IS_DO, false);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
-                        placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
-                        error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                    placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
+                    error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }

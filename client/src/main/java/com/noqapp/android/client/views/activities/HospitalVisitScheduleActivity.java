@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -40,7 +41,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
     private ViewPager viewPager;
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     @Override
@@ -145,8 +146,8 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
 
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
+            this,
+            STORAGE_PERMISSION_PERMS,
+            STORAGE_PERMISSION_CODE);
     }
 }

@@ -39,7 +39,7 @@ public class ChangeLanguageActivity extends BaseActivity implements LanguageAdap
 
     @Override
     public void onLanguageSelected(LanguageInfo languageInfo) {
-       // new CustomToast().showToast(this, " Language changed successfully");
+        // new CustomToast().showToast(this, " Language changed successfully");
     }
 
     private ArrayList<LanguageInfo> getEnabledIndianLanguage() {

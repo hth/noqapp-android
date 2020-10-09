@@ -23,8 +23,11 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
     private List<JsonHospitalVisitSchedule> categories;
     private Context context;
 
-    public HospitalVisitScheduleAdapter(Context context, List<JsonHospitalVisitSchedule> categories,
-                                        HospitalVisitScheduleListAdapter.OnItemClickListener listener) {
+    public HospitalVisitScheduleAdapter(
+        Context context,
+        List<JsonHospitalVisitSchedule> categories,
+        HospitalVisitScheduleListAdapter.OnItemClickListener listener
+    ) {
         this.categories = categories;
         this.context = context;
         this.listener = listener;
@@ -40,12 +43,14 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder Vholder, final int position) {
         ViewHolder holder = (ViewHolder) Vholder;
         holder.tv_menu_header.setText(categories.get(position).getHeader());
-        HospitalVisitScheduleListAdapter adapter = new HospitalVisitScheduleListAdapter(context,
-                categories.get(position).getVisitingFor(), listener, categories.get(position));
+        HospitalVisitScheduleListAdapter adapter = new HospitalVisitScheduleListAdapter(
+            context,
+            categories.get(position).getVisitingFor(),
+            listener,
+            categories.get(position));
         holder.fh_list_view.setAdapter(adapter);
         holder.ll_header.setBackgroundColor(Color.WHITE);
         holder.tv_menu_header.setTextColor(Color.BLACK);
-
     }
 
     @Override
@@ -65,5 +70,4 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
             this.fh_list_view = itemView.findViewById(R.id.fh_list_view);
         }
     }
-
 }

@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +28,7 @@ public class AllCouponsAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_all_coupons,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_all_coupons, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -46,8 +44,7 @@ public class AllCouponsAdapter extends RecyclerView.Adapter {
         } else {
             holder.tv_discount_amount.setText(String.valueOf(jsonCoupon.getDiscountAmount()) + "% off");
         }
-        holder.tv_offer_validity.setText("Validity period: " +
-                CommonHelper.formatStringDate(CommonHelper.SDF_YYYY_MM_DD, jsonCoupon.getCouponEndDate()));
+        holder.tv_offer_validity.setText("Validity period: " + CommonHelper.formatStringDate(CommonHelper.SDF_YYYY_MM_DD, jsonCoupon.getCouponEndDate()));
         holder.card_view.setCardBackgroundColor(Color.parseColor("#CA705F"));
         holder.tv_apply_coupon.setTextColor(Color.parseColor("#CA705F"));
         holder.tv_apply_coupon.setOnClickListener((View v) -> {
@@ -73,7 +70,6 @@ public class AllCouponsAdapter extends RecyclerView.Adapter {
         private TextView tv_apply_coupon;
         private TextView tv_offer_validity;
         private CardView card_view;
-
 
         private MyViewHolder(View itemView) {
             super(itemView);

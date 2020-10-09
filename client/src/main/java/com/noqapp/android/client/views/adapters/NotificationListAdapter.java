@@ -27,8 +27,11 @@ public class NotificationListAdapter extends BaseAdapter {
     private List<DisplayNotification> notificationsList;
     private DeleteRecord deleteRecord;
 
-    public NotificationListAdapter(Context context, List<DisplayNotification> notificationsList,
-                                   DeleteRecord deleteRecord) {
+    public NotificationListAdapter(
+        Context context,
+        List<DisplayNotification> notificationsList,
+        DeleteRecord deleteRecord
+    ) {
         this.context = context;
         this.notificationsList = notificationsList;
         this.deleteRecord = deleteRecord;
@@ -85,9 +88,7 @@ public class NotificationListAdapter extends BaseAdapter {
             recordHolder.iv_big_image.setVisibility(View.GONE);
         } else {
             recordHolder.iv_big_image.setVisibility(View.VISIBLE);
-            Picasso.get().load(
-                    displayNotification.getImageUrl())
-                    .into(recordHolder.iv_big_image);
+            Picasso.get().load(displayNotification.getImageUrl()).into(recordHolder.iv_big_image);
         }
         recordHolder.iv_delete.setOnClickListener(v -> {
             if (null != deleteRecord) {
@@ -114,5 +115,4 @@ public class NotificationListAdapter extends BaseAdapter {
     public interface DeleteRecord {
         void deleteNotification(DisplayNotification displayNotification);
     }
-
 }

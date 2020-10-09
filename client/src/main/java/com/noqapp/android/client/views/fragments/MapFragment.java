@@ -97,26 +97,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         try {
             /* For the start location, the color of marker is GREEN and for the end location, the color of marker is RED. */
             mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(results.routes[overview].legs[overview].startLocation.lat, results.routes[overview].legs[overview].startLocation.lng))
-                    .title(results.routes[overview].legs[overview].startAddress)
-                    .icon(getMarkerIcon("#" + Integer.toHexString(ContextCompat.getColor(getContext(), R.color.green)))))
-                    .setFlat(true);
+                .position(new LatLng(results.routes[overview].legs[overview].startLocation.lat, results.routes[overview].legs[overview].startLocation.lng))
+                .title(results.routes[overview].legs[overview].startAddress)
+                .icon(getMarkerIcon("#" + Integer.toHexString(ContextCompat.getColor(getContext(), R.color.green)))))
+                .setFlat(true);
             mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(results.routes[overview].legs[overview].endLocation.lat, results.routes[overview].legs[overview].endLocation.lng))
-                    .title(results.routes[overview].legs[overview].endAddress)
-                    .icon(getMarkerIcon("#" + Integer.toHexString(ContextCompat.getColor(getContext(), R.color.colorAccent))))
-                    .snippet(getEndLocationTitle(results, TravelMode.DRIVING)));
+                .position(new LatLng(results.routes[overview].legs[overview].endLocation.lat, results.routes[overview].legs[overview].endLocation.lng))
+                .title(results.routes[overview].legs[overview].endAddress)
+                .icon(getMarkerIcon("#" + Integer.toHexString(ContextCompat.getColor(getContext(), R.color.colorAccent))))
+                .snippet(getEndLocationTitle(results, TravelMode.DRIVING)));
         } catch (ArrayIndexOutOfBoundsException e) {
             e.getLocalizedMessage();
 
             mMap.addMarker(new MarkerOptions()
-                    .position(source)
-                    .title("No route information available to destination")
-                    .icon(getMarkerIcon("#" + Integer.toHexString(ContextCompat.getColor(getContext(), R.color.green)))));
+                .position(source)
+                .title("No route information available to destination")
+                .icon(getMarkerIcon("#" + Integer.toHexString(ContextCompat.getColor(getContext(), R.color.green)))));
             mMap.addMarker(new MarkerOptions()
-                    .position(destination)
-                    .title("Destination route not available")
-                    .icon(getMarkerIcon("#" + Integer.toHexString(ContextCompat.getColor(getContext(), R.color.colorAccent)))));
+                .position(destination)
+                .title("Destination route not available")
+                .icon(getMarkerIcon("#" + Integer.toHexString(ContextCompat.getColor(getContext(), R.color.colorAccent)))));
 
             CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(source, 10);
             mMap.animateCamera(yourLocation);
@@ -133,11 +133,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         DateTime now = DateTime.now(DateTimeZone.UTC).plusDays(1);
         try {
             return DirectionsApi.newRequest(getGeoContext())
-                    .mode(travelMode)
-                    .origin(new com.google.maps.model.LatLng(source.latitude, source.longitude))
-                    .destination(new com.google.maps.model.LatLng(destination.latitude, destination.longitude))
-                    .departureTime(now)
-                    .await();
+                .mode(travelMode)
+                .origin(new com.google.maps.model.LatLng(source.latitude, source.longitude))
+                .destination(new com.google.maps.model.LatLng(destination.latitude, destination.longitude))
+                .departureTime(now)
+                .await();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -147,10 +147,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GeoApiContext getGeoContext() {
         GeoApiContext geoApiContext = new GeoApiContext();
         return geoApiContext.setQueryRateLimit(3)
-                .setApiKey(getString(R.string.google_maps_key))
-                .setConnectTimeout(2, TimeUnit.SECONDS)
-                .setReadTimeout(2, TimeUnit.SECONDS)
-                .setWriteTimeout(2, TimeUnit.SECONDS);
+            .setApiKey(getString(R.string.google_maps_key))
+            .setConnectTimeout(2, TimeUnit.SECONDS)
+            .setReadTimeout(2, TimeUnit.SECONDS)
+            .setWriteTimeout(2, TimeUnit.SECONDS);
     }
 
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
@@ -167,8 +167,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private String getEndLocationTitle(DirectionsResult results, TravelMode travelMode) {
         return StringUtils.capitalize(
-                travelMode.toString()) + " Time: " + results.routes[overview].legs[overview].duration.humanReadable
-                + " & Distance: " + results.routes[overview].legs[overview].distance.humanReadable;
+            travelMode.toString()) + " Time: " + results.routes[overview].legs[overview].duration.humanReadable
+            + " & Distance: " + results.routes[overview].legs[overview].distance.humanReadable;
     }
 
     private BitmapDescriptor getMarkerIcon(String color) {

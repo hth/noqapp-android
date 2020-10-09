@@ -62,8 +62,8 @@ public class SliderPagerAdapter extends PagerAdapter {
 
             if (image_arraylist.get(position).endsWith(".pdf")) {
                 Picasso.get()
-                        .load(R.drawable.pdf_thumb)
-                        .into(im_slider);
+                    .load(R.drawable.pdf_thumb)
+                    .into(im_slider);
                 im_slider.setOnClickListener((View v) -> {
                     if (image_arraylist.get(position).endsWith(".pdf")) {
                         Intent in = new Intent(activity, WebViewActivity.class);
@@ -75,18 +75,18 @@ public class SliderPagerAdapter extends PagerAdapter {
                 });
             } else {
                 Picasso.get()
-                        .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
-                        .into(im_slider);
+                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
+                    .into(im_slider);
             }
         } else {
             view = layoutInflater.inflate(R.layout.layout_slider, container, false);
             ImageView im_slider = view.findViewById(R.id.im_slider);
             String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
             Picasso.get()
-                    .load(AppUtils.getImageUrls(TextUtils.isEmpty(bucket) ? BuildConfig.SERVICE_BUCKET : bucket, url))
-                    .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
-                    .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
-                    .into(im_slider);
+                .load(AppUtils.getImageUrls(TextUtils.isEmpty(bucket) ? BuildConfig.SERVICE_BUCKET : bucket, url))
+                .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
+                .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
+                .into(im_slider);
         }
 
         container.addView(view);

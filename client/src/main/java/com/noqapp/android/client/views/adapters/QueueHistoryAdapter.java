@@ -47,7 +47,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_queue_history, parent, false);
+            .inflate(R.layout.rcv_queue_history, parent, false);
         return new MyViewHolder(v);
     }
 
@@ -60,7 +60,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         holder.tv_queue_join_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
 
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription() + " @ "
-                + CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getServiceBeginTime()));
+            + CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getServiceBeginTime()));
         holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());
         holder.tv_token_assigned.setText(jsonQueueHistorical.getDisplayToken());
         holder.btn_rejoin.setOnClickListener((View v) -> {
@@ -77,7 +77,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                     in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                     in.putExtra(IBConstant.KEY_FROM_LIST, true);
                     in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                    in.putExtra(IBConstant.KEY_IS_DO,jsonQueueHistorical.getBusinessType()== BusinessTypeEnum.DO);
+                    in.putExtra(IBConstant.KEY_IS_DO, jsonQueueHistorical.getBusinessType() == BusinessTypeEnum.DO);
                     context.startActivity(in);
                     break;
                 case HS:

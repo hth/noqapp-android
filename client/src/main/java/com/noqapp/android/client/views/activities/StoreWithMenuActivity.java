@@ -52,7 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class StoreWithMenuActivity extends BaseActivity implements StorePresenter,
-        MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
+    MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
     private TextView tv_store_name, tv_store_address;
@@ -167,10 +167,10 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getBannerPlaceholder(this))
-                    .error(ImageUtils.getBannerErrorPlaceholder(this))
-                    .into(iv_category_banner);
+                .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                .placeholder(ImageUtils.getBannerPlaceholder(this))
+                .error(ImageUtils.getBannerErrorPlaceholder(this))
+                .into(iv_category_banner);
         else {
             Picasso.get().load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
         }
@@ -258,14 +258,14 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         rcv_header.setAdapter(menuHeaderAdapter);
 
         StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(
-                this,
-                tempHeaderList,
-                tempListDetails,
-                this,
-                currencySymbol,
-                AppUtils.isStoreOpenToday(jsonStore),
-                jsonQueue.getBusinessType(),
-                jsonQueue.getBizStoreId());
+            this,
+            tempHeaderList,
+            tempListDetails,
+            this,
+            currencySymbol,
+            AppUtils.isStoreOpenToday(jsonStore),
+            jsonQueue.getBusinessType(),
+            jsonQueue.getBizStoreId());
         expandableListView.setAdapter(expandableListAdapter);
         for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
             expandableListView.expandGroup(i);
@@ -315,22 +315,22 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     int price = 0;
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
-                                .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
-                                .setProductQuantity(value.getChildInput())
-                                .setProductName(value.getJsonStoreProduct().getProductName())
-                                .setPackageSize(value.getJsonStoreProduct().getPackageSize())
-                                .setUnitValue(value.getJsonStoreProduct().getUnitValue())
-                                .setUnitOfMeasurement(value.getJsonStoreProduct().getUnitOfMeasurement())
-                                .setProductType(value.getJsonStoreProduct().getProductType()));
+                            .setProductId(value.getJsonStoreProduct().getProductId())
+                            .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
+                            .setProductQuantity(value.getChildInput())
+                            .setProductName(value.getJsonStoreProduct().getProductName())
+                            .setPackageSize(value.getJsonStoreProduct().getPackageSize())
+                            .setUnitValue(value.getJsonStoreProduct().getUnitValue())
+                            .setUnitOfMeasurement(value.getJsonStoreProduct().getUnitOfMeasurement())
+                            .setProductType(value.getJsonStoreProduct().getProductType()));
                         price += value.getChildInput() * value.getFinalDiscountedPrice().movePointRight(2).intValue();
                     }
                     if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
                         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                                .setBizStoreId(jsonQueue.getBizStoreId())
-                                .setBusinessType(jsonQueue.getBusinessType())
-                                .setCodeQR(jsonQueue.getCodeQR())
-                                .setOrderPrice(String.valueOf(price));
+                            .setBizStoreId(jsonQueue.getBizStoreId())
+                            .setBusinessType(jsonQueue.getBusinessType())
+                            .setCodeQR(jsonQueue.getCodeQR())
+                            .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
                         Intent intent = new Intent(StoreWithMenuActivity.this, OrderActivity.class);

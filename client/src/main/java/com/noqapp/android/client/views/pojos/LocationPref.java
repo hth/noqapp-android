@@ -49,10 +49,10 @@ public class LocationPref implements Serializable {
     @Override
     public String toString() {
         return "LocationPref{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", city='" + city + '\'' +
-                ", countryCode='" + countryCode + '\'' +
-                '}';
+            "latitude=" + latitude +
+            ", longitude=" + longitude +
+            ", city='" + city + '\'' +
+            ", countryCode='" + countryCode + '\'' +
+            '}';
     }
 }

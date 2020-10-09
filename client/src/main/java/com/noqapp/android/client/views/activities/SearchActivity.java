@@ -45,7 +45,7 @@ import java.util.ArrayList;
  * Created by chandra on 5/7/17.
  */
 public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener,
-        SearchBusinessStorePresenter, GPSTracker.LocationCommunicator {
+    SearchBusinessStorePresenter, GPSTracker.LocationCommunicator {
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
     private String scrollId = "";
@@ -59,6 +59,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private final String TAG = SearchActivity.class.getSimpleName();
     private RelativeLayout rl_empty;
     private GPSTracker gpsTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
@@ -96,7 +97,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                     return true;
                 }
                 if (event.getRawX() <= (20 + edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                   applySearch();
+                    applySearch();
                     return true;
                 }
             }
@@ -173,12 +174,12 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
-                        .setCityName(city)
-                        .setLatitude(lat)
-                        .setLongitude(lng)
-                        .setQuery(edt_search.getText().toString())
-                        .setFilters("")
-                        .setScrollId(""); //Scroll id - fresh search pass blank
+                    .setCityName(city)
+                    .setLatitude(lat)
+                    .setLongitude(lng)
+                    .setQuery(edt_search.getText().toString())
+                    .setFilters("")
+                    .setScrollId(""); //Scroll id - fresh search pass blank
                 searchBusinessStoreModels.search(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -192,13 +193,13 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
-                        .setCityName(city)
-                        .setLatitude(lat)
-                        .setLongitude(lng)
-                        .setQuery(edt_search.getText().toString())
-                        .setCodeQR(getIntent().getStringExtra("codeQR"))
-                        .setFilters("")
-                        .setScrollId(""); //Scroll id - fresh search pass blank
+                    .setCityName(city)
+                    .setLatitude(lat)
+                    .setLongitude(lng)
+                    .setQuery(edt_search.getText().toString())
+                    .setCodeQR(getIntent().getStringExtra("codeQR"))
+                    .setFilters("")
+                    .setScrollId(""); //Scroll id - fresh search pass blank
                 searchBusinessStoreModels.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -328,7 +329,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
 
-    private void applySearch(){
+    private void applySearch() {
         if (AppInitialize.isLockMode) {
             performKioskSearch();
         } else {

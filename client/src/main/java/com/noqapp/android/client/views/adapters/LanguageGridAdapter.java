@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,10 +27,10 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
     private Context context;
 
     public LanguageGridAdapter(
-            Context context,
-            List<Locale> localeList,
-            Map<Locale, List<SurveyQuestion>> questions,
-            OnItemClickListener listener
+        Context context,
+        List<Locale> localeList,
+        Map<Locale, List<SurveyQuestion>> questions,
+        OnItemClickListener listener
     ) {
         this.localeList = localeList;
         this.questions = questions;

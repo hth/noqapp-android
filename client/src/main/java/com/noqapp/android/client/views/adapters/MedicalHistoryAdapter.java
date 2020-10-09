@@ -64,7 +64,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         } else {
             recordHolder.tv_diagnosed_by.setText(jmr.getDiagnosedByDisplayName());
         }
-        recordHolder.tv_diagnosed_by.setVisibility(TextUtils.isEmpty(jmr.getDiagnosedByDisplayName())?View.GONE:View.VISIBLE);
+        recordHolder.tv_diagnosed_by.setVisibility(TextUtils.isEmpty(jmr.getDiagnosedByDisplayName()) ? View.GONE : View.VISIBLE);
         recordHolder.tv_business_name.setText(jmr.getBusinessName());
         recordHolder.tv_business_category_name.setText(jmr.getBizCategoryName());
         recordHolder.tv_complaints.setText(jmr.getChiefComplain());
@@ -74,9 +74,9 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         recordHolder.tv_no_of_time_access.setText("# of times record viewed: " + jmr.getRecordAccess().size());
-        if(BusinessTypeEnum.DO == jmr.getBusinessType()){
+        if (BusinessTypeEnum.DO == jmr.getBusinessType()) {
             recordHolder.iv_profile.setImageResource(R.drawable.doctor);
-        }else{
+        } else {
             recordHolder.iv_profile.setImageResource(R.drawable.lab);
         }
         return view;

@@ -25,7 +25,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 
 public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener,
-        MigrateEmailPresenter, ProfilePresenter {
+    MigrateEmailPresenter, ProfilePresenter {
 
     private TextView tv_header;
     private TextView tv_msg;
