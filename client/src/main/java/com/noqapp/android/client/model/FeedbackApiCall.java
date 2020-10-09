@@ -25,7 +25,6 @@ public class FeedbackApiCall {
         this.feedbackPresenter = feedbackPresenter;
     }
 
-
     static {
         feedbackApiUrls = RetrofitClient.getClient().create(FeedbackApiUrls.class);
     }

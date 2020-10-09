@@ -52,9 +52,9 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
                 edt_body.setEnabled(false);
                 edt_subject.setEnabled(false);
                 ShowAlertInformation.showAlertWithDismissCapability(
-                        ContactUsActivity.this,
-                        "Validate Email",
-                        "To contact us you need to verify your email address. Go to profile to verify.");
+                    ContactUsActivity.this,
+                    "Validate Email",
+                    "To contact us you need to verify your email address. Go to profile to verify.");
             }
         } else {
             btn_submit.setEnabled(false);
@@ -74,12 +74,12 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
                 setProgressMessage("Sending feedback...");
                 showProgress();
                 new FeedbackApiCall(ContactUsActivity.this).review(
-                        UserUtils.getDeviceId(),
-                        UserUtils.getEmail(),
-                        UserUtils.getAuth(),
-                        feedback
-                                .setBody(edt_body.getText().toString())
-                                .setSubject(edt_subject.getText().toString()));
+                    UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(),
+                    feedback
+                        .setBody(edt_body.getText().toString())
+                        .setSubject(edt_subject.getText().toString()));
             }
         });
 
