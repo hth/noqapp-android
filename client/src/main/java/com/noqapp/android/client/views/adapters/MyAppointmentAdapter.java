@@ -13,9 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.JsonSchedule;
+import com.noqapp.android.common.model.types.category.BankDepartmentEnum;
+import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -42,8 +47,26 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
         holder.tv_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
         try {
-            holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
-        } catch (Exception exp) {
+            if (StringUtils.isNotBlank(jsonSchedule.getJsonQueueDisplay().getBizCategoryId())) {
+                switch (jsonSchedule.getJsonQueueDisplay().getBusinessType()) {
+                    case DO:
+                        holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                        break;
+                    case HS:
+                        holder.tv_category.setText(HealthCareServiceEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                        break;
+                    case BK:
+                        holder.tv_category.setText(BankDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                        break;
+                    case CD:
+                    case CDQ:
+                        holder.tv_category.setText(CanteenStoreDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+                        break;
+                    default:
+                        holder.tv_category.setText("N/A");
+                }
+            }
+        } catch (IllegalArgumentException exp) {
             holder.tv_category.setText("");
             Log.e("MyAppointmentAdapter", exp.toString());
         }
