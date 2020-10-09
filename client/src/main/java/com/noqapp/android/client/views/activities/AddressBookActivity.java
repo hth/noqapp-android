@@ -1,19 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientPreferenceApiCalls;
-import com.noqapp.android.client.model.ClientProfileApiCall;
-import com.noqapp.android.client.presenter.ClientPreferencePresenter;
-import com.noqapp.android.client.presenter.ProfileAddressPresenter;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.AddressListAdapter;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonUserAddress;
-import com.noqapp.android.common.beans.JsonUserAddressList;
-import com.noqapp.android.common.beans.JsonUserPreference;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,6 +13,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ClientPreferenceApiCalls;
+import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.presenter.ClientPreferencePresenter;
+import com.noqapp.android.client.presenter.ProfileAddressPresenter;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.AddressListAdapter;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonUserAddress;
+import com.noqapp.android.common.beans.JsonUserAddressList;
+import com.noqapp.android.common.beans.JsonUserPreference;
 
 import java.util.ArrayList;
 import java.util.List;

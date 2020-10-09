@@ -14,7 +14,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.customviews.FixedHeightListView;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 
-
 import java.util.List;
 
 public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {

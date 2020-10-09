@@ -14,8 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.AppUtils;
 
 
 public class BlinkerActivity extends Activity {

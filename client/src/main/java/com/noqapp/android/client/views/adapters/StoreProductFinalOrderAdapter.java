@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.math.BigDecimal;

@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AnalyticsEvents;
-import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 import com.noqapp.android.client.views.activities.AppInitialize;
+import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.PermissionUtils;
 

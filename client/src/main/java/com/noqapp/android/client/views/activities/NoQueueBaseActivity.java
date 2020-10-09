@@ -1,15 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
 import android.content.Context;
-//import android.content.SharedPreferences;
 import android.os.Bundle;
-//import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+//import android.content.SharedPreferences;
+//import android.text.TextUtils;
 
 //import com.google.gson.Gson;
 //import com.noqapp.android.client.model.APIConstant;

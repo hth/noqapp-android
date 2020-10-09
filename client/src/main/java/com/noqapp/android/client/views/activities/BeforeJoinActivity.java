@@ -1,27 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.QueueApiAuthenticCall;
-import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
-import com.noqapp.android.client.presenter.QueuePresenter;
-import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.AnalyticsEvents;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.JoinQueueUtil;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.ShowCustomDialog;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.DependentAdapter;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.squareup.picasso.Picasso;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +22,27 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.QueueApiAuthenticCall;
+import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.presenter.QueuePresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
+import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.JoinQueueUtil;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.DependentAdapter;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

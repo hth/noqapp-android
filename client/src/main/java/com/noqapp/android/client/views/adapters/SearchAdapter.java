@@ -29,7 +29,6 @@ import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 

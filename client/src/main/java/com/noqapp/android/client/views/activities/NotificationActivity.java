@@ -1,19 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.AnalyticsEvents;
-import com.noqapp.android.client.utils.ShowCustomDialog;
-import com.noqapp.android.client.views.adapters.NotificationListAdapter;
-import com.noqapp.android.common.pojos.DisplayNotification;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.ShowCustomDialog;
+import com.noqapp.android.client.views.adapters.NotificationListAdapter;
+import com.noqapp.android.common.pojos.DisplayNotification;
 
 import java.util.List;
 

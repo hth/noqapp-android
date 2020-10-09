@@ -1,26 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DeviceApiCall;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.GPSTracker;
-import com.noqapp.android.client.views.pojos.LocationPref;
-import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.NetworkUtil;
-import com.noqapp.android.common.utils.PermissionUtils;
-
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import com.airbnb.lottie.LottieAnimationView;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -40,6 +19,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.DeviceApiCall;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.GPSTracker;
+import com.noqapp.android.client.views.pojos.LocationPref;
+import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
+import com.noqapp.android.common.utils.PermissionUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;

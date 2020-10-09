@@ -1,26 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
-import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.presenter.ReviewPresenter;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.body.OrderReview;
-import com.noqapp.android.client.presenter.beans.body.QueueReview;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.AnalyticsEvents;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,6 +19,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
+import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.presenter.ReviewPresenter;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.OrderReview;
+import com.noqapp.android.client.presenter.beans.body.QueueReview;
+import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
 

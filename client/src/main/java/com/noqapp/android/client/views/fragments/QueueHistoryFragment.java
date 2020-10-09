@@ -19,7 +19,6 @@ import com.noqapp.android.client.presenter.beans.JsonQueueHistoricalList;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.QueueHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.QueueHistoryAdapter;
 import com.noqapp.android.common.customviews.CustomToast;

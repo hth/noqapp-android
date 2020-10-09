@@ -19,7 +19,6 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.OrderHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.OrderHistoryAdapter;
 import com.noqapp.android.common.customviews.CustomToast;

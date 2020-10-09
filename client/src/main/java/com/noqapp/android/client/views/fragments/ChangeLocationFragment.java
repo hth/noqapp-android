@@ -15,11 +15,11 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.GPSTracker;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.AppInitialize;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.utils.GeoIP;
