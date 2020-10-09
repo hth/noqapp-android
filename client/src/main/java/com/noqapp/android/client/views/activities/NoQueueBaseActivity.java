@@ -1,15 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
 import android.content.Context;
-//import android.content.SharedPreferences;
 import android.os.Bundle;
-//import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+//import android.content.SharedPreferences;
+//import android.text.TextUtils;
 
 //import com.google.gson.Gson;
 //import com.noqapp.android.client.model.APIConstant;
@@ -25,7 +26,7 @@ import androidx.fragment.app.FragmentTransaction;
  * Through out the App. So only one class can extend this Activity. Otherwise it was a serious issue.
  */
 public class NoQueueBaseActivity extends AppCompatActivity {
- //   private static final String PREKEY_PHONE = "phone";
+    //   private static final String PREKEY_PHONE = "phone";
 //    private static final String PREKEY_NAME = "name";
 //    private static final String PREKEY_MAIL = "mail";
 //    private static final String PREKEY_DOB = "dateOfBirth";
@@ -42,7 +43,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 //    private static final String KEY_USER_PROFILE = "userProfile";
 //    /* Secured Shared Preference. */
 //    static final String TOKEN_FCM = "tokenFCM";
- //   public static NoQueueBaseActivity noQueueBaseActivity;
+    //   public static NoQueueBaseActivity noQueueBaseActivity;
 
 //    public static SharedPreferences getSharedPreferences() {
 //        return sharedPreferences;

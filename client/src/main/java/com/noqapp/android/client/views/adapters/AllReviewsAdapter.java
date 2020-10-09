@@ -49,10 +49,10 @@ public class AllReviewsAdapter extends RecyclerView.Adapter {
         try {
             if (!TextUtils.isEmpty(jsonReview.getProfileImage())) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonReview.getProfileImage()))
-                        .placeholder(ImageUtils.getProfilePlaceholder(context))
-                        .error(ImageUtils.getProfileErrorPlaceholder(context))
-                        .into(holder.iv_main);
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonReview.getProfileImage()))
+                    .placeholder(ImageUtils.getProfilePlaceholder(context))
+                    .error(ImageUtils.getProfileErrorPlaceholder(context))
+                    .into(holder.iv_main);
             }
         } catch (Exception e) {
             e.printStackTrace();

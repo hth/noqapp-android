@@ -1,5 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
@@ -18,25 +32,13 @@ import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-
 import java.util.ArrayList;
 
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+
 public class MedicalProfileActivity
-        extends BaseActivity
-        implements MedicalRecordProfilePresenter, View.OnClickListener {
+    extends BaseActivity
+    implements MedicalRecordProfilePresenter, View.OnClickListener {
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
     private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy, tv_blood_type_update_msg;
     private SegmentedControl sc_blood_type;
@@ -299,9 +301,9 @@ public class MedicalProfileActivity
                 break;
             case R.id.tv_update_medical_history:
                 if (TextUtils.isEmpty(edt_medicine_allergy.getText().toString())
-                        && TextUtils.isEmpty(edt_family_history.getText().toString())
-                        && TextUtils.isEmpty(edt_past_history.getText().toString())
-                        && TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
+                    && TextUtils.isEmpty(edt_family_history.getText().toString())
+                    && TextUtils.isEmpty(edt_past_history.getText().toString())
+                    && TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
                     new CustomToast().showToast(this, "Edit at least one field");
                 } else {
                     JsonUserMedicalProfile jump;

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
@@ -45,14 +46,14 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private String bizStoreId;
 
     public StoreProductMenuAdapter(
-            Context context,
-            List<JsonStoreCategory> listDataHeader,
-            HashMap<String, List<StoreCartItem>> listDataChild,
-            CartOrderUpdate cartOrderUpdate,
-            String currencySymbol,
-            boolean isStoreOpen,
-            BusinessTypeEnum businessType,
-            String bizStoreId) {
+        Context context,
+        List<JsonStoreCategory> listDataHeader,
+        HashMap<String, List<StoreCartItem>> listDataChild,
+        CartOrderUpdate cartOrderUpdate,
+        String currencySymbol,
+        boolean isStoreOpen,
+        BusinessTypeEnum businessType,
+        String bizStoreId) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -71,8 +72,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         return this.listDataChild
-                .get(this.listDataHeader.get(groupPosition).getCategoryId())
-                .get(childPosition);
+            .get(this.listDataHeader.get(groupPosition).getCategoryId())
+            .get(childPosition);
     }
 
     @Override
@@ -82,11 +83,11 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(
-            final int groupPosition,
-            final int childPosition,
-            boolean isLastChild,
-            View convertView,
-            ViewGroup parent
+        final int groupPosition,
+        final int childPosition,
+        boolean isLastChild,
+        View convertView,
+        ViewGroup parent
     ) {
         final ChildViewHolder childViewHolder;
         final StoreCartItem storeCartItem = (StoreCartItem) getChild(groupPosition, childPosition);
@@ -129,7 +130,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             .error(ImageUtils.getThumbErrorPlaceholder(context))
             .into(childViewHolder.iv_product_image);
         childViewHolder.iv_product_image.setOnClickListener(v ->
-                showProductImageDialog(jsonStoreProduct, storeCartItem, childViewHolder.btn_increase,
+            showProductImageDialog(jsonStoreProduct, storeCartItem, childViewHolder.btn_increase,
                 childViewHolder.btn_decrease, childViewHolder.tv_value));
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -175,15 +176,15 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
             childViewHolder.tv_value.setText(String.valueOf(number));
             listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                    .get(childPosition).setChildInput(number);
+                .get(childPosition).setChildInput(number);
             if (number <= 0) {
                 orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).getJsonStoreProduct().getProductId());
+                    .get(childPosition).getJsonStoreProduct().getProductId());
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
             } else {
                 orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition));
+                    .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                    .get(childPosition));
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
             }
             notifyDataSetChanged();
@@ -193,15 +194,15 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
             childViewHolder.tv_value.setText(String.valueOf(number));
             listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                    .get(childPosition).setChildInput(number);
+                .get(childPosition).setChildInput(number);
             if (number <= 0) {
                 orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).getJsonStoreProduct().getProductId());
+                    .get(childPosition).getJsonStoreProduct().getProductId());
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
             } else {
                 orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition));
+                    .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                    .get(childPosition));
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
             }
             notifyDataSetChanged();
@@ -209,6 +210,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
 
         return convertView;
     }
+
     private void showProductImageDialog(JsonStoreProduct jsonStoreProduct, StoreCartItem storeCartItem,
                                         Button list_btn_increase, Button list_btn_decrease, TextView list_tv_value) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.FullScreenDialogTheme);
@@ -240,12 +242,12 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             tv_temp.setVisibility(View.VISIBLE);
         }
         Picasso.get()
-                .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
-                        ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + bizStoreId + File.separator + jsonStoreProduct.getProductImage()
-                        : MISSING_PRODUCT_IMAGE)
-                .placeholder(ImageUtils.getThumbPlaceholder(context))
-                .error(ImageUtils.getThumbErrorPlaceholder(context))
-                .into(iv_product_image);
+            .load(StringUtils.isNotBlank(jsonStoreProduct.getProductImage())
+                ? BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + bizStoreId + File.separator + jsonStoreProduct.getProductImage()
+                : MISSING_PRODUCT_IMAGE)
+            .placeholder(ImageUtils.getThumbPlaceholder(context))
+            .error(ImageUtils.getThumbErrorPlaceholder(context))
+            .into(iv_product_image);
 
         if (jsonStoreProduct.getProductDiscount() > 0) {
             tv_price.setPaintFlags(tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -291,10 +293,10 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             list_btn_increase.performClick();
             BigDecimal amountString = showCartAmount();
             if (amountString.compareTo(new BigDecimal(0)) > 0) {
-               // btn_place_order.setVisibility(View.VISIBLE);
+                // btn_place_order.setVisibility(View.VISIBLE);
                 btn_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString.toString());
             } else {
-               // btn_place_order.setVisibility(View.GONE);
+                // btn_place_order.setVisibility(View.GONE);
                 btn_place_order.setText("Done");
             }
         });
@@ -307,10 +309,10 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             list_btn_decrease.performClick();
             BigDecimal amountString = showCartAmount();
             if (amountString.compareTo(new BigDecimal(0)) > 0) {
-               // btn_place_order.setVisibility(View.VISIBLE);
+                // btn_place_order.setVisibility(View.VISIBLE);
                 btn_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString.toString());
             } else {
-               // btn_place_order.setVisibility(View.GONE);
+                // btn_place_order.setVisibility(View.GONE);
                 btn_place_order.setText("Done");
             }
             notifyDataSetChanged();

@@ -53,10 +53,10 @@ public class LanguageInfo {
     @Override
     public String toString() {
         return "LanguageInfo{" +
-                "languageTitle='" + languageTitle + '\'' +
-                ", languageCode='" + languageCode + '\'' +
-                ", languageDrawable=" + languageDrawable +
-                ", isLanguageSelected=" + isLanguageSelected +
-                '}';
+            "languageTitle='" + languageTitle + '\'' +
+            ", languageCode='" + languageCode + '\'' +
+            ", languageDrawable=" + languageDrawable +
+            ", isLanguageSelected=" + isLanguageSelected +
+            '}';
     }
 }

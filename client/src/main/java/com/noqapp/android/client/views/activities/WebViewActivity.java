@@ -69,7 +69,7 @@ public class WebViewActivity extends BaseActivity {
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == MotionEvent.ACTION_UP
-                        && webView.canGoBack()) {
+                    && webView.canGoBack()) {
                     handler.sendEmptyMessage(1);
                     return true;
                 }
@@ -127,7 +127,7 @@ public class WebViewActivity extends BaseActivity {
             try {
                 dismissProgress();
                 webView.loadUrl("javascript:(function() { " +
-                        "document.querySelector('[role=\"toolbar\"]').remove();})()");
+                    "document.querySelector('[role=\"toolbar\"]').remove();})()");
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

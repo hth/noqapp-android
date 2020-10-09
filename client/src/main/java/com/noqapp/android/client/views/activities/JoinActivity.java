@@ -91,8 +91,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
  * Created by chandra on 5/7/17.
  */
 public class JoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter,
-        ActivityCommunicator, CFClientInterface, CashFreeNotifyQPresenter,
-        QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter, AuthorizeResponsePresenter {
+    ActivityCommunicator, CFClientInterface, CashFreeNotifyQPresenter,
+    QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter, AuthorizeResponsePresenter {
     private static final String TAG = JoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_mobile;
@@ -178,14 +178,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                         clientCouponApiCalls.setCouponApplyRemovePresenter(JoinActivity.this);
 
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
-                                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                                // .setCouponId(jsonCoupon.getCouponId())
-                                .setTransactionId(jsonTokenAndQueue.getTransactionId());
+                            .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                            // .setCouponId(jsonCoupon.getCouponId())
+                            .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
                         clientCouponApiCalls.remove(UserUtils.getDeviceId(),
-                                UserUtils.getEmail(),
-                                UserUtils.getAuth(),
-                                couponOnOrder);
+                            UserUtils.getEmail(),
+                            UserUtils.getAuth(),
+                            couponOnOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(JoinActivity.this);
                     }
@@ -288,8 +288,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
-                        placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
-                        error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                    placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
+                    error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
@@ -485,7 +485,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (null != token) {
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB ||
-                    token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+                token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                 tokenPresenterResponse(jsonToken);
                 btn_pay.setVisibility(View.VISIBLE);
@@ -543,8 +543,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 if (isEnabledPayment) {
                     startTimer();
                     new CustomToast().showToast(
-                            this,
-                            "Please complete your transaction within " + BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
+                        this,
+                        "Please complete your transaction within " + BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
                     queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 } else {
                     queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
@@ -805,9 +805,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             showProgress();
             setProgressCancel(false);
             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                    .setCodeQR(codeQR)
-                    .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                    .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
+                .setCodeQR(codeQR)
+                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
             queueApiAuthenticCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
         }
     }
@@ -827,14 +827,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
                     clientCouponApiCalls.setCouponApplyRemovePresenter(this);
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
-                            .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                            .setCouponId(jsonCoupon.getCouponId())
-                            .setTransactionId(jsonTokenAndQueue.getTransactionId());
+                        .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                        .setCouponId(jsonCoupon.getCouponId())
+                        .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
                     clientCouponApiCalls.apply(UserUtils.getDeviceId(),
-                            UserUtils.getEmail(),
-                            UserUtils.getAuth(),
-                            couponOnOrder);
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        couponOnOrder);
                 } else {
                     ShowAlertInformation.showNetworkDialog(JoinActivity.this);
                 }
@@ -945,9 +945,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
                 if (!TextUtils.isEmpty(gCard) || !TextUtils.isEmpty(lCard)) {
                     QueueAuthorize queueAuthorize = new QueueAuthorize()
-                            .setCodeQR(codeQR)
-                            .setFirstCustomerId(gCard)
-                            .setAdditionalCustomerId(lCard);
+                        .setCodeQR(codeQR)
+                        .setFirstCustomerId(gCard)
+                        .setAdditionalCustomerId(lCard);
                     queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
                     queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);

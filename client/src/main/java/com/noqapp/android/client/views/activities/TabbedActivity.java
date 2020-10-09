@@ -7,7 +7,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
-public abstract class TabbedActivity extends BaseActivity{
+
+public abstract class TabbedActivity extends BaseActivity {
     protected TabLayout tabLayout;
     protected ViewPager viewPager;
     protected LoadTabs loadTabs;

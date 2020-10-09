@@ -55,7 +55,7 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircularImag
         init();
 
         mFinalLeftAvatarPadding = context.getResources().getDimension(
-                R.dimen.spacing_normal);
+            R.dimen.spacing_normal);
     }
 
     private void init() {
@@ -82,9 +82,9 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircularImag
             float heightFactor = (mChangeBehaviorPoint - expandedPercentageFactor) / mChangeBehaviorPoint;
 
             float distanceXToSubtract = ((mStartXPosition - mFinalXPosition)
-                    * heightFactor) + (child.getHeight() / 2);
+                * heightFactor) + (child.getHeight() / 2);
             float distanceYToSubtract = ((mStartYPosition - mFinalYPosition)
-                    * (1f - expandedPercentageFactor)) + (child.getHeight() / 2);
+                * (1f - expandedPercentageFactor)) + (child.getHeight() / 2);
 
             child.setX(mStartXPosition - distanceXToSubtract);
             child.setY(mStartYPosition - distanceYToSubtract);
@@ -97,7 +97,7 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircularImag
             child.setLayoutParams(lp);
         } else {
             float distanceYToSubtract = ((mStartYPosition - mFinalYPosition)
-                    * (1f - expandedPercentageFactor)) + (mStartHeight / 2);
+                * (1f - expandedPercentageFactor)) + (mStartHeight / 2);
 
             child.setX(mStartXPosition - child.getWidth() / 2);
             child.setY(mStartYPosition - distanceYToSubtract);

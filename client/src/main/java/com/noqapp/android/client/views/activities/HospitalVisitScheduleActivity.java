@@ -1,5 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
@@ -15,20 +29,6 @@ import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
 
-import com.google.android.material.tabs.TabLayout;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
     private ViewPager viewPager;
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     @Override
@@ -145,8 +145,8 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
 
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
+            this,
+            STORAGE_PERMISSION_PERMS,
+            STORAGE_PERMISSION_CODE);
     }
 }

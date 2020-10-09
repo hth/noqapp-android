@@ -18,8 +18,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
-import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.squareup.picasso.Picasso;
 

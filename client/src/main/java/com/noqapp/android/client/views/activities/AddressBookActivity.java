@@ -1,5 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientPreferenceApiCalls;
 import com.noqapp.android.client.model.ClientProfileApiCall;
@@ -14,25 +28,12 @@ import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.JsonUserAddressList;
 import com.noqapp.android.common.beans.JsonUserPreference;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBookActivity
-        extends BaseActivity
-        implements ProfileAddressPresenter, AddressListAdapter.UpdateAddress, ClientPreferencePresenter {
+    extends BaseActivity
+    implements ProfileAddressPresenter, AddressListAdapter.UpdateAddress, ClientPreferencePresenter {
     private EditText edt_add_address;
     private LinearLayout ll_add_address;
     private ClientProfileApiCall clientProfileApiCall;
@@ -59,9 +60,9 @@ public class AddressBookActivity
                     showProgress();
                     setProgressMessage("Adding address in progress...");
                     clientProfileApiCall.addProfileAddress(
-                            UserUtils.getEmail(),
-                            UserUtils.getAuth(),
-                            new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
                 }
             }
         });
@@ -95,11 +96,11 @@ public class AddressBookActivity
         AppInitialize.setUserProfile(jp);
         Log.e("address list: ", addressList.toString());
         lv_address.setAdapter(
-                new AddressListAdapter(
-                        this,
-                        jsonUserAddressList.getJsonUserAddresses(),
-                        this,
-                        jp.getJsonUserPreference().getUserAddressId()));
+            new AddressListAdapter(
+                this,
+                jsonUserAddressList.getJsonUserAddresses(),
+                this,
+                jp.getJsonUserPreference().getUserAddressId()));
 
         lv_address.setOnItemClickListener((parent, view, position, id) -> {
             JsonUserAddress jsonUserAddress = addressList.get(position);

@@ -91,7 +91,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
         sc_msg_announce.isChecked = AppInitialize.isMsgAnnouncementEnable()
 
-       var jsonUserPreference: JsonUserPreference? = null
+        var jsonUserPreference: JsonUserPreference? = null
         if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().jsonUserPreference) {
             jsonUserPreference = AppInitialize.getUserProfile().jsonUserPreference
         }

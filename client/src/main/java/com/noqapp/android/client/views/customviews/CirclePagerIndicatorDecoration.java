@@ -48,7 +48,7 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
-        if(null != parent.getAdapter()) {
+        if (null != parent.getAdapter()) {
             int itemCount = parent.getAdapter().getItemCount();
 
             // center horizontally, calculate width and subtract half from center
@@ -108,7 +108,7 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
             // no swipe, draw a normal indicator
             float highlightStart = indicatorStartX + itemWidth * highlightPosition;
             c.drawLine(highlightStart, indicatorPosY,
-                    highlightStart + mIndicatorItemLength, indicatorPosY, mPaint);
+                highlightStart + mIndicatorItemLength, indicatorPosY, mPaint);
         } else {
             float highlightStart = indicatorStartX + itemWidth * highlightPosition;
             // calculate partial highlight
@@ -116,13 +116,13 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
 
             // draw the cut off highlight
             c.drawLine(highlightStart + partialLength, indicatorPosY,
-                    highlightStart + mIndicatorItemLength, indicatorPosY, mPaint);
+                highlightStart + mIndicatorItemLength, indicatorPosY, mPaint);
 
             // draw the highlight overlapping to the next item as well
             if (highlightPosition < itemCount - 1) {
                 highlightStart += itemWidth;
                 c.drawLine(highlightStart, indicatorPosY,
-                        highlightStart + partialLength, indicatorPosY, mPaint);
+                    highlightStart + partialLength, indicatorPosY, mPaint);
             }
         }
     }

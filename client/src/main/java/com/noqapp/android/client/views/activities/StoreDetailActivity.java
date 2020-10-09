@@ -1,5 +1,24 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.StoreDetailApiCalls;
@@ -22,29 +41,8 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
-
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-
 import com.noqapp.android.common.utils.CommonHelper;
 import com.squareup.picasso.Picasso;
-
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -206,10 +204,10 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         }
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getBannerPlaceholder(this))
-                    .error(ImageUtils.getBannerErrorPlaceholder(this))
-                    .into(iv_category_banner);
+                .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                .placeholder(ImageUtils.getBannerPlaceholder(this))
+                .error(ImageUtils.getBannerErrorPlaceholder(this))
+                .into(iv_category_banner);
         else {
             Picasso.get().load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
         }

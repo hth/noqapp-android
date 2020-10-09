@@ -83,9 +83,9 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             }
             tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
             String note = getString(R.string.asterisk)
-                    + " Arrive 30 mins before schedule appointment\n"
-                    + getString(R.string.asterisk) + getString(R.string.asterisk)
-                    + " Cancel at least 24 hrs before scheduled time\n";
+                + " Arrive 30 mins before schedule appointment\n"
+                + getString(R.string.asterisk) + getString(R.string.asterisk)
+                + " Cancel at least 24 hrs before scheduled time\n";
             tv_msg.setText(note);
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);

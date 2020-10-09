@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.SurveyQuestion;
-import com.noqapp.android.client.utils.KioskStringConstants;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -11,9 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.SurveyQuestion;
+import com.noqapp.android.client.utils.KioskStringConstants;
 
 import java.util.List;
 import java.util.Locale;
@@ -26,10 +27,10 @@ public class LanguageGridAdapter extends RecyclerView.Adapter {
     private Context context;
 
     public LanguageGridAdapter(
-            Context context,
-            List<Locale> localeList,
-            Map<Locale, List<SurveyQuestion>> questions,
-            OnItemClickListener listener
+        Context context,
+        List<Locale> localeList,
+        Map<Locale, List<SurveyQuestion>> questions,
+        OnItemClickListener listener
     ) {
         this.localeList = localeList;
         this.questions = questions;

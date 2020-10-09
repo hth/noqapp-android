@@ -1,26 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
-import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.presenter.ReviewPresenter;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.body.OrderReview;
-import com.noqapp.android.client.presenter.beans.body.QueueReview;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.AnalyticsEvents;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,6 +19,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
+import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.presenter.ReviewPresenter;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.OrderReview;
+import com.noqapp.android.client.presenter.beans.body.QueueReview;
+import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -63,6 +63,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     private Toast backPressToast;
     private LinearLayout ll_fill_review, ll_thank_u;
     private long mLastClickTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
@@ -200,21 +201,21 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                                 new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
                             } else {
                                 QueueReview rr = new QueueReview()
-                                        .setCodeQR(jtk.getCodeQR())
-                                        .setToken(jtk.getToken())
-                                        .setHoursSaved(selectedRadio) // update according select radio
-                                        .setRatingCount(Math.round(ratingBar.getRating()))
-                                        .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
-                                        .setQueueUserId(jtk.getQueueUserId());
-                                new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
-                            }
-                        } else {
-                            QueueReview rr = new QueueReview()
                                     .setCodeQR(jtk.getCodeQR())
                                     .setToken(jtk.getToken())
                                     .setHoursSaved(selectedRadio) // update according select radio
                                     .setRatingCount(Math.round(ratingBar.getRating()))
-                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
+                                    .setQueueUserId(jtk.getQueueUserId());
+                                new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                            }
+                        } else {
+                            QueueReview rr = new QueueReview()
+                                .setCodeQR(jtk.getCodeQR())
+                                .setToken(jtk.getToken())
+                                .setHoursSaved(selectedRadio) // update according select radio
+                                .setRatingCount(Math.round(ratingBar.getRating()))
+                                .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
 
                             ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
                             reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);

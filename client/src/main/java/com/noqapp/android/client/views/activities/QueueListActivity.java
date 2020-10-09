@@ -28,7 +28,7 @@ import java.util.Map;
 
 
 public class QueueListActivity extends BaseActivity implements
-        CategoryHeaderAdapter.OnItemClickListener, LevelUpQueueAdapter.OnItemClickListener {
+    CategoryHeaderAdapter.OnItemClickListener, LevelUpQueueAdapter.OnItemClickListener {
 
     private List<JsonCategory> categoryMap;
     private Map<String, ArrayList<BizStoreElastic>> queueMap;
@@ -50,9 +50,9 @@ public class QueueListActivity extends BaseActivity implements
                 Map<String, JsonCategory> keys = new HashMap();
                 for (int i = 0; i < tempCategoryMap.size(); i++) {
                     BusinessCustomerAttributeEnum businessCustomerAttribute = CanteenStoreDepartmentEnum.
-                            getBusinessCustomerAttribute(tempCategoryMap.get(i).getBizCategoryId());
+                        getBusinessCustomerAttribute(tempCategoryMap.get(i).getBizCategoryId());
                     if (!keys.containsKey(businessCustomerAttribute.getName())) {
-                        keys.put(businessCustomerAttribute.getName(),null);
+                        keys.put(businessCustomerAttribute.getName(), null);
                         categoryMap.add(new JsonCategory().setCategoryName(businessCustomerAttribute.getDescription()).setBizCategoryId(businessCustomerAttribute.getName()));
                     }
                 }
@@ -60,7 +60,7 @@ public class QueueListActivity extends BaseActivity implements
                     ArrayList<BizStoreElastic> innerList = entry.getValue();
                     for (int i = 0; i < innerList.size(); i++) {
                         BusinessCustomerAttributeEnum businessCustomerAttribute = CanteenStoreDepartmentEnum.
-                                getBusinessCustomerAttribute(innerList.get(i).getBizCategoryId());
+                            getBusinessCustomerAttribute(innerList.get(i).getBizCategoryId());
                         if (queueMap.containsKey(businessCustomerAttribute.getName())) {
                             queueMap.get(businessCustomerAttribute.getName()).add(innerList.get(i));
                         } else {

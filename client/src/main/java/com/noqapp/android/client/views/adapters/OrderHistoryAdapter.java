@@ -26,7 +26,6 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreWithMenuActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -50,7 +49,6 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
         this.context = context;
         this.listener = listener;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -83,12 +81,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
             default:
                 holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.text_header_color));
         }
-        holder.iv_details.setOnClickListener((View v) -> {
-            listener.onStoreItemClick(jsonPurchaseOrderHistorical);
-
-        });
+        holder.iv_details.setOnClickListener((View v) -> listener.onStoreItemClick(jsonPurchaseOrderHistorical));
         if (jsonPurchaseOrderHistorical.getBusinessType() == BusinessTypeEnum.PH && (jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.PO ||
-                jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.OP)) {
+            jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.OP)) {
             holder.btn_activate.setVisibility(View.VISIBLE);
             holder.btn_reorder.setVisibility(View.GONE);
         } else {
@@ -115,9 +110,12 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
                 progressDialog.setIndeterminate(true);
                 progressDialog.setMessage("Activating order in progress...");
                 progressDialog.show();
-                new PurchaseOrderApiCall(OrderHistoryAdapter.this).
-                        activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                                UserUtils.getAuth(), jsonPurchaseOrderHistorical);
+                new PurchaseOrderApiCall(OrderHistoryAdapter.this)
+                    .activateOrder(
+                        UserUtils.getDeviceId(),
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        jsonPurchaseOrderHistorical);
             } else {
                 ShowAlertInformation.showNetworkDialog(context);
             }
@@ -156,7 +154,6 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
         }
     }
 
-
     @Override
     public void authenticationFailure() {
         progressDialog.dismiss();
@@ -181,7 +178,6 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tv_name;
         private TextView tv_address;
         private TextView tv_order_date;

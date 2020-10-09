@@ -35,14 +35,14 @@ public class SliderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_slider_pager);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         page_position = getIntent().getIntExtra("pos", 0);
         init();
         addBottomDots(page_position);
         actionbarBack.setOnClickListener((View v) -> {
-                finish();
+            finish();
         });
 
 
@@ -56,14 +56,14 @@ public class SliderActivity extends AppCompatActivity {
             slider_image_list = b.getStringArrayList("imageurls");
         else
             slider_image_list = new ArrayList<>();
-        SliderPagerAdapter sliderPagerAdapter ;
-        if(b.getBoolean("isDocument")){
-            sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list,true,b.getString("recordReferenceId"));
-        }else{
-            if(TextUtils.isEmpty(b.getString("bucket"))) {
+        SliderPagerAdapter sliderPagerAdapter;
+        if (b.getBoolean("isDocument")) {
+            sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list, true, b.getString("recordReferenceId"));
+        } else {
+            if (TextUtils.isEmpty(b.getString("bucket"))) {
                 sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list);
-            }else {
-                sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list,b.getString("bucket"));
+            } else {
+                sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list, b.getString("bucket"));
             }
         }
 

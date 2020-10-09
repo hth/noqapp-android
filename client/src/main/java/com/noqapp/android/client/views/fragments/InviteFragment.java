@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.AppInitialize;

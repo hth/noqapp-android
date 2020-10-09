@@ -26,9 +26,9 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -114,8 +114,8 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
             boolean isDoctor = bundle.getBooleanExtra(IBConstant.KEY_IS_DO, false);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
-                        placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
-                        error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                    placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme)).
+                    error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }

@@ -52,10 +52,10 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     }
 
     public LevelUpQueueAdapter(
-            Context context,
-            List<JsonCategory> listDataHeader,
-            Map<String, ArrayList<BizStoreElastic>> listDataChild,
-            OnItemClickListener listener
+        Context context,
+        List<JsonCategory> listDataHeader,
+        Map<String, ArrayList<BizStoreElastic>> listDataChild,
+        OnItemClickListener listener
     ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
@@ -68,11 +68,11 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
     }
 
     public LevelUpQueueAdapter(
-            Context context,
-            List<JsonCategory> listDataHeader,
-            Map<String, ArrayList<BizStoreElastic>> listDataChild,
-            OnItemClickListener listener,
-            boolean isSingleEntry
+        Context context,
+        List<JsonCategory> listDataHeader,
+        Map<String, ArrayList<BizStoreElastic>> listDataChild,
+        OnItemClickListener listener,
+        boolean isSingleEntry
     ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
@@ -93,11 +93,11 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(
-            final int groupPosition,
-            final int childPosition,
-            boolean isLastChild,
-            View convertView,
-            ViewGroup parent
+        final int groupPosition,
+        final int childPosition,
+        boolean isLastChild,
+        View convertView,
+        ViewGroup parent
     ) {
         try {
             final ChildViewHolder childViewHolder;
@@ -172,7 +172,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     childViewHolder.tv_lunch_time.setText(lunchTime);
                     childViewHolder.tv_lunch_time.setVisibility(View.VISIBLE);
                 }
-                Log.e("value: "+childPosition, time);
+                Log.e("value: " + childPosition, time);
                 childViewHolder.tv_store_timing.setText(time);
                 childViewHolder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.orange_gradient));
                 childViewHolder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
@@ -190,20 +190,20 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                         switch (bizStoreElastic.getBusinessType()) {
                             case DO:
                                 childViewHolder.tv_status.setText(
-                                        context.getResources().getString(R.string.closed_now_booking_start_at)
+                                    context.getResources().getString(R.string.closed_now_booking_start_at)
                                         + " "
                                         + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                                 break;
                             default:
                                 childViewHolder.tv_status.setText(
-                                        context.getResources().getString(R.string.closed_now_token_available_after)
+                                    context.getResources().getString(R.string.closed_now_token_available_after)
                                         + " "
                                         + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                                 break;
                         }
                     } else {
                         childViewHolder.tv_status.setText(
-                                context.getResources().getString(R.string.closed_now_token_available_after)
+                            context.getResources().getString(R.string.closed_now_token_available_after)
                                 + " "
                                 + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                     }
@@ -218,14 +218,14 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                                 break;
                             default:
                                 childViewHolder.tv_status.setText(
-                                        context.getResources().getString(R.string.open_serving_at)
+                                    context.getResources().getString(R.string.open_serving_at)
                                         + " "
                                         + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                                 break;
                         }
                     } else {
                         childViewHolder.tv_status.setText(
-                                context.getResources().getString(R.string.open_serving_at)
+                            context.getResources().getString(R.string.open_serving_at)
                                 + " "
                                 + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                     }

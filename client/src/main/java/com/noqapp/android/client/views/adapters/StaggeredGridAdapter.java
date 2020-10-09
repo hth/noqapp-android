@@ -16,6 +16,7 @@ import java.util.List;
 
 public class StaggeredGridAdapter extends RecyclerView.Adapter {
     private List<String> dataList;
+
     public StaggeredGridAdapter(List<String> dataList) {
         this.dataList = dataList;
         Collections.sort(dataList);

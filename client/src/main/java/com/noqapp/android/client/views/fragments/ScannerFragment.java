@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AnalyticsEvents;
-import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 import com.noqapp.android.client.views.activities.AppInitialize;
+import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.PermissionUtils;
 
@@ -27,7 +27,8 @@ public class ScannerFragment extends BaseFragment {
     private int requestCode;
     private ScanResult scanResult;
 
-    public ScannerFragment() {}
+    public ScannerFragment() {
+    }
 
     public ScannerFragment(ScanResult scanResult, int requestCode) {
         this.scanResult = scanResult;
@@ -36,6 +37,7 @@ public class ScannerFragment extends BaseFragment {
 
     public interface ScanResult {
         void barcodeResult(String codeQR, boolean isCategoryData);
+
         void qrCodeResult(String[] scanData);
     }
 
@@ -74,8 +76,8 @@ public class ScannerFragment extends BaseFragment {
 
     private void requestCameraAndStoragePermission() {
         requestPermissions(
-                PermissionUtils.CAMERA_AND_STORAGE_PERMISSIONS,
-                PermissionUtils.PERMISSION_REQUEST_CAMERA_AND_STORAGE);
+            PermissionUtils.CAMERA_AND_STORAGE_PERMISSIONS,
+            PermissionUtils.PERMISSION_REQUEST_CAMERA_AND_STORAGE);
     }
 
     @Override

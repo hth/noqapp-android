@@ -18,7 +18,6 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.MyAppointmentAdapter;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
@@ -29,11 +28,10 @@ import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class UpcomingAppointmentFragment extends BaseFragment implements AppointmentPresenter,
-        MyAppointmentAdapter.OnItemClickListener {
+    MyAppointmentAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
@@ -81,7 +79,7 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
         Collections.sort(jsonSchedules, (o1, o2) -> {
             try {
                 return CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()).
-                        compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()));
+                    compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()));
             } catch (Exception e) {
                 e.printStackTrace();
                 return 0;

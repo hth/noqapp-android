@@ -25,8 +25,6 @@ import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -151,7 +149,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
     }
 
     // Display wait time
-    private String  displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue){
+    private String displayWaitTimes(final JsonTokenAndQueue jsonTokenAndQueue) {
         try {
             long avgServiceTime = jsonTokenAndQueue.getAverageServiceTime();
             if (avgServiceTime == 0) {
@@ -177,6 +175,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
 
     public interface OnItemClickListener {
         void currentQorOrderItemClick(JsonTokenAndQueue item);
+
         void currentAppointmentClick(JsonSchedule jsonSchedule);
     }
 

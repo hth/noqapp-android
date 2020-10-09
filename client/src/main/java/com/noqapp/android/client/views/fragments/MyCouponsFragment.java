@@ -19,7 +19,6 @@ import com.noqapp.android.client.model.ClientCouponApiCalls;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.MyCouponsAdapter;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonCouponList;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
-        MyCouponsAdapter.OnItemClickListener {
+    MyCouponsAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonCoupon> jsonCoupons = new ArrayList<>();
@@ -43,7 +42,7 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
         rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
-                RecyclerView.VERTICAL, false));
+            RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
         if (jsonCoupons.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
@@ -60,10 +59,10 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
             String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);
             if (TextUtils.isEmpty(codeQR)) {
                 clientCouponApiCalls.availableCoupon(UserUtils.getDeviceId(),
-                        UserUtils.getEmail(), UserUtils.getAuth());
+                    UserUtils.getEmail(), UserUtils.getAuth());
             } else {
                 clientCouponApiCalls.filterCoupon(UserUtils.getDeviceId(),
-                        UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());

@@ -1,12 +1,5 @@
 package com.noqapp.android.client.model.database.utils;
 
-import static com.noqapp.android.client.views.activities.AppInitialize.dbHandler;
-
-import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.pojos.DisplayNotification;
-import com.noqapp.android.common.utils.CommonHelper;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -14,9 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.noqapp.android.client.model.database.DatabaseTable;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.pojos.DisplayNotification;
+import com.noqapp.android.common.utils.CommonHelper;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.noqapp.android.client.views.activities.AppInitialize.dbHandler;
 
 /**
  * Created by chandra on 8/7/17.
@@ -42,10 +42,10 @@ public class NotificationDB {
         cv.put(DatabaseTable.Notification.IMAGE_URL, TextUtils.isEmpty(imageUrl) ? "" : imageUrl);
         try {
             long successCount = dbHandler.getWritableDb().insertWithOnConflict(
-                    DatabaseTable.Notification.TABLE_NAME,
-                    null,
-                    cv,
-                    SQLiteDatabase.CONFLICT_REPLACE);
+                DatabaseTable.Notification.TABLE_NAME,
+                null,
+                cv,
+                SQLiteDatabase.CONFLICT_REPLACE);
 
             Log.d(TAG, "Data insert notification " + String.valueOf(successCount));
         } catch (SQLException e) {
@@ -89,7 +89,7 @@ public class NotificationDB {
         cv.put(DatabaseTable.Notification.STATUS, KEY_READ);
         try {
             long successCount = dbHandler.getWritableDb().
-                    update(DatabaseTable.Notification.TABLE_NAME, cv, DatabaseTable.Notification.STATUS + "=" + KEY_UNREAD, null);
+                update(DatabaseTable.Notification.TABLE_NAME, cv, DatabaseTable.Notification.STATUS + "=" + KEY_UNREAD, null);
             Log.d(TAG, "Data updated notification " + String.valueOf(successCount));
         } catch (SQLException e) {
             Log.e(TAG, "Error update notification reason=" + e.getLocalizedMessage(), e);
@@ -120,9 +120,9 @@ public class NotificationDB {
     public static void deleteNotification(Integer sequence, String key) {
         try {
             int out = dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME,
-                    DatabaseTable.Notification.SEQUENCE + "=? AND " +
-                            DatabaseTable.Notification.KEY + "=?",
-                    new String[]{Integer.toString(sequence), key});
+                DatabaseTable.Notification.SEQUENCE + "=? AND " +
+                    DatabaseTable.Notification.KEY + "=?",
+                new String[]{Integer.toString(sequence), key});
             Log.v("notification deleted:", "" + out);
         } catch (Exception e) {
             e.printStackTrace();

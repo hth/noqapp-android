@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllCouponsFragment
-        extends BaseFragment
-        implements CouponPresenter, AllCouponsAdapter.OnItemClickListener {
+    extends BaseFragment
+    implements CouponPresenter, AllCouponsAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonCoupon> jsonCoupons = new ArrayList<>();

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.math.BigDecimal;
@@ -73,9 +72,9 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         childViewHolder.tv_title.setText(storeCartItem.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getProductQuantity()));
         childViewHolder.tv_product_count.setText(String.valueOf(storeCartItem.getProductQuantity()));
-        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct())+ " x " + storeCartItem.getProductQuantity());
+        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct()) + " x " + storeCartItem.getProductQuantity());
         childViewHolder.tv_total_product_price.setText(currencySymbol + " " + CommonHelper.
-                displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
+            displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
 
 
         switch (storeCartItem.getProductType()) {

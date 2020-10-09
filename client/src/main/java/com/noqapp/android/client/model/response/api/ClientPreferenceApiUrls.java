@@ -1,6 +1,5 @@
 package com.noqapp.android.client.model.response.api;
 
-import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.common.beans.JsonUserPreference;
 
 import retrofit2.Call;

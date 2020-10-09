@@ -1,7 +1,6 @@
 package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonInQueuePerson;
-import com.noqapp.android.common.beans.JsonCouponList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

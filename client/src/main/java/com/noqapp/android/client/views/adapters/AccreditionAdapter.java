@@ -45,10 +45,10 @@ public class AccreditionAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder Vholder, int position) {
         MyViewHolder holder = (MyViewHolder) Vholder;
         Picasso.get()
-                .load(AppUtils.getImageUrls(BuildConfig.ACCREDITATION_BUCKET, imageUrls.get(position)))
-                .placeholder(ImageUtils.getThumbPlaceholder(context))
-                .error(ImageUtils.getThumbErrorPlaceholder(context))
-                .into(holder.iv_photo);
+            .load(AppUtils.getImageUrls(BuildConfig.ACCREDITATION_BUCKET, imageUrls.get(position)))
+            .placeholder(ImageUtils.getThumbPlaceholder(context))
+            .error(ImageUtils.getThumbErrorPlaceholder(context))
+            .into(holder.iv_photo);
 
         if (position < 3 || imageUrls.size() == 4) {
             holder.tv_title.setVisibility(View.GONE);

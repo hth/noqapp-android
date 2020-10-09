@@ -26,9 +26,9 @@ import com.noqapp.android.client.model.DependentApiCall;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -58,7 +58,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener,
-        ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
+    ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
     private static final String TAG = UserProfileEditActivity.class.getSimpleName();
 
     private ImageView iv_profile;
@@ -126,10 +126,10 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(iv_profile);
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
+                    .placeholder(ImageUtils.getProfilePlaceholder(this))
+                    .error(ImageUtils.getProfileErrorPlaceholder(this))
+                    .into(iv_profile);
                 tv_remove_image.setVisibility(View.VISIBLE);
             } else {
                 tv_remove_image.setVisibility(View.GONE);
@@ -455,8 +455,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             isValid = false;
         }
         if (((null == dependentProfile && isDependent && nameList.contains(name)))
-                || (null == dependentProfile && !isDependent && !AppInitialize.getUserName().toUpperCase().equals(name) && nameList.contains(name))
-                || (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
+            || (null == dependentProfile && !isDependent && !AppInitialize.getUserName().toUpperCase().equals(name) && nameList.contains(name))
+            || (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
             edt_Name.setError(getString(R.string.error_name_exist));
             isValid = false;
         }

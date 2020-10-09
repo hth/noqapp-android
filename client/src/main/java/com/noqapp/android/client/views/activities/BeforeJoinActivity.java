@@ -1,27 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.QueueApiAuthenticCall;
-import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
-import com.noqapp.android.client.presenter.QueuePresenter;
-import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
-import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.AnalyticsEvents;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.JoinQueueUtil;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.ShowCustomDialog;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.DependentAdapter;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.squareup.picasso.Picasso;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +22,27 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.QueueApiAuthenticCall;
+import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.presenter.QueuePresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
+import com.noqapp.android.client.utils.AnalyticsEvents;
+import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.JoinQueueUtil;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.DependentAdapter;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -154,9 +153,9 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(imageUrl)
-                        .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
-                        .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                    .load(imageUrl)
+                    .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
+                    .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
@@ -462,7 +461,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
 
                 }
             });
-            showCustomDialog.displayDialog(getString(R.string.alert),getString(R.string.business_too_far_from_location));
+            showCustomDialog.displayDialog(getString(R.string.alert), getString(R.string.business_too_far_from_location));
         } else {
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
