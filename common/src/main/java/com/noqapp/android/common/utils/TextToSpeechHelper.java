@@ -1,7 +1,6 @@
 package com.noqapp.android.common.utils;
 
 import android.content.Context;
-import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.util.Log;
