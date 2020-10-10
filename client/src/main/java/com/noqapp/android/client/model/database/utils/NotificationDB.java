@@ -46,7 +46,6 @@ public class NotificationDB {
                 null,
                 cv,
                 SQLiteDatabase.CONFLICT_REPLACE);
-
             Log.d(TAG, "Data insert notification " + String.valueOf(successCount));
         } catch (SQLException e) {
             Log.e(TAG, "Error insert notification reason=" + e.getLocalizedMessage(), e);
@@ -55,7 +54,6 @@ public class NotificationDB {
 
 
     public static List<DisplayNotification> getNotificationsList() {
-
         String query = "SELECT *  FROM " + DatabaseTable.Notification.TABLE_NAME + " ORDER BY " + DatabaseTable.Notification.SEQUENCE + " DESC ";
         List<DisplayNotification> displayNotificationList = new ArrayList<>();
         Cursor cursor = dbHandler.getWritableDb().rawQuery(query, null);
@@ -88,8 +86,11 @@ public class NotificationDB {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseTable.Notification.STATUS, KEY_READ);
         try {
-            long successCount = dbHandler.getWritableDb().
-                update(DatabaseTable.Notification.TABLE_NAME, cv, DatabaseTable.Notification.STATUS + "=" + KEY_UNREAD, null);
+            long successCount = dbHandler.getWritableDb().update(
+                DatabaseTable.Notification.TABLE_NAME,
+                cv,
+                DatabaseTable.Notification.STATUS + "=" + KEY_UNREAD,
+                null);
             Log.d(TAG, "Data updated notification " + String.valueOf(successCount));
         } catch (SQLException e) {
             Log.e(TAG, "Error update notification reason=" + e.getLocalizedMessage(), e);
@@ -100,7 +101,14 @@ public class NotificationDB {
         try {
             String selection = DatabaseTable.Notification.STATUS + " = ? ";
             String[] selectionArgs = {KEY_UNREAD};
-            Cursor c = dbHandler.getWritableDb().query(DatabaseTable.Notification.TABLE_NAME, null, selection, selectionArgs, null, null, null);
+            Cursor c = dbHandler.getWritableDb().query(
+                DatabaseTable.Notification.TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
             int result = c.getCount();
             c.close();
             return result;
@@ -119,9 +127,9 @@ public class NotificationDB {
 
     public static void deleteNotification(Integer sequence, String key) {
         try {
-            int out = dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME,
-                DatabaseTable.Notification.SEQUENCE + "=? AND " +
-                    DatabaseTable.Notification.KEY + "=?",
+            int out = dbHandler.getWritableDb().delete(
+                DatabaseTable.Notification.TABLE_NAME,
+                DatabaseTable.Notification.SEQUENCE + "=? AND " + DatabaseTable.Notification.KEY + "=?",
                 new String[]{Integer.toString(sequence), key});
             Log.v("notification deleted:", "" + out);
         } catch (Exception e) {

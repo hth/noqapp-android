@@ -13,12 +13,10 @@ import android.widget.LinearLayout;
 
 import com.noqapp.android.common.R;
 
-
 public class ShowUploadImageDialog {
     private Context context;
 
     private DialogClickListener dialogClickListener;
-
 
     public interface DialogClickListener {
         void btnPositiveClick();
@@ -35,8 +33,6 @@ public class ShowUploadImageDialog {
         this.context = context;
     }
 
-
-
     public void displayDialog(Bitmap bitmap) {
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -50,13 +46,15 @@ public class ShowUploadImageDialog {
 
         btnPositive.setOnClickListener(v -> {
             dialog.dismiss();
-            if (null != dialogClickListener)
+            if (null != dialogClickListener) {
                 dialogClickListener.btnPositiveClick();
+            }
         });
         btnNegative.setOnClickListener(v -> {
             dialog.dismiss();
-            if (null != dialogClickListener)
+            if (null != dialogClickListener) {
                 dialogClickListener.btnNegativeClick();
+            }
         });
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
