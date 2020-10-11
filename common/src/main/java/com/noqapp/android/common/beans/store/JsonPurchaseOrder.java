@@ -67,6 +67,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("op")
     private String orderPrice;
 
+    @JsonProperty ("ta")
+    private String tax;
+
     @JsonProperty("dm")
     private DeliveryModeEnum deliveryMode;
 
@@ -222,6 +225,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setOrderPrice(String orderPrice) {
         this.orderPrice = orderPrice;
+        return this;
+    }
+
+    public String getTax() {
+        return tax;
+    }
+
+    public JsonPurchaseOrder setTax(String tax) {
+        this.tax = tax;
         return this;
     }
 
