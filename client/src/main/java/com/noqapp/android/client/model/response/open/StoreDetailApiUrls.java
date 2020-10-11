@@ -1,6 +1,9 @@
 package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.JsonStore;
+import com.noqapp.android.common.beans.JsonHour;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -25,5 +28,20 @@ public interface StoreDetailApiUrls {
 
             @Path("codeQR")
             String codeQR
+    );
+
+    /**
+     * No Errors
+     */
+    @GET("open/store/{bizStoreId}.json")
+    Call<List<JsonHour>> storeHours(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt,
+
+        @Path("bizStoreId")
+        String bizStoreId
     );
 }
