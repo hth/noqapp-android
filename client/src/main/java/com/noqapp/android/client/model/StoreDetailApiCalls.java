@@ -49,7 +49,6 @@ public class StoreDetailApiCalls {
         this.storeHoursPresenter = storeHoursPresenter;
     }
 
-
     static {
         storeDetailApiUrls = RetrofitClient.getClient().create(StoreDetailApiUrls.class);
     }
