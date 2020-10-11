@@ -33,7 +33,7 @@ public interface StoreDetailApiUrls {
     /**
      * No Errors
      */
-    @GET("open/store/{bizStoreId}.json")
+    @GET("open/store/hours/{codeQR}.json")
     Call<List<JsonHour>> storeHours(
         @Header("X-R-DID")
         String did,
@@ -41,7 +41,7 @@ public interface StoreDetailApiUrls {
         @Header("X-R-DT")
         String dt,
 
-        @Path("bizStoreId")
-        String bizStoreId
+        @Path("codeQR")
+        String codeQR
     );
 }
