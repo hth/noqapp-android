@@ -93,7 +93,6 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -101,6 +100,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_token_time_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve" />
 
                     <TextView
                         android:id="@+id/tv_time_value"
@@ -121,15 +129,6 @@
                         android:textSize="@dimen/text_size_twelve" />
 
                     <TextView
-                        android:id="@+id/tv_token_time_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text=""
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve" />
-
-                    <TextView
                         android:id="@+id/tv_appointment_time_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -137,11 +136,8 @@
                         android:text=""
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve" />
-
-
                 </LinearLayout>
-
-
+                
             </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

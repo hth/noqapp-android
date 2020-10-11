@@ -103,7 +103,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
             AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), holder.tv_store_review);
             StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
-            holder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
+            holder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic.isDayClosed(),
+                    storeHourElastic.getStartHour(), storeHourElastic.getEndHour()));
             holder.tv_store_review.setOnClickListener((View v) -> {
                 if (bizStoreElastic.getReviewCount() > 0) {
                     Intent in = new Intent(context, AllReviewsActivity.class);

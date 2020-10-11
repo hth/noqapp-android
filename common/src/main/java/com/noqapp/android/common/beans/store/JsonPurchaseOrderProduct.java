@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.TaxEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
@@ -37,6 +38,9 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
 
     @JsonProperty("pp")
     private int productPrice;
+
+    @JsonProperty("ta")
+    private TaxEnum tax;
 
     @JsonProperty("pd")
     private int productDiscount;
@@ -82,6 +86,15 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
 
     public JsonPurchaseOrderProduct setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public JsonPurchaseOrderProduct setTax(TaxEnum tax) {
+        this.tax = tax;
         return this;
     }
 

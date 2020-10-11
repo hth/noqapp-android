@@ -269,7 +269,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                 }
             }*/
             tv_store_timing.setText(time);
-//            AppUtils.showAllDaysTiming(this, tv_store_timing, bizStoreElastic.getStoreHourElasticList());
+            AppUtils.showAllDaysTiming(this, tv_store_timing, jsonQueue.getCodeQR());
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener((View v) -> {
                 if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
