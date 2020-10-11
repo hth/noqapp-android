@@ -14,6 +14,7 @@ public class IBConstant {
     public static final String KEY_STORE_NAME = "storeName";
     public static final String KEY_STORE_ADDRESS = "storeAddress";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
+    public static final String KEY_STORE_TIMING = "jsonStoreHourElastics";
     public static final String KEY_DATA_OBJECT = "object";
     public static final String KEY_DATA = "data";
 
