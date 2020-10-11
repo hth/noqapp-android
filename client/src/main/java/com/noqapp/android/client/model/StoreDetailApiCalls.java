@@ -47,10 +47,10 @@ public class StoreDetailApiCalls {
      * Gets state of a queue whose QR code was scanned.
      *
      * @param did
-     * @param qrCode
+     * @param codeQR
      */
-    public void getStoreDetail(String did, String qrCode) {
-        storeDetailApiUrls.getStoreDetail(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonStore>() {
+    public void getStoreDetail(String did, String codeQR) {
+        storeDetailApiUrls.getStoreDetail(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonStore>() {
             @Override
             public void onResponse(@NonNull Call<JsonStore> call, @NonNull Response<JsonStore> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
