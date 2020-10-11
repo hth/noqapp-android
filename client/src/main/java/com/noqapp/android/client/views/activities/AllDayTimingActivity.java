@@ -28,5 +28,4 @@ public class AllDayTimingActivity extends BaseActivity {
             listview.setAdapter(adapter);
         }
     }
-
 }
