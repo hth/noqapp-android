@@ -20,7 +20,7 @@ public class AllDayTimingActivity extends BaseActivity {
         setContentView(R.layout.activity_all_day_timing);
         ListView listview = findViewById(R.id.listview);
         initActionsViews(false);
-        tv_toolbar_title.setText(getString(R.string.all_day_timing));
+        tv_toolbar_title.setText(getString(R.string.weekly_hours));
         Intent bundle = getIntent();
         if (null != bundle && null != bundle.getExtras()) {
             List<StoreHourElastic> storeHourElastics = (List<StoreHourElastic>) bundle.getExtras().getSerializable(IBConstant.KEY_STORE_TIMING);

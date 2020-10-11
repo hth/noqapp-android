@@ -22,9 +22,8 @@
             <LinearLayout
                 android:id="@+id/ll_day"
                 android:layout_width="35dp"
-
                 android:layout_height="wrap_content"
-                android:background="@color/rating_unselect"
+                android:background="@color/button_disable"
                 android:orientation="vertical">
 
                 <TextView
@@ -38,7 +37,6 @@
                     android:textSize="@dimen/text_size_eighteen"
                     android:background="@android:color/transparent"
                     android:textStyle="bold"/>
-
             </LinearLayout>
 
             <LinearLayout
@@ -57,11 +55,21 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_token_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Token"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:id="@+id/tv_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Store timing"
+                        android:text="Store"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />
@@ -71,17 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Lunch timing"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_token_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Token timing"
+                        android:text="Lunch"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />
@@ -91,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Appointment timing"
+                        android:text="Appointment"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />
