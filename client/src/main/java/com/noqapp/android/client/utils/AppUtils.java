@@ -12,6 +12,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.views.activities.AllDayTimingActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.common.beans.JsonHour;
@@ -51,6 +53,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -460,7 +463,7 @@ public class AppUtils extends CommonHelper {
         return output;
     }
 
-    private String getDayName(int dayOfWeek) {
+    public static String getDayName(int dayOfWeek) {
         String dayName = null;
         switch (dayOfWeek) {
             case 1:
@@ -517,6 +520,14 @@ public class AppUtils extends CommonHelper {
             return "";
         } else {
             return context.getString(R.string.lunch_time) + ": " + Formatter.duration(lunchTimeStart, lunchTimeEnd);
+        }
+    }
+
+    public String storeLunchTiming(int lunchTimeStart, int lunchTimeEnd) {
+        if (lunchTimeStart == 0 || lunchTimeEnd == 0) {
+            return "";
+        } else {
+            return Formatter.duration(lunchTimeStart, lunchTimeEnd);
         }
     }
 
@@ -697,4 +708,17 @@ public class AppUtils extends CommonHelper {
             Log.w(TAG, "No network found");
         }
     }
+
+    public static void showAllDaysTiming(Context context, TextView textView, List<StoreHourElastic> storeHourElastics){
+        textView.setTextColor(ContextCompat.getColor(context, R.color.btn_color));
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        textView.setOnClickListener((View v) -> {
+            Intent in = new Intent(context, AllDayTimingActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(IBConstant.KEY_STORE_TIMING, (Serializable) storeHourElastics);
+            in.putExtras(bundle);
+            context.startActivity(in);
+        });
+    }
+
 }

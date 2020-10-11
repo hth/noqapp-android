@@ -74,6 +74,11 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:name=".views.activities.AllDayTimingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
             android:name=".views.activities.AddressBookActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />

@@ -25,6 +25,7 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.AllDayTimingActivity;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.LoginActivity;
@@ -35,6 +36,7 @@ import com.noqapp.android.common.model.types.WalkInStateEnum;
 import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
 import com.noqapp.android.common.utils.Formatter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -150,6 +152,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     context.startActivity(in);
                 }
             });
+            AppUtils.showAllDaysTiming(context, childViewHolder.tv_store_timing, bizStoreElastic.getStoreHourElasticList());
             String specialization = bizStoreElastic.getCompleteEducation();
             childViewHolder.tv_specialization.setText(specialization);
             childViewHolder.tv_specialization.setVisibility(TextUtils.isEmpty(specialization) ? View.GONE : View.VISIBLE);

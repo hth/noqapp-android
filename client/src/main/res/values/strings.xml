@@ -203,6 +203,7 @@
     <string name="medical_history">Past Doctor Visits</string>
     <string name="my_appointments">My Appointments</string>
     <string name="medical_history_details">Case History</string>
+    <string name="all_day_timing">All day timing</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
