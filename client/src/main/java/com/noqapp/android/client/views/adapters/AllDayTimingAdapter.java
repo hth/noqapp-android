@@ -60,24 +60,18 @@ public class AllDayTimingAdapter extends BaseAdapter {
         
         JsonHour jsonHour = jsonHours.get(position);
         recordHolder.tv_day.setText(AppUtils.getDayName(jsonHour.getDayOfWeek()));
-        String storeTime = new AppUtils().formatTodayStoreTiming(context, jsonHour.isDayClosed(),
-                jsonHour.getStartHour(), jsonHour.getEndHour());
+
+        String storeTime = new AppUtils().formatTodayStoreTiming(context, jsonHour.isDayClosed(), jsonHour.getStartHour(), jsonHour.getEndHour());
         recordHolder.tv_time_value.setText(storeTime);
 
-        String lunchTime = new AppUtils().storeLunchTiming(jsonHour.getLunchTimeStart(),
-                jsonHour.getLunchTimeEnd());
+        String lunchTime = new AppUtils().storeLunchTiming(jsonHour.getLunchTimeStart(), jsonHour.getLunchTimeEnd());
         recordHolder.tv_lunch_time_value.setText(TextUtils.isEmpty(lunchTime) ? NA: lunchTime);
 
-
-        String tokenTime = new AppUtils().storeLunchTiming(jsonHour.getTokenAvailableFrom(),
-                jsonHour.getTokenNotAvailableFrom());
+        String tokenTime = new AppUtils().storeLunchTiming(jsonHour.getTokenAvailableFrom(), jsonHour.getTokenNotAvailableFrom());
         recordHolder.tv_token_time_value.setText(TextUtils.isEmpty(tokenTime) ? NA: tokenTime);
 
-
-        String appointmentTime = new AppUtils().storeLunchTiming(jsonHour.getAppointmentStartHour(),
-                jsonHour.getAppointmentStartHour());
+        String appointmentTime = new AppUtils().storeLunchTiming(jsonHour.getAppointmentStartHour(), jsonHour.getAppointmentStartHour());
         recordHolder.tv_appointment_time_value.setText(TextUtils.isEmpty(appointmentTime) ? NA : appointmentTime);
-
 
         return view;
     }
@@ -94,5 +88,4 @@ public class AllDayTimingAdapter extends BaseAdapter {
         RecordHolder() {
         }
     }
-    
 }
