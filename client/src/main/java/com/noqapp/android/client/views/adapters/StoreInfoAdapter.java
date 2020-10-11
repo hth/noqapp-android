@@ -61,7 +61,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
             default:
                 holder.tv_name.setText(item.getDisplayName());
                 StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(item.getStoreHourElasticList());
-                holder.tv_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic));
+                holder.tv_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic.isDayClosed(),
+                        storeHourElastic.getStartHour(), storeHourElastic.getEndHour()));
         }
         if (!TextUtils.isEmpty(item.getDisplayImage())) {
             Picasso.get()

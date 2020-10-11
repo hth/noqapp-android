@@ -152,7 +152,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                     context.startActivity(in);
                 }
             });
-            AppUtils.showAllDaysTiming(context, childViewHolder.tv_store_timing, bizStoreElastic.getStoreHourElasticList());
+            AppUtils.showAllDaysTiming(context, childViewHolder.tv_store_timing, bizStoreElastic.getCodeQR());
             String specialization = bizStoreElastic.getCompleteEducation();
             childViewHolder.tv_specialization.setText(specialization);
             childViewHolder.tv_specialization.setVisibility(TextUtils.isEmpty(specialization) ? View.GONE : View.VISIBLE);
@@ -169,7 +169,8 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             } else {
                 childViewHolder.tv_store_timing.setVisibility(View.VISIBLE);
                 childViewHolder.tv_status.setVisibility(View.VISIBLE);
-                String time = new AppUtils().formatTodayStoreTiming(context, storeHourElastic);
+                String time = new AppUtils().formatTodayStoreTiming(context, storeHourElastic.isDayClosed(),
+                        storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
                 String lunchTime = new AppUtils().formatTodayStoreLunchTiming(context, storeHourElastic.getLunchTimeStart(), storeHourElastic.getLunchTimeEnd());
                 if (!TextUtils.isEmpty(lunchTime)) {
                     childViewHolder.tv_lunch_time.setText(lunchTime);

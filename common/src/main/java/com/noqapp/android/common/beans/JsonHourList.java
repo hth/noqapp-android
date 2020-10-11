@@ -32,6 +32,9 @@ public class JsonHourList implements Serializable {
     @JsonProperty("hrs")
     private List<JsonHour> jsonHours = new ArrayList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonHour> getJsonHours() {
         return jsonHours;
     }
@@ -39,5 +42,22 @@ public class JsonHourList implements Serializable {
     public JsonHourList setJsonHours(List<JsonHour> jsonHours) {
         this.jsonHours = jsonHours;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonHourList setError(ErrorEncounteredJson error) {
+        this.error = error;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonHourList{" +
+                "jsonHours=" + jsonHours +
+                ", error=" + error +
+                '}';
     }
 }

@@ -14,21 +14,22 @@ import androidx.cardview.widget.CardView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.common.beans.JsonHour;
 
 import java.util.List;
 
 public class AllDayTimingAdapter extends BaseAdapter {
     private String NA = "NA";
     private Context context;
-    private List<StoreHourElastic> storeHourElastics;
+    private List<JsonHour> jsonHours;
 
-    public AllDayTimingAdapter(Context context, List<StoreHourElastic> storeHourElastics) {
+    public AllDayTimingAdapter(Context context, List<JsonHour> jsonHours) {
         this.context = context;
-        this.storeHourElastics = storeHourElastics;
+        this.jsonHours = jsonHours;
     }
 
     public int getCount() {
-        return this.storeHourElastics.size();
+        return this.jsonHours.size();
     }
 
     public Object getItem(int n) {
@@ -57,23 +58,24 @@ public class AllDayTimingAdapter extends BaseAdapter {
             recordHolder = (RecordHolder) view.getTag();
         }
         
-        StoreHourElastic storeHourElastic = storeHourElastics.get(position);
-        recordHolder.tv_day.setText(AppUtils.getDayName(storeHourElastic.getDayOfWeek()));
-        String storeTime = new AppUtils().formatTodayStoreTiming(context, storeHourElastic);
+        JsonHour jsonHour = jsonHours.get(position);
+        recordHolder.tv_day.setText(AppUtils.getDayName(jsonHour.getDayOfWeek()));
+        String storeTime = new AppUtils().formatTodayStoreTiming(context, jsonHour.isDayClosed(),
+                jsonHour.getStartHour(), jsonHour.getEndHour());
         recordHolder.tv_time_value.setText(storeTime);
 
-        String lunchTime = new AppUtils().storeLunchTiming(storeHourElastic.getLunchTimeStart(),
-                storeHourElastic.getLunchTimeEnd());
+        String lunchTime = new AppUtils().storeLunchTiming(jsonHour.getLunchTimeStart(),
+                jsonHour.getLunchTimeEnd());
         recordHolder.tv_lunch_time_value.setText(TextUtils.isEmpty(lunchTime) ? NA: lunchTime);
 
 
-        String tokenTime = new AppUtils().storeLunchTiming(storeHourElastic.getTokenAvailableFrom(),
-                storeHourElastic.getTokenNotAvailableFrom());
+        String tokenTime = new AppUtils().storeLunchTiming(jsonHour.getTokenAvailableFrom(),
+                jsonHour.getTokenNotAvailableFrom());
         recordHolder.tv_token_time_value.setText(TextUtils.isEmpty(tokenTime) ? NA: tokenTime);
 
 
-        String appointmentTime = new AppUtils().storeLunchTiming(storeHourElastic.getAppointmentStartHour(),
-                storeHourElastic.getAppointmentStartHour());
+        String appointmentTime = new AppUtils().storeLunchTiming(jsonHour.getAppointmentStartHour(),
+                jsonHour.getAppointmentStartHour());
         recordHolder.tv_appointment_time_value.setText(TextUtils.isEmpty(appointmentTime) ? NA : appointmentTime);
 
 

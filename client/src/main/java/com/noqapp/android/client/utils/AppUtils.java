@@ -496,11 +496,11 @@ public class AppUtils extends CommonHelper {
         ShowAlertInformation.showAuthenticErrorDialog(context);
     }
 
-    public String formatTodayStoreTiming(Context context, StoreHourElastic storeHourElastic) {
-        if (storeHourElastic.isDayClosed())
+      public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {
+        if (isDayClosed)
             return "Closed";
         else
-            return formatTodayStoreTiming(context, storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
+            return formatTodayStoreTiming(context, startHour, endHour);
     }
 
     public String formatTodayStoreTiming(Context context, int startHour, int endHour) {
@@ -709,13 +709,13 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public static void showAllDaysTiming(Context context, TextView textView, List<StoreHourElastic> storeHourElastics){
+    public static void showAllDaysTiming(Context context, TextView textView, String codeQR){
         textView.setTextColor(ContextCompat.getColor(context, R.color.btn_color));
         textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         textView.setOnClickListener((View v) -> {
             Intent in = new Intent(context, AllDayTimingActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable(IBConstant.KEY_STORE_TIMING, (Serializable) storeHourElastics);
+            bundle.putString(IBConstant.KEY_CODE_QR, codeQR);
             in.putExtras(bundle);
             context.startActivity(in);
         });
