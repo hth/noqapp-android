@@ -71,7 +71,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
             ShowAlertInformation.showThemeDialog(getActivity(), getString(R.string.alert), getString(R.string.empty_invite_code));
         } else {
             try {
-                String shareMessage = "\"Hi, I am using a new and wonderful app, called NoQueue. " +
+                String shareMessage = "Hi, I am using a new and wonderful app, called NoQueue. " +
                     "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, " +
                     "it is real time. Get the status update on your phone quickly and immediately. " +
                     "I am sending you an invite so you too enjoy the experience and avoid standing in queues.\n\n" +
