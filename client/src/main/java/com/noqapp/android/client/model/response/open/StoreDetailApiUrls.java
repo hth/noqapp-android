@@ -2,6 +2,7 @@ package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.beans.JsonHourList;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface StoreDetailApiUrls {
      * No Errors
      */
     @GET("open/store/hours/{codeQR}.json")
-    Call<List<JsonHour>> storeHours(
+    Call<JsonHourList> storeHours(
         @Header("X-R-DID")
         String did,
 
