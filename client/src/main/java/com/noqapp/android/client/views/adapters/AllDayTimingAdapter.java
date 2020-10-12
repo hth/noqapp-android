@@ -70,7 +70,7 @@ public class AllDayTimingAdapter extends BaseAdapter {
         String lunchTime = new AppUtils().storeLunchTiming(jsonHour.getLunchTimeStart(), jsonHour.getLunchTimeEnd());
         recordHolder.tv_lunch_time_value.setText(TextUtils.isEmpty(lunchTime) ? NA : lunchTime);
 
-        String appointmentTime = new AppUtils().storeLunchTiming(jsonHour.getAppointmentStartHour(), jsonHour.getAppointmentStartHour());
+        String appointmentTime = new AppUtils().storeLunchTiming(jsonHour.getAppointmentStartHour(), jsonHour.getAppointmentEndHour());
         recordHolder.tv_appointment_time_value.setText(TextUtils.isEmpty(appointmentTime) ? NA : appointmentTime);
 
         return view;
