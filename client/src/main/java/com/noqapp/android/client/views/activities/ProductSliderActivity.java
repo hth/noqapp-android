@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductSliderActivity extends BaseActivity {
-
     private LinearLayout ll_dots;
     private List<JsonStoreProduct> slider_product_list = null;
     private int page_position = 0;
@@ -43,6 +42,22 @@ public class ProductSliderActivity extends BaseActivity {
         ProductSliderPagerAdapter sliderPagerAdapter = new ProductSliderPagerAdapter(this, slider_product_list);
         vp_slider.setAdapter(sliderPagerAdapter);
         vp_slider.setCurrentItem(page_position);
+        vp_slider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                addBottomDots(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void addBottomDots(int currentPage) {
@@ -52,7 +67,7 @@ public class ProductSliderActivity extends BaseActivity {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(35);
-            dots[i].setTextColor(Color.parseColor("#ffffff"));
+            dots[i].setTextColor(Color.parseColor("#999999"));
             ll_dots.addView(dots[i]);
         }
         if (dots.length > 0) {
