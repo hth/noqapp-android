@@ -267,7 +267,7 @@
     <string name="pre_approve">Pre-Approve</string>
     <string name="biz_announcement">Attention: COVID-19 Update</string>
     <string name="photo">Photos</string>
-    <string name="display_case_product">Available Products</string>
+    <string name="display_case_product">Featured Products</string>
     <string name="amenities">Amenities</string>
     <string name="facility">Facility</string>
     <string name="skip_msg">You were not served. \nPress yes to join the queue again.</string>
