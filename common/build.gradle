@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'net.danlew:android.joda:2.10.6'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.10'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.11'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'com.itextpdf:itextg:5.5.10'
@@ -63,7 +63,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
 
     // (Optional) If you also have JUnit 4-based tests
-    testImplementation "junit:junit:4.13"
+    testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.0'
     testImplementation 'org.awaitility:awaitility:4.0.3'
 }
