@@ -56,7 +56,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
             final JsonTokenAndQueue jsonTokenAndQueue = (JsonTokenAndQueue) object;
             holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
             holder.card_view.setOnClickListener((View v) -> listener.currentQorOrderItemClick(jsonTokenAndQueue));
-            holder.tv_position_in_queue_value.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+            holder.tv_position_in_queue_value.setText(String.valueOf(jsonTokenAndQueue.afterHowLongForDisplay()));
             if (QueueOrderTypeEnum.Q == jsonTokenAndQueue.getBusinessType().getQueueOrderType()) {
                 holder.tv_token_label.setText(context.getString(R.string.token));
                 if (jsonTokenAndQueue.getToken() <= jsonTokenAndQueue.getServingNumber()) {
