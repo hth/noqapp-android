@@ -678,6 +678,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 bundle.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 bundle.putInt("token", item.getToken());
                 bundle.putInt("currentServing", item.getServingNumber());
+                bundle.putString("displayCurrentServing", item.getDisplayServingNumber());
                 bundle.putString("GeoHash", item.getGeoHash());
                 bundle.putString(IBConstant.KEY_STORE_NAME, item.getDisplayName());
                 bundle.putString(IBConstant.KEY_STORE_ADDRESS, item.getStoreAddress());

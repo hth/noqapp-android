@@ -75,6 +75,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private Button btn_cancel_order;
     private String codeQR;
     private int currentServing = -1;
+    private String displayCurrentServing;
     private TextView tv_payment_status, tv_total_amt_paid, tv_total_amt_paid_label, tv_total_amt_remain;
     private TextView tv_grand_total_amt;
     private TextView tv_coupon_discount_amt;
@@ -173,6 +174,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_address.setText(getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
         codeQR = getIntent().getExtras().getString(IBConstant.KEY_CODE_QR);
         currentServing = getIntent().getExtras().getInt("currentServing");
+        displayCurrentServing = getIntent().getExtras().getString("displayCurrentServing");
         if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (isOnline()) {
@@ -309,7 +311,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             ll_order_details.addView(inflatedLayout);
         }
         int currentTemp = currentServing == -1 ? jsonPurchaseOrder.getServingNumber() : currentServing;
-        tv_serving_no.setText(jsonPurchaseOrder.getToken() - currentTemp <= 0 ? String.valueOf(jsonPurchaseOrder.getToken()) : String.valueOf(currentTemp));
+        tv_serving_no.setText(jsonPurchaseOrder.getToken() - currentTemp <= 0 ? String.valueOf(jsonPurchaseOrder.getDisplayToken()) : displayCurrentServing);
         btn_pay_now.setVisibility(View.GONE);
         switch (jsonPurchaseOrder.getPresentOrderState()) {
             case VB: {
@@ -449,7 +451,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 }
             }
             int currentTemp = currentServing == -1 ? jq.getServingNumber() : currentServing;
-            tv_serving_no.setText(jq.getToken() - currentTemp <= 0 ? String.valueOf(jsonPurchaseOrder.getToken()) : String.valueOf(currentTemp));
+            tv_serving_no.setText(jq.getToken() - currentTemp <= 0 ? String.valueOf(jsonPurchaseOrder.getDisplayToken()) : jq.getDisplayServingNumber());
         }
         return false;
     }
