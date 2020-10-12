@@ -404,12 +404,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         String goTo = "";
                         String currentServing = "";
                         if (jsonData instanceof JsonTopicQueueData) {
-                            Log.e("IN JsonTopicQueueData", jsonData.toString());
+                            Log.e("In JsonTopicQueueData", jsonData.toString());
                             currentServing = String.valueOf(((JsonTopicQueueData) jsonData).getCurrentlyServing());
                             goTo = ((JsonTopicQueueData) jsonData).getGoTo();
                         }
                         if (jsonData instanceof JsonTopicOrderData) {
-                            Log.e("IN JsonTopicOrderData", jsonData.toString());
+                            Log.e("In JsonTopicOrderData", jsonData.toString());
                             currentServing = String.valueOf(((JsonTopicOrderData) jsonData).getCurrentlyServing());
                             goTo = ((JsonTopicOrderData) jsonData).getGoTo();
                         }
