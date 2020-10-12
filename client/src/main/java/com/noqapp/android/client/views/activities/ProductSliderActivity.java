@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductSliderActivity extends BaseActivity {
-
     private LinearLayout ll_dots;
     private List<JsonStoreProduct> slider_product_list = null;
     private int page_position = 0;

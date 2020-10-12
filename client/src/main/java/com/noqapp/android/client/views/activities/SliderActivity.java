@@ -22,30 +22,22 @@ import java.util.ArrayList;
 /**
  * Created by chandra on 3/26/18.
  */
-
 public class SliderActivity extends AppCompatActivity {
-
     private LinearLayout ll_dots;
     private ArrayList<String> slider_image_list = null;
     private int page_position = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_slider_pager);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         page_position = getIntent().getIntExtra("pos", 0);
         init();
         addBottomDots(page_position);
-        actionbarBack.setOnClickListener((View v) -> {
-            finish();
-        });
-
-
+        actionbarBack.setOnClickListener((View v) -> finish());
     }
 
     private void init() {
@@ -97,7 +89,8 @@ public class SliderActivity extends AppCompatActivity {
             dots[i].setTextColor(Color.parseColor("#ffffff"));
             ll_dots.addView(dots[i]);
         }
-        if (dots.length > 0)
+        if (dots.length > 0) {
             dots[currentPage].setTextColor(Color.parseColor("#b71c1c"));
+        }
     }
 }
