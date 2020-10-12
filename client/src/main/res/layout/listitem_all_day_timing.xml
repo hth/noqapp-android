@@ -137,7 +137,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve" />
                 </LinearLayout>
-                
+
             </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
