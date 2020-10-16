@@ -18,12 +18,9 @@ public class ITest {
     protected String emailid = "bsd@email.com";
     protected String did = "92E12771-751E-460E-98D8-A64224447442";
 
-
     @Mock protected Log log;
     @BeforeAll
     public void globalISetup() throws IOException {
-        MockitoAnnotations.initMocks(this);
-
+        MockitoAnnotations.openMocks(this);
     }
-
 }

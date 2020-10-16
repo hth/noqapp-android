@@ -30,7 +30,7 @@ public class JoinQueueTest extends ITest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         queueApiAuthenticCall = new QueueApiAuthenticCall();
         queueApiAuthenticCall.setQueuePresenter(queuePresenter);
         queueApiAuthenticCall.setTokenPresenter(tokenPresenter);

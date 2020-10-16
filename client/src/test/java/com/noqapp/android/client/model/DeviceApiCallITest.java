@@ -30,7 +30,7 @@ class DeviceApiCallITest extends ITest {
     private DeviceApiCall deviceApiCall;
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         this.deviceApiCall = new DeviceApiCall();
         this.deviceApiCall.setAppBlacklistPresenter(appBlacklistPresenter);
         this.deviceApiCall.setDeviceRegisterPresenter(deviceRegisterPresenter);
