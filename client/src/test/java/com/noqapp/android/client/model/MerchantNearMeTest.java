@@ -39,7 +39,7 @@ public class MerchantNearMeTest extends ITest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         searchBusinessStoreApiCalls = new SearchBusinessStoreApiCalls(searchBusinessStorePresenter);
         storeDetailApiCalls = new StoreDetailApiCalls(storePresenter);
     }
