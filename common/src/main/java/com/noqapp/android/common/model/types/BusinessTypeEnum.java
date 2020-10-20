@@ -36,9 +36,14 @@ public enum BusinessTypeEnum implements Serializable {
     SM("SM", "Shopping Mall", Q, "Queue", QQ),
     MT("MT", "Movie Theater", Q, "Queue", QQ),
     SC("SC", "School", Q, "Queue", QQ),
+
+    //For health service
     DO("DO", "Hospital/Doctor", Q, "Queue", QQ),
     HS("HS", "Health Care Services", O, "Store", OD),
-    PH("PH", "Pharmacy", O, "Store", OD),                //Users cannot directly order these, as these have to be prescribed
+    //Users cannot directly order these, as these have to be prescribed
+    PH("PH", "Pharmacy", O, "Store", OD),
+
+    //To be decided on supported TransactionCancel for all the below condition
     PW("PW", "Place of Worship", Q, "Queue", QQ),
     MU("MU", "Museum", Q, "Queue", QQ),
     TA("TA", "Tourist Attraction", Q, "Queue", QQ),
