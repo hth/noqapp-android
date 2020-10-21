@@ -145,7 +145,7 @@ public class LaunchActivity
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
         } else {
-            COUNTRY_CODE = getCountryCode();
+            COUNTRY_CODE = "IN";
         }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
@@ -298,8 +298,10 @@ public class LaunchActivity
 
     public void updateLocationUI() {
         if (null != homeFragment) {
-            homeFragment.updateUIWithNewLocation(AppInitialize.location.getLatitude(),
-                AppInitialize.location.getLongitude(), AppInitialize.cityName);
+            homeFragment.updateUIWithNewLocation(
+                AppInitialize.location.getLatitude(),
+                AppInitialize.location.getLongitude(),
+                AppInitialize.cityName);
             //tv_location.setText(cityName);
         }
     }
