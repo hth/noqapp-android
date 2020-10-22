@@ -409,7 +409,11 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             }
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
-            new CustomToast().showToast(this, "Device register error: ");
+            try {
+                new CustomToast().showToast(this, "Device register error: ");
+            }catch (Exception e){
+                Log.e("BadTokenException :", "Exception caught while showing the window" + e.getLocalizedMessage());
+            }
         }
     }
 
@@ -426,13 +430,13 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         /* dismissProgress(); no progress bar silent call here */
-        new ErrorResponseHandler().processError(this, eej);
+       // new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         /* dismissProgress(); no progress bar silent call here */
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+       // new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     public static void fetchDeviceId() {
@@ -442,6 +446,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             new DeviceToken(
                 AppInitialize.getTokenFCM(),
                 Constants.appVersion(),
-                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
+                CommonHelper.getLocation(AppInitialize.location.getLatitude(),
+                        AppInitialize.location.getLongitude())));
     }
 }

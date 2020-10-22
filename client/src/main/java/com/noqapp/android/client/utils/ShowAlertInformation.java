@@ -21,7 +21,7 @@ public class ShowAlertInformation {
         showThemeDialog(context, context.getString(R.string.networkerror), context.getString(R.string.offline));
     }
 
-    public static void showAuthenticErrorDialog(Context context) {
+    public static void showAuthenticErrorDialog(Activity context) {
         ShowAlertInformation.showThemeDialog(context, context.getString(R.string.authentication_fail_title), context.getString(R.string.authentication_fail_msg));
     }
 
@@ -115,7 +115,7 @@ public class ShowAlertInformation {
         }
     }
 
-    private static void showThemeDialogWithIcon(Context context, String title, String message, boolean isGravityLeft, int icon) {
+    private static void showThemeDialogWithIcon(Activity context, String title, String message, boolean isGravityLeft, int icon) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
@@ -140,7 +140,7 @@ public class ShowAlertInformation {
         mAlertDialog.show();
     }
 
-    public static void showThemeDialog(Context context, String title, String message, int icon) {
+    public static void showThemeDialog(Activity context, String title, String message, int icon) {
         showThemeDialogWithIcon(context, title, message, false, icon);
     }
 

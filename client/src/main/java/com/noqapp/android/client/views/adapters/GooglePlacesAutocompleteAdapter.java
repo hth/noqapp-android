@@ -9,10 +9,11 @@ import android.widget.Filterable;
 
 import com.noqapp.android.client.utils.AppUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {
-    private List<String> resultList;
+    private List<String> resultList = new ArrayList<>();
 
     public GooglePlacesAutocompleteAdapter(Context context, int resource) {
         super(context, resource);
@@ -20,7 +21,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implem
 
     @Override
     public int getCount() {
-        return resultList.size();
+        return null == resultList ? 0 : resultList.size();
     }
 
     @Override
@@ -39,24 +40,25 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implem
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
-                if (constraint != null) {
-                    // Retrieve the autocomplete results.
-                    resultList = AppUtils.autoCompleteWithOkHttp(constraint.toString());
+                synchronized (filterResults) {
+                    if (constraint != null) {
+                        // Clear and Retrieve the autocomplete results.
+                        resultList = AppUtils.autoCompleteWithOkHttp(constraint.toString());
+                        if(null == resultList){
+                            resultList = new ArrayList<>();
+                        }
 
-                    // Assign the data to the FilterResults
-                    filterResults.values = resultList;
-                    if (resultList != null) {
+                        // Assign the data to the FilterResults
+                        filterResults.values = resultList;
                         filterResults.count = resultList.size();
-                    } else {
-                        filterResults.count = 0;
                     }
+                    return filterResults;
                 }
-                return filterResults;
             }
 
             @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results != null && results.count > 0) {
+            protected void publishResults(CharSequence constraint, FilterResults filterResults) {
+                if (filterResults != null && filterResults.count > 0) {
                     notifyDataSetChanged();
                 } else {
                     notifyDataSetInvalidated();

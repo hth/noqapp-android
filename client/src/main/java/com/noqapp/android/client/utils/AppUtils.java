@@ -491,9 +491,9 @@ public class AppUtils extends CommonHelper {
         return dayName;
     }
 
-    public static void authenticationProcessing(Context context) {
+    public static void authenticationProcessing(Activity activity) {
         AppInitialize.clearPreferences();
-        ShowAlertInformation.showAuthenticErrorDialog(context);
+        ShowAlertInformation.showAuthenticErrorDialog(activity);
     }
 
       public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {
