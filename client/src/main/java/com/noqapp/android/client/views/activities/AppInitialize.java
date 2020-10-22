@@ -404,7 +404,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
             AppInitialize.location.setLatitude(locationPref.getLatitude());
             AppInitialize.location.setLongitude(locationPref.getLongitude());
-            if (null != LaunchActivity.getLaunchActivity().tv_location) {
+            if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().tv_location) {
                 LaunchActivity.getLaunchActivity().tv_location.setText(AppInitialize.cityName);
             }
         } else {
