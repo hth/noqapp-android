@@ -107,6 +107,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                     showProgress();
                     setProgressMessage("Login in progress..");
                     loginApiCalls.login(email.toLowerCase(), pwd);
+                    //TODO register device after getting QID
 
 //                    Answers.getInstance().logLogin(new LoginEvent()
 //                            .putMethod("Email_Password_Login")
