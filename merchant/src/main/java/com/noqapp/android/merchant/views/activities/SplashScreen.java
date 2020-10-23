@@ -36,7 +36,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
     static SplashScreen splashScreen;
     private static String tokenFCM = "";
     private String APP_PREF = "splashPref";
-    private static String deviceId = "";
+    private static String deviceId;
     private String TAG = SplashScreen.class.getSimpleName();
 
     @Override
@@ -85,18 +85,18 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
 
     private void sendRegistrationToServer(String refreshToken) {
         if (new NetworkUtil(this).isOnline()) {
-            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(),
-                    CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
+            DeviceToken deviceToken = new DeviceToken(
+                refreshToken,
+                Constants.appVersion(),
+                CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
+
             SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
             deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
             if (StringUtils.isBlank(deviceId)) {
-                deviceId = UUID.randomUUID().toString().toUpperCase();
-                Log.d(TAG, "Created deviceId=" + deviceId);
-                sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
                 //Call this api only once in life time
                 DeviceApiCalls deviceApiCalls = new DeviceApiCalls();
                 deviceApiCalls.setDeviceRegisterPresenter(this);
-                deviceApiCalls.register(deviceId, deviceToken);
+                deviceApiCalls.register(deviceToken);
             } else {
                 Log.e("Launch", "launching from sendRegistrationToServer");
                 Log.d(TAG, "Exist deviceId=" + deviceId);
@@ -140,9 +140,15 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Launch", "launching from deviceRegisterResponse");
+            deviceId = deviceRegistered.getDeviceId();
+            Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: " + deviceRegistered);
             Intent i = new Intent(splashScreen, LaunchActivity.class);
             i.putExtra(LaunchActivity.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
+
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
+            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
+
             splashScreen.startActivity(i);
             splashScreen.finish();
         } else {

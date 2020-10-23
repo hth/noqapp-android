@@ -247,7 +247,7 @@ public class LaunchActivity
         if (isOnline()) {
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setAppBlacklistPresenter(this);
-            deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+            deviceModel.isSupportedAppVersion();
         }
         if (null != getIntent().getExtras()) {
             try {

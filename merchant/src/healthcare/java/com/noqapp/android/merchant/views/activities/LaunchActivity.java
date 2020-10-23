@@ -63,7 +63,7 @@ public class LaunchActivity
 
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            deviceApiCalls.isSupportedAppVersion(UserUtils.getDeviceId());
+            deviceApiCalls.isSupportedAppVersion();
         }
     }
 
