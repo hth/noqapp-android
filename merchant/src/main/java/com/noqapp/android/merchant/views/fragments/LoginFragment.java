@@ -193,7 +193,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
-
     @Override
     public void merchantResponse(JsonMerchant jsonMerchant) {
         Gson gson = new Gson();
@@ -220,12 +219,17 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 LaunchActivity.getLaunchActivity().setPriorityAccess(priorityAccess);
             }
 
-            if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR ||
-                    jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                if ((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&
-                        jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO) ||
-                        (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant") &&
-                                jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO) || getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
+
+            UserLevelEnum userLevel =  jsonMerchant.getJsonProfile().getUserLevel();
+            BusinessTypeEnum businessType = jsonMerchant.getJsonProfile().getBusinessType();
+            String packageName = getActivity().getPackageName();
+
+            if (userLevel == UserLevelEnum.Q_SUPERVISOR || userLevel == UserLevelEnum.S_MANAGER) {
+                if (
+                    (packageName.equalsIgnoreCase("com.noqapp.android.merchant.healthcare") && businessType == BusinessTypeEnum.DO) ||
+                    (packageName.equalsIgnoreCase("com.noqapp.android.merchant") && businessType != BusinessTypeEnum.DO) ||
+                    packageName.equalsIgnoreCase("com.noqapp.android.merchant.tv")
+                ) {
                     if (LaunchActivity.isTablet) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
                         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.6f);
@@ -262,7 +266,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                     LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
                     LaunchActivity.getLaunchActivity().updateMenuList(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, LaunchActivity.getLaunchActivity().getInventoryHome());
-
                 } else {
                     // unauthorised to see the screen
                     LaunchActivity.getLaunchActivity().setAccessGrant(false);
