@@ -95,7 +95,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         userList = LaunchActivity.getLaunchActivity().getUserList();
         loginApiCalls = new LoginApiCalls(this);
         merchantProfileModel = new MerchantProfileApiCalls();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, userList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, userList);
         actv_email.setThreshold(1);//will start working from first character
         actv_email.setAdapter(adapter);
         btn_login.setOnClickListener(v -> {
@@ -154,7 +154,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
             if (!userList.contains(email)) {
                 userList.add(email);
                 LaunchActivity.getLaunchActivity().setUserList(userList);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, userList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, userList);
                 //Getting the instance of AutoCompleteTextView
                 actv_email.setThreshold(1);//will start working from first character
                 actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
