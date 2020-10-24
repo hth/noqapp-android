@@ -71,12 +71,12 @@ public class LoginActivity extends OTPActivity {
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
         AppInitialize.commitProfile(profile, email, auth);
-        if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID())
-            && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+//        if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID())
+//            && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
             NotificationDB.clearNotificationTable();
             ReviewDB.clearReviewTable();
             AppUtils.reCreateDeviceID(this);
-        }
+    //    }
         AppInitialize.setPreviousUserQID(profile.getQueueUserId());
 
         if (getIntent().getBooleanExtra("fromLogin", false)) {
