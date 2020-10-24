@@ -1,11 +1,5 @@
 package com.noqapp.android.client.model;
 
-import static com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum.MOBILE_JSON;
-import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.noqapp.android.client.ITest;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.utils.Constants;
@@ -19,8 +13,13 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.UUID;
 import java.util.concurrent.Callable;
+
+import static com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum.MOBILE_JSON;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DeviceApiCallITest extends ITest {

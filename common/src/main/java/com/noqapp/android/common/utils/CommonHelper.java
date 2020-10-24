@@ -297,53 +297,6 @@ public class CommonHelper {
         return input.substring(0, index + 1) + ":" + input.substring(index + 1);
     }
 
-    /**
-     * Since 1.2.590.
-     */
-    @Deprecated
-    public static List<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
-        List<String> timeSlot = new ArrayList<>();
-        if (slotMinute != 0) {
-            try {
-                int fromHour, fromMinute, toHour, toMinute;
-                fromHour = Integer.parseInt(strFromTime.split(":")[0]);
-                fromMinute = Integer.parseInt(strFromTime.split(":")[1]);
-
-                toHour = Integer.parseInt(strToTime.split(":")[0]);
-                toMinute = Integer.parseInt(strToTime.split(":")[1]);
-
-                long slot = slotMinute * 60 * 1000;
-                Calendar calendar2 = Calendar.getInstance();
-                calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
-                calendar2.set(Calendar.MINUTE, fromMinute);
-                long startTime = calendar2.getTimeInMillis();
-
-                Calendar calendar1 = Calendar.getInstance();
-                calendar1.set(Calendar.HOUR_OF_DAY, toHour);
-                calendar1.set(Calendar.MINUTE, toMinute);
-                long endTime = calendar1.getTimeInMillis();
-
-                if (isEqual) {
-                    while (startTime <= endTime) {
-                        DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        timeSlot.add(sdfTime.format(new Date(startTime)));
-                        startTime = startTime + slot;
-                    }
-                } else {
-                    while (startTime < endTime) {
-                        DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        timeSlot.add(sdfTime.format(new Date(startTime)));
-                        startTime = startTime + slot;
-                    }
-                }
-            } catch (Exception e) {
-                FirebaseCrashlytics.getInstance().log("Failed time slot " + slotMinute + ":" + strFromTime + ":" + strToTime);
-                e.printStackTrace();
-            }
-        }
-        return timeSlot;
-    }
-
     public static List<String> computeTimeSlot(int slotMinute, String strFromTime, String strToTime, AppointmentComputationEnum appointmentComputation) {
         List<String> timeSlot = new ArrayList<>();
         if (slotMinute != 0) {
