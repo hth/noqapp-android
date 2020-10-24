@@ -18,12 +18,14 @@ import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 
-public class LoginActivity extends OTPActivity {
+public class LoginActivity extends OTPActivity implements DeviceRegisterPresenter {
 
     private final String TAG = LoginActivity.class.getSimpleName();
     private long mLastClickTime = 0;
@@ -75,18 +77,10 @@ public class LoginActivity extends OTPActivity {
 //            && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
             NotificationDB.clearNotificationTable();
             ReviewDB.clearReviewTable();
-            AppUtils.reCreateDeviceID(this);
+            AppUtils.reCreateDeviceID(this, this);
     //    }
         AppInitialize.setPreviousUserQID(profile.getQueueUserId());
-
-        if (getIntent().getBooleanExtra("fromLogin", false)) {
-            // To refresh the launch activity
-            Intent intent = new Intent(this, LaunchActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }
-        finish();//close the current activity
-        dismissProgress();
+       // dismissProgress();
     }
 
     @Override
@@ -114,5 +108,23 @@ public class LoginActivity extends OTPActivity {
     @Override
     public void authenticationFailure() {
 
+    }
+
+    @Override
+    public void deviceRegisterError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
+        dismissProgress();
+        AppInitialize.processRegisterDeviceIdResponse(deviceRegistered, this);
+        if (getIntent().getBooleanExtra("fromLogin", false)) {
+            // To refresh the launch activity
+            Intent intent = new Intent(this, LaunchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        finish();//close the current activity
     }
 }

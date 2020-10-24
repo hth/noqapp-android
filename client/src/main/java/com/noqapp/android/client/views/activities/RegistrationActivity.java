@@ -26,9 +26,11 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.views.activities.helper.CapitalizeEachWordFirstLetterTextWatcher;
@@ -36,7 +38,7 @@ import com.noqapp.android.common.views.activities.helper.CapitalizeEachWordFirst
 import java.util.Random;
 import java.util.TimeZone;
 
-public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener {
+public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener, DeviceRegisterPresenter {
     private final String TAG = RegistrationActivity.class.getSimpleName();
     private EditText edt_phoneNo;
     private EditText edt_Name;
@@ -114,19 +116,20 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (profile.getError() == null) {
             Log.d(TAG, "Profile: " + profile.toString());
             AppInitialize.commitProfile(profile, email, auth);
-            if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID()) && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+           // if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID()) && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
                 NotificationDB.clearNotificationTable();
                 ReviewDB.clearReviewTable();
-                AppUtils.reCreateDeviceID(this);
-            }
+                AppUtils.reCreateDeviceID(this, this);
+          //  }
             AppInitialize.setPreviousUserQID(profile.getQueueUserId());
-            finish();
+            //finish();
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
             ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
+            dismissProgress();
         }
-        dismissProgress();
+
     }
 
     @Override
@@ -276,5 +279,17 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         Random rnd = new Random();
         int n = 100000 + rnd.nextInt(900000);
         return String.valueOf(n);
+    }
+
+    @Override
+    public void deviceRegisterError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
+        AppInitialize.processRegisterDeviceIdResponse(deviceRegistered, this);
+        dismissProgress();
+        finish();
     }
 }

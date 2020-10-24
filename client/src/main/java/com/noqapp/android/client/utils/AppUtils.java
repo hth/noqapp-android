@@ -40,6 +40,7 @@ import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.GeoIP;
@@ -684,9 +685,9 @@ public class AppUtils extends CommonHelper {
         return true;
     }
 
-    public static void reCreateDeviceID(Activity context) {
+    public static void reCreateDeviceID(Activity context, DeviceRegisterPresenter deviceRegisterPresenter) {
         if (new NetworkUtil(context).isOnline()) {
-            AppInitialize.fetchDeviceId();
+            AppInitialize.fetchDeviceId(deviceRegisterPresenter);
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             LayoutInflater inflater = LayoutInflater.from(context);
