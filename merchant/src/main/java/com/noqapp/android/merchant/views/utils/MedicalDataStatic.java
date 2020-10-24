@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.utils;
 
 import com.google.gson.Gson;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
@@ -683,7 +684,7 @@ public class MedicalDataStatic {
 
     public static ArrayList<DataObj> getSymptomsOnCategoryType(String bizCategoryId) {
         ArrayList<DataObj> tempList = new ArrayList<>();
-        PreferenceObjects preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+        PreferenceObjects preferenceObjects = new Gson().fromJson(AppInitialize.getSuggestionsPrefs(), PreferenceObjects.class);
         if (null != preferenceObjects && preferenceObjects.getSymptomsList().size() > 0) {
             tempList.addAll(preferenceObjects.getSymptomsList());
         }

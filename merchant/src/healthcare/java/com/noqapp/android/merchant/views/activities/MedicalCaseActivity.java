@@ -26,6 +26,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
 import com.noqapp.android.merchant.model.PreferredBusinessApiCalls;
@@ -118,7 +119,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         medicalCaseActivity = this;
         formDataObj = new FormDataObj();
         try {
-            preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+            preferenceObjects = new Gson().fromJson(AppInitialize.getSuggestionsPrefs(), PreferenceObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
             preferenceObjects = new PreferenceObjects();
@@ -197,7 +198,7 @@ public class MedicalCaseActivity extends BaseActivity implements
 
             }
         });
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             PreferredBusinessApiCalls preferredBusinessModel = new PreferredBusinessApiCalls(MedicalCaseActivity.this);
             preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         }
@@ -281,7 +282,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         temp.setDentalProcedureList(preferenceObjects.clearListSelection(preferenceObjects.getDentalProcedureList()));
         temp.setInstructionList(preferenceObjects.getInstructionList());
         temp.setPreferredStoreInfoHashMap(preferenceObjects.getPreferredStoreInfoHashMap());
-        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
+        AppInitialize.setSuggestionsPrefs(temp);
     }
 
     @Override

@@ -168,7 +168,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         editor.apply();
     }
 
-    public static SharedPreferences.Editor getSharedPreferencesEditor() {
+    private static SharedPreferences.Editor getSharedPreferencesEditor() {
         return preferences.edit();
     }
 

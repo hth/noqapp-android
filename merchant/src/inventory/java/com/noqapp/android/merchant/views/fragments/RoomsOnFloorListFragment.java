@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.CheckAssetPresenter;
 import com.noqapp.android.merchant.model.CheckAssetApiCalls;
@@ -43,7 +44,7 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
         bizNameId = getArguments().getString("bizNameId", "");
         floor = getArguments().getString("floor", "");
         LaunchActivity.getLaunchActivity().setActionBarTitle(floor);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
             CheckAssetApiCalls checkAssetApiCalls = new CheckAssetApiCalls();

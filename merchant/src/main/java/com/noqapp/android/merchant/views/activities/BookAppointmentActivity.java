@@ -41,6 +41,7 @@ import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
@@ -167,7 +168,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                 new CustomToast().showToast(BookAppointmentActivity.this, "Please select appointment date & time");
             } else {
                 if (isEdit) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (new NetworkUtil(this).isOnline()) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                             return;
                         }
@@ -189,9 +190,9 @@ public class BookAppointmentActivity extends BaseActivity implements
                             .setJsonSchedule(jsonScheduleTemp)
                             .setBookActionType(ActionTypeEnum.EDIT);
                         scheduleApiCalls.bookSchedule(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                             bookSchedule);
                     } else {
                         ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
@@ -342,16 +343,16 @@ public class BookAppointmentActivity extends BaseActivity implements
         times.clear();
         appointmentSlotAdapter = new AppointmentSlotAdapter(new ArrayList<AppointmentSlot>(), this, this);
         rv_available_date.setAdapter(appointmentSlotAdapter);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             setProgressMessage("Fetching appointments...");
             setProgressCancel(false);
             showProgress();
             scheduleApiCalls = new ScheduleApiCalls();
             scheduleApiCalls.setAppointmentPresenter(this);
             scheduleApiCalls.scheduleForDay(
-                BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(),
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
                 day,
                 codeQR);
         } else {
@@ -421,7 +422,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         });
         cid = "";
         ccp = customDialogView.findViewById(R.id.ccp);
-        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        String c_codeValue = AppInitialize.getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
         btn_create_order = customDialogView.findViewById(R.id.btn_create_order);
@@ -468,9 +469,9 @@ public class BookAppointmentActivity extends BaseActivity implements
                 businessCustomerApiCalls = new BusinessCustomerApiCalls();
                 businessCustomerApiCalls.setFindCustomerPresenter(BookAppointmentActivity.this);
                 businessCustomerApiCalls.findCustomer(
-                    BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
                     new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
                 btn_create_token.setClickable(false);
                 //  mAlertDialog.dismiss();
@@ -508,7 +509,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                     int start = AppUtils.removeColon((String) sp_start_time.getSelectedItem());
                     int end = AppUtils.removeColon((String) sp_end_time.getSelectedItem());
                     if (start < end) {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (new NetworkUtil(this).isOnline()) {
                             if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                                 return;
                             }
@@ -540,9 +541,9 @@ public class BookAppointmentActivity extends BaseActivity implements
                                 .setBusinessCustomer(jsonBusinessCustomer)
                                 .setJsonSchedule(jsonSchedule)
                                 .setBookActionType(ActionTypeEnum.ADD);
-                            scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
+                            scheduleApiCalls.bookSchedule(AppInitialize.getDeviceID(),
+                                    AppInitialize.getEmail(),
+                                    AppInitialize.getAuth(),
                                 bookSchedule);
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);

@@ -84,7 +84,7 @@ public class DetailFragment extends Fragment {
         tv_marquee.setText(str.toString());
         tv_marquee.setMarqueeRepeatLimit(-1);
         tv_marquee.setSelected(true);
-        if (LaunchActivity.isTvSplitViewEnable()) {
+        if (AppInitialize.isTvSplitViewEnable()) {
             LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.65f);
             LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.35f);
             fl_left.setLayoutParams(lp1);

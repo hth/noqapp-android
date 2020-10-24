@@ -86,7 +86,7 @@ public class PreferenceActivity extends BaseActivity implements FilePresenter, I
         actionbarBack.setOnClickListener(v -> onBackPressed());
         preferenceActivity = this;
         try {
-            preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+            preferenceObjects = new Gson().fromJson(AppInitialize.getSuggestionsPrefs(), PreferenceObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
             preferenceObjects = new PreferenceObjects();
@@ -143,7 +143,7 @@ public class PreferenceActivity extends BaseActivity implements FilePresenter, I
 
     @Override
     public void onBackPressed() {
-        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(preferenceObjects);
+        AppInitialize.setSuggestionsPrefs(preferenceObjects);
         super.onBackPressed();
     }
 
@@ -152,7 +152,7 @@ public class PreferenceActivity extends BaseActivity implements FilePresenter, I
         super.onStop();
         M_MerchantProfileApiCalls m_merchantProfileApiCalls = new M_MerchantProfileApiCalls(this);
         m_merchantProfileApiCalls.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
-                new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestionsPrefs()));
+                new JsonProfessionalProfilePersonal().setDataDictionary(AppInitialize.getSuggestionsPrefs()));
     }
 
     @Override

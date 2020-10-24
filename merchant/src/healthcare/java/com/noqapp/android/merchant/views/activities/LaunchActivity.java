@@ -40,7 +40,7 @@ public class LaunchActivity
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         launchActivity = this;
-        Log.v("device id check", getDeviceID());
+        Log.v("device id check", AppInitialize.getDeviceID());
         networkUtil = new NetworkUtil(this);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
@@ -62,7 +62,7 @@ public class LaunchActivity
         initDrawer();
 
         /* Call to check if the current version of app blacklist or old. */
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             deviceApiCalls.isSupportedAppVersion();
         }
     }
@@ -87,7 +87,7 @@ public class LaunchActivity
     public void updateMenuList(boolean showChart) {
         super.updateMenuList(showChart);
         try {
-            if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            if (AppInitialize.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 List<MenuDrawer> childModelsList = new ArrayList<>();
                 childModelsList.add(new MenuDrawer(getString(R.string.menu_preference), false, false, R.drawable.case_history));
                 childModelsList.add(new MenuDrawer(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));

@@ -36,6 +36,7 @@ import com.noqapp.android.common.model.types.order.ProductTypeEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -91,7 +92,7 @@ public class ProductListActivity extends BaseActivity implements
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText(getString(R.string.screen_product_list));
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
             storeProductApiCalls.setStoreProductPresenter(this);
@@ -109,7 +110,7 @@ public class ProductListActivity extends BaseActivity implements
             String defaultCategory = "Un-Categorized";
             jsonStoreCategories.clear();
             jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-            jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()));
+            jsonStoreCategories.addAll(CommonHelper.populateWithAllCategories(AppInitialize.getUserProfile().getBusinessType()));
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
             final HashMap<String, List<StoreCartItem>> storeCartItems = new HashMap<>();
             for (int l = 0; l < jsonStoreCategories.size(); l++) {
@@ -231,7 +232,7 @@ public class ProductListActivity extends BaseActivity implements
 
     @Override
     public void menuItemUpdate(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             setProgressMessage("Updating data...");
             showProgress();
             setProgressCancel(false);
@@ -315,12 +316,12 @@ public class ProductListActivity extends BaseActivity implements
         final SegmentedControl sc_product_type = customDialogView.findViewById(R.id.sc_product_type);
         edt_prod_name.addTextChangedListener(new CustomTextWatcher(tv_name, "Name", true, edt_prod_name));
         edt_prod_description.addTextChangedListener(new CustomTextWatcher(tv_description, "Description"));
-        edt_prod_price.addTextChangedListener(new CustomTextWatcher(tv_price, LaunchActivity.getCurrencySymbol() + " Price", true));
+        edt_prod_price.addTextChangedListener(new CustomTextWatcher(tv_price, AppInitialize.getCurrencySymbol() + " Price", true));
         edt_prod_unit_value.addTextChangedListener(new CustomTextWatcher(tv_unit, "Quantity"));
 
         formatText(tv_name, "Name", "");
         formatText(tv_description, "Description", "");
-        formatText(tv_price, LaunchActivity.getCurrencySymbol() + " Price ", "");
+        formatText(tv_price, AppInitialize.getCurrencySymbol() + " Price ", "");
         formatText(tv_unit, "Quantity", "");
         formatText(tv_measure, "Unit", "");
 
@@ -351,7 +352,7 @@ public class ProductListActivity extends BaseActivity implements
         });
 
         sc_product_type_index = -1;
-        List<String> prodTypesSegment = ProductTypeEnum.populateWithProductType(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType());
+        List<String> prodTypesSegment = ProductTypeEnum.populateWithProductType(AppInitialize.getUserProfile().getBusinessType());
         // sort the list alphabetically
         Collections.sort(prodTypesSegment);
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
@@ -449,7 +450,7 @@ public class ProductListActivity extends BaseActivity implements
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             new CustomToast().showToast(this, "Action perform successfully");
             selectionPos = -1;
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(this).isOnline()) {
                 showProgress();
                 StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
                 storeProductApiCalls.setStoreProductPresenter(this);
@@ -545,7 +546,7 @@ public class ProductListActivity extends BaseActivity implements
         public void afterTextChanged(Editable editable) {
             String text = isCap ? CommonHelper.capitalizeEachWordFirstLetter(editable.toString()) : editable.toString();
             if (isCurrency)
-                text = LaunchActivity.getCurrencySymbol() + " " + text;
+                text = AppInitialize.getCurrencySymbol() + " " + text;
             formatText(view, prefix, text);
             if (editable.length() != 0 && isCap) {
                 sourceTextView.removeTextChangedListener(this);

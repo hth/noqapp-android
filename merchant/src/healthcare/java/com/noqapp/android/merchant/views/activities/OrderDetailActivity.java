@@ -35,6 +35,7 @@ import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.CouponApiCalls;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
@@ -182,7 +183,7 @@ public class OrderDetailActivity
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick() {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (new NetworkUtil(OrderDetailActivity.this).isOnline()) {
                         showProgress();
                         setProgressMessage("Removing discount...");
                         // progressDialog.setCancelable(false);
@@ -196,9 +197,9 @@ public class OrderDetailActivity
                                 .setCodeQR(codeQR)
                                 .setTransactionId(jsonQueuedPerson.getTransactionId());
 
-                        couponApiCalls.remove(BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
+                        couponApiCalls.remove(AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                                 couponOnOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
@@ -235,7 +236,7 @@ public class OrderDetailActivity
                     new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));
                 } else {
                     // do process
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (new NetworkUtil(this).isOnline()) {
                         showProgress();
                         setProgressMessage("Starting payment refund...");
                         setProgressCancel(false);
@@ -250,9 +251,9 @@ public class OrderDetailActivity
                                 .setToken(jsonQueuedPerson.getToken())
                                 .setTransactionId(jsonQueuedPerson.getTransactionId());
                         jqp.setJsonPurchaseOrder(jpo);
-                        manageQueueApiCalls.cancel(BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
+                        manageQueueApiCalls.cancel(AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                                 jqp);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
@@ -268,7 +269,7 @@ public class OrderDetailActivity
             dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             dialog.show();
         });
-        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        currencySymbol = AppInitialize.getCurrencySymbol();
         updateUI();
         TextView tv_item_count = findViewById(R.id.tv_item_count);
         tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
@@ -287,7 +288,7 @@ public class OrderDetailActivity
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
                         public void btnPositiveClick() {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            if (new NetworkUtil(OrderDetailActivity.this).isOnline()) {
                                 showProgress();
                                 setProgressMessage("Starting payment...");
                                 setProgressCancel(false);
@@ -302,9 +303,9 @@ public class OrderDetailActivity
                                         .setTransactionId(jsonQueuedPerson.getTransactionId())
                                         .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
                                 jqp.setJsonPurchaseOrder(jpo);
-                                manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
-                                        LaunchActivity.getLaunchActivity().getEmail(),
-                                        LaunchActivity.getLaunchActivity().getAuth(),
+                                manageQueueApiCalls.counterPayment(AppInitialize.getDeviceID(),
+                                        AppInitialize.getEmail(),
+                                        AppInitialize.getAuth(),
                                         jqp);
                             } else {
                                 ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
@@ -343,9 +344,9 @@ public class OrderDetailActivity
                     receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
                     receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
                     receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
-                    receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(), receipt);
+                    receiptInfoApiCalls.detail(AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(), receipt);
                 } else {
                     permissionHelper.requestStoragePermission();
                 }
@@ -553,7 +554,7 @@ public class OrderDetailActivity
                     tv_discount_value.setText(jsonCoupon.getDiscountAmount() + "% discount");
                 }
 
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(this).isOnline()) {
                     showProgress();
                     setProgressMessage("Applying discount...");
                     // progressDialog.setCancelable(false);
@@ -567,9 +568,9 @@ public class OrderDetailActivity
                             .setCodeQR(codeQR)
                             .setTransactionId(jsonQueuedPerson.getTransactionId());
 
-                    couponApiCalls.apply(BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
+                    couponApiCalls.apply(AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
                             couponOnOrder);
                 } else {
                     ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);

@@ -23,6 +23,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
@@ -190,7 +191,7 @@ public class PatientProfileActivity extends BaseActivity implements
         Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
         medicalHistoryApiCalls = new MedicalHistoryApiCalls();
         medicalHistoryApiCalls.setJsonMedicalRecordPresenter(this);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             new AsyncTaskTemp().execute();
         } else {
             ShowAlertInformation.showNetworkDialog(this);
@@ -246,9 +247,8 @@ public class PatientProfileActivity extends BaseActivity implements
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
-            medicalHistoryApiCalls.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
+            medicalHistoryApiCalls.retrieveMedicalRecord(AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(), AppInitialize.getAuth(), jsonMedicalRecord);
 
             return null;
         }

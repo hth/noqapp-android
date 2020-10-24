@@ -13,6 +13,7 @@ import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.AdvertisementApiCalls;
 import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
@@ -71,7 +72,7 @@ public class MainActivity
     private int currentPage = 0;
     private Timer timer;
     private final long DELAY_MS = 1000;//delay in milliseconds before task is to be executed
-    private final long PERIOD_MS = LaunchActivity.getTvRefreshTime() * 1000;
+    private final long PERIOD_MS = AppInitialize.getTvRefreshTime() * 1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     protected BroadcastReceiver broadcastReceiver;
     private JsonAdvertisementList jsonAdvertisementList;
@@ -164,26 +165,25 @@ public class MainActivity
 
             }
         };
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
             ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(this);
             clientInQueueApiCalls.toBeServedClients(
-                    UserUtils.getDeviceId(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+                    UserUtils.getDeviceId(), AppInitialize.getEmail(),
+                    AppInitialize.getAuth(), queueDetail);
 
             AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
             advertisementApiCalls.setAdvertisementPresenter(this);
             advertisementApiCalls.setProfessionalProfilesPresenter(this);
             advertisementApiCalls.getAllAdvertisements(
                     UserUtils.getDeviceId(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth());
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth());
             advertisementApiCalls.professionalProfiles(
                     UserUtils.getDeviceId(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth());
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth());
         }
     }
 
@@ -410,16 +410,13 @@ public class MainActivity
     }
 
     public void updateTv(ArrayList<JsonTopic> topics) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             isNotification = true;
             showProgress();
             QueueDetail queueDetail = getQueueDetails(topics);
             ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(this);
-            clientInQueueApiCalls.toBeServedClients(
-                    UserUtils.getDeviceId(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),
-                    queueDetail);
+            clientInQueueApiCalls.toBeServedClients(UserUtils.getDeviceId(), AppInitialize.getEmail(),
+                    AppInitialize.getAuth(), queueDetail);
         }
     }
 

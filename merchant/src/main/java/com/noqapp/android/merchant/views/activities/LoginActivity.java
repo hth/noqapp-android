@@ -31,6 +31,7 @@ import com.hbb20.CountryCodePicker;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.RegisterApiCalls;
@@ -110,7 +111,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         setProgressMessage("Login in progress");
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE.STATE_INITIALIZED);
-        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        String c_codeValue = AppInitialize.getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         Log.v("country code", "" + c_code);
         countryCode = "+" + c_code;
@@ -179,7 +180,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
     private void action_Login() {
         if (validate()) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(this).isOnline()) {
                 showProgress();
                 setProgressMessage("Generating OTP");
                 countryCode = ccp.getSelectedCountryCodeWithPlus();
@@ -359,7 +360,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
             case STATE_SIGN_IN_SUCCESS:
                 // Np-op, handled by sign-in check
 
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(this).isOnline()) {
                     showProgress();
                     callLoginAPI(user.getPhoneNumber());
                 } else {

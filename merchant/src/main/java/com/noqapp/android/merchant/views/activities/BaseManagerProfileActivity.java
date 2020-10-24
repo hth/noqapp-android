@@ -34,6 +34,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.FileUtils;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.ShowUploadImageDialog;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -90,23 +91,23 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
         tabLayout = findViewById(R.id.tabs);
         loadTabs = new LoadTabs();
         loadTabs.execute();
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             setProgressMessage("Fetching profile...");
             merchantProfileApiCalls.setMerchantPresenter(this);
             merchantProfileApiCalls.fetch(
                     UserUtils.getDeviceId(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth());
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth());
         }
     }
 
     @Override
     public void merchantResponse(JsonMerchant jsonMerchant) {
         if (null != jsonMerchant && null != jsonMerchant.getJsonProfile()) {
-            LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
-            LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
-            LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
+            AppInitialize.setUserName(jsonMerchant.getJsonProfile().getName());
+            AppInitialize.setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
+            AppInitialize.setUserProfile(jsonMerchant.getJsonProfile());
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
             Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
             loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());
@@ -190,7 +191,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
                 setProgressMessage("Removing profile image");
                 merchantProfileApiCalls.setImageUploadPresenter(this);
                 merchantProfileApiCalls.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                        UserUtils.getAuth(), new UpdateProfile().setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId()));
+                        UserUtils.getAuth(), new UpdateProfile().setQueueUserId(AppInitialize.getUserProfile().getQueueUserId()));
             }
             break;
         }
@@ -231,7 +232,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
                                 String type = getMimeType(BaseManagerProfileActivity.this, selectedImage);
                                 File file = new File(convertedPath);
                                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                                RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
+                                RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), AppInitialize.getUserProfile().getQueueUserId());
                                 merchantProfileApiCalls.setImageUploadPresenter(BaseManagerProfileActivity.this);
                                 merchantProfileApiCalls.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                             }
@@ -320,7 +321,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
             tv_remove_image.setVisibility(View.GONE);
-            LaunchActivity.getLaunchActivity().setUserProfile(LaunchActivity.getLaunchActivity().getUserProfile().setProfileImage(""));
+            AppInitialize.setUserProfile(AppInitialize.getUserProfile().setProfileImage(""));
             new CustomToast().showToast(this, "Profile image removed successfully!");
         } else {
             new CustomToast().showToast(this, "Failed to remove profile image");

@@ -51,6 +51,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
@@ -262,17 +263,17 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             recordHolder.tv_token_time_slot.setVisibility(View.VISIBLE);
             recordHolder.tv_token_time_slot.setText(context.getString(R.string.time_slot, jsonQueuedPerson.getTimeSlotMessage()));
         }
-        if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().getUserProfile()) {
+        if (null != AppInitialize.getUserProfile()) {
             recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo)
                     ? context.getString(R.string.unregister_user)
-                    : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    : PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
         }
 
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
-        if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+        if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(AppInitialize.getUserLevel().name())) {
             recordHolder.tv_customer_mobile.setOnClickListener(v -> {
                 if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
-                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
                 }
             });
         } else {
@@ -305,13 +306,13 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
         // Don't show radio buttons when merchant priority access is false
         // or customer has already been approved.
-        if (LaunchActivity.getLaunchActivity().getPriorityAccess()
+        if (AppInitialize.getPriorityAccess()
                 && jsonQueuedPerson.getBusinessCustomerAttributes() != null
                 && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)
                 && !jsonQueuedPerson.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.RJ)) {
 
             // Get the business customer priorities from sharedPreference set in loginActivity
-            List<JsonBusinessCustomerPriority> businessCustomerPriorities = LaunchActivity.getLaunchActivity().getBusinessCustomerPriority();
+            List<JsonBusinessCustomerPriority> businessCustomerPriorities = AppInitialize.getBusinessCustomerPriority();
             recordHolder.ll_account_authentication.setVisibility(View.VISIBLE);
             RadioGroup.LayoutParams rprms;
             // Clean up the radio group view
@@ -459,7 +460,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             recordHolder.tv_payment_stat.setVisibility(View.GONE);
         }
         recordHolder.tv_payment_stat.setOnClickListener(v -> {
-            if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+            if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(AppInitialize.getUserLevel().name())) {
                 peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, false);
             } else {
                 new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
@@ -471,7 +472,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         recordHolder.tv_upload_document.setOnClickListener(v -> uploadDocument(context, jsonQueuedPerson));
         recordHolder.tv_business_customer_id.setOnClickListener(v -> editBusinessCustomerId(context, jsonQueuedPerson));
         try {
-            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            if (AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER) {
                 if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S && queueStatusEnum == QueueStatusEnum.N) {
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);
@@ -482,7 +483,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
                     recordHolder.tv_create_case.setClickable(false);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
                 }
-            } else if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+            } else if (AppInitialize.getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
                 if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);

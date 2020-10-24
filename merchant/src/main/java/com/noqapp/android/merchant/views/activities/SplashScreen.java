@@ -7,7 +7,6 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -18,9 +17,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,14 +26,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.UUID;
 
 public class SplashScreen extends BaseActivity implements DeviceRegisterPresenter {
 
-    static SplashScreen splashScreen;
-    private static String tokenFCM = "";
-    private String APP_PREF = "splashPref";
-    private static String deviceId;
+    private SplashScreen splashScreen;
+    private String tokenFCM = "";
+    private String deviceId;
     private String TAG = SplashScreen.class.getSimpleName();
 
     @Override
@@ -90,8 +85,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
                 Constants.appVersion(),
                 CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
 
-            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
-            deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
+            deviceId = AppInitialize.getDeviceId();
             if (StringUtils.isBlank(deviceId)) {
                 //Call this api only once in life time
                 DeviceApiCalls deviceApiCalls = new DeviceApiCalls();
@@ -101,7 +95,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
                 Log.e("Launch", "launching from sendRegistrationToServer");
                 Log.d(TAG, "Exist deviceId=" + deviceId);
                 Intent i = new Intent(splashScreen, LaunchActivity.class);
-                i.putExtra(LaunchActivity.TOKEN_FCM, tokenFCM);
+                i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
                 i.putExtra("deviceId", deviceId);
                 splashScreen.startActivity(i);
                 splashScreen.finish();
@@ -143,12 +137,10 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
             deviceId = deviceRegistered.getDeviceId();
             Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: " + deviceRegistered);
             Intent i = new Intent(splashScreen, LaunchActivity.class);
-            i.putExtra(LaunchActivity.TOKEN_FCM, tokenFCM);
+            i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
 
-            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
-            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
-
+            AppInitialize.setDeviceID(deviceId);
             splashScreen.startActivity(i);
             splashScreen.finish();
         } else {

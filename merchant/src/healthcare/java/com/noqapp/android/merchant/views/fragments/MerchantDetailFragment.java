@@ -25,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.hbb20.CountryCodePicker;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -37,6 +38,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.AppointmentActivity;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
@@ -64,17 +66,17 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
         iv_view_followup.setOnClickListener(view -> {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 Intent in = new Intent(getActivity(), FollowUpListActivity.class);
                 in.putExtra("codeQR", jsonTopic.getCodeQR());
-                in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+                in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(AppInitialize.getUserLevel().name()));
                 ((Activity) context).startActivity(in);
             } else {
                 ShowAlertInformation.showNetworkDialog(context);
             }
         });
         iv_product_list.setVisibility(View.GONE);
-        switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+        switch (AppInitialize.getUserProfile().getBusinessType()) {
             case DO:
             case HS:
                 iv_appointment.setVisibility(View.VISIBLE);
@@ -132,7 +134,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         final RadioGroup rg_token_type = view.findViewById(R.id.rg_token_type);
         final RadioButton rb_mobile = view.findViewById(R.id.rb_mobile);
         builder.setView(view);
-        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        String c_codeValue = AppInitialize.getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         ccp = view.findViewById(R.id.ccp);
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
@@ -190,9 +192,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode() + edt_mobile_unregistered.getText().toString());
                         jsonBusinessCustomer.setRegisteredUser(false);
                         manageQueueApiCalls.dispenseTokenWithClientInfo(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                                 jsonBusinessCustomer);
                     }
                 });
@@ -242,9 +244,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         businessCustomerApiCalls = new BusinessCustomerApiCalls();
                         businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
                         businessCustomerApiCalls.findCustomer(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                                 new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(businessCustomerId));
                         btn_create_token.setClickable(false);
                         //  mAlertDialog.dismiss();
@@ -289,7 +291,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
             btn_create_order.setOnClickListener(v -> {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(getActivity()).isOnline()) {
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                         return;
                     }
@@ -313,9 +315,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                             .setRegisteredUser(true);
 
                     manageQueueApiCalls.dispenseTokenWithClientInfo(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
+                            AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
                             jsonBusinessCustomer);
 
                 } else {
@@ -338,7 +340,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     protected void showAllPeopleInQHistory() {
         Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
         in.putExtra("codeQR", jsonTopic.getCodeQR());
-        in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+        in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(AppInitialize.getUserLevel().name()));
         ((Activity) context).startActivity(in);
     }
 

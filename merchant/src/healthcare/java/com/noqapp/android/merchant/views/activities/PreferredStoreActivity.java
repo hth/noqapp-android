@@ -7,6 +7,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
@@ -53,7 +54,7 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         preferredStoreActivity = this;
         try {
-            preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+            preferenceObjects = new Gson().fromJson(AppInitialize.getSuggestionsPrefs(), PreferenceObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
             preferenceObjects = new PreferenceObjects();
@@ -74,7 +75,7 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
         replaceFragmentWithoutBackStack(R.id.frame_list, preferredStoreCategoryList);
 
         if (null != LaunchActivity.merchantListFragment && null != LaunchActivity.merchantListFragment.getTopics() && LaunchActivity.merchantListFragment.getTopics().size() > 0) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(this).isOnline()) {
                 showProgress();
                 new PreferredBusinessApiCalls(this)
                         .getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
@@ -130,7 +131,7 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(preferenceObjects);
+        AppInitialize.setSuggestionsPrefs(preferenceObjects);
     }
 
 
@@ -145,7 +146,7 @@ public class PreferredStoreActivity extends BaseActivity implements View.OnClick
         super.onStop();
         M_MerchantProfileApiCalls m_merchantProfileApiCalls = new M_MerchantProfileApiCalls(this);
         m_merchantProfileApiCalls.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
-                new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestionsPrefs()));
+                new JsonProfessionalProfilePersonal().setDataDictionary(AppInitialize.getSuggestionsPrefs()));
     }
 
     @Override

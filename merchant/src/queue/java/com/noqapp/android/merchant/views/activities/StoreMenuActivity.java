@@ -112,7 +112,7 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         try {
             Intent in = new Intent(this, OrderDetailActivity.class);
             in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-            if (PaymentPermissionEnum.A == jsonTopic.getJsonPaymentPermission().getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+            if (PaymentPermissionEnum.A == jsonTopic.getJsonPaymentPermission().getPaymentPermissions().get(AppInitialize.getUserLevel().name())) {
                 in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, false);
             } else {
                 in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);

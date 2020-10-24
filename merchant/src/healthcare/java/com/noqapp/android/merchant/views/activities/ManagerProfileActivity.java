@@ -14,9 +14,9 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
     @Override
     protected void setupViewPager(ViewPager viewPager) {
         super.setupViewPager(viewPager);
-        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+        if (AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER) {
             // Additional profile will be only visible to store manager
-            switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+            switch (AppInitialize.getUserProfile().getBusinessType()) {
                 case DO:
                     userAdditionalInfoFragment = new UserAdditionalInfoFragment();
                     adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
@@ -35,12 +35,12 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
     public void merchantResponse(JsonMerchant jsonMerchant) {
         super.merchantResponse(jsonMerchant);
         if (null != jsonMerchant) {
-            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            if (AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER) {
                 // Additional profile will be only visible to store manager
                 switch (jsonMerchant.getJsonProfile().getBusinessType()) {
                     case DO:
                         if(null != jsonMerchant.getJsonProfessionalProfile()) {
-                            LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
+                            AppInitialize.setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
                             userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
                             merchantReviewQListFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
                         }

@@ -16,11 +16,13 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
@@ -69,10 +71,9 @@ public class MedicalHistoryFilteredFragment extends BaseFragment implements Medi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            medicalHistoryApiCalls.historicalFiltered(BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(), bizCategoryId,
+        if (new NetworkUtil(getActivity()).isOnline()) {
+            medicalHistoryApiCalls.historicalFiltered(AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(), AppInitialize.getAuth(), bizCategoryId,
                     new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
 
         } else {
@@ -146,8 +147,7 @@ public class MedicalHistoryFilteredFragment extends BaseFragment implements Medi
 
 
     public void updateList() {
-        medicalHistoryApiCalls.historical(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
+        medicalHistoryApiCalls.historical(AppInitialize.getDeviceID(), AppInitialize.getEmail(),
+                AppInitialize.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
     }
 }

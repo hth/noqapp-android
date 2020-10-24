@@ -21,10 +21,12 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BooleanReplacementEnum;
 import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.HospitalVisitFor;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.HospitalVisitScheduleAdapter;
@@ -99,7 +101,7 @@ public class HospitalVisitScheduleFragment
             final AlertDialog mAlertDialog = builder.create();
             mAlertDialog.setCanceledOnTouchOutside(false);
             btn_update.setOnClickListener(v -> {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(getActivity()).isOnline()) {
                     showProgress();
                     HospitalVisitFor hospitalVisitFor = new HospitalVisitFor();
                     hospitalVisitFor.setHospitalVisitScheduleId(jsonHospitalVisitSchedule.getHospitalVisitScheduleId());
@@ -108,9 +110,9 @@ public class HospitalVisitScheduleFragment
                     hospitalVisitFor.setQid(getArguments().getString("qUserId"));
                     MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
                     medicalHistoryApiCalls.modifyVisitingFor(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
+                            AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
                             hospitalVisitFor);
                     mAlertDialog.dismiss();
                 } else {

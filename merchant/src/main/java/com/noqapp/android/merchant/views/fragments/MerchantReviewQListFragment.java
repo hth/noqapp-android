@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonReviewBucket;
 import com.noqapp.android.common.beans.JsonReviewList;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -47,7 +48,7 @@ public class MerchantReviewQListFragment extends BaseFragment implements QueueRe
     }
 
     public void updateUI(JsonProfessionalProfilePersonal temp) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             showProgress();
             setProgressMessage("Getting reviews...");
             MerchantProfileApiCalls merchantProfileApiCalls = new MerchantProfileApiCalls();

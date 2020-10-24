@@ -33,6 +33,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
@@ -41,6 +42,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
@@ -88,7 +90,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         rcv_order_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_order_list.setItemAnimator(new DefaultItemAnimator());
         rcv_order_list.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        storeMenuOrderAdapter = new StoreMenuOrderAdapter(childData, storeMenuActivity, this, LaunchActivity.getCurrencySymbol());
+        storeMenuOrderAdapter = new StoreMenuOrderAdapter(childData, storeMenuActivity, this, AppInitialize.getCurrencySymbol());
         rcv_order_list.setAdapter(storeMenuOrderAdapter);
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
@@ -157,7 +159,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         });
         cid = "";
         ccp = view.findViewById(R.id.ccp);
-        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        String c_codeValue = AppInitialize.getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
         rb_customer_id.setVisibility(View.GONE);
@@ -198,9 +200,9 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                 setProgressMessage("Searching user...");
                 setProgressCancel(false);
                 businessCustomerApiCalls.findCustomer(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
                         new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
                 btn_create_token.setClickable(false);
                 // mAlertDialog.dismiss();
@@ -241,7 +243,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
             btn_create_order.setOnClickListener(v -> {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(getActivity()).isOnline()) {
                     setProgressMessage("Placing order....");
                     showProgress();
                     setProgressCancel(false);

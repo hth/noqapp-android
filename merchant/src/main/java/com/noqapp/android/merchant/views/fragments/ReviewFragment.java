@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.presenter.AllReviewPresenter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ReviewApiUnAuthenticCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -73,7 +74,7 @@ public class ReviewFragment extends BaseFragment implements AllReviewPresenter {
             tv_address.setText(storeAddress);
             jsonReviews = new ArrayList<>();
             String codeQR = jsonTopic.getCodeQR();
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 ReviewApiUnAuthenticCalls reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCalls();
                 reviewApiUnAuthenticCall.setAllReviewPresenter(this);
                 reviewApiUnAuthenticCall.review(UserUtils.getDeviceId(), codeQR);

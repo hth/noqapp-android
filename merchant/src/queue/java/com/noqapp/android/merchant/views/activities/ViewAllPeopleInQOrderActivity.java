@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -39,7 +40,7 @@ public class ViewAllPeopleInQOrderActivity extends BaseActivity implements Purch
         rl_empty = findViewById(R.id.rl_empty);
         tv_toolbar_title.setText(getString(R.string.screen_order_q_history));
         setProgressMessage("Fetching data...");
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
             purchaseOrderApiCalls.setPurchaseOrderPresenter(this);

@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
@@ -37,6 +38,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
@@ -98,7 +100,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setTopicPresenter(this);
-        String strOutput = LaunchActivity.getLaunchActivity().getCounterName();
+        String strOutput = AppInitialize.getCounterName();
         Type type = new TypeToken<HashMap<String, String>>() {
         }.getType();
         Gson gson = new Gson();
@@ -196,19 +198,19 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         if (null != bundle) {
             // TODO: Update design to store queue list on client locally instead of making API call on back
             manageQueueApiCalls.getQueues(
-                    BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth());
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth());
             subscribeTopics();
             initListView();
         } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 if (null != LaunchActivity.getLaunchActivity()) {
                     showProgress();
                     manageQueueApiCalls.getQueues(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth());
+                            AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth());
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
@@ -312,7 +314,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
 
             }
         });
-        LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
+        AppInitialize.setLastUpdateTime(System.currentTimeMillis());
         updateSnackbarTxt();
         snackbar.show();
         if (LaunchActivity.isTablet) {
@@ -390,7 +392,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
                         if (null != merchantDetailFragment) {
                             merchantDetailFragment.updateListData(topics);
                         }
-                        LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
+                        AppInitialize.setLastUpdateTime(System.currentTimeMillis());
                         updateSnackbarTxt();
                         break;
                     }
@@ -457,12 +459,12 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
     @Override
     public void onRefresh() {
         //Refresh the ListView after pull
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             swipeRefreshLayout.setRefreshing(true);
             manageQueueApiCalls.getQueues(
-                    BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth());
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth());
         } else {
             new CustomToast().showToast(getActivity(), getString(R.string.networkerror));
             swipeRefreshLayout.setRefreshing(false);
@@ -471,12 +473,12 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
 
     private void updateSnackbarTxt() {
         if (isFragmentVisible)
-            snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
+            snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(AppInitialize.getLastUpdateTime()));
     }
 
     public void saveCounterNames(String codeQR, String name) {
         mHashmap.put(codeQR, name);
-        LaunchActivity.getLaunchActivity().setCounterName(mHashmap);
+        AppInitialize.setCounterName(mHashmap);
     }
 
     @Override

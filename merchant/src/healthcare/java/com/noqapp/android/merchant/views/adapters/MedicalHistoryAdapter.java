@@ -35,6 +35,7 @@ import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.SliderActivity;
@@ -427,9 +428,8 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                 labFile.setObservation(edt_observation.getText().toString());
                 labFile.setLabCategory(labCategoryEnum);
                 MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(updateObservationPresenter);
-                medicalHistoryApiCalls.updateObservation(BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(), labFile);
+                medicalHistoryApiCalls.updateObservation(AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(), AppInitialize.getAuth(), labFile);
                 btn_update.setClickable(false);
                 mAlertDialog.dismiss();
             }

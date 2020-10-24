@@ -22,6 +22,7 @@ import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
@@ -45,7 +46,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
         this.menuItemUpdate = menuItemUpdate;
-        isRestaurant = LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS;
+        isRestaurant = AppInitialize.getUserProfile().getBusinessType() == BusinessTypeEnum.RS;
         orders.clear();
     }
 
@@ -97,7 +98,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
-        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        String currencySymbol = AppInitialize.getCurrencySymbol();
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(
                 currencySymbol

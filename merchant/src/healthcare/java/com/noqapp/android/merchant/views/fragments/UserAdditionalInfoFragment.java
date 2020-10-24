@@ -22,6 +22,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
 
@@ -239,7 +240,7 @@ public class UserAdditionalInfoFragment extends BaseFragment implements Merchant
         new CustomToast().showToast(getActivity(), "Professional profile updated");
         if (null != jsonProfessionalProfilePersonal) {
             Log.v("JsonProfessionalProfile", jsonProfessionalProfilePersonal.toString());
-            LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonProfessionalProfilePersonal);
+            AppInitialize.setUserProfessionalProfile(jsonProfessionalProfilePersonal);
             updateUI(jsonProfessionalProfilePersonal);
         }
         dismissProgress();

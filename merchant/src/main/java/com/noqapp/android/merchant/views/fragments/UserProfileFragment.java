@@ -17,6 +17,7 @@ import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.CustomCalendar;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
@@ -135,7 +136,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         if (validate()) {
             // btn_update.setBackgroundResource(R.drawable.button_drawable_red);
             // btn_update.setTextColor(Color.WHITE);
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 setProgressMessage("Updating profile info...");
                 showProgress();
                 //   String phoneNo = edt_phoneNo.getText().toString();

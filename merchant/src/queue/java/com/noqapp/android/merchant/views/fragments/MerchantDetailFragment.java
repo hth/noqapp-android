@@ -37,6 +37,7 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -52,6 +53,7 @@ import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.AppointmentActivity;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.HCSMenuActivity;
@@ -93,7 +95,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         iv_appointment.setVisibility(View.GONE);
-        switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+        switch (AppInitialize.getUserProfile().getBusinessType()) {
             case RS:
             case GS:
             case CF:
@@ -104,7 +106,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
 
         iv_product_list.setOnClickListener(v -> {
-            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            if (AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER) {
                 Intent intent = new Intent(getActivity(), ProductListActivity.class);
                 intent.putExtra("codeQR", jsonTopic.getCodeQR());
                 ((Activity) context).startActivity(intent);
@@ -150,7 +152,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     protected void showAllPeopleInQHistory() {
         Intent in = new Intent(getActivity(), ViewAllPeopleInQOrderActivity.class);
         in.putExtra("codeQR", jsonTopic.getCodeQR());
-        in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+        in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(AppInitialize.getUserLevel().name()));
         ((Activity) context).startActivity(in);
     }
 
@@ -171,7 +173,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         if (tv_counter_name.getText().toString().trim().equals("")) {
             counterNameEmpty();
         } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 showProgress();
 
                 JsonPurchaseOrder jsonPurchaseOrder = purchaseOrders.get(position);
@@ -266,7 +268,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         if (tv_counter_name.getText().toString().trim().equals("")) {
             counterNameEmpty();
         } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 showProgress();
                 setProgressMessage("Completing the order...");
                 OrderServed orderServed = new OrderServed();
@@ -288,7 +290,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     @Override
     public void orderCancelClick(int position) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             showProgress();
             setProgressMessage("Canceling the order...");
             OrderServed orderServed = new OrderServed();
@@ -366,9 +368,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             btn_skip.setVisibility(View.GONE);
             tv_skip.setVisibility(View.GONE);
 
-            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
-                || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
-                || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+            if (AppInitialize.getUserLevel() == UserLevelEnum.M_ADMIN
+                || AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER
+                || AppInitialize.getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
                 // TODO(hth) Implement further settings for merchant topic
             }
 
@@ -431,7 +433,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 if (tv_counter_name.getText().toString().trim().equals("")) {
                     counterNameEmpty();
                 } else {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (new NetworkUtil(getActivity()).isOnline()) {
                         showProgress();
                         OrderServed orderServed = new OrderServed();
                         orderServed.setCodeQR(jsonTopic.getCodeQR());
@@ -463,7 +465,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                                 @Override
                                 public void btnPositiveClick() {
-                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                    if (new NetworkUtil(getActivity()).isOnline()) {
                                         showProgress();
                                         OrderServed orderServed = new OrderServed();
                                         orderServed.setCodeQR(jsonTopic.getCodeQR());
@@ -484,7 +486,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                             });
                             showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
                         } else {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            if (new NetworkUtil(getActivity()).isOnline()) {
                                 showProgress();
                                 OrderServed orderServed = new OrderServed();
                                 orderServed.setCodeQR(jsonTopic.getCodeQR());
@@ -501,7 +503,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 }
             });
 
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 if (isNewCall) { // show progressbar only first time
                     showProgress();
                 }
@@ -600,7 +602,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         final RadioGroup rg_token_type = view.findViewById(R.id.rg_token_type);
         final RadioButton rb_mobile = view.findViewById(R.id.rb_mobile);
         builder.setView(view);
-        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        String c_codeValue = AppInitialize.getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         ccp = view.findViewById(R.id.ccp);
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
@@ -659,9 +661,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode() + edt_mobile_unregistered.getText().toString());
                         jsonBusinessCustomer.setRegisteredUser(false);
                         manageQueueApiCalls.dispenseTokenWithClientInfo(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                             jsonBusinessCustomer);
                     }
                 });
@@ -711,9 +713,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         businessCustomerApiCalls = new BusinessCustomerApiCalls();
                         businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
                         businessCustomerApiCalls.findCustomer(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                             new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
                         btn_create_token.setClickable(false);
                         //  mAlertDialog.dismiss();
@@ -750,7 +752,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
             btn_create_order.setOnClickListener(v -> {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(getActivity()).isOnline()) {
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                         return;
                     }
@@ -773,9 +775,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         .setBusinessCustomerId(cid)
                         .setRegisteredUser(true);
                     manageQueueApiCalls.dispenseTokenWithClientInfo(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
+                            AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
                         jsonBusinessCustomer);
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());

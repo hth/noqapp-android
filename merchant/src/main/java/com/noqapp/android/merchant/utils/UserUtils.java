@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.utils;
 
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,14 +16,14 @@ public class UserUtils {
     }
 
     public static String getEmail() {
-        return LaunchActivity.getLaunchActivity().getEmail();
+        return AppInitialize.getEmail();
     }
 
     public static String getAuth() {
-        return LaunchActivity.getLaunchActivity().getAuth();
+        return AppInitialize.getAuth();
     }
 
     public static String getDeviceId() {
-        return BaseLaunchActivity.getDeviceID();
+        return AppInitialize.getDeviceID();
     }
 }

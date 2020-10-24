@@ -20,6 +20,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.CustomCalendar;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.RegisterApiCalls;
@@ -95,7 +96,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (validate()) {
 //            btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
 //            btnRegistration.setTextColor(Color.WHITE);
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(this).isOnline()) {
                 setProgressMessage("Registration in progress...");
                 setProgressCancel(false);
                 showProgress();
