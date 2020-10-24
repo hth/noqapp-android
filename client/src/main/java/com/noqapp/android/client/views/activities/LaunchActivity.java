@@ -1,6 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,12 +31,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.common.cache.Cache;
@@ -104,7 +110,7 @@ import io.nlopez.smartlocation.location.config.LocationParams;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class LaunchActivity
-    extends NoQueueBaseActivity
+    extends AppCompatActivity
     implements OnClickListener, AppBlacklistPresenter,
     SharedPreferences.OnSharedPreferenceChangeListener,
     DeviceRegisterPresenter {
@@ -946,7 +952,7 @@ public class LaunchActivity
                         AppInitialize.clearPreferences();
                         NotificationDB.clearNotificationTable();
                         ReviewDB.clearReviewTable();
-                        AppUtils.reCreateDeviceID(launchActivity, launchActivity);
+                        reCreateDeviceID(launchActivity, launchActivity);
 
                     }
 
@@ -1324,6 +1330,37 @@ public class LaunchActivity
             msgIds.add(msgId);
             cacheMsgIds.put(MSG_IDS, msgIds);
             textToSpeechHelper.makeAnnouncement(jsonTextToSpeeches);
+        }
+    }
+
+    public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(container, fragment).commit();
+    }
+
+    public void reCreateDeviceID(Activity context, DeviceRegisterPresenter deviceRegisterPresenter) {
+        if (new NetworkUtil(context).isOnline()) {
+            AppInitialize.fetchDeviceId(deviceRegisterPresenter);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+            tvTitle.setText(context.getString(R.string.networkerror));
+            tv_msg.setText(context.getString(R.string.offline));
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                context.finish();
+            });
+            mAlertDialog.show();
+            Log.w(TAG, "No network found");
         }
     }
 }
