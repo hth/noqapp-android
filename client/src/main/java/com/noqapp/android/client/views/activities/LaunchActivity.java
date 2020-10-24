@@ -417,6 +417,7 @@ public class LaunchActivity
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     loginIntent.putExtra("fromLogin", true);
                     startActivity(loginIntent);
+                    finish();
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 break;
