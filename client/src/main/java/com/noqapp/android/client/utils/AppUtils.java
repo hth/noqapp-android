@@ -145,12 +145,7 @@ public class AppUtils extends CommonHelper {
 
         jsonQueues.removeAll(afterNowClosedQueues);
         jsonQueues.removeAll(closedTodayQueues);
-        Comparator<JsonQueue> openNow = new Comparator<JsonQueue>() {
-            @Override
-            public int compare(JsonQueue o1, JsonQueue o2) {
-                return systemHourMinutes - o1.getStartHour() < systemHourMinutes - o2.getStartHour() ? 1 : -1;
-            }
-        };
+        Comparator<JsonQueue> openNow = (o1, o2) -> systemHourMinutes - o1.getStartHour() < systemHourMinutes - o2.getStartHour() ? 1 : -1;
 
         Collections.sort(jsonQueues, openNow);
         jsonQueues.addAll(afterNowClosedQueues);
