@@ -30,6 +30,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.StoreSettingApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
@@ -163,7 +164,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         cv_appointment = findViewById(R.id.cv_appointment);
         codeQR = getIntent().getStringExtra("codeQR");
 
-        BusinessTypeEnum businessType = BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType();
+        BusinessTypeEnum businessType = AppInitialize.getUserProfile().getBusinessType();
         if (BusinessTypeEnum.DO == businessType) {
             ll_follow_up.setVisibility(View.VISIBLE);
             cv_payment.setVisibility(View.VISIBLE);
@@ -195,7 +196,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
 
         actionbarBack.setOnClickListener(v -> onBackPressed());
         iv_delete_scheduling.setOnClickListener(v -> {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(SettingActivity.this).isOnline()) {
                 ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
@@ -378,7 +379,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             }
         });
 
-        if ((LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER)) {
+        if ((AppInitialize.getUserLevel() != UserLevelEnum.S_MANAGER)) {
             view_prevent_click.setVisibility(View.VISIBLE);
             tv_no_permission.setVisibility(View.VISIBLE);
             btn_update_permanent_setting.setVisibility(View.GONE);
@@ -472,7 +473,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 edt_appointment_accepting_week,
                 edt_appointment_duration,
                 edt_token_no);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             storeSettingApiCalls.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
@@ -795,7 +796,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
             public void btnPositiveClick() {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(SettingActivity.this).isOnline()) {
                     setProgressMessage("Updating payment settings...");
                     showProgress();
                     StoreSetting storeSetting = SerializationUtils.clone(SettingActivity.this.storeSettingTemp);
@@ -850,7 +851,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
             public void btnPositiveClick() {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(SettingActivity.this).isOnline()) {
                     setProgressMessage("Updating appointment settings...");
                     showProgress();
                     StoreSetting storeSetting = SerializationUtils.clone(SettingActivity.this.storeSettingTemp);
@@ -958,7 +959,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     }
 
     private void callUpdate(String alertMsg) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             updateQueueSettings(alertMsg);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
@@ -991,8 +992,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     }
 
     private boolean isSpecificSettingEditAllowed() {
-        return (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) ||
-                (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR);
+        return (AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER) ||
+                (AppInitialize.getUserLevel() == UserLevelEnum.Q_SUPERVISOR);
     }
 
     private boolean validateLunchTime() {

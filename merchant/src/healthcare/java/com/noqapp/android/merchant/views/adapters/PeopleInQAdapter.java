@@ -33,6 +33,7 @@ import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -86,9 +87,9 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                             changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
 
                             manageQueueApiCalls.changeUserInQueue(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(), changeUserInQueue);
+                                    AppInitialize.getDeviceID(),
+                                    AppInitialize.getEmail(),
+                                    AppInitialize.getAuth(), changeUserInQueue);
                             mAlertDialog.dismiss();
                         } else {
                             mAlertDialog.dismiss();
@@ -150,21 +151,21 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                     } else {
                         customProgressBar.setProgressMessage("Updating Customer Id...");
                         customProgressBar.showProgress();
-                        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
+                        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), AppInitialize.getUserProfile().getCountryShortName());
                         JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
                         jsonBusinessCustomer.setCodeQR(codeQR);
                         jsonBusinessCustomer.setCustomerPhone(phoneNoWithCode);
                         jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
                         if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
                             businessCustomerApiCalls.addId(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
+                                    AppInitialize.getDeviceID(),
+                                    AppInitialize.getEmail(),
+                                    AppInitialize.getAuth(), jsonBusinessCustomer);
                         } else {
                             businessCustomerApiCalls.editId(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
+                                    AppInitialize.getDeviceID(),
+                                    AppInitialize.getEmail(),
+                                    AppInitialize.getAuth(), jsonBusinessCustomer);
                         }
                         btn_update.setClickable(false);
                         mAlertDialog.dismiss();
@@ -188,7 +189,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
     @Override
     public void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
-        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+        if (AppInitialize.getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
             if (LaunchActivity.isTablet) {
                 Intent intent = new Intent(context, PhysicalDialogActivity.class);
                 intent.putExtra(IBConstant.KEY_CODE_QR, codeQR);
@@ -205,14 +206,14 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         } else {
             if (QueueUserStateEnum.Q == jsonQueuedPerson.getQueueUserState() || QueueUserStateEnum.S == jsonQueuedPerson.getQueueUserState()) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                    if (null == LaunchActivity.getLaunchActivity().getUserProfessionalProfile()) {
+                    if (null == AppInitialize.getUserProfessionalProfile()) {
                         // temporary crash fix
-                        LaunchActivity.getLaunchActivity().setUserProfessionalProfile(new JsonProfessionalProfilePersonal().setFormVersion(FormVersionEnum.MFD1));
+                        AppInitialize.setUserProfessionalProfile(new JsonProfessionalProfilePersonal().setFormVersion(FormVersionEnum.MFD1));
                     }
 
                     PreferenceObjects preferenceObjects = null;
                     try {
-                        preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+                        preferenceObjects = new Gson().fromJson(AppInitialize.getSuggestionsPrefs(), PreferenceObjects.class);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

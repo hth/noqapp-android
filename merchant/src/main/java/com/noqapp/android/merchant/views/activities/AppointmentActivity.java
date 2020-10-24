@@ -23,6 +23,7 @@ import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -254,7 +255,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 
         calendarView.setOnForwardPageChangeListener(() -> fetchEvents(calendarView.getCurrentPageDate()));
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             fetchEvents(Calendar.getInstance());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
@@ -322,9 +323,9 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForMonth(
-                BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(),
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
                 AppUtils.dateFormatAsYYYY_MM_DD(calendar), codeRQ);
     }
 

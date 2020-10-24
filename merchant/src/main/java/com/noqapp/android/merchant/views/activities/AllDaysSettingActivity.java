@@ -21,6 +21,7 @@ import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.StoreSettingApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.StoreHours;
@@ -140,7 +141,7 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
         actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText(getString(R.string.screen_settings_all_days));
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             storeSettingApiCalls.storeHours(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
@@ -369,7 +370,7 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
     }
 
     private void callUpdate(String alertMsg) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             updateQueueSettings(alertMsg);
         } else {
             ShowAlertInformation.showNetworkDialog(AllDaysSettingActivity.this);

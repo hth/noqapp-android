@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.CheckAssetPresenter;
 import com.noqapp.android.merchant.model.CheckAssetApiCalls;
@@ -58,7 +59,7 @@ public class InventoryInRoomFragment extends BaseFragment implements
             if (null != inventoryAdapter)
                 inventoryAdapter.selectUnselectAllData(false);
         });
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
             CheckAssetApiCalls checkAssetApiCalls = new CheckAssetApiCalls();

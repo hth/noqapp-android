@@ -31,6 +31,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
@@ -69,13 +70,13 @@ public class AppointmentListAdapter extends RecyclerView.Adapter {
         holder.tv_customer_mobile.setText(
                 TextUtils.isEmpty(jsonSchedule.getJsonProfile().getPhoneRaw())
                         ? context.getString(R.string.unregister_user)
-                        : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().
+                        : PhoneFormatterUtil.formatNumber(AppInitialize.
                                 getUserProfile().getCountryShortName(),
                         jsonSchedule.getJsonProfile().getPhoneRaw()));
         holder.tv_customer_mobile.setOnClickListener(v -> {
             if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
                 AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.
-                        formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(),
+                        formatNumber(AppInitialize.getUserProfile().getCountryShortName(),
                                 jsonSchedule.getJsonProfile().getPhoneRaw()));
         });
 

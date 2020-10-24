@@ -17,6 +17,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
@@ -257,20 +258,20 @@ public class PhysicalActivity extends BaseActivity implements
                 jsonMedicalRecord.setFollowUpInDays(followup);
             }
             medicalHistoryApiCalls.update(
-                    BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
                     jsonMedicalRecord);
         });
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
             medicalHistoryApiCalls.setJsonMedicalRecordPresenter(this);
-            medicalHistoryApiCalls.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
+            medicalHistoryApiCalls.retrieveMedicalRecord(AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(), jsonMedicalRecord);
 
         } else {
             ShowAlertInformation.showNetworkDialog(PhysicalActivity.this);
@@ -291,9 +292,8 @@ public class PhysicalActivity extends BaseActivity implements
                     receipt.setCodeQR(codeQR);
                     receipt.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                     receipt.setTransactionId(jsonQueuedPerson.getTransactionId());
-                    receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(), receipt);
+                    receiptInfoApiCalls.detail(AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(), AppInitialize.getAuth(), receipt);
                 }
             } else {
                 permissionHelper.requestStoragePermission();

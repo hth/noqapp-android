@@ -36,6 +36,7 @@ import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
 import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
 import com.noqapp.android.merchant.utils.MyAxisValueFormatter;
 import com.noqapp.android.merchant.utils.MyValueFormatter;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.math.BigDecimal;
@@ -248,7 +249,7 @@ public class ChartFragment extends Fragment {
             setData(entries, healthCareStat.getRepeatCustomers().getMonthOfYear());
             //set the bar data
             generateDataBar(healthCareStat.getTwelveMonths());
-            switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+            switch (AppInitialize.getUserProfile().getBusinessType()) {
                 case DO:
                     updateLineChart(healthCareStat.getTwelveMonths(), healthCareStat.getProductPrice());
                     cv_earning.setVisibility(View.VISIBLE);

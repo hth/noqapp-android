@@ -14,6 +14,7 @@ import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -63,13 +64,13 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
         qUserId = jsonQueuedPerson.getQueueUserId();
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
             medicalHistoryApiCalls.hospitalVisitSchedule(
-                    BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
                     new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
         } else {
             ShowAlertInformation.showNetworkDialog(this);

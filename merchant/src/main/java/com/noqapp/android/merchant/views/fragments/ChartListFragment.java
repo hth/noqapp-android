@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.FragmentTransaction;
 
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantStatsApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -62,7 +63,7 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
         }
 
         if (isFirstTime) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 showProgress();
                 setProgressMessage("Getting statistics...");
                 merchantStatsApiCalls.healthCare(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());

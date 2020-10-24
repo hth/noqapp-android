@@ -28,7 +28,7 @@ public class LaunchActivity extends BaseLaunchActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar(toolbar);
         launchActivity = this;
-        Log.v("device id check", getDeviceID());
+        Log.v("device id check", AppInitialize.getDeviceID());
         networkUtil = new NetworkUtil(this);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
@@ -50,8 +50,8 @@ public class LaunchActivity extends BaseLaunchActivity {
         initDrawer();
 
         /* Call to check if the current version of app blacklist or old. */
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            deviceApiCalls.isSupportedAppVersion(UserUtils.getDeviceId());
+        if (new NetworkUtil(this).isOnline()) {
+            deviceApiCalls.isSupportedAppVersion();
         }
     }
 

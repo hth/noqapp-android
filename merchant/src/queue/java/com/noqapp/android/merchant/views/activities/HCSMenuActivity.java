@@ -49,6 +49,7 @@ import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BaseMasterLabApiCalls;
@@ -161,7 +162,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         btn_place_order = findViewById(R.id.btn_place_order);
         btn_place_order.setOnClickListener(v -> showCreateTokenDialogWithMobile(HCSMenuActivity.this, codeQR));
 
-        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        currencySymbol = AppInitialize.getCurrencySymbol();
         jsonTopic = (JsonTopic) getIntent().getSerializableExtra("jsonTopic");
 
         codeQR = jsonTopic.getCodeQR();
@@ -172,11 +173,11 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
             actv_search.setText("");
             AppUtils.hideKeyBoard(HCSMenuActivity.this);
         });
-        if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getSuggestionsProductPrefs())) {
+        if (TextUtils.isEmpty(AppInitialize.getSuggestionsProductPrefs())) {
             callFileApi();
         } else {
             try {
-                preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsProductPrefs(), PreferenceObjects.class);
+                preferenceObjects = new Gson().fromJson(AppInitialize.getSuggestionsProductPrefs(), PreferenceObjects.class);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -380,7 +381,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         preferenceObjects.setPathologyList(preferenceObjects.clearListSelection(masterDataPath));
         preferenceObjects.setSpecList(preferenceObjects.clearListSelection(masterDataSpec));
         preferenceObjects.setLastUpdateDate(CommonHelper.SDF_YYYY_MM_DD.format(new Date()));
-        LaunchActivity.getLaunchActivity().setSuggestionsProductsPrefs(preferenceObjects);
+        AppInitialize.setSuggestionsProductsPrefs(preferenceObjects);
     }
 
     private void bindAdapterData() {
@@ -605,7 +606,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
             }
         });
         ccp = view.findViewById(R.id.ccp);
-        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        String c_codeValue = AppInitialize.getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
         btn_create_token = view.findViewById(R.id.btn_create_token);
@@ -648,9 +649,9 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                     setProgressMessage("Searching patient...");
                     setProgressCancel(false);
                     businessCustomerApiCalls.findCustomer(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
+                            AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
                             new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
                     btn_create_token.setClickable(false);
                     // mAlertDialog.dismiss();
@@ -659,12 +660,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
             }
         });
 
-        actionbarBack.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 
@@ -703,7 +699,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
             btn_create_order.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (new NetworkUtil(HCSMenuActivity.this).isOnline()) {
                         setProgressMessage("Placing order....");
                         showProgress();
                         setProgressCancel(false);

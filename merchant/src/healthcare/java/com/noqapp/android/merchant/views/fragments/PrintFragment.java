@@ -33,6 +33,7 @@ import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.PermissionHelper;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
@@ -364,9 +365,9 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
                 jsonMedicalRecord.setFollowUpInDays(null);
             }
             medicalHistoryApiCalls.update(
-                    BaseLaunchActivity.getDeviceID(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
                     jsonMedicalRecord);
         });
         return v;

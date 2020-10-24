@@ -20,29 +20,8 @@ public interface DeviceApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/device/v1/register.json")
-    Call<DeviceRegistered> register(
-            @Header("X-R-DT")
-            String dt,
-
-            @Header ("X-R-AF")
-            String appFlavor,
-
-            @Body
-            DeviceToken deviceToken
-    );
-
-    /**
-     * Errors
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     */
-    @Deprecated
     @POST("open/device/register.json")
     Call<DeviceRegistered> register(
-            @Header("X-R-DID")
-            String did,
-
             @Header("X-R-DT")
             String dt,
 
@@ -60,9 +39,6 @@ public interface DeviceApiUrls {
      */
     @POST("open/device/version.json")
     Call<JsonLatestAppVersion> isSupportedAppVersion(
-            @Header("X-R-DID")
-            String did,
-
             @Header("X-R-DT")
             String dt,
 

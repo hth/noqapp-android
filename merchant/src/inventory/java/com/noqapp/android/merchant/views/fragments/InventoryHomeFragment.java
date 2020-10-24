@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.BizNamePresenter;
 import com.noqapp.android.merchant.interfaces.CheckAssetPresenter;
@@ -22,6 +23,7 @@ import com.noqapp.android.merchant.presenter.beans.body.merchant.CheckAsset;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.FloorAdapter;
 import com.noqapp.android.merchant.views.utils.PdfInventoryGenerator;
@@ -48,7 +50,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
         View view = inflater.inflate(R.layout.frag_inventory_home, container, false);
         btn_print = view.findViewById(R.id.btn_print);
         PermissionHelper permissionHelper = new PermissionHelper(getActivity());
-        prefList = LaunchActivity.getLaunchActivity().getInventoryPrefs();
+        prefList = AppInitialize.getInventoryPrefs();
         Log.e("saved info",prefList.toString());
         btn_print.setOnClickListener(v -> {
             if(tempList.size()>0) {
@@ -69,7 +71,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
         checkAssetApiCalls = new CheckAssetApiCalls();
         checkAssetApiCalls.setBizNamePresenter(this);
         checkAssetApiCalls.setCheckAssetPresenter(this);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("Fetching info...");
             showProgress();
             checkAssetApiCalls.bizName(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new CheckAsset());
@@ -105,7 +107,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
         businessName = checkAsset.getBusinessName();
         businessAddress = checkAsset.getAreaAndTown();
         dismissProgress();
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
             checkAssetApiCalls.floors(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), checkAsset);
@@ -127,6 +129,6 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LaunchActivity.getLaunchActivity().setInventoryPrefs(tempList);
+        AppInitialize.setInventoryPrefs(tempList);
     }
 }

@@ -19,6 +19,7 @@ import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.AppointmentStatusEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
@@ -111,7 +112,7 @@ public class AppointmentActivityNew extends BaseActivity implements
                 }
             }
         });
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             fetchData();
         } else {
             ShowAlertInformation.showNetworkDialog(this);
@@ -122,9 +123,9 @@ public class AppointmentActivityNew extends BaseActivity implements
         showProgress();
         scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
-        scheduleApiCalls.scheduleForDay(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(),
+        scheduleApiCalls.scheduleForDay(AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
                 getIntent().getStringExtra("selectedDate"),
                 getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
     }
@@ -132,7 +133,7 @@ public class AppointmentActivityNew extends BaseActivity implements
     @Override
     public void appointmentAccept(JsonSchedule jsonSchedule, int pos) {
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             ShowCustomDialog showDialog = new ShowCustomDialog(this);
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
@@ -140,9 +141,9 @@ public class AppointmentActivityNew extends BaseActivity implements
                     setProgressMessage("Accepting appointment...");
                     showProgress();
                     jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.A);
-                    scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
+                    scheduleApiCalls.scheduleAction(AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(), jsonSchedule);
                 }
 
                 @Override
@@ -158,7 +159,7 @@ public class AppointmentActivityNew extends BaseActivity implements
 
     @Override
     public void appointmentReject(JsonSchedule jsonSchedule, int pos) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             ShowCustomDialog showDialog = new ShowCustomDialog(this);
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
@@ -166,9 +167,9 @@ public class AppointmentActivityNew extends BaseActivity implements
                     setProgressMessage("Rejecting appointment...");
                     showProgress();
                     jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.R);
-                    scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
+                    scheduleApiCalls.scheduleAction(AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(), jsonSchedule);
                 }
 
                 @Override
@@ -190,9 +191,9 @@ public class AppointmentActivityNew extends BaseActivity implements
                 .setBusinessCustomer(null)
                 .setJsonSchedule(jsonSchedule)
                 .setBookActionType(ActionTypeEnum.EDIT);
-        scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(),
+        scheduleApiCalls.bookSchedule(AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
                 bookSchedule);
     }
 

@@ -22,6 +22,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
@@ -57,17 +58,17 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter {
         recordHolder.tv_join_timing.setTextColor(Color.WHITE);
         if (null != LaunchActivity.getLaunchActivity()) {
             recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                    PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
         }
 
         if (visibility) {
             if (null != LaunchActivity.getLaunchActivity()) {
                 recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                        PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                        PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
             }
             recordHolder.tv_customer_mobile.setOnClickListener(v -> {
                 if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
             recordHolder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));

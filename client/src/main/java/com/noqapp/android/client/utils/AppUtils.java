@@ -1,7 +1,6 @@
 package com.noqapp.android.client.utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +40,6 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.GeoIP;
-import com.noqapp.android.common.utils.NetworkUtil;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +49,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -78,24 +73,6 @@ import static com.noqapp.android.common.model.types.UserLevelEnum.S_MANAGER;
 
 public class AppUtils extends CommonHelper {
     private static final String TAG = AppUtils.class.getSimpleName();
-    private static Map<String, Locale> localeMap;
-
-    public static String iso3CountryCodeToIso2CountryCode(String iso3CountryCode) {
-        if (null == localeMap) {
-            String[] countries = Locale.getISOCountries();
-            localeMap = new HashMap<>(countries.length);
-            for (String country : countries) {
-                Locale locale = new Locale("", country);
-                localeMap.put(locale.getISO3Country().toUpperCase(), locale);
-            }
-        }
-        return localeMap.get(iso3CountryCode).getCountry();
-    }
-
-    public static String iso2CountryCodeToIso3CountryCode(String iso2CountryCode) {
-        Locale locale = new Locale("", iso2CountryCode);
-        return locale.getISO3Country();
-    }
 
     public static void makeCall(Activity context, String phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
@@ -491,9 +468,9 @@ public class AppUtils extends CommonHelper {
         return dayName;
     }
 
-    public static void authenticationProcessing(Context context) {
+    public static void authenticationProcessing(Activity activity) {
         AppInitialize.clearPreferences();
-        ShowAlertInformation.showAuthenticErrorDialog(context);
+        ShowAlertInformation.showAuthenticErrorDialog(activity);
     }
 
       public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {
@@ -682,31 +659,6 @@ public class AppUtils extends CommonHelper {
             }
         }
         return true;
-    }
-
-    public static void reCreateDeviceID(Activity context) {
-        if (new NetworkUtil(context).isOnline()) {
-            AppInitialize.fetchDeviceId();
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            LayoutInflater inflater = LayoutInflater.from(context);
-            builder.setTitle(null);
-            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
-            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-            tvTitle.setText(context.getString(R.string.networkerror));
-            tv_msg.setText(context.getString(R.string.offline));
-            builder.setView(customDialogView);
-            final AlertDialog mAlertDialog = builder.create();
-            mAlertDialog.setCanceledOnTouchOutside(false);
-            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-            btn_yes.setOnClickListener(v -> {
-                mAlertDialog.dismiss();
-                context.finish();
-            });
-            mAlertDialog.show();
-            Log.w(TAG, "No network found");
-        }
     }
 
     public static void showAllDaysTiming(Context context, TextView textView, String codeQR){

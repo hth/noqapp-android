@@ -119,9 +119,8 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         showProgress();
         setProgressMessage("Fetching documents...");
         medicalHistoryApiCalls.setJsonMedicalRecordPresenter(this);
-        medicalHistoryApiCalls.existsMedicalRecord(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), codeQR, recordReferenceId);
+        medicalHistoryApiCalls.existsMedicalRecord(AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(), AppInitialize.getAuth(), codeQR, recordReferenceId);
 
     }
 
@@ -258,9 +257,8 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
                 });
                 showProgress();
                 setProgressMessage("Deleting image...");
-                medicalHistoryApiCalls.removeImage(BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
+                medicalHistoryApiCalls.removeImage(AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(), AppInitialize.getAuth(), jsonMedicalRecord);
 
             }
 

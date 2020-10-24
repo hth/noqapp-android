@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
@@ -144,7 +145,7 @@ public class MerchantDetailFragment extends BaseFragment implements QueuePersonL
                 + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
         tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
         tv_title.setText(jsonTopic.getDisplayName());
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             showProgress();
             getAllPeopleInQ(jsonTopic);
 

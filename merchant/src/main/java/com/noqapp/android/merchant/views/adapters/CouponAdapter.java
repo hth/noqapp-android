@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.content.Context;
@@ -42,7 +43,7 @@ public class CouponAdapter extends RecyclerView.Adapter {
         holder.tv_discount_description.setText(jsonCoupon.getDiscountDescription());
 
         if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
-            holder.tv_discount_amount.setText(LaunchActivity.getCurrencySymbol() + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
+            holder.tv_discount_amount.setText(AppInitialize.getCurrencySymbol() + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
         } else {
             holder.tv_discount_amount.setText(jsonCoupon.getDiscountAmount() + "% off");
         }

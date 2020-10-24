@@ -22,6 +22,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.pojos.Receipt;
 import com.noqapp.android.common.utils.HeaderFooterPageEvent;
@@ -53,7 +54,7 @@ public class ReceiptGeneratorPDF extends PdfHelper {
 
     public void createPdf(Receipt temp) {
         this.receipt = temp;
-        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        currencySymbol = AppInitialize.getCurrencySymbol();
         currencySymbol = "₹";
         String fileName = new SimpleDateFormat("'NoQueue_" + receipt.getJsonPurchaseOrder().getCustomerName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         File dest = new File(getAppPath(mContext.getResources().getString(R.string.app_name)) + fileName);

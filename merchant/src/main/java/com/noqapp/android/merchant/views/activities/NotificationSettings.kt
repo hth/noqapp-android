@@ -40,7 +40,7 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
         val rb_7: RadioButton = findViewById(R.id.rb_7)
         val rb_10: RadioButton = findViewById(R.id.rb_10)
 
-        val jsonUserPreference: JsonUserPreference? = BaseLaunchActivity.getLaunchActivity().getUserProfile().jsonUserPreference
+        val jsonUserPreference: JsonUserPreference? = AppInitialize.getUserProfile().jsonUserPreference
         if (null == jsonUserPreference) {
             sc_sms.isChecked = AppInitialize.isNotificationReceiveEnable()
             sc_sound.isChecked = AppInitialize.isNotificationSoundEnable()
@@ -49,20 +49,20 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
             sc_sound.isChecked = jsonUserPreference.firebaseNotification == CommunicationModeEnum.R
         }
         if (packageName.equals("com.noqapp.android.merchant.tv", ignoreCase = true)) {
-            sc_msg_announce.isChecked = LaunchActivity.isMsgAnnouncementEnable()
-            sc_tv_split_view.isChecked = LaunchActivity.isTvSplitViewEnable()
+            sc_msg_announce.isChecked = AppInitialize.isMsgAnnouncementEnable()
+            sc_tv_split_view.isChecked = AppInitialize.isTvSplitViewEnable()
             cv_msg_announce.visibility = View.VISIBLE
             cv_tv_split_view.visibility = View.VISIBLE
             cv_tv_refresh_time.visibility = View.VISIBLE
 
-            when(LaunchActivity.getTvRefreshTime()) {
+            when(AppInitialize.getTvRefreshTime()) {
                 3 -> {rb_3.isChecked = true}
                 5-> {rb_5.isChecked = true}
                 7 -> {rb_7.isChecked = true}
                 10 -> {rb_10.isChecked = true}
             }
             sc_msg_announce.setOnCheckedChangeListener { buttonView, isChecked ->
-                LaunchActivity.setMsgAnnouncementEnable(isChecked)
+                AppInitialize.setMsgAnnouncementEnable(isChecked)
                 if (isChecked) {
                     // The switch is enabled/checked
                     CustomToast().showToast(this@NotificationSettings, "Message Announcement Enabled")
@@ -72,7 +72,7 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
                 }
             }
             sc_tv_split_view.setOnCheckedChangeListener { buttonView, isChecked ->
-                LaunchActivity.setTvSplitViewEnable(isChecked)
+                AppInitialize.setTvSplitViewEnable(isChecked)
                 if (isChecked) {
                     // The switch is enabled/checked
                     CustomToast().showToast(this@NotificationSettings, "TV Split View Enabled")
@@ -85,10 +85,10 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
             rg_time.setOnCheckedChangeListener { group, checkedId ->
                 val rb = findViewById<View>(checkedId) as RadioButton
                 when(rb.id) {
-                    R.id.rb_3 -> {LaunchActivity.setTvRefreshTime(3)}
-                    R.id.rb_5 -> {LaunchActivity.setTvRefreshTime(5)}
-                    R.id.rb_7 -> {LaunchActivity.setTvRefreshTime(7)}
-                    R.id.rb_10 -> {LaunchActivity.setTvRefreshTime(10)}
+                    R.id.rb_3 -> {AppInitialize.setTvRefreshTime(3)}
+                    R.id.rb_5 -> {AppInitialize.setTvRefreshTime(5)}
+                    R.id.rb_7 -> {AppInitialize.setTvRefreshTime(7)}
+                    R.id.rb_10 -> {AppInitialize.setTvRefreshTime(10)}
                 }
                 CustomToast().showToast(this@NotificationSettings, "TV refresh time set to : "+rb.text)
             }
@@ -127,9 +127,9 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
 
     override fun merchantPreferencePresenterResponse(jsonUserPreference: JsonUserPreference?) {
         //dismissProgress()
-        val jsonProfile: JsonProfile = BaseLaunchActivity.getLaunchActivity().getUserProfile()
+        val jsonProfile: JsonProfile = AppInitialize.getUserProfile()
         jsonProfile.jsonUserPreference = jsonUserPreference
-        BaseLaunchActivity.getLaunchActivity().setUserProfile(jsonProfile)
+        AppInitialize.setUserProfile(jsonProfile)
         CustomToast().showToast(this@NotificationSettings, "Settings updated successfully")
     }
 }

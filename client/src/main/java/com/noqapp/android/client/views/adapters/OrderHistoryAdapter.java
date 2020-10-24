@@ -157,20 +157,20 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     @Override
     public void authenticationFailure() {
         progressDialog.dismiss();
-        AppUtils.authenticationProcessing(context);
+        AppUtils.authenticationProcessing((Activity) context);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         progressDialog.dismiss();
-        new ErrorResponseHandler().processFailureResponseCode(context, errorCode);
+        new ErrorResponseHandler().processFailureResponseCode((Activity)context, errorCode);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         progressDialog.dismiss();
         if (null != eej)
-            new ErrorResponseHandler().processError(context, eej);
+            new ErrorResponseHandler().processError((Activity)context, eej);
     }
 
     public interface OnItemClickListener {

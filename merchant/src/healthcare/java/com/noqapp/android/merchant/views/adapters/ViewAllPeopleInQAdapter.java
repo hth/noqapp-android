@@ -25,6 +25,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
@@ -72,11 +73,11 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter {
         if (visibility) {
             if (null != LaunchActivity.getLaunchActivity()) {
                 holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                        PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                        PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
             }
             holder.tv_customer_mobile.setOnClickListener(v -> {
                 if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    AppUtils.makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    AppUtils.makeCall((Activity) context, PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
             holder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));

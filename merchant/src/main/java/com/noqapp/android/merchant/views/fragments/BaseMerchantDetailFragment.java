@@ -45,6 +45,7 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
@@ -62,6 +63,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
@@ -213,7 +215,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 createToken(context, jsonTopic.getCodeQR());
             } else {
                 ShowAlertInformation.showNetworkDialog(context);
@@ -221,7 +223,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         });
         iv_queue_history = itemView.findViewById(R.id.iv_queue_history);
         iv_queue_history.setOnClickListener(view -> {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 showAllPeopleInQHistory();
             } else {
                 ShowAlertInformation.showNetworkDialog(context);
@@ -366,7 +368,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             break;
                         }
                     }
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (new NetworkUtil(getActivity()).isOnline()) {
                         // setProgressMessage("Fetching list...");
                         //showProgress();
                         manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
@@ -389,7 +391,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         dialog.setCanceledOnTouchOutside(true);
 
         final AutoCompleteTextView actv_counter = dialog.findViewById(R.id.actv_counter);
-        final ArrayList<String> names = LaunchActivity.getLaunchActivity().getCounterNames();
+        final ArrayList<String> names = AppInitialize.getCounterNames();
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, names);
         actv_counter.setAdapter(adapter1);
         actv_counter.setThreshold(1);
@@ -407,7 +409,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 mAdapterCallback.saveCounterNames(codeQR, actv_counter.getText().toString().trim());
                 if (!names.contains(actv_counter.getText().toString())) {
                     names.add(actv_counter.getText().toString());
-                    LaunchActivity.getLaunchActivity().setCounterNames(names);
+                    AppInitialize.setCounterNames(names);
                 }
                 dialog.dismiss();
             }
@@ -477,9 +479,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         btn_start.setText(context.getString(R.string.start));
         btn_start.setBackgroundResource(R.drawable.start);
 
-        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
-            || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
-            || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+        if (AppInitialize.getUserLevel() == UserLevelEnum.M_ADMIN
+            || AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER
+            || AppInitialize.getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
             // TODO(hth) Implement further settings for merchant topic
         }
 
@@ -547,7 +549,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(getActivity()).isOnline()) {
                     showProgress();
                     setProgressMessage("Calling next person in Q...");
                     Served served = new Served();
@@ -558,9 +560,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                     served.setGoTo(tv_counter_name.getText().toString());
                     setPresenter();
                     manageQueueApiCalls.served(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
+                            AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
                         served);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
@@ -577,7 +579,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
                         public void btnPositiveClick() {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            if (new NetworkUtil(getActivity()).isOnline()) {
                                 setProgressMessage("Skip current person in Q...");
                                 showProgress();
                                 Served served = new Served();
@@ -588,9 +590,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                                 served.setGoTo(tv_counter_name.getText().toString());
                                 setPresenter();
                                 manageQueueApiCalls.served(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                        AppInitialize.getDeviceID(),
+                                        AppInitialize.getEmail(),
+                                        AppInitialize.getAuth(),
                                     served);
                                 chronometer.stop();
                                 chronometer.setBase(SystemClock.elapsedRealtime());
@@ -629,7 +631,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                             @Override
                             public void btnPositiveClick() {
-                                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                if (new NetworkUtil(getActivity()).isOnline()) {
                                     setProgressMessage("Pause the Queue...");
                                     showProgress();
                                     Served served = new Served();
@@ -641,9 +643,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                                     served.setGoTo(tv_counter_name.getText().toString());
                                     setPresenter();
                                     manageQueueApiCalls.served(
-                                        BaseLaunchActivity.getDeviceID(),
-                                        LaunchActivity.getLaunchActivity().getEmail(),
-                                        LaunchActivity.getLaunchActivity().getAuth(),
+                                            AppInitialize.getDeviceID(),
+                                            AppInitialize.getEmail(),
+                                            AppInitialize.getAuth(),
                                         served);
                                 } else {
                                     ShowAlertInformation.showNetworkDialog(context);
@@ -657,7 +659,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                         });
                         showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
                     } else {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (new NetworkUtil(getActivity()).isOnline()) {
                             setProgressMessage("Starting Queue...");
                             showProgress();
                             Served served = new Served();
@@ -669,9 +671,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             served.setGoTo(tv_counter_name.getText().toString());
                             setPresenter();
                             manageQueueApiCalls.served(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
+                                    AppInitialize.getDeviceID(),
+                                    AppInitialize.getEmail(),
+                                    AppInitialize.getAuth(),
                                 served);
                             chronometer.stop();
                             chronometer.setBase(SystemClock.elapsedRealtime());
@@ -684,7 +686,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             }
         });
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
             if (isNewCall) // show progressbar only first time
                 showProgress();
             getAllPeopleInQ(jsonTopic);
@@ -720,7 +722,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
                     public void btnPositiveClick() {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (new NetworkUtil(getActivity()).isOnline()) {
                             showProgress();
                             lastSelectedPos = position;
                             Served served = new Served();
@@ -731,9 +733,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             served.setGoTo(tv_counter_name.getText().toString());
                             served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
                             manageQueueApiCalls.acquire(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
+                                    AppInitialize.getDeviceID(),
+                                    AppInitialize.getEmail(),
+                                    AppInitialize.getAuth(),
                                 served);
                         } else {
                             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -774,9 +776,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
         businessCustomerApiCalls.setApproveCustomerPresenter(this);
         businessCustomerApiCalls.accessCustomer(
-            BaseLaunchActivity.getDeviceID(),
-            LaunchActivity.getLaunchActivity().getEmail(),
-            LaunchActivity.getLaunchActivity().getAuth(),
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
             customerPriority
         );
     }
@@ -821,9 +823,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             .setCustomerPhone(phoneNoWithCode);
 
         manageQueueApiCalls.dispenseTokenWithClientInfo(
-            BaseLaunchActivity.getDeviceID(),
-            LaunchActivity.getLaunchActivity().getEmail(),
-            LaunchActivity.getLaunchActivity().getAuth(),
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
             jsonBusinessCustomer);
     }
 

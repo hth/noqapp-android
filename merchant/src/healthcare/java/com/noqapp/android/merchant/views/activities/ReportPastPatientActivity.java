@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -232,7 +233,7 @@ public class ReportPastPatientActivity extends BaseActivity implements QueuePers
 
     private void callApi() {
         setProgressMessage("Fetching data...");
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             jt = (JsonTopic) sp_queue_list.getSelectedItem();
             showProgress();
             CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()

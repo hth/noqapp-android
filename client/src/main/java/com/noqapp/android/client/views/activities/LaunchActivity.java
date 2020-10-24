@@ -1,6 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,12 +31,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.common.cache.Cache;
@@ -62,6 +68,7 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.HomeFragment;
 import com.noqapp.android.client.views.pojos.LocationPref;
+import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -81,6 +88,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.pojos.MenuDrawer;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
@@ -102,9 +110,10 @@ import io.nlopez.smartlocation.location.config.LocationParams;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class LaunchActivity
-    extends NoQueueBaseActivity
+    extends AppCompatActivity
     implements OnClickListener, AppBlacklistPresenter,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener,
+    DeviceRegisterPresenter {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static Locale locale;
     public static SharedPreferences languagePref;
@@ -247,7 +256,7 @@ public class LaunchActivity
         if (isOnline()) {
             DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setAppBlacklistPresenter(this);
-            deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+            deviceModel.isSupportedAppVersion();
         }
         if (null != getIntent().getExtras()) {
             try {
@@ -417,6 +426,7 @@ public class LaunchActivity
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     loginIntent.putExtra("fromLogin", true);
                     startActivity(loginIntent);
+                    finish();
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 break;
@@ -940,8 +950,10 @@ public class LaunchActivity
                     @Override
                     public void btnPositiveClick() {
                         AppInitialize.clearPreferences();
-                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                        startActivity(loginIntent);
+                        NotificationDB.clearNotificationTable();
+                        ReviewDB.clearReviewTable();
+                        reCreateDeviceID(launchActivity, launchActivity);
+
                     }
 
                     @Override
@@ -1014,6 +1026,19 @@ public class LaunchActivity
                 break;
             }
         }
+    }
+
+    @Override
+    public void deviceRegisterError() {
+        /* dismissProgress(); no progress bar silent call here */
+    }
+
+    @Override
+    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
+        /* dismissProgress(); no progress bar silent call here */
+        AppInitialize.processRegisterDeviceIdResponse(deviceRegistered, this);
+        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+        startActivity(loginIntent);
     }
 
     public class FcmNotificationReceiver extends BroadcastReceiver {
@@ -1305,6 +1330,37 @@ public class LaunchActivity
             msgIds.add(msgId);
             cacheMsgIds.put(MSG_IDS, msgIds);
             textToSpeechHelper.makeAnnouncement(jsonTextToSpeeches);
+        }
+    }
+
+    public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(container, fragment).commit();
+    }
+
+    public void reCreateDeviceID(Activity context, DeviceRegisterPresenter deviceRegisterPresenter) {
+        if (new NetworkUtil(context).isOnline()) {
+            AppInitialize.fetchDeviceId(deviceRegisterPresenter);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+            tvTitle.setText(context.getString(R.string.networkerror));
+            tv_msg.setText(context.getString(R.string.offline));
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                context.finish();
+            });
+            mAlertDialog.show();
+            Log.w(TAG, "No network found");
         }
     }
 }

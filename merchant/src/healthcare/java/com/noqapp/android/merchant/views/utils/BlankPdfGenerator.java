@@ -25,6 +25,7 @@ import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 
@@ -66,16 +67,16 @@ public class BlankPdfGenerator extends PdfHelper {
             Chunk glue = new Chunk(new VerticalPositionMark());
 
             Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
-            Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
+            Chunk titleChunk = new Chunk(AppInitialize.getUserProfessionalProfile().getName(), titleFont);
             Paragraph titleParagraph = new Paragraph();
             titleParagraph.add(titleChunk);
             document.add(titleParagraph);
 
 
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-            String license = AppUtils.getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getLicenses());
+            String license = AppUtils.getCompleteEducation(AppInitialize.getUserProfessionalProfile().getLicenses());
             String temp = TextUtils.isEmpty(license) ? notAvailable : license;
-            Chunk degreeChunk = new Chunk(AppUtils.getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation())
+            Chunk degreeChunk = new Chunk(AppUtils.getCompleteEducation(AppInitialize.getUserProfessionalProfile().getEducation())
                     + " (Reg. Id: " + temp + ")", normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);

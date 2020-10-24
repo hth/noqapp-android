@@ -26,6 +26,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.OnOffEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.LoginApiCalls;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
@@ -36,7 +37,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.WebViewActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
@@ -70,7 +71,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         actv_email = view.findViewById(R.id.actv_email);
         TextView tv_forget_pwd = view.findViewById(R.id.tv_forget_pwd);
         tv_forget_pwd.setOnClickListener(v -> {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 Intent in = new Intent(getActivity(), WebViewActivity.class);
                 in.putExtra(IBConstant.KEY_URL, Constants.URL_FORGET_PWD);
                 in.putExtra("title", "Forgot Password");
@@ -81,7 +82,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         });
         TextView tv_become_merchant = view.findViewById(R.id.tv_become_merchant);
         tv_become_merchant.setOnClickListener(v -> {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            if (new NetworkUtil(getActivity()).isOnline()) {
                 Intent in = new Intent(getActivity(), WebViewActivity.class);
                 in.putExtra(IBConstant.KEY_URL, Constants.URL_MERCHANT_REGISTER);
                 in.putExtra("title", "Become Merchant");
@@ -92,10 +93,10 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         });
         edt_pwd = view.findViewById(R.id.edt_pwd);
         edt_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        userList = LaunchActivity.getLaunchActivity().getUserList();
+        userList = AppInitialize.getUserList();
         loginApiCalls = new LoginApiCalls(this);
         merchantProfileModel = new MerchantProfileApiCalls();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, userList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, userList);
         actv_email.setThreshold(1);//will start working from first character
         actv_email.setAdapter(adapter);
         btn_login.setOnClickListener(v -> {
@@ -103,10 +104,11 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
             if (isValidInput()) {
                 //   btn_login.setBackgroundResource(R.drawable.button_drawable_red);
                 //   btn_login.setTextColor(Color.WHITE);
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (new NetworkUtil(getActivity()).isOnline()) {
                     showProgress();
                     setProgressMessage("Login in progress..");
                     loginApiCalls.login(email.toLowerCase(), pwd);
+                    //TODO register device after getting QID
 
 //                    Answers.getInstance().logLogin(new LoginEvent()
 //                            .putMethod("Email_Password_Login")
@@ -147,14 +149,14 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
     @Override
     public void loginResponse(String email, String auth) {
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
-            LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
+            AppInitialize.setUserInformation("", "", email, auth, true);
             setProgressMessage("Fetching your profile...");
             merchantProfileModel.setMerchantPresenter(this);
-            merchantProfileModel.fetch(BaseLaunchActivity.getDeviceID(), email, auth);
+            merchantProfileModel.fetch(AppInitialize.getDeviceID(), email, auth);
             if (!userList.contains(email)) {
                 userList.add(email);
-                LaunchActivity.getLaunchActivity().setUserList(userList);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, userList);
+                AppInitialize.setUserList(userList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, userList);
                 //Getting the instance of AutoCompleteTextView
                 actv_email.setThreshold(1);//will start working from first character
                 actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
@@ -193,23 +195,22 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
-
     @Override
     public void merchantResponse(JsonMerchant jsonMerchant) {
         Gson gson = new Gson();
         if (null != jsonMerchant) {
-            LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
-            LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
+            AppInitialize.setUserName(jsonMerchant.getJsonProfile().getName());
+            AppInitialize.setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
             if (null != jsonMerchant.getJsonProfessionalProfile()) {
                 PreferenceObjects map = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), PreferenceObjects.class);
                 if (null != map) {
-                    LaunchActivity.getLaunchActivity().setSuggestionsPrefs(map);
+                    AppInitialize.setSuggestionsPrefs(map);
                 }
             }
 
             if (null != jsonMerchant.getCustomerPriorities() && jsonMerchant.getCustomerPriorities().size() > 0) {
                 String customerPriority = gson.toJson(jsonMerchant.getCustomerPriorities());
-                LaunchActivity.getLaunchActivity().setBusinessCustomerPriority(customerPriority);
+                AppInitialize.setBusinessCustomerPriority(customerPriority);
             }
 
             if (jsonMerchant.getJsonBusinessFeatures() != null && jsonMerchant.getJsonBusinessFeatures().getPriorityAccess() != null) {
@@ -217,15 +218,20 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 if (jsonMerchant.getJsonBusinessFeatures().getPriorityAccess() == OnOffEnum.O && jsonMerchant.getCustomerPriorities().size() > 0) {
                     priorityAccess = true;
                 }
-                LaunchActivity.getLaunchActivity().setPriorityAccess(priorityAccess);
+                AppInitialize.setPriorityAccess(priorityAccess);
             }
 
-            if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR ||
-                    jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                if ((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&
-                        jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO) ||
-                        (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant") &&
-                                jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO) || getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
+
+            UserLevelEnum userLevel =  jsonMerchant.getJsonProfile().getUserLevel();
+            BusinessTypeEnum businessType = jsonMerchant.getJsonProfile().getBusinessType();
+            String packageName = getActivity().getPackageName();
+
+            if (userLevel == UserLevelEnum.Q_SUPERVISOR || userLevel == UserLevelEnum.S_MANAGER) {
+                if (
+                    (packageName.equalsIgnoreCase("com.noqapp.android.merchant.healthcare") && businessType == BusinessTypeEnum.DO) ||
+                    (packageName.equalsIgnoreCase("com.noqapp.android.merchant") && businessType != BusinessTypeEnum.DO) ||
+                    packageName.equalsIgnoreCase("com.noqapp.android.merchant.tv")
+                ) {
                     if (LaunchActivity.isTablet) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
                         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.6f);
@@ -234,9 +240,9 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                         LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
                     }
                     LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
-                    LaunchActivity.getLaunchActivity().setAccessGrant(true);
-                    LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
-                    LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
+                    AppInitialize.setAccessGrant(true);
+                    AppInitialize.setUserProfile(jsonMerchant.getJsonProfile());
+                    AppInitialize.setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
                     LaunchActivity.getLaunchActivity().updateMenuList(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER);
                     MerchantListFragment mlf = new MerchantListFragment();
                     Bundle b = new Bundle();
@@ -246,7 +252,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                     LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
                 } else {
                     // unauthorised to see the screen
-                    LaunchActivity.getLaunchActivity().setAccessGrant(false);
+                    AppInitialize.setAccessGrant(false);
                     AccessDeniedFragment adf = new AccessDeniedFragment();
                     Bundle b = new Bundle();
                     b.putString("errorMsg", "You are login in the wrong app please login in the correct app");
@@ -257,15 +263,14 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
             } else if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.A_SUPERVISOR) {
                 if (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.inventory")) {
                     LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
-                    LaunchActivity.getLaunchActivity().setAccessGrant(true);
-                    LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
-                    LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
+                    AppInitialize.setAccessGrant(true);
+                    AppInitialize.setUserProfile(jsonMerchant.getJsonProfile());
+                    AppInitialize.setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
                     LaunchActivity.getLaunchActivity().updateMenuList(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, LaunchActivity.getLaunchActivity().getInventoryHome());
-
                 } else {
                     // unauthorised to see the screen
-                    LaunchActivity.getLaunchActivity().setAccessGrant(false);
+                    AppInitialize.setAccessGrant(false);
                     AccessDeniedFragment adf = new AccessDeniedFragment();
                     Bundle b = new Bundle();
                     b.putString("errorMsg", "You are login in the wrong app please login in the correct app");
@@ -275,7 +280,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 }
             } else {
                 // unauthorised to see the screen
-                LaunchActivity.getLaunchActivity().setAccessGrant(false);
+                AppInitialize.setAccessGrant(false);
                 AccessDeniedFragment adf = new AccessDeniedFragment();
                 Bundle b = new Bundle();
                 b.putString("errorMsg", getString(R.string.error_access_denied));

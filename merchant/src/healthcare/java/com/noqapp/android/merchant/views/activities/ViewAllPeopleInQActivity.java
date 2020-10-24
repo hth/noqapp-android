@@ -7,6 +7,7 @@ import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -42,7 +43,7 @@ public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePerso
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_queue_history));
         setProgressMessage("Fetching data...");
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             ManageQueueApiCalls manageQueueApiCalls = new ManageQueueApiCalls();
             manageQueueApiCalls.setQueuePersonListPresenter(this);

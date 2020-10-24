@@ -29,6 +29,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -110,9 +111,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
 //        }
 
 
-        if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().getUserProfile()) {
+        if (null != AppInitialize.getUserProfile()) {
             recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                    PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
         }
 
         if (!TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
@@ -186,7 +187,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             recordHolder.tv_order_data.setVisibility(View.GONE);
         }
         recordHolder.tv_order_data.setOnClickListener(v -> {
-            if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+            if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(AppInitialize.getUserLevel().name())) {
                 peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, false);
             } else {
                 new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
@@ -197,7 +198,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         if (!LaunchActivity.isTablet) {
             recordHolder.tv_item_count.setPaintFlags(recordHolder.tv_item_count.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             recordHolder.tv_item_count.setOnClickListener(v -> {
-                if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+                if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(AppInitialize.getUserLevel().name())) {
                     peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder, false);
                 } else {
                     new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
@@ -273,7 +274,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
                 AppUtils.makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
         });
         recordHolder.tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
-        OrderItemAdapter adapter = new OrderItemAdapter(context, jsonPurchaseOrder.getPurchaseOrderProducts(), BaseLaunchActivity.getCurrencySymbol(), true);
+        OrderItemAdapter adapter = new OrderItemAdapter(context, jsonPurchaseOrder.getPurchaseOrderProducts(), AppInitialize.getCurrencySymbol(), true);
         recordHolder.listview.setAdapter(adapter);
         recordHolder.tv_order_accept.setOnClickListener(v -> peopleInQOrderAdapterClick.orderAcceptClick(position));
 

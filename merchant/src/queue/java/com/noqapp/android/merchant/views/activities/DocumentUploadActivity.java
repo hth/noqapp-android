@@ -122,9 +122,8 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         showProgress();
         setProgressMessage("Fetching documents...");
         purchaseOrderApiCalls.setLabFilePresenter(this);
-        purchaseOrderApiCalls.showAttachment(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), new LabFile().setTransactionId(transactionId));
+        purchaseOrderApiCalls.showAttachment(AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(), AppInitialize.getAuth(), new LabFile().setTransactionId(transactionId));
 
     }
 
@@ -235,9 +234,8 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
                         .setDeleteAttachment(imageName);
                 showProgress();
                 setProgressMessage("Deleting image...");
-                purchaseOrderApiCalls.removeAttachment(BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(), labFile);
+                purchaseOrderApiCalls.removeAttachment(AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(), AppInitialize.getAuth(), labFile);
 
             }
 

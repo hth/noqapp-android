@@ -22,6 +22,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileHistoryActivity;
 
@@ -50,11 +51,11 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(listPosition);
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
-        if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().getUserProfile()) {
+        if (null != AppInitialize.getUserProfile()) {
             holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                    PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
         }
-        if (DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+        if (DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(AppInitialize.getUserLevel().name())) {
             if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
                 holder.tv_customer_mobile.setCompoundDrawablesWithIntrinsicBounds(R.drawable.copy, 0, 0, 0);
                 holder.tv_customer_mobile.setOnTouchListener((v, event) -> {
@@ -75,7 +76,8 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
             }
             holder.tv_customer_mobile.setOnClickListener(v -> {
                 if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
-                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(),
+                            PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
                 }
             });
         } else {

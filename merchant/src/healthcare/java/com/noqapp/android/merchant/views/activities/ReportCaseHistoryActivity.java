@@ -20,6 +20,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.MedicalRecordFieldFilterEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -232,7 +233,7 @@ public class ReportCaseHistoryActivity extends BaseActivity implements
 
     private void callApi() {
         bottomLayout.setVisibility(View.VISIBLE);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             JsonTopic jt = (JsonTopic) sp_queue_list.getSelectedItem();
             CodeQRDateRangeLookup codeQRDateRangeLookup = new CodeQRDateRangeLookup()
                     .setCodeQR(jt.getCodeQR())

@@ -18,8 +18,6 @@ import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterApiCall;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtils;
@@ -114,11 +112,6 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (profile.getError() == null) {
             Log.d(TAG, "Profile: " + profile.toString());
             AppInitialize.commitProfile(profile, email, auth);
-            if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID()) && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
-                NotificationDB.clearNotificationTable();
-                ReviewDB.clearReviewTable();
-                AppUtils.reCreateDeviceID(this);
-            }
             AppInitialize.setPreviousUserQID(profile.getQueueUserId());
             finish();
         } else {
@@ -277,4 +270,5 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         int n = 100000 + rnd.nextInt(900000);
         return String.valueOf(n);
     }
+
 }

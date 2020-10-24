@@ -89,7 +89,6 @@ public abstract class BaseLaunchActivity
     extends AppCompatActivity
     implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
-    private static SharedPreferences sharedpreferences;
     protected List<MenuDrawer> menuDrawerItems = new ArrayList<>();
 
     public static void setMerchantListFragment(MerchantListFragment merchantListFragment) {
@@ -98,28 +97,6 @@ public abstract class BaseLaunchActivity
 
     protected DeviceApiCalls deviceApiCalls;
     public static MerchantListFragment merchantListFragment;
-    protected final String IS_LOGIN = "isLoggedIn";
-    protected final String KEY_USER_EMAIL = "userEmail";
-    protected final String KEY_USER_NAME = "userName";
-    protected final String KEY_IS_ACCESS_GRANT = "accessGrant";
-    protected final String KEY_USER_LEVEL = "userLevel";
-    protected final String KEY_CUSTOMER_PRIORITY = "customerPriority";
-    protected final String PRIORITY_ACCESS = "priorityAccess";
-    protected final String KEY_MERCHANT_COUNTER_NAME = "counterName";
-    protected final String KEY_USER_ID = "userId";
-    protected final String KEY_USER_LIST = "userList";
-    protected final String KEY_USER_AUTH = "auth";
-    protected final String KEY_LAST_UPDATE = "last_update";
-    protected final String KEY_SUGGESTION_PREF = "suggestionsPrefs";
-    protected final String KEY_SUGGESTION_PRODUCT_PREF = "suggestionsProductsPrefs";
-    protected final String KEY_INVENTORY_PREF = "inventoryPrefs";
-    protected final String KEY_COUNTER_NAME_LIST = "counterNames";
-    protected final String KEY_USER_PROFILE = "userProfile";
-    protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
-    private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
-    private static final String PREKEY_IS_TV_SPLIT_VIEW = "tvSplitView";
-    private static final String PREKEY_TV_REFRESH_TIME = "tvRefreshTime";
-    static final String TOKEN_FCM = "tokenFCM";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
     protected long lastPress;
@@ -131,7 +108,6 @@ public abstract class BaseLaunchActivity
     public Toolbar toolbar;
     protected TextView tv_toolbar_title;
     protected ImageView actionbarBack;
-
     public static Locale locale;
     public static SharedPreferences languagepref;
     public static String language;
@@ -155,17 +131,16 @@ public abstract class BaseLaunchActivity
             isTablet = false;
         }
         super.onCreate(savedInstanceState);
-        sharedpreferences = this.getPreferences(Context.MODE_PRIVATE);
         languagepref = PreferenceManager.getDefaultSharedPreferences(this);
         languagepref.registerOnSharedPreferenceChangeListener(this);
         language = languagepref.getString("pref_language", "");
 
         if (null != getIntent().getExtras()) {
-            if (!TextUtils.isEmpty(getIntent().getStringExtra(BaseLaunchActivity.TOKEN_FCM))) {
-                setTokenFCM(getIntent().getStringExtra(BaseLaunchActivity.TOKEN_FCM));
+            if (!TextUtils.isEmpty(getIntent().getStringExtra(AppInitialize.TOKEN_FCM))) {
+                AppInitialize.setTokenFCM(getIntent().getStringExtra(AppInitialize.TOKEN_FCM));
             }
             if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
-                setDeviceID(getIntent().getStringExtra("deviceId"));
+                AppInitialize.setDeviceID(getIntent().getStringExtra("deviceId"));
             }
         }
 
@@ -192,8 +167,8 @@ public abstract class BaseLaunchActivity
     protected void initDrawer() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerList = findViewById(R.id.drawer_list);
-        if (isLoggedIn()) {
-            updateMenuList(getUserLevel() == UserLevelEnum.S_MANAGER);
+        if (AppInitialize.isLoggedIn()) {
+            updateMenuList(AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER);
         }
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             public void onDrawerClosed(View view) {
@@ -207,8 +182,8 @@ public abstract class BaseLaunchActivity
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         actionbarBack.setOnClickListener(v -> onBackPressed());
-        if (isLoggedIn()) {
-            if (isAccessGrant()) {
+        if (AppInitialize.isLoggedIn()) {
+            if (AppInitialize.isAccessGrant()) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 if (isInventoryApp) {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getInventoryHome());
@@ -352,7 +327,7 @@ public abstract class BaseLaunchActivity
         settingList.add(new MenuDrawer(getString(R.string.legal), false, false, R.drawable.legal));
         settingList.add(new MenuDrawer("Rate the app", false, false, R.drawable.ic_star));
         settingList.add(new MenuDrawer(getString(R.string.language_setting), false, false, R.drawable.language));
-        if (isLoggedIn()) {
+        if (AppInitialize.isLoggedIn()) {
             settingList.add(new MenuDrawer(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
             settingList.add(new MenuDrawer(getString(R.string.broadcast_message), false, false, R.drawable.sms));
         }
@@ -400,225 +375,6 @@ public abstract class BaseLaunchActivity
         return networkUtil.isOnline();
     }
 
-    public String getUserName() {
-        return sharedpreferences.getString(KEY_USER_NAME, "");
-    }
-
-    public void setUserName(String name) {
-        sharedpreferences.edit().putString(KEY_USER_NAME, name).apply();
-    }
-
-    public void setUserList(ArrayList<String> userList) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        String json = new Gson().toJson(userList);
-        editor.putString(KEY_USER_LIST, json);
-        editor.apply();
-    }
-
-    public ArrayList<String> getUserList() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String json = sharedPrefs.getString(KEY_USER_LIST, null);
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        ArrayList<String> arrayList = new Gson().fromJson(json, type);
-        return arrayList == null ? new ArrayList<String>() : arrayList;
-    }
-
-    public String getCounterName() {
-        return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
-    }
-
-    public void setCounterName(HashMap<String, String> mHashmap) {
-        String strInput = new Gson().toJson(mHashmap);
-        sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, strInput).apply();
-    }
-
-    public String getSuggestionsPrefs() {
-        return sharedpreferences.getString(KEY_SUGGESTION_PREF, null);
-    }
-
-    public String getSuggestionsProductPrefs() {
-        return sharedpreferences.getString(KEY_SUGGESTION_PRODUCT_PREF, null);
-    }
-
-    public void setSuggestionsPrefs(PreferenceObjects testCaseObjects) {
-        String strInput = new Gson().toJson(testCaseObjects);
-        sharedpreferences.edit().putString(KEY_SUGGESTION_PREF, strInput).apply();
-    }
-
-    public Map<String, List<JsonCheckAsset>> getInventoryPrefs() {
-        String storedHashMapString = sharedpreferences.getString(KEY_INVENTORY_PREF, null);
-        java.lang.reflect.Type type = new TypeToken<Map<String, List<JsonCheckAsset>>>() {
-        }.getType();
-        Map<String, List<JsonCheckAsset>> tempList = new Gson().fromJson(storedHashMapString, type);
-        return null != tempList ? tempList : new HashMap<>();
-    }
-
-    public void setInventoryPrefs(Map<String, List<JsonCheckAsset>> dataList) {
-        String strInput = new Gson().toJson(dataList);
-        sharedpreferences.edit().putString(KEY_INVENTORY_PREF, strInput).apply();
-    }
-
-    public void setSuggestionsProductsPrefs(PreferenceObjects testCaseObjects) {
-        String strInput = new Gson().toJson(testCaseObjects);
-        sharedpreferences.edit().putString(KEY_SUGGESTION_PRODUCT_PREF, strInput).apply();
-    }
-
-    public ArrayList<String> getCounterNames() {
-        //Retrieve the values
-        String jsonText = sharedpreferences.getString(KEY_COUNTER_NAME_LIST, null);
-        ArrayList<String> nameList = new Gson().fromJson(jsonText, ArrayList.class);
-        return null != nameList ? nameList : new ArrayList<String>();
-    }
-
-    public void setCounterNames(ArrayList<String> mHashmap) {
-        String strInput = new Gson().toJson(mHashmap);
-        sharedpreferences.edit().putString(KEY_COUNTER_NAME_LIST, strInput).apply();
-    }
-
-    public UserLevelEnum getUserLevel() {
-        return UserLevelEnum.valueOf(sharedpreferences.getString(KEY_USER_LEVEL, ""));
-    }
-
-    public void setUserLevel(String userLevel) {
-        sharedpreferences.edit().putString(KEY_USER_LEVEL, userLevel).apply();
-    }
-
-    public void setBusinessCustomerPriority(String customerPriority) {
-        sharedpreferences.edit().putString(KEY_CUSTOMER_PRIORITY, customerPriority).apply();
-    }
-
-    public void setPriorityAccess(boolean priorityAccess) {
-        sharedpreferences.edit().putBoolean(PRIORITY_ACCESS, priorityAccess).apply();
-    }
-
-    public static void setMsgAnnouncementEnable(boolean isMsgAnnounce) {
-        sharedpreferences.edit().putBoolean(PREKEY_IS_MSG_ANNOUNCE, isMsgAnnounce).apply();
-    }
-
-    public static boolean isMsgAnnouncementEnable() {
-        return sharedpreferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
-    }
-
-    public static void setTvSplitViewEnable(boolean isTvSplitView) {
-        sharedpreferences.edit().putBoolean(PREKEY_IS_TV_SPLIT_VIEW, isTvSplitView).apply();
-    }
-
-    public static boolean isTvSplitViewEnable() {
-        return sharedpreferences.getBoolean(PREKEY_IS_TV_SPLIT_VIEW, true);
-    }
-
-    public static void setTvRefreshTime(int refreshTime) {
-        sharedpreferences.edit().putInt(PREKEY_TV_REFRESH_TIME, refreshTime).apply();
-    }
-
-    public List<JsonBusinessCustomerPriority> getBusinessCustomerPriority() {
-        Gson gson = new Gson();
-        List<JsonBusinessCustomerPriority> businessCustomerPriority;
-        String customerPriority = sharedpreferences.getString(KEY_CUSTOMER_PRIORITY, "");
-        Type type = new TypeToken<List<JsonBusinessCustomerPriority>>() {}.getType();
-        businessCustomerPriority = gson.fromJson(customerPriority, type);
-        return businessCustomerPriority;
-    }
-
-    public boolean getPriorityAccess() {
-        return sharedpreferences.getBoolean(PRIORITY_ACCESS, false);
-    }
-
-    public static int getTvRefreshTime() {
-        return sharedpreferences.getInt(PREKEY_TV_REFRESH_TIME, 5);
-    }
-
-    public String getUSerID() {
-        return sharedpreferences.getString(KEY_USER_ID, "");
-    }
-
-    public String getAuth() {
-        return sharedpreferences.getString(KEY_USER_AUTH, "");
-    }
-
-    public String getEmail() {
-        return sharedpreferences.getString(KEY_USER_EMAIL, "");
-    }
-
-    public long getLastUpdateTime() {
-        return sharedpreferences.getLong(KEY_LAST_UPDATE, System.currentTimeMillis());
-    }
-
-    public void setLastUpdateTime(long lastUpdateTime) {
-        sharedpreferences.edit().putLong(KEY_LAST_UPDATE, lastUpdateTime).apply();
-    }
-
-    public boolean isLoggedIn() {
-        return sharedpreferences.getBoolean(IS_LOGIN, false);
-    }
-
-    public boolean isAccessGrant() {
-        return sharedpreferences.getBoolean(KEY_IS_ACCESS_GRANT, true);
-    }
-
-    public void setAccessGrant(boolean isAccessGrant) {
-        sharedpreferences.edit().putBoolean(KEY_IS_ACCESS_GRANT, isAccessGrant).apply();
-    }
-
-    public static String getTokenFCM() {
-        return sharedpreferences.getString(TOKEN_FCM, "");
-    }
-
-    public static void setTokenFCM(String tokenFCM) {
-        sharedpreferences.edit().putString(TOKEN_FCM, tokenFCM).apply();
-    }
-
-    public void setUserInformation(String userName, String userId, String email, String auth, boolean isLogin) {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(KEY_USER_NAME, userName);
-        editor.putString(KEY_USER_ID, userId);
-        editor.putString(KEY_USER_EMAIL, email);
-        editor.putString(KEY_USER_AUTH, auth);
-        editor.putBoolean(IS_LOGIN, isLogin);
-        editor.apply();
-    }
-
-    public void setUserProfile(JsonProfile jsonProfile) {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        String json = new Gson().toJson(jsonProfile);
-        editor.putString(KEY_USER_PROFILE, json);
-        editor.apply();
-        sharedpreferences.edit().putString(AppUtils.CURRENCY_SYMBOL, AppUtils.getCurrencySymbol(jsonProfile.getCountryShortName())).apply();
-    }
-
-    public JsonProfile getUserProfile() {
-        String json = sharedpreferences.getString(KEY_USER_PROFILE, "");
-        return new Gson().fromJson(json, JsonProfile.class);
-
-    }
-
-    public void setUserProfessionalProfile(JsonProfessionalProfilePersonal jsonProfessionalProfile) {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        String json = new Gson().toJson(jsonProfessionalProfile);
-        editor.putString(KEY_USER_PROFESSIONAL_PROFILE, json);
-        editor.apply();
-    }
-
-    public JsonProfessionalProfilePersonal getUserProfessionalProfile() {
-        String json = sharedpreferences.getString(KEY_USER_PROFESSIONAL_PROFILE, "");
-        return new Gson().fromJson(json, JsonProfessionalProfilePersonal.class);
-
-    }
-
-    public static String getCurrencySymbol() {
-        return sharedpreferences.getString(AppUtils.CURRENCY_SYMBOL, "");
-    }
-
-    public static String getDeviceID() {
-        return sharedpreferences.getString(APIConstant.Key.XR_DID, "");
-    }
-
-    private static void setDeviceID(String deviceId) {
-        sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
-    }
-
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -632,7 +388,7 @@ public abstract class BaseLaunchActivity
     }
 
     public void setUserName() {
-        tv_name.setText(WordUtils.initials(getUserName()));
+        tv_name.setText(WordUtils.initials(AppInitialize.getUserName()));
     }
 
 
@@ -749,7 +505,7 @@ public abstract class BaseLaunchActivity
             merchantListFragment = null;
         }
         // logout
-        clearPreferences();
+        AppInitialize.clearPreferences();
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         if (showAlert) {
@@ -876,15 +632,6 @@ public abstract class BaseLaunchActivity
             ((AppInitialize) getApplication()).setLocale(this);
             this.recreate();
         }
-    }
-
-    public static void clearPreferences() {
-        // Clear all data except DID & FCM Token
-        String did = getDeviceID();
-        String tokenFCM = getTokenFCM();
-        sharedpreferences.edit().clear().apply();
-        setDeviceID(did);
-        setTokenFCM(tokenFCM);
     }
 
     public void callPreference() {

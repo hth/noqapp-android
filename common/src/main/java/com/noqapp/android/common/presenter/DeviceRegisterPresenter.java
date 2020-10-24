@@ -7,5 +7,4 @@ public interface DeviceRegisterPresenter extends ResponseErrorPresenter {
     void deviceRegisterError();
 
     void deviceRegisterResponse(DeviceRegistered deviceRegistered);
-
 }

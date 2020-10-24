@@ -22,6 +22,7 @@ import com.noqapp.android.merchant.model.MasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
@@ -228,9 +229,8 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
         showProgress();
         MasterLabApiCalls masterLabApiCalls = new MasterLabApiCalls();
         masterLabApiCalls.setMasterLabPresenter(this);
-        masterLabApiCalls.flag(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), masterLabArrayList.get(pos));
+        masterLabApiCalls.flag(AppInitialize.getDeviceID(), AppInitialize.getEmail(),
+                AppInitialize.getAuth(), masterLabArrayList.get(pos));
     }
 
     @Override

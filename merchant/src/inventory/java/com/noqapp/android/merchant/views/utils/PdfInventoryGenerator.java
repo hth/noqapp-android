@@ -22,6 +22,7 @@ import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.io.File;
@@ -92,7 +93,7 @@ public class PdfInventoryGenerator extends PdfHelper {
             String formattedDate = df.format(c);
             Paragraph p_sign = new Paragraph();
             p_sign.add(new Chunk("Created By: ", normalBigFont));
-            p_sign.add(new Chunk(LaunchActivity.getLaunchActivity().getUserName(), normalFont));
+            p_sign.add(new Chunk(AppInitialize.getUserName(), normalFont));
             p_sign.add("            ");
             p_sign.add("                                                                   ");
             p_sign.add(new Chunk("Date: ", normalBigFont));

@@ -43,7 +43,7 @@ import java.util.Locale;
  * Created by chandra on 5/20/17.
  */
 public class AppInitialize extends MultiDexApplication implements DeviceRegisterPresenter {
-    private final String TAG = AppInitialize.class.getSimpleName();
+    private static final String TAG = AppInitialize.class.getSimpleName();
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
@@ -168,7 +168,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         editor.apply();
     }
 
-    public static SharedPreferences.Editor getSharedPreferencesEditor() {
+    private static SharedPreferences.Editor getSharedPreferencesEditor() {
         return preferences.edit();
     }
 
@@ -391,26 +391,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
 
     @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
-        if (deviceRegistered.getRegistered() == 1) {
-            Log.e("Device register", "deviceRegister Success");
-            AppInitialize.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
-            Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
-
-            LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setCity(AppInitialize.cityName)
-                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
-            AppInitialize.setLocationPreference(locationPref);
-            AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
-            AppInitialize.location.setLatitude(locationPref.getLatitude());
-            AppInitialize.location.setLongitude(locationPref.getLongitude());
-            if (null != LaunchActivity.getLaunchActivity().tv_location) {
-                LaunchActivity.getLaunchActivity().tv_location.setText(AppInitialize.cityName);
-            }
-        } else {
-            Log.e("Device register error: ", deviceRegistered.toString());
-            new CustomToast().showToast(this, "Device register error: ");
-        }
+        processRegisterDeviceIdResponse(deviceRegistered, this);
     }
 
     @Override
@@ -426,22 +407,56 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         /* dismissProgress(); no progress bar silent call here */
-        new ErrorResponseHandler().processError(this, eej);
+       // new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         /* dismissProgress(); no progress bar silent call here */
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+       // new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     public static void fetchDeviceId() {
+        fetchDeviceId(appInitialize);
+    }
+
+    public static void fetchDeviceId(DeviceRegisterPresenter deviceRegisterPresenter) {
         DeviceApiCall deviceModel = new DeviceApiCall();
-        deviceModel.setDeviceRegisterPresenter(appInitialize);
+        deviceModel.setDeviceRegisterPresenter(deviceRegisterPresenter);
         deviceModel.register(
-            new DeviceToken(
-                AppInitialize.getTokenFCM(),
-                Constants.appVersion(),
-                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
+                new DeviceToken(
+                        AppInitialize.getTokenFCM(),
+                        Constants.appVersion(),
+                        CommonHelper.getLocation(AppInitialize.location.getLatitude(),
+                                AppInitialize.location.getLongitude())));
+    }
+
+    public static void processRegisterDeviceIdResponse(DeviceRegistered deviceRegistered, Context context){
+
+        if (deviceRegistered.getRegistered() == 1) {
+            Log.e("Device register", "deviceRegister Success");
+            AppInitialize.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), context);
+            Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
+
+            LocationPref locationPref = AppInitialize.getLocationPreference()
+                    .setCity(AppInitialize.cityName)
+                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+            AppInitialize.setLocationPreference(locationPref);
+            AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
+            AppInitialize.location.setLatitude(locationPref.getLatitude());
+            AppInitialize.location.setLongitude(locationPref.getLongitude());
+            if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().tv_location) {
+                LaunchActivity.getLaunchActivity().tv_location.setText(AppInitialize.cityName);
+            }
+        } else {
+            Log.e("Device register error: ", deviceRegistered.toString());
+            try {
+                new CustomToast().showToast(context, "Device register error: ");
+            }catch (Exception e){
+                Log.e("BadTokenException :", "Exception caught while showing the window" + e.getLocalizedMessage());
+            }
+        }
+
     }
 }

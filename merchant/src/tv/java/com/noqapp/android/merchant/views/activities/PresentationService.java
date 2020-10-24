@@ -75,7 +75,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private final String LOOP_TIME = "9";
     private final String SERVER_LOOP_TIME = "5";
     private final int MILLI_SECONDS = 1000;
-    private final int SECONDS = LaunchActivity.getTvRefreshTime() * 60;
+    private final int SECONDS = AppInitialize.getTvRefreshTime() * 60;
     private final int MINUTE = SECONDS * MILLI_SECONDS;
     private boolean callAdvertisement = true;
     private boolean callFirstTime = true;
@@ -277,7 +277,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             ll_left = findViewById(R.id.ll_left);
             no_of_q = topicAndQueueTVList.size();
             scrolltext = findViewById(R.id.scrolltext);
-            if (LaunchActivity.isTvSplitViewEnable()) {
+            if (AppInitialize.isTvSplitViewEnable()) {
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.65f);
                 LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.35f);
                 ll_left.setLayoutParams(lp1);
@@ -513,9 +513,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
                 ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(PresentationService.this);
                 clientInQueueApiCalls.toBeServedClients(
-                        UserUtils.getDeviceId(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+                        UserUtils.getDeviceId(), AppInitialize.getEmail(),
+                        AppInitialize.getAuth(), queueDetail);
                 Log.e("SERVER Called for data", "done");
                 if (timerCount == MINUTE)
                     timerCount = 0;
@@ -527,8 +526,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
                 advertisementApiCalls.setAdvertisementPresenter(PresentationService.this);
                 advertisementApiCalls.setProfessionalProfilesPresenter(PresentationService.this);
-                advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId(), LaunchActivity.getLaunchActivity().getEmail(), LaunchActivity.getLaunchActivity().getAuth());
-                advertisementApiCalls.professionalProfiles(UserUtils.getDeviceId(), LaunchActivity.getLaunchActivity().getEmail(), LaunchActivity.getLaunchActivity().getAuth());
+                advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId(), AppInitialize.getEmail(), AppInitialize.getAuth());
+                advertisementApiCalls.professionalProfiles(UserUtils.getDeviceId(), AppInitialize.getEmail(), AppInitialize.getAuth());
                 callAdvertisement = false;
             }
         }

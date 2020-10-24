@@ -7,6 +7,7 @@ import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -40,7 +41,7 @@ public class FollowUpListActivity extends BaseActivity implements QueuePersonLis
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_followup));
         setProgressMessage("Fetching followup data...");
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        if (new NetworkUtil(this).isOnline()) {
             showProgress();
             MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(FollowUpListActivity.this);
             medicalHistoryApiCalls.getFollowUpList(UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
