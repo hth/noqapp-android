@@ -75,12 +75,20 @@ public class LoginActivity extends OTPActivity implements DeviceRegisterPresente
         AppInitialize.commitProfile(profile, email, auth);
 //        if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID())
 //            && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
-            NotificationDB.clearNotificationTable();
-            ReviewDB.clearReviewTable();
-            AppUtils.reCreateDeviceID(this, this);
-    //    }
+//            NotificationDB.clearNotificationTable();
+//            ReviewDB.clearReviewTable();
+//            AppUtils.reCreateDeviceID(this);
+//        }
         AppInitialize.setPreviousUserQID(profile.getQueueUserId());
-       // dismissProgress();
+
+        if (getIntent().getBooleanExtra("fromLogin", false)) {
+            // To refresh the launch activity
+            Intent intent = new Intent(this, LaunchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        finish();//close the current activity
+        dismissProgress();
     }
 
     @Override

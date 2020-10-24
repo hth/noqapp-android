@@ -116,20 +116,19 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (profile.getError() == null) {
             Log.d(TAG, "Profile: " + profile.toString());
             AppInitialize.commitProfile(profile, email, auth);
-           // if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID()) && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
-                NotificationDB.clearNotificationTable();
-                ReviewDB.clearReviewTable();
-                AppUtils.reCreateDeviceID(this, this);
-          //  }
+//            if (!TextUtils.isEmpty(AppInitialize.getPreviousUserQID()) && !AppInitialize.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+//                NotificationDB.clearNotificationTable();
+//                ReviewDB.clearReviewTable();
+//                AppUtils.reCreateDeviceID(this);
+//            }
             AppInitialize.setPreviousUserQID(profile.getQueueUserId());
-            //finish();
+            finish();
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
             ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
-            dismissProgress();
         }
-
+        dismissProgress();
     }
 
     @Override

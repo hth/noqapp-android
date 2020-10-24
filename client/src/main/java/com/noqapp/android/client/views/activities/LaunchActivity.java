@@ -62,6 +62,7 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.HomeFragment;
 import com.noqapp.android.client.views.pojos.LocationPref;
+import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -81,6 +82,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.pojos.MenuDrawer;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
@@ -104,7 +106,8 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
 public class LaunchActivity
     extends NoQueueBaseActivity
     implements OnClickListener, AppBlacklistPresenter,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener,
+    DeviceRegisterPresenter {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static Locale locale;
     public static SharedPreferences languagePref;
@@ -941,8 +944,10 @@ public class LaunchActivity
                     @Override
                     public void btnPositiveClick() {
                         AppInitialize.clearPreferences();
-                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                        startActivity(loginIntent);
+                        NotificationDB.clearNotificationTable();
+                        ReviewDB.clearReviewTable();
+                        AppUtils.reCreateDeviceID(launchActivity, launchActivity);
+
                     }
 
                     @Override
@@ -1015,6 +1020,19 @@ public class LaunchActivity
                 break;
             }
         }
+    }
+
+    @Override
+    public void deviceRegisterError() {
+        /* dismissProgress(); no progress bar silent call here */
+    }
+
+    @Override
+    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
+        /* dismissProgress(); no progress bar silent call here */
+        AppInitialize.processRegisterDeviceIdResponse(deviceRegistered, this);
+        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+        startActivity(loginIntent);
     }
 
     public class FcmNotificationReceiver extends BroadcastReceiver {
