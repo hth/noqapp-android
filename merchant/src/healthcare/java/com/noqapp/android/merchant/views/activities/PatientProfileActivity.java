@@ -51,10 +51,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientProfileActivity extends BaseActivity implements
-        PatientProfilePresenter,
-        JsonMedicalRecordPresenter,
-        MedicalHistoryFilteredFragment.UpdateWorkDone {
+public class PatientProfileActivity
+    extends BaseActivity
+    implements PatientProfilePresenter, JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
     public ProgressBar pb_physical;
     private TextView tv_patient_name, tv_address, tv_details;
     private ImageView iv_profile;
@@ -247,9 +246,11 @@ public class PatientProfileActivity extends BaseActivity implements
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
-            medicalHistoryApiCalls.retrieveMedicalRecord(AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(), AppInitialize.getAuth(), jsonMedicalRecord);
-
+            medicalHistoryApiCalls.retrieveMedicalRecord(
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
+                jsonMedicalRecord);
             return null;
         }
     }
@@ -370,8 +371,8 @@ public class PatientProfileActivity extends BaseActivity implements
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
-                        .into(iv_profile);
+                    .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
+                    .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -398,7 +399,6 @@ public class PatientProfileActivity extends BaseActivity implements
             if (!TextUtils.isEmpty(jsonMedicalRecord.getNoteForPatient())) {
                 parseDentalDiagnosis(jsonMedicalRecord.getNoteForPatient(), createdDate);
             }
-
         }
 
         list_view.setAdapter(new WorkDoneAdapter(this, toothWorkDoneList));

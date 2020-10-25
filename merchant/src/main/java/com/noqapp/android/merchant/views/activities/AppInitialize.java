@@ -58,6 +58,7 @@ public class AppInitialize extends Application {
     private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
     private static final String PREKEY_IS_TV_SPLIT_VIEW = "tvSplitView";
     private static final String PREKEY_TV_REFRESH_TIME = "tvRefreshTime";
+
     public AppInitialize() {
         super();
     }
@@ -150,7 +151,6 @@ public class AppInitialize extends Application {
     public static String getSuggestionsProductPrefs() {
         return preferences.getString(KEY_SUGGESTION_PRODUCT_PREF, null);
     }
-
 
     public static String getUserName() {
         return preferences.getString(KEY_USER_NAME, "");
@@ -337,7 +337,6 @@ public class AppInitialize extends Application {
     public static JsonProfessionalProfilePersonal getUserProfessionalProfile() {
         String json = preferences.getString(KEY_USER_PROFESSIONAL_PROFILE, "");
         return new Gson().fromJson(json, JsonProfessionalProfilePersonal.class);
-
     }
 
     public static String getCurrencySymbol() {

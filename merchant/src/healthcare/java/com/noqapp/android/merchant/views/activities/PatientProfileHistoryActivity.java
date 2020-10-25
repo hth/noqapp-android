@@ -45,8 +45,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientProfileHistoryActivity extends BaseActivity implements PatientProfilePresenter,
-        JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
+public class PatientProfileHistoryActivity
+    extends BaseActivity
+    implements PatientProfilePresenter, JsonMedicalRecordPresenter, MedicalHistoryFilteredFragment.UpdateWorkDone {
     public ProgressBar pb_physical;
     private TextView tv_patient_name, tv_address, tv_details;
     private ImageView iv_profile;
@@ -144,13 +145,14 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
             mhff.setArguments(b);
             replaceFragmentWithoutBackStack(R.id.fl_medical_history_filtered, mhff);
 
-
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
-            medicalHistoryApiCalls.retrieveMedicalRecord(AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(), AppInitialize.getAuth(), jsonMedicalRecord);
-
+            medicalHistoryApiCalls.retrieveMedicalRecord(
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
+                jsonMedicalRecord);
             return null;
         }
     }
@@ -223,8 +225,8 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
-                        .into(iv_profile);
+                    .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
+                    .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -247,7 +249,7 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
             }
 
             if (!TextUtils.isEmpty(jsonMedicalRecord.getNoteForPatient())) {
-                parseDentalDiagnosis(jsonMedicalRecord.getNoteForPatient(),createdDate);
+                parseDentalDiagnosis(jsonMedicalRecord.getNoteForPatient(), createdDate);
             }
 
         }
@@ -256,7 +258,7 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
         tv_empty_work_done.setVisibility(toothWorkDoneList.size() > 0 ? View.GONE : View.VISIBLE);
 
         //Dental Treatment data
-        dt_list_view.setAdapter(new WorkDoneAdapter(this, toothDentalTreatmentList,true));
+        dt_list_view.setAdapter(new WorkDoneAdapter(this, toothDentalTreatmentList, true));
         tv_empty_dt.setVisibility(toothDentalTreatmentList.size() > 0 ? View.GONE : View.VISIBLE);
 
         scroll_view.fullScroll(ScrollView.FOCUS_UP);
@@ -290,14 +292,14 @@ public class PatientProfileHistoryActivity extends BaseActivity implements Patie
 
     private void parseDentalDiagnosis(String str, String createdDate) {
         try {
-            String[] temp = str.split("\\|",-1);
+            String[] temp = str.split("\\|", -1);
             if (temp.length > 0) {
                 for (String act : temp) {
                     if (act.contains(":")) {
                         String[] strArray = act.split(":");
                         String str1 = strArray[0].trim();
                         String str2 = strArray[1];
-                        toothDentalTreatmentList.add(new ToothWorkDone(str1, str2, "",createdDate));
+                        toothDentalTreatmentList.add(new ToothWorkDone(str1, str2, "", createdDate));
                     }
                 }
             }

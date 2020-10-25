@@ -67,17 +67,19 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter {
         holder.tv_queue_status.setText(Html.fromHtml("<b>Queue Status: </b>" + jsonQueuedPerson.getQueueUserState().getDescription()));
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         holder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
-                ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
-                : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
+            ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
+            : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
         if (visibility) {
             if (null != LaunchActivity.getLaunchActivity()) {
-                holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                        PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
+                holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo)
+                    ? context.getString(R.string.unregister_user)
+                    : PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
             }
             holder.tv_customer_mobile.setOnClickListener(v -> {
-                if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
                     AppUtils.makeCall((Activity) context, PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
+                }
             });
         } else {
             holder.tv_customer_mobile.setText(AppUtils.hidePhoneNumberWithX(phoneNo));
@@ -87,13 +89,13 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter {
         holder.tv_sequence_number.setTextColor(Color.WHITE);
         holder.tv_join_timing.setTextColor(Color.WHITE);
         if (null == jsonQueuedPerson.getJsonPurchaseOrder()) {
-            holder.tv_order_data.setBackground(ContextCompat.getDrawable(context,R.drawable.grey_background));
-        }else{
-            holder.tv_order_data.setBackground(ContextCompat.getDrawable(context,R.drawable.button_drawable_red));
+            holder.tv_order_data.setBackground(ContextCompat.getDrawable(context, R.drawable.grey_background));
+        } else {
+            holder.tv_order_data.setBackground(ContextCompat.getDrawable(context, R.drawable.button_drawable_red));
         }
         holder.tv_order_data.setOnClickListener(v -> {
             if (null == jsonQueuedPerson.getJsonPurchaseOrder()) {
-                new CustomToast().showToast(context,"No order available for this user");
+                new CustomToast().showToast(context, "No order available for this user");
             } else {
                 Intent in = new Intent(context, OrderDetailActivity.class);
                 in.putExtra("jsonQueuedPerson", jsonQueuedPerson);

@@ -51,8 +51,9 @@ import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
-        FindCustomerPresenter, OrderDetailActivity.UpdateWholeList {
+public class MerchantDetailFragment
+    extends BaseMerchantDetailFragment
+    implements FindCustomerPresenter, OrderDetailActivity.UpdateWholeList {
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
     private Button btn_create_order;
@@ -93,8 +94,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             mLastClickTime = SystemClock.elapsedRealtime();
             Intent intent = new Intent(getActivity(), AppointmentActivity.class);
             intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
-            intent.putExtra("displayName",jsonTopic.getDisplayName());
-            intent.putExtra("bizCategoryId",jsonTopic.getBizCategoryId());
+            intent.putExtra("displayName", jsonTopic.getDisplayName());
+            intent.putExtra("bizCategoryId", jsonTopic.getBizCategoryId());
             ((Activity) context).startActivity(intent);
         });
         return v;
@@ -108,7 +109,11 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void getAllPeopleInQ(JsonTopic jsonTopic) {
         manageQueueApiCalls.setQueuePersonListPresenter(this);
-        manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+        manageQueueApiCalls.getAllQueuePersonList(
+            UserUtils.getDeviceId(),
+            UserUtils.getEmail(),
+            UserUtils.getAuth(),
+            jsonTopic.getCodeQR());
     }
 
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
@@ -192,10 +197,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         jsonBusinessCustomer.setCustomerPhone(ccp_unregistered.getDefaultCountryCode() + edt_mobile_unregistered.getText().toString());
                         jsonBusinessCustomer.setRegisteredUser(false);
                         manageQueueApiCalls.dispenseTokenWithClientInfo(
-                                AppInitialize.getDeviceID(),
-                                AppInitialize.getEmail(),
-                                AppInitialize.getAuth(),
-                                jsonBusinessCustomer);
+                            AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
+                            jsonBusinessCustomer);
                     }
                 });
             } else {
@@ -225,7 +230,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         }
                     }
 
-                    if (isValid ) {
+                    if (isValid) {
                         setProgressMessage("Searching Patient...");
                         showProgress();
                         setProgressCancel(false);
@@ -244,10 +249,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         businessCustomerApiCalls = new BusinessCustomerApiCalls();
                         businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
                         businessCustomerApiCalls.findCustomer(
-                                AppInitialize.getDeviceID(),
-                                AppInitialize.getEmail(),
-                                AppInitialize.getAuth(),
-                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(businessCustomerId));
+                            AppInitialize.getDeviceID(),
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
+                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(businessCustomerId));
                         btn_create_token.setClickable(false);
                         //  mAlertDialog.dismiss();
                     }
@@ -307,18 +312,18 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     }
 
                     JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer()
-                            .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                        .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                     jsonBusinessCustomer
-                            .setCodeQR(topicsList.get(currentPosition).getCodeQR())
-                            .setCustomerPhone(phoneNoWithCode)
-                            .setBusinessCustomerId(businessCustomerId)
-                            .setRegisteredUser(true);
+                        .setCodeQR(topicsList.get(currentPosition).getCodeQR())
+                        .setCustomerPhone(phoneNoWithCode)
+                        .setBusinessCustomerId(businessCustomerId)
+                        .setRegisteredUser(true);
 
                     manageQueueApiCalls.dispenseTokenWithClientInfo(
-                            AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth(),
-                            jsonBusinessCustomer);
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
+                        jsonBusinessCustomer);
 
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
@@ -343,7 +348,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(AppInitialize.getUserLevel().name()));
         ((Activity) context).startActivity(in);
     }
-
 
     @Override
     public void updateWholeList() {

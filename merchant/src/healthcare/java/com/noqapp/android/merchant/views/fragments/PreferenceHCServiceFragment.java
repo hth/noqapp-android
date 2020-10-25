@@ -36,8 +36,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class PreferenceHCServiceFragment extends BaseFragment implements
-        SelectItemListAdapter.RemoveListItem, TestListAdapter.FlagListItem, MasterLabPresenter {
+public class PreferenceHCServiceFragment
+    extends BaseFragment
+    implements SelectItemListAdapter.RemoveListItem, TestListAdapter.FlagListItem, MasterLabPresenter {
 
     private ListView lv_tests, lv_all_tests;
     private AutoCompleteTextView actv_search;
@@ -77,58 +78,52 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
         lv_all_tests = v.findViewById(R.id.lv_all_tests);
         actv_search = v.findViewById(R.id.actv_search);
         selectedList = getPreviousList(getArguments().getInt("type"));
-        if (null == selectedList)
+        if (null == selectedList) {
             selectedList = new ArrayList<>();
+        }
         actv_search.setThreshold(1);
-        actv_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                JsonMasterLab value = (JsonMasterLab) parent.getItemAtPosition(position);
-                DataObj dataObj = new DataObj();
-                dataObj.setShortName(value.getProductShortName());
-                dataObj.setSelect(false);
-                if (!selectedList.contains(dataObj)) {
-                    selectedList.add(dataObj);
-                    selectItemListAdapter.notifyDataSetChanged();
-                    actv_search.setText("");
-                } else {
-                    new CustomToast().showToast(getActivity(), "Already selected");
-                }
-                AppUtils.hideKeyBoard(getActivity());
+
+        actv_search.setOnItemClickListener((parent, view, position, id) -> {
+            JsonMasterLab value = (JsonMasterLab) parent.getItemAtPosition(position);
+            DataObj dataObj = new DataObj();
+            dataObj.setShortName(value.getProductShortName());
+            dataObj.setSelect(false);
+            if (!selectedList.contains(dataObj)) {
+                selectedList.add(dataObj);
+                selectItemListAdapter.notifyDataSetChanged();
+                actv_search.setText("");
+            } else {
+                new CustomToast().showToast(getActivity(), "Already selected");
             }
+            AppUtils.hideKeyBoard(getActivity());
         });
-        actv_search.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_LEFT = 0;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (actv_search.getRight() - actv_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        actv_search.setText("");
-                        AppUtils.hideKeyBoard(getActivity());
-                        return true;
-                    }
-                    if (event.getRawX() <= (20 + actv_search.getLeft() + actv_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                        //performSearch();
-                        return true;
-                    }
+
+        actv_search.setOnTouchListener((v12, event) -> {
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_LEFT = 0;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (actv_search.getRight() - actv_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    actv_search.setText("");
+                    AppUtils.hideKeyBoard(getActivity());
+                    return true;
                 }
-                return false;
+                if (event.getRawX() <= (20 + actv_search.getLeft() + actv_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                    //performSearch();
+                    return true;
+                }
             }
+            return false;
         });
 
         selectItemListAdapter = new SelectItemListAdapter(getActivity(), selectedList, this);
         lv_tests.setAdapter(selectItemListAdapter);
-        lv_all_tests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DataObj dataObj = new DataObj();
-                dataObj.setShortName(masterLabArrayList.get(position).getProductShortName());
-                dataObj.setSelect(false);
-                if (!selectedList.contains(dataObj)) {
-                    selectedList.add(dataObj);
-                    selectItemListAdapter.notifyDataSetChanged();
-                }
+        lv_all_tests.setOnItemClickListener((parent, view, position, id) -> {
+            DataObj dataObj = new DataObj();
+            dataObj.setShortName(masterLabArrayList.get(position).getProductShortName());
+            dataObj.setSelect(false);
+            if (!selectedList.contains(dataObj)) {
+                selectedList.add(dataObj);
+                selectItemListAdapter.notifyDataSetChanged();
             }
         });
 
@@ -154,12 +149,7 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
 
     public void setData(ArrayList<JsonMasterLab> tempList) {
         masterLabArrayList = tempList;
-        Collections.sort(masterLabArrayList, new Comparator<JsonMasterLab>() {
-            @Override
-            public int compare(JsonMasterLab item1, JsonMasterLab item2) {
-                return item1.getProductShortName().compareToIgnoreCase(item2.getProductShortName());
-            }
-        });
+        Collections.sort(masterLabArrayList, (item1, item2) -> item1.getProductShortName().compareToIgnoreCase(item2.getProductShortName()));
         testListAdapter = new TestListAdapter(getActivity(), masterLabArrayList, this);
         lv_all_tests.setAdapter(testListAdapter);
         testListAutoComplete = new TestListAutoComplete(getActivity(), masterLabArrayList);
@@ -206,12 +196,7 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
     }
 
     private void sortListData(ArrayList<DataObj> dataObjs) {
-        Collections.sort(dataObjs, new Comparator<DataObj>() {
-            @Override
-            public int compare(DataObj item1, DataObj item2) {
-                return item1.getShortName().compareToIgnoreCase(item2.getShortName());
-            }
-        });
+        Collections.sort(dataObjs, (item1, item2) -> item1.getShortName().compareToIgnoreCase(item2.getShortName()));
     }
 
     @Override
@@ -219,7 +204,6 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
         selectedList.remove(pos);
         selectItemListAdapter.notifyDataSetChanged();
         new CustomToast().showToast(getActivity(), "Record deleted from List");
-
     }
 
     @Override
@@ -229,8 +213,11 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
         showProgress();
         MasterLabApiCalls masterLabApiCalls = new MasterLabApiCalls();
         masterLabApiCalls.setMasterLabPresenter(this);
-        masterLabApiCalls.flag(AppInitialize.getDeviceID(), AppInitialize.getEmail(),
-                AppInitialize.getAuth(), masterLabArrayList.get(pos));
+        masterLabApiCalls.flag(
+            AppInitialize.getDeviceID(),
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
+            masterLabArrayList.get(pos));
     }
 
     @Override
@@ -273,7 +260,6 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
             }
         }
     }
-
 
     @Override
     public void onDetach() {

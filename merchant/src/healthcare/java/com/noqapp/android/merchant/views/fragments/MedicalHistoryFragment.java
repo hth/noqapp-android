@@ -31,8 +31,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MedicalHistoryFragment extends BaseFragment implements MedicalRecordListPresenter,
-        MedicalHistoryAdapter.HistoryUpdate {
+public class MedicalHistoryFragment
+    extends BaseFragment
+    implements MedicalRecordListPresenter, MedicalHistoryAdapter.HistoryUpdate {
     private ProgressBar pb_history;
     private ListView listview;
     private TextView tv_empty_list;
@@ -42,8 +43,7 @@ public class MedicalHistoryFragment extends BaseFragment implements MedicalRecor
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.frag_medical_history, container, false);
         pb_history = view.findViewById(R.id.pb_history);
@@ -59,9 +59,11 @@ public class MedicalHistoryFragment extends BaseFragment implements MedicalRecor
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (new NetworkUtil(getActivity()).isOnline()) {
-            medicalHistoryApiCalls.historical(AppInitialize.getDeviceID(), AppInitialize.getEmail(),
-                    AppInitialize.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-
+            medicalHistoryApiCalls.historical(
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
+                new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -72,15 +74,12 @@ public class MedicalHistoryFragment extends BaseFragment implements MedicalRecor
         Log.d("data", jsonMedicalRecordList.toString());
         if (!jsonMedicalRecordList.getJsonMedicalRecords().isEmpty()) {
             List<JsonMedicalRecord> jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
-
-            Collections.sort(jsonMedicalRecords, new Comparator<JsonMedicalRecord>() {
-                public int compare(JsonMedicalRecord o1, JsonMedicalRecord o2) {
-                    try {
-                        return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getCreateDate()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return 0;
-                    }
+            Collections.sort(jsonMedicalRecords, (o1, o2) -> {
+                try {
+                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getCreateDate()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
                 }
             });
             MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(getActivity(), jsonMedicalRecords, this);
@@ -125,7 +124,6 @@ public class MedicalHistoryFragment extends BaseFragment implements MedicalRecor
         pb_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
     }
 
-
     public void updateList() {
 //         if (isDental) {
 //            medicalHistoryApiCalls.historicalFiltered(BaseLaunchActivity.getDeviceID(),
@@ -133,9 +131,10 @@ public class MedicalHistoryFragment extends BaseFragment implements MedicalRecor
 //                    LaunchActivity.getLaunchActivity().getAuth(), bizCategoryId,
 //                    new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
 //        }
-        medicalHistoryApiCalls.historical(AppInitialize.getDeviceID(), AppInitialize.getEmail(),
-                AppInitialize.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-
-
+        medicalHistoryApiCalls.historical(
+            AppInitialize.getDeviceID(),
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
+            new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
     }
 }

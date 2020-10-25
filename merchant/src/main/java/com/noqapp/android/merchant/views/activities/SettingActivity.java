@@ -906,14 +906,11 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(SettingActivity.this, R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                    if (selectedHour == 0 && selectedMinute == 0) {
-                        new CustomToast().showToast(SettingActivity.this, getString(R.string.error_time));
-                    } else {
-                        textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
-                    }
+            mTimePicker = new TimePickerDialog(SettingActivity.this, R.style.TimePickerTheme, (timePicker, selectedHour, selectedMinute) -> {
+                if (selectedHour == 0 && selectedMinute == 0) {
+                    new CustomToast().showToast(SettingActivity.this, getString(R.string.error_time));
+                } else {
+                    textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                 }
             }, hour, minute, false);//Yes 24 hour time
             //mTimePicker.setTitle("Select Time");
@@ -992,8 +989,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     }
 
     private boolean isSpecificSettingEditAllowed() {
-        return (AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER) ||
-                (AppInitialize.getUserLevel() == UserLevelEnum.Q_SUPERVISOR);
+        return AppInitialize.getUserLevel() == UserLevelEnum.S_MANAGER || AppInitialize.getUserLevel() == UserLevelEnum.Q_SUPERVISOR;
     }
 
     private boolean validateLunchTime() {
