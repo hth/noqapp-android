@@ -15,6 +15,7 @@ public interface DeviceRegistrationApiUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_APP_ACCESS_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
