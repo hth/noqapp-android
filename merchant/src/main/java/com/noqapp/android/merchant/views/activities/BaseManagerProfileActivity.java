@@ -57,7 +57,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class BaseManagerProfileActivity extends BaseActivity implements View.OnClickListener,
-        MerchantPresenter, ImageUploadPresenter {
+    MerchantPresenter, ImageUploadPresenter {
 
     private TextView tv_profile_name;
     private Button tv_remove_image;
@@ -65,7 +65,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
     private final int SELECT_PICTURE = 110;
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -96,9 +96,9 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
             setProgressMessage("Fetching profile...");
             merchantProfileApiCalls.setMerchantPresenter(this);
             merchantProfileApiCalls.fetch(
-                    UserUtils.getDeviceId(),
-                    AppInitialize.getEmail(),
-                    AppInitialize.getAuth());
+                UserUtils.getDeviceId(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth());
         }
     }
 
@@ -166,8 +166,8 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
-                        .into(iv_profile);
+                    .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
+                    .into(iv_profile);
                 tv_remove_image.setVisibility(View.VISIBLE);
             } else {
                 tv_remove_image.setVisibility(View.GONE);
@@ -191,7 +191,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
                 setProgressMessage("Removing profile image");
                 merchantProfileApiCalls.setImageUploadPresenter(this);
                 merchantProfileApiCalls.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                        UserUtils.getAuth(), new UpdateProfile().setQueueUserId(AppInitialize.getUserProfile().getQueueUserId()));
+                    UserUtils.getAuth(), new UpdateProfile().setQueueUserId(AppInitialize.getUserProfile().getQueueUserId()));
             }
             break;
         }
@@ -291,9 +291,9 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
 
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
+            this,
+            STORAGE_PERMISSION_PERMS,
+            STORAGE_PERMISSION_CODE);
     }
 
     @Override

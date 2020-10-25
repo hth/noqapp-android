@@ -58,29 +58,29 @@ import com.noqapp.android.merchant.views.pojos.Receipt;
 import org.apache.commons.lang3.StringUtils;
 
 public class OrderDetailActivity
-        extends BaseActivity
-        implements QueuePaymentPresenter, QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponApplyRemovePresenter {
+    extends BaseActivity
+    implements QueuePaymentPresenter, QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponApplyRemovePresenter {
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private TextView tv_cost, tv_order_state, tv_transaction_id;
     private Spinner sp_payment_mode;
 
     private String[] payment_modes = {
-            "Cash",
-            "Cheque",
-            "Credit Card",
-            "Debit Card",
-            "Internet Banking",
-            "Paytm"
+        "Cash",
+        "Cheque",
+        "Credit Card",
+        "Debit Card",
+        "Internet Banking",
+        "Paytm"
     };
 
     private PaymentModeEnum[] payment_modes_enum = {
-            PaymentModeEnum.CA,
-            PaymentModeEnum.CQ,
-            PaymentModeEnum.CC,
-            PaymentModeEnum.DC,
-            PaymentModeEnum.NTB,
-            PaymentModeEnum.PTM
+        PaymentModeEnum.CA,
+        PaymentModeEnum.CQ,
+        PaymentModeEnum.CC,
+        PaymentModeEnum.DC,
+        PaymentModeEnum.NTB,
+        PaymentModeEnum.PTM
     };
 
     private View rl_payment;
@@ -192,15 +192,15 @@ public class OrderDetailActivity
                         couponApiCalls.setCouponApplyRemovePresenter(OrderDetailActivity.this);
 
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
-                                .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                                .setCouponId(jsonPurchaseOrder.getCouponId())
-                                .setCodeQR(codeQR)
-                                .setTransactionId(jsonQueuedPerson.getTransactionId());
+                            .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                            .setCouponId(jsonPurchaseOrder.getCouponId())
+                            .setCodeQR(codeQR)
+                            .setTransactionId(jsonQueuedPerson.getTransactionId());
 
                         couponApiCalls.remove(AppInitialize.getDeviceID(),
-                                AppInitialize.getEmail(),
-                                AppInitialize.getAuth(),
-                                couponOnOrder);
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
+                            couponOnOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                     }
@@ -241,20 +241,20 @@ public class OrderDetailActivity
                         setProgressMessage("Starting payment refund...");
                         setProgressCancel(false);
                         JsonQueuedPerson jqp = new JsonQueuedPerson()
-                                .setQueueUserId(jsonQueuedPerson.getQueueUserId())
-                                .setToken(jsonQueuedPerson.getToken());
+                            .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                            .setToken(jsonQueuedPerson.getToken());
 
                         JsonPurchaseOrder jpo = new JsonPurchaseOrder()
-                                .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                                .setCodeQR(codeQR)
-                                .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
-                                .setToken(jsonQueuedPerson.getToken())
-                                .setTransactionId(jsonQueuedPerson.getTransactionId());
+                            .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                            .setCodeQR(codeQR)
+                            .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                            .setToken(jsonQueuedPerson.getToken())
+                            .setTransactionId(jsonQueuedPerson.getTransactionId());
                         jqp.setJsonPurchaseOrder(jpo);
                         manageQueueApiCalls.cancel(AppInitialize.getDeviceID(),
-                                AppInitialize.getEmail(),
-                                AppInitialize.getAuth(),
-                                jqp);
+                            AppInitialize.getEmail(),
+                            AppInitialize.getAuth(),
+                            jqp);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                     }
@@ -281,9 +281,7 @@ public class OrderDetailActivity
             if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState()) {
                 new CustomToast().showToast(OrderDetailActivity.this, "Payment not allowed on cancelled order.");
             } else {
-                if (QueueUserStateEnum.Q == jsonQueuedPerson.getQueueUserState()
-                        || QueueUserStateEnum.S == jsonQueuedPerson.getQueueUserState()
-                ) {
+                if (QueueUserStateEnum.Q == jsonQueuedPerson.getQueueUserState() || QueueUserStateEnum.S == jsonQueuedPerson.getQueueUserState()) {
                     ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
@@ -293,20 +291,20 @@ public class OrderDetailActivity
                                 setProgressMessage("Starting payment...");
                                 setProgressCancel(false);
                                 JsonQueuedPerson jqp = new JsonQueuedPerson()
-                                        .setQueueUserId(jsonQueuedPerson.getQueueUserId())
-                                        .setToken(jsonQueuedPerson.getToken());
+                                    .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                                    .setToken(jsonQueuedPerson.getToken());
 
                                 JsonPurchaseOrder jpo = new JsonPurchaseOrder()
-                                        .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                                        .setCodeQR(codeQR)
-                                        .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
-                                        .setTransactionId(jsonQueuedPerson.getTransactionId())
-                                        .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                                    .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                                    .setCodeQR(codeQR)
+                                    .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                                    .setTransactionId(jsonQueuedPerson.getTransactionId())
+                                    .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
                                 jqp.setJsonPurchaseOrder(jpo);
                                 manageQueueApiCalls.counterPayment(AppInitialize.getDeviceID(),
-                                        AppInitialize.getEmail(),
-                                        AppInitialize.getAuth(),
-                                        jqp);
+                                    AppInitialize.getEmail(),
+                                    AppInitialize.getAuth(),
+                                    jqp);
                             } else {
                                 ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                             }
@@ -344,9 +342,11 @@ public class OrderDetailActivity
                     receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
                     receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
                     receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
-                    receiptInfoApiCalls.detail(AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth(), receipt);
+                    receiptInfoApiCalls.detail(
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
+                        receipt);
                 } else {
                     permissionHelper.requestStoragePermission();
                 }
@@ -362,8 +362,8 @@ public class OrderDetailActivity
         tv_token.setText("Token/Order No. " + jsonQueuedPerson.getDisplayToken());
         tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress())
-                ? getApplicationContext().getString(R.string.name_unavailable)
-                : jsonPurchaseOrder.getDeliveryAddress()));
+            ? getApplicationContext().getString(R.string.name_unavailable)
+            : jsonPurchaseOrder.getDeliveryAddress()));
 
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
@@ -383,8 +383,8 @@ public class OrderDetailActivity
             btn_remove_discount.setVisibility(View.GONE);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
+            PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
+            PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
@@ -395,12 +395,12 @@ public class OrderDetailActivity
         }
 
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState()
-                ? getApplicationContext().getString(R.string.name_unavailable)
-                : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+            ? getApplicationContext().getString(R.string.name_unavailable)
+            : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
 
         tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId()
-                ? getApplicationContext().getString(R.string.name_unavailable)
-                : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
+            ? getApplicationContext().getString(R.string.name_unavailable)
+            : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
 
         if (null == jsonPurchaseOrder.getTransactionVia()) {
             tv_transaction_via.setText(getApplicationContext().getString(R.string.name_unavailable));
@@ -563,15 +563,15 @@ public class OrderDetailActivity
                     couponApiCalls.setCouponApplyRemovePresenter(this);
 
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
-                            .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                            .setCouponId(jsonCoupon.getCouponId())
-                            .setCodeQR(codeQR)
-                            .setTransactionId(jsonQueuedPerson.getTransactionId());
+                        .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                        .setCouponId(jsonCoupon.getCouponId())
+                        .setCodeQR(codeQR)
+                        .setTransactionId(jsonQueuedPerson.getTransactionId());
 
                     couponApiCalls.apply(AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth(),
-                            couponOnOrder);
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
+                        couponOnOrder);
                 } else {
                     ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                 }

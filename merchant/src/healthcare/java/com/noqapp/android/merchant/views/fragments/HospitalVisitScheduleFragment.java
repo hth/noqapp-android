@@ -38,8 +38,8 @@ import java.util.List;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 public class HospitalVisitScheduleFragment
-        extends BaseFragment
-        implements HospitalVisitScheduleListAdapter.OnItemClickListener, HospitalVisitSchedulePresenter {
+    extends BaseFragment
+    implements HospitalVisitScheduleListAdapter.OnItemClickListener, HospitalVisitSchedulePresenter {
 
     private List<JsonHospitalVisitSchedule> listData;
     private RecyclerView rcv_hospital_visit;
@@ -110,10 +110,10 @@ public class HospitalVisitScheduleFragment
                     hospitalVisitFor.setQid(getArguments().getString("qUserId"));
                     MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
                     medicalHistoryApiCalls.modifyVisitingFor(
-                            AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth(),
-                            hospitalVisitFor);
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
+                        hospitalVisitFor);
                     mAlertDialog.dismiss();
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());

@@ -52,8 +52,10 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         if (null != AppInitialize.getUserProfile()) {
-            holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                    PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
+            holder.tv_customer_mobile.setText(
+                TextUtils.isEmpty(phoneNo)
+                    ? context.getString(R.string.unregister_user)
+                    : PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
         }
         if (DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(AppInitialize.getUserLevel().name())) {
             if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
@@ -76,8 +78,9 @@ public class AllPatientHistoryAdapter extends RecyclerView.Adapter {
             }
             holder.tv_customer_mobile.setOnClickListener(v -> {
                 if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
-                    AppUtils.makeCall(LaunchActivity.getLaunchActivity(),
-                            PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
+                    AppUtils.makeCall(
+                        LaunchActivity.getLaunchActivity(),
+                        PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
                 }
             });
         } else {

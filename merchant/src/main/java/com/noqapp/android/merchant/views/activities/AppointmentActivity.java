@@ -159,13 +159,9 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
                 m1.setDuration(400);
                 m1.setStartDelay(100); //Optional Delay
                 m1.setInterpolator(new LinearInterpolator());
-                m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
-                        calendarView.requestLayout();
-                    }
-
+                m1.addUpdateListener(animation -> {
+                    ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                    calendarView.requestLayout();
                 });
                 m1.start();
 //                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -191,13 +187,9 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
                 m1.setDuration(400);
                 m1.setStartDelay(100); //Optional Delay
                 m1.setInterpolator(new LinearInterpolator());
-                m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
-                        calendarView.requestLayout();
-                    }
-
+                m1.addUpdateListener(animation -> {
+                    ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                    calendarView.requestLayout();
                 });
                 m1.start();
 //                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -242,19 +234,14 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
             e.printStackTrace();
         }
         // calendarView.setDisabledDays(getDisabledDays());
-        calendarView.setOnDayClickListener(new OnDayClickListener() {
-            @Override
-            public void onDayClick(EventDay eventDay) {
-                if (eventDay.isEnabled() && null != eventDay.getEventObject()) {
-                    scrollInList((JsonSchedule) eventDay.getEventObject());
-                }
+        calendarView.setOnDayClickListener(eventDay -> {
+            if (eventDay.isEnabled() && null != eventDay.getEventObject()) {
+                scrollInList((JsonSchedule) eventDay.getEventObject());
             }
         });
 
         calendarView.setOnPreviousPageChangeListener(() -> fetchEvents(calendarView.getCurrentPageDate()));
-
         calendarView.setOnForwardPageChangeListener(() -> fetchEvents(calendarView.getCurrentPageDate()));
-
         if (new NetworkUtil(this).isOnline()) {
             fetchEvents(Calendar.getInstance());
         } else {
@@ -323,10 +310,11 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForMonth(
-                AppInitialize.getDeviceID(),
-                AppInitialize.getEmail(),
-                AppInitialize.getAuth(),
-                AppUtils.dateFormatAsYYYY_MM_DD(calendar), codeRQ);
+            AppInitialize.getDeviceID(),
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
+            AppUtils.dateFormatAsYYYY_MM_DD(calendar),
+            codeRQ);
     }
 
     @Override

@@ -47,15 +47,23 @@ import java.util.List;
 import java.util.Random;
 
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
-
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-                            PeopleInQAdapterClick peopleInQAdapterClick, String codeQR,
-                            JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
+    public PeopleInQAdapter(
+        List<JsonQueuedPerson> data,
+        Context context,
+        PeopleInQAdapterClick peopleInQAdapterClick,
+        String codeQR,
+        JsonDataVisibility jsonDataVisibility,
+        JsonPaymentPermission jsonPaymentPermission
+    ) {
         super(data, context, peopleInQAdapterClick, codeQR, jsonDataVisibility, jsonPaymentPermission);
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-                            PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
+    public PeopleInQAdapter(
+        List<JsonQueuedPerson> data,
+        Context context,
+        PeopleInQAdapterClick peopleInQAdapterClick,
+        JsonTopic jsonTopic
+    ) {
         super(data, context, peopleInQAdapterClick, jsonTopic);
     }
 
@@ -87,9 +95,10 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                             changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
 
                             manageQueueApiCalls.changeUserInQueue(
-                                    AppInitialize.getDeviceID(),
-                                    AppInitialize.getEmail(),
-                                    AppInitialize.getAuth(), changeUserInQueue);
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
+                                changeUserInQueue);
                             mAlertDialog.dismiss();
                         } else {
                             mAlertDialog.dismiss();
@@ -158,14 +167,16 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
                         if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
                             businessCustomerApiCalls.addId(
-                                    AppInitialize.getDeviceID(),
-                                    AppInitialize.getEmail(),
-                                    AppInitialize.getAuth(), jsonBusinessCustomer);
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
+                                jsonBusinessCustomer);
                         } else {
                             businessCustomerApiCalls.editId(
-                                    AppInitialize.getDeviceID(),
-                                    AppInitialize.getEmail(),
-                                    AppInitialize.getAuth(), jsonBusinessCustomer);
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
+                                jsonBusinessCustomer);
                         }
                         btn_update.setClickable(false);
                         mAlertDialog.dismiss();
@@ -202,7 +213,6 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 context.startActivity(intent);
                 ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
             }
-
         } else {
             if (QueueUserStateEnum.Q == jsonQueuedPerson.getQueueUserState() || QueueUserStateEnum.S == jsonQueuedPerson.getQueueUserState()) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
@@ -247,7 +257,6 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 } else {
                     new CustomToast().showToast(context, context.getString(R.string.msg_client_already_acquired));
                 }
-
             } else {
                 new CustomToast().showToast(context, "Currently you are not serving this person");
             }
@@ -255,8 +264,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId, String action,
-                         String codeQR) {
+    void approveCustomer(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId, String action, String codeQR) {
         // Do-nothing: Anjali take a look.
     }
 }

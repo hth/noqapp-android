@@ -42,12 +42,11 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_col
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class AppointmentActivityNew extends BaseActivity implements
-        AppointmentListAdapter.OnItemClickListener, AppointmentPresenter {
+    AppointmentListAdapter.OnItemClickListener, AppointmentPresenter {
 
     private TextView tv_header, tv_date;
     private RecyclerView rcv_appointments;
-    private TextView tv_appointment_accepted, tv_total_appointment,
-            tv_appointment_cancelled, tv_appointment_pending;
+    private TextView tv_appointment_accepted, tv_total_appointment, tv_appointment_cancelled, tv_appointment_pending;
     private ScheduleApiCalls scheduleApiCalls;
     private SegmentedControl sc_filter;
     private ArrayList<String> filter_data = new ArrayList<>();
@@ -124,15 +123,14 @@ public class AppointmentActivityNew extends BaseActivity implements
         scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForDay(AppInitialize.getDeviceID(),
-                AppInitialize.getEmail(),
-                AppInitialize.getAuth(),
-                getIntent().getStringExtra("selectedDate"),
-                getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
+            getIntent().getStringExtra("selectedDate"),
+            getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
     }
 
     @Override
     public void appointmentAccept(JsonSchedule jsonSchedule, int pos) {
-
         if (new NetworkUtil(this).isOnline()) {
             ShowCustomDialog showDialog = new ShowCustomDialog(this);
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
@@ -141,9 +139,11 @@ public class AppointmentActivityNew extends BaseActivity implements
                     setProgressMessage("Accepting appointment...");
                     showProgress();
                     jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.A);
-                    scheduleApiCalls.scheduleAction(AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth(), jsonSchedule);
+                    scheduleApiCalls.scheduleAction(
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
+                        jsonSchedule);
                 }
 
                 @Override
@@ -167,9 +167,11 @@ public class AppointmentActivityNew extends BaseActivity implements
                     setProgressMessage("Rejecting appointment...");
                     showProgress();
                     jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.R);
-                    scheduleApiCalls.scheduleAction(AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth(), jsonSchedule);
+                    scheduleApiCalls.scheduleAction(
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
+                        jsonSchedule);
                 }
 
                 @Override
@@ -188,13 +190,13 @@ public class AppointmentActivityNew extends BaseActivity implements
         setProgressMessage("Editing appointment...");
         showProgress();
         BookSchedule bookSchedule = new BookSchedule()
-                .setBusinessCustomer(null)
-                .setJsonSchedule(jsonSchedule)
-                .setBookActionType(ActionTypeEnum.EDIT);
+            .setBusinessCustomer(null)
+            .setJsonSchedule(jsonSchedule)
+            .setBookActionType(ActionTypeEnum.EDIT);
         scheduleApiCalls.bookSchedule(AppInitialize.getDeviceID(),
-                AppInitialize.getEmail(),
-                AppInitialize.getAuth(),
-                bookSchedule);
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
+            bookSchedule);
     }
 
     @Override

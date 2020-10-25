@@ -69,7 +69,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec, ll_path;
     private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono, acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
     private PreferredStoreList preferredStoreList;
-    private ListView list_view,list_view_wd;
+    private ListView list_view, list_view_wd;
     private TextView tv_tr, tv_nfp;
     private LinearLayout ll_wd;
 
@@ -145,20 +145,17 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
 
         setProgressMessage("Uploading data...");
 
-        sc_follow_up.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
-                    tv_followup.setText("in " + followup + " days");
-                    MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFollowup(tv_followup.getText().toString());
-                }
-                if (isReselected) {
-                    followup = "";
-                    tv_followup.setText("");
-                    MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFollowup("");
-                    sc_follow_up.clearSelection();
-                }
+        sc_follow_up.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
+            if (isSelected) {
+                followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
+                tv_followup.setText("in " + followup + " days");
+                MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFollowup(tv_followup.getText().toString());
+            }
+            if (isReselected) {
+                followup = "";
+                tv_followup.setText("");
+                MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFollowup("");
+                sc_follow_up.clearSelection();
             }
         });
 
@@ -199,14 +196,14 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             jsonMedicalRecord.setNoteToDiagnoser(caseHistory.getNoteToDiagnoser());
 
             JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
-                    .setBloodPressure(caseHistory.getBloodPressure())
-                    .setPulse(caseHistory.getPulse())
-                    .setWeight(caseHistory.getWeight())
-                    .setOxygen(caseHistory.getOxygenLevel())
-                    .setTemperature(caseHistory.getTemperature())
-                    .setHeight(caseHistory.getHeight())
-                    .setRespiratory(caseHistory.getRespiratory())
-                    .setPhysicalFilled(caseHistory.isPhysicalFilled());
+                .setBloodPressure(caseHistory.getBloodPressure())
+                .setPulse(caseHistory.getPulse())
+                .setWeight(caseHistory.getWeight())
+                .setOxygen(caseHistory.getOxygenLevel())
+                .setTemperature(caseHistory.getTemperature())
+                .setHeight(caseHistory.getHeight())
+                .setRespiratory(caseHistory.getRespiratory())
+                .setPhysicalFilled(caseHistory.isPhysicalFilled());
 
             if (caseHistory.getPathologyList().size() > 0) {
                 ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
@@ -365,10 +362,10 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
                 jsonMedicalRecord.setFollowUpInDays(null);
             }
             medicalHistoryApiCalls.update(
-                    AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(),
-                    AppInitialize.getAuth(),
-                    jsonMedicalRecord);
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
+                jsonMedicalRecord);
         });
         return v;
     }
@@ -449,7 +446,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             if (permissionHelper.isStoragePermissionAllowed()) {
                 PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
                 pdfGenerator.createPdf(caseHistory, TextUtils.isEmpty(followup) ? 0 : Integer.parseInt(followup),
-                        MedicalCaseActivity.getMedicalCaseActivity().isDental());
+                    MedicalCaseActivity.getMedicalCaseActivity().isDental());
             } else {
                 permissionHelper.requestStoragePermission();
             }
@@ -530,7 +527,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
 
     private int getSelectionPos(List<JsonPreferredBusiness> temp, HealthCareServiceEnum hcse) {
         PreferredStoreInfo preferredStoreInfo = MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getPreferredStoreInfoHashMap().
-                get(MedicalCaseActivity.getMedicalCaseActivity().codeQR);
+            get(MedicalCaseActivity.getMedicalCaseActivity().codeQR);
         if (null == preferredStoreInfo) {
             return 0;
         }
@@ -651,7 +648,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private void parseDentalDiagnosis(String str) {
         try {
             ArrayList<ToothWorkDone> toothWorkDoneList = new ArrayList<>();
-            String[] temp = str.split("\\|",-1);
+            String[] temp = str.split("\\|", -1);
             if (temp.length > 0) {
                 for (String act : temp) {
                     if (act.contains(":")) {
@@ -662,7 +659,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
                     }
                 }
             }
-            WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList,true);
+            WorkDoneAdapter workDoneAdapter = new WorkDoneAdapter(getActivity(), toothWorkDoneList, true);
             list_view.setAdapter(workDoneAdapter);
             workDoneAdapter.notifyDataSetChanged();
         } catch (Exception e) {

@@ -136,18 +136,15 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         recordHolder.tv_examination.setText(jsonMedicalRecord.getExamination());
         recordHolder.tv_medicine.setText(getMedicineFormList(jsonMedicalRecord.getMedicalMedicines()));
         if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
-            recordHolder.tv_attachment.setText("" + jsonMedicalRecord.getImages().size());
+            recordHolder.tv_attachment.setText(String.valueOf(jsonMedicalRecord.getImages().size()));
             recordHolder.tv_attachment.setVisibility(View.VISIBLE);
             recordHolder.view_separator.setVisibility(View.VISIBLE);
-            recordHolder.tv_attachment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, SliderActivity.class);
-                    intent.putExtra("imageurls", (ArrayList<String>) jsonMedicalRecord.getImages());
-                    intent.putExtra("isDocument", true);
-                    intent.putExtra("recordReferenceId", jsonMedicalRecord.getRecordReferenceId());
-                    context.startActivity(intent);
-                }
+            recordHolder.tv_attachment.setOnClickListener(v -> {
+                Intent intent = new Intent(context, SliderActivity.class);
+                intent.putExtra("imageurls", (ArrayList<String>) jsonMedicalRecord.getImages());
+                intent.putExtra("isDocument", true);
+                intent.putExtra("recordReferenceId", jsonMedicalRecord.getRecordReferenceId());
+                context.startActivity(intent);
             });
         } else {
             recordHolder.tv_attachment.setText("No Attachment");
@@ -160,17 +157,27 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         recordHolder.ll_pathology.setVisibility(View.GONE);
         recordHolder.ll_mri.setVisibility(View.GONE);
         recordHolder.ll_sono.setVisibility(View.GONE);
-        if (null != jsonMedicalRecord.getMedicalPathologiesLists() && jsonMedicalRecord.getMedicalPathologiesLists().size() > 0
-                && jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages() != null &&
-                jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size() > 0) {
+
+        if (null != jsonMedicalRecord.getMedicalPathologiesLists()
+            && jsonMedicalRecord.getMedicalPathologiesLists().size() > 0
+            && jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages() != null
+            && jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size() > 0
+        ) {
             recordHolder.tv_attachment_pathology.setText("" + jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size());
             if (TextUtils.isEmpty(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation())) {
                 recordHolder.tv_observation_pathology_label.setText("N/A");
             } else {
                 recordHolder.tv_observation_pathology_label.setText(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation());
             }
-            recordHolder.tv_attachment_pathology.setOnClickListener(v -> callSliderScreen(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages(), jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId()));
-            recordHolder.tv_observation_pathology_label.setOnClickListener(v -> updateObservation(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId(), LabCategoryEnum.PATH));
+
+            recordHolder.tv_attachment_pathology.setOnClickListener(v -> callSliderScreen(
+                jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages(),
+                jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId()));
+
+            recordHolder.tv_observation_pathology_label.setOnClickListener(v -> updateObservation(
+                jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId(),
+                LabCategoryEnum.PATH));
+
             recordHolder.ll_pathology.setVisibility(View.VISIBLE);
         } else {
             recordHolder.tv_attachment_pathology.setText("No Attachment");
@@ -277,8 +284,9 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         Log.v(" updateObservation", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             new CustomToast().showToast(context, "Observation updated successfully");
-            if (null != historyUpdate)
+            if (null != historyUpdate) {
                 historyUpdate.updateList();
+            }
         } else {
             new CustomToast().showToast(context, "Failed to update Observation");
         }
@@ -287,16 +295,18 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
     @Override
     public void authenticationFailure() {
         AppUtils.authenticationProcessing();
-        if (null != historyUpdate)
+        if (null != historyUpdate) {
             historyUpdate.showProgress(false);
+        }
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         // dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(context, errorCode);
-        if (null != historyUpdate)
+        if (null != historyUpdate) {
             historyUpdate.showProgress(false);
+        }
     }
 
     @Override
@@ -304,8 +314,10 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         if (null != eej) {
             new ErrorResponseHandler().processError(context, eej);
         }
-        if (null != historyUpdate)
+
+        if (null != historyUpdate) {
             historyUpdate.showProgress(false);
+        }
     }
 
     static class RecordHolder {
@@ -384,8 +396,9 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                             String shortName = strArray[0];
                             String val = strArray[1];
                             String desc = "";
-                            if (strArray.length == 3)
+                            if (strArray.length == 3) {
                                 desc = strArray[2];
+                            }
 
                             if (TextUtils.isEmpty(desc)) {
                                 data += "Having " + shortName + " since last " + val + "." + "\n";
@@ -399,8 +412,9 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (data.endsWith(", "))
+        if (data.endsWith(", ")) {
             data = data.substring(0, data.length() - 2);
+        }
         return data;
     }
 
@@ -421,15 +435,19 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
             if (TextUtils.isEmpty(edt_observation.getText().toString())) {
                 edt_observation.setError(context.getString(R.string.error_all_field_required));
             } else {
-                if (null != historyUpdate)
+                if (null != historyUpdate) {
                     historyUpdate.showProgress(true);
+                }
                 LabFile labFile = new LabFile();
                 labFile.setRecordReferenceId(recordReferenceId);
                 labFile.setObservation(edt_observation.getText().toString());
                 labFile.setLabCategory(labCategoryEnum);
                 MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(updateObservationPresenter);
-                medicalHistoryApiCalls.updateObservation(AppInitialize.getDeviceID(),
-                        AppInitialize.getEmail(), AppInitialize.getAuth(), labFile);
+                medicalHistoryApiCalls.updateObservation(
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
+                    labFile);
                 btn_update.setClickable(false);
                 mAlertDialog.dismiss();
             }

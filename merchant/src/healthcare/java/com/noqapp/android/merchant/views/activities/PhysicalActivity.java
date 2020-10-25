@@ -44,9 +44,9 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
-public class PhysicalActivity extends BaseActivity implements
-        MedicalRecordPresenter, JsonMedicalRecordPresenter,
-        MeterView.MeterViewValueChanged, ReceiptInfoPresenter {
+public class PhysicalActivity
+    extends BaseActivity
+    implements MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged, ReceiptInfoPresenter {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_followup, tv_rr, tv_height;
     private DiscreteSeekBar dsb_bp_low, dsb_bp_high, dsb_rr, dsb_height;
@@ -95,7 +95,6 @@ public class PhysicalActivity extends BaseActivity implements
                 startActivity(intent);
                 finish();
             }
-
         });
 
         tv_title.setText(jsonQueuedPerson.getCustomerName());
@@ -105,7 +104,6 @@ public class PhysicalActivity extends BaseActivity implements
         mv_temperature2 = findViewById(R.id.mv_temperature2);
         mv_temperature1 = findViewById(R.id.mv_temperature1);
         mv_oxygen = findViewById(R.id.mv_oxygen);
-
 
         tv_followup = findViewById(R.id.tv_followup);
         tv_weight = findViewById(R.id.tv_weight);
@@ -184,7 +182,6 @@ public class PhysicalActivity extends BaseActivity implements
         mv_weight2.setMeterViewValueChanged(this);
         mv_oxygen.setMeterViewValueChanged(this);
 
-
         meterViewValueChanged(mv_pulse);
         meterViewValueChanged(mv_weight1);
         meterViewValueChanged(mv_temperature1);
@@ -245,12 +242,12 @@ public class PhysicalActivity extends BaseActivity implements
                 jsonMedicalPhysical.setHeight(null);
             }
             if (null != jsonMedicalPhysical.getPulse()
-                    || null != jsonMedicalPhysical.getBloodPressure()
-                    || null != jsonMedicalPhysical.getRespiratory()
-                    || null != jsonMedicalPhysical.getHeight()
-                    || null != jsonMedicalPhysical.getWeight()
-                    || null != jsonMedicalPhysical.getTemperature()
-                    || null != jsonMedicalPhysical.getOxygen()) {
+                || null != jsonMedicalPhysical.getBloodPressure()
+                || null != jsonMedicalPhysical.getRespiratory()
+                || null != jsonMedicalPhysical.getHeight()
+                || null != jsonMedicalPhysical.getWeight()
+                || null != jsonMedicalPhysical.getTemperature()
+                || null != jsonMedicalPhysical.getOxygen()) {
                 jsonMedicalPhysical.setPhysicalFilled(true);
             }
             jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
@@ -258,10 +255,10 @@ public class PhysicalActivity extends BaseActivity implements
                 jsonMedicalRecord.setFollowUpInDays(followup);
             }
             medicalHistoryApiCalls.update(
-                    AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(),
-                    AppInitialize.getAuth(),
-                    jsonMedicalRecord);
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
+                jsonMedicalRecord);
         });
         if (new NetworkUtil(this).isOnline()) {
             showProgress();
@@ -269,10 +266,11 @@ public class PhysicalActivity extends BaseActivity implements
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
             medicalHistoryApiCalls.setJsonMedicalRecordPresenter(this);
-            medicalHistoryApiCalls.retrieveMedicalRecord(AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(),
-                    AppInitialize.getAuth(), jsonMedicalRecord);
-
+            medicalHistoryApiCalls.retrieveMedicalRecord(
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
+                jsonMedicalRecord);
         } else {
             ShowAlertInformation.showNetworkDialog(PhysicalActivity.this);
         }
@@ -292,8 +290,11 @@ public class PhysicalActivity extends BaseActivity implements
                     receipt.setCodeQR(codeQR);
                     receipt.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                     receipt.setTransactionId(jsonQueuedPerson.getTransactionId());
-                    receiptInfoApiCalls.detail(AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(), AppInitialize.getAuth(), receipt);
+                    receiptInfoApiCalls.detail(
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
+                        receipt);
                 }
             } else {
                 permissionHelper.requestStoragePermission();
@@ -427,7 +428,6 @@ public class PhysicalActivity extends BaseActivity implements
             case R.id.mv_oxygen:
                 tv_oxygen.setText("Oxygen: " + mv_oxygen.getValueAsString());
                 break;
-
             default:
                 break;
         }

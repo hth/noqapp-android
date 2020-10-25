@@ -66,25 +66,26 @@ public class AppointmentListAdapter extends RecyclerView.Adapter {
         JsonSchedule jsonSchedule = (JsonSchedule) dataSet.get(position).getEventObject();
         holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
         holder.tv_gender_age.setText(AppUtils.calculateAge(jsonSchedule.getJsonProfile().
-                getBirthday()) + ", " + jsonSchedule.getJsonProfile().getGender().name());
+            getBirthday()) + ", " + jsonSchedule.getJsonProfile().getGender().name());
         holder.tv_customer_mobile.setText(
-                TextUtils.isEmpty(jsonSchedule.getJsonProfile().getPhoneRaw())
-                        ? context.getString(R.string.unregister_user)
-                        : PhoneFormatterUtil.formatNumber(AppInitialize.
-                                getUserProfile().getCountryShortName(),
-                        jsonSchedule.getJsonProfile().getPhoneRaw()));
+            TextUtils.isEmpty(jsonSchedule.getJsonProfile().getPhoneRaw())
+                ? context.getString(R.string.unregister_user)
+                : PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), jsonSchedule.getJsonProfile().getPhoneRaw()));
         holder.tv_customer_mobile.setOnClickListener(v -> {
-            if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                AppUtils.makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.
-                        formatNumber(AppInitialize.getUserProfile().getCountryShortName(),
-                                jsonSchedule.getJsonProfile().getPhoneRaw()));
+            if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user))) {
+                AppUtils.makeCall(
+                    LaunchActivity.getLaunchActivity(),
+                    PhoneFormatterUtil.formatNumber(
+                        AppInitialize.getUserProfile().getCountryShortName(),
+                        jsonSchedule.getJsonProfile().getPhoneRaw()));
+            }
         });
 
         try {
             if (!TextUtils.isEmpty(jsonSchedule.getJsonProfile().getProfileImage())) {
                 Picasso.get()
-                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonSchedule.getJsonProfile().getProfileImage())
-                        .into(holder.iv_profile);
+                    .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonSchedule.getJsonProfile().getProfileImage())
+                    .into(holder.iv_profile);
 
             } else {
                 Picasso.get().load(R.drawable.profile_blue).into(holder.iv_profile);
@@ -95,10 +96,12 @@ public class AppointmentListAdapter extends RecyclerView.Adapter {
         }
 
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime())
-                + " - " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getEndTime()));
+            + " - " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getEndTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
-        holder.tv_chief_complaints.setText(TextUtils.isEmpty(jsonSchedule.getChiefComplain())
-                ? context.getString(R.string.unregister_user) : jsonSchedule.getChiefComplain());
+        holder.tv_chief_complaints.setText(
+            TextUtils.isEmpty(jsonSchedule.getChiefComplain())
+                ? context.getString(R.string.unregister_user)
+                : jsonSchedule.getChiefComplain());
         holder.rl_edit_complaints.setOnClickListener(v -> showAddComplaintsDialog(context, holder.tv_chief_complaints, jsonSchedule, position));
         holder.card_view.setCardBackgroundColor(Color.WHITE);
         holder.rl_accept.setBackgroundColor(Color.WHITE);
@@ -161,7 +164,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter {
             }
         });
 
-        holder.tv_appointment_time.setOnClickListener(v -> listener.appointmentReschedule(jsonSchedule,position));
+        holder.tv_appointment_time.setOnClickListener(v -> listener.appointmentReschedule(jsonSchedule, position));
     }
 
     @Override
@@ -212,7 +215,6 @@ public class AppointmentListAdapter extends RecyclerView.Adapter {
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
-
 
     private void showAddComplaintsDialog(final Context mContext, TextView textView, JsonSchedule jsonSchedule, int position) {
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -61,7 +60,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class DocumentUploadActivity extends BaseActivity implements View.OnClickListener,
-        ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {
+    ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {
 
     private static final int PICK_IMAGE_CAMERA = 101;
     private static final int PICK_IMAGE_GALLERY = 102;
@@ -119,9 +118,12 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         showProgress();
         setProgressMessage("Fetching documents...");
         medicalHistoryApiCalls.setJsonMedicalRecordPresenter(this);
-        medicalHistoryApiCalls.existsMedicalRecord(AppInitialize.getDeviceID(),
-                AppInitialize.getEmail(), AppInitialize.getAuth(), codeQR, recordReferenceId);
-
+        medicalHistoryApiCalls.existsMedicalRecord(
+            AppInitialize.getDeviceID(),
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
+            codeQR,
+            recordReferenceId);
     }
 
 
@@ -168,10 +170,8 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
             ContentResolver cr = this.getContentResolver();
             mimeType = cr.getType(uri);
         } else {
-            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
-                    .toString());
-            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                    fileExtension.toLowerCase());
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
         }
         return mimeType;
     }
@@ -182,8 +182,9 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         Log.v("Image upload", "" + jsonResponse);
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             new CustomToast().showToast(this, "Document upload successfully! Change will be reflect after 5 min");
-            if (null == jsonMedicalRecordTemp.getImages())
-                jsonMedicalRecordTemp.setImages(new ArrayList<String>());
+            if (null == jsonMedicalRecordTemp.getImages()) {
+                jsonMedicalRecordTemp.setImages(new ArrayList<>());
+            }
             jsonMedicalRecordTemp.getImages().add(jsonResponse.getData());
             jsonMedicalRecordResponse(jsonMedicalRecordTemp);
         } else {
@@ -229,8 +230,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
 
     private void initProgress() {
         progressDialogImage = new ProgressDialog(this);
-        progressDialogImage.getWindow().setBackgroundDrawable(new
-                ColorDrawable(android.graphics.Color.TRANSPARENT));
+        progressDialogImage.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         progressDialogImage.setIndeterminate(true);
         progressDialogImage.setCancelable(true);
         // progressDialogImage.show();
@@ -250,16 +250,16 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
                 }
                 JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                 jsonMedicalRecord.setRecordReferenceId(recordReferenceId);
-                jsonMedicalRecord.setImages(new ArrayList<String>() {
-                    {
-                        add(imageName);
-                    }
-                });
+                jsonMedicalRecord.setImages(new ArrayList<String>() {{
+                    add(imageName);
+                }});
                 showProgress();
                 setProgressMessage("Deleting image...");
-                medicalHistoryApiCalls.removeImage(AppInitialize.getDeviceID(),
-                        AppInitialize.getEmail(), AppInitialize.getAuth(), jsonMedicalRecord);
-
+                medicalHistoryApiCalls.removeImage(
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
+                    jsonMedicalRecord);
             }
 
             @Override
@@ -276,10 +276,11 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         switch (requestCode) {
             case PermissionUtils.PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Take Photo"))
+                    if (userChoosenTask.equals("Take Photo")) {
                         cameraIntent();
-                    else if (userChoosenTask.equals("Choose from Library"))
+                    } else if (userChoosenTask.equals("Choose from Library")) {
                         galleryIntent();
+                    }
                 } else {
                     //code for deny
                 }
@@ -287,8 +288,9 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
 
             case PERMISSION_REQUEST_CAMERA:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Take Photo"))
+                    if (userChoosenTask.equals("Take Photo")) {
                         cameraIntent();
+                    }
                 } else {
                     //code for deny
                 }
@@ -297,33 +299,32 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
     }
 
     private void selectImage() {
-        final CharSequence[] items = {"Camera", "Choose from Library", //"Select Pdf",
-                "Cancel"};
+        final CharSequence[] items = {
+            "Camera",
+            "Choose from Library", //"Select Pdf",
+            "Cancel"
+        };
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle("Add Photo");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = PermissionUtils.checkPermission(DocumentUploadActivity.this);
-
-                if (items[item].equals("Camera")) {
-                    userChoosenTask = "Camera";
-                    if (result)
-                        cameraIntent();
-
-                } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask = "Choose from Library";
-                    if (result)
-                        galleryIntent();
-
-                } else if (items[item].equals("Select Pdf")) {
-                    userChoosenTask = "Select Pdf";
-                    if (result)
-                        selectPdfIntent();
-
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
+        builder.setItems(items, (dialog, item) -> {
+            boolean result = PermissionUtils.checkPermission(DocumentUploadActivity.this);
+            if (items[item].equals("Camera")) {
+                userChoosenTask = "Camera";
+                if (result) {
+                    cameraIntent();
                 }
+            } else if (items[item].equals("Choose from Library")) {
+                userChoosenTask = "Choose from Library";
+                if (result) {
+                    galleryIntent();
+                }
+            } else if (items[item].equals("Select Pdf")) {
+                userChoosenTask = "Select Pdf";
+                if (result) {
+                    selectPdfIntent();
+                }
+            } else if (items[item].equals("Cancel")) {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -344,15 +345,13 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
     }
 
     private void cameraIntent() {
-        if (ContextCompat.checkSelfPermission(DocumentUploadActivity.this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED) {
+        if (ContextCompat.checkSelfPermission(DocumentUploadActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(DocumentUploadActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
         } else {
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.TITLE, "New Picture");
             values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-            imageUri = getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(intent, PICK_IMAGE_CAMERA);
@@ -376,8 +375,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
@@ -396,7 +394,6 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
                 RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
                 medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             dismissProgress();
@@ -407,8 +404,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
     private void onCaptureImageResult(Intent data) {
         try {
             // Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
-                    getContentResolver(), imageUri);
+            Bitmap thumbnail = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             String path = getRealPathFromURI(imageUri);
@@ -431,7 +427,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
     private void onSelectFromGalleryResult(Intent data) {
         if (data != null) {
             try {
-                 Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                 try {
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     Log.e("file path temp:", convertedPath);
@@ -480,18 +476,18 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
                 progressDialogImage.show();
                 progressDialogImage.setContentView(R.layout.progress_lay);
                 Picasso.get()
-                        .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
-                        .into(iv_large, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                progressDialogImage.dismiss();
-                            }
+                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
+                    .into(iv_large, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            progressDialogImage.dismiss();
+                        }
 
-                            @Override
-                            public void onError(Exception e) {
-                                progressDialogImage.dismiss();
-                            }
-                        });
+                        @Override
+                        public void onError(Exception e) {
+                            progressDialogImage.dismiss();
+                        }
+                    });
                 frame_image.setVisibility(View.VISIBLE);
                 isExpandScreenOpen = true;
             }
@@ -507,7 +503,6 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
     public void imageDeleteClick(String imageUrl) {
         deleteImage(imageUrl);
     }
-
 
     @Override
     public void onBackPressed() {
