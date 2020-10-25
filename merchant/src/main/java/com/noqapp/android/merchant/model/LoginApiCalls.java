@@ -40,8 +40,8 @@ public class LoginApiCalls {
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     loginPresenter.loginResponse(
-                            response.headers().get(APIConstant.Key.XR_MAIL),
-                            response.headers().get(APIConstant.Key.XR_AUTH));
+                        response.headers().get(APIConstant.Key.XR_MAIL),
+                        response.headers().get(APIConstant.Key.XR_AUTH));
 
                     Log.d("Login Response", String.valueOf(response.body()));
                     Log.d("Login Response Mail", String.valueOf(response.headers().get(APIConstant.Key.XR_MAIL)));

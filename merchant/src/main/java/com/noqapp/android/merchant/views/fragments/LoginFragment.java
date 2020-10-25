@@ -52,8 +52,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
-public class LoginFragment extends BaseFragment implements LoginPresenter,
-        MerchantPresenter, DeviceRegistrationPresenter {
+public class LoginFragment
+    extends BaseFragment
+    implements LoginPresenter, MerchantPresenter, DeviceRegistrationPresenter {
 
     private Button btn_login;
     private EditText edt_pwd;
@@ -115,7 +116,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter,
                     showProgress();
                     setProgressMessage("Login in progress..");
                     loginApiCalls.login(email.toLowerCase(), pwd);
-                    //TODO register device after getting QID
 
 //                    Answers.getInstance().logLogin(new LoginEvent()
 //                            .putMethod("Email_Password_Login")
@@ -135,7 +135,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter,
                 iv_show_hide_password.setImageResource(R.drawable.password_hide);
                 //Hide Password
                 edt_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
             }
         });
         return view;
@@ -159,14 +158,16 @@ public class LoginFragment extends BaseFragment implements LoginPresenter,
             AppInitialize.setUserInformation("", "", email, auth, true);
             deviceRegistrationApiCalls.setDeviceRegisterPresenter(this);
             DeviceToken deviceToken = new DeviceToken(
-                    AppInitialize.getTokenFCM(),
-                    Constants.appVersion(),
-                    CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
+                AppInitialize.getTokenFCM(),
+                Constants.appVersion(),
+                CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
+
             deviceRegistrationApiCalls.register(
-                    AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(),
-                    AppInitialize.getAuth(),
-                    deviceToken);
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
+                deviceToken);
+
             setProgressMessage("Fetching your profile...");
         } else {
             dismissProgress();
@@ -228,16 +229,15 @@ public class LoginFragment extends BaseFragment implements LoginPresenter,
                 AppInitialize.setPriorityAccess(priorityAccess);
             }
 
-
-            UserLevelEnum userLevel =  jsonMerchant.getJsonProfile().getUserLevel();
+            UserLevelEnum userLevel = jsonMerchant.getJsonProfile().getUserLevel();
             BusinessTypeEnum businessType = jsonMerchant.getJsonProfile().getBusinessType();
             String packageName = getActivity().getPackageName();
 
             if (userLevel == UserLevelEnum.Q_SUPERVISOR || userLevel == UserLevelEnum.S_MANAGER) {
                 if (
                     (packageName.equalsIgnoreCase("com.noqapp.android.merchant.healthcare") && businessType == BusinessTypeEnum.DO) ||
-                    (packageName.equalsIgnoreCase("com.noqapp.android.merchant") && businessType != BusinessTypeEnum.DO) ||
-                    packageName.equalsIgnoreCase("com.noqapp.android.merchant.tv")
+                        (packageName.equalsIgnoreCase("com.noqapp.android.merchant") && businessType != BusinessTypeEnum.DO) ||
+                        packageName.equalsIgnoreCase("com.noqapp.android.merchant.tv")
                 ) {
                     if (LaunchActivity.isTablet) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
