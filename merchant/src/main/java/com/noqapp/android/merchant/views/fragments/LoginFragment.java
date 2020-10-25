@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
@@ -28,6 +30,7 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.DeviceRegistrationApiCalls;
 import com.noqapp.android.merchant.model.LoginApiCalls;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
@@ -40,6 +43,7 @@ import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.AppInitialize;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.WebViewActivity;
+import com.noqapp.android.merchant.views.interfaces.DeviceRegistrationPresenter;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
@@ -48,7 +52,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
-public class LoginFragment extends BaseFragment implements LoginPresenter, MerchantPresenter {
+public class LoginFragment
+    extends BaseFragment
+    implements LoginPresenter, MerchantPresenter, DeviceRegistrationPresenter {
 
     private Button btn_login;
     private EditText edt_pwd;
@@ -57,6 +63,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
     private ArrayList<String> userList = new ArrayList<>();
     private LoginApiCalls loginApiCalls;
     private MerchantProfileApiCalls merchantProfileModel;
+    private DeviceRegistrationApiCalls deviceRegistrationApiCalls;
     private View view;
 
     public LoginFragment() {
@@ -96,6 +103,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         userList = AppInitialize.getUserList();
         loginApiCalls = new LoginApiCalls(this);
         merchantProfileModel = new MerchantProfileApiCalls();
+        deviceRegistrationApiCalls = new DeviceRegistrationApiCalls();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, userList);
         actv_email.setThreshold(1);//will start working from first character
         actv_email.setAdapter(adapter);
@@ -108,7 +116,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                     showProgress();
                     setProgressMessage("Login in progress..");
                     loginApiCalls.login(email.toLowerCase(), pwd);
-                    //TODO register device after getting QID
 
 //                    Answers.getInstance().logLogin(new LoginEvent()
 //                            .putMethod("Email_Password_Login")
@@ -128,7 +135,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 iv_show_hide_password.setImageResource(R.drawable.password_hide);
                 //Hide Password
                 edt_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
             }
         });
         return view;
@@ -150,17 +156,19 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
     public void loginResponse(String email, String auth) {
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
             AppInitialize.setUserInformation("", "", email, auth, true);
+            deviceRegistrationApiCalls.setDeviceRegisterPresenter(this);
+            DeviceToken deviceToken = new DeviceToken(
+                AppInitialize.getTokenFCM(),
+                Constants.appVersion(),
+                CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
+
+            deviceRegistrationApiCalls.register(
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth(),
+                deviceToken);
+
             setProgressMessage("Fetching your profile...");
-            merchantProfileModel.setMerchantPresenter(this);
-            merchantProfileModel.fetch(AppInitialize.getDeviceID(), email, auth);
-            if (!userList.contains(email)) {
-                userList.add(email);
-                AppInitialize.setUserList(userList);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, userList);
-                //Getting the instance of AutoCompleteTextView
-                actv_email.setThreshold(1);//will start working from first character
-                actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-            }
         } else {
             dismissProgress();
             new CustomToast().showToast(getActivity(), getString(R.string.error_login));
@@ -221,16 +229,15 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 AppInitialize.setPriorityAccess(priorityAccess);
             }
 
-
-            UserLevelEnum userLevel =  jsonMerchant.getJsonProfile().getUserLevel();
+            UserLevelEnum userLevel = jsonMerchant.getJsonProfile().getUserLevel();
             BusinessTypeEnum businessType = jsonMerchant.getJsonProfile().getBusinessType();
             String packageName = getActivity().getPackageName();
 
             if (userLevel == UserLevelEnum.Q_SUPERVISOR || userLevel == UserLevelEnum.S_MANAGER) {
                 if (
                     (packageName.equalsIgnoreCase("com.noqapp.android.merchant.healthcare") && businessType == BusinessTypeEnum.DO) ||
-                    (packageName.equalsIgnoreCase("com.noqapp.android.merchant") && businessType != BusinessTypeEnum.DO) ||
-                    packageName.equalsIgnoreCase("com.noqapp.android.merchant.tv")
+                        (packageName.equalsIgnoreCase("com.noqapp.android.merchant") && businessType != BusinessTypeEnum.DO) ||
+                        packageName.equalsIgnoreCase("com.noqapp.android.merchant.tv")
                 ) {
                     if (LaunchActivity.isTablet) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
@@ -333,5 +340,29 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
             isValid = false;
         }
         return isValid;
+    }
+
+    @Override
+    public void deviceRegistrationError() {
+
+    }
+
+    @Override
+    public void deviceRegistrationResponse(JsonResponse jsonResponse) {
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            merchantProfileModel.setMerchantPresenter(this);
+            merchantProfileModel.fetch(AppInitialize.getDeviceID(), AppInitialize.getEmail(), AppInitialize.getAuth());
+            if (!userList.contains(email)) {
+                userList.add(email);
+                AppInitialize.setUserList(userList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, userList);
+                //Getting the instance of AutoCompleteTextView
+                actv_email.setThreshold(1);//will start working from first character
+                actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+            }
+        } else {
+            new CustomToast().showToast(getActivity(), "Failed to get the queues");
+        }
+        dismissProgress();
     }
 }
