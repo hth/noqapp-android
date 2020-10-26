@@ -568,13 +568,13 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         TextView tv_total_amt_paid_label = customDialogView.findViewById(R.id.tv_total_amt_paid_label);
         TextView tv_total_amt_remain = customDialogView.findViewById(R.id.tv_total_amt_remain);
         RelativeLayout rl_amount_remaining = customDialogView.findViewById(R.id.rl_amount_remaining);
-        tv_tax_amt.setText(currencySymbol + "0.00");
+        tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }
-        tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_due_amt.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
+        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
+        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
