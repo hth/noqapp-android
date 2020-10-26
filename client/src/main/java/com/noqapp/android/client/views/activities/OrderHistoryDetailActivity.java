@@ -128,9 +128,9 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             startActivity(in);
         });
         tv_store_rating.setText(String.valueOf(jsonPurchaseOrder.getRatingCount()));
-        tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
-        tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
+        tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
         for (int i = 0; i < jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().size(); i++) {
             JsonPurchaseOrderProductHistorical jsonPurchaseOrderProduct = jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -156,5 +156,4 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         tv_additional_info.setText("Additional Note: " + jsonPurchaseOrder.getAdditionalNote());
         tv_additional_info.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
     }
-
 }

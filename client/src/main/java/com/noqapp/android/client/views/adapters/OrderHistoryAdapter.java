@@ -35,13 +35,14 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderHistoryAdapter extends RecyclerView.Adapter implements PurchaseOrderPresenter {
     private final Context context;
     private final OnItemClickListener listener;
-    private ArrayList<JsonPurchaseOrderHistorical> dataSet;
+    private final ArrayList<JsonPurchaseOrderHistorical> dataSet;
     private ProgressDialog progressDialog;
 
     public OrderHistoryAdapter(ArrayList<JsonPurchaseOrderHistorical> data, Context context, OnItemClickListener listener) {
@@ -65,7 +66,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
         holder.tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonPurchaseOrderHistorical.getCreated()));
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         try {
-            holder.tv_order_amount.setText(AppUtils.getCurrencySymbol(jsonPurchaseOrderHistorical.getCountryShortName()) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+            holder.tv_order_amount.setText(AppUtils.getCurrencySymbol(jsonPurchaseOrderHistorical.getCountryShortName()) + " " + new BigDecimal(jsonPurchaseOrderHistorical.total()).movePointLeft(2).toString());
         } catch (Exception e) {
             holder.tv_order_amount.setText("0");
             e.printStackTrace();
@@ -82,8 +83,10 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
                 holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.text_header_color));
         }
         holder.iv_details.setOnClickListener((View v) -> listener.onStoreItemClick(jsonPurchaseOrderHistorical));
-        if (jsonPurchaseOrderHistorical.getBusinessType() == BusinessTypeEnum.PH && (jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.PO ||
-            jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.OP)) {
+        if (jsonPurchaseOrderHistorical.getBusinessType() == BusinessTypeEnum.PH &&
+            (jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.PO
+                || jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.OP)
+        ) {
             holder.btn_activate.setVisibility(View.VISIBLE);
             holder.btn_reorder.setVisibility(View.GONE);
         } else {
@@ -163,14 +166,15 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     @Override
     public void responseErrorPresenter(int errorCode) {
         progressDialog.dismiss();
-        new ErrorResponseHandler().processFailureResponseCode((Activity)context, errorCode);
+        new ErrorResponseHandler().processFailureResponseCode((Activity) context, errorCode);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         progressDialog.dismiss();
-        if (null != eej)
-            new ErrorResponseHandler().processError((Activity)context, eej);
+        if (null != eej) {
+            new ErrorResponseHandler().processError((Activity) context, eej);
+        }
     }
 
     public interface OnItemClickListener {
@@ -178,16 +182,16 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_name;
-        private TextView tv_address;
-        private TextView tv_order_date;
-        private TextView tv_order_amount;
-        private TextView tv_order_item;
-        private TextView tv_queue_status;
-        private ImageView iv_details;
-        private Button btn_reorder;
-        private Button btn_activate;
-        private CardView card_view;
+        private final TextView tv_name;
+        private final TextView tv_address;
+        private final TextView tv_order_date;
+        private final TextView tv_order_amount;
+        private final TextView tv_order_item;
+        private final TextView tv_queue_status;
+        private final ImageView iv_details;
+        private final Button btn_reorder;
+        private final Button btn_activate;
+        private final CardView card_view;
 
         private MyViewHolder(View itemView) {
             super(itemView);
@@ -207,7 +211,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     private String getOrderItems(List<JsonPurchaseOrderProductHistorical> data) {
         String result = "";
         for (int i = 0; i < data.size(); i++) {
-            result += data.get(i).getProductName() + " x " + String.valueOf(data.get(i).getProductQuantity()) + ", ";
+            result += data.get(i).getProductName() + " x " + data.get(i).getProductQuantity() + ", ";
         }
         return result.endsWith(", ") ? result.substring(0, result.length() - 2) : result;
     }

@@ -13,6 +13,8 @@ import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -373,6 +375,10 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     public JsonPurchaseOrderHistorical setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    public int total() {
+        return Integer.parseInt(orderPrice) + Integer.parseInt(StringUtils.isBlank(tax) ? "0" : tax);
     }
 
     @Override
