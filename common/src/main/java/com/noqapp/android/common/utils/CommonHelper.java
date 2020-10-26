@@ -62,7 +62,7 @@ public class CommonHelper {
     public static final SimpleDateFormat SDF_ISO8601_FMT = new SimpleDateFormat(ISO8601_FMT, Locale.getDefault());
     private static final DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HH:mm");
     public static final String CURRENCY_SYMBOL = "currencySymbol";
-    private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+    private static final SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
 
     public enum AppointmentComputationEnum {FILLED, TOTAL_SLOTS}
 
@@ -81,7 +81,6 @@ public class CommonHelper {
         final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object
         openPlayStore(context, appPackageName);
     }
-
 
     public static void openPlayStore(Context context, String appPackageName) {
         try {
@@ -225,6 +224,10 @@ public class CommonHelper {
 
     public static String displayPrice(String number) {
         return new BigDecimal(number).movePointLeft(2).toString();
+    }
+
+    public static String displayPriceWithTax(String totalAmount, String tax) {
+        return new BigDecimal(totalAmount).add(new BigDecimal(tax)).movePointLeft(2).toString();
     }
 
     public static String displayPrice(int number) {

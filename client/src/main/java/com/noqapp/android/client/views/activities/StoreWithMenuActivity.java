@@ -51,8 +51,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StoreWithMenuActivity extends BaseActivity implements StorePresenter,
-    MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
+public class StoreWithMenuActivity
+    extends BaseActivity
+    implements StorePresenter, MenuHeaderAdapter.OnItemClickListener, StoreProductMenuAdapter.CartOrderUpdate {
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
     private TextView tv_store_name, tv_store_address;
@@ -95,7 +96,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         View listHeader = inflater.inflate(R.layout.store_list_header, null);
         stickyViewSpacer = listHeader.findViewById(R.id.stickyViewPlaceholder);
         expandableListView.addHeaderView(listHeader);
-
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -273,7 +273,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
         expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
 
         expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int position = new AppUtils().getFirstVisibleGroup(expandableListView);
@@ -287,7 +286,6 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
                 /* Check if the first item is already reached to top.*/
                 if (expandableListView.getFirstVisiblePosition() == 0) {
                     View firstChild = expandableListView.getChildAt(0);
@@ -313,23 +311,30 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     HashMap<String, StoreCartItem> getOrder = expandableListAdapter.getOrders();
                     List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                     int price = 0;
+                    int tax = 0;
                     for (StoreCartItem value : getOrder.values()) {
-                        ll.add(new JsonPurchaseOrderProduct()
-                            .setProductId(value.getJsonStoreProduct().getProductId())
-                            .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
-                            .setProductQuantity(value.getChildInput())
-                            .setProductName(value.getJsonStoreProduct().getProductName())
-                            .setPackageSize(value.getJsonStoreProduct().getPackageSize())
-                            .setUnitValue(value.getJsonStoreProduct().getUnitValue())
-                            .setUnitOfMeasurement(value.getJsonStoreProduct().getUnitOfMeasurement())
-                            .setProductType(value.getJsonStoreProduct().getProductType()));
+                        JsonPurchaseOrderProduct jsonPurchaseOrderProduct =
+                            new JsonPurchaseOrderProduct()
+                                .setProductId(value.getJsonStoreProduct().getProductId())
+                                .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
+                                .setProductQuantity(value.getChildInput())
+                                .setProductName(value.getJsonStoreProduct().getProductName())
+                                .setPackageSize(value.getJsonStoreProduct().getPackageSize())
+                                .setUnitValue(value.getJsonStoreProduct().getUnitValue())
+                                .setUnitOfMeasurement(value.getJsonStoreProduct().getUnitOfMeasurement())
+                                .setProductDiscount(value.getJsonStoreProduct().getProductDiscount())
+                                .setTax(value.getJsonStoreProduct().getTax())
+                                .setProductType(value.getJsonStoreProduct().getProductType());
                         price += value.getChildInput() * value.getFinalDiscountedPrice().movePointRight(2).intValue();
+                        tax += value.getChildInput() * jsonPurchaseOrderProduct.computeTax();
+                        ll.add(jsonPurchaseOrderProduct);
                     }
                     if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
                         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                             .setBizStoreId(jsonQueue.getBizStoreId())
                             .setBusinessType(jsonQueue.getBusinessType())
                             .setCodeQR(jsonQueue.getCodeQR())
+                            .setTax(String.valueOf(tax))
                             .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 

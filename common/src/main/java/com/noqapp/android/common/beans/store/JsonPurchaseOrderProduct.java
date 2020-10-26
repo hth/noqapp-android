@@ -10,21 +10,22 @@ import com.noqapp.android.common.model.types.order.TaxEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by hitender on 4/1/18.
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -166,10 +167,18 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
 
     public JsonStoreProduct getJsonStoreProduct() {
         return new JsonStoreProduct()
-                .setProductPrice(productPrice)
-                .setUnitValue(unitValue)
-                .setUnitOfMeasurement(unitOfMeasurement)
-                .setPackageSize(packageSize)
-                .setProductType(productType);
+            .setProductPrice(productPrice)
+            .setUnitValue(unitValue)
+            .setUnitOfMeasurement(unitOfMeasurement)
+            .setPackageSize(packageSize)
+            .setProductType(productType);
+    }
+
+    public int computeTax() {
+        BigDecimal taxCompute = new BigDecimal(productPrice - productDiscount);
+        if (taxCompute.intValue() <= 0) {
+            return 0;
+        }
+        return taxCompute.multiply(tax.getValue().movePointLeft(2)).intValue();
     }
 }

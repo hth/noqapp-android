@@ -344,7 +344,7 @@ public class LoginFragment
 
     @Override
     public void deviceRegistrationError() {
-
+        new CustomToast().showToast(getActivity(), "Something went wrong. Try again later. If issue continues please contact admin or support.");
     }
 
     @Override
