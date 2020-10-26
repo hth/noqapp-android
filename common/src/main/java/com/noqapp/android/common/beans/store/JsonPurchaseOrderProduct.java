@@ -16,16 +16,16 @@ import java.math.BigDecimal;
  * Created by hitender on 4/1/18.
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -167,13 +167,12 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
 
     public JsonStoreProduct getJsonStoreProduct() {
         return new JsonStoreProduct()
-                .setProductPrice(productPrice)
-                .setUnitValue(unitValue)
-                .setUnitOfMeasurement(unitOfMeasurement)
-                .setPackageSize(packageSize)
-                .setProductType(productType);
+            .setProductPrice(productPrice)
+            .setUnitValue(unitValue)
+            .setUnitOfMeasurement(unitOfMeasurement)
+            .setPackageSize(packageSize)
+            .setProductType(productType);
     }
-
 
     public int computeTax() {
         BigDecimal taxCompute = new BigDecimal(productPrice - productDiscount);
