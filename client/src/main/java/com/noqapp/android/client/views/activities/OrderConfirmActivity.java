@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -267,7 +268,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private void updateUI() {
         String currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
         tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
-        if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
+        if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
