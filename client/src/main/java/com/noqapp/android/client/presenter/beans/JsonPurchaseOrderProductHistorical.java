@@ -9,6 +9,7 @@ import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.TaxEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
@@ -42,6 +43,9 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain implement
 
     @JsonProperty("pp")
     private int productPrice;
+
+    @JsonProperty("ta")
+    private TaxEnum tax;
 
     @JsonProperty("pd")
     private int productDiscount;
@@ -103,6 +107,15 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain implement
 
     public void setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public JsonPurchaseOrderProductHistorical setTax(TaxEnum tax) {
+        this.tax = tax;
+        return this;
     }
 
     public int getProductDiscount() {
