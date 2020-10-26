@@ -19,6 +19,8 @@ import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -485,6 +487,10 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public void setError(ErrorEncounteredJson error) {
         this.error = error;
+    }
+
+    public int total() {
+        return Integer.parseInt(orderPrice) + Integer.parseInt(StringUtils.isBlank(tax) ? "0" : tax);
     }
 
     @Override

@@ -222,10 +222,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         clientProfileApiCall = new ClientProfileApiCall();
         clientProfileApiCall.setProfilePresenter(this);
         tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
-        tv_due_amt.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
+        tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
         tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
-        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
-        tv_final_amount.setText("Grand Total \n" + currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
+        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
+        tv_final_amount.setText("Grand Total \n" + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         StoreProductFinalOrderAdapter storeProductFinalOrderAdapter = new StoreProductFinalOrderAdapter(
