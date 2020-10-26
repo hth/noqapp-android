@@ -584,7 +584,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             rl_amount_remaining.setVisibility(View.GONE);
-            tv_total_amt_paid.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+            tv_total_amt_paid.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
             tv_total_amt_remain.setText(currencySymbol + "0.00");
             tv_total_amt_paid_label.setText(getString(R.string.total_amount_paid));
         } else if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
