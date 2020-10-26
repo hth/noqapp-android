@@ -349,7 +349,7 @@
     <string name="screen_all_feeds">सभी फ़ीड्स</string>
     <string name="screen_all_events">कूपन/ऑफर</string>
     <string name="total_amount_paid">भुगतान की गई कुल राशि:</string>
-    <string name="total_amount_remaing">कुल राशि शेष:</string>
+    <string name="total_amount_remaining">कुल राशि शेष:</string>
     <string name="pay_and_join">पे एंड कन्फर्म क्यू</string>
 
     <!-- Empty Screens labels -->

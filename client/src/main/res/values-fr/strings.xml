@@ -349,7 +349,7 @@
     <string name="screen_all_feeds">Tous les flux </string>
     <string name="screen_all_events">Des événements et offre</string>
     <string name="total_amount_paid">Le montant total payé</string>
-    <string name="total_amount_remaing">Le montant total du solde</string>
+    <string name="total_amount_remaining">Le montant total du solde</string>
     <string name="pay_and_join">Payer et confimer le queue</string>
 
     <!-- Empty Screens labels -->
