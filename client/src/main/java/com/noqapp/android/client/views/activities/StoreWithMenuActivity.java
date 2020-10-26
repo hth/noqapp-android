@@ -313,8 +313,10 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                     HashMap<String, StoreCartItem> getOrder = expandableListAdapter.getOrders();
                     List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                     int price = 0;
+                    int tax = 0;
                     for (StoreCartItem value : getOrder.values()) {
-                        ll.add(new JsonPurchaseOrderProduct()
+                        JsonPurchaseOrderProduct jsonPurchaseOrderProduct =
+                        new JsonPurchaseOrderProduct()
                             .setProductId(value.getJsonStoreProduct().getProductId())
                             .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
                             .setProductQuantity(value.getChildInput())
@@ -322,14 +324,19 @@ public class StoreWithMenuActivity extends BaseActivity implements StorePresente
                             .setPackageSize(value.getJsonStoreProduct().getPackageSize())
                             .setUnitValue(value.getJsonStoreProduct().getUnitValue())
                             .setUnitOfMeasurement(value.getJsonStoreProduct().getUnitOfMeasurement())
-                            .setProductType(value.getJsonStoreProduct().getProductType()));
+                            .setProductDiscount(value.getJsonStoreProduct().getProductDiscount())
+                            .setTax(value.getJsonStoreProduct().getTax())
+                            .setProductType(value.getJsonStoreProduct().getProductType());
                         price += value.getChildInput() * value.getFinalDiscountedPrice().movePointRight(2).intValue();
+                        tax += value.getChildInput() *jsonPurchaseOrderProduct.computeTax();
+                        ll.add(jsonPurchaseOrderProduct);
                     }
                     if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
                         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                             .setBizStoreId(jsonQueue.getBizStoreId())
                             .setBusinessType(jsonQueue.getBusinessType())
                             .setCodeQR(jsonQueue.getCodeQR())
+                            .setTax(String.valueOf(tax))
                             .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 

@@ -10,6 +10,7 @@ import com.noqapp.android.common.model.types.order.TaxEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by hitender on 4/1/18.
@@ -171,5 +172,14 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
                 .setUnitOfMeasurement(unitOfMeasurement)
                 .setPackageSize(packageSize)
                 .setProductType(productType);
+    }
+
+
+    public int computeTax() {
+        BigDecimal taxCompute = new BigDecimal(productPrice - productDiscount);
+        if (taxCompute.intValue() <= 0) {
+            return 0;
+        }
+        return taxCompute.multiply(tax.getValue().movePointLeft(2)).intValue();
     }
 }

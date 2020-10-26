@@ -129,6 +129,8 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         });
         tv_store_rating.setText(String.valueOf(jsonPurchaseOrder.getRatingCount()));
         tv_tax_amt.setText(currencySymbol + "0.00");
+       // @TODO @hitnder add tax for the JsonPurchaseOrderHistorical
+       // tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         for (int i = 0; i < jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().size(); i++) {

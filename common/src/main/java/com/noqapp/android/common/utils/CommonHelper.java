@@ -227,6 +227,11 @@ public class CommonHelper {
         return new BigDecimal(number).movePointLeft(2).toString();
     }
 
+    public static String displayPriceWithTax(String totalAmount, String tax) {
+        int totalAmountWithTax = Integer.parseInt(totalAmount) + Integer.parseInt(tax);
+        return new BigDecimal(String.valueOf(totalAmountWithTax)).movePointLeft(2).toString();
+    }
+
     public static String displayPrice(int number) {
         return displayPrice(String.valueOf(number));
     }

@@ -266,13 +266,13 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     private void updateUI() {
         String currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
-        tv_tax_amt.setText(currencySymbol + "0.00");
+        tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }
-        tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_due_amt.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
+        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
+        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
@@ -282,7 +282,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             rl_amount_remaining.setVisibility(View.GONE);
-            tv_total_amt_paid.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+            tv_total_amt_paid.setText(currencySymbol + CommonHelper.displayPriceWithTax(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()));
             tv_total_amt_remain.setText(currencySymbol + "0.00");
             tv_total_amt_paid_label.setText(getString(R.string.total_amount_paid));
         } else if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
