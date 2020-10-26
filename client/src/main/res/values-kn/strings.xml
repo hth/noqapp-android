@@ -349,7 +349,7 @@
     <string name="screen_all_feeds">ಎಲ್ಲಾ ಫೀಡ್‌ಗಳು</string>
     <string name="screen_all_events">ಈವೆಂಟ್‌ಗಳು ಹಾಗೂ ಆಫರ್‌ಗಳು</string>
     <string name="total_amount_paid">ಪಾವತಿಸಿದ ಒಟ್ಟು ಮೊತ್ತ:</string>
-    <string name="total_amount_remaing">ಉಳಿದಿರುವ ಒಟ್ಟು ಮೊತ್ತ:</string>
+    <string name="total_amount_remaining">ಉಳಿದಿರುವ ಒಟ್ಟು ಮೊತ್ತ:</string>
     <string name="pay_and_join">ಪಾವತಿಸಿ ಹಾಗೂ ಸರದಿಯನ್ನು ಧೃಢೀಕರಿಸಿ</string>
 
     <!-- Empty Screens labels -->

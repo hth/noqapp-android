@@ -350,7 +350,7 @@
     <string name="screen_all_feeds">All Feeds</string>
     <string name="screen_all_events">Events &amp; Offers</string>
     <string name="total_amount_paid">Total Amount Paid:</string>
-    <string name="total_amount_remaing">Total Amount Remaining:</string>
+    <string name="total_amount_remaining">Total Amount Remaining:</string>
     <string name="pay_and_join">Pay &amp; Confirm Queue</string>
 
     <!-- Empty Screens labels -->

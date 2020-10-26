@@ -222,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:gravity="left"
-                        android:text="@string/total_amount_remaing"
+                        android:text="@string/total_amount_remaining"
                         android:textSize="@dimen/store_info" />
 
                     <TextView
