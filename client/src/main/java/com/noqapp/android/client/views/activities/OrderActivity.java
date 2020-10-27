@@ -221,9 +221,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         clientProfileApiCall = new ClientProfileApiCall();
         clientProfileApiCall.setProfilePresenter(this);
+        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
-        tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
         tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.grandTotal()));
         tv_final_amount.setText("Grand Total \n" + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.grandTotal()));
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
@@ -244,7 +244,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 mLastClickTime = SystemClock.elapsedRealtime();
                 showProgress();
                 setProgressCancel(false);
-                setProgressMessage("Order placing in progress..");
+                setProgressMessage("Order placing in progress...");
                 if (validateForm()) {
                     if (isProductWithoutPrice) {
                         new CustomToast().showToast(OrderActivity.this, "Cannot process as merchant has not set product price");
