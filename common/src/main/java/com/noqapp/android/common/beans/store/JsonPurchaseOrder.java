@@ -3,10 +3,10 @@ package com.noqapp.android.common.beans.store;
 import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
@@ -71,6 +71,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     @JsonProperty ("ta")
     private String tax;
+
+    @JsonProperty ("gt")
+    private String grandTotal;
 
     @JsonProperty("dm")
     private DeliveryModeEnum deliveryMode;
@@ -236,6 +239,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setTax(String tax) {
         this.tax = tax;
+        return this;
+    }
+
+    public String getGrandTotal() {
+        return grandTotal;
+    }
+
+    public JsonPurchaseOrder setGrandTotal(String grandTotal) {
+        this.grandTotal = grandTotal;
         return this;
     }
 
@@ -467,17 +479,17 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public String computeFinalAmountWithDiscount() {
         if (0 == storeDiscount) {
-            return CommonHelper.displayPrice(orderPrice);
+            return CommonHelper.displayPrice(total());
         } else {
-            return CommonHelper.displayPrice(new BigDecimal(orderPrice).add(new BigDecimal(storeDiscount)).toString());
+            return CommonHelper.displayPrice(new BigDecimal(total()).add(new BigDecimal(storeDiscount)).toString());
         }
     }
 
     public String computeFinalAmountWithDiscountOffline() {
         if (0 == storeDiscount) {
-            return CommonHelper.displayPrice(orderPrice);
+            return CommonHelper.displayPrice(total());
         } else {
-            return CommonHelper.displayPrice(new BigDecimal(orderPrice).subtract(new BigDecimal(storeDiscount)).toString());
+            return CommonHelper.displayPrice(grandTotal());
         }
     }
 
@@ -489,8 +501,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         this.error = error;
     }
 
+    @JsonIgnore
     public int total() {
         return Integer.parseInt(orderPrice) + Integer.parseInt(StringUtils.isBlank(tax) ? "0" : tax);
+    }
+
+    @JsonIgnore
+    public int grandTotal() {
+        this.grandTotal = new BigDecimal(total()).subtract(new BigDecimal(storeDiscount)).toString();
+        return Integer.parseInt(this.grandTotal);
     }
 
     @Override
