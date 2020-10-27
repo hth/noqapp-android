@@ -580,7 +580,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                 ll_order_list.addView(v);
                 price += 1 * menuSelectData.get(pos).getPrice();
             }
-            tv_cost.setText(currencySymbol + " " + String.valueOf(price));
+            tv_cost.setText(currencySymbol + " " + price);
         }
 
         tv_toolbar_title.setText("Create Order");
@@ -592,17 +592,15 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         builder.setView(view);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_mobile) {
-                    ll_mobile.setVisibility(View.VISIBLE);
-                    edt_id.setVisibility(View.GONE);
-                    edt_id.setText("");
-                } else {
-                    edt_id.setVisibility(View.VISIBLE);
-                    ll_mobile.setVisibility(View.GONE);
-                    edt_mobile.setText("");
-                }
+        rg_user_id.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_mobile) {
+                ll_mobile.setVisibility(View.VISIBLE);
+                edt_id.setVisibility(View.GONE);
+                edt_id.setText("");
+            } else {
+                edt_id.setVisibility(View.VISIBLE);
+                ll_mobile.setVisibility(View.GONE);
+                edt_mobile.setText("");
             }
         });
         ccp = view.findViewById(R.id.ccp);
@@ -612,51 +610,49 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
         btn_create_token.setText("Search Patient");
-        btn_create_token.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                boolean isValid = true;
-                edt_mobile.setError(null);
-                edt_id.setError(null);
-                AppUtils.hideKeyBoard(HCSMenuActivity.this);
-                int selectedId = rg_user_id.getCheckedRadioButtonId();
-                if (selectedId == R.id.rb_mobile) {
-                    if (TextUtils.isEmpty(edt_mobile.getText())) {
-                        edt_mobile.setError(getString(R.string.error_mobile_blank));
-                        isValid = false;
-                    }
+        btn_create_token.setOnClickListener(v -> {
+            boolean isValid = true;
+            edt_mobile.setError(null);
+            edt_id.setError(null);
+            AppUtils.hideKeyBoard(HCSMenuActivity.this);
+            int selectedId = rg_user_id.getCheckedRadioButtonId();
+            if (selectedId == R.id.rb_mobile) {
+                if (TextUtils.isEmpty(edt_mobile.getText())) {
+                    edt_mobile.setError(getString(R.string.error_mobile_blank));
+                    isValid = false;
+                }
+            } else {
+                if (TextUtils.isEmpty(edt_id.getText())) {
+                    edt_id.setError(getString(R.string.error_customer_id));
+                    isValid = false;
+                }
+            }
+            if (isValid) {
+                String phone = "";
+                String cid = "";
+                if (rb_mobile.isChecked()) {
+                    edt_id.setText("");
+                    countryCode = ccp.getSelectedCountryCode();
+                    countryShortName = ccp.getDefaultCountryName().toUpperCase();
+                    phone = countryCode + edt_mobile.getText().toString();
                 } else {
-                    if (TextUtils.isEmpty(edt_id.getText())) {
-                        edt_id.setError(getString(R.string.error_customer_id));
-                        isValid = false;
-                    }
+                    cid = edt_id.getText().toString();
+                    edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
                 }
-                if (isValid) {
-                    String phone = "";
-                    String cid = "";
-                    if (rb_mobile.isChecked()) {
-                        edt_id.setText("");
-                        countryCode = ccp.getSelectedCountryCode();
-                        countryShortName = ccp.getDefaultCountryName().toUpperCase();
-                        phone = countryCode + edt_mobile.getText().toString();
-                    } else {
-                        cid = edt_id.getText().toString();
-                        edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
-                    }
-                    showProgress();
-                    setProgressMessage("Searching patient...");
-                    setProgressCancel(false);
-                    businessCustomerApiCalls.findCustomer(
-                            AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth(),
-                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                    btn_create_token.setClickable(false);
-                    // mAlertDialog.dismiss();
-
-                }
+                showProgress();
+                setProgressMessage("Searching patient...");
+                setProgressCancel(false);
+                businessCustomerApiCalls.findCustomer(
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
+                    new JsonBusinessCustomerLookup()
+                        .setCodeQR(codeQR)
+                        .setCustomerPhone(phone)
+                        .setBusinessCustomerId(cid)
+                );
+                btn_create_token.setClickable(false);
+                // mAlertDialog.dismiss();
             }
         });
 

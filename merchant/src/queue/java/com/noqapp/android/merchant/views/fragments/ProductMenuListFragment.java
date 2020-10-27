@@ -59,9 +59,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProductMenuListFragment extends BaseFragment implements StoreMenuOrderAdapter.CartOrderUpdate,
-        FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack,
-        LoginActivity.LoginCallBack {
+public class ProductMenuListFragment
+    extends BaseFragment
+    implements StoreMenuOrderAdapter.CartOrderUpdate, FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
     private RecyclerView rcv_order_list;
     private List<StoreCartItem> childData;
     private StoreMenuActivity storeMenuActivity;
@@ -144,17 +144,15 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         mAlertDialog = null;
         mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_mobile) {
-                    edt_mobile.setVisibility(View.VISIBLE);
-                    edt_id.setVisibility(View.GONE);
-                    edt_id.setText("");
-                } else {
-                    edt_id.setVisibility(View.VISIBLE);
-                    edt_mobile.setVisibility(View.GONE);
-                    edt_mobile.setText("");
-                }
+        rg_user_id.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_mobile) {
+                edt_mobile.setVisibility(View.VISIBLE);
+                edt_id.setVisibility(View.GONE);
+                edt_id.setText("");
+            } else {
+                edt_id.setVisibility(View.VISIBLE);
+                edt_mobile.setVisibility(View.GONE);
+                edt_mobile.setText("");
             }
         });
         cid = "";
@@ -200,10 +198,10 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                 setProgressMessage("Searching user...");
                 setProgressCancel(false);
                 businessCustomerApiCalls.findCustomer(
-                        AppInitialize.getDeviceID(),
-                        AppInitialize.getEmail(),
-                        AppInitialize.getAuth(),
-                        new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
+                    new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
                 btn_create_token.setClickable(false);
                 // mAlertDialog.dismiss();
 
@@ -252,16 +250,16 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                     int price = 0;
                     for (StoreCartItem value : getOrder.values()) {
                         ll.add(new JsonPurchaseOrderProduct()
-                                .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
-                                .setProductQuantity(value.getChildInput())
-                                .setProductName(value.getJsonStoreProduct().getProductName()));
+                            .setProductId(value.getJsonStoreProduct().getProductId())
+                            .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
+                            .setProductQuantity(value.getChildInput())
+                            .setProductName(value.getJsonStoreProduct().getProductName()));
                         price += value.getChildInput() * value.getFinalDiscountedPrice().movePointRight(2).intValue();
                     }
                     JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                            .setCodeQR(codeQR)
-                            .setQueueUserId(jsonProfile.getQueueUserId())
-                            .setOrderPrice(String.valueOf(price));
+                        .setCodeQR(codeQR)
+                        .setQueueUserId(jsonProfile.getQueueUserId())
+                        .setOrderPrice(String.valueOf(price));
                     jsonPurchaseOrder.setCustomerName(jsonProfile.getName());
                     jsonPurchaseOrder.setPurchaseOrderProducts(ll);
                     jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
