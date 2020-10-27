@@ -273,7 +273,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         }
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
         tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
-        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
+        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.grandTotal()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());

@@ -1,6 +1,7 @@
 package com.noqapp.android.client.presenter.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,6 +58,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     @JsonProperty ("ta")
     private String tax;
+
+    @JsonProperty ("gt")
+    private String grandTotal;
 
     @JsonProperty("dm")
     private DeliveryModeEnum deliveryMode;
@@ -178,6 +182,15 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     public JsonPurchaseOrderHistorical setTax(String tax) {
         this.tax = tax;
+        return this;
+    }
+
+    public String getGrandTotal() {
+        return grandTotal;
+    }
+
+    public JsonPurchaseOrderHistorical setGrandTotal(String grandTotal) {
+        this.grandTotal = grandTotal;
         return this;
     }
 
@@ -377,6 +390,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
         return this;
     }
 
+    @JsonIgnore
     public int total() {
         return Integer.parseInt(orderPrice) + Integer.parseInt(StringUtils.isBlank(tax) ? "0" : tax);
     }
