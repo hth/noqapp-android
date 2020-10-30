@@ -31,7 +31,7 @@ import java.io.Serializable;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonClientData extends JsonData implements Serializable{
+public class JsonClientData extends JsonData implements Serializable {
 
     @JsonProperty("mo")
     private MessageOriginEnum messageOrigin;
