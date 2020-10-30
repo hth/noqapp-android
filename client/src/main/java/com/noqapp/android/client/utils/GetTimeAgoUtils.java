@@ -22,23 +22,20 @@ public class GetTimeAgoUtils {
         if (time == 0) {
             return null;
         }
-        final long diff = time;
-        if (diff < MINUTE_MILLIS) {
-            return String.format(context.getResources().getString(R.string.seconds), (diff / 1000));
-        } else if (diff < 10 * MINUTE_MILLIS) {
+        if (time < 10 * MINUTE_MILLIS) {
             return context.getResources().getString(R.string.few_minutes);
-        } else if (diff < 50 * MINUTE_MILLIS) {
-            return String.format(context.getResources().getString(R.string.approx_minutes), (diff / MINUTE_MILLIS ));
-        } else if (diff < 75 * MINUTE_MILLIS) {
+        } else if (time < 50 * MINUTE_MILLIS) {
+            return String.format(context.getResources().getString(R.string.approx_minutes), (time / MINUTE_MILLIS ));
+        } else if (time < 75 * MINUTE_MILLIS) {
             return context.getResources().getString(R.string.approx_an_hour);
-        } else if (diff < 135 * MINUTE_MILLIS) {
+        } else if (time < 135 * MINUTE_MILLIS) {
             return context.getResources().getString(R.string.approx_two_hours);
-        } else if (diff < 24 * HOUR_MILLIS) {
-            return String.format(context.getResources().getString(R.string.approx_hours), (diff / HOUR_MILLIS ));
-        } else if (diff < 48 * HOUR_MILLIS) {
+        } else if (time < 24 * HOUR_MILLIS) {
+            return String.format(context.getResources().getString(R.string.approx_hours), (time / HOUR_MILLIS ));
+        } else if (time < 48 * HOUR_MILLIS) {
             return context.getResources().getString(R.string.more_than_a_day);
         } else {
-            return String.format(context.getResources().getString(R.string.approx_days), (diff / DAY_MILLIS ));
+            return String.format(context.getResources().getString(R.string.approx_days), (time / DAY_MILLIS ));
         }
     }
 
@@ -48,21 +45,20 @@ public class GetTimeAgoUtils {
             return null;
         }
         // TODO: localize
-        final long diff = time;
-        if (diff < MINUTE_MILLIS) {
-            return diff / 1000 + " seconds ago";
-        } else if (diff < 2 * MINUTE_MILLIS) {
+        if (time < MINUTE_MILLIS) {
+            return time / 1000 + " seconds ago";
+        } else if (time < 2 * MINUTE_MILLIS) {
             return "a minute ago";
-        } else if (diff < 50 * MINUTE_MILLIS) {
-            return diff / MINUTE_MILLIS + " minutes ago";
-        } else if (diff < 90 * MINUTE_MILLIS) {
+        } else if (time < 50 * MINUTE_MILLIS) {
+            return time / MINUTE_MILLIS + " minutes ago";
+        } else if (time < 90 * MINUTE_MILLIS) {
             return "an hour ago";
-        } else if (diff < 24 * HOUR_MILLIS) {
-            return diff / HOUR_MILLIS + " hours ago";
-        } else if (diff < 48 * HOUR_MILLIS) {
+        } else if (time < 24 * HOUR_MILLIS) {
+            return time / HOUR_MILLIS + " hours ago";
+        } else if (time < 48 * HOUR_MILLIS) {
             return "Tomorrow";
         } else {
-            return diff / DAY_MILLIS + " days ago";
+            return time / DAY_MILLIS + " days ago";
         }
     }
 }

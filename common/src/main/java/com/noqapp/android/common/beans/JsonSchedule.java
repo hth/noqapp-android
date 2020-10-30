@@ -1,5 +1,6 @@
 package com.noqapp.android.common.beans;
 
+import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.AppointmentStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -65,6 +66,9 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     @JsonProperty("qd")
     private JsonQueueDisplay jsonQueueDisplay;
+
+    @JsonProperty("ps")
+    private AppointmentStateEnum appointmentState;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -181,6 +185,15 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     public JsonSchedule setJsonQueueDisplay(JsonQueueDisplay jsonQueueDisplay) {
         this.jsonQueueDisplay = jsonQueueDisplay;
+        return this;
+    }
+
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
+    }
+
+    public JsonSchedule setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 
