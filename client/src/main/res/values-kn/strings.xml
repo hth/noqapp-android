@@ -79,7 +79,7 @@
     <string name="position_in_queue_label">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ</string>
     <string name="position_in_queue">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ: %1$d</string>
     <string name="your_are_next_label">ಮುಂದಿನದು ನಿಮ್ಮ ಸರದಿ!</string>
-    <string name="daily_token_limit">ದೈನಂದಿನ ಟೋಕನ್ ಮಿತಿ: %1$d</string>
+    <string name="daily_token_limit">ದೈನಂದಿನ ಟೋಕನ್ ಮಿತಿ: %1$s</string>
     <string name="estimated_wait">Estimated Wait: %1$s</string>
     <string name="expected_service_around">Expected Service: %1$s</string>
     <string name="serving_now_in_queue">Serving now: %1$s</string>

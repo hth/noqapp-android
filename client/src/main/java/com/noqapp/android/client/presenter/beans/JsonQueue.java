@@ -159,6 +159,9 @@ public class JsonQueue implements Serializable {
 
     @JsonProperty("at")
     private int availableTokenCount;
+
+    @JsonProperty("tc")
+    private int availableTokenAfterCancellation;
     //***************************/
     //*  Queue Settings Ends.   */
     //***************************/
@@ -174,7 +177,6 @@ public class JsonQueue implements Serializable {
 
     @JsonProperty("cp")
     private int cancellationPrice;
-
     //*********************************/
     //*  Queue Price Settings Ends.   */
     //*********************************/
@@ -560,6 +562,15 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
+    public int getAvailableTokenAfterCancellation() {
+        return availableTokenAfterCancellation;
+    }
+
+    public JsonQueue setAvailableTokenAfterCancellation(int availableTokenAfterCancellation) {
+        this.availableTokenAfterCancellation = availableTokenAfterCancellation;
+        return this;
+    }
+
     public AppointmentStateEnum getAppointmentState() {
         return appointmentState;
     }
@@ -719,6 +730,10 @@ public class JsonQueue implements Serializable {
 
     public void setTimeSlotMessage(String timeSlotMessage) {
         this.timeSlotMessage = timeSlotMessage;
+    }
+
+    public int realAvailableToken() {
+        return availableTokenCount + availableTokenAfterCancellation;
     }
 
     public ErrorEncounteredJson getError() {
