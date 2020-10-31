@@ -214,7 +214,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             if (jsonQueue.getAvailableTokenCount() != 0) {
                 fl_token_available.setVisibility(View.VISIBLE);
                 int tokenAlreadyIssued = jsonQueue.getServingNumber() + jsonQueue.getPeopleInQueue();
-                int tokenAvailableForDay = Math.max(jsonQueue.getAvailableTokenCount() - tokenAlreadyIssued, 0);
+                int tokenAvailableForDay = Math.max(jsonQueue.realAvailableToken() - tokenAlreadyIssued, 0);
                 tv_token_available.setText(String.valueOf(tokenAvailableForDay));
                 tv_token_available_text.setText(getResources().getQuantityString(R.plurals.token_available, tokenAvailableForDay));
             }
@@ -239,7 +239,14 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             tv_live_status.startAnimation(addAnimation());
 
             if (jsonQueue.getAvailableTokenCount() != 0) {
-                tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), jsonQueue.getAvailableTokenCount()));
+                String text;
+                if (jsonQueue.getAvailableTokenAfterCancellation() != 0) {
+                    text = jsonQueue.getAvailableTokenCount() + " (cancelled token: " + jsonQueue.getAvailableTokenAfterCancellation() + ")";
+                    tv_daily_token_limit.setTextColor(ContextCompat.getColor(this, R.color.theme_color_red));
+                } else {
+                    text = String.valueOf(jsonQueue.getAvailableTokenCount());
+                }
+                tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), text));
                 tv_daily_token_limit.setVisibility(View.VISIBLE);
             }
             if (jsonQueue.getLimitServiceByDays() != 0) {
@@ -260,14 +267,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                 tv_delay_in_time.setVisibility(View.GONE);
             }
             String time = new AppUtils().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
-            // @TODO need lunch time in jsonQueue
-           /* if(null != bizStoreElastic){
-                StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
-                String lunchTime = new AppUtils().formatTodayStoreLunchTiming(this, storeHourElastic.getLunchTimeStart(), storeHourElastic.getLunchTimeEnd());
-                if(!TextUtils.isEmpty(lunchTime)){
-                    time += "\n"+lunchTime;
-                }
-            }*/
             tv_store_timing.setText(time);
             AppUtils.showAllDaysTiming(this, tv_store_timing, jsonQueue.getCodeQR());
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

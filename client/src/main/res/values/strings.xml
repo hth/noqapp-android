@@ -20,7 +20,7 @@
     <string name="screen_upcoming_appointment">My Appointments</string>
 
     <string name="action_settings">Settings</string>
-    <string name="join">Click to get Token</string>
+    <string name="join">Click to get token</string>
     <string name="view_token_status">View Token Status</string>
     <string name="login_to_join">Login to Join</string>
     <string name="cancel">Cancel</string>
@@ -79,7 +79,7 @@
     <string name="position_in_queue_label">Position in queue</string>
     <string name="position_in_queue">Position in queue: %1$d</string>
     <string name="your_are_next_label">You are next!</string>
-    <string name="daily_token_limit">Daily token limit: %1$d</string>
+    <string name="daily_token_limit">Daily token limit: %1$s</string>
     <string name="estimated_wait">Estimated Wait: %1$s</string>
     <string name="expected_service_around">Expected Service: %1$s</string>
     <string name="serving_now_in_queue">Serving now: %1$s</string>
