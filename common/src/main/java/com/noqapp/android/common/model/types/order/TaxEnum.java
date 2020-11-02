@@ -53,6 +53,23 @@ public enum TaxEnum {
         return a;
     }
 
+    public static List<String> asListOfDescriptionAsString() {
+        List<String> a = new LinkedList<>();
+        for (TaxEnum tax : TaxEnum.values()) {
+            a.add(tax.description);
+        }
+        return a;
+    }
+
+    public static TaxEnum getEnum(String description) {
+        for (TaxEnum unitOfMeasurementEnum : TaxEnum.values()) {
+            if (description.equals(unitOfMeasurementEnum.description)) {
+                return unitOfMeasurementEnum;
+            }
+        }
+        return TaxEnum.ZE;
+    }
+
     @Override
     public String toString() {
         return description;

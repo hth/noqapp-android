@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -33,6 +35,7 @@ import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.TaxEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -51,7 +54,9 @@ import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
 import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -264,6 +269,7 @@ public class ProductListActivity extends BaseActivity implements
         final TextView tv_offline = customDialogView.findViewById(R.id.tv_offline);
         Button btn_add_update = customDialogView.findViewById(R.id.btn_add_update);
         Button btn_view = customDialogView.findViewById(R.id.btn_view);
+        CheckBox cb_put_on_display = customDialogView.findViewById(R.id.cb_put_on_display);
         View productview = customDialogView.findViewById(R.id.productview);
         isViewHidden = true;
         btn_view.setOnClickListener(v -> {
@@ -306,6 +312,7 @@ public class ProductListActivity extends BaseActivity implements
         ///
         final TextView tv_category_type = customDialogView.findViewById(R.id.tv_category_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
+        final Spinner sp_tax = customDialogView.findViewById(R.id.sp_tax);
         final EditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
         final EditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
         final EditText edt_prod_limit = customDialogView.findViewById(R.id.edt_prod_limit);
@@ -313,6 +320,7 @@ public class ProductListActivity extends BaseActivity implements
         final EditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
         final EditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
         final EditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
+        final TextView tv_product_available_date = customDialogView.findViewById(R.id.tv_product_available_date);
         final SegmentedControl sc_product_type = customDialogView.findViewById(R.id.sc_product_type);
         edt_prod_name.addTextChangedListener(new CustomTextWatcher(tv_name, "Name", true, edt_prod_name));
         edt_prod_description.addTextChangedListener(new CustomTextWatcher(tv_description, "Description"));
@@ -336,7 +344,7 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_unit_value.setText("1");
             edt_prod_pack_size.setText("1");
         }
-
+        tv_product_available_date.setOnClickListener(v -> openDatePicker(tv_product_available_date));
         sp_unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -356,6 +364,7 @@ public class ProductListActivity extends BaseActivity implements
         // sort the list alphabetically
         Collections.sort(prodTypesSegment);
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
+        List<String> prodTax = TaxEnum.asListOfDescriptionAsString();
 
         // sort the list alphabetically
         Collections.sort(prodUnits);
@@ -376,6 +385,7 @@ public class ProductListActivity extends BaseActivity implements
             }
         });
         sp_unit.setAdapter(new EnumAdapter(this, prodUnits));
+        sp_tax.setAdapter(new EnumAdapter(this, prodTax));
         sc_product_type.addSegments(prodTypesSegment);
 
         sc_product_type.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
@@ -396,9 +406,16 @@ public class ProductListActivity extends BaseActivity implements
             edt_prod_limit.setText(String.valueOf(jsonStoreProduct.getInventoryLimit()));
             edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
             edt_prod_unit_value.setText(String.valueOf(jsonStoreProduct.getDisplayUnitValue()));
+            cb_put_on_display.setChecked(jsonStoreProduct.isDisplayCaseTurnedOn());
+            try {
+                tv_product_available_date.setText(CommonHelper.SDF_YYYY_MM_DD.format(CommonHelper.SDF_ISO8601_FMT.parse(jsonStoreProduct.getAvailableDate())));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             tv_category_type.setText(categories.get(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList)));
             selectionPos = getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId(), categoryList);
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription()));
+            sp_tax.setSelection(getItemPosition(prodTax, jsonStoreProduct.getTax().getDescription()));
             sc_product_type.setSelectedSegment(getItemPosition(prodTypesSegment, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {
                 tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
@@ -429,10 +446,13 @@ public class ProductListActivity extends BaseActivity implements
                     jsonStoreProduct.setProductDiscount((int) (convertStringToFloat(edt_prod_discount.getText().toString()) * 100));
                     jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(prodTypesSegment.get(sc_product_type_index)));
                     jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
+                    jsonStoreProduct.setTax(TaxEnum.getEnum(sp_tax.getSelectedItem().toString()));
                     jsonStoreProduct.setStoreCategoryId(getCategoryID(categories.get(selectionPos), categoryList));
                     jsonStoreProduct.setPackageSize(convertStringToInt(edt_prod_pack_size.getText().toString()));
                     jsonStoreProduct.setUnitValue(convertStringToInt(edt_prod_unit_value.getText().toString()) * 100);
                     jsonStoreProduct.setInventoryLimit(convertStringToInt(edt_prod_limit.getText().toString()));
+                    jsonStoreProduct.setDisplayCaseTurnedOn(cb_put_on_display.isChecked());
+                    jsonStoreProduct.setAvailableDate(tv_product_available_date.getText().toString());
                     menuItemUpdate(jsonStoreProduct, actionTypeEnum);
                     mAlertDialog.dismiss();
                 }
@@ -443,6 +463,24 @@ public class ProductListActivity extends BaseActivity implements
         mAlertDialog.show();
     }
 
+    private void openDatePicker(final TextView tv) {
+        Calendar newCalendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+            Calendar newDate = Calendar.getInstance();
+            newDate.set(year, monthOfYear, dayOfMonth);
+            Date current = newDate.getTime();
+            int date_diff = new Date().compareTo(current);
+
+            if (date_diff < 0) {
+                tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
+            } else {
+                new CustomToast().showToast(ProductListActivity.this, getString(R.string.error_past_date));
+                tv.setText("");
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
 
     @Override
     public void actionOnProductResponse(JsonResponse jsonResponse) {
