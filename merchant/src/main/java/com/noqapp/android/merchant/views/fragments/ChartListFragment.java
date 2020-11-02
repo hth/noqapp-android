@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.FragmentTransaction;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantStatsApiCalls;
@@ -97,19 +98,21 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (LaunchActivity.isTablet) {
-                    chartFragment.updateChart(healthCareStatList.get(position));
-                    //set page for view pager
-                } else {
-                    chartFragment = new ChartFragment();
-                    Bundle b = new Bundle();
-                    b.putSerializable("healthCareStat", healthCareStatList.get(position));
-                    chartFragment.setArguments(b);
-                    ChartListActivity.getChartListActivity().replaceFragmentWithBackStack(R.id.frame_layout, chartFragment, ChartListFragment.class.getSimpleName());
+                if (healthCareStatList.size() > 0) {
+                    if (LaunchActivity.isTablet) {
+                        chartFragment.updateChart(healthCareStatList.get(position));
+                        //set page for view pager
+                    } else {
+                        chartFragment = new ChartFragment();
+                        Bundle b = new Bundle();
+                        b.putSerializable("healthCareStat", healthCareStatList.get(position));
+                        chartFragment.setArguments(b);
+                        ChartListActivity.getChartListActivity().replaceFragmentWithBackStack(R.id.frame_layout, chartFragment, ChartListFragment.class.getSimpleName());
+                    }
+                    selected_pos = position;
+                    // to set the selected cell color
+                    getActivity().runOnUiThread(run);
                 }
-                selected_pos = position;
-                // to set the selected cell color
-                getActivity().runOnUiThread(run);
             }
         });
 
@@ -130,6 +133,7 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
     @Override
     public void chartError() {
         dismissProgress();
+        Log.v("ChartListFragment","Error in Chart data");
     }
 
     @Override

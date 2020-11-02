@@ -13,10 +13,8 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
-import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.fragments.InventoryHomeFragment;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -28,7 +26,6 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         isInventoryApp = true;
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);

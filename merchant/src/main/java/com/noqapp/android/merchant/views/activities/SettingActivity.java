@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
@@ -164,25 +165,31 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         cv_appointment = findViewById(R.id.cv_appointment);
         codeQR = getIntent().getStringExtra("codeQR");
 
-        BusinessTypeEnum businessType = AppInitialize.getUserProfile().getBusinessType();
-        if (BusinessTypeEnum.DO == businessType) {
-            ll_follow_up.setVisibility(View.VISIBLE);
-            cv_payment.setVisibility(View.VISIBLE);
-            isFollowUpAllow = true;
-        } else {
-            ll_follow_up.setVisibility(View.GONE);
-            cv_payment.setVisibility(View.GONE);
-            isFollowUpAllow = false;
-        }
+        if(null == AppInitialize.getUserProfile()){
+            FirebaseCrashlytics.getInstance().log("Merchant settingActivity User profile null");
+            new CustomToast().showToast(this, "User details are not valid. please comeback again");
+            finish();
+        }else {
+            BusinessTypeEnum businessType = AppInitialize.getUserProfile().getBusinessType();
+            if (BusinessTypeEnum.DO == businessType) {
+                ll_follow_up.setVisibility(View.VISIBLE);
+                cv_payment.setVisibility(View.VISIBLE);
+                isFollowUpAllow = true;
+            } else {
+                ll_follow_up.setVisibility(View.GONE);
+                cv_payment.setVisibility(View.GONE);
+                isFollowUpAllow = false;
+            }
 
-        switch (businessType) {
-            case DO:
-            case HS:
-            case PW:
-                cv_appointment.setVisibility(View.VISIBLE);
-                break;
-            default:
-                cv_appointment.setVisibility(View.GONE);
+            switch (businessType) {
+                case DO:
+                case HS:
+                case PW:
+                    cv_appointment.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    cv_appointment.setVisibility(View.GONE);
+            }
         }
 
         yes_no_list.clear();
