@@ -20,6 +20,7 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -514,34 +515,41 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("JsonPurchaseOrder{");
-        sb.append("bizStoreId='").append(bizStoreId).append('\'');
-        sb.append(", codeQR='").append(codeQR).append('\'');
-        sb.append(", queueUserId='").append(queueUserId).append('\'');
-        sb.append(", customerPhone='").append(customerPhone).append('\'');
-        sb.append(", deliveryAddress='").append(deliveryAddress).append('\'');
-        sb.append(", storeDiscount=").append(storeDiscount);
-        sb.append(", partialPayment='").append(partialPayment).append('\'');
-        sb.append(", orderPrice='").append(orderPrice).append('\'');
-        sb.append(", deliveryMode=").append(deliveryMode);
-        sb.append(", paymentMode=").append(paymentMode);
-        sb.append(", paymentStatus=").append(paymentStatus);
-        sb.append(", businessType=").append(businessType);
-        sb.append(", purchaseOrderProducts=").append(purchaseOrderProducts);
-        sb.append(", servingNumber=").append(servingNumber);
-        sb.append(", token=").append(token);
-        sb.append(", customerName='").append(customerName).append('\'');
-        sb.append(", expectedServiceBegin='").append(expectedServiceBegin).append('\'');
-        sb.append(", transactionId='").append(transactionId).append('\'');
-        sb.append(", presentOrderState=").append(presentOrderState);
-        sb.append(", created='").append(created).append('\'');
-        sb.append(", additionalNote='").append(additionalNote).append('\'');
-        sb.append(", transactionMessage='").append(transactionMessage).append('\'');
-        sb.append(", transactionVia=").append(transactionVia);
-        sb.append(", jsonResponseWithCFToken=").append(jsonResponseWithCFToken);
-        sb.append(", customized=").append(customized);
-        sb.append(", error=").append(error);
-        sb.append('}');
-        return sb.toString();
+        return new ToStringBuilder(this)
+                .append("bizStoreId", bizStoreId)
+                .append("codeQR", codeQR)
+                .append("queueUserId", queueUserId)
+                .append("customerPhone", customerPhone)
+                .append("deliveryAddress", deliveryAddress)
+                .append("storeDiscount", storeDiscount)
+                .append("partialPayment", partialPayment)
+                .append("orderPrice", orderPrice)
+                .append("tax", tax)
+                .append("grandTotal", grandTotal)
+                .append("deliveryMode", deliveryMode)
+                .append("paymentMode", paymentMode)
+                .append("paymentStatus", paymentStatus)
+                .append("businessType", businessType)
+                .append("couponId", couponId)
+                .append("discountedPurchase", discountedPurchase)
+                .append("displayName", displayName)
+                .append("purchaseOrderProducts", purchaseOrderProducts)
+                .append("servingNumber", servingNumber)
+                .append("displayServingNumber", displayServingNumber)
+                .append("token", token)
+                .append("displayToken", displayToken)
+                .append("customerName", customerName)
+                .append("expectedServiceBegin", expectedServiceBegin)
+                .append("transactionId", transactionId)
+                .append("presentOrderState", presentOrderState)
+                .append("created", created)
+                .append("additionalNote", additionalNote)
+                .append("transactionMessage", transactionMessage)
+                .append("transactionVia", transactionVia)
+                .append("jsonResponseWithCFToken", jsonResponseWithCFToken)
+                .append("jsonCoupon", jsonCoupon)
+                .append("customized", customized)
+                .append("error", error)
+                .toString();
     }
 }
