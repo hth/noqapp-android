@@ -77,7 +77,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(Objects.requireNonNull(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())));
                 tv_schedule_date.setText("Date: " + date);
-                tv_schedule_time.setText("Time: " + Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime()));
+                tv_schedule_time.setText("Time: " + jsonSchedule.getAppointmentTimeByAppointmentState());
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.utils.Formatter;
 
 import java.io.Serializable;
 
@@ -215,6 +216,18 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     @JsonIgnoreProperties
     public void setMultipleSlotEndTiming(int multipleSlotEndTiming) {
         this.multipleSlotEndTiming = multipleSlotEndTiming;
+    }
+
+    public String getAppointmentTimeByAppointmentState() {
+        switch (appointmentState) {
+            case S:
+                return "NA";
+            case A:
+            case O:
+            case F:
+            default:
+                return Formatter.convertMilitaryTo12HourFormat(startTime);
+        }
     }
 
     public ErrorEncounteredJson getError() {
