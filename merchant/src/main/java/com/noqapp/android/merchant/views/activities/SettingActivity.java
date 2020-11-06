@@ -165,11 +165,11 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         cv_appointment = findViewById(R.id.cv_appointment);
         codeQR = getIntent().getStringExtra("codeQR");
 
-        if(null == AppInitialize.getUserProfile()){
+        if (null == AppInitialize.getUserProfile()) {
             FirebaseCrashlytics.getInstance().log("Merchant settingActivity User profile null");
             new CustomToast().showToast(this, "User details are not valid. please comeback again");
             finish();
-        }else {
+        } else {
             BusinessTypeEnum businessType = AppInitialize.getUserProfile().getBusinessType();
             if (BusinessTypeEnum.DO == businessType) {
                 ll_follow_up.setVisibility(View.VISIBLE);

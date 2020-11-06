@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,5 +20,4 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
 
     }
-
 }
