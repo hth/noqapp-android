@@ -219,14 +219,18 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     }
 
     public String getAppointmentTimeByAppointmentState() {
-        switch (appointmentState) {
-            case S:
-                return "NA";
-            case A:
-            case O:
-            case F:
-            default:
-                return Formatter.convertMilitaryTo12HourFormat(startTime);
+        if (appointmentState != null) {
+            switch (appointmentState) {
+                case S:
+                    return "Walk-In Token";
+                case A:
+                case O:
+                case F:
+                default:
+                    return Formatter.convertMilitaryTo12HourFormat(startTime);
+            }
+        } else {
+            return Formatter.convertMilitaryTo12HourFormat(startTime);
         }
     }
 
