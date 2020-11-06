@@ -218,6 +218,7 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         this.multipleSlotEndTiming = multipleSlotEndTiming;
     }
 
+    //TODO remove null check after Nov 2020
     public String getAppointmentTimeByAppointmentState() {
         if (appointmentState != null) {
             switch (appointmentState) {
