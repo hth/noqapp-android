@@ -858,7 +858,7 @@ public class LaunchActivity
             healthList.add(new MenuDrawer(getString(R.string.medical_history), false, false, R.drawable.medical_history));
 
             menuDrawerItems.add(new MenuDrawer(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
-            menuDrawerItems.add(new MenuDrawer(getString(R.string.my_appointments), true, false, R.drawable.appointment));
+            menuDrawerItems.add(new MenuDrawer(getString(R.string.appointments), true, false, R.drawable.appointment));
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.order_history), true, false, R.drawable.purchase_order));
         if (isLogin) {
@@ -983,7 +983,7 @@ public class LaunchActivity
             }
             case R.drawable.appointment: {
                 if (UserUtils.isLogin()) {
-                    Intent in = new Intent(launchActivity, MyAppointmentsActivity.class);
+                    Intent in = new Intent(launchActivity, AppointmentActivity.class);
                     startActivity(in);
                 } else {
                     new CustomToast().showToast(launchActivity, "Please login to see the details");

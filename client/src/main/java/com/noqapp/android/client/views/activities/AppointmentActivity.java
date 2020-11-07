@@ -9,12 +9,12 @@ import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.PastAppointmentFragment;
 import com.noqapp.android.client.views.fragments.UpcomingAppointmentFragment;
 
-public class MyAppointmentsActivity extends TabbedActivity {
+public class AppointmentActivity extends TabbedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
-        tv_toolbar_title.setText(getString(R.string.my_appointments));
+        tv_toolbar_title.setText(getString(R.string.appointments));
     }
 
     @Override

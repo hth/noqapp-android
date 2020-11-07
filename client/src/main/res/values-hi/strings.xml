@@ -17,7 +17,7 @@
     <string name="medical_profile">मेडिकल प्रोफाइल</string>
     <string name="medical_profiles">मेडिकल प्रोफाइल</string>
     <string name="screen_view_all">समग्र अवलोकन</string>
-    <string name="screen_upcoming_appointment">मेरे अपॉइंटमेंट</string>
+    <string name="screen_upcoming_appointment">अपॉइंटमेंट</string>
 
     <string name="action_settings">सेटिंग्स और पसंद</string>
     <string name="join">क्लिक कर टोकन प्राप्त करें</string>
@@ -201,7 +201,7 @@
     <string name="home">होम</string>
     <string name="share">शेयर/साझा करें</string>
     <string name="medical_history">पिछले डॉक्टर का दौरा</string>
-    <string name="my_appointments">मेरे अपॉइंटमेंट</string>
+    <string name="appointments">अपॉइंटमेंट</string>
     <string name="medical_history_details">पूर्ववृत्त (केस हिस्ट्री)</string>
 
     <!-- Strings related to login -->

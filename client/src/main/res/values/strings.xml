@@ -17,7 +17,7 @@
     <string name="medical_profile">Medical Profile</string>
     <string name="medical_profiles">Medical Profiles</string>
     <string name="screen_view_all">View All</string>
-    <string name="screen_upcoming_appointment">My Appointments</string>
+    <string name="screen_upcoming_appointment">Appointments</string>
 
     <string name="action_settings">Settings</string>
     <string name="join">Click to get token</string>
@@ -201,7 +201,7 @@
     <string name="home">Home</string>
     <string name="share">Share</string>
     <string name="medical_history">Past Doctor Visits</string>
-    <string name="my_appointments">My Appointments</string>
+    <string name="appointments">Appointments</string>
     <string name="medical_history_details">Case History</string>
     <string name="weekly_hours">Weekly Hours</string>
 
