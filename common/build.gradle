@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'net.danlew:android.joda:2.10.7'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.11'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.12'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'com.itextpdf:itextg:5.5.10'
