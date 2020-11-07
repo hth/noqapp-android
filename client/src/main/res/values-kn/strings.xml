@@ -48,7 +48,7 @@
     <string name="version_no">ಆಪ್ ಆವೃತ್ತಿ: %1$s</string>
 
     <!--Register Screen-->
-    <string name="phonenumber">ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>
+    <string name="phone_number">ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>
     <string name="register">ನೋಂದಣಿ</string>
 
     <string name="login">ಲಾಗಿನ್ ಮಾಡಿ</string>

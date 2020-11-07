@@ -495,10 +495,11 @@
                         style="@style/style_join_queue_tv"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
-                        android:text="@string/phonenumber"
+                        android:text="@string/phone_number"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_fourteen"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_mobile"
@@ -507,7 +508,8 @@
                         android:drawableLeft="@mipmap/phone"
                         android:drawablePadding="5dp"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen" />
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:visibility="gone" />
 
                     <TextView
                         style="@style/style_join_queue_tv"
