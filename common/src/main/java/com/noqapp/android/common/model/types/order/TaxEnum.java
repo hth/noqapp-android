@@ -62,9 +62,9 @@ public enum TaxEnum {
     }
 
     public static TaxEnum getEnum(String description) {
-        for (TaxEnum unitOfMeasurementEnum : TaxEnum.values()) {
-            if (description.equals(unitOfMeasurementEnum.description)) {
-                return unitOfMeasurementEnum;
+        for (TaxEnum taxEnum : TaxEnum.values()) {
+            if (description.equals(taxEnum.description)) {
+                return taxEnum;
             }
         }
         return TaxEnum.ZE;
