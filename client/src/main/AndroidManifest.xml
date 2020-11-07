@@ -151,7 +151,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".views.activities.MyAppointmentsActivity"
+            android:name=".views.activities.AppointmentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity

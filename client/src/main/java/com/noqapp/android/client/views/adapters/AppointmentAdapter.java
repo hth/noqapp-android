@@ -25,11 +25,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Date;
 import java.util.List;
 
-public class MyAppointmentAdapter extends RecyclerView.Adapter {
+public class AppointmentAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<JsonSchedule> dataSet;
 
-    public MyAppointmentAdapter(List<JsonSchedule> data, OnItemClickListener listener) {
+    public AppointmentAdapter(List<JsonSchedule> data, OnItemClickListener listener) {
         this.dataSet = data;
         this.listener = listener;
     }

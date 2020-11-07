@@ -17,7 +17,7 @@
     <string name="medical_profile">Profil médical</string>
     <string name="medical_profiles">Les profils médicals</string>
     <string name="screen_view_all">Vue tout</string>
-    <string name="screen_upcoming_appointment">Mon rendez-vous</string>
+    <string name="screen_upcoming_appointment">Rendez-vous</string>
 
     <string name="action_settings">Paramétres</string>
     <string name="join">Joindre</string>
@@ -200,8 +200,8 @@
     <string name="navigation_drawer_close">terminez tiroir de navigation</string>
     <string name="home">page de l\'écran</string>
     <string name="share">partager</string>
-    <string name="medical_history">des visites précédentes chez le médecin</string>
-    <string name="my_appointments">mes rendez-vous</string>
+    <string name="medical_history">Des visites précédentes chez le médecin</string>
+    <string name="appointments">Rendez-vous</string>
     <string name="medical_history_details">L\'anamnèse</string>
 
     <!-- Strings related to login -->

@@ -17,7 +17,7 @@
     <string name="medical_profile">ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್</string>
     <string name="medical_profiles">ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್‌ಗಳು</string>
     <string name="screen_view_all">ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ</string>
-    <string name="screen_upcoming_appointment">ನನ್ನ ನೇಮಕಾತಿಗಳು</string>
+    <string name="screen_upcoming_appointment">ನೇಮಕಾತಿಗಳು</string>
 
     <string name="action_settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
     <string name="join">ಟೋಕನ್ ಪಡೆಯಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
@@ -201,7 +201,7 @@
     <string name="home">ಹೋಂ</string>
     <string name="share">ಹಂಚಿಕೊಳ್ಳಿ</string>
     <string name="medical_history">ಹಿಂದಿನ ವೈದ್ಯರ ಭೇಟಿಗಳು</string>
-    <string name="my_appointments">ನನ್ನ ನೇಮಕಾತಿಗಳು</string>
+    <string name="appointments">ನೇಮಕಾತಿಗಳು</string>
     <string name="medical_history_details">ಕೇಸ್ ಇತಿಹಾಸ</string>
 
     <!-- Strings related to login -->

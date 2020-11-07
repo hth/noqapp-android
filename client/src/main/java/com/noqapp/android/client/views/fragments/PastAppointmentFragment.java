@@ -18,7 +18,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
-import com.noqapp.android.client.views.adapters.MyAppointmentAdapter;
+import com.noqapp.android.client.views.adapters.AppointmentAdapter;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
@@ -32,7 +32,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class PastAppointmentFragment extends BaseFragment implements AppointmentPresenter,
-    MyAppointmentAdapter.OnItemClickListener {
+    AppointmentAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
@@ -88,7 +88,7 @@ public class PastAppointmentFragment extends BaseFragment implements Appointment
             }
         });
 
-        MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(jsonSchedules, this);
+        AppointmentAdapter appointmentListAdapter = new AppointmentAdapter(jsonSchedules, this);
         rcv_appointments.setAdapter(appointmentListAdapter);
         dismissProgress();
     }
