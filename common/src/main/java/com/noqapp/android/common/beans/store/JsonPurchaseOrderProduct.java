@@ -175,11 +175,12 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
     }
 
     public int computeTax() {
-        BigDecimal taxCompute = new BigDecimal(productPrice - productDiscount);
-        if (taxCompute.intValue() <= 0) {
+        /* As productPrice includes product discount if any. */
+        BigDecimal taxToBeComputedOnPrice = new BigDecimal(productPrice);
+        if (taxToBeComputedOnPrice.intValue() <= 0) {
             return 0;
         }
-        return taxCompute
+        return taxToBeComputedOnPrice
             .multiply(new BigDecimal(productQuantity))
             .multiply(tax.getValue().movePointLeft(2)).intValue();
     }
