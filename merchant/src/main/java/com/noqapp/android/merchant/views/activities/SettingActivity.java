@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
@@ -61,7 +62,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     protected ImageView actionbarBack, iv_delete_scheduling;
     private String codeQR;
     private TextView tv_store_close, tv_store_start, tv_store_lunch_start, tv_store_lunch_close,
-            tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
+        tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
     private CheckBox cb_limit, cb_enable_payment, cb_lunch;
     private EditText edt_token_no;
@@ -73,7 +74,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     private EditText edt_appointment_accepting_week, edt_appointment_duration;
 
     private SegmentedControl sc_prevent_join, sc_today_closed, sc_day_closed, sc_store_offline,
-            sc_enable_appointment;
+        sc_enable_appointment;
 
     private List<String> yes_no_list = new ArrayList<>();
     private LinearLayout ll_payment, ll_follow_up;
@@ -81,9 +82,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     private CardView cv_payment, cv_appointment;
     private boolean isFollowUpAllow = false;
     private ImageView iv_today_settings, iv_token_timing, iv_store_closing, iv_permanent_setting,
-            iv_payment_setting, iv_appointment_setting;
+        iv_payment_setting, iv_appointment_setting;
     private LinearLayout ll_today_settings, ll_token_timing, ll_store_closing, ll_permanent_setting,
-            ll_payment_setting, ll_appointment_setting;
+        ll_payment_setting, ll_appointment_setting;
     boolean is_today_settings_expand = true;
     boolean is_token_timing = true;
     boolean is_store_closing = true;
@@ -164,25 +165,31 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         cv_appointment = findViewById(R.id.cv_appointment);
         codeQR = getIntent().getStringExtra("codeQR");
 
-        BusinessTypeEnum businessType = AppInitialize.getUserProfile().getBusinessType();
-        if (BusinessTypeEnum.DO == businessType) {
-            ll_follow_up.setVisibility(View.VISIBLE);
-            cv_payment.setVisibility(View.VISIBLE);
-            isFollowUpAllow = true;
+        if (null == AppInitialize.getUserProfile()) {
+            FirebaseCrashlytics.getInstance().log("Merchant settingActivity User profile null");
+            new CustomToast().showToast(this, "User details are not valid. please comeback again");
+            finish();
         } else {
-            ll_follow_up.setVisibility(View.GONE);
-            cv_payment.setVisibility(View.GONE);
-            isFollowUpAllow = false;
-        }
+            BusinessTypeEnum businessType = AppInitialize.getUserProfile().getBusinessType();
+            if (BusinessTypeEnum.DO == businessType) {
+                ll_follow_up.setVisibility(View.VISIBLE);
+                cv_payment.setVisibility(View.VISIBLE);
+                isFollowUpAllow = true;
+            } else {
+                ll_follow_up.setVisibility(View.GONE);
+                cv_payment.setVisibility(View.GONE);
+                isFollowUpAllow = false;
+            }
 
-        switch (businessType) {
-            case DO:
-            case HS:
-            case PW:
-                cv_appointment.setVisibility(View.VISIBLE);
-                break;
-            default:
-                cv_appointment.setVisibility(View.GONE);
+            switch (businessType) {
+                case DO:
+                case HS:
+                case PW:
+                    cv_appointment.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    cv_appointment.setVisibility(View.GONE);
+            }
         }
 
         yes_no_list.clear();
@@ -266,9 +273,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
         cb_lunch = findViewById(R.id.cb_lunch);
         View.OnClickListener disableClick = v -> ShowAlertInformation.showThemeDialog(
-                SettingActivity.this,
-                "Alert",
-                "Lunch time disabled for the day. Select checkbox to enable the lunch time.");
+            SettingActivity.this,
+            "Alert",
+            "Lunch time disabled for the day. Select checkbox to enable the lunch time.");
 
         cb_lunch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
@@ -329,19 +336,19 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             if (isSpecificSettingEditAllowed()) {
                 if (isEndTimeBeforeStartTime(tv_store_start, tv_store_close)) {
                     ShowAlertInformation.showThemeDialog(
-                            SettingActivity.this,
-                            "Alert",
-                            "'Queue start time' should be before 'Queue close time'.");
+                        SettingActivity.this,
+                        "Alert",
+                        "'Queue start time' should be before 'Queue close time'.");
                 } else if (isEndTimeBeforeStartTime(tv_token_available, tv_token_not_available)) {
                     ShowAlertInformation.showThemeDialog(
-                            SettingActivity.this,
-                            "Alert",
-                            "'Issue token from' should be before 'Stop issuing token after'.");
+                        SettingActivity.this,
+                        "Alert",
+                        "'Issue token from' should be before 'Stop issuing token after'.");
                 } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
                     ShowAlertInformation.showThemeDialog(
-                            SettingActivity.this,
-                            "Alert",
-                            "'Stop issuing token after' should be before 'Queue close time'.");
+                        SettingActivity.this,
+                        "Alert",
+                        "'Stop issuing token after' should be before 'Queue close time'.");
                 } else {
                     if (validateLunchTime()) {
                         callUpdate(getString(R.string.setting_token_q_timing));
@@ -465,14 +472,14 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             }
         });
         setSelectAllOnFocus(
-                edt_deduction_amount,
-                edt_fees,
-                edt_follow_up_in_days,
-                edt_discounted_followup_price,
-                edt_limited_followup_days,
-                edt_appointment_accepting_week,
-                edt_appointment_duration,
-                edt_token_no);
+            edt_deduction_amount,
+            edt_fees,
+            edt_follow_up_in_days,
+            edt_discounted_followup_price,
+            edt_limited_followup_days,
+            edt_appointment_accepting_week,
+            edt_appointment_duration,
+            edt_token_no);
         if (new NetworkUtil(this).isOnline()) {
             showProgress();
             storeSettingApiCalls.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
@@ -515,8 +522,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             tv_fee_after_discounted_followup.setVisibility(View.VISIBLE);
             try {
                 tv_fee_after_discounted_followup.setText("Service charge for limited follow-up until " +
-                        edt_limited_followup_days.getText().toString() + " days is " +
-                        (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
+                    edt_limited_followup_days.getText().toString() + " days is " +
+                    (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -997,21 +1004,21 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             boolean isValid = true;
             if (isEndTimeBeforeStartTime(tv_store_lunch_start, tv_store_lunch_close)) {
                 ShowAlertInformation.showThemeDialog(
-                        SettingActivity.this,
-                        "Alert",
-                        "'Lunch start time' should be before 'Lunch close time'.");
+                    SettingActivity.this,
+                    "Alert",
+                    "'Lunch start time' should be before 'Lunch close time'.");
                 isValid = false;
             } else if (isEndTimeBeforeStartTime(tv_store_start, tv_store_lunch_start)) {
                 ShowAlertInformation.showThemeDialog(
-                        SettingActivity.this,
-                        "Alert",
-                        "'Lunch start time' should be after 'Queue start time'.");
+                    SettingActivity.this,
+                    "Alert",
+                    "'Lunch start time' should be after 'Queue start time'.");
                 isValid = false;
             } else if (isEndTimeBeforeStartTime(tv_store_lunch_close, tv_store_close)) {
                 ShowAlertInformation.showThemeDialog(
-                        SettingActivity.this,
-                        "Alert",
-                        "'Lunch close time' should be before 'Queue close time'.");
+                    SettingActivity.this,
+                    "Alert",
+                    "'Lunch close time' should be before 'Queue close time'.");
                 isValid = false;
             }
             return isValid;

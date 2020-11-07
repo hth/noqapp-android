@@ -88,7 +88,6 @@ import java.util.Map;
 public abstract class BaseLaunchActivity
     extends AppCompatActivity
     implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
-    public static DatabaseHelper dbHandler;
     protected List<MenuDrawer> menuDrawerItems = new ArrayList<>();
 
     public static void setMerchantListFragment(MerchantListFragment merchantListFragment) {

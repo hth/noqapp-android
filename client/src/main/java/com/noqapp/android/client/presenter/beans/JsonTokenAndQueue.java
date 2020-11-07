@@ -498,11 +498,15 @@ public class JsonTokenAndQueue implements Serializable {
                 .append("tokenAvailableFrom", tokenAvailableFrom)
                 .append("startHour", startHour)
                 .append("endHour", endHour)
+                .append("lunchTimeStart", lunchTimeStart)
+                .append("lunchTimeEnd", lunchTimeEnd)
                 .append("delayedInMinutes", delayedInMinutes)
                 .append("topic", topic)
                 .append("servingNumber", servingNumber)
+                .append("displayServingNumber", displayServingNumber)
                 .append("lastNumber", lastNumber)
                 .append("token", token)
+                .append("displayToken", displayToken)
                 .append("queueUserId", queueUserId)
                 .append("queueStatus", queueStatus)
                 .append("purchaseOrderState", purchaseOrderState)
@@ -514,6 +518,7 @@ public class JsonTokenAndQueue implements Serializable {
                 .append("jsonPurchaseOrder", jsonPurchaseOrder)
                 .append("bizCategoryId", bizCategoryId)
                 .append("transactionId", transactionId)
+                .append("timeSlotMessage", timeSlotMessage)
                 .toString();
     }
 }

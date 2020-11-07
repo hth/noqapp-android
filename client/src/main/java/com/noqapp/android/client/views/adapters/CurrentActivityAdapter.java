@@ -137,7 +137,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     holder.tv_degree.setText(jsonSchedule.getJsonQueueDisplay().getBusinessName());
             }
             holder.tv_store_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
-            holder.tv_schedule_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
+            holder.tv_schedule_time.setText(jsonSchedule.getAppointmentTimeByAppointmentState());
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(Objects.requireNonNull(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())));
                 holder.tv_schedule_date.setText(date);

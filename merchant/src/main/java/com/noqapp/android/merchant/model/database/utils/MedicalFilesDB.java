@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.noqapp.android.merchant.views.activities.BaseLaunchActivity.dbHandler;
+import static com.noqapp.android.merchant.views.activities.AppInitialize.dbHandler;
 
 public class MedicalFilesDB {
     private static final String KEY_FORM_SUBMITTED = "1";

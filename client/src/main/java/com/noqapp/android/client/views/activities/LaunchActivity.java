@@ -856,9 +856,9 @@ public class LaunchActivity
             List<MenuDrawer> healthList = new ArrayList<>();
             healthList.add(new MenuDrawer(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
             healthList.add(new MenuDrawer(getString(R.string.medical_history), false, false, R.drawable.medical_history));
-            healthList.add(new MenuDrawer(getString(R.string.my_appointments), false, false, R.drawable.appointment));
 
             menuDrawerItems.add(new MenuDrawer(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
+            menuDrawerItems.add(new MenuDrawer(getString(R.string.my_appointments), true, false, R.drawable.appointment));
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.order_history), true, false, R.drawable.purchase_order));
         if (isLogin) {

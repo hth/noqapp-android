@@ -16,6 +16,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.FontsOverride;
 import com.noqapp.android.merchant.model.APIConstant;
+import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
@@ -58,6 +59,7 @@ public class AppInitialize extends Application {
     private static final String PREKEY_IS_MSG_ANNOUNCE = "msgAnnouncement";
     private static final String PREKEY_IS_TV_SPLIT_VIEW = "tvSplitView";
     private static final String PREKEY_TV_REFRESH_TIME = "tvRefreshTime";
+    public static DatabaseHelper dbHandler;
 
     public AppInitialize() {
         super();
@@ -77,6 +79,7 @@ public class AppInitialize extends Application {
         setLocale(this);
 
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
     }
 
     private Locale getLocaleFromPref() {

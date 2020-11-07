@@ -180,8 +180,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
             if (AppUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in background, show the notification in notification tray
-                if (null == LaunchActivity.dbHandler) {
-                    LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+                if (null == AppInitialize.dbHandler) {
+                    AppInitialize.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                 }
                 if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);

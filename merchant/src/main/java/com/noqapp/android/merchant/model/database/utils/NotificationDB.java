@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.noqapp.android.merchant.views.activities.LaunchActivity.dbHandler;
+import static com.noqapp.android.merchant.views.activities.AppInitialize.dbHandler;
 
 /**
  * Created by chandra on 8/7/17.

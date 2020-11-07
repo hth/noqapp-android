@@ -411,6 +411,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
+            bundle.putBoolean(IBConstant.KEY_FROM_LIST, true);
+            bundle.putString("displayCurrentServing", jsonPurchaseOrder.getDisplayServingNumber());
+            bundle.putInt("token", jsonPurchaseOrder.getToken());
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
             bundle.putString("GeoHash", getIntent().getExtras().getString("GeoHash"));
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
@@ -566,6 +569,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
+            bundle.putBoolean(IBConstant.KEY_FROM_LIST, true);
+            bundle.putString("displayCurrentServing", jsonPurchaseOrder.getDisplayServingNumber());
+            bundle.putInt("token", jsonPurchaseOrder.getToken());
             bundle.putString("GeoHash", getIntent().getExtras().getString("GeoHash"));
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
             bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));

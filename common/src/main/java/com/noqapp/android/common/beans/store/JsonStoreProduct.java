@@ -8,6 +8,8 @@ import com.noqapp.android.common.model.types.order.ProductTypeEnum;
 import com.noqapp.android.common.model.types.order.TaxEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -297,22 +299,28 @@ public class JsonStoreProduct implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonStoreProduct{" +
-                "productId='" + productId + '\'' +
-                ", productName='" + productName + '\'' +
-                ", productPrice=" + productPrice +
-                ", productDiscount=" + productDiscount +
-                ", productInfo='" + productInfo + '\'' +
-                ", productImage='" + productImage + '\'' +
-                ", storeCategoryId='" + storeCategoryId + '\'' +
-                ", productType=" + productType +
-                ", unitValue=" + unitValue +
-                ", packageSize=" + packageSize +
-                ", inventoryCurrent=" + inventoryCurrent +
-                ", inventoryLimit=" + inventoryLimit +
-                ", unitOfMeasurement=" + unitOfMeasurement +
-                ", productReference='" + productReference + '\'' +
-                ", active=" + active +
-                '}';
+        return new ToStringBuilder(this)
+                .append("productId", productId)
+                .append("barCode", barCode)
+                .append("productName", productName)
+                .append("productPrice", productPrice)
+                .append("tax", tax)
+                .append("productDiscount", productDiscount)
+                .append("productInfo", productInfo)
+                .append("productImage", productImage)
+                .append("storeCategoryId", storeCategoryId)
+                .append("productType", productType)
+                .append("unitValue", unitValue)
+                .append("packageSize", packageSize)
+                .append("inventoryCurrent", inventoryCurrent)
+                .append("inventoryLimit", inventoryLimit)
+                .append("unitOfMeasurement", unitOfMeasurement)
+                .append("productReference", productReference)
+                .append("availableDate", availableDate)
+                .append("availableNow", availableNow)
+                .append("displayCaseTurnedOn", displayCaseTurnedOn)
+                .append("bizStoreId", bizStoreId)
+                .append("active", active)
+                .toString();
     }
 }

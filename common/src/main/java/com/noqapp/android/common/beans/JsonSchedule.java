@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.utils.Formatter;
 
 import java.io.Serializable;
 
@@ -215,6 +216,23 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     @JsonIgnoreProperties
     public void setMultipleSlotEndTiming(int multipleSlotEndTiming) {
         this.multipleSlotEndTiming = multipleSlotEndTiming;
+    }
+
+    //TODO remove null check after Nov 2020
+    public String getAppointmentTimeByAppointmentState() {
+        if (appointmentState != null) {
+            switch (appointmentState) {
+                case S:
+                    return "Walk-In Token";
+                case A:
+                case O:
+                case F:
+                default:
+                    return Formatter.convertMilitaryTo12HourFormat(startTime);
+            }
+        } else {
+            return Formatter.convertMilitaryTo12HourFormat(startTime);
+        }
     }
 
     public ErrorEncounteredJson getError() {

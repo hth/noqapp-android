@@ -686,7 +686,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             }
         });
 
-        if (new NetworkUtil(getActivity()).isOnline()) {
+        if (new NetworkUtil(LaunchActivity.getLaunchActivity()).isOnline()) {
             if (isNewCall) // show progressbar only first time
                 showProgress();
             getAllPeopleInQ(jsonTopic);

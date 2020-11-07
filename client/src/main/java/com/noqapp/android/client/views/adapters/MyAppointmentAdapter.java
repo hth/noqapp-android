@@ -77,7 +77,7 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.tv_appointment_time.setText(Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime()));
+        holder.tv_appointment_time.setText(jsonSchedule.getAppointmentTimeByAppointmentState());
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
         //  AppUtilities.loadProfilePic(holder.iv_main,jsonSchedule.getJsonProfile().getProfileImage(),context);
         holder.card_view.setOnClickListener((View v) -> {
