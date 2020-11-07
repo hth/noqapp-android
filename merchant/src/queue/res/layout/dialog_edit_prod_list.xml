@@ -441,7 +441,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Put on display"
+                android:text="Put on Display"
                 android:buttonTint="@color/colorPrimaryDark" />
 
             <TextView
