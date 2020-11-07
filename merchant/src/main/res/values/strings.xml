@@ -230,7 +230,7 @@
     <string name="product_name">Name <font color='red'>\u002A</font></string>
     <string name="product_price">Product price <font color='red'>\u002A</font></string>
     <string name="product_daily_limit">Inventory</string>
-    <string name="product_available_date">Available on display</string>
+    <string name="product_available_date">Available on Display</string>
     <string name="product_desc">Description</string>
     <string name="product_discount">Product discount</string>
     <string name="product_category">Product category <font color='red'>\u002A</font></string>
