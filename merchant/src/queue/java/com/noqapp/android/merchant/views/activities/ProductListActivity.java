@@ -486,7 +486,7 @@ public class ProductListActivity extends BaseActivity implements
     public void actionOnProductResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            new CustomToast().showToast(this, "Action perform successfully");
+            new CustomToast().showToast(this, "Action performed successfully");
             selectionPos = -1;
             if (new NetworkUtil(this).isOnline()) {
                 showProgress();
