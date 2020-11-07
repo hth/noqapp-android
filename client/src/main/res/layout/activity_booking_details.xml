@@ -199,7 +199,8 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen" />
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:visibility="gone" />
 
 
                 </LinearLayout>

@@ -48,7 +48,7 @@
     <string name="version_no">एप्लिकेशन  संस्करण: %1$s</string>
 
     <!--Register Screen-->
-    <string name="phonenumber">फोन नंबर</string>
+    <string name="phone_number">फोन नंबर</string>
     <string name="register">पंजीकरण</string>
 
     <string name="login">लॉग इन</string>

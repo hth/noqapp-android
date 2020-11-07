@@ -32,7 +32,7 @@
     <string name="firstname">Prénom</string>
 
     <!--Invite Screen-->
-    <string name="how_it_works">Comment se fonctionne ?</string>
+    <string name="how_it_works">Comment se fonctionne?</string>
     <string name="your_invite_code">Votre code de l\'invité</string>
     <string name="copy">Copie</string>
     <string name="send_invite">Invitez</string>
@@ -48,8 +48,8 @@
     <string name="version_no">Version d\'app: %1$s</string>
 
     <!--Register Screen-->
-    <string name="phonenumber">Numéro de téléphone </string>
-    <string name="register">L\'enregistrement </string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="register">L\'enregistrement</string>
 
     <string name="login">Connexion</string>
     <string name="phone">Téléphone <font color='red'>\u002A</font></string>

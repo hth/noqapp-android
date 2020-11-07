@@ -48,7 +48,7 @@
     <string name="version_no">App version: %1$s</string>
 
     <!--Register Screen-->
-    <string name="phonenumber">Phone Number</string>
+    <string name="phone_number">Phone Number</string>
     <string name="register">Register</string>
 
     <string name="login">Login</string>
