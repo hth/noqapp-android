@@ -391,7 +391,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_toRightOf="@+id/iv_offer"
                                 android:padding="5dp"
-                                android:text="Apply Coupon Code"
+                                android:text="Apply Coupon"
                                 android:textColor="@color/btn_color"
                                 android:textSize="@dimen/text_size_sixteen" />
 
