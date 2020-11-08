@@ -12,6 +12,8 @@ import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.OnOffEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.model.types.SupportedDeliveryEnum;
+import com.noqapp.android.common.model.types.SupportedPaymentEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -195,6 +197,18 @@ public class JsonQueue implements Serializable {
     //******************************************/
     //*  Queue Appointment Setting Ends.       */
     //******************************************/
+
+    //****************************************************/
+    //*  Business Payment & Delivery Setting Starts.     */
+    //****************************************************/
+    @JsonProperty("ap")
+    private Set<SupportedPaymentEnum> acceptedPayments;
+
+    @JsonProperty("ad")
+    private Set<SupportedDeliveryEnum> acceptedDeliveries;
+    //****************************************************/
+    //* Business Payment & Delivery Setting Ends.        */
+    //****************************************************/
 
     @JsonProperty("bc")
     private String bizCategoryId;
@@ -595,6 +609,24 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setAppointmentOpenHowFar(int appointmentOpenHowFar) {
         this.appointmentOpenHowFar = appointmentOpenHowFar;
+        return this;
+    }
+
+    public Set<SupportedPaymentEnum> getAcceptedPayments() {
+        return acceptedPayments;
+    }
+
+    public JsonQueue setAcceptedPayments(Set<SupportedPaymentEnum> acceptedPayments) {
+        this.acceptedPayments = acceptedPayments;
+        return this;
+    }
+
+    public Set<SupportedDeliveryEnum> getAcceptedDeliveries() {
+        return acceptedDeliveries;
+    }
+
+    public JsonQueue setAcceptedDeliveries(Set<SupportedDeliveryEnum> acceptedDeliveries) {
+        this.acceptedDeliveries = acceptedDeliveries;
         return this;
     }
 
