@@ -59,7 +59,7 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("BCI")
     private String bizCategoryId;
 
-    @JsonProperty("AD")
+    @JsonProperty("SA")
     private String address;
 
     @JsonProperty("AR")
