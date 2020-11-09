@@ -129,7 +129,6 @@ public class DocumentUploadActivity
             new LabFile().setTransactionId(transactionId));
     }
 
-
     @Override
     public void authenticationFailure() {
         dismissProgress();
@@ -151,7 +150,6 @@ public class DocumentUploadActivity
         dismissProgress();
     }
 
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -162,7 +160,6 @@ public class DocumentUploadActivity
                 fab_add_image.show();
                 isExpandScreenOpen = false;
                 break;
-
         }
     }
 
@@ -170,7 +167,6 @@ public class DocumentUploadActivity
         String fileExtension = MimeTypeMap.getFileExtensionFromUrl(filePath);
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
     }
-
 
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
@@ -186,7 +182,6 @@ public class DocumentUploadActivity
         } else {
             new CustomToast().showToast(this, "Failed to update document");
         }
-
     }
 
     @Override
@@ -210,11 +205,9 @@ public class DocumentUploadActivity
         dismissProgress();
     }
 
-
     private void initProgress() {
         progressDialogImage = new ProgressDialog(this);
-        progressDialogImage.getWindow().setBackgroundDrawable(new
-                ColorDrawable(android.graphics.Color.TRANSPARENT));
+        progressDialogImage.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         progressDialogImage.setIndeterminate(true);
         progressDialogImage.setCancelable(true);
         // progressDialogImage.show();
@@ -232,13 +225,15 @@ public class DocumentUploadActivity
                     e.printStackTrace();
                 }
                 LabFile labFile = new LabFile().
-                        setTransactionId(transactionId)
-                        .setDeleteAttachment(imageName);
+                    setTransactionId(transactionId)
+                    .setDeleteAttachment(imageName);
                 showProgress();
                 setProgressMessage("Deleting image...");
-                purchaseOrderApiCalls.removeAttachment(AppInitialize.getDeviceID(),
-                        AppInitialize.getEmail(), AppInitialize.getAuth(), labFile);
-
+                purchaseOrderApiCalls.removeAttachment(
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth(),
+                    labFile);
             }
 
             @Override
@@ -255,10 +250,11 @@ public class DocumentUploadActivity
         switch (requestCode) {
             case PermissionUtils.PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Take Photo"))
+                    if (userChoosenTask.equals("Take Photo")) {
                         cameraIntent();
-                    else if (userChoosenTask.equals("Choose from Library"))
+                    } else if (userChoosenTask.equals("Choose from Library")) {
                         galleryIntent();
+                    }
                 } else {
                     //code for deny
                 }
@@ -266,8 +262,9 @@ public class DocumentUploadActivity
 
             case PERMISSION_REQUEST_CAMERA:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Take Photo"))
+                    if (userChoosenTask.equals("Take Photo")) {
                         cameraIntent();
+                    }
                 } else {
                     //code for deny
                 }
@@ -276,29 +273,29 @@ public class DocumentUploadActivity
     }
 
     private void selectImage() {
-        final CharSequence[] items = {"Camera", "Choose from Library",
-                "Cancel"};
+        final CharSequence[] items = {
+            "Camera",
+            "Choose from Library",
+            "Cancel"
+        };
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle("Add Photo");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = PermissionUtils.checkPermission(DocumentUploadActivity.this);
+        builder.setItems(items, (dialog, item) -> {
+            boolean result = PermissionUtils.checkPermission(DocumentUploadActivity.this);
 
-                if (items[item].equals("Camera")) {
-                    userChoosenTask = "Camera";
-                    if (result)
-                        cameraIntent();
-
-                } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask = "Choose from Library";
-                    if (result)
-                        galleryIntent();
-
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
+            if (items[item].equals("Camera")) {
+                userChoosenTask = "Camera";
+                if (result) {
+                    cameraIntent();
                 }
+            } else if (items[item].equals("Choose from Library")) {
+                userChoosenTask = "Choose from Library";
+                if (result) {
+                    galleryIntent();
+                }
+            } else if (items[item].equals("Cancel")) {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -312,15 +309,13 @@ public class DocumentUploadActivity
     }
 
     private void cameraIntent() {
-        if (ContextCompat.checkSelfPermission(DocumentUploadActivity.this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED) {
+        if (ContextCompat.checkSelfPermission(DocumentUploadActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(DocumentUploadActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
         } else {
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.TITLE, "New Picture");
             values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-            imageUri = getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(intent, PICK_IMAGE_CAMERA);
@@ -342,16 +337,14 @@ public class DocumentUploadActivity
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
 
     private void onCaptureImageResult(Intent data) {
         try {
-            Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
-                    getContentResolver(), imageUri);
+            Bitmap thumbnail = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             String path = getRealPathFromURI(imageUri);
@@ -388,7 +381,6 @@ public class DocumentUploadActivity
                         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), transactionId);
                         purchaseOrderApiCalls.addAttachment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -404,20 +396,18 @@ public class DocumentUploadActivity
             progressDialogImage.show();
             progressDialogImage.setContentView(R.layout.progress_lay);
             Picasso.get()
-                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + labFileTemp.getRecordReferenceId() + "/" + imageUrl)
-                    .into(iv_large, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            progressDialogImage.dismiss();
-                        }
+                .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + labFileTemp.getRecordReferenceId() + "/" + imageUrl)
+                .into(iv_large, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressDialogImage.dismiss();
+                    }
 
-                        @Override
-                        public void onError(Exception e) {
-                            progressDialogImage.dismiss();
-                        }
-
-
-                    });
+                    @Override
+                    public void onError(Exception e) {
+                        progressDialogImage.dismiss();
+                    }
+                });
             frame_image.setVisibility(View.VISIBLE);
             isExpandScreenOpen = true;
         } else {
