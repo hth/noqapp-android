@@ -136,6 +136,7 @@ public class LaunchActivity
     private TextToSpeechHelper textToSpeechHelper;
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
+    private DrawerExpandableListAdapter expandableListAdapter;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -542,12 +543,16 @@ public class LaunchActivity
     }
 
     public void updateNotificationBadgeCount() {
-        int notify_count = NotificationDB.getNotificationCount();
-        tv_badge.setText(String.valueOf(notify_count));
-        if (notify_count > 0) {
-            tv_badge.setVisibility(View.VISIBLE);
-        } else {
-            tv_badge.setVisibility(View.INVISIBLE);
+//        int notify_count = NotificationDB.getNotificationCount();
+//        tv_badge.setText(String.valueOf(notify_count));
+//        if (notify_count > 0) {
+//            tv_badge.setVisibility(View.VISIBLE);
+//        } else {
+//            tv_badge.setVisibility(View.INVISIBLE);
+//        }
+        if (null != expandable_drawer_listView && null != expandableListAdapter) {
+            //expandable_drawer_listView.notify();
+            expandableListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -865,7 +870,7 @@ public class LaunchActivity
             menuDrawerItems.add(new MenuDrawer(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers));
-
+        menuDrawerItems.add(new MenuDrawer(getString(R.string.notification_setting), true, false, R.drawable.ic_notification));
         List<MenuDrawer> settingList = new ArrayList<>();
         settingList.add(new MenuDrawer(getString(R.string.share), false, false, R.drawable.ic_menu_share));
         settingList.add(new MenuDrawer(getString(R.string.invite), false, false, R.drawable.invite));
@@ -882,7 +887,7 @@ public class LaunchActivity
             menuDrawerItems.add(new MenuDrawer(getString(R.string.noqueue_apps), true, false, R.drawable.apps));
         }
 
-        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, menuDrawerItems);
+        expandableListAdapter = new DrawerExpandableListAdapter(this, menuDrawerItems);
         expandable_drawer_listView.setAdapter(expandableListAdapter);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -941,6 +946,11 @@ public class LaunchActivity
             }
             case R.drawable.settings: {
                 Intent in = new Intent(launchActivity, PreferenceSettings.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_notification: {
+                Intent in = new Intent(launchActivity, NotificationActivity.class);
                 startActivity(in);
                 break;
             }
