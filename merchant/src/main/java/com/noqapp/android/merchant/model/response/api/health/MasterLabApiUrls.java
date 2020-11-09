@@ -27,6 +27,25 @@ public interface MasterLabApiUrls {
             String auth
     );
 
+    @Deprecated
+    @POST("api/m/h/lab/add.json")
+    Call<JsonResponse> add(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonMasterLab jsonMasterLab
+    );
+
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
