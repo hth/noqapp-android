@@ -24,8 +24,6 @@ public class MasterLabApiCalls extends BaseMasterLabApiCalls {
         this.masterLabPresenter = masterLabPresenter;
     }
 
-
-
     public void add(String did, String mail, String auth, JsonMasterLab jsonMasterLab) {
         masterLabApiUrls.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
             @Override
