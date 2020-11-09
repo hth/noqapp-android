@@ -622,7 +622,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         updateDiscountUI();
     }
 
-
     private void callAddressPreference() {
         ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();
         clientProfileApiCall.setClientPreferencePresenter(this);
