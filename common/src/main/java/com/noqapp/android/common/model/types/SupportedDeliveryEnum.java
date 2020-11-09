@@ -1,5 +1,10 @@
 package com.noqapp.android.common.model.types;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Store accepted delivery.
  * hitender
@@ -23,6 +28,14 @@ public enum SupportedDeliveryEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public static Map<String, String> asMapWithNameAsKey(Set<SupportedDeliveryEnum> hset) {
+        HashMap<String, String> availableOptions = new LinkedHashMap<>();
+        for (SupportedDeliveryEnum supportedDeliveryEnum : hset) {
+            availableOptions.put(supportedDeliveryEnum.name, supportedDeliveryEnum.description);
+        }
+        return availableOptions;
     }
 
     @Override

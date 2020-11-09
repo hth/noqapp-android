@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
@@ -53,6 +55,8 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
+import com.noqapp.android.common.model.types.SupportedDeliveryEnum;
+import com.noqapp.android.common.model.types.SupportedPaymentEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentMethodEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
@@ -130,6 +134,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             acrb_take_away.setChecked(true);
             ll_address.setVisibility(View.GONE);
         }
+        JsonQueue jsonQueue = (JsonQueue) getIntent().getExtras().getSerializable(IBConstant.KEY_JSON_QUEUE);
         if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
             acrb_cash.setChecked(true);
             acrb_online.setChecked(false);
@@ -137,6 +142,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             acrb_cash.setChecked(false);
             acrb_online.setChecked(true);
         }
+        Map<String, String> enabledPaymentOption = SupportedPaymentEnum.asMapWithNameAsKey(jsonQueue.getAcceptedPayments());
+        acrb_cash.setEnabled(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName())));
+        acrb_online.setEnabled(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName())));
+        acrb_cash.setChecked(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName())));
+        acrb_online.setChecked(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName())));
         rg_delivery.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.acrb_home_delivery) {
                 ll_address.setVisibility(View.VISIBLE);
@@ -144,7 +154,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 ll_address.setVisibility(View.GONE);
             }
         });
-
+        AppCompatRadioButton acrb_home_delivery = (AppCompatRadioButton)rg_delivery.getChildAt(0);
+        AppCompatRadioButton acrb_take_away = (AppCompatRadioButton)rg_delivery.getChildAt(1);
+        Map<String, String> enabledDeliveryOptions = SupportedDeliveryEnum.asMapWithNameAsKey(jsonQueue.getAcceptedDeliveries());
+        acrb_home_delivery.setEnabled(TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.HOM.getName())));
+        acrb_take_away.setEnabled(TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.PIK.getName())));
+        acrb_home_delivery.setChecked(TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.HOM.getName())));
+        acrb_take_away.setChecked(TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.PIK.getName())));
         if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().getJsonUserAddresses()) {
             List<JsonUserAddress> jsonUserAddressList = AppInitialize.getUserProfile().getJsonUserAddresses();
             for (int i = 0; i < jsonUserAddressList.size(); i++) {

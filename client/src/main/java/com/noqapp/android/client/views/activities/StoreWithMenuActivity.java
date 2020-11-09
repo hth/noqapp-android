@@ -343,6 +343,7 @@ public class StoreWithMenuActivity
                         Intent intent = new Intent(StoreWithMenuActivity.this, OrderActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable(IBConstant.KEY_DATA, jsonPurchaseOrder);
+                        bundle.putSerializable(IBConstant.KEY_JSON_QUEUE, jsonQueue);
                         bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
                         bundle.putString(IBConstant.KEY_STORE_ADDRESS, jsonQueue.getStoreAddress());
                         bundle.putString("GeoHash", jsonQueue.getGeoHash());

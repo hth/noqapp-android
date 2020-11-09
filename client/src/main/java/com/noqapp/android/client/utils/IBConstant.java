@@ -16,6 +16,7 @@ public class IBConstant {
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
     public static final String KEY_DATA_OBJECT = "object";
     public static final String KEY_DATA = "data";
+    public static final String KEY_JSON_QUEUE = "jsonQueue";
 
     public static final String IS_DEPENDENT = "isDependent";
     public static final String DEPENDENT_PROFILE = "dependentProfile";
