@@ -58,9 +58,9 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-
-public class DocumentUploadActivity extends BaseActivity implements View.OnClickListener,
-        ImageUploadPresenter, LabFilePresenter, ImageUploadAdapter.OnItemClickListener {
+public class DocumentUploadActivity
+    extends BaseActivity
+    implements View.OnClickListener, ImageUploadPresenter, LabFilePresenter, ImageUploadAdapter.OnItemClickListener {
 
     private final int PICK_IMAGE_CAMERA = 101;
     private final int PICK_IMAGE_GALLERY = 102;
@@ -122,9 +122,11 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         showProgress();
         setProgressMessage("Fetching documents...");
         purchaseOrderApiCalls.setLabFilePresenter(this);
-        purchaseOrderApiCalls.showAttachment(AppInitialize.getDeviceID(),
-                AppInitialize.getEmail(), AppInitialize.getAuth(), new LabFile().setTransactionId(transactionId));
-
+        purchaseOrderApiCalls.showAttachment(
+            AppInitialize.getDeviceID(),
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
+            new LabFile().setTransactionId(transactionId));
     }
 
 
