@@ -143,10 +143,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             acrb_online.setChecked(true);
         }
         Map<String, String> enabledPaymentOption = SupportedPaymentEnum.asMapWithNameAsKey(jsonQueue.getAcceptedPayments());
-        acrb_cash.setEnabled(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName())));
-        acrb_online.setEnabled(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName())));
-        acrb_cash.setChecked(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName())));
-        acrb_online.setChecked(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName())));
+        acrb_cash.setEnabled(!TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName())));
+        acrb_online.setEnabled(!TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName())));
+        if(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName()))) {
+            acrb_cash.setChecked(false);
+        }
+        if(TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName()))) {
+            acrb_online.setChecked(false);
+        }
         rg_delivery.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.acrb_home_delivery) {
                 ll_address.setVisibility(View.VISIBLE);
@@ -157,10 +161,16 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         AppCompatRadioButton acrb_home_delivery = (AppCompatRadioButton)rg_delivery.getChildAt(0);
         AppCompatRadioButton acrb_take_away = (AppCompatRadioButton)rg_delivery.getChildAt(1);
         Map<String, String> enabledDeliveryOptions = SupportedDeliveryEnum.asMapWithNameAsKey(jsonQueue.getAcceptedDeliveries());
-        acrb_home_delivery.setEnabled(TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.HOM.getName())));
-        acrb_take_away.setEnabled(TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.PIK.getName())));
-        acrb_home_delivery.setChecked(TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.HOM.getName())));
-        acrb_take_away.setChecked(TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.PIK.getName())));
+        acrb_home_delivery.setEnabled(!TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.HOM.getName())));
+        acrb_take_away.setEnabled(!TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.PIK.getName())));
+
+        if(TextUtils.isEmpty(enabledPaymentOption.get(SupportedDeliveryEnum.HOM.getName()))) {
+            acrb_home_delivery.setChecked(false);
+        }
+        if(TextUtils.isEmpty(enabledPaymentOption.get(SupportedDeliveryEnum.PIK.getName()))) {
+            acrb_take_away.setChecked(false);
+        }
+       
         if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().getJsonUserAddresses()) {
             List<JsonUserAddress> jsonUserAddressList = AppInitialize.getUserProfile().getJsonUserAddresses();
             for (int i = 0; i < jsonUserAddressList.size(); i++) {
