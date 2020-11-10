@@ -110,7 +110,6 @@ public class ScannerActivity extends AppCompatActivity implements
                         if (contents.startsWith("https://q.noqapp.com")) {
                             try {
                                 if (contents.endsWith(MessageOriginEnum.AU.name())) {
-
                                     String[] codeQR = contents.split("https://q.noqapp.com/");
                                     String[] scanData = codeQR[1].split("#");
                                     qrCodeResult(scanData);
@@ -118,10 +117,9 @@ public class ScannerActivity extends AppCompatActivity implements
 
                                 } else {
                                     String[] codeQR = contents.split("/");
-                                    //endswith - q.htm or b.htm
-                                    // to define weather we need to show category screen or join screen
-                                    boolean isCategoryData = contents.endsWith("b.htm");
-                                    barcodeResult(codeQR[3], isCategoryData);
+                                    //ends with - q.htm, o.htm or b.htm
+                                    //to define if we need to show category screen or join screen or order screen
+                                    barcodeResult(codeQR[3], contents);
                                     Bundle params = new Bundle();
                                     params.putString("codeQR", codeQR[3]);
                                     AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SCAN_STORE_CODE_QR_SCREEN, params);
@@ -151,8 +149,8 @@ public class ScannerActivity extends AppCompatActivity implements
         return ScannerFragment.RC_BARCODE_CAPTURE;
     }
 
-    private void barcodeResult(String codeQR, boolean isCategoryData) {
-        if (isCategoryData) {
+    private void barcodeResult(String codeQR, String contents) {
+        if (contents.endsWith("b.htm")) {
             Intent in = new Intent(this, CategoryInfoActivity.class);
             Bundle b = new Bundle();
             b.putString(IBConstant.KEY_CODE_QR, codeQR);
@@ -160,6 +158,8 @@ public class ScannerActivity extends AppCompatActivity implements
             b.putBoolean(IBConstant.KEY_IS_TEMPLE, false);
             in.putExtra("bundle", b);
             startActivity(in);
+        } else if (contents.endsWith("o.htm")) {
+            //Show orders instead
         } else {
             Intent in = new Intent(this, BeforeJoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
