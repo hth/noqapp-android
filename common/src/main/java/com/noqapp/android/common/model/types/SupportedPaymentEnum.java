@@ -1,5 +1,11 @@
 package com.noqapp.android.common.model.types;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Store accepted payment.
  * hitender
@@ -29,6 +35,14 @@ public enum SupportedPaymentEnum {
 
     public String getFriendlyDescription() {
         return friendlyDescription;
+    }
+
+    public static Map<String, String> asMapWithNameAsKey(Set<SupportedPaymentEnum> hset) {
+        HashMap<String, String> availableOptions = new LinkedHashMap<>();
+        for (SupportedPaymentEnum supportedPaymentEnum : hset) {
+            availableOptions.put(supportedPaymentEnum.name, supportedPaymentEnum.description);
+        }
+        return availableOptions;
     }
 
     @Override

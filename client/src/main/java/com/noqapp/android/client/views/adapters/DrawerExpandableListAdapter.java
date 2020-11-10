@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.common.pojos.MenuDrawer;
 
 import java.util.List;
@@ -96,6 +97,10 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             convertView.setBackgroundColor(Color.WHITE);
         }
+        if (headerItem.getTitle().equals(context.getString(R.string.notification_setting))) {
+            TextView tv_badge = convertView.findViewById(R.id.tv_badge);
+            updateNotificationBadgeCount(tv_badge);
+        }
         return convertView;
     }
 
@@ -107,5 +112,15 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+    
+    private void updateNotificationBadgeCount(TextView tv_badge) {
+        int notify_count = NotificationDB.getNotificationCount();
+        tv_badge.setText(String.valueOf(notify_count));
+        if (notify_count > 0) {
+            tv_badge.setVisibility(View.VISIBLE);
+        } else {
+            tv_badge.setVisibility(View.INVISIBLE);
+        }
     }
 }

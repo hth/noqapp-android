@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -11,6 +11,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginLeft="5dp"
+        android:layout_alignParentLeft="true"
         android:layout_marginRight="10dp"
         android:tint="@android:color/black" />
 
@@ -22,6 +23,21 @@
         android:gravity="left|center_vertical"
         android:text="Item Name"
         android:textColor="@android:color/black"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:layout_toLeftOf="@+id/tv_badge"
         android:textSize="@dimen/text_size_twelve" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_badge"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/badge_bg"
+        android:gravity="center"
+        android:padding="3dp"
+        android:text="0"
+        android:textColor="@android:color/white"
+        android:visibility="invisible"
+        android:textSize="10sp"/>
+
+</RelativeLayout>

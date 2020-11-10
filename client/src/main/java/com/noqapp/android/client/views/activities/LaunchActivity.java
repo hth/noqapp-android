@@ -24,14 +24,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -110,7 +108,7 @@ import io.nlopez.smartlocation.location.config.LocationParams;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class LaunchActivity
-    extends AppCompatActivity
+    extends ScannerActivity
     implements OnClickListener, AppBlacklistPresenter,
     SharedPreferences.OnSharedPreferenceChangeListener,
     DeviceRegisterPresenter {
@@ -122,7 +120,6 @@ public class LaunchActivity
     public TextView tv_location;
     public NetworkUtil networkUtil;
     protected ExpandableListView expandable_drawer_listView;
-    private TextView tv_badge;
     private long lastPress;
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
@@ -136,6 +133,7 @@ public class LaunchActivity
     private TextToSpeechHelper textToSpeechHelper;
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
+    private DrawerExpandableListAdapter expandableListAdapter;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -145,11 +143,9 @@ public class LaunchActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        tv_badge = findViewById(R.id.tv_badge);
         tv_location = findViewById(R.id.tv_location);
         ImageView iv_search = findViewById(R.id.iv_search);
-        ImageView iv_notification = findViewById(R.id.iv_notification);
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
+        ImageView iv_barcode = findViewById(R.id.iv_barcode);
         launchActivity = this;
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
@@ -219,8 +215,7 @@ public class LaunchActivity
         ((AppInitialize) getApplication()).setLocale(this);
         iv_search.setOnClickListener(this);
         tv_location.setOnClickListener(this);
-        iv_notification.setOnClickListener(this);
-        fl_notification.setVisibility(View.VISIBLE);
+        iv_barcode.setOnClickListener(this);
         iv_search.setVisibility(View.VISIBLE);
         //initProgress();
         homeFragment = new HomeFragment();
@@ -399,10 +394,10 @@ public class LaunchActivity
             case R.id.iv_search:
                 homeFragment.callSearch();
                 break;
-            case R.id.iv_notification:
-                Intent in = new Intent(launchActivity, NotificationActivity.class);
-                startActivity(in);
-                break;
+            case R.id.iv_barcode: {
+                startScanningBarcode();
+            }
+            break;
             case R.id.iv_profile:
                 if (UserUtils.isLogin()) {
                     Intent intent = new Intent(launchActivity, UserProfileActivity.class);
@@ -542,12 +537,16 @@ public class LaunchActivity
     }
 
     public void updateNotificationBadgeCount() {
-        int notify_count = NotificationDB.getNotificationCount();
-        tv_badge.setText(String.valueOf(notify_count));
-        if (notify_count > 0) {
-            tv_badge.setVisibility(View.VISIBLE);
-        } else {
-            tv_badge.setVisibility(View.INVISIBLE);
+//        int notify_count = NotificationDB.getNotificationCount();
+//        tv_badge.setText(String.valueOf(notify_count));
+//        if (notify_count > 0) {
+//            tv_badge.setVisibility(View.VISIBLE);
+//        } else {
+//            tv_badge.setVisibility(View.INVISIBLE);
+//        }
+        if (null != expandable_drawer_listView && null != expandableListAdapter) {
+            //expandable_drawer_listView.notify();
+            expandableListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -865,7 +864,7 @@ public class LaunchActivity
             menuDrawerItems.add(new MenuDrawer(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers));
-
+        menuDrawerItems.add(new MenuDrawer(getString(R.string.notification_setting), true, false, R.drawable.ic_notification));
         List<MenuDrawer> settingList = new ArrayList<>();
         settingList.add(new MenuDrawer(getString(R.string.share), false, false, R.drawable.ic_menu_share));
         settingList.add(new MenuDrawer(getString(R.string.invite), false, false, R.drawable.invite));
@@ -882,7 +881,7 @@ public class LaunchActivity
             menuDrawerItems.add(new MenuDrawer(getString(R.string.noqueue_apps), true, false, R.drawable.apps));
         }
 
-        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, menuDrawerItems);
+        expandableListAdapter = new DrawerExpandableListAdapter(this, menuDrawerItems);
         expandable_drawer_listView.setAdapter(expandableListAdapter);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -941,6 +940,11 @@ public class LaunchActivity
             }
             case R.drawable.settings: {
                 Intent in = new Intent(launchActivity, PreferenceSettings.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_notification: {
+                Intent in = new Intent(launchActivity, NotificationActivity.class);
                 startActivity(in);
                 break;
             }

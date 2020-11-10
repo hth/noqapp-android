@@ -47,7 +47,6 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             tv_home_delivery.setBackgroundColor(ContextCompat.getColor(this@PreferenceSettings, R.color.review_color))
             tv_home_delivery.setTextColor(Color.WHITE)
             tv_take_away.setTextColor(Color.BLACK)
-
         }
         tv_take_away.setOnClickListener {
             isHomeDelivery = false
