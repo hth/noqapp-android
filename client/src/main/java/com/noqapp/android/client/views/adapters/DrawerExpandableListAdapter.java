@@ -82,9 +82,9 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
         TextView tv_header_title = convertView.findViewById(R.id.tv_header_title);
         if (headerItem.isHasChildren()) {
             tv_header_title.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    isExpanded ? R.drawable.arrow_up_black : R.drawable.arrow_down_black, 0);
+                0,
+                0,
+                isExpanded ? R.drawable.arrow_up_black : R.drawable.arrow_down_black, 0);
         } else {
             tv_header_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
@@ -113,8 +113,7 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
-
+    
     private void updateNotificationBadgeCount(TextView tv_badge) {
         int notify_count = NotificationDB.getNotificationCount();
         tv_badge.setText(String.valueOf(notify_count));

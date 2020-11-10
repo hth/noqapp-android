@@ -41,7 +41,7 @@ import com.noqapp.android.common.utils.PermissionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class ScannerActivity extends AppCompatActivity implements
-        ClientInQueuePresenter {
+    ClientInQueuePresenter {
     public static final int RC_BARCODE_CAPTURE = 23;
     private final String TAG = ScannerActivity.class.getSimpleName();
     private int requestCode;
@@ -54,7 +54,6 @@ public class ScannerActivity extends AppCompatActivity implements
         requestCode = scanCodeQRType();
     }
 
-
     protected void startScanningBarcode() {
         if (PermissionUtils.isCameraAndStoragePermissionAllowed(this)) {
             scanBarcode();
@@ -63,7 +62,6 @@ public class ScannerActivity extends AppCompatActivity implements
         }
     }
 
-
     private void scanBarcode() {
         Intent intent = new Intent(this, BarcodeCaptureActivity.class);
         intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
@@ -71,11 +69,10 @@ public class ScannerActivity extends AppCompatActivity implements
         startActivityForResult(intent, requestCode);
     }
 
-
     private void requestCameraAndStoragePermission() {
         ActivityCompat.requestPermissions(this,
-                PermissionUtils.CAMERA_AND_STORAGE_PERMISSIONS,
-                PermissionUtils.PERMISSION_REQUEST_CAMERA_AND_STORAGE);
+            PermissionUtils.CAMERA_AND_STORAGE_PERMISSIONS,
+            PermissionUtils.PERMISSION_REQUEST_CAMERA_AND_STORAGE);
     }
 
     @Override
@@ -154,7 +151,6 @@ public class ScannerActivity extends AppCompatActivity implements
         return ScannerFragment.RC_BARCODE_CAPTURE;
     }
 
-
     private void barcodeResult(String codeQR, boolean isCategoryData) {
         if (isCategoryData) {
             Intent in = new Intent(this, CategoryInfoActivity.class);
@@ -173,18 +169,17 @@ public class ScannerActivity extends AppCompatActivity implements
         }
     }
 
-
     private void qrCodeResult(String[] scanData) {
         if (scanData.length > 2) {
             AuthenticateClientInQueueApiCalls authenticateClientInQueueApiCalls = new AuthenticateClientInQueueApiCalls(this);
             customProgressBar.showProgress();
             customProgressBar.setProgressMessage("Validating token...");
             authenticateClientInQueueApiCalls.clientInQueue(
-                    UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth(),
-                    scanData[0],
-                    scanData[1]);
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
+                scanData[0],
+                scanData[1]);
         }
     }
 

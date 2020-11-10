@@ -46,9 +46,7 @@ public class ScannerFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
         rl_scan = view.findViewById(R.id.rl_scan);
-        rl_scan.setOnClickListener(v -> {
-            startScanningBarcode();
-        });
+        rl_scan.setOnClickListener(v -> startScanningBarcode());
         return view;
     }
 
@@ -59,7 +57,6 @@ public class ScannerFragment extends BaseFragment {
             requestCameraAndStoragePermission();
         }
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

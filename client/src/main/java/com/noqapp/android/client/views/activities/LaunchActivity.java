@@ -134,6 +134,7 @@ public class LaunchActivity
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
     private DrawerExpandableListAdapter expandableListAdapter;
+
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
