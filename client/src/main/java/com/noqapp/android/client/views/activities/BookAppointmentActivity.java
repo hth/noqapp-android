@@ -432,7 +432,8 @@ public class BookAppointmentActivity
         if (isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();
-            appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
+            appointmentApiCalls.scheduleForDay(
+                UserUtils.getDeviceId(),
                 UserUtils.getEmail(),
                 UserUtils.getAuth(),
                 day,

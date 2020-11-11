@@ -205,7 +205,8 @@ public class AfterJoinActivity
                             // .setCouponId(jsonCoupon.getCouponId())
                             .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                        clientCouponApiCalls.remove(UserUtils.getDeviceId(),
+                        clientCouponApiCalls.remove(
+                            UserUtils.getDeviceId(),
                             UserUtils.getEmail(),
                             UserUtils.getAuth(),
                             couponOnOrder);
