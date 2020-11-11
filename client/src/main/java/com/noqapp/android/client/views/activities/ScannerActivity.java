@@ -113,8 +113,7 @@ public class ScannerActivity extends AppCompatActivity implements
                                     String[] codeQR = contents.split("https://q.noqapp.com/");
                                     String[] scanData = codeQR[1].split("#");
                                     qrCodeResult(scanData);
-                                    Log.d("SCAN RESULT", codeQR[1]);
-
+                                    Log.d("Scan Result", codeQR[1]);
                                 } else {
                                     String[] codeQR = contents.split("/");
                                     //ends with - q.htm, o.htm or b.htm
