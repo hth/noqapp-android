@@ -38,10 +38,10 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     private boolean isRestaurant;
 
     public StoreProductMenuAdapter(
-            Context context,
-            List<JsonStoreCategory> listDataHeader,
-            HashMap<String, List<StoreCartItem>> listDataChild
-            , MenuItemUpdate menuItemUpdate) {
+        Context context,
+        List<JsonStoreCategory> listDataHeader,
+        HashMap<String, List<StoreCartItem>> listDataChild
+        , MenuItemUpdate menuItemUpdate) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -57,8 +57,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         return this.listDataChild
-                .get(this.listDataHeader.get(groupPosition).getCategoryId())
-                .get(childPosition);
+            .get(this.listDataHeader.get(groupPosition).getCategoryId())
+            .get(childPosition);
     }
 
     @Override
@@ -68,17 +68,16 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(
-            final int groupPosition,
-            final int childPosition,
-            boolean isLastChild,
-            View convertView,
-            ViewGroup parent
+        final int groupPosition,
+        final int childPosition,
+        boolean isLastChild,
+        View convertView,
+        ViewGroup parent
     ) {
         final ChildViewHolder childViewHolder;
         final StoreCartItem storeCartItem = (StoreCartItem) getChild(groupPosition, childPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
@@ -91,8 +90,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.rl_menu_child = convertView.findViewById(R.id.rl_menu_child);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
-            childViewHolder = (ChildViewHolder) convertView
-                    .getTag(R.layout.list_item_menu_child);
+            childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_menu_child);
         }
         final JsonStoreProduct jsonStoreProduct = storeCartItem.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
@@ -101,9 +99,9 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         String currencySymbol = AppInitialize.getCurrencySymbol();
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(
-                currencySymbol
-                        + " "
-                        + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
+            currencySymbol
+                + " "
+                + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -115,8 +113,9 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             case NV:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
                 break;
-            default:
+            case VE:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
+                break;
         }
 
         childViewHolder.tv_cat.setVisibility(isRestaurant ? View.VISIBLE : View.INVISIBLE);
@@ -195,8 +194,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     }
 
     private double calculateDiscountPrice(String displayPrice, String discountAmount) {
-        double price = Double.valueOf(displayPrice);
-        double discountAmountValue = Double.valueOf(discountAmount);
+        double price = Double.parseDouble(displayPrice);
+        double discountAmountValue = Double.parseDouble(discountAmount);
         return (price - discountAmountValue);
     }
 
