@@ -168,6 +168,7 @@ public class ScannerActivity extends AppCompatActivity implements
             in.putExtras(b);
             startActivity(in);
         } else {
+            //Show option to join queue
             Intent in = new Intent(this, BeforeJoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
             in.putExtra(IBConstant.KEY_FROM_LIST, false);

@@ -64,6 +64,10 @@ public class JsonQueue implements Serializable {
     @JsonProperty("d")
     private String displayName;
 
+    /* This is needed when opening store based on QR Code. */
+    @JsonProperty("di")
+    private String displayImage;
+
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
@@ -291,6 +295,15 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public JsonQueue setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 

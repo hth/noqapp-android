@@ -165,13 +165,19 @@ public class StoreWithMenuActivity
             tv_enable_kiosk.setVisibility(View.GONE);
         }
 
-        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
+        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
             Picasso.get()
                 .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                 .placeholder(ImageUtils.getBannerPlaceholder(this))
                 .error(ImageUtils.getBannerErrorPlaceholder(this))
                 .into(iv_category_banner);
-        else {
+        } else if (!TextUtils.isEmpty(jsonQueue.getDisplayImage())) {
+            Picasso.get()
+                .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonQueue.getDisplayImage()))
+                .placeholder(ImageUtils.getBannerPlaceholder(this))
+                .error(ImageUtils.getBannerErrorPlaceholder(this))
+                .into(iv_category_banner);
+        } else {
             Picasso.get().load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
         }
 
