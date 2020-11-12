@@ -248,18 +248,26 @@ public class ProductMenuListFragment
                     HashMap<String, StoreCartItem> getOrder = StoreMenuActivity.storeMenuActivity.getOrders();
                     List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                     int price = 0;
+                    int tax = 0;
                     for (StoreCartItem value : getOrder.values()) {
-                        ll.add(new JsonPurchaseOrderProduct()
-                            .setProductId(value.getJsonStoreProduct().getProductId())
-                            .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
-                            .setProductQuantity(value.getChildInput())
-                            .setProductName(value.getJsonStoreProduct().getProductName()));
+                        JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
+                                .setProductId(value.getJsonStoreProduct().getProductId())
+                                .setProductPrice(value.getFinalDiscountedPrice().movePointRight(2).intValue())
+                                .setProductQuantity(value.getChildInput())
+                                .setProductDiscount(value.getJsonStoreProduct().getProductDiscount())
+                                .setTax(value.getJsonStoreProduct().getTax())
+                                .setProductType(value.getJsonStoreProduct().getProductType())
+                                .setProductName(value.getJsonStoreProduct().getProductName());
                         price += value.getChildInput() * value.getFinalDiscountedPrice().movePointRight(2).intValue();
+                        tax += jsonPurchaseOrderProduct.computeTax();
+                        ll.add(jsonPurchaseOrderProduct);
                     }
                     JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                        .setCodeQR(codeQR)
-                        .setQueueUserId(jsonProfile.getQueueUserId())
-                        .setOrderPrice(String.valueOf(price));
+                            .setCodeQR(codeQR)
+                            .setQueueUserId(jsonProfile.getQueueUserId())
+                            .setOrderPrice(String.valueOf(price))
+                            .setGrandTotal(String.valueOf(price + tax))
+                            .setTax(String.valueOf(tax));
                     jsonPurchaseOrder.setCustomerName(jsonProfile.getName());
                     jsonPurchaseOrder.setPurchaseOrderProducts(ll);
                     jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());

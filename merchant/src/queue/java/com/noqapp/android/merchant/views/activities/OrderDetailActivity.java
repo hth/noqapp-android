@@ -473,7 +473,7 @@ public class OrderDetailActivity
             }
             try {
                 tv_cost.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
-                tv_grand_total_amt.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+                tv_grand_total_amt.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
             } catch (Exception e) {
                 e.printStackTrace();
                 tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
