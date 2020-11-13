@@ -201,7 +201,7 @@ public class ScannerActivity extends AppCompatActivity implements
     @Override
     public void clientInQueueErrorPresenter(ErrorEncounteredJson eej) {
         Log.e("JsonInQueuePerson error", eej.toString());
-        ShowAlertInformation.showInfoDisplayDialog(this, "Invalid Token", "This token is not valid to queue");
+        ShowAlertInformation.showInfoDisplayDialog(this, "Invalid Token", "Caution: Not a valid token");
         customProgressBar.dismissProgress();
     }
 
