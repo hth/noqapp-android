@@ -164,13 +164,18 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.ll_btns.setVisibility(View.GONE);
             childViewHolder.tv_sold_out.setVisibility(View.GONE);
         }
+
         switch (jsonStoreProduct.getProductType()) {
             case NV:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
                 break;
-            default:
+            case VE:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
+                break;
+            default:
+                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_none);
         }
+
         childViewHolder.btn_increase.setOnClickListener((View v) -> {
             String val = childViewHolder.tv_value.getText().toString();
             int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
@@ -277,13 +282,18 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             ll_btns.setVisibility(View.GONE);
             tv_sold_out.setVisibility(View.GONE);
         }
+
         switch (jsonStoreProduct.getProductType()) {
             case NV:
                 tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
                 break;
-            default:
+            case VE:
                 tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
+                break;
+            default:
+                tv_cat.setBackgroundResource(R.drawable.round_corner_none);
         }
+
         btn_increase.setOnClickListener((View v) -> {
             String val = tv_value.getText().toString();
             int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));

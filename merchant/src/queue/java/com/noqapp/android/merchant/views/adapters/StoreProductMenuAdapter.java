@@ -116,9 +116,11 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             case VE:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
                 break;
+            default:
+                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_none);
         }
-
         childViewHolder.tv_cat.setVisibility(isRestaurant ? View.VISIBLE : View.INVISIBLE);
+
         childViewHolder.iv_delete.setOnClickListener(v -> {
             ShowCustomDialog showDialog = new ShowCustomDialog(context);
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {

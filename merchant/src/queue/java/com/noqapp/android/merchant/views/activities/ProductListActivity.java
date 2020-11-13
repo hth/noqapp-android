@@ -160,9 +160,9 @@ public class ProductListActivity extends BaseActivity implements
                 if (expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size() > 0) {
                     headerPosition.add(headerTracker);
                     headerTracker += expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size();
-
-                } else
+                } else {
                     removeEmptyData.add(i);
+                }
             }
             // Remove the categories which having zero items
             for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
@@ -176,8 +176,9 @@ public class ProductListActivity extends BaseActivity implements
                 tempListDetails.put(tempHeaderList.get(i).getCategoryId(), expandableListDetail.get(tempHeaderList.get(i).getCategoryId()));
                 // add  the count in category for header list
                 int itemSize = expandableListDetail.get(tempHeaderList.get(i).getCategoryId()).size();
-                JsonStoreCategory jsc = new JsonStoreCategory().setCategoryId(tempHeaderList.get(i).getCategoryId())
-                        .setCategoryName(tempHeaderList.get(i).getCategoryName() + " (" + itemSize + ") ");
+                JsonStoreCategory jsc = new JsonStoreCategory()
+                    .setCategoryId(tempHeaderList.get(i).getCategoryId())
+                    .setCategoryName(tempHeaderList.get(i).getCategoryName() + " (" + itemSize + ") ");
                 finalHeaderList.add(jsc);
             }
             rcv_header = findViewById(R.id.rcv_header);
@@ -190,10 +191,10 @@ public class ProductListActivity extends BaseActivity implements
             menuHeaderAdapter.notifyDataSetChanged();
 
             StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(
-                    this,
-                    finalHeaderList,
-                    tempListDetails,
-                    this);
+                this,
+                finalHeaderList,
+                tempListDetails,
+                this);
             expandableListView.setAdapter(expandableListAdapter);
             for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
                 expandableListView.expandGroup(i);
@@ -299,7 +300,6 @@ public class ProductListActivity extends BaseActivity implements
             jsonStoreProduct.setActive(false);
             menuItemUpdate(jsonStoreProduct, ActionTypeEnum.INACTIVE);
             // mAlertDialog.dismiss();
-
         });
 
         TextView tv_name = customDialogView.findViewById(R.id.tv_name);
@@ -348,8 +348,7 @@ public class ProductListActivity extends BaseActivity implements
         sp_unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view,
-                                       int position, long id) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 formatText(tv_measure, "Unit", sp_unit.getSelectedItem().toString());
             }
 
@@ -518,8 +517,9 @@ public class ProductListActivity extends BaseActivity implements
                 }
             }
         }
-        if (!TextUtils.isEmpty(errorMsg))
+        if (!TextUtils.isEmpty(errorMsg)) {
             new CustomToast().showToast(this, errorMsg);
+        }
         return isValid;
     }
 
@@ -615,7 +615,6 @@ public class ProductListActivity extends BaseActivity implements
         }
     }
 
-
     private void selectCategoryDialog(List<String> categories, TextView textView, int autoSelect) {
         selectionPos = -1;
         selectedCategory = "";
@@ -624,8 +623,7 @@ public class ProductListActivity extends BaseActivity implements
         View customDialogView = inflater.inflate(R.layout.select_category, null, false);
         TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
         ListView listView = customDialogView.findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_single_choice, categories));
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, categories));
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             selectionPos = i;
@@ -646,7 +644,7 @@ public class ProductListActivity extends BaseActivity implements
         iv_close.setOnClickListener(v -> mAlertDialog.dismiss());
         btn_done.setOnClickListener(v -> {
             if (selectionPos == -1) {
-                new CustomToast().showToast(this, "please select a category");
+                new CustomToast().showToast(this, "Please select a category");
             } else {
                 selectedCategory = categories.get(selectionPos);
                 mAlertDialog.dismiss();
@@ -670,8 +668,7 @@ public class ProductListActivity extends BaseActivity implements
         TextView textView;
         List<String> indexList = new ArrayList<String>(mapIndex.keySet());
         for (String index : indexList) {
-            textView = (TextView) getLayoutInflater().inflate(
-                    R.layout.side_index_item, null);
+            textView = (TextView) getLayoutInflater().inflate(R.layout.side_index_item, null);
             textView.setText(index);
             textView.setOnClickListener(v -> {
                 TextView selectedIndex = (TextView) v;

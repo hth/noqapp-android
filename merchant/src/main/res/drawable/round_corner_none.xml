@@ -7,7 +7,7 @@
             <shape android:shape="rectangle">
                 <stroke
                     android:width="1dp"
-                    android:color="#FF0000" />
+                    android:color="#FFF" />
             </shape>
         </rotate>
     </item>
@@ -16,7 +16,7 @@
         android:height="5dp"
         android:gravity="center">
         <shape android:shape="oval">
-            <solid android:color="#FF0000" />
+            <solid android:color="#FFF" />
         </shape>
     </item>
 </layer-list>

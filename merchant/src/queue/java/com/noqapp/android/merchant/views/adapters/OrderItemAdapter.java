@@ -82,10 +82,9 @@ public class OrderItemAdapter extends BaseAdapter {
             recordHolder.tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             recordHolder.tv_amount.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
         } else {
-
             recordHolder.tv_title.setText(jpop.getProductName() + " " + AppUtils.getPriceWithUnits(jpop.getJsonStoreProduct()) + " x " + jpop.getProductQuantity());
             recordHolder.tv_amount.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jpop.getProductPrice()).multiply(new BigDecimal(jpop.getProductQuantity())).toString()));
-            if (jpop.getProductPrice() == 0) {
+            if (0 == jpop.getProductPrice()) {
                 recordHolder.tv_amount.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit, 0);
             } else {
                 recordHolder.tv_amount.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);

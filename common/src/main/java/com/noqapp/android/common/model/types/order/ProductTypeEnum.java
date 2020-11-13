@@ -24,6 +24,7 @@ public enum ProductTypeEnum {
     EL("EL", "Electronic"),
     PH("PH", "Pharmacy"),
     HS("HS", "Health Care Services");
+
     private static final String TAG = ProductTypeEnum.class.getSimpleName();
 
     public static EnumSet<ProductTypeEnum> PHARMACY = EnumSet.of(PH);
@@ -32,7 +33,7 @@ public enum ProductTypeEnum {
     public static ProductTypeEnum[] HEALTH_CARE_VALUES = {HS};
     public static EnumSet<ProductTypeEnum> GROCERY = EnumSet.of(GE, OR, FR, VE, NV, AC, NC);
     public static ProductTypeEnum[] GROCERY_VALUES = {GE, OR, FR, VE, NV, AC, NC};
-    public static EnumSet<ProductTypeEnum> RESTAURANT = EnumSet.of(VE, NV, AC);
+    public static EnumSet<ProductTypeEnum> RESTAURANT = EnumSet.of(VE, NV, AC, NC);
     public static ProductTypeEnum[] RESTAURANT_VALUES = {VE, NV, AC, NC};
 
     private final String name;

@@ -73,21 +73,23 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getProductQuantity()));
         childViewHolder.tv_product_count.setText(String.valueOf(storeCartItem.getProductQuantity()));
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct()) + " x " + storeCartItem.getProductQuantity());
-        childViewHolder.tv_total_product_price.setText(currencySymbol + " " + CommonHelper.
-            displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
-
+        childViewHolder.tv_total_product_price.setText(currencySymbol + " " + CommonHelper.displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
 
         switch (storeCartItem.getProductType()) {
             case NV:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
                 break;
-            default:
+            case VE:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
+                break;
+            default:
+                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_none);
         }
+
         childViewHolder.btn_increase.setOnClickListener((View v) -> {
             String val = childViewHolder.tv_value.getText().toString();
             int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
-            childViewHolder.tv_value.setText("" + number);
+            childViewHolder.tv_value.setText(number);
             listDataChild.get(position).setProductQuantity(number);
             if (number <= 0) {
                 listDataChild.remove(position);
