@@ -238,11 +238,18 @@ public class CommonHelper {
         try {
             if (null != jsonStoreProduct) {
                 Log.d(TAG, jsonStoreProduct.toString());
-                return jsonStoreProduct.getDisplayPrice()
-                    + " / "
-                    + jsonStoreProduct.getDisplayUnitValue()
-                    + " "
-                    + (jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription());
+                String unitOfMeasurement = jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription();
+                if (StringUtils.isNotBlank(unitOfMeasurement)) {
+                    switch (jsonStoreProduct.getUnitOfMeasurement()) {
+                        case DZ:
+                        case HD:
+                            unitOfMeasurement = " (" + jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription() + ")";
+                            break;
+                        default:
+                            //Do nothing
+                    }
+                }
+                return jsonStoreProduct.getDisplayPrice() + " / " + jsonStoreProduct.getDisplayUnitValue() + unitOfMeasurement;
             } else {
                 return "";
             }

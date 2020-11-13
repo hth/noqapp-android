@@ -663,8 +663,7 @@ public class AfterJoinActivity
                         + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice())
                         + " x "
                         + jsonPurchaseOrderProduct.getProductQuantity());
-                    tv_total_price.setText(currencySymbol
-                        + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
+                    tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
                     ll_order_details.addView(inflatedLayout);
                 }
                 if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {

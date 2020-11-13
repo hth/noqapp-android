@@ -583,8 +583,9 @@ public class ProductListActivity extends BaseActivity implements
 
         public void afterTextChanged(Editable editable) {
             String text = isCap ? CommonHelper.capitalizeEachWordFirstLetter(editable.toString()) : editable.toString();
-            if (isCurrency)
+            if (isCurrency) {
                 text = AppInitialize.getCurrencySymbol() + " " + text;
+            }
             formatText(view, prefix, text);
             if (editable.length() != 0 && isCap) {
                 sourceTextView.removeTextChangedListener(this);
