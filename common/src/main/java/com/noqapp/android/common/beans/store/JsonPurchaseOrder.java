@@ -454,6 +454,10 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String computeItemTotal() {
+        return CommonHelper.displayPrice((new BigDecimal(orderPrice).add(new BigDecimal(storeDiscount)).toString()));
+    }
+
     public String computeBalanceAmount() {
         switch (paymentStatus) {
             case PA:
