@@ -119,7 +119,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_cat.setVisibility(isRestaurant ? View.VISIBLE : View.INVISIBLE);
 
         childViewHolder.iv_delete.setOnClickListener(v -> {
-            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+            ShowCustomDialog showDialog = new ShowCustomDialog(context, true);
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick() {
