@@ -4,5 +4,8 @@
     <string name="service_time">Current Customer \n Service time</string>
     <string name="pdf_author">NoQueue Merchant</string>
     <string name="add_new">Create Order</string>
-
+    <string name="total_tax">Taxes:</string>
+    <string name="item_total">Item Total:</string>
+    <string name="discount">Coupon Discount:</string>
+    <string name="grand_total">Grand Total:</string>
 </resources>

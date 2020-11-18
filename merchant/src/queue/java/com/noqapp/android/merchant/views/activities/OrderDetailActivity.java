@@ -108,6 +108,7 @@ public class OrderDetailActivity
     private TextView tv_payment_msg;
     private TextView tv_grand_total_amt;
     private TextView tv_coupon_discount_amt;
+    private TextView tv_tax;
     private Button btn_discount, btn_remove_discount;
     private TextView tv_discount_value;
     private LinearLayout ll_partial;
@@ -134,6 +135,7 @@ public class OrderDetailActivity
 
         tv_toolbar_title.setText(getString(R.string.order_details));
         tv_token = findViewById(R.id.tv_token);
+        tv_tax = findViewById(R.id.tv_tax);
         tv_q_name = findViewById(R.id.tv_q_name);
         tv_customer_name = findViewById(R.id.tv_customer_name);
         tv_payment_msg = findViewById(R.id.tv_payment_msg);
@@ -422,6 +424,7 @@ public class OrderDetailActivity
             tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
             tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
             tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
+            tv_tax.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
             btn_remove_discount.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
             if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
@@ -472,14 +475,14 @@ public class OrderDetailActivity
                 tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             }
             try {
-                tv_cost.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
-                tv_grand_total_amt.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
+                tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+                tv_grand_total_amt.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
             } catch (Exception e) {
                 e.printStackTrace();
                 tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
                 tv_grand_total_amt.setText(currencySymbol + " " + String.valueOf(0 / 100));
             }
-            tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+            tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
 
             if (null == jsonPurchaseOrder.getTransactionVia()) {
                 tv_transaction_via.setText("N/A");

@@ -426,7 +426,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:gravity="left"
-                        android:text="Coupon Discount"
+                        android:text="@string/discount"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/store_info" />
 
@@ -454,7 +454,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:gravity="left"
-                        android:text="Grand Total"
+                        android:text="@string/grand_total"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/store_info"
                         android:textStyle="bold" />

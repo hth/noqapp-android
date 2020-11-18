@@ -29,4 +29,5 @@ public class BaseConstants {
     public static double DEFAULT_LONGITUDE = 72.8147;
     public static String DEFAULT_CITY = "Mumbai";
     public static String DEFAULT_COUNTRY_CODE = "IN";
+    public static final String MINUS = "-";
 }

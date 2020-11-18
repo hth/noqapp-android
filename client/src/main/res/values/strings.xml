@@ -274,8 +274,10 @@
     <string name="skip">Skip</string>
     <string name="order_now">Order Now</string>
     <string name="payment_due">Payment Due:</string>
-    <string name="total_tax">Total Tax:</string>
-    <string name="total_amount">Total Amount:</string>
+    <string name="total_tax">Taxes:</string>
+    <string name="total_amount">Item Total:</string>
+    <string name="discount">Coupon Discount:</string>
+    <string name="grand_total">Grand Total:</string>
     <string name="order_details">Order Details</string>
     <string name="deliver_address">Delivery Address</string>
     <string name="add_address">Add address</string>

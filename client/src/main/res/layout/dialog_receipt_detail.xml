@@ -61,32 +61,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:gravity="left"
-                    android:text="@string/total_tax"
-                    android:textSize="@dimen/store_info" />
-
-                <TextView
-                    android:id="@+id/tv_tax_amt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
-                    android:textSize="@dimen/store_info" />
-            </RelativeLayout>
-
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -125,6 +99,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="left"
+                    android:text="@string/total_tax"
+                    android:textSize="@dimen/store_info" />
+
+                <TextView
+                    android:id="@+id/tv_tax_amt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:textSize="@dimen/store_info" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
@@ -133,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:gravity="left"
-                    android:text="Coupon Discount"
+                    android:text="@string/discount"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/store_info" />
 
@@ -161,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:gravity="left"
-                    android:text="Grand Total"
+                    android:text="@string/grand_total"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/store_info"
                     android:textStyle="bold" />

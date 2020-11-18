@@ -439,19 +439,46 @@
 
 
                                 <TextView
-                                    android:id="@+id/tv_title"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"
                                     android:layout_toLeftOf="@+id/tv_cost"
                                     android:paddingLeft="5dp"
-                                    android:text="Total Cost: "
+                                    android:text="@string/total_amount"
                                     android:textColor="@android:color/black"
                                     android:textSize="@dimen/text_size_twelve"
                                     android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/tv_cost"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:paddingRight="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_twelve" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="5dp">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_toLeftOf="@+id/tv_tax_amt"
+                                    android:paddingLeft="5dp"
+                                    android:text="@string/total_tax"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_twelve"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_tax_amt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
@@ -473,7 +500,7 @@
                                     android:layout_alignParentLeft="true"
                                     android:gravity="left"
                                     android:paddingLeft="5dp"
-                                    android:text="Coupon Discount"
+                                    android:text="@string/discount"
                                     android:textColor="@android:color/black"
                                     android:textSize="@dimen/text_size_twelve"
                                     android:textStyle="bold" />
@@ -501,7 +528,7 @@
                                     android:layout_alignParentLeft="true"
                                     android:gravity="left"
                                     android:paddingLeft="5dp"
-                                    android:text="Grand Total"
+                                    android:text="@string/grand_total"
                                     android:textColor="@android:color/black"
                                     android:textSize="@dimen/text_size_twelve"
                                     android:textStyle="bold" />
