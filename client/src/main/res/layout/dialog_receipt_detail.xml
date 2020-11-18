@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:gravity="center"
         android:padding="10dp"
         android:text="Order Receipt"
@@ -18,29 +18,27 @@
         android:id="@+id/seperator1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tv_title"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="5dp"
         android:background="#80333333" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/seperator"
-        android:layout_below="@+id/seperator1"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/ll_amount"
-            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ScrollView
+            <com.noqapp.android.client.views.customviews.MaxHeightScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:scrollbarThumbVertical="@color/color_invite_details"
+                android:scrollbarFadeDuration="0"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:scrollbars="vertical"
@@ -52,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
 
-            </ScrollView>
+            </com.noqapp.android.client.views.customviews.MaxHeightScrollView>
 
 
         </LinearLayout>
@@ -61,7 +59,6 @@
             android:id="@+id/ll_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -278,13 +275,12 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:id="@+id/seperator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/tv_close"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="0dp"
         android:background="#80333333" />
@@ -293,12 +289,11 @@
         android:id="@+id/tv_close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:gravity="center"
         android:padding="10dp"
         android:text="Close"
         android:textSize="@dimen/text_size_fourteen"
         android:textStyle="bold" />
-</RelativeLayout>
+</LinearLayout>
 
 
