@@ -574,9 +574,15 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             jsonPurchaseOrder.setOrderPrice("0");
         }
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
-        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeItemTotal());
         tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
-        tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+
+        if (jsonPurchaseOrder.getStoreDiscount() > 0) {
+            tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        } else {
+            tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        }
+
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
         } else {
@@ -617,9 +623,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         TextView tv_close = customDialogView.findViewById(R.id.tv_close);
-        tv_close.setOnClickListener(v -> {
-            mAlertDialog.dismiss();
-        });
+        tv_close.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 }

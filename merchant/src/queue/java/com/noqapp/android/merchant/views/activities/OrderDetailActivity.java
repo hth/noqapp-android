@@ -475,8 +475,8 @@ public class OrderDetailActivity
                 tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             }
             try {
-                tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-                tv_grand_total_amt.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
+                tv_cost.setText(currencySymbol + jsonPurchaseOrder.computeItemTotal());
+                tv_grand_total_amt.setText(currencySymbol + jsonPurchaseOrder.computeBalanceAmount());
             } catch (Exception e) {
                 e.printStackTrace();
                 tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
