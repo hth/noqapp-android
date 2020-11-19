@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -76,7 +75,7 @@ public class OrderDetailActivity
     private String currencySymbol;
     private TextView tv_paid_amount_value, tv_remaining_amount_value, tv_notes;
     private Spinner sp_payment_mode;
-    private String[] payment_modes = {
+    private final String[] payment_modes = {
             "Cash",
             "Cheque",
             "Credit Card",
@@ -85,7 +84,7 @@ public class OrderDetailActivity
             "Paytm"
     };
 
-    private PaymentModeEnum[] payment_modes_enum = {
+    private final PaymentModeEnum[] payment_modes_enum = {
             PaymentModeEnum.CA,
             PaymentModeEnum.CQ,
             PaymentModeEnum.CC,
@@ -241,7 +240,7 @@ public class OrderDetailActivity
             final Button btn_update = dialog.findViewById(R.id.btn_update);
             btn_update.setOnClickListener(v12 -> {
                 edt_random.setError(null);
-                AppUtils.hideKeyBoard((Activity) OrderDetailActivity.this);
+                AppUtils.hideKeyBoard(OrderDetailActivity.this);
                 if (!edt_random.getText().toString().equals(tv_random.getText().toString())) {
                     edt_random.setError(OrderDetailActivity.this.getString(R.string.error_invalid_captcha));
                     new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));
@@ -422,8 +421,8 @@ public class OrderDetailActivity
             tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
             tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
             tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
-            tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
-            tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
+            tv_paid_amount_value.setText(currencySymbol + jsonPurchaseOrder.computePaidAmount());
+            tv_remaining_amount_value.setText(currencySymbol + jsonPurchaseOrder.computeBalanceAmount());
             tv_tax.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
             btn_remove_discount.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
@@ -449,7 +448,7 @@ public class OrderDetailActivity
                     btn_pay_partial.setVisibility(View.GONE);
                     edt_amount.setVisibility(View.GONE);
                     rl_multiple.setVisibility(View.VISIBLE);
-                    tv_multiple_payment.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+                    tv_multiple_payment.setText(currencySymbol + Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100);
                 } else {
                     rl_multiple.setVisibility(View.GONE);
                     tv_multiple_payment.setText("");
@@ -459,7 +458,6 @@ public class OrderDetailActivity
                 btn_discount.setVisibility(View.GONE);
                 btn_remove_discount.setVisibility(View.GONE);
             }
-
 
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()
                     || PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()
@@ -474,15 +472,21 @@ public class OrderDetailActivity
             } else {
                 tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             }
+
             try {
                 tv_cost.setText(currencySymbol + jsonPurchaseOrder.computeItemTotal());
                 tv_grand_total_amt.setText(currencySymbol + jsonPurchaseOrder.computeBalanceAmount());
             } catch (Exception e) {
                 e.printStackTrace();
-                tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
-                tv_grand_total_amt.setText(currencySymbol + " " + String.valueOf(0 / 100));
+                tv_cost.setText(currencySymbol + 0 / 100);
+                tv_grand_total_amt.setText(currencySymbol + 0 / 100);
             }
-            tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+
+            if (jsonPurchaseOrder.getStoreDiscount() > 0) {
+                tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+            } else {
+                tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+            }
 
             if (null == jsonPurchaseOrder.getTransactionVia()) {
                 tv_transaction_via.setText("N/A");
@@ -523,10 +527,9 @@ public class OrderDetailActivity
         jsonPurchaseOrder.getPurchaseOrderProducts().set(pos, jpop);
         checkProductWithZeroPrice();
         jsonPurchaseOrder.setOrderPrice(String.valueOf(calculateTotalPrice()));
-        tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-        tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
-        tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
-
+        tv_cost.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_paid_amount_value.setText(currencySymbol + jsonPurchaseOrder.computePaidAmount());
+        tv_remaining_amount_value.setText(currencySymbol + jsonPurchaseOrder.computeBalanceAmount());
     }
 
     private double calculateTotalPrice() {
@@ -540,8 +543,7 @@ public class OrderDetailActivity
     public void checkProductWithZeroPrice() {
         isProductWithoutPrice = false;
         if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getPurchaseOrderProducts() && jsonPurchaseOrder.getPurchaseOrderProducts().size() > 0) {
-            for (JsonPurchaseOrderProduct jpop :
-                    jsonPurchaseOrder.getPurchaseOrderProducts()) {
+            for (JsonPurchaseOrderProduct jpop : jsonPurchaseOrder.getPurchaseOrderProducts()) {
                 if (jpop.getProductPrice() == 0) {
                     isProductWithoutPrice = true;
                     break;
@@ -604,7 +606,7 @@ public class OrderDetailActivity
         if (null != jsonPurchaseOrder) {
             this.jsonPurchaseOrder = jsonPurchaseOrder;
             updateUI();
-            Log.v("modify order data:", jsonPurchaseOrder.toString());
+            Log.v("Modify order data:", jsonPurchaseOrder.toString());
             if (null != updateWholeList) {
                 updateWholeList.updateWholeList();
             }
@@ -686,7 +688,7 @@ public class OrderDetailActivity
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
                 Log.e("Data received", jsonCoupon.toString());
                 if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
-                    tv_discount_value.setText(currencySymbol + " " + jsonCoupon.getDiscountAmount());
+                    tv_discount_value.setText(currencySymbol + jsonCoupon.getDiscountAmount());
                 } else {
                     tv_discount_value.setText(jsonCoupon.getDiscountAmount() + "% discount");
                 }

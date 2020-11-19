@@ -251,15 +251,15 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
 
         switch (jsonPurchaseOrder.getBusinessType()) {
             case HS:
-                recordHolder.tv_order_done.setText("Service Completed");
-                recordHolder.tv_order_cancel.setText("Cancel Service");
-                recordHolder.tv_order_prepared.setText("Start Service");
+                recordHolder.tv_order_done.setText("Completed");
+                recordHolder.tv_order_cancel.setText("Cancel");
+                recordHolder.tv_order_prepared.setText("Start");
                 recordHolder.tv_upload_document.setVisibility(View.GONE); // Not needed now
                 break;
             default:
-                recordHolder.tv_order_done.setText("Order Done");
-                recordHolder.tv_order_cancel.setText("Cancel Order");
-                recordHolder.tv_order_prepared.setText("Order prepared");
+                recordHolder.tv_order_done.setText("Done");
+                recordHolder.tv_order_cancel.setText("Cancel");
+                recordHolder.tv_order_prepared.setText("Prepared");
                 recordHolder.tv_upload_document.setVisibility(View.GONE);
         }
         recordHolder.tv_order_status.setText("Status: " + jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());

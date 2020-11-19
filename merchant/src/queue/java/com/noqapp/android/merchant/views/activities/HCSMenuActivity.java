@@ -107,7 +107,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
     private ArrayList<HCSMenuObject> masterDataPath = new ArrayList<>();
     private ArrayList<HCSMenuObject> masterDataSpec = new ArrayList<>();
 
-    private ArrayList<HCSMenuObject> menuSelectData = new ArrayList<>();
+    private final ArrayList<HCSMenuObject> menuSelectData = new ArrayList<>();
     private JsonTopic jsonTopic;
     private AutoCompleteTextView actv_search;
     private HCSMenuAdapter hcsMenuAdapter = null;
@@ -247,10 +247,8 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
+        return result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED;
         //If permission is not granted returning false
-        return false;
     }
 
     private void requestStoragePermission() {
@@ -546,7 +544,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                 TextView tv_title = v.findViewById(R.id.tv_title);
                 TextView tv_amount = v.findViewById(R.id.tv_amount);
                 tv_title.setText(menuSelectData.get(i).getJsonMasterLab().getProductShortName());
-                tv_amount.setText(currencySymbol + " " + String.valueOf(menuSelectData.get(i).getPrice()));
+                tv_amount.setText(currencySymbol + menuSelectData.get(i).getPrice());
                 tv_amount.setOnClickListener(v1 -> {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
                     LayoutInflater inflater1 = LayoutInflater.from(mContext);
@@ -567,11 +565,11 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                         } else {
 //                                    new AppUtils().hideKeyBoard(HCSMenuActivity.this);
 //                                    mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                            InputMethodManager imm = (InputMethodManager) getSystemService(mContext.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(edt_prod_price.getWindowToken(), 0);
                             menuSelectData.get(pos).setPrice(Double.parseDouble(edt_prod_price.getText().toString()));
-                            tv_amount.setText(currencySymbol + " " + String.valueOf(menuSelectData.get(pos).getPrice()));
-                            tv_cost.setText(currencySymbol + " " + String.valueOf(calculateTotalPrice()));
+                            tv_amount.setText(currencySymbol + menuSelectData.get(pos).getPrice());
+                            tv_cost.setText(currencySymbol + calculateTotalPrice());
                             mAlertDialog.dismiss();
                         }
                     });
@@ -580,7 +578,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                 ll_order_list.addView(v);
                 price += 1 * menuSelectData.get(pos).getPrice();
             }
-            tv_cost.setText(currencySymbol + " " + price);
+            tv_cost.setText(currencySymbol + price);
         }
 
         tv_toolbar_title.setText("Create Order");

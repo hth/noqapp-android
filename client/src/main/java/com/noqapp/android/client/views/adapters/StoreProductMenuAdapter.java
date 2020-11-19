@@ -302,7 +302,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             BigDecimal amountString = showCartAmount();
             if (amountString.compareTo(new BigDecimal(0)) > 0) {
                 // btn_place_order.setVisibility(View.VISIBLE);
-                btn_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString.toString());
+                btn_place_order.setText("Your cart amount is: " + currencySymbol + amountString.toString());
             } else {
                 // btn_place_order.setVisibility(View.GONE);
                 btn_place_order.setText("Done");
@@ -318,7 +318,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             BigDecimal amountString = showCartAmount();
             if (amountString.compareTo(new BigDecimal(0)) > 0) {
                 // btn_place_order.setVisibility(View.VISIBLE);
-                btn_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString.toString());
+                btn_place_order.setText("Your cart amount is: " + currencySymbol + amountString.toString());
             } else {
                 // btn_place_order.setVisibility(View.GONE);
                 btn_place_order.setText("Done");

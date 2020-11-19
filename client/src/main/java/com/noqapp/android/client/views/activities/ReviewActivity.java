@@ -151,7 +151,6 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                             break;
                         default:
                             tv_review_msg.setText(getString(R.string.review_msg_queue_done));
-
                     }
                 } catch (Exception e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
