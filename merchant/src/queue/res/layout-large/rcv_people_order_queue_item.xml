@@ -190,7 +190,7 @@
                     android:background="@drawable/bg_gradient_round"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Accept Order"
+                    android:text="Accept"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_twelve" />
 
@@ -204,7 +204,7 @@
                     android:background="@drawable/bg_gradient_round"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Cancel Order"
+                    android:text="Cancel"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_twelve" />
             </LinearLayout>

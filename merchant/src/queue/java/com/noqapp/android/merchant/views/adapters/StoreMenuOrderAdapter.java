@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,15 +31,12 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
 
-    public StoreMenuOrderAdapter(List<StoreCartItem> menuItemsList,
-                                 StoreMenuActivity storeMenuActivity, CartOrderUpdate
-                                         cartOrderUpdate, String currencySymbol) {
+    public StoreMenuOrderAdapter(List<StoreCartItem> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate, String currencySymbol) {
         this.menuItemsList = menuItemsList;
         this.storeMenuActivity = storeMenuActivity;
         this.cartOrderUpdate = cartOrderUpdate;
         this.currencySymbol = currencySymbol;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,8 +53,8 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
 
         recordHolder.tv_title.setText(jsonStoreProduct.getProductName());
         recordHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
-        recordHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
-        recordHolder.tv_discounted_price.setText(currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
+        recordHolder.tv_price.setText(currencySymbol + AppUtils.getPriceWithUnits(jsonStoreProduct));
+        recordHolder.tv_discounted_price.setText(currencySymbol + storeCartItem.getFinalDiscountedPrice());
         if (jsonStoreProduct.getProductDiscount() > 0) {
             recordHolder.tv_price.setPaintFlags(recordHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             recordHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -69,16 +65,14 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
         recordHolder.btn_increase.setOnClickListener(v -> {
             String val = recordHolder.tv_value.getText().toString();
             int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
-            recordHolder.tv_value.setText("" + number);
-            menuItemsList
-                    .get(position).setChildInput(number);
+            recordHolder.tv_value.setText(number);
+            menuItemsList.get(position).setChildInput(number);
             if (number <= 0) {
                 storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
                 setMenuItemsList(storeMenuActivity.getCartList());
             } else {
-                storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
-                        .get(position));
+                storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList.get(position));
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
             }
             notifyDataSetChanged();

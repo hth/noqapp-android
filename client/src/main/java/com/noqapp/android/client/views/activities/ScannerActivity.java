@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AuthenticateClientInQueueApiCalls;
 import com.noqapp.android.client.presenter.ClientInQueuePresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonInQueuePerson;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
@@ -159,7 +160,15 @@ public class ScannerActivity extends AppCompatActivity implements
             startActivity(in);
         } else if (contents.endsWith("o.htm")) {
             //Show orders instead
+            BizStoreElastic bizStoreElastic = new BizStoreElastic();
+            bizStoreElastic.setCodeQR(codeQR);
+            Intent in = new Intent(this, StoreWithMenuActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("BizStoreElastic", bizStoreElastic);
+            in.putExtras(b);
+            startActivity(in);
         } else {
+            //Show option to join queue
             Intent in = new Intent(this, BeforeJoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
             in.putExtra(IBConstant.KEY_FROM_LIST, false);
@@ -186,12 +195,14 @@ public class ScannerActivity extends AppCompatActivity implements
     public void clientInQueueResponse(JsonInQueuePerson jsonInQueuePerson) {
         Log.e("JsonInQueuePerson", jsonInQueuePerson.toString());
         displayValidUserDialog(jsonInQueuePerson);
+        customProgressBar.dismissProgress();
     }
 
     @Override
     public void clientInQueueErrorPresenter(ErrorEncounteredJson eej) {
         Log.e("JsonInQueuePerson error", eej.toString());
-        ShowAlertInformation.showInfoDisplayDialog(this, "Invalid Token", "This token is not valid to queue");
+        ShowAlertInformation.showInfoDisplayDialog(this, "Invalid Token", "Caution: Not a valid token");
+        customProgressBar.dismissProgress();
     }
 
     private void displayValidUserDialog(JsonInQueuePerson jsonInQueuePerson) {
@@ -222,16 +233,20 @@ public class ScannerActivity extends AppCompatActivity implements
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         /* dismissProgress(); no progress bar silent call here */
         new ErrorResponseHandler().processError(this, eej);
+        customProgressBar.dismissProgress();
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         /* dismissProgress(); no progress bar silent call here */
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        customProgressBar.dismissProgress();
     }
 
     @Override
     public void authenticationFailure() {
-        AppUtils.authenticationProcessing(this);
+        //AppUtils.authenticationProcessing(this);
+        ShowAlertInformation.showInfoDisplayDialog(this, "Invalid Authorization", "You are not authorized to scan this code QR");
+        customProgressBar.dismissProgress();
     }
 }

@@ -322,7 +322,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
     public void updateCartOrderInfo(BigDecimal amountString) {
         if (amountString.compareTo(new BigDecimal(0)) > 0) {
             tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: " + currencySymbol + " " + amountString.toString());
+            tv_place_order.setText("Your cart amount is: " + currencySymbol + amountString.toString());
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");

@@ -97,11 +97,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
         String currencySymbol = AppInitialize.getCurrencySymbol();
-        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
-        childViewHolder.tv_discounted_price.setText(
-            currencySymbol
-                + " "
-                + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
+        childViewHolder.tv_price.setText(currencySymbol + AppUtils.getPriceWithUnits(jsonStoreProduct));
+        childViewHolder.tv_discounted_price.setText(currencySymbol + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -116,11 +113,13 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             case VE:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
                 break;
+            default:
+                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_none);
         }
-
         childViewHolder.tv_cat.setVisibility(isRestaurant ? View.VISIBLE : View.INVISIBLE);
+
         childViewHolder.iv_delete.setOnClickListener(v -> {
-            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+            ShowCustomDialog showDialog = new ShowCustomDialog(context, true);
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick() {

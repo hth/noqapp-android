@@ -153,6 +153,14 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
         return this;
     }
 
+    public String getDisplayPrice() {
+        return new BigDecimal(productPrice).movePointLeft(2).toString();
+    }
+
+    public String getDisplayDiscount() {
+        return new BigDecimal(productDiscount).movePointLeft(2).toString();
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("JsonPurchaseOrderProduct{");

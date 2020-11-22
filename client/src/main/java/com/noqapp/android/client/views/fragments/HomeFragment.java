@@ -1051,7 +1051,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     @Override
     public void clientInQueueErrorPresenter(ErrorEncounteredJson eej) {
         Log.e("JsonInQueuePerson error", eej.toString());
-        ShowAlertInformation.showInfoDisplayDialog(getActivity(), "Invalid Token", "This token is not valid to queue");
+        ShowAlertInformation.showInfoDisplayDialog(getActivity(), "Invalid Token", "Caution: Not a valid token");
     }
 
     private static class QueueHandler extends Handler {

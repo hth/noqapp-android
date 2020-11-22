@@ -7,7 +7,7 @@ import java.util.List;
  * Created by hitender on 4/1/18.
  */
 public enum UnitOfMeasurementEnum {
-    CN("CN", "count (nos)", "count"),
+    CN("CN", "count (nos)", ""),
     DZ("DZ", "dozen", "dz"),
     HD("HD", "1/2 dozen", "1/2 dz"),
     MG("MG", "mg", "mg"),

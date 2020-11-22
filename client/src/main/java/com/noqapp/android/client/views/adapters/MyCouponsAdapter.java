@@ -42,10 +42,9 @@ public class MyCouponsAdapter extends RecyclerView.Adapter {
         if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
             holder.tv_discount_amount.setText("Rs " + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
         } else {
-            holder.tv_discount_amount.setText(String.valueOf(jsonCoupon.getDiscountAmount()) + "% off");
+            holder.tv_discount_amount.setText(jsonCoupon.getDiscountAmount() + "% off");
         }
-        holder.tv_offer_validity.setText("Validity period: " +
-            CommonHelper.formatStringDate(CommonHelper.SDF_YYYY_MM_DD, jsonCoupon.getCouponEndDate()));
+        holder.tv_offer_validity.setText("Validity period: " + CommonHelper.formatStringDate(CommonHelper.SDF_YYYY_MM_DD, jsonCoupon.getCouponEndDate()));
         holder.card_view.setCardBackgroundColor(Color.parseColor("#CA705F"));
         holder.tv_apply_coupon.setTextColor(Color.parseColor("#CA705F"));
         holder.tv_apply_coupon.setOnClickListener((View v) -> {

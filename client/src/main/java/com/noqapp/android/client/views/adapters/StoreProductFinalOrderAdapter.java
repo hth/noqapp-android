@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -58,6 +58,8 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_title = convertView.findViewById(R.id.tv_title);
             childViewHolder.tv_price = convertView.findViewById(R.id.tv_price);
+            childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
+            childViewHolder.tv_product_quantity = convertView.findViewById(R.id.tv_product_quantity);
             childViewHolder.tv_total_product_price = convertView.findViewById(R.id.tv_total_product_price);
             childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
@@ -72,22 +74,34 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         childViewHolder.tv_title.setText(storeCartItem.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getProductQuantity()));
         childViewHolder.tv_product_count.setText(String.valueOf(storeCartItem.getProductQuantity()));
-        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(storeCartItem.getJsonStoreProduct()) + " x " + storeCartItem.getProductQuantity());
-        childViewHolder.tv_total_product_price.setText(currencySymbol + " " + CommonHelper.
-            displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
-
-
+       // childViewHolder.tv_price.setText(currencySymbol + CommonHelper.displayPrice(storeCartItem.getProductPrice()));
+        childViewHolder.tv_discounted_price.setText(currencySymbol +  CommonHelper.displayPrice(storeCartItem.getProductPrice()));
+        childViewHolder.tv_product_quantity.setText(" x " + storeCartItem.getProductQuantity());
+        childViewHolder.tv_total_product_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
+        if (storeCartItem.getProductDiscount() > 0) {
+            childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
+            childViewHolder.tv_price.setText(currencySymbol + calculateActualPrice(storeCartItem.getDisplayPrice(), storeCartItem.getDisplayDiscount()));
+        } else {
+            childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            childViewHolder.tv_discounted_price.setVisibility(View.GONE);
+            childViewHolder.tv_price.setText(currencySymbol + CommonHelper.displayPrice(storeCartItem.getProductPrice()));
+        }
         switch (storeCartItem.getProductType()) {
             case NV:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
                 break;
-            default:
+            case VE:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
+                break;
+            default:
+                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_none);
         }
+
         childViewHolder.btn_increase.setOnClickListener((View v) -> {
             String val = childViewHolder.tv_value.getText().toString();
             int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
-            childViewHolder.tv_value.setText("" + number);
+            childViewHolder.tv_value.setText(number);
             listDataChild.get(position).setProductQuantity(number);
             if (number <= 0) {
                 listDataChild.remove(position);
@@ -130,11 +144,23 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
     private final class ChildViewHolder {
         private TextView tv_title;
         private TextView tv_price;
+        private TextView tv_discounted_price;
+        private TextView tv_product_quantity;
         private TextView tv_product_count;
         private TextView tv_total_product_price;
         private TextView tv_value;
         private TextView tv_cat;
         private Button btn_decrease;
         private Button btn_increase;
+    }
+
+    /*
+     * Product price already coming with discount so actual
+     * price computed with adding the discount amount
+     */
+    private BigDecimal calculateActualPrice(String displayPrice, String discountAmount) {
+        BigDecimal price = new BigDecimal(displayPrice);
+        BigDecimal discountAmountValue = new BigDecimal(discountAmount);
+        return price.add(discountAmountValue);
     }
 }

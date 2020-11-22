@@ -13,6 +13,7 @@ import com.noqapp.android.common.model.types.order.TaxEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * User: hitender
@@ -218,6 +219,13 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain implement
         this.businessType = businessType;
     }
 
+    public String getDisplayPrice() {
+        return new BigDecimal(productPrice).movePointLeft(2).toString();
+    }
+
+    public String getDisplayDiscount() {
+        return new BigDecimal(productDiscount).movePointLeft(2).toString();
+    }
 
     public JsonStoreProduct getJsonStoreProduct() {
         return new JsonStoreProduct().setProductPrice(productPrice).setUnitValue(unitValue).

@@ -124,7 +124,14 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                     ll_thank_u.setVisibility(View.GONE);
                     ll_fill_review.setVisibility(View.VISIBLE);
                 }
-                tv_store_name.setText(Html.fromHtml("<u>" + jtk.getBusinessName() + "</u>"));
+
+                /* Show business name when has multiple business like CD or DO. */
+                if (StringUtils.isNotBlank(jtk.getBusinessName())) {
+                    tv_store_name.setText(Html.fromHtml("<u>" + jtk.getBusinessName() + "</u>"));
+                } else {
+                    tv_store_name.setVisibility(View.GONE);
+                }
+
                 tv_queue_name.setText(jtk.getDisplayName());
                 tv_address.setText(jtk.getStoreAddress());
                 String datetime = DateFormat.getDateTimeInstance().format(new Date());
@@ -151,7 +158,6 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                             break;
                         default:
                             tv_review_msg.setText(getString(R.string.review_msg_queue_done));
-
                     }
                 } catch (Exception e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -169,7 +175,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         //actionbarBack.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener((View v) -> onBackPressed());
         ratingBar.setRating(5.0f);
-        ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> tv_rating_value.setText(rating + ""));
+        ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> tv_rating_value.setText(String.valueOf(rating)));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener((View v) -> {
             if (null == jtk || jtk.getBusinessType() == BusinessTypeEnum.DO) {

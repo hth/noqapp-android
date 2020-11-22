@@ -28,7 +28,6 @@ public class AuthenticateClientInQueueApiCalls {
         this.clientInQueuePresenter = clientInQueuePresenter;
     }
 
-
     public void clientInQueue(String did, String mail, String auth, String codeQR, String token) {
         authenticateClientInQueueApiUrls.clientInQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR, token).enqueue(new Callback<JsonInQueuePerson>() {
             @Override

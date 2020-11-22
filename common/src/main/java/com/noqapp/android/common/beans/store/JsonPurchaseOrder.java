@@ -235,7 +235,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     }
 
     public String getTax() {
-        return tax;
+        return StringUtils.isBlank(tax) ? "0" : tax;
     }
 
     public JsonPurchaseOrder setTax(String tax) {
@@ -454,13 +454,17 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String computeItemTotal() {
+        return CommonHelper.displayPrice((new BigDecimal(orderPrice).add(new BigDecimal(storeDiscount)).toString()));
+    }
+
     public String computeBalanceAmount() {
         switch (paymentStatus) {
             case PA:
                 return "0";
             default:
                 if (TextUtils.isEmpty(partialPayment)) {
-                    return CommonHelper.displayPrice(orderPrice);
+                    return CommonHelper.displayPrice(new BigDecimal(orderPrice).add(new BigDecimal(tax)).toString());
                 } else {
                     return CommonHelper.displayPrice(new BigDecimal(orderPrice).subtract(new BigDecimal(partialPayment)).toString());
                 }
@@ -470,7 +474,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     public String computePaidAmount() {
         switch (paymentStatus) {
             case PA:
-                return CommonHelper.displayPrice(orderPrice);
+                return CommonHelper.displayPrice(new BigDecimal(orderPrice).add(new BigDecimal(tax)).toString());
             case MP:
                 return CommonHelper.displayPrice(partialPayment);
             default:

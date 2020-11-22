@@ -13,10 +13,12 @@ import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -388,6 +390,10 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     public JsonPurchaseOrderHistorical setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    public String computeItemTotal() {
+        return CommonHelper.displayPrice((new BigDecimal(orderPrice).add(new BigDecimal(storeDiscount)).toString()));
     }
 
     @JsonIgnore

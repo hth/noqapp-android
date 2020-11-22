@@ -365,8 +365,8 @@ public class OrderDetailActivity
             ? getApplicationContext().getString(R.string.name_unavailable)
             : jsonPurchaseOrder.getDeliveryAddress()));
 
-        tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
-        tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
+        tv_paid_amount_value.setText(currencySymbol + jsonPurchaseOrder.computePaidAmount());
+        tv_remaining_amount_value.setText(currencySymbol + jsonPurchaseOrder.computeBalanceAmount());
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_payment.setVisibility(View.VISIBLE);
 
@@ -409,15 +409,20 @@ public class OrderDetailActivity
         }
 
         try {
-            tv_cost.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
-            tv_grand_total_amt.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+            tv_cost.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
+            tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         } catch (Exception e) {
             e.printStackTrace();
-            tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
-            tv_grand_total_amt.setText(currencySymbol + " " + String.valueOf(0 / 100));
+            tv_cost.setText(currencySymbol + String.valueOf(0 / 100));
+            tv_grand_total_amt.setText(currencySymbol + String.valueOf(0 / 100));
         }
 
-        tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        if (jsonPurchaseOrder.getStoreDiscount() > 0) {
+            tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        } else {
+            tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        }
+
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
@@ -549,7 +554,7 @@ public class OrderDetailActivity
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
                 Log.e("Data received", jsonCoupon.toString());
                 if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
-                    tv_discount_value.setText(currencySymbol + " " + jsonCoupon.getDiscountAmount());
+                    tv_discount_value.setText(currencySymbol + jsonCoupon.getDiscountAmount());
                 } else {
                     tv_discount_value.setText(jsonCoupon.getDiscountAmount() + "% discount");
                 }
