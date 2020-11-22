@@ -141,7 +141,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         } else {
             tv_coupon_discount_label.setText(getString(R.string.discount));
-            //tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+            tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         }
         for (int i = 0; i < jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().size(); i++) {
             JsonPurchaseOrderProductHistorical jsonPurchaseOrderProduct = jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().get(i);

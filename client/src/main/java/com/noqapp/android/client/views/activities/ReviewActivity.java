@@ -124,7 +124,14 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                     ll_thank_u.setVisibility(View.GONE);
                     ll_fill_review.setVisibility(View.VISIBLE);
                 }
-                tv_store_name.setText(Html.fromHtml("<u>" + jtk.getBusinessName() + "</u>"));
+
+                /* Show business name when has multiple business like CD or DO. */
+                if (StringUtils.isNotBlank(jtk.getBusinessName())) {
+                    tv_store_name.setText(Html.fromHtml("<u>" + jtk.getBusinessName() + "</u>"));
+                } else {
+                    tv_store_name.setVisibility(View.GONE);
+                }
+
                 tv_queue_name.setText(jtk.getDisplayName());
                 tv_address.setText(jtk.getStoreAddress());
                 String datetime = DateFormat.getDateTimeInstance().format(new Date());
