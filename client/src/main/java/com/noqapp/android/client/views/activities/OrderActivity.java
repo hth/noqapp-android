@@ -102,6 +102,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private JsonCoupon jsonCoupon;
     private TextView tv_grand_total_amt;
     private TextView tv_coupon_discount_amt;
+    private TextView tv_coupon_discount_label;
     private TextView tv_total_order_amt;
     private TextView tv_due_amt;
     private TextView tv_final_amount;
@@ -124,6 +125,37 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         acrb_online = findViewById(R.id.acrb_online);
         acrb_home_delivery = findViewById(R.id.acrb_home_delivery);
         acrb_take_away = findViewById(R.id.acrb_take_away);
+        rg_delivery.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.acrb_home_delivery) {
+                ll_address.setVisibility(View.VISIBLE);
+            } else if (checkedId == R.id.acrb_take_away) {
+                ll_address.setVisibility(View.GONE);
+            }
+        });
+        JsonQueue jsonQueue = (JsonQueue) getIntent().getExtras().getSerializable(IBConstant.KEY_JSON_QUEUE);
+        Map<String, String> enabledPaymentOption = SupportedPaymentEnum.asMapWithNameAsKey(jsonQueue.getAcceptedPayments());
+        acrb_cash.setEnabled(!TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName())));
+        acrb_online.setEnabled(!TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName())));
+        if (TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName()))) {
+            acrb_cash.setChecked(false);
+        }
+        if (TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName()))) {
+            acrb_online.setChecked(false);
+        }
+
+        AppCompatRadioButton acrb_home_delivery = (AppCompatRadioButton) rg_delivery.getChildAt(0);
+        AppCompatRadioButton acrb_take_away = (AppCompatRadioButton) rg_delivery.getChildAt(1);
+        Map<String, String> enabledDeliveryOptions = SupportedDeliveryEnum.asMapWithNameAsKey(jsonQueue.getAcceptedDeliveries());
+        acrb_home_delivery.setEnabled(!TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.HOM.getName())));
+        acrb_take_away.setEnabled(!TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.PIK.getName())));
+
+        if (TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.HOM.getName()))) {
+            acrb_home_delivery.setChecked(false);
+        }
+        if (TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.PIK.getName()))) {
+            acrb_take_away.setChecked(false);
+        }
+
         JsonUserPreference jsonUserPreference = AppInitialize.getUserProfile().getJsonUserPreference();
         if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
             acrb_home_delivery.setChecked(true);
@@ -134,41 +166,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             acrb_take_away.setChecked(true);
             ll_address.setVisibility(View.GONE);
         }
-        JsonQueue jsonQueue = (JsonQueue) getIntent().getExtras().getSerializable(IBConstant.KEY_JSON_QUEUE);
+
         if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
             acrb_cash.setChecked(true);
             acrb_online.setChecked(false);
         } else {
             acrb_cash.setChecked(false);
             acrb_online.setChecked(true);
-        }
-        Map<String, String> enabledPaymentOption = SupportedPaymentEnum.asMapWithNameAsKey(jsonQueue.getAcceptedPayments());
-        acrb_cash.setEnabled(!TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName())));
-        acrb_online.setEnabled(!TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName())));
-        if (TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName()))) {
-            acrb_cash.setChecked(false);
-        }
-        if (TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName()))) {
-            acrb_online.setChecked(false);
-        }
-        rg_delivery.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.acrb_home_delivery) {
-                ll_address.setVisibility(View.VISIBLE);
-            } else if (checkedId == R.id.acrb_take_away) {
-                ll_address.setVisibility(View.GONE);
-            }
-        });
-        AppCompatRadioButton acrb_home_delivery = (AppCompatRadioButton) rg_delivery.getChildAt(0);
-        AppCompatRadioButton acrb_take_away = (AppCompatRadioButton) rg_delivery.getChildAt(1);
-        Map<String, String> enabledDeliveryOptions = SupportedDeliveryEnum.asMapWithNameAsKey(jsonQueue.getAcceptedDeliveries());
-        acrb_home_delivery.setEnabled(!TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.HOM.getName())));
-        acrb_take_away.setEnabled(!TextUtils.isEmpty(enabledDeliveryOptions.get(SupportedDeliveryEnum.PIK.getName())));
-
-        if (TextUtils.isEmpty(enabledPaymentOption.get(SupportedDeliveryEnum.HOM.getName()))) {
-            acrb_home_delivery.setChecked(false);
-        }
-        if (TextUtils.isEmpty(enabledPaymentOption.get(SupportedDeliveryEnum.PIK.getName()))) {
-            acrb_take_away.setChecked(false);
         }
 
         if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().getJsonUserAddresses()) {
@@ -204,6 +208,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
         rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
+        tv_coupon_discount_label = findViewById(R.id.tv_coupon_discount_label);
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         tv_final_amount = findViewById(R.id.tv_final_amount);
         rl_apply_coupon.setOnClickListener((View v) -> {
@@ -228,6 +233,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     tv_coupon_name.setText("");
                     jsonPurchaseOrder.setStoreDiscount(0);
                     jsonPurchaseOrder.setCouponId("");
+                    tv_coupon_discount_label.setText(getString(R.string.discount));
                     updateDiscountUI();
                 }
 
@@ -253,6 +259,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.grandTotal()));
         tv_final_amount.setText("Grand Total \n" + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.grandTotal()));
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        if(jsonPurchaseOrder.getStoreDiscount()>0) {
+             String couponName = jsonPurchaseOrder.getJsonCoupon().getDiscountName();
+             tv_coupon_discount_label.setText(getString(R.string.discount_with_coupon, couponName));
+        }
         tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         StoreProductFinalOrderAdapter storeProductFinalOrderAdapter = new StoreProductFinalOrderAdapter(
             this,
@@ -326,6 +336,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 tv_coupon_name.setText(jsonCoupon.getDiscountName());
                 jsonPurchaseOrder.setCouponId(jsonCoupon.getCouponId());
                 updateDiscountUI();
+                if(jsonPurchaseOrder.getStoreDiscount()>0) {
+                     tv_coupon_discount_label.setText(getString(R.string.discount_with_coupon, jsonCoupon.getDiscountName()));
+                }
             }
         }
     }
@@ -352,25 +365,25 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     private boolean isAddressRequired() {
-        return !(acrb_cash.isChecked() || acrb_take_away.isChecked());
+        return  acrb_home_delivery.isChecked();
     }
 
     private boolean validateForm() {
         boolean isValid = true;
         tv_address.setError(null);
         if (!AppInitialize.isEmailVerified()) {
-            new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
+            ShowAlertInformation.showInfoDisplayDialog(this, "Email Required","To pay, email is mandatory. In your profile add and verify email");
             isValid = false;
         }
         if (isAddressRequired()) {
             if (tv_address.getText().toString().equals("")) {
-                tv_address.setError("Please enter delivery address.");
+                ShowAlertInformation.showInfoDisplayDialog(this, "Address Required","Please enter delivery address.");
                 isValid = false;
             } else {
                 String storeGeoHash = getIntent().getExtras().getString("GeoHash");
                 if (!TextUtils.isEmpty(storeGeoHash)) {
                     if (null == jsonUserAddress || TextUtils.isEmpty(jsonUserAddress.getGeoHash())) {
-                        tv_address.setError("Please select a valid address");
+                        ShowAlertInformation.showInfoDisplayDialog(this,"Address not valid","Please select a valid address");
                         isValid = false;
                     } else {
                         float lat_s = (float) GeoHashUtils.decodeLatitude(storeGeoHash);
@@ -382,13 +395,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             case RS:
                             case FT:
                                 if (distance > getIntent().getExtras().getInt("deliveryRange")) {
-                                    tv_address.setError("Please change the address. This address is very far from the store");
+                                    ShowAlertInformation.showInfoDisplayDialog(this,"Address too far","Please change the address. This address is very far from the store");
                                     isValid = false;
                                 }
                                 break;
                             default:
                                 if (distance > 150) { // Set for washing car stores
-                                    tv_address.setError("Please change the address. This address is very far from the store");
+                                    ShowAlertInformation.showInfoDisplayDialog(this,"Address too far","Please change the address. This address is very far from the store");
                                     isValid = false;
                                 }
                         }

@@ -100,6 +100,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_price = convertView.findViewById(R.id.tv_price);
             childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);
             childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
+            childViewHolder.tv_product_unit = convertView.findViewById(R.id.tv_product_unit);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
             childViewHolder.tv_sold_out = convertView.findViewById(R.id.tv_sold_out);
             childViewHolder.ll_btns = convertView.findViewById(R.id.ll_btns);
@@ -116,7 +117,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_product_details.setText(jsonStoreProduct.getProductInfo());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
-        childViewHolder.tv_price.setText(currencySymbol + AppUtils.getPriceWithUnits(jsonStoreProduct));
+        childViewHolder.tv_price.setText(currencySymbol + jsonStoreProduct.getDisplayPrice());
+        childViewHolder.tv_product_unit.setText(AppUtils.getProductWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(currencySymbol + storeCartItem.getFinalDiscountedPrice());
         if (!AppUtils.isRelease()) {
             childViewHolder.tv_temp.setText("Inventory " + jsonStoreProduct.getInventoryCurrent() + " out of " + jsonStoreProduct.getInventoryLimit());
@@ -135,7 +137,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
         } else {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            childViewHolder.tv_discounted_price.setVisibility(View.INVISIBLE);
+            childViewHolder.tv_discounted_price.setVisibility(View.GONE);
         }
         if (isStoreOpen) {
             switch (businessType) {
@@ -397,6 +399,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         private TextView tv_price;
         private TextView tv_value;
         private TextView tv_discounted_price;
+        private TextView tv_product_unit;
         private TextView tv_cat;
         private ImageView iv_product_image;
         private TextView tv_sold_out;

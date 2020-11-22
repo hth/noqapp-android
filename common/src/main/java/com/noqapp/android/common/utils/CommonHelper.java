@@ -260,6 +260,32 @@ public class CommonHelper {
         }
     }
 
+    public static String getProductWithUnits(JsonStoreProduct jsonStoreProduct) {
+        try {
+            if (null != jsonStoreProduct) {
+                Log.d(TAG, jsonStoreProduct.toString());
+                String unitOfMeasurement = jsonStoreProduct.getUnitOfMeasurement() == null ? "" : jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription();
+                if (StringUtils.isNotBlank(unitOfMeasurement)) {
+                    switch (jsonStoreProduct.getUnitOfMeasurement()) {
+                        case DZ:
+                        case HD:
+                            unitOfMeasurement = " (" + jsonStoreProduct.getUnitOfMeasurement().getFriendlyDescription() + ")";
+                            break;
+                        default:
+                            //Do nothing
+                    }
+                }
+                return " / " + jsonStoreProduct.getDisplayUnitValue() + unitOfMeasurement;
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().log("Failed displaying price jsonStoreProduct " + jsonStoreProduct);
+            Log.e(TAG, "jsonStoreProduct " + e.getLocalizedMessage(), e);
+            return "";
+        }
+    }
+
     public static double round(float value) {
         int scale = (int) Math.pow(10, 2);
         return (double) Math.round(value * scale) / scale;
