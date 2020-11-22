@@ -227,6 +227,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         TextView tv_price = view.findViewById(R.id.tv_price);
         TextView tv_value = view.findViewById(R.id.tv_value);
         TextView tv_discounted_price = view.findViewById(R.id.tv_discounted_price);
+        TextView tv_product_unit = view.findViewById(R.id.tv_product_unit);
         TextView tv_cat = view.findViewById(R.id.tv_cat);
         TextView tv_sold_out = view.findViewById(R.id.tv_sold_out);
         LinearLayout ll_btns = view.findViewById(R.id.ll_btns);
@@ -240,7 +241,8 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         tv_title.setText(jsonStoreProduct.getProductName());
         tv_product_details.setText(jsonStoreProduct.getProductInfo());
         tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
-        tv_price.setText(currencySymbol + AppUtils.getPriceWithUnits(jsonStoreProduct));
+        tv_price.setText(currencySymbol + jsonStoreProduct.getDisplayPrice());
+        tv_product_unit.setText(AppUtils.getProductWithUnits(jsonStoreProduct));
         tv_discounted_price.setText(currencySymbol + storeCartItem.getFinalDiscountedPrice());
         if (!AppUtils.isRelease()) {
             tv_temp.setText("Inventory " + jsonStoreProduct.getInventoryCurrent() + " out of " + jsonStoreProduct.getInventoryLimit());
@@ -259,7 +261,7 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
             tv_discounted_price.setVisibility(View.VISIBLE);
         } else {
             tv_price.setPaintFlags(tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            tv_discounted_price.setVisibility(View.INVISIBLE);
+            tv_discounted_price.setVisibility(View.GONE);
         }
         if (isStoreOpen) {
             switch (businessType) {
