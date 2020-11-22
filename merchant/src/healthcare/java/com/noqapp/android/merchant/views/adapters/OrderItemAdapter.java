@@ -45,7 +45,7 @@ public class OrderItemAdapter extends BaseAdapter {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.list_item_order, viewGroup, false);
             recordHolder.tv_title = view.findViewById(R.id.tv_title);
-            recordHolder.tv_amount = view.findViewById(R.id.tv_amount);
+            recordHolder.tv_amount = view.findViewById(R.id.tv_total_price);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
