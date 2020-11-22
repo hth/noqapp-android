@@ -13,6 +13,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.ProductUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -58,6 +59,8 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_title = convertView.findViewById(R.id.tv_title);
             childViewHolder.tv_price = convertView.findViewById(R.id.tv_price);
+            childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
+            childViewHolder.tv_product_quantity = convertView.findViewById(R.id.tv_product_quantity);
             childViewHolder.tv_total_product_price = convertView.findViewById(R.id.tv_total_product_price);
             childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
@@ -72,7 +75,10 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         childViewHolder.tv_title.setText(storeCartItem.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getProductQuantity()));
         childViewHolder.tv_product_count.setText(String.valueOf(storeCartItem.getProductQuantity()));
-        childViewHolder.tv_price.setText(currencySymbol + CommonHelper.displayPrice(storeCartItem.getProductPrice()) + " x " + storeCartItem.getProductQuantity());
+        childViewHolder.tv_price.setText(currencySymbol + CommonHelper.displayPrice(storeCartItem.getProductPrice()));
+        // @TODO need to fix the discount price currently JsonPurchaseOrderProduct don't have the required information
+       // childViewHolder.tv_discounted_price.setText(currencySymbol +  ProductUtils.calculateDiscountPrice(storeCartItem.getDisplayPrice(), storeCartItem.getDisplayDiscount()););
+        childViewHolder.tv_product_quantity.setText(" x " + storeCartItem.getProductQuantity());
         childViewHolder.tv_total_product_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
 
         switch (storeCartItem.getProductType()) {
@@ -132,6 +138,8 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
     private final class ChildViewHolder {
         private TextView tv_title;
         private TextView tv_price;
+        private TextView tv_discounted_price;
+        private TextView tv_product_quantity;
         private TextView tv_product_count;
         private TextView tv_total_product_price;
         private TextView tv_value;

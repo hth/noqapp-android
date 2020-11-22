@@ -55,6 +55,23 @@
                     android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_twelve" />
+
+                <TextView
+                    android:id="@+id/tv_discounted_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_twelve" />
+
+                <TextView
+                    android:id="@+id/tv_product_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_twelve" />
             </LinearLayout>
         </RelativeLayout>
 
