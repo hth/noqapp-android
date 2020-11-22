@@ -148,7 +148,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="2dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:background="@android:color/darker_gray" />
 
                             <com.noqapp.android.merchant.views.customviews.FixedHeightListView
@@ -444,7 +444,7 @@
                                     android:layout_alignParentLeft="true"
                                     android:layout_toLeftOf="@+id/tv_cost"
                                     android:paddingLeft="5dp"
-                                    android:text="@string/total_amount"
+                                    android:text="@string/item_total"
                                     android:textColor="@android:color/black"
                                     android:textSize="@dimen/text_size_twelve"
                                     android:textStyle="bold" />

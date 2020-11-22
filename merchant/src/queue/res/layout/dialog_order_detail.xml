@@ -132,7 +132,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:background="@android:color/darker_gray" />
 
                     <com.noqapp.android.merchant.views.customviews.FixedHeightListView

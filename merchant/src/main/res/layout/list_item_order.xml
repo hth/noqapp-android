@@ -1,28 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:padding="5dp"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:weightSum="1">
 
-
-<TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:paddingLeft="5dp"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/tv_amount"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size_fourteen"
-        android:layout_height="wrap_content"/>
-
-<TextView
-        android:id="@+id/tv_amount"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/tv_total_price"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_fourteen">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_fourteen" />
+
+        <LinearLayout
+            android:id="@+id/ll_mid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_twelve" />
+
+            <TextView
+                android:id="@+id/tv_discounted_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_twelve" />
+
+            <TextView
+                android:id="@+id/tv_product_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_twelve" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:drawablePadding="5dp"
         android:paddingRight="5dp"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size_fourteen"
-        android:drawablePadding="5dp"
-        android:layout_alignParentRight="true"/>
+        android:textSize="@dimen/text_size_fourteen" />
 
 </RelativeLayout>

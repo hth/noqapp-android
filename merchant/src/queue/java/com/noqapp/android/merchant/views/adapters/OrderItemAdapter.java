@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.ProductUtils;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
@@ -70,7 +73,11 @@ public class OrderItemAdapter extends BaseAdapter {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.list_item_order, viewGroup, false);
             recordHolder.tv_title = view.findViewById(R.id.tv_title);
-            recordHolder.tv_amount = view.findViewById(R.id.tv_amount);
+            recordHolder.tv_total_price = view.findViewById(R.id.tv_total_price);
+            recordHolder.tv_price = view.findViewById(R.id.tv_price);
+            recordHolder.tv_discounted_price = view.findViewById(R.id.tv_discounted_price);
+            recordHolder.tv_product_quantity = view.findViewById(R.id.tv_product_quantity);
+            recordHolder.ll_mid = view.findViewById(R.id.ll_mid);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
@@ -78,19 +85,33 @@ public class OrderItemAdapter extends BaseAdapter {
         JsonPurchaseOrderProduct jpop = jsonPurchaseOrderProductList.get(position);
         if (isInQ) {
             recordHolder.tv_title.setText(jpop.getProductName());
-            recordHolder.tv_amount.setText(String.valueOf(jpop.getProductQuantity()));
+            recordHolder.tv_total_price.setText(String.valueOf(jpop.getProductQuantity()));
             recordHolder.tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-            recordHolder.tv_amount.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+            recordHolder.tv_total_price.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+            recordHolder.ll_mid.setVisibility(View.GONE);
         } else {
-            recordHolder.tv_title.setText(jpop.getProductName() + " " + AppUtils.getPriceWithUnits(jpop.getJsonStoreProduct()) + " x " + jpop.getProductQuantity());
-            recordHolder.tv_amount.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jpop.getProductPrice()).multiply(new BigDecimal(jpop.getProductQuantity())).toString()));
-            if (0 == jpop.getProductPrice()) {
-                recordHolder.tv_amount.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit, 0);
+            recordHolder.ll_mid.setVisibility(View.VISIBLE);
+            recordHolder.tv_title.setText(jpop.getProductName());
+            recordHolder.tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jpop.getProductPrice()).multiply(new BigDecimal(jpop.getProductQuantity())).toString()));
+            recordHolder.tv_price.setText(currencySymbol + jpop.getDisplayPrice());
+            recordHolder.tv_product_quantity.setText(" x " + jpop.getProductQuantity());
+            recordHolder.tv_discounted_price.setText(currencySymbol + ProductUtils.calculateDiscountPrice(jpop.getDisplayPrice(), jpop.getDisplayDiscount()));
+            if (jpop.getProductDiscount() > 0) {
+                recordHolder.tv_price.setPaintFlags(recordHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                recordHolder.tv_discounted_price.setVisibility(View.VISIBLE);
+                recordHolder.tv_total_price.setText(currencySymbol + ProductUtils.calculateDiscountPrice(jpop.getDisplayPrice(), jpop.getDisplayDiscount()));
             } else {
-                recordHolder.tv_amount.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                recordHolder.tv_price.setPaintFlags(recordHolder.tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                recordHolder.tv_discounted_price.setVisibility(View.GONE);
+                recordHolder.tv_total_price.setText(currencySymbol + jpop.getDisplayPrice());
+            }
+            if (0 == jpop.getProductPrice()) {
+                recordHolder.tv_total_price.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit, 0);
+            } else {
+                recordHolder.tv_total_price.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
 
-            recordHolder.tv_amount.setOnClickListener(v -> {
+            recordHolder.tv_total_price.setOnClickListener(v -> {
                 if (jpop.getProductPrice() == 0 && isClickEnable) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     LayoutInflater inflater = LayoutInflater.from(context);
@@ -126,8 +147,11 @@ public class OrderItemAdapter extends BaseAdapter {
 
     static class RecordHolder {
         TextView tv_title;
-        TextView tv_amount;
-
+        TextView tv_total_price;
+        TextView tv_price;
+        TextView tv_discounted_price;
+        TextView tv_product_quantity;
+        LinearLayout ll_mid;
         RecordHolder() {
         }
     }
