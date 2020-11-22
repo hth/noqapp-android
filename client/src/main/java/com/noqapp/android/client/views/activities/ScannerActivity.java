@@ -41,8 +41,7 @@ import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class ScannerActivity extends AppCompatActivity implements
-    ClientInQueuePresenter {
+public class ScannerActivity extends AppCompatActivity implements ClientInQueuePresenter {
     public static final int RC_BARCODE_CAPTURE = 23;
     private final String TAG = ScannerActivity.class.getSimpleName();
     private int requestCode;
