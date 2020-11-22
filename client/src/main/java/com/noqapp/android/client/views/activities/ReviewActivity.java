@@ -168,7 +168,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         //actionbarBack.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener((View v) -> onBackPressed());
         ratingBar.setRating(5.0f);
-        ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> tv_rating_value.setText(rating + ""));
+        ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> tv_rating_value.setText(String.valueOf(rating)));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener((View v) -> {
             if (null == jtk || jtk.getBusinessType() == BusinessTypeEnum.DO) {
