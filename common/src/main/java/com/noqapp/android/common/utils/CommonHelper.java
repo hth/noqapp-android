@@ -54,15 +54,15 @@ public class CommonHelper {
     private static final String TAG = CommonHelper.class.getSimpleName();
 
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    public static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-    public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    public static final SimpleDateFormat SDF_YYYY_MM_DD_HH_MM_A = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
-    public static final SimpleDateFormat SDF_YYYY_MM_DD_KK_MM = new SimpleDateFormat("yyyy-MM-dd kk:mm", Locale.getDefault());
-    public static final SimpleDateFormat SDF_DD_MMM_YY_HH_MM_A = new SimpleDateFormat("dd MMM yy, hh:mm a", Locale.getDefault());
-    public static final SimpleDateFormat SDF_ISO8601_FMT = new SimpleDateFormat(ISO8601_FMT, Locale.getDefault());
+    public static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+    public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    public static final SimpleDateFormat SDF_YYYY_MM_DD_HH_MM_A = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.US);
+    public static final SimpleDateFormat SDF_YYYY_MM_DD_KK_MM = new SimpleDateFormat("yyyy-MM-dd kk:mm", Locale.US);
+    public static final SimpleDateFormat SDF_DD_MMM_YY_HH_MM_A = new SimpleDateFormat("dd MMM yy, hh:mm a", Locale.US);
+    public static final SimpleDateFormat SDF_ISO8601_FMT = new SimpleDateFormat(ISO8601_FMT, Locale.US);
     private static final DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HH:mm");
     public static final String CURRENCY_SYMBOL = "currencySymbol";
-    private static final SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+    private static final SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.US);
 
     public enum AppointmentComputationEnum {FILLED, TOTAL_SLOTS}
 
@@ -114,7 +114,7 @@ public class CommonHelper {
 
     public static String getYearFromDate(String dateValue) {
         try {
-            DateFormat sdf = new SimpleDateFormat("YYYY-MM-DD", Locale.getDefault());
+            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date date = sdf.parse(dateValue);
             return MMM_YYYY.format(date);
         } catch (ParseException | IllegalArgumentException e) {

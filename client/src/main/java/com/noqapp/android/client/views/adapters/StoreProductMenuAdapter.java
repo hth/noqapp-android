@@ -216,8 +216,13 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private void showProductImageDialog(JsonStoreProduct jsonStoreProduct, StoreCartItem storeCartItem,
-                                        Button list_btn_increase, Button list_btn_decrease, TextView list_tv_value) {
+    private void showProductImageDialog(
+        JsonStoreProduct jsonStoreProduct,
+        StoreCartItem storeCartItem,
+        Button list_btn_increase,
+        Button list_btn_decrease,
+        TextView list_tv_value
+    ) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.FullScreenDialogTheme);
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
