@@ -277,7 +277,7 @@
     <string name="total_tax">Taxes:</string>
     <string name="total_amount">Item Total:</string>
     <string name="discount">Discount:</string>
-    <string name="discount_with_coupon">Discount(%1$s) :</string>
+    <string name="discount_with_coupon">Discount (%1$s):</string>
     <string name="grand_total">Grand Total:</string>
     <string name="order_details">Order Details</string>
     <string name="deliver_address">Delivery Address</string>
