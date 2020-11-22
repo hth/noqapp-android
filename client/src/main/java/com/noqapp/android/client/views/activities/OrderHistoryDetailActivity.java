@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistori
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -23,6 +25,7 @@ import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.ProductUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,6 +42,8 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_order_detail));
         TextView tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
+        TextView tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
+        TextView tv_coupon_discount_label = findViewById(R.id.tv_coupon_discount_label);
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         TextView tv_due_amt = findViewById(R.id.tv_due_amt);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
@@ -128,18 +133,42 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             startActivity(in);
         });
         tv_store_rating.setText(String.valueOf(jsonPurchaseOrder.getRatingCount()));
-        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeItemTotal());
         tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
+        if (jsonPurchaseOrder.getStoreDiscount() > 0) {
+            //tv_coupon_discount_label.setText(getString(R.string.discount_with_coupon, jsonPurchaseOrder.getJsonCoupon().getDiscountName()));
+            tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        } else {
+            tv_coupon_discount_label.setText(getString(R.string.discount));
+            //tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        }
         for (int i = 0; i < jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().size(); i++) {
             JsonPurchaseOrderProductHistorical jsonPurchaseOrderProduct = jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
+            TextView tv_price = inflatedLayout.findViewById(R.id.tv_price);
+            TextView tv_discounted_price = inflatedLayout.findViewById(R.id.tv_discounted_price);
+            TextView tv_product_quantity = inflatedLayout.findViewById(R.id.tv_product_quantity);
             //tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + "\n" + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + jsonPurchaseOrderProduct.getProductQuantity());
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName());
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
+            tv_price.setText(currencySymbol + jsonPurchaseOrderProduct.getDisplayPrice());
+            tv_product_quantity.setText(" x " + jsonPurchaseOrderProduct.getProductQuantity());
+            tv_discounted_price.setText(currencySymbol + ProductUtils.calculateDiscountPrice(jsonPurchaseOrderProduct.getDisplayPrice(), jsonPurchaseOrderProduct.getDisplayDiscount()));
+            if (jsonPurchaseOrderProduct.getProductDiscount() > 0) {
+                tv_price.setPaintFlags(tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                tv_discounted_price.setVisibility(View.VISIBLE);
+                tv_total_price.setText(currencySymbol + ProductUtils.calculateDiscountPrice(jsonPurchaseOrderProduct.getDisplayPrice(), jsonPurchaseOrderProduct.getDisplayDiscount()));
+            } else {
+                tv_price.setPaintFlags(tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                tv_discounted_price.setVisibility(View.GONE);
+                tv_total_price.setText(currencySymbol + jsonPurchaseOrderProduct.getDisplayPrice());
+            }
+
+
             ll_order_details.addView(inflatedLayout);
         }
         tv_store_name.setText(jsonPurchaseOrder.getDisplayName());

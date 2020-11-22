@@ -288,7 +288,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal">
 
                     <TextView
@@ -306,6 +306,33 @@
                             android:layout_alignParentRight="true"
                             android:gravity="right"
                             android:textSize="@dimen/store_info"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_coupon_discount_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="@string/discount"
+                        android:textSize="@dimen/store_info" />
+
+                    <TextView
+                        android:id="@+id/tv_coupon_discount_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:text="- Rs 0"
+                        android:textSize="@dimen/store_info" />
                 </RelativeLayout>
 
                 <View

@@ -36,13 +36,13 @@
             <com.noqapp.android.client.views.customviews.MaxHeightScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbarThumbVertical="@color/color_invite_details"
-                android:scrollbarFadeDuration="0"
-                android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:scrollbars="vertical"
-                android:paddingBottom="5dp">
+                android:paddingBottom="5dp"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollbarFadeDuration="0"
+                android:scrollbarThumbVertical="@color/color_invite_details"
+                android:scrollbars="vertical">
 
                 <LinearLayout
                     android:id="@+id/ll_order_details"
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
+
                 android:orientation="horizontal">
 
                 <TextView
