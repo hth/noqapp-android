@@ -20,12 +20,11 @@ import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.AppInitialize;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.pojos.Receipt;
-import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,7 +58,7 @@ public class ReceiptGeneratorPDF extends PdfHelper {
         String fileName = new SimpleDateFormat("'NoQueue_" + receipt.getJsonPurchaseOrder().getCustomerName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         File dest = new File(getAppPath(mContext.getResources().getString(R.string.app_name)) + fileName);
         if (dest.exists()) {
-            Log.d("Delete", "File deleted successfully " +  dest.delete());
+            Log.d("Delete", "File deleted successfully " + dest.delete());
         }
 
         try {
@@ -133,14 +132,14 @@ public class ReceiptGeneratorPDF extends PdfHelper {
             for (int i = 0; i < receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().size(); i++) {
                 JsonPurchaseOrderProduct jpop = receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().get(i);
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(i + 1), normalFont));
-                table.addCell(pdfPCellWithoutBorder(jpop.getProductName()+ " " + AppUtils.getPriceWithUnits(jpop.getJsonStoreProduct()), normalFont));
+                table.addCell(pdfPCellWithoutBorder(jpop.getProductName() + " " + AppUtils.getPriceWithUnits(jpop.getJsonStoreProduct()), normalFont));
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(jpop.getProductQuantity()), normalFont));
                 table.addCell(pdfPCellWithoutBorder(currencySymbol + CommonHelper.displayPrice(jpop.getProductPrice()), urFontName));
                 table.addCell(pdfPCellWithoutBorder(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jpop.getProductPrice()).multiply(new BigDecimal(jpop.getProductQuantity())).toString()), urFontName));
             }
             //Add discount info in receipt
-            if(!TextUtils.isEmpty(receipt.getJsonPurchaseOrder().getCouponId())){
-                table.addCell(pdfPCellWithoutBorder(String.valueOf(receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().size()+ 1), normalFont));
+            if (!TextUtils.isEmpty(receipt.getJsonPurchaseOrder().getCouponId())) {
+                table.addCell(pdfPCellWithoutBorder(String.valueOf(receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().size() + 1), normalFont));
                 table.addCell(pdfPCellWithoutBorder("Discount", normalFont));
                 table.addCell(pdfPCellWithoutBorder("1", normalFont));
                 table.addCell(pdfPCellWithoutBorder(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(receipt.getJsonPurchaseOrder().getStoreDiscount()), urFontName));
@@ -171,7 +170,7 @@ public class ReceiptGeneratorPDF extends PdfHelper {
             table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + receipt.getJsonPurchaseOrder().computePaidAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Transaction Via:", normalBoldFont, 5));
-            String transactionVia = (null == receipt.getJsonPurchaseOrder().getTransactionVia())?"N/A":receipt.getJsonPurchaseOrder().getTransactionVia().getFriendlyDescription();
+            String transactionVia = (null == receipt.getJsonPurchaseOrder().getTransactionVia()) ? "N/A" : receipt.getJsonPurchaseOrder().getTransactionVia().getFriendlyDescription();
             table.addCell(pdfPCellWithoutBorderWithPadding(transactionVia, normalFont, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Payment Mode:", normalBoldFont, 5));
