@@ -1,11 +1,11 @@
 package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -45,6 +45,7 @@ import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.ProductUtils;
 import com.xw.repo.BubbleSeekBar;
 
 import java.math.BigDecimal;
@@ -612,9 +613,23 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            //tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + "\n" + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + jsonPurchaseOrderProduct.getProductQuantity());
+            TextView tv_price = inflatedLayout.findViewById(R.id.tv_price);
+            TextView tv_discounted_price = inflatedLayout.findViewById(R.id.tv_discounted_price);
+            TextView tv_product_quantity = inflatedLayout.findViewById(R.id.tv_product_quantity);
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName());
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
+            tv_price.setText(currencySymbol + jsonPurchaseOrderProduct.getDisplayPrice());
+            tv_product_quantity.setText(" x " + jsonPurchaseOrderProduct.getProductQuantity());
+            tv_discounted_price.setText(currencySymbol + ProductUtils.calculateDiscountPrice(jsonPurchaseOrderProduct.getDisplayPrice(), jsonPurchaseOrderProduct.getDisplayDiscount()));
+            if (jsonPurchaseOrderProduct.getProductDiscount() > 0) {
+                tv_price.setPaintFlags(tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                tv_discounted_price.setVisibility(View.VISIBLE);
+                tv_total_price.setText(currencySymbol + ProductUtils.calculateDiscountPrice(jsonPurchaseOrderProduct.getDisplayPrice(), jsonPurchaseOrderProduct.getDisplayDiscount()));
+            } else {
+                tv_price.setPaintFlags(tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                tv_discounted_price.setVisibility(View.GONE);
+                tv_total_price.setText(currencySymbol + jsonPurchaseOrderProduct.getDisplayPrice());
+            }
             if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {
                 //added for  Pharmacy order place from merchant side directly
                 findViewById(R.id.ll_amount).setVisibility(View.GONE);

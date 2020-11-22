@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.ProductUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -75,12 +74,19 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         childViewHolder.tv_title.setText(storeCartItem.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getProductQuantity()));
         childViewHolder.tv_product_count.setText(String.valueOf(storeCartItem.getProductQuantity()));
-        childViewHolder.tv_price.setText(currencySymbol + CommonHelper.displayPrice(storeCartItem.getProductPrice()));
-        // @TODO need to fix the discount price currently JsonPurchaseOrderProduct don't have the required information
-       // childViewHolder.tv_discounted_price.setText(currencySymbol +  ProductUtils.calculateDiscountPrice(storeCartItem.getDisplayPrice(), storeCartItem.getDisplayDiscount()););
+       // childViewHolder.tv_price.setText(currencySymbol + CommonHelper.displayPrice(storeCartItem.getProductPrice()));
+        childViewHolder.tv_discounted_price.setText(currencySymbol +  CommonHelper.displayPrice(storeCartItem.getProductPrice()));
         childViewHolder.tv_product_quantity.setText(" x " + storeCartItem.getProductQuantity());
         childViewHolder.tv_total_product_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(storeCartItem.getProductPrice()).multiply(new BigDecimal(storeCartItem.getProductQuantity())).toString()));
-
+        if (storeCartItem.getProductDiscount() > 0) {
+            childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
+            childViewHolder.tv_price.setText(currencySymbol + calculateActualPrice(storeCartItem.getDisplayPrice(), storeCartItem.getDisplayDiscount()));
+        } else {
+            childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            childViewHolder.tv_discounted_price.setVisibility(View.GONE);
+            childViewHolder.tv_price.setText(currencySymbol + CommonHelper.displayPrice(storeCartItem.getProductPrice()));
+        }
         switch (storeCartItem.getProductType()) {
             case NV:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
@@ -146,5 +152,15 @@ public class StoreProductFinalOrderAdapter extends BaseAdapter {
         private TextView tv_cat;
         private Button btn_decrease;
         private Button btn_increase;
+    }
+
+    /*
+     * Product price already coming with discount so actual
+     * price computed with adding the discount amount
+     */
+    private BigDecimal calculateActualPrice(String displayPrice, String discountAmount) {
+        BigDecimal price = new BigDecimal(displayPrice);
+        BigDecimal discountAmountValue = new BigDecimal(discountAmount);
+        return price.add(discountAmountValue);
     }
 }
