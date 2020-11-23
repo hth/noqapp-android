@@ -23,8 +23,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.AppInitialize;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +38,9 @@ public class StoreProductMenuAdapter extends BaseExpandableListAdapter {
     public StoreProductMenuAdapter(
         Context context,
         List<JsonStoreCategory> listDataHeader,
-        HashMap<String, List<StoreCartItem>> listDataChild
-        , MenuItemUpdate menuItemUpdate) {
+        HashMap<String, List<StoreCartItem>> listDataChild,
+        MenuItemUpdate menuItemUpdate
+    ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
