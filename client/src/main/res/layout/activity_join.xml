@@ -251,7 +251,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:gravity="right"
-                                    android:text="- Rs 0"
+                                    android:text="0"
                                     android:textColor="@android:color/black"
                                     android:textSize="@dimen/store_info" />
                             </RelativeLayout>
