@@ -65,7 +65,7 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
         recordHolder.btn_increase.setOnClickListener(v -> {
             String val = recordHolder.tv_value.getText().toString();
             int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
-            recordHolder.tv_value.setText(number);
+            recordHolder.tv_value.setText(String.valueOf(number));
             menuItemsList.get(position).setChildInput(number);
             if (number <= 0) {
                 storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
