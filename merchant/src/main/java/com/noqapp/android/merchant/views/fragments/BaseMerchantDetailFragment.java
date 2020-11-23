@@ -468,8 +468,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             tv_counter_name.setText(cName);
         }
 
-        tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
-            + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
+        tv_timing.setText("Timing: "
+            + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
+            + " - "
+            + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
 
         tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
         /* Add to show only remaining people in queue */
@@ -560,9 +562,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                     served.setGoTo(tv_counter_name.getText().toString());
                     setPresenter();
                     manageQueueApiCalls.served(
-                            AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth(),
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth(),
                         served);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
@@ -590,9 +592,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                                 served.setGoTo(tv_counter_name.getText().toString());
                                 setPresenter();
                                 manageQueueApiCalls.served(
-                                        AppInitialize.getDeviceID(),
-                                        AppInitialize.getEmail(),
-                                        AppInitialize.getAuth(),
+                                    AppInitialize.getDeviceID(),
+                                    AppInitialize.getEmail(),
+                                    AppInitialize.getAuth(),
                                     served);
                                 chronometer.stop();
                                 chronometer.setBase(SystemClock.elapsedRealtime());
@@ -643,9 +645,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                                     served.setGoTo(tv_counter_name.getText().toString());
                                     setPresenter();
                                     manageQueueApiCalls.served(
-                                            AppInitialize.getDeviceID(),
-                                            AppInitialize.getEmail(),
-                                            AppInitialize.getAuth(),
+                                        AppInitialize.getDeviceID(),
+                                        AppInitialize.getEmail(),
+                                        AppInitialize.getAuth(),
                                         served);
                                 } else {
                                     ShowAlertInformation.showNetworkDialog(context);
@@ -671,9 +673,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             served.setGoTo(tv_counter_name.getText().toString());
                             setPresenter();
                             manageQueueApiCalls.served(
-                                    AppInitialize.getDeviceID(),
-                                    AppInitialize.getEmail(),
-                                    AppInitialize.getAuth(),
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                                 served);
                             chronometer.stop();
                             chronometer.setBase(SystemClock.elapsedRealtime());
@@ -733,9 +735,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             served.setGoTo(tv_counter_name.getText().toString());
                             served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
                             manageQueueApiCalls.acquire(
-                                    AppInitialize.getDeviceID(),
-                                    AppInitialize.getEmail(),
-                                    AppInitialize.getAuth(),
+                                AppInitialize.getDeviceID(),
+                                AppInitialize.getEmail(),
+                                AppInitialize.getAuth(),
                                 served);
                         } else {
                             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -776,9 +778,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
         businessCustomerApiCalls.setApproveCustomerPresenter(this);
         businessCustomerApiCalls.accessCustomer(
-                AppInitialize.getDeviceID(),
-                AppInitialize.getEmail(),
-                AppInitialize.getAuth(),
+            AppInitialize.getDeviceID(),
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
             customerPriority
         );
     }
@@ -823,9 +825,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             .setCustomerPhone(phoneNoWithCode);
 
         manageQueueApiCalls.dispenseTokenWithClientInfo(
-                AppInitialize.getDeviceID(),
-                AppInitialize.getEmail(),
-                AppInitialize.getAuth(),
+            AppInitialize.getDeviceID(),
+            AppInitialize.getEmail(),
+            AppInitialize.getAuth(),
             jsonBusinessCustomer);
     }
 
@@ -873,6 +875,5 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 break;
         }
         return true;
-
     }
 }
