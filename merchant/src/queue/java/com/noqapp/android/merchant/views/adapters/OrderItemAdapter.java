@@ -20,7 +20,6 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ProductUtils;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import java.math.BigDecimal;
@@ -38,16 +37,24 @@ public class OrderItemAdapter extends BaseAdapter {
         isClickEnable = clickEnable;
     }
 
-    public OrderItemAdapter(Context context, List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts,
-                            String currencySymbol, OrderDetailActivity orderDetailActivity) {
+    public OrderItemAdapter(
+        Context context,
+        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts,
+        String currencySymbol,
+        OrderDetailActivity orderDetailActivity
+    ) {
         this.context = context;
         this.jsonPurchaseOrderProductList = jsonPurchaseOrderProducts;
         this.currencySymbol = currencySymbol;
         this.orderDetailActivity = orderDetailActivity;
     }
 
-    public OrderItemAdapter(Context context, List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts,
-                            String currencySymbol, boolean isInQ) {
+    public OrderItemAdapter(
+        Context context,
+        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts,
+        String currencySymbol,
+        boolean isInQ
+    ) {
         this.context = context;
         this.jsonPurchaseOrderProductList = jsonPurchaseOrderProducts;
         this.currencySymbol = currencySymbol;
