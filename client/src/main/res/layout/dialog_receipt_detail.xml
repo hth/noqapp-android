@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
+                android:paddingRight="5dp"
                 android:paddingBottom="5dp"
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbarFadeDuration="0"
@@ -48,6 +48,7 @@
                     android:id="@+id/ll_order_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
                     android:orientation="vertical" />
 
             </com.noqapp.android.client.views.customviews.MaxHeightScrollView>
