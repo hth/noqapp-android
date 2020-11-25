@@ -29,8 +29,8 @@ import static com.noqapp.android.client.views.activities.AppInitialize.dbHandler
 public class TokenAndQueueDB {
     private static final String TAG = TokenAndQueueDB.class.getSimpleName();
 
-    public static void deleteTokenQueue(String codeQR , String token) {
-        boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token}) > 0;
+    public static void deleteTokenQueue(String codeQR, String token) {
+        boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, TokenQueue.CODE_QR + "=?" + " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR, token}) > 0;
         Log.i(TAG, "Deleted deleteTokenQueue status=" + resultStatus);
     }
 
@@ -108,7 +108,7 @@ public class TokenAndQueueDB {
     public static JsonTokenAndQueue getCurrentQueueObject(String codeQR, String token) {
         JsonTokenAndQueue tokenAndQueue = null;
         try {
-            Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token}, null, null, null, null);
+            Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.CODE_QR + "=?" + " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR, token}, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 try {
                     while (cursor.moveToNext()) {
@@ -214,7 +214,7 @@ public class TokenAndQueueDB {
 
     public static JsonTokenAndQueue getHistoryQueueObject(String codeQR, String token) {
         JsonTokenAndQueue tokenAndQueue = null;
-        Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token}, null, null, TokenQueue.CREATE_DATE, null);
+        Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, TokenQueue.CODE_QR + "=?" + " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR, token}, null, null, TokenQueue.CREATE_DATE, null);
         if (cursor != null && cursor.getCount() > 0) {
             try {
                 while (cursor.moveToNext()) {
@@ -320,7 +320,7 @@ public class TokenAndQueueDB {
         for (JsonTokenAndQueue tokenAndQueue : list) {
             //@TODO hth re check  updating the existing value
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(tokenAndQueue.getCodeQR(), String.valueOf(tokenAndQueue.getToken()));
-            if(null != jtk) {
+            if (null != jtk) {
                 tokenAndQueue.setServiceEndTime(jtk.getServiceEndTime());
             }
             ContentValues values = createQueueContentValues(tokenAndQueue);
@@ -424,7 +424,7 @@ public class TokenAndQueueDB {
             ContentValues con = new ContentValues();
             con.put(TokenQueue.SERVING_NUMBER, servingNumber);
             //  con.put(TokenQueue.TOKEN, token);
-            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token});
+            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?" + " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR, token});
             Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + successCount);
 
             return successCount > 0;
@@ -439,7 +439,7 @@ public class TokenAndQueueDB {
             ContentValues con = new ContentValues();
             con.put(TokenQueue.PURCHASE_ORDER_STATE, orderState);
             //  con.put(TokenQueue.TOKEN, token);
-            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token});
+            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?" + " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR, token});
             Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + successCount);
 
             return successCount > 0;
@@ -452,9 +452,9 @@ public class TokenAndQueueDB {
     public boolean isTokenExist(String table_name, String codeQR, String date) {
         String whereClause = TokenQueue.CODE_QR + " = ?" + " AND " + TokenQueue.CREATE_DATE + " = ?";
         return DatabaseUtils.longForQuery(
-                dbHandler.getWritableDb(),
-                "SELECT COUNT(*) FROM " + table_name + " WHERE " + whereClause,
-                new String[]{codeQR, date}) > 0;
+            dbHandler.getWritableDb(),
+            "SELECT COUNT(*) FROM " + table_name + " WHERE " + whereClause,
+            new String[]{codeQR, date}) > 0;
     }
 
     private static String getTransactionID(JsonTokenAndQueue jsonTokenAndQueue) {
