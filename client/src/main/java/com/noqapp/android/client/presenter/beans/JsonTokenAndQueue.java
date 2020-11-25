@@ -107,6 +107,9 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty ("dt")
     private String displayToken;
 
+    @JsonProperty("sl")
+    private String timeSlotMessage;
+
     @JsonProperty("qid")
     private String queueUserId;
 
@@ -139,12 +142,6 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("ti")
     private String transactionId;
-
-    /**
-     * This field is not part of this object. It comes from JsonToken. It comes only once.
-     * {@link JsonToken#getTimeSlotMessage}.
-     */
-    private String timeSlotMessage;
 
     public String getCodeQR() {
         return codeQR;
