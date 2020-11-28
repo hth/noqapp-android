@@ -362,23 +362,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             e.printStackTrace();
         }
     }
-     //@TODO do we need to add this condition on actionbar barcode
-//    private void showScannerWhenMatchingRole() {
-//        JsonProfile jsonProfile = AppInitialize.getUserProfile();
-//        if (null == jsonProfile) {
-//            frame_scan.setVisibility(View.GONE);
-//        } else {
-//            switch (jsonProfile.getUserLevel()) {
-//                case S_MANAGER:
-//                case Q_SUPERVISOR:
-//                    // @TODO revert this changes after silent location feature removed
-//                    frame_scan.setVisibility(View.GONE);
-//                    break;
-//                default:
-//                    frame_scan.setVisibility(View.GONE);
-//            }
-//        }
-//    }
 
     private void callCurrentAndHistoryQueue() {
         if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
