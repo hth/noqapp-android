@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,22 +11,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.common.beans.JsonHour;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class AllDayTimingAdapter extends BaseAdapter {
-    private String NA = "NA";
+    private final String NA = "NA";
     private Context context;
     private List<JsonHour> jsonHours;
+    private int dayOfWeek = 0;
 
     public AllDayTimingAdapter(Context context, List<JsonHour> jsonHours) {
         this.context = context;
         this.jsonHours = jsonHours;
+        dayOfWeek = AppUtils.getDayOfWeek(Calendar.getInstance());
     }
 
     public int getCount() {
@@ -72,6 +76,13 @@ public class AllDayTimingAdapter extends BaseAdapter {
 
         String appointmentTime = new AppUtils().storeLunchTiming(jsonHour.getAppointmentStartHour(), jsonHour.getAppointmentEndHour());
         recordHolder.tv_appointment_time_value.setText(TextUtils.isEmpty(appointmentTime) ? NA : appointmentTime);
+        if (dayOfWeek == jsonHour.getDayOfWeek()) {
+            recordHolder.ll_day.setBackgroundColor(ContextCompat.getColor(context, R.color.button_color));
+            recordHolder.tv_day.setTextColor(Color.WHITE);
+        } else {
+            recordHolder.ll_day.setBackgroundColor(ContextCompat.getColor(context, R.color.button_disable));
+            recordHolder.tv_day.setTextColor(Color.BLACK);
+        }
 
         return view;
     }
