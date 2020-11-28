@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -63,6 +65,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
+import com.noqapp.android.client.views.customviews.BadgeDrawable;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.HomeFragment;
 import com.noqapp.android.client.views.pojos.LocationPref;
@@ -223,9 +226,6 @@ public class LaunchActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (null != getSupportActionBar()) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
         drawer = findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -537,16 +537,15 @@ public class LaunchActivity
     }
 
     public void updateNotificationBadgeCount() {
-//        int notify_count = NotificationDB.getNotificationCount();
-//        tv_badge.setText(String.valueOf(notify_count));
-//        if (notify_count > 0) {
-//            tv_badge.setVisibility(View.VISIBLE);
-//        } else {
-//            tv_badge.setVisibility(View.INVISIBLE);
-//        }
+        int notify_count = NotificationDB.getNotificationCount();
         if (null != expandable_drawer_listView && null != expandableListAdapter) {
-            //expandable_drawer_listView.notify();
             expandableListAdapter.notifyDataSetChanged();
+        }
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this,R.drawable.ic_burger, notify_count));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowCustomEnabled(true);   // enable overriding the default toolbar layout
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 
@@ -1367,4 +1366,16 @@ public class LaunchActivity
             Log.w(TAG, "No network found");
         }
     }
+
+    private Drawable setBadgeCount(Context context, int res, int badgeCount){
+        LayerDrawable icon = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable);
+        Drawable mainIcon = ContextCompat.getDrawable(context, res);
+        BadgeDrawable badge = new BadgeDrawable(context);
+        badge.setCount(String.valueOf(badgeCount));
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+        icon.setDrawableByLayerId(R.id.ic_main_icon, mainIcon);
+        return icon;
+    }
+
 }
