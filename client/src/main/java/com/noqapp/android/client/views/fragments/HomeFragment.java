@@ -16,14 +16,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +31,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
-import com.noqapp.android.client.model.AuthenticateClientInQueueApiCalls;
 import com.noqapp.android.client.model.FeedApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -42,7 +39,6 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
-import com.noqapp.android.client.presenter.ClientInQueuePresenter;
 import com.noqapp.android.client.presenter.FeedPresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -71,7 +67,6 @@ import com.noqapp.android.client.views.activities.AllEventsActivity;
 import com.noqapp.android.client.views.activities.AllFeedsActivity;
 import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
-import com.noqapp.android.client.views.activities.BeforeJoinActivity;
 import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
@@ -95,7 +90,6 @@ import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
-import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
@@ -119,10 +113,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
     CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
     StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
-    FeedPresenter, AdvertisementPresenter, ScannerFragment.ScanResult, ClientInQueuePresenter {
+    FeedPresenter, AdvertisementPresenter {
 
     private final String TAG = HomeFragment.class.getSimpleName();
-    private FrameLayout frame_scan;
     private TextView tv_active_title;
     private TextView tv_deviceId;
 
@@ -218,9 +211,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        frame_scan = view.findViewById(R.id.frame_scan);
-
         rl_helper = view.findViewById(R.id.rl_helper);
         btnLogin = view.findViewById(R.id.btnLogin);
         btnSkip = view.findViewById(R.id.btnSkip);
@@ -352,13 +342,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         getNearMeInfo(city, String.valueOf(lat), String.valueOf(lng));
 //        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
-
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        ScannerFragment scannerFragment = new ScannerFragment(this, scanCodeQRType());
-        transaction.add(R.id.frame_scan, scannerFragment);
-        transaction.commit();
-
-        showScannerWhenMatchingRole();
     }
 
     @Override
@@ -378,26 +361,24 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
-
-        showScannerWhenMatchingRole();
     }
-
-    private void showScannerWhenMatchingRole() {
-        JsonProfile jsonProfile = AppInitialize.getUserProfile();
-        if (null == jsonProfile) {
-            frame_scan.setVisibility(View.GONE);
-        } else {
-            switch (jsonProfile.getUserLevel()) {
-                case S_MANAGER:
-                case Q_SUPERVISOR:
-                    // @TODO revert this changes after silent location feature removed
-                    frame_scan.setVisibility(View.GONE);
-                    break;
-                default:
-                    frame_scan.setVisibility(View.GONE);
-            }
-        }
-    }
+     //@TODO do we need to add this condition on actionbar barcode
+//    private void showScannerWhenMatchingRole() {
+//        JsonProfile jsonProfile = AppInitialize.getUserProfile();
+//        if (null == jsonProfile) {
+//            frame_scan.setVisibility(View.GONE);
+//        } else {
+//            switch (jsonProfile.getUserLevel()) {
+//                case S_MANAGER:
+//                case Q_SUPERVISOR:
+//                    // @TODO revert this changes after silent location feature removed
+//                    frame_scan.setVisibility(View.GONE);
+//                    break;
+//                default:
+//                    frame_scan.setVisibility(View.GONE);
+//            }
+//        }
+//    }
 
     private void callCurrentAndHistoryQueue() {
         if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
@@ -423,40 +404,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         if (isProgressFirstTime) {
             pb_current.setVisibility(View.VISIBLE);
             pb_health_care.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void barcodeResult(String codeQR, boolean isCategoryData) {
-        if (isCategoryData) {
-            Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
-            Bundle b = new Bundle();
-            b.putString(IBConstant.KEY_CODE_QR, codeQR);
-            b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
-            b.putBoolean(IBConstant.KEY_IS_TEMPLE, false);
-            in.putExtra("bundle", b);
-            getActivity().startActivity(in);
-        } else {
-            Intent in = new Intent(getActivity(), BeforeJoinActivity.class);
-            in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
-            in.putExtra(IBConstant.KEY_FROM_LIST, false);
-            in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-            startActivity(in);
-        }
-    }
-
-    @Override
-    public void qrCodeResult(String[] scanData) {
-        if (scanData.length > 2) {
-            AuthenticateClientInQueueApiCalls authenticateClientInQueueApiCalls = new AuthenticateClientInQueueApiCalls(this);
-            showProgress();
-            setProgressMessage("Validating token...");
-            authenticateClientInQueueApiCalls.clientInQueue(
-                UserUtils.getDeviceId(),
-                UserUtils.getEmail(),
-                UserUtils.getAuth(),
-                scanData[0],
-                scanData[1]);
         }
     }
 
@@ -1042,18 +989,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         }
     }
 
-    @Override
-    public void clientInQueueResponse(JsonInQueuePerson jsonInQueuePerson) {
-        Log.e("JsonInQueuePerson", jsonInQueuePerson.toString());
-        displayValidUserDialog(jsonInQueuePerson);
-    }
-
-    @Override
-    public void clientInQueueErrorPresenter(ErrorEncounteredJson eej) {
-        Log.e("JsonInQueuePerson error", eej.toString());
-        ShowAlertInformation.showInfoDisplayDialog(getActivity(), "Invalid Token", "Caution: Not a valid token");
-    }
-
     private static class QueueHandler extends Handler {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter();
 
@@ -1118,10 +1053,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
-    }
-
-    private int scanCodeQRType() {
-        return ScannerFragment.RC_BARCODE_CAPTURE;
     }
 
     public void displayValidUserDialog(JsonInQueuePerson jsonInQueuePerson) {

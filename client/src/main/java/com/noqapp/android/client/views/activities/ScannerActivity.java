@@ -27,13 +27,11 @@ import com.noqapp.android.client.presenter.ClientInQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonInQueuePerson;
 import com.noqapp.android.client.utils.AnalyticsEvents;
-import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.fragments.ScannerFragment;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.CustomProgressBar;
@@ -145,7 +143,7 @@ public class ScannerActivity extends AppCompatActivity implements ClientInQueueP
     }
 
     private int scanCodeQRType() {
-        return ScannerFragment.RC_BARCODE_CAPTURE;
+        return RC_BARCODE_CAPTURE;
     }
 
     private void barcodeResult(String codeQR, String contents) {

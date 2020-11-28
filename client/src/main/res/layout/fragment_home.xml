@@ -98,17 +98,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <FrameLayout
-                    android:id="@+id/frame_scan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/cell_size"
-                    android:paddingLeft="@dimen/screen_padding_home"
-                    android:paddingTop="10dp"
-                    android:paddingRight="@dimen/screen_padding_home"
-                    android:visibility="visible" />
-
                 <LinearLayout
                     android:id="@+id/rl_current_activity"
                     android:layout_width="match_parent"
