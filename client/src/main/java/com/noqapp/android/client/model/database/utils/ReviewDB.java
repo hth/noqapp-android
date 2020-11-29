@@ -24,7 +24,7 @@ public class ReviewDB {
                     DatabaseTable.Review.TABLE_NAME,
                     null,
                     value);
-            Log.d(TAG, "Data insert queue review" + String.valueOf(successCount));
+            Log.d(TAG, "Data insert queue review" + successCount);
         } catch (SQLException e) {
             Log.e(TAG, "Error insert queue review reason=" + e.getLocalizedMessage(), e);
         }

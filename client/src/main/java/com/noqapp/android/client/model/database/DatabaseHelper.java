@@ -11,21 +11,9 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "noqueue.db";
-    private static final int DB_VERSION = 12;
+    private static final int DB_VERSION = 13;
     private static final Patch[] PATCHES = new Patch[]{
-        new Patch(5, 6, "1.2.27") {
-            public void apply(SQLiteDatabase db) {
-                CreateTable.dropAndCreateTable(db);
-            }
-        }, new Patch(6, 7, "1.2.300") {
-            public void apply(SQLiteDatabase db) {
-                CreateTable.alterTable(db);
-            }
-        }, new Patch(7, 8, "1.2.300") {
-            public void apply(SQLiteDatabase db) {
-                CreateTable.alterNotificationTable(db);
-            }
-        }, new Patch(8, 9, "1.2.392") {
+        new Patch(8, 9, "1.2.392") {
             public void apply(SQLiteDatabase db) {
                 CreateTable.dropAndCreateTable(db);
             }
@@ -33,11 +21,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             public void apply(SQLiteDatabase db) {
                 CreateTable.dropAndCreateTable(db);
             }
-        },  new Patch(10, 11, "1.2.590") {
+        }, new Patch(10, 11, "1.2.590") {
             public void apply(SQLiteDatabase db) {
                 CreateTable.dropAndCreateTable(db);
             }
-        },  new Patch(11, 12, "1.2.625") {
+        }, new Patch(11, 12, "1.2.625") {
+            public void apply(SQLiteDatabase db) {
+                CreateTable.dropAndCreateTable(db);
+            }
+        }, new Patch(12, 13, "1.2.695") {
             public void apply(SQLiteDatabase db) {
                 CreateTable.dropAndCreateTable(db);
             }
