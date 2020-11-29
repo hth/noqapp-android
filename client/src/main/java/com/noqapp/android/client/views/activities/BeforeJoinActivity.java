@@ -246,10 +246,14 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
                     text = String.valueOf(jsonQueue.getAvailableTokenCount());
                     tv_daily_token_limit.setTextColor(ContextCompat.getColor(this, R.color.theme_color_red));
                     tv_daily_token_limit_msg.setTextColor(ContextCompat.getColor(this, R.color.theme_color_red));
-                    tv_daily_token_limit_msg.setText("Cancelled token: " + jsonQueue.getAvailableTokenAfterCancellation());
+                    if (jsonQueue.getAvailableTokenAfterCancellation() > 1) {
+                        tv_daily_token_limit_msg.setText("Cancelled tokens: " + jsonQueue.getAvailableTokenAfterCancellation());
+                    } else {
+                        tv_daily_token_limit_msg.setText("Cancelled token: " + jsonQueue.getAvailableTokenAfterCancellation());
+                    }
                     tv_daily_token_limit_msg.setPaintFlags(tv_daily_token_limit_msg.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tv_daily_token_limit_msg.setOnClickListener((View v) -> {
-                        new CustomToast().showToast(BeforeJoinActivity.this,jsonQueue.getAvailableTokenAfterCancellation() +" Token available due to cancellation of other users");
+                        new CustomToast().showToast(BeforeJoinActivity.this, "Tokens issued in lieu of cancellation");
                     });
                     tv_daily_token_limit_msg.setVisibility(View.VISIBLE);
                 } else {
