@@ -65,6 +65,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
     private TextView tv_currently_serving;
     private TextView tv_live_status;
     private TextView tv_daily_token_limit;
+    private TextView tv_daily_token_limit_msg;
     private TextView tv_revisit_restriction;
     private TextView tv_identification_code;
     private TextView tv_mobile;
@@ -106,6 +107,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         tv_currently_serving = findViewById(R.id.tv_currently_serving);
         tv_live_status = findViewById(R.id.tv_live_status);
         tv_daily_token_limit = findViewById(R.id.tv_daily_token_limit);
+        tv_daily_token_limit_msg = findViewById(R.id.tv_daily_token_limit_msg);
         tv_revisit_restriction = findViewById(R.id.tv_revisit_restriction);
         tv_identification_code = findViewById(R.id.tv_identification_code);
         ImageView iv_profile = findViewById(R.id.iv_profile);
@@ -241,13 +243,26 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
             if (jsonQueue.getAvailableTokenCount() != 0) {
                 String text;
                 if (jsonQueue.getAvailableTokenAfterCancellation() != 0) {
-                    text = jsonQueue.getAvailableTokenCount() + " (cancelled token: " + jsonQueue.getAvailableTokenAfterCancellation() + ")";
+                    text = String.valueOf(jsonQueue.getAvailableTokenCount());
                     tv_daily_token_limit.setTextColor(ContextCompat.getColor(this, R.color.theme_color_red));
+                    tv_daily_token_limit_msg.setTextColor(ContextCompat.getColor(this, R.color.theme_color_red));
+                    if (jsonQueue.getAvailableTokenAfterCancellation() > 1) {
+                        tv_daily_token_limit_msg.setText("Cancelled tokens: " + jsonQueue.getAvailableTokenAfterCancellation());
+                    } else {
+                        tv_daily_token_limit_msg.setText("Cancelled token: " + jsonQueue.getAvailableTokenAfterCancellation());
+                    }
+                    tv_daily_token_limit_msg.setPaintFlags(tv_daily_token_limit_msg.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    tv_daily_token_limit_msg.setOnClickListener((View v) -> {
+                        new CustomToast().showToast(BeforeJoinActivity.this, "Tokens issued in lieu of cancellation");
+                    });
+                    tv_daily_token_limit_msg.setVisibility(View.VISIBLE);
                 } else {
                     text = String.valueOf(jsonQueue.getAvailableTokenCount());
+                    tv_daily_token_limit_msg.setVisibility(View.INVISIBLE);
                 }
                 tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), text));
                 tv_daily_token_limit.setVisibility(View.VISIBLE);
+
             }
             if (jsonQueue.getLimitServiceByDays() != 0) {
                 tv_revisit_restriction.setText(String.format(getResources().getString(R.string.revisit_restriction), jsonQueue.getLimitServiceByDays() + " days"));
