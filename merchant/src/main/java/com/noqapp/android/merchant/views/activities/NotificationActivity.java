@@ -31,7 +31,6 @@ public class NotificationActivity extends BaseActivity implements NotificationLi
         tv_toolbar_title.setText(getString(R.string.screen_notification));
         iv_home.setImageResource(R.drawable.delete_all);
         loadListData();
-
     }
 
     @Override
