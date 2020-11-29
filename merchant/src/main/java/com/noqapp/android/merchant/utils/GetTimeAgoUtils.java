@@ -1,10 +1,8 @@
 package com.noqapp.android.merchant.utils;
 
-
 /**
  * Created by chandra on 6/4/17.
  */
-
 public class GetTimeAgoUtils {
 
     private static final int SECOND_MILLIS = 1000;
@@ -51,7 +49,7 @@ public class GetTimeAgoUtils {
         // TODO: localize
         final long diff = time;
         if (diff < MINUTE_MILLIS) {
-            return  diff / 1000 + " seconds ago";
+            return diff / 1000 + " seconds ago";
         } else if (diff < 2 * MINUTE_MILLIS) {
             return "a minute ago";
         } else if (diff < 50 * MINUTE_MILLIS) {
@@ -59,11 +57,11 @@ public class GetTimeAgoUtils {
         } else if (diff < 90 * MINUTE_MILLIS) {
             return "an hour ago";
         } else if (diff < 24 * HOUR_MILLIS) {
-            return  diff / HOUR_MILLIS + " hours ago";
+            return diff / HOUR_MILLIS + " hours ago";
         } else if (diff < 48 * HOUR_MILLIS) {
-            return "Tomorrow";
+            return "Yesterday";
         } else {
-            return  diff / DAY_MILLIS + " days ago";
+            return diff / DAY_MILLIS + " days ago";
         }
     }
 }

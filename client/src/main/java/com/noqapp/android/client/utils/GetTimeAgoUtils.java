@@ -7,7 +7,6 @@ import com.noqapp.android.client.R;
 /**
  * Created by chandra on 6/4/17.
  */
-
 public class GetTimeAgoUtils {
 
     private static final int SECOND_MILLIS = 1000;
