@@ -42,7 +42,6 @@ public class GetTimeAgoUtils {
     }
 
     public static String getTimeInAgo(long time) {
-
         if (time == 0) {
             return null;
         }
