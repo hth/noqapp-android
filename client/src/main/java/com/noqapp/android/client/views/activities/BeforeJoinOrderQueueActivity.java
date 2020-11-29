@@ -58,6 +58,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     private TextView tv_rating;
     private TextView tv_delay_in_time;
     private TextView tv_daily_token_limit;
+    private TextView tv_daily_token_limit_msg;
     private TextView tv_revisit_restriction;
     private TextView tv_identification_code;
     private TextView tv_mobile;
@@ -101,6 +102,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         tv_store_timing = findViewById(R.id.tv_store_timing);
         tv_lunch_time = findViewById(R.id.tv_lunch_time);
         tv_daily_token_limit = findViewById(R.id.tv_daily_token_limit);
+        tv_daily_token_limit_msg = findViewById(R.id.tv_daily_token_limit_msg);
         tv_revisit_restriction = findViewById(R.id.tv_revisit_restriction);
         tv_identification_code = findViewById(R.id.tv_identification_code);
         ImageView iv_category_banner = findViewById(R.id.iv_category_banner);
@@ -192,7 +194,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             tv_people_in_q_text.setText(getResources().getQuantityString(R.plurals.people_in_queue, jsonQueue.getPeopleInQueue()));
 
             if (jsonQueue.getAvailableTokenCount() != 0) {
-                tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), jsonQueue.getAvailableTokenCount()));
+                tv_daily_token_limit.setText(String.format(getResources().getString(R.string.daily_token_limit), String.valueOf(jsonQueue.getAvailableTokenCount())));
                 tv_daily_token_limit.setVisibility(View.VISIBLE);
             }
             if (jsonQueue.getLimitServiceByDays() != 0) {

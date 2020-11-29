@@ -366,15 +366,35 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_daily_token_limit"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColor="@color/colorAddress"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:visibility="gone" />
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/tv_daily_token_limit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tv_daily_token_limit_msg"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:paddingLeft="10dp"
+                            android:gravity="right"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_revisit_restriction"
