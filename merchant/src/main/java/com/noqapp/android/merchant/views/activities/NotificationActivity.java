@@ -15,11 +15,11 @@ import com.noqapp.android.merchant.views.adapters.NotificationListAdapter;
 
 import java.util.List;
 
-
 public class NotificationActivity extends BaseActivity implements NotificationListAdapter.DeleteRecord {
 
     private ListView listview;
     private RelativeLayout rl_empty;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setScreenOrientation();
@@ -31,7 +31,6 @@ public class NotificationActivity extends BaseActivity implements NotificationLi
         tv_toolbar_title.setText(getString(R.string.screen_notification));
         iv_home.setImageResource(R.drawable.delete_all);
         loadListData();
-
     }
 
     @Override
@@ -39,10 +38,9 @@ public class NotificationActivity extends BaseActivity implements NotificationLi
         super.onPause();
         // mark all the entry as read
         NotificationDB.updateNotification();
-
     }
 
-    private void loadListData(){
+    private void loadListData() {
         List<DisplayNotification> notificationsList = NotificationDB.getNotificationsList();
         NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList, this);
         listview.setAdapter(adapter);

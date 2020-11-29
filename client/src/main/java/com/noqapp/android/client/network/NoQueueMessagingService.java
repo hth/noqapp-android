@@ -152,7 +152,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         List<JsonTextToSpeech> jsonTextToSpeeches = null;
                         boolean containsTextToSpeeches = mappedData.containsKey("textToSpeeches");
                         if (containsTextToSpeeches) {
-                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {
+                            });
                             //TODO(hth) Temp code. Removed as parsing issue.
                             mappedData.remove("textToSpeeches");
                         }
@@ -174,7 +175,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         JsonClientTokenAndQueueData jsonClientTokenAndQueueData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientTokenAndQueueData.class);
 
                         JsonTokenAndQueueList jsonTokenAndQueueList = new JsonTokenAndQueueList();
-                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(mappedData.get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {}));
+                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(mappedData.get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {
+                        }));
                         jsonClientTokenAndQueueData.setTokenAndQueues(jsonTokenAndQueueList.getTokenAndQueues());
                         jsonData = jsonClientTokenAndQueueData;
                         Log.d("FCM", jsonData.toString());
@@ -209,7 +211,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         List<JsonTextToSpeech> jsonTextToSpeeches = null;
                         boolean containsTextToSpeeches = mappedData.containsKey("textToSpeeches");
                         if (containsTextToSpeeches) {
-                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {
+                            });
                             //TODO(hth) Temp code. Removed as parsing issue.
                             mappedData.remove("textToSpeeches");
                         }
@@ -486,14 +489,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                                 break;
                                             default:
                                                 long avgServiceTime = jtk.getAverageServiceTime() != 0
-                                                        ? jtk.getAverageServiceTime()
-                                                        : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
+                                                    ? jtk.getAverageServiceTime()
+                                                    : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
                                                 String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
-                                                        avgServiceTime,
-                                                        jtk.afterHowLong(),
-                                                        QueueStatusEnum.N,
-                                                        jtk.getStartHour(),
-                                                        getApplicationContext());
+                                                    avgServiceTime,
+                                                    jtk.afterHowLong(),
+                                                    QueueStatusEnum.N,
+                                                    jtk.getStartHour(),
+                                                    getApplicationContext());
                                                 if (!TextUtils.isEmpty(waitTime)) {
                                                     notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
                                                 }
@@ -525,21 +528,21 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     if (jsonData instanceof JsonMedicalFollowUp) {
                         Log.e("JsonMedicalFollowUp", jsonData.toString());
                         NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonMedicalFollowUp) jsonData).getCodeQR(),
-                                jsonData.getBody(),
-                                jsonData.getTitle(),
-                                BusinessTypeEnum.PA.getName(),
-                                imageUrl);
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonMedicalFollowUp) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            imageUrl);
                     } else if (jsonData instanceof JsonTopicAppointmentData) {
                         Log.e("JsonTopicAppointData", jsonData.toString());
                         NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                "",
-                                jsonData.getBody(),
-                                jsonData.getTitle(),
-                                BusinessTypeEnum.PA.getName(),
-                                jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            "",
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            jsonData.getImageURL());
                     }
                 }
             } catch (Exception e) {
@@ -657,15 +660,15 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
 
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(),
-                    highImportance ? channelWithSound : channelNoSound)
-                    .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
-                    .setSmallIcon(getNotificationIcon())
-                    .setLargeIcon(getNotificationBitmap())
-                    .setContentTitle(title)
-                    .setContentText(messageBody)
-                    //.setAutoCancel(true)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
-                    .setLights(Color.parseColor("#ffb400"), 50, 10);
+                highImportance ? channelWithSound : channelNoSound)
+                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(getNotificationBitmap())
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                //.setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
+                .setLights(Color.parseColor("#ffb400"), 50, 10);
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
                 if (highImportance) {
                     mBuilder.setPriority(Notification.PRIORITY_HIGH);
@@ -677,9 +680,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
             if (bitmap != null) {
                 mBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
-                        .bigPicture(bitmap)
-                        //.setSummaryText(message)
-                        .bigLargeIcon(null));
+                    .bigPicture(bitmap)
+                    //.setSummaryText(message)
+                    .bigLargeIcon(null));
             }
             if (isVibrate) {
                 mBuilder.setVibrate(new long[]{500, 500});
@@ -691,8 +694,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
             stackBuilder.addNextIntent(notificationIntent);
             PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-                    Constants.requestCodeNotification,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                Constants.requestCodeNotification,
+                PendingIntent.FLAG_UPDATE_CURRENT
             );
             mBuilder.setContentIntent(resultPendingIntent);
 
@@ -743,21 +746,21 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
                 int importance = AppInitialize.isNotificationSoundEnable()
-                        ? NotificationManager.IMPORTANCE_HIGH
-                        : NotificationManager.IMPORTANCE_LOW;
+                    ? NotificationManager.IMPORTANCE_HIGH
+                    : NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
                 notificationManager.createNotificationChannel(mChannel);
             }
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                    .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
-                    .setSmallIcon(getNotificationIcon())
-                    .setLargeIcon(getNotificationBitmap())
-                    .setContentTitle(title)
-                    .setContentText(messageBody)
-                    .setAutoCancel(true)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
-                    .setLights(Color.parseColor("#ffb400"), 50, 10);
+                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(getNotificationBitmap())
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
+                .setLights(Color.parseColor("#ffb400"), 50, 10);
             if (AppInitialize.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri);
             } else {
@@ -765,9 +768,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
             if (bitmap != null) {
                 mBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
-                        .bigPicture(bitmap)
-                        //.setSummaryText(message)
-                        .bigLargeIcon(null));
+                    .bigPicture(bitmap)
+                    //.setSummaryText(message)
+                    .bigLargeIcon(null));
             }
             if (isVibrate) {
                 mBuilder.setVibrate(new long[]{500, 500});
@@ -779,8 +782,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
             stackBuilder.addNextIntent(notificationIntent);
             PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-                    Constants.requestCodeNotification,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                Constants.requestCodeNotification,
+                PendingIntent.FLAG_UPDATE_CURRENT
             );
             mBuilder.setContentIntent(resultPendingIntent);
 
@@ -841,21 +844,21 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
                 int importance = AppInitialize.isNotificationSoundEnable()
-                        ? NotificationManager.IMPORTANCE_HIGH
-                        : NotificationManager.IMPORTANCE_LOW;
+                    ? NotificationManager.IMPORTANCE_HIGH
+                    : NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
                 notificationManager.createNotificationChannel(mChannel);
             }
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                    .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
-                    .setSmallIcon(getNotificationIcon())
-                    .setLargeIcon(getNotificationBitmap())
-                    .setContentTitle(title)
-                    .setContentText(messageBody)
-                    .setAutoCancel(true)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
-                    .setLights(Color.parseColor("#ffb400"), 50, 10);
+                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(getNotificationBitmap())
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
+                .setLights(Color.parseColor("#ffb400"), 50, 10);
             if (AppInitialize.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri);
             } else {
@@ -863,15 +866,15 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
             if (bitmap != null) {
                 mBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
-                        .bigPicture(bitmap)
-                        //.setSummaryText(message)
-                        .bigLargeIcon(null));
+                    .bigPicture(bitmap)
+                    //.setSummaryText(message)
+                    .bigLargeIcon(null));
             }
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
             stackBuilder.addNextIntent(notificationIntent);
             PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-                    Constants.requestCodeNotification,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                Constants.requestCodeNotification,
+                PendingIntent.FLAG_UPDATE_CURRENT
             );
             mBuilder.setContentIntent(resultPendingIntent);
 
