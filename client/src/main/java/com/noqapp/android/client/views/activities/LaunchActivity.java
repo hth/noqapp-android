@@ -1122,7 +1122,8 @@ public class LaunchActivity
                             jsonData.getTitle(),
                             ((JsonAlertData) jsonData).getBusinessType() == null
                                 ? BusinessTypeEnum.PA.getName()
-                                : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
+                                : ((JsonAlertData) jsonData).getBusinessType().getName(),
+                            jsonData.getImageURL());
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
@@ -1276,6 +1277,7 @@ public class LaunchActivity
                     }
                 } else {
                     new CustomToast().showToast(launchActivity, "UnSupported Notification reached: " + payload);
+                    FirebaseCrashlytics.getInstance().log("UnSupported Notification reached: " + payload);
                 }
             }
         }
