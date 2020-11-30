@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -74,6 +75,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
+import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonData;
@@ -542,7 +544,7 @@ public class LaunchActivity
             expandableListAdapter.notifyDataSetChanged();
         }
         if (null != getSupportActionBar()) {
-            getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this,R.drawable.ic_burger, notify_count));
+            getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_burger, notify_count));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowCustomEnabled(true);   // enable overriding the default toolbar layout
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -1068,6 +1070,7 @@ public class LaunchActivity
             }
         }
 
+        @SuppressLint("LongLogTag")
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
@@ -1088,6 +1091,8 @@ public class LaunchActivity
                     Log.e("JsonClientTokenAndQData", jsonData.toString());
                 } else if (jsonData instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", jsonData.toString());
+                } else if (jsonData instanceof JsonChangeServiceTimeData) {
+                    Log.e("JsonChangeServiceTimeData", jsonData.toString());
                 } else if (jsonData instanceof JsonTopicAppointmentData) {
                     Log.e("JsonTopicAppointData", jsonData.toString());
                     NotificationDB.insertNotification(
@@ -1252,6 +1257,20 @@ public class LaunchActivity
                         /* Show some meaningful msg to the end user */
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
+                    } else if (jsonData instanceof JsonChangeServiceTimeData) {
+                        String body = jsonData.getBody() + "\n " + "Token no: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
+                            + "\n " + "Old time slot: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
+                            + "\n " + "New time slot: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), body);
+
+                        NotificationDB.insertNotification(
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
+                            jsonData.getImageURL());
+                        updateNotificationBadgeCount();
                     } else {
                         updateNotification(jsonData, codeQR);
                     }
@@ -1287,7 +1306,7 @@ public class LaunchActivity
         }
     }
 
-    public static String getCountry(Context context) {
+    private static String getCountry(Context context) {
         try {
             LocationManager locationManager = (LocationManager) launchActivity.getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null) {
@@ -1367,7 +1386,7 @@ public class LaunchActivity
         }
     }
 
-    private Drawable setBadgeCount(Context context, int res, int badgeCount){
+    private Drawable setBadgeCount(Context context, int res, int badgeCount) {
         LayerDrawable icon = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable);
         Drawable mainIcon = ContextCompat.getDrawable(context, res);
         BadgeDrawable badge = new BadgeDrawable(context);

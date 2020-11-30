@@ -6,7 +6,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.JsonQueueChangeServiceTime;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -39,6 +42,9 @@ public class JsonChangeServiceTimeData extends JsonData implements Serializable 
     @JsonProperty("qr")
     private String codeQR;
 
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
+
     private List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = new LinkedList<>();
 
     public MessageOriginEnum getMessageOrigin() {
@@ -54,6 +60,15 @@ public class JsonChangeServiceTimeData extends JsonData implements Serializable 
         return this;
     }
 
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonChangeServiceTimeData setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
     public List<JsonQueueChangeServiceTime> getJsonQueueChangeServiceTimes() {
         return jsonQueueChangeServiceTimes;
     }
@@ -61,5 +76,14 @@ public class JsonChangeServiceTimeData extends JsonData implements Serializable 
     public JsonChangeServiceTimeData setJsonQueueChangeServiceTimes(List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes) {
         this.jsonQueueChangeServiceTimes = jsonQueueChangeServiceTimes;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("messageOrigin", messageOrigin)
+                .append("codeQR", codeQR)
+                .append("jsonQueueChangeServiceTimes", jsonQueueChangeServiceTimes)
+                .toString();
     }
 }
