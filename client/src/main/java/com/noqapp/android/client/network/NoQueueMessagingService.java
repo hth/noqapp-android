@@ -253,7 +253,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 case QCT:
                     try {
                         JsonChangeServiceTimeData jsonChangeServiceTimeData = mapper.readValue(new JSONObject(mappedData).toString(), JsonChangeServiceTimeData.class);
-
                         List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = new LinkedList<>();
                         if (null != mappedData.get("qcsts")) {
                             jsonQueueChangeServiceTimes = mapper.readValue(mappedData.get("qcsts"), new TypeReference<List<JsonQueueChangeServiceTime>>() {});
@@ -328,7 +327,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     title,
                                     ((JsonAlertData) jsonData).getBusinessType() == null
                                         ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), imageUrl);
+                                        : ((JsonAlertData) jsonData).getBusinessType().getName(),
+                                    imageUrl);
 
                                 sendNotification(title, body, false, imageUrl);
                             } else if (jsonData instanceof JsonClientData) {
@@ -358,7 +358,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                         ReviewDB.insert(cv);
                                     }
-                                    sendNotification(title, body, codeQR, true, token, imageUrl);//pass codeQR to open review screen
+                                    sendNotification(title, body, codeQR, true, token, imageUrl); //pass codeQR to open review screen
                                 } else if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                                     ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                                     if (null != reviewData) {
@@ -378,7 +378,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                         ReviewDB.insert(cv);
                                     }
-                                    sendNotification(title, body, codeQR, false, token, imageUrl);//pass codeQR to open skip screen
+                                    sendNotification(title, body, codeQR, false, token, imageUrl); //pass codeQR to open skip screen
                                 }
                             } else if (jsonData instanceof JsonClientTokenAndQueueData) {
                                 List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) jsonData).getTokenAndQueues();
@@ -392,7 +392,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     jsonData.getTitle(),
                                     BusinessTypeEnum.PA.getName(),
                                     imageUrl);
-
                                 for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                                     NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
                                 }
@@ -416,7 +415,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     title,
                                     ((JsonAlertData) jsonData).getBusinessType() == null
                                         ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), imageUrl);
+                                        : ((JsonAlertData) jsonData).getBusinessType().getName(),
+                                    imageUrl);
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {

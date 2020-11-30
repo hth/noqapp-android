@@ -544,7 +544,7 @@ public class LaunchActivity
             expandableListAdapter.notifyDataSetChanged();
         }
         if (null != getSupportActionBar()) {
-            getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this,R.drawable.ic_burger, notify_count));
+            getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_burger, notify_count));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowCustomEnabled(true);   // enable overriding the default toolbar layout
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -1258,20 +1258,20 @@ public class LaunchActivity
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonChangeServiceTimeData) {
-                        String body = jsonData.getBody()  +"\n "+"Token no: "+ ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
-                                +"\n "+"Old time slot: "+((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
-                                +"\n "+"New time slot: "+((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(),body );
+                        String body = jsonData.getBody() + "\n " + "Token no: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
+                            + "\n " + "Old time slot: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
+                            + "\n " + "New time slot: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), body);
 
                         NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                                jsonData.getBody(),
-                                jsonData.getTitle(),
-                                ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
                             jsonData.getImageURL());
                         updateNotificationBadgeCount();
-                    }else {
+                    } else {
                         updateNotification(jsonData, codeQR);
                     }
                 } else {
@@ -1306,7 +1306,7 @@ public class LaunchActivity
         }
     }
 
-    public static String getCountry(Context context) {
+    private static String getCountry(Context context) {
         try {
             LocationManager locationManager = (LocationManager) launchActivity.getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null) {
@@ -1386,7 +1386,7 @@ public class LaunchActivity
         }
     }
 
-    private Drawable setBadgeCount(Context context, int res, int badgeCount){
+    private Drawable setBadgeCount(Context context, int res, int badgeCount) {
         LayerDrawable icon = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable);
         Drawable mainIcon = ContextCompat.getDrawable(context, res);
         BadgeDrawable badge = new BadgeDrawable(context);
