@@ -667,5 +667,4 @@ public class AppUtils extends CommonHelper {
             context.startActivity(in);
         });
     }
-
 }
