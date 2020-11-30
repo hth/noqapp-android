@@ -1276,6 +1276,7 @@ public class LaunchActivity
                     }
                 } else {
                     new CustomToast().showToast(launchActivity, "UnSupported Notification reached: " + payload);
+                    FirebaseCrashlytics.getInstance().log("UnSupported Notification reached: " + payload);
                 }
             }
         }
