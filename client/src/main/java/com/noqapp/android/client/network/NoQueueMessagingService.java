@@ -256,6 +256,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             jsonQueueChangeServiceTimes = mapper.readValue(mappedData.get("qcsts"), new TypeReference<List<JsonQueueChangeServiceTime>>() {});
                         }
                         jsonChangeServiceTimeData.setJsonQueueChangeServiceTimes(jsonQueueChangeServiceTimes);
+                        jsonData = jsonChangeServiceTimeData;
                         Log.d("Update time slot", jsonChangeServiceTimeData.toString());
                     } catch (Exception e) {
                         FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QCT);

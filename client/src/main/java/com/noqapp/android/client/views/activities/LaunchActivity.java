@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -74,6 +75,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
+import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonData;
@@ -1068,6 +1070,7 @@ public class LaunchActivity
             }
         }
 
+        @SuppressLint("LongLogTag")
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
@@ -1088,6 +1091,8 @@ public class LaunchActivity
                     Log.e("JsonClientTokenAndQData", jsonData.toString());
                 } else if (jsonData instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", jsonData.toString());
+                } else if (jsonData instanceof JsonChangeServiceTimeData) {
+                    Log.e("JsonChangeServiceTimeData", jsonData.toString());
                 } else if (jsonData instanceof JsonTopicAppointmentData) {
                     Log.e("JsonTopicAppointData", jsonData.toString());
                     NotificationDB.insertNotification(
@@ -1252,7 +1257,20 @@ public class LaunchActivity
                         /* Show some meaningful msg to the end user */
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
-                    } else {
+                    } else if (jsonData instanceof JsonChangeServiceTimeData) {
+                        String body = jsonData.getBody()  +"\n "+"Token no: "+ ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getToken()
+                                +"\n "+"Old time slot: "+((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
+                                +"\n "+"New time slot: "+((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(),body );
+
+                        NotificationDB.insertNotification(
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                body, jsonData.getImageURL());
+                        updateNotificationBadgeCount();
+                    }else {
                         updateNotification(jsonData, codeQR);
                     }
                 } else {
