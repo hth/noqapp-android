@@ -1258,7 +1258,7 @@ public class LaunchActivity
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonChangeServiceTimeData) {
-                        String body = jsonData.getBody()  +"\n "+"Token no: "+ ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getToken()
+                        String body = jsonData.getBody()  +"\n "+"Token no: "+ ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
                                 +"\n "+"Old time slot: "+((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
                                 +"\n "+"New time slot: "+((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(),body );
