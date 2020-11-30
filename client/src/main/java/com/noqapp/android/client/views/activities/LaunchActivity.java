@@ -1268,7 +1268,8 @@ public class LaunchActivity
                                 ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
                                 jsonData.getBody(),
                                 jsonData.getTitle(),
-                                body, jsonData.getImageURL());
+                                ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
+                            jsonData.getImageURL());
                         updateNotificationBadgeCount();
                     }else {
                         updateNotification(jsonData, codeQR);
