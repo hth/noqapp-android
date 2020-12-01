@@ -344,6 +344,16 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
     }
 
+    /*
+     * Method to update the current Queue list when time slot
+     * changed for a particular token
+     * */
+    public void updateCurrentQueueList() {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            callCurrentAndHistoryQueue();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();

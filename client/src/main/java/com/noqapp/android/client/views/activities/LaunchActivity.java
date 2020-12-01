@@ -1272,6 +1272,9 @@ public class LaunchActivity
                             ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
                             jsonData.getImageURL());
                         updateNotificationBadgeCount();
+                        if (null != homeFragment) {
+                            homeFragment.updateCurrentQueueList();
+                        }
                     } else {
                         updateNotification(jsonData, codeQR);
                     }
