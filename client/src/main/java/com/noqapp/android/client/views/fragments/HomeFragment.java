@@ -26,8 +26,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
@@ -344,10 +346,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
     }
 
-    /*
-     * Method to update the current Queue list when time slot
-     * changed for a particular token
-     * */
+    /** Method to update the current Queue list when time slot changed for a particular token. */
     public void updateCurrentQueueList() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             callCurrentAndHistoryQueue();
@@ -382,8 +381,11 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(), CommonHelper.getLocation(lat, lng));
-            queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
+                String tokenFCM = instanceIdResult.getToken();
+                DeviceToken deviceToken = new DeviceToken(tokenFCM, Constants.appVersion(), CommonHelper.getLocation(lat, lng));
+                queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+            });
         } else {
             //Call the current queue
             QueueApiUnAuthenticCall queueModel = new QueueApiUnAuthenticCall();
@@ -391,8 +393,11 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
             //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), Constants.appVersion(), CommonHelper.getLocation(lat, lng));
-            queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
+                String tokenFCM = instanceIdResult.getToken();
+                DeviceToken deviceToken = new DeviceToken(tokenFCM, Constants.appVersion(), CommonHelper.getLocation(lat, lng));
+                queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
+            });
         }
         if (isProgressFirstTime) {
             pb_current.setVisibility(View.VISIBLE);
