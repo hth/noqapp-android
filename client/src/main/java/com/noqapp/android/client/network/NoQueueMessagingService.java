@@ -435,6 +435,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     jsonData.getTitle(),
                                     ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
                                     jsonData.getImageURL());
+                            sendNotification(title, msg, true, imageUrl);
                         }else {
                             String goTo = "";
                             String currentServing = "";
