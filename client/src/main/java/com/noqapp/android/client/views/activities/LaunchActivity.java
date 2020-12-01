@@ -1259,19 +1259,22 @@ public class LaunchActivity
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonChangeServiceTimeData) {
-                        String body = jsonData.getBody() + "\n " + "Token no: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
-                            + "\n " + "Old time slot: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
-                            + "\n " + "New time slot: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
+                        String body = jsonData.getBody() + "\n " + "Token: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
+                            + "\n " + "Previous: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
+                            + "\n " + "Updated: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), body);
 
                         NotificationDB.insertNotification(
                             NotificationDB.KEY_NOTIFY,
                             ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
+                            body,
                             jsonData.getTitle(),
                             ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
                             jsonData.getImageURL());
                         updateNotificationBadgeCount();
+                        if (null != homeFragment) {
+                            homeFragment.updateCurrentQueueList();
+                        }
                     } else {
                         updateNotification(jsonData, codeQR);
                     }
