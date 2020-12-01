@@ -425,8 +425,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         if (jsonData instanceof JsonChangeServiceTimeData) {
                             Log.e("In JsonChangeServiceTimeData", jsonData.toString());
                             String msg = jsonData.getBody() + "\n" + "Token: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
-                                    + "\n" + "Existing time slot: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
-                                    + "\n" + "Changed to time slot: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
+                                    + "\n" + "Existing: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
+                                    + "\n" + "Changed To: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
 
                             NotificationDB.insertNotification(
                                     NotificationDB.KEY_NOTIFY,
