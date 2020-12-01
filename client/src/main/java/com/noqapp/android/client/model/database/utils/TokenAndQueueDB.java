@@ -84,7 +84,7 @@ public class TokenAndQueueDB {
         }
         return listJsonQueue;
     }
-    
+
     /** Added to update the current list with old values. */
     public static List<JsonTokenAndQueue> getUpdatedCurrentQueueList(List<JsonTokenAndQueue> newList, List<JsonTokenAndQueue> oldList) {
         if (null != newList && newList.size() != 0 && null != oldList && oldList.size() != 0) {

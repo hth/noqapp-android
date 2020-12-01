@@ -1267,7 +1267,7 @@ public class LaunchActivity
                         NotificationDB.insertNotification(
                             NotificationDB.KEY_NOTIFY,
                             ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
+                            body,
                             jsonData.getTitle(),
                             ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
                             jsonData.getImageURL());
