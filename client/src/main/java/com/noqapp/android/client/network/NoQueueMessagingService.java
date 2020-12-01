@@ -425,18 +425,18 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         if (jsonData instanceof JsonChangeServiceTimeData) {
                             Log.e("In JsonChangeServiceTimeData", jsonData.toString());
                             String msg = jsonData.getBody() + "\n" + "Token: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
-                                    + "\n" + "Existing: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
-                                    + "\n" + "Changed To: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
+                                + "\n" + "Existing: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
+                                + "\n" + "Changed To: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
 
                             NotificationDB.insertNotification(
-                                    NotificationDB.KEY_NOTIFY,
-                                    ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                                    msg,
-                                    jsonData.getTitle(),
-                                    ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
-                                    jsonData.getImageURL());
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
+                                msg,
+                                jsonData.getTitle(),
+                                ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
+                                jsonData.getImageURL());
                             sendNotification(title, msg, true, imageUrl);
-                        }else {
+                        } else {
                             String goTo = "";
                             String currentServing = "";
                             if (jsonData instanceof JsonTopicQueueData) {
@@ -507,14 +507,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                                     break;
                                                 default:
                                                     long avgServiceTime = jtk.getAverageServiceTime() != 0
-                                                            ? jtk.getAverageServiceTime()
-                                                            : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
+                                                        ? jtk.getAverageServiceTime()
+                                                        : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
                                                     String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
-                                                            avgServiceTime,
-                                                            jtk.afterHowLong(),
-                                                            QueueStatusEnum.N,
-                                                            jtk.getStartHour(),
-                                                            getApplicationContext());
+                                                        avgServiceTime,
+                                                        jtk.afterHowLong(),
+                                                        QueueStatusEnum.N,
+                                                        jtk.getStartHour(),
+                                                        getApplicationContext());
                                                     if (!TextUtils.isEmpty(waitTime)) {
                                                         notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
                                                     }
