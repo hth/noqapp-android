@@ -423,19 +423,27 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         if (jsonData instanceof JsonChangeServiceTimeData) {
-                            Log.e("In JsonChangeServiceTimeData", jsonData.toString());
-                            String msg = jsonData.getBody() + "\n" + "Token: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
-                                + "\n" + "Previously: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
-                                + "\n" + "Updated: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
+                            JsonTokenAndQueue jsonTokenAndQueue = TokenAndQueueDB.findByQRCode(((JsonChangeServiceTimeData) jsonData).getCodeQR());
+                            if (null != jsonTokenAndQueue) {
+                                List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes();
+                                for (JsonQueueChangeServiceTime jsonQueueChangeServiceTime : jsonQueueChangeServiceTimes) {
+                                    if (jsonQueueChangeServiceTime.getToken() == jsonTokenAndQueue.getToken()) {
+                                        Log.e("In JsonChangeServiceTimeData", jsonData.toString());
+                                        String msg = jsonData.getBody() + "\n" + "Token: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
+                                            + "\n" + "Previously: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
+                                            + "\n" + "Updated: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
 
-                            NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                                msg,
-                                jsonData.getTitle(),
-                                ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
-                                jsonData.getImageURL());
-                            sendNotification(title, msg, true, imageUrl);
+                                        NotificationDB.insertNotification(
+                                            NotificationDB.KEY_NOTIFY,
+                                            ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
+                                            msg,
+                                            jsonData.getTitle(),
+                                            ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
+                                            jsonData.getImageURL());
+                                        sendNotification(title, msg, true, imageUrl);
+                                    }
+                                }
+                            }
                         } else {
                             String goTo = "";
                             String currentServing = "";

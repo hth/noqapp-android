@@ -466,5 +466,54 @@ public class TokenAndQueueDB {
             }
         }
     }
+
+    public static JsonTokenAndQueue findByQRCode(String codeQR) {
+        JsonTokenAndQueue tokenAndQueue = null;
+        Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.CODE_QR + "=?", new String[]{codeQR}, null, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            try {
+                while (cursor.moveToNext()) {
+                    tokenAndQueue = new JsonTokenAndQueue();
+                    tokenAndQueue.setCodeQR(cursor.getString(0));
+                    tokenAndQueue.setBusinessName(cursor.getString(1));
+                    tokenAndQueue.setDisplayName(cursor.getString(2));
+                    tokenAndQueue.setStoreAddress(cursor.getString(3));
+                    tokenAndQueue.setCountryShortName(cursor.getString(4));
+                    tokenAndQueue.setStorePhone(cursor.getString(5));
+                    tokenAndQueue.setTokenAvailableFrom(cursor.getInt(6));
+                    tokenAndQueue.setStartHour(cursor.getInt(7));
+                    tokenAndQueue.setEndHour(cursor.getInt(8));
+                    tokenAndQueue.setTopic(cursor.getString(9));
+                    tokenAndQueue.setServingNumber(cursor.getInt(10));
+                    tokenAndQueue.setDisplayServingNumber(cursor.getString(11));
+                    tokenAndQueue.setLastNumber(cursor.getInt(12));
+                    tokenAndQueue.setToken(cursor.getInt(13));
+                    tokenAndQueue.setDisplayToken(cursor.getString(14));
+                    tokenAndQueue.setQueueStatus(cursor.getString(15) == null ? null : QueueStatusEnum.valueOf(cursor.getString(15)));
+                    tokenAndQueue.setServiceEndTime(cursor.getString(16));
+                    tokenAndQueue.setRatingCount(cursor.getInt(17));
+                    tokenAndQueue.setAverageServiceTime(cursor.getInt(18));
+                    tokenAndQueue.setHoursSaved(cursor.getInt(19));
+                    tokenAndQueue.setCreateDate(cursor.getString(20));
+                    tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(21)));
+                    tokenAndQueue.setGeoHash(cursor.getString(22));
+                    tokenAndQueue.setTown(cursor.getString(23));
+                    tokenAndQueue.setArea(cursor.getString(24));
+                    tokenAndQueue.setDisplayImage(cursor.getString(25));
+                    tokenAndQueue.setQueueUserId(cursor.getString(26));
+                    tokenAndQueue.setPurchaseOrderState(cursor.getString(27) == null ? null : PurchaseOrderStateEnum.valueOf(cursor.getString(27)));
+                    tokenAndQueue.setTransactionId(cursor.getString(28));
+                    tokenAndQueue.setTimeSlotMessage(cursor.getString(29));
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
+            } finally {
+                if (!cursor.isClosed()) {
+                    cursor.close();
+                }
+            }
+        }
+        return tokenAndQueue;
+    }
 }
 
