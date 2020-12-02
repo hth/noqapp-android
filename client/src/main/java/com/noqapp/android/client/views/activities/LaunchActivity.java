@@ -73,6 +73,7 @@ import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
+import com.noqapp.android.common.beans.JsonQueueChangeServiceTime;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
@@ -1259,21 +1260,29 @@ public class LaunchActivity
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonChangeServiceTimeData) {
-                        String body = jsonData.getBody() + "\n " + "Token: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
-                            + "\n " + "Previous: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
-                            + "\n " + "Updated: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), body);
+                        JsonTokenAndQueue jsonTokenAndQueue = TokenAndQueueDB.findByQRCode(((JsonChangeServiceTimeData) jsonData).getCodeQR());
+                        if (null != jsonTokenAndQueue) {
+                            List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes();
+                            for (JsonQueueChangeServiceTime jsonQueueChangeServiceTime : jsonQueueChangeServiceTimes) {
+                                if (jsonQueueChangeServiceTime.getToken() == jsonTokenAndQueue.getToken()) {
+                                    String body = jsonData.getBody() + "\n " + "Token: " + jsonQueueChangeServiceTime.getDisplayToken()
+                                        + "\n " + "Previous: " + jsonQueueChangeServiceTime.getOldTimeSlotMessage()
+                                        + "\n " + "Updated: " + jsonQueueChangeServiceTime.getUpdatedTimeSlotMessage();
+                                    ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), body);
 
-                        NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                            body,
-                            jsonData.getTitle(),
-                            ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
-                            jsonData.getImageURL());
-                        updateNotificationBadgeCount();
-                        if (null != homeFragment) {
-                            homeFragment.updateCurrentQueueList();
+                                    NotificationDB.insertNotification(
+                                        NotificationDB.KEY_NOTIFY,
+                                        ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
+                                        body,
+                                        jsonData.getTitle(),
+                                        ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
+                                        jsonData.getImageURL());
+                                    updateNotificationBadgeCount();
+                                    if (null != homeFragment) {
+                                        homeFragment.updateCurrentQueueList();
+                                    }
+                                }
+                            }
                         }
                     } else {
                         updateNotification(jsonData, codeQR);
