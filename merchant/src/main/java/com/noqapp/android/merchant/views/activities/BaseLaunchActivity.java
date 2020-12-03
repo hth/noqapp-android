@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,15 +35,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonBusinessCustomerPriority;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
-import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
-import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
+import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonData;
@@ -56,10 +53,7 @@ import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.noqapp.android.common.views.activities.AppsLinksActivity;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
-import com.noqapp.android.merchant.model.database.DatabaseHelper;
-import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -391,6 +385,7 @@ public abstract class BaseLaunchActivity
     }
 
 
+    @SuppressLint("LongLogTag")
     public void updateListByNotification(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -425,6 +420,11 @@ public abstract class BaseLaunchActivity
                 }
             } else if (jsonData instanceof JsonClientOrderData) {
                 Log.e("JsonClientOrderData", jsonData.toString());
+            }else if (jsonData instanceof JsonChangeServiceTimeData) {
+                Log.e("JsonChangeServiceTimeData", jsonData.toString());
+                if (null != fragmentCommunicator) {
+                    fragmentCommunicator.updatePeopleQueue(qrcode);
+                }
             }
         }
     }
