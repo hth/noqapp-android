@@ -429,6 +429,16 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
     }
 
     @Override
+    public void updatePeopleQueue(String codeQR) {
+        if (new NetworkUtil(getActivity()).isOnline()) {
+            manageQueueApiCalls.getQueues(
+                    AppInitialize.getDeviceID(),
+                    AppInitialize.getEmail(),
+                    AppInitialize.getAuth());
+        }
+    }
+
+    @Override
     public void onMethodCallback(JsonToken token) {
         if (null != token) {
             for (int i = 0; i < topics.size(); i++) {
