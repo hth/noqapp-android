@@ -18,7 +18,6 @@ import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
@@ -97,7 +96,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         setLocale(this);
 
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
-        fireBaseAnalytics = FirebaseAnalytics.getInstance(this);
+        fireBaseAnalytics = FirebaseAnalytics.getInstance(this); //needs android.permission.WAKE_LOCK
         location = new Location("");
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         JodaTimeAndroid.init(this);
@@ -407,13 +406,13 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         /* dismissProgress(); no progress bar silent call here */
-       // new ErrorResponseHandler().processError(this, eej);
+        // new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         /* dismissProgress(); no progress bar silent call here */
-       // new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        // new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     public static void fetchDeviceId() {
@@ -424,24 +423,22 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         DeviceApiCall deviceModel = new DeviceApiCall();
         deviceModel.setDeviceRegisterPresenter(deviceRegisterPresenter);
         deviceModel.register(
-                new DeviceToken(
-                        AppInitialize.getTokenFCM(),
-                        Constants.appVersion(),
-                        CommonHelper.getLocation(AppInitialize.location.getLatitude(),
-                                AppInitialize.location.getLongitude())));
+            new DeviceToken(
+                AppInitialize.getTokenFCM(),
+                Constants.appVersion(),
+                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
     }
 
-    public static void processRegisterDeviceIdResponse(DeviceRegistered deviceRegistered, Context context){
-
+    public static void processRegisterDeviceIdResponse(DeviceRegistered deviceRegistered, Context context) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Device register", "deviceRegister Success");
             AppInitialize.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), context);
             Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
 
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                    .setCity(AppInitialize.cityName)
-                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                .setCity(AppInitialize.cityName)
+                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             AppInitialize.setLocationPreference(locationPref);
             AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
             AppInitialize.location.setLatitude(locationPref.getLatitude());
@@ -453,10 +450,9 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             Log.e("Device register error: ", deviceRegistered.toString());
             try {
                 new CustomToast().showToast(context, "Device register error: ");
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e("BadTokenException :", "Exception caught while showing the window" + e.getLocalizedMessage());
             }
         }
-
     }
 }
