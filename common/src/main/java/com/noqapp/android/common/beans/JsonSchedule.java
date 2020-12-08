@@ -218,20 +218,15 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         this.multipleSlotEndTiming = multipleSlotEndTiming;
     }
 
-    //TODO remove null check after Nov 2020
     public String getAppointmentTimeByAppointmentState() {
-        if (appointmentState != null) {
-            switch (appointmentState) {
-                case S:
-                    return "Walk-In Token";
-                case A:
-                case O:
-                case F:
-                default:
-                    return Formatter.convertMilitaryTo12HourFormat(startTime);
-            }
-        } else {
-            return Formatter.convertMilitaryTo12HourFormat(startTime);
+        switch (appointmentState) {
+            case S:
+                return "Walk-In Token";
+            case A:
+            case O:
+            case F:
+            default:
+                return Formatter.convertMilitaryTo12HourFormat(startTime);
         }
     }
 
