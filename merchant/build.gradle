@@ -89,6 +89,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     dexOptions {
         javaMaxHeapSize "4g"
     }
@@ -489,7 +493,6 @@ dependencies {
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 /** Gradle default task. */
 defaultTasks 'clean', 'assembleDebug'
