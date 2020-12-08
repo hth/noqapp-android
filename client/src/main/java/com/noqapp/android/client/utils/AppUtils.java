@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +52,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -512,51 +518,53 @@ public class AppUtils extends CommonHelper {
     }
 
     public static void shareTheApp(Context context) {
-        // @TODO revert the below changes when permission enabled in manifest
-//        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
-//        if (drawable instanceof BitmapDrawable) {
-//            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-//            Uri bitmapUri = null;
-//            try {
-//                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
-//                file.getParentFile().mkdirs();
-//                FileOutputStream out = new FileOutputStream(file);
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-//                out.close();
-//                if (Build.VERSION.SDK_INT < 24) {
-//                    bitmapUri = Uri.fromFile(file);
-//                } else {
-//                    bitmapUri = Uri.parse(file.getPath()); // Work-around for new SDKs, doesn't work on older ones.
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            if (bitmapUri != null) {
-//                Intent shareIntent = new Intent();
-//                shareIntent.putExtra(Intent.EXTRA_TEXT, "I am inviting you to join our app. A simple and secure app developed by us. Check out my app at: https://play.google.com/store/apps/details?id=" + context.getPackageName());
-//                shareIntent.setAction(Intent.ACTION_SEND);
-//                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
-//                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                shareIntent.setType("image/*");
-//                context.startActivity(Intent.createChooser(shareIntent, "Share my app"));
-//            }
-//        }
-        // @TODO revert the below changes when permission enabled in manifest
-        try {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NoQueue App");
-            String shareMessage = "Hi, I am using a new and wonderful app, called NoQueue. " +
-                "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, it is real time. " +
-                "Get the status update on your phone quickly and immediately. I am sending you an invite so you too " +
-                "enjoy the experience and avoid standing in queues.\n\n" +
-                "Download it here: https://play.google.com/store/apps/details?id=" + context.getPackageName();
-            Log.d("Share app", shareMessage);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-            context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        String shareMessage = "Hi, I am using a new and wonderful app, called NoQueue. " +
+            "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, it is real time. " +
+            "Get the status update on your phone quickly and immediately. I am sending you an invite so you too " +
+            "enjoy the experience and avoid standing in queues.\n\n" +
+            "Download it here: https://play.google.com/store/apps/details?id=" + context.getPackageName();
+
+        // @TODO revert the below changes when storage permission enabled in manifest
+        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
+        if (drawable instanceof BitmapDrawable) {
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            Uri bitmapUri = null;
+            try {
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+                file.getParentFile().mkdirs();
+                FileOutputStream out = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+                out.close();
+                if (Build.VERSION.SDK_INT < 24) {
+                    bitmapUri = Uri.fromFile(file);
+                } else {
+                    bitmapUri = Uri.parse(file.getPath()); // Work-around for new SDKs, doesn't work on older ones.
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (bitmapUri != null) {
+                Intent shareIntent = new Intent();
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.setType("image/*");
+                context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
+            }
         }
+
+        // @TODO revert the below changes when storage permission disabled in manifest
+//        try {
+//            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//            shareIntent.setType("text/plain");
+//            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NoQueue App");
+//            Log.d("Share app", shareMessage);
+//            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+//            context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static boolean isRelease() {
