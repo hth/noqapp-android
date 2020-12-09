@@ -154,14 +154,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         List<JsonTextToSpeech> jsonTextToSpeeches = null;
                         boolean containsTextToSpeeches = mappedData.containsKey("textToSpeeches");
                         if (containsTextToSpeeches) {
-                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {
-                            });
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
                             //TODO(hth) Temp code. Removed as parsing issue.
                             mappedData.remove("textToSpeeches");
                         }
 
                         jsonData = mapper.readValue(new JSONObject(mappedData).toString(), JsonTopicQueueData.class);
-
                         if (null != jsonTextToSpeeches) {
                             jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
                         }
@@ -174,11 +172,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     break;
                 case CQO:
                     try {
-                        JsonClientTokenAndQueueData jsonClientTokenAndQueueData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientTokenAndQueueData.class);
-
                         JsonTokenAndQueueList jsonTokenAndQueueList = new JsonTokenAndQueueList();
-                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(mappedData.get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {
-                        }));
+                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(mappedData.get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {}));
+
+                        JsonClientTokenAndQueueData jsonClientTokenAndQueueData = mapper.readValue(new JSONObject(mappedData).toString(), JsonClientTokenAndQueueData.class);
                         jsonClientTokenAndQueueData.setTokenAndQueues(jsonTokenAndQueueList.getTokenAndQueues());
                         jsonData = jsonClientTokenAndQueueData;
                         Log.d("FCM", jsonData.toString());
@@ -213,8 +210,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         List<JsonTextToSpeech> jsonTextToSpeeches = null;
                         boolean containsTextToSpeeches = mappedData.containsKey("textToSpeeches");
                         if (containsTextToSpeeches) {
-                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {
-                            });
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
                             //TODO(hth) Temp code. Removed as parsing issue.
                             mappedData.remove("textToSpeeches");
                         }
@@ -271,11 +267,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 default:
                     // object = null;
             }
+
             try {
                 if (!AppUtils.isAppIsInBackground(getApplicationContext())) {
                     // app is in foreground, broadcast the push message
                     Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                    pushNotification.putExtra("jsonData", (Serializable) jsonData);
+                    pushNotification.putExtra("jsonData", jsonData);
                     pushNotification.putExtra(FIREBASE_TYPE, mappedData.get(FIREBASE_TYPE));
                     pushNotification.putExtra(CODE_QR, mappedData.get(CODE_QR));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
