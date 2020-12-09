@@ -26,6 +26,7 @@ import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -41,6 +42,7 @@ import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.GeoIP;
@@ -525,45 +527,37 @@ public class AppUtils extends CommonHelper {
             "Download it here: https://play.google.com/store/apps/details?id=" + context.getPackageName();
 
         // @TODO revert the below changes when storage permission enabled in manifest (fails on Samsung)
-//        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
-//        if (drawable instanceof BitmapDrawable) {
-//            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-//            Uri bitmapUri = null;
-//            try {
-//                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
-//                file.getParentFile().mkdirs();
-//                FileOutputStream out = new FileOutputStream(file);
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-//                out.close();
-//                if (Build.VERSION.SDK_INT < 24) {
-//                    bitmapUri = Uri.fromFile(file);
-//                } else {
-//                    bitmapUri = Uri.parse(file.getPath()); // Work-around for new SDKs, doesn't work on older ones.
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            if (bitmapUri != null) {
-//                Intent shareIntent = new Intent();
-//                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-//                shareIntent.setAction(Intent.ACTION_SEND);
-//                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
-//                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                shareIntent.setType("image/*");
-//                context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
-//            }
-//        }
+        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
+        if (drawable instanceof BitmapDrawable) {
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            Uri bitmapUri = null;
+            try {
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+                if (file.getParentFile().mkdirs() || file.getParentFile().exists()) {
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+                    out.close();
+                    if (Build.VERSION.SDK_INT < 24) {
+                        bitmapUri = Uri.fromFile(file);
+                    } else {
+                        bitmapUri = Uri.parse(file.getPath()); // Work-around for new SDKs, doesn't work on older ones.
+                    }
+                }
+            } catch (IOException e) {
+                FirebaseCrashlytics.getInstance().log("Failed to share app " + e.getLocalizedMessage());
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
 
-        // @TODO revert the below changes when storage permission disabled in manifest
-        try {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
+            if (null != bitmapUri) {
+                shareIntent.setType("image/*");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+            } else {
+                shareIntent.setType("text/plain");
+            }
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NoQueue");
-            Log.d("Share app", shareMessage);
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
