@@ -66,10 +66,10 @@ public class JsonCategory implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("bizCategoryId", bizCategoryId)
-                .append("categoryName", categoryName)
-                .append("displayImage", displayImage)
-                .toString();
+        return "JsonCategory{" +
+            "bizCategoryId='" + bizCategoryId + '\'' +
+            ", categoryName='" + categoryName + '\'' +
+            ", displayImage='" + displayImage + '\'' +
+            '}';
     }
 }
