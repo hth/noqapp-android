@@ -30,7 +30,6 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
@@ -39,7 +38,6 @@ import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.AppInitialize;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
 import com.noqapp.android.merchant.views.adapters.MerchantListAdapter;
@@ -57,7 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MerchantListFragment extends BaseFragment implements TopicPresenter,
-        FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
+    FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
 
     public static int selected_pos = 0;
     private MerchantDetailFragment merchantDetailFragment;
@@ -80,6 +78,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
     private boolean isFragmentVisible = false;
     private AutoCompleteTextView auto_complete_search;
     private ManageQueueApiCalls manageQueueApiCalls;
+
     public MerchantListFragment() {
 
     }
@@ -149,9 +148,9 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
                         if (selectedQRcode.equalsIgnoreCase(jt.getCodeQR())) {
                             hideAndReset();
                             listview.performItemClick(
-                                    listview.getAdapter().getView(j, null, null),
-                                    j,
-                                    listview.getAdapter().getItemId(j));
+                                listview.getAdapter().getView(j, null, null),
+                                j,
+                                listview.getAdapter().getItemId(j));
                             break;
                         }
                     }
@@ -183,7 +182,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         updater = new Runnable() {
             @Override
             public void run() {
-                updateSnackbarTxt();// update the snakebar after every minute
+                updateSnackBarTxt();// update the snakebar after every minute
                 timerHandler.postDelayed(updater, 60000);
             }
         };
@@ -198,9 +197,9 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         if (null != bundle) {
             // TODO: Update design to store queue list on client locally instead of making API call on back
             manageQueueApiCalls.getQueues(
-                    AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(),
-                    AppInitialize.getAuth());
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth());
             subscribeTopics();
             initListView();
         } else {
@@ -208,9 +207,9 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
                 if (null != LaunchActivity.getLaunchActivity()) {
                     showProgress();
                     manageQueueApiCalls.getQueues(
-                            AppInitialize.getDeviceID(),
-                            AppInitialize.getEmail(),
-                            AppInitialize.getAuth());
+                        AppInitialize.getDeviceID(),
+                        AppInitialize.getEmail(),
+                        AppInitialize.getAuth());
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
@@ -232,7 +231,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
             LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
             LaunchActivity.getLaunchActivity().enableDisableBack(false);
             isFragmentVisible = true;
-            updateSnackbarTxt();
+            updateSnackBarTxt();
             if (null != adapter) {
                 adapter.notifyDataSetChanged();
             }
@@ -291,7 +290,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         listview.setAdapter(adapter);
         if (null != getActivity()) {
             temp_adapter = new AutocompleteAdapter(getActivity(),
-                    R.layout.auto_text_item, topics);
+                R.layout.auto_text_item, topics);
             auto_complete_search.setAdapter(temp_adapter);
         }
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -310,12 +309,10 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
                 selected_pos = position;
                 // to set the selected cell color
                 getActivity().runOnUiThread(run);
-
-
             }
         });
         AppInitialize.setLastUpdateTime(System.currentTimeMillis());
-        updateSnackbarTxt();
+        updateSnackBarTxt();
         snackbar.show();
         if (LaunchActivity.isTablet) {
             if (null != topics && topics.size() > 0) {
@@ -393,7 +390,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
                             merchantDetailFragment.updateListData(topics);
                         }
                         AppInitialize.setLastUpdateTime(System.currentTimeMillis());
-                        updateSnackbarTxt();
+                        updateSnackBarTxt();
                         break;
                     }
                 }
@@ -432,9 +429,9 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
     public void updatePeopleQueue(String codeQR) {
         if (new NetworkUtil(getActivity()).isOnline()) {
             manageQueueApiCalls.getQueues(
-                    AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(),
-                    AppInitialize.getAuth());
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth());
         }
     }
 
@@ -472,18 +469,19 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
         if (new NetworkUtil(getActivity()).isOnline()) {
             swipeRefreshLayout.setRefreshing(true);
             manageQueueApiCalls.getQueues(
-                    AppInitialize.getDeviceID(),
-                    AppInitialize.getEmail(),
-                    AppInitialize.getAuth());
+                AppInitialize.getDeviceID(),
+                AppInitialize.getEmail(),
+                AppInitialize.getAuth());
         } else {
             new CustomToast().showToast(getActivity(), getString(R.string.networkerror));
             swipeRefreshLayout.setRefreshing(false);
         }
     }
 
-    private void updateSnackbarTxt() {
-        if (isFragmentVisible)
+    private void updateSnackBarTxt() {
+        if (isFragmentVisible) {
             snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(AppInitialize.getLastUpdateTime()));
+        }
     }
 
     public void saveCounterNames(String codeQR, String name) {
@@ -498,8 +496,9 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
 
     public void clearData() {
         topics.clear();
-        if (null != adapter)
+        if (null != adapter) {
             adapter.notifyDataSetChanged();
+        }
         try {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             if (null != merchantDetailFragment) {
