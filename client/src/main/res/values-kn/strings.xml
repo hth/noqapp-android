@@ -167,7 +167,7 @@
     <string name="authentication_fail_msg">ದಯವಿಟ್ಟು ಮತ್ತೆ ಲಾಗಿನ್ ಮಾಡಿ.</string>
     <string name="barcode_error">ಸರದಿ ಕಂಡುಬಂದಿಲ್ಲ</string>
     <string name="barcode_error_msg">ಈ NoQueue ಕೋಡ್‌ನೊಂದಿಗೆ ಯಾವುದೇ ವ್ಯಾಪಾರಿ ಸಂಬಂಧ ಹೊಂದಿಲ್ಲ</string>
-    <string name="copy_right">ವೆಬ್‌ಸೈಟ್: https://noqapp.com\n\n NoQueue &#174; ಇದು NoQueue Inc.\n 2020 \u00a9 NoQueue Inc ನ ವ್ಯಾಪಾರೀ ಲಾಂಛನವಾಗಿದೆ</string>
+    <string name="copy_right">ವೆಬ್‌ಸೈಟ್: https://noqapp.com\n\n NoQueue &#174; ಇದು NoQueue Inc.\n 2021 \u00a9 NoQueue Inc ನ ವ್ಯಾಪಾರೀ ಲಾಂಛನವಾಗಿದೆ</string>
     <string name="alert">ಎಚ್ಚರಿಕೆ</string>
     <string name="wait_time">Wait time</string>
     <string name="wait_time_formatted">Wait time: %1$s</string>

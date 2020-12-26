@@ -62,7 +62,7 @@
     <string name="error_pwd_length">पासवर्ड की लंबाई 6 से अधिक होनी चाहिए</string>
     <string name="authentication_fail">प्रमाणीकरण विफलता</string>
     <string name="authentication_fail_msg">कृपया फिर से लॉग इन करे </string>
-    <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2020 \u00a9 NoQueue Inc</string>
+    <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2021 \u00a9 NoQueue Inc</string>
     <string name="unregister_user">N/A</string>
     <string name="error_user_served">%1$s is being currently served.</string>
     <string name="error_client_just_acquired">Client is just acquired by someone else</string>
