@@ -176,4 +176,20 @@ public interface StoreSettingApiUrls {
         @Body
         StoreHours storeHours
     );
+
+
+    @POST("api/m/ss/notifyFreshStockArrival.json")
+    Call<JsonResponse> notifyFreshStockArrival(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt,
+
+        @Header("X-R-MAIL")
+        String mail,
+
+        @Header("X-R-AUTH")
+        String auth
+    );
 }
