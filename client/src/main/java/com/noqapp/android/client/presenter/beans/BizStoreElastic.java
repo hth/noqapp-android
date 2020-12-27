@@ -18,6 +18,7 @@ import com.noqapp.android.common.model.types.WalkInStateEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -163,6 +164,9 @@ public class BizStoreElastic implements Serializable {
 
     @JsonProperty("AC")
     private List<AccreditationEnum> accreditation = new LinkedList<>();
+
+    @JsonProperty("FS")
+    private Date freshStockArrivalDate;
 
     /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
     @JsonProperty("WP")
@@ -531,6 +535,15 @@ public class BizStoreElastic implements Serializable {
 
     public BizStoreElastic setAccreditation(List<AccreditationEnum> accreditation) {
         this.accreditation = accreditation;
+        return this;
+    }
+
+    public Date getFreshStockArrivalDate() {
+        return freshStockArrivalDate;
+    }
+
+    public BizStoreElastic setFreshStockArrivalDate(Date freshStockArrivalDate) {
+        this.freshStockArrivalDate = freshStockArrivalDate;
         return this;
     }
 
