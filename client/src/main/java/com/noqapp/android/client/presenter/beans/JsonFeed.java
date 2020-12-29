@@ -32,8 +32,8 @@ public class JsonFeed extends AbstractDomain implements Parcelable {
     @JsonProperty("ti")
     private String title;
 
-    @JsonProperty("co")
-    private String content;
+    @JsonProperty("ds")
+    private String description;
 
     @JsonProperty("ct")
     private String contentType;
@@ -61,7 +61,7 @@ public class JsonFeed extends AbstractDomain implements Parcelable {
 
     protected JsonFeed(Parcel in) {
         title = in.readString();
-        content = in.readString();
+        description = in.readString();
         contentType = in.readString();
         contentId = in.readString();
         imageUrl = in.readString();
@@ -92,12 +92,12 @@ public class JsonFeed extends AbstractDomain implements Parcelable {
         return this;
     }
 
-    public String getContent() {
-        return content;
+    public String getDescription() {
+        return description;
     }
 
-    public JsonFeed setContent(String content) {
-        this.content = content;
+    public JsonFeed setDescription(String description) {
+        this.description = description;
         return this;
     }
 
@@ -172,7 +172,7 @@ public class JsonFeed extends AbstractDomain implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(content);
+        dest.writeString(description);
         dest.writeString(contentType);
         dest.writeString(contentId);
         dest.writeString(imageUrl);

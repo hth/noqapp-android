@@ -60,7 +60,7 @@ public class FeedActivity extends AppCompatActivity {
         }
 
         Picasso.get().load(jsonFeed.getImageUrl()).into(iv_bg);
-        String data = jsonFeed.getContent();
+        String data = jsonFeed.getDescription();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             tv_details.setText(Html.fromHtml(data, Html.FROM_HTML_MODE_COMPACT));
         } else {
