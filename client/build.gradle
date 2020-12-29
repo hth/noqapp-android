@@ -432,7 +432,7 @@ dependencies {
         exclude module: 'joda-time'
     }
     implementation 'com.google.maps.android:android-maps-utils:0.5'
-    implementation 'com.airbnb.android:lottie:3.5.0'
+    implementation 'com.airbnb.android:lottie:3.6.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.multidex:multidex:2.0.1'
