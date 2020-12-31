@@ -37,6 +37,9 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
     @JsonProperty("f")
     private FirebaseMessageTypeEnum firebaseMessageType;
 
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("title")
     private String title;
 
