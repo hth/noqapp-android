@@ -111,6 +111,10 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getBodyBasedOnTargetLanguage(String targetLanguage) {
+        return translatedBody.containsKey(targetLanguage) ? translatedBody.get(targetLanguage) : body;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("JsonData{");
