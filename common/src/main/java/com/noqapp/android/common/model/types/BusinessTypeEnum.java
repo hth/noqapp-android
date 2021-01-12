@@ -1,8 +1,10 @@
 package com.noqapp.android.common.model.types;
 
+import static com.noqapp.android.common.model.types.BusinessSupportEnum.MP;
 import static com.noqapp.android.common.model.types.BusinessSupportEnum.OD;
 import static com.noqapp.android.common.model.types.BusinessSupportEnum.OQ;
 import static com.noqapp.android.common.model.types.BusinessSupportEnum.QQ;
+import static com.noqapp.android.common.model.types.QueueOrderTypeEnum.M;
 import static com.noqapp.android.common.model.types.QueueOrderTypeEnum.O;
 import static com.noqapp.android.common.model.types.QueueOrderTypeEnum.Q;
 
@@ -49,7 +51,10 @@ public enum BusinessTypeEnum implements Serializable {
     TA("TA", "Tourist Attraction", Q, "Queue", QQ),
     NC("NC", "Night Club", Q, "Queue", QQ),
     BK("BK", "Bank", Q, "Queue", QQ),
-    PA("PA", "Park", Q, "Queue", QQ);
+    PA("PA", "Park", Q, "Queue", QQ),
+
+    //For Marketplace
+    PR("PR", "Property Rental", M, "Marketplace", MP);
 
     private final String description;
     private final String name;
