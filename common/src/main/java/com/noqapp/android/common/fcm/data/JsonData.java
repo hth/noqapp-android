@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -109,6 +111,15 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
     public JsonData setJsonTextToSpeeches(List<JsonTextToSpeech> jsonTextToSpeeches) {
         this.jsonTextToSpeeches = jsonTextToSpeeches;
         return this;
+    }
+
+    public String getBodyBasedOnTargetLanguage(String targetLanguage) {
+        if (StringUtils.isNotBlank(targetLanguage)) {
+            return translatedBody.containsKey(targetLanguage) ? translatedBody.get(targetLanguage) : body;
+        } else {
+            return body;
+        }
+
     }
 
     @Override

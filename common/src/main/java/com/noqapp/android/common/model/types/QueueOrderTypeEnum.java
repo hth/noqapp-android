@@ -6,5 +6,6 @@ package com.noqapp.android.common.model.types;
  */
 public enum QueueOrderTypeEnum {
     Q, //Queued
-    O  //Order
+    O, //Order
+    M  //Marketplace
 }
