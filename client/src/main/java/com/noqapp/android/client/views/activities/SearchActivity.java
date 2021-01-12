@@ -272,8 +272,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     @Override
     public void nearMeMerchant(BizStoreElasticList bizStoreElasticList) {
-        ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
-        nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
+        ArrayList<BizStoreElastic> nearMeData = new ArrayList<>(bizStoreElasticList.getBizStoreElastics());
         scrollId = bizStoreElasticList.getScrollId();
         if (scrollId == null) {
             scrollId = "";
