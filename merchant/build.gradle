@@ -33,7 +33,7 @@ android {
     archivesBaseName = "merchant"
 
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
 
     def versionPropsFile = file('version.properties')
     def versionMajor = 0
