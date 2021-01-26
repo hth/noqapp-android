@@ -207,7 +207,6 @@ public class SearchBusinessStoreApiCalls {
         });
     }
 
-
     public void kiosk(String did, SearchStoreQuery searchStoreQuery) {
         searchBusinessStoreApiUrls.kiosk(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
