@@ -66,18 +66,14 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
-import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public abstract class BaseLaunchActivity
     extends AppCompatActivity
@@ -255,6 +251,10 @@ public abstract class BaseLaunchActivity
                     new CustomToast().showToast(launchActivity, "No queue available");
                 }
                 break;
+            case R.drawable.notify_products:
+                    Intent notifyStockIntent = new Intent(launchActivity, NotifyStocksActivity.class);
+                    startActivity(notifyStockIntent);
+                break;
             case R.drawable.logout:
                 showLogoutDialog();
                 break;
@@ -323,6 +323,7 @@ public abstract class BaseLaunchActivity
         if (AppInitialize.isLoggedIn()) {
             settingList.add(new MenuDrawer(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
             settingList.add(new MenuDrawer(getString(R.string.broadcast_message), false, false, R.drawable.sms));
+            settingList.add(new MenuDrawer(getString(R.string.notify_stocks), false, false, R.drawable.notify_products));
         }
         menuDrawerItems.add(new MenuDrawer("Settings", true, true, R.drawable.settings_square, settingList));
         if (!AppUtils.isRelease()) {
