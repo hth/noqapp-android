@@ -17,7 +17,6 @@ import com.noqapp.android.merchant.views.interfaces.StoreHoursSettingPresenter;
 
 public class NotifyStocksActivity extends BaseActivity implements StoreHoursSettingPresenter {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +29,9 @@ public class NotifyStocksActivity extends BaseActivity implements StoreHoursSett
             setProgressMessage("Sending message...");
             showProgress();
             storeSettingApiCalls.notifyFreshStockArrival(
-                    UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth());
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth());
         });
     }
 
