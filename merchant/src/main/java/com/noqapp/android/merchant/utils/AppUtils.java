@@ -188,7 +188,7 @@ public class AppUtils extends CommonHelper {
     }
 
     public static ArrayList<String> getYearsTillNow() {
-        ArrayList<String> yearList = new ArrayList<String>();
+        ArrayList<String> yearList = new ArrayList<>();
         yearList.add("Select year");
         int startYear = 2018;
         int endYear = Calendar.getInstance().get(Calendar.YEAR);

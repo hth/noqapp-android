@@ -60,6 +60,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
@@ -228,7 +229,7 @@ public abstract class BaseLaunchActivity
             case R.drawable.pie_chart:
                 if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
                     Intent in1 = new Intent(launchActivity, ChartListActivity.class);
-                    in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                    in1.putExtra("jsonTopic", merchantListFragment.getTopics());
                     startActivity(in1);
                 } else {
                     new CustomToast().showToast(launchActivity, "No queue available");
@@ -280,7 +281,7 @@ public abstract class BaseLaunchActivity
             case R.drawable.ic_reviews:
                 if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
                     Intent in1 = new Intent(launchActivity, ReviewListActivity.class);
-                    in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                    in1.putExtra("jsonTopic", merchantListFragment.getTopics());
                     startActivity(in1);
                 } else {
                     new CustomToast().showToast(launchActivity, "No queue available");
@@ -323,7 +324,15 @@ public abstract class BaseLaunchActivity
         if (AppInitialize.isLoggedIn()) {
             settingList.add(new MenuDrawer(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
             settingList.add(new MenuDrawer(getString(R.string.broadcast_message), false, false, R.drawable.sms));
-            settingList.add(new MenuDrawer(getString(R.string.notify_stocks), false, false, R.drawable.notify_products));
+
+            switch (AppInitialize.getUserProfile().getBusinessType()) {
+                case CD:
+                case CDQ:
+                    settingList.add(new MenuDrawer(getString(R.string.notify_stocks), false, false, R.drawable.notify_products));
+                    break;
+                default:
+                    //Nothing
+            }
         }
         menuDrawerItems.add(new MenuDrawer("Settings", true, true, R.drawable.settings_square, settingList));
         if (!AppUtils.isRelease()) {
