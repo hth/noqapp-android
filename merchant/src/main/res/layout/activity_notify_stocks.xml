@@ -7,7 +7,6 @@
 
     <include layout="@layout/toolbar_layout_home" />
 
-
     <RelativeLayout
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="50dp"
             android:gravity="center"
-            android:hint="Press submit button to notify the customers about fresh stock arrival"
+            android:hint="@string/fresh_stock_arrival_body"
             android:maxLength="256"
             android:padding="10dp"
             android:textStyle="bold"

@@ -22,7 +22,7 @@ public class NotifyStocksActivity extends BaseActivity implements StoreHoursSett
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notify_stocks);
         initActionsViews(false);
-        tv_toolbar_title.setText("Notify Customers about stock");
+        tv_toolbar_title.setText(R.string.fresh_stock_arrival_title);
         Button btn_submit = findViewById(R.id.btn_submit);
         StoreSettingApiCalls storeSettingApiCalls = new StoreSettingApiCalls(this);
         btn_submit.setOnClickListener((View v) -> {

@@ -317,4 +317,7 @@
 
     <string name="time_slot">Time slot: %1$s</string>
     <string name="menu_appointments">Appointments</string>
+    
+    <string name="fresh_stock_arrival_title">Notify All Of New Stock</string>
+    <string name="fresh_stock_arrival_body">Press the button below to notify customers on fresh stock arrival</string>
 </resources>
