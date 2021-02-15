@@ -276,4 +276,34 @@ public class StoreSettingApiCalls {
             }
         });
     }
+
+    public void notifyFreshStockArrival(String did, String mail, String auth) {
+        storeSettingApiUrls.notifyFreshStockArrival(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d(TAG, "notifyFreshStockArrival, response " + response.body().toString());
+                        storeHoursSettingPresenter.queueStoreHoursSettingModifyResponse(response.body());
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
+                        storeHoursSettingPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        storeHoursSettingPresenter.authenticationFailure();
+                    } else {
+                        storeHoursSettingPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("fail notifyFreshStock", t.getLocalizedMessage(), t);
+                storeHoursSettingPresenter.queueStoreHoursSettingError();
+            }
+        });
+    }
 }
