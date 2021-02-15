@@ -252,8 +252,8 @@ public abstract class BaseLaunchActivity
                 }
                 break;
             case R.drawable.notify_products:
-                    Intent notifyStockIntent = new Intent(launchActivity, NotifyStocksActivity.class);
-                    startActivity(notifyStockIntent);
+                Intent notifyFreshStockArrivalIntent = new Intent(launchActivity, NotifyFreshStockArrivalActivity.class);
+                startActivity(notifyFreshStockArrivalIntent);
                 break;
             case R.drawable.logout:
                 showLogoutDialog();
@@ -421,7 +421,7 @@ public abstract class BaseLaunchActivity
                 }
             } else if (jsonData instanceof JsonClientOrderData) {
                 Log.e("JsonClientOrderData", jsonData.toString());
-            }else if (jsonData instanceof JsonChangeServiceTimeData) {
+            } else if (jsonData instanceof JsonChangeServiceTimeData) {
                 Log.e("JsonChangeServiceTimeData", jsonData.toString());
                 if (null != fragmentCommunicator) {
                     fragmentCommunicator.updatePeopleQueue(qrcode);

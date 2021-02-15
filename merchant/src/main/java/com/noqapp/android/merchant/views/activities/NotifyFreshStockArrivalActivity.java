@@ -15,7 +15,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.StoreHoursSettingPresenter;
 
-public class NotifyStocksActivity extends BaseActivity implements StoreHoursSettingPresenter {
+public class NotifyFreshStockArrivalActivity extends BaseActivity implements StoreHoursSettingPresenter {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
