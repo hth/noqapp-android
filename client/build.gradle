@@ -433,7 +433,7 @@ dependencies {
         exclude module: 'joda-time'
     }
     implementation 'com.google.maps.android:android-maps-utils:0.5'
-    implementation 'com.airbnb.android:lottie:3.6.0'
+    implementation 'com.airbnb.android:lottie:3.6.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -460,18 +460,18 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.7.7'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
-    testImplementation 'joda-time:joda-time:2.10.9'
+    testImplementation 'joda-time:joda-time:2.10.10'
 
     // (Required) Writing and executing Unit Tests on the JUnit Platform
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
 
     // (Optional) If you need "Parameterized Tests"
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.1'
 
     // (Optional) If you also have JUnit 4-based tests
-    testImplementation 'junit:junit:4.13.1'
-    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.1'
     testImplementation 'org.awaitility:awaitility:4.0.3'
 }
 
