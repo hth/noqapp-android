@@ -19,6 +19,11 @@ import retrofit2.Response;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
+/**
+ * Device client registration is called when user is logged in. Otherwise call Device registration.
+ * Most of the time it will start with device registration as user is not logged in. But if logged in
+ * then call this api. Most likely this would be removed in future as device is registered just once.
+ */
 public class DeviceClientApiCall {
     private final String TAG = DeviceClientApiCall.class.getSimpleName();
 
