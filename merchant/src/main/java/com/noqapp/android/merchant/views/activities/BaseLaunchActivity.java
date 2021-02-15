@@ -325,13 +325,15 @@ public abstract class BaseLaunchActivity
             settingList.add(new MenuDrawer(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
             settingList.add(new MenuDrawer(getString(R.string.broadcast_message), false, false, R.drawable.sms));
 
-            switch (AppInitialize.getUserProfile().getBusinessType()) {
-                case CD:
-                case CDQ:
-                    settingList.add(new MenuDrawer(getString(R.string.notify_stocks), false, false, R.drawable.notify_products));
-                    break;
-                default:
-                    //Nothing
+            if (UserLevelEnum.S_MANAGER == AppInitialize.getUserProfile().getUserLevel()) {
+                switch (AppInitialize.getUserProfile().getBusinessType()) {
+                    case CD:
+                    case CDQ:
+                        settingList.add(new MenuDrawer(getString(R.string.notify_stocks), false, false, R.drawable.notify_products));
+                        break;
+                    default:
+                        //Nothing
+                }
             }
         }
         menuDrawerItems.add(new MenuDrawer("Settings", true, true, R.drawable.settings_square, settingList));
