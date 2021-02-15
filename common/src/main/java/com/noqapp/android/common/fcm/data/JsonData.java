@@ -1,5 +1,6 @@
 package com.noqapp.android.common.fcm.data;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.utils.deserialization.MapOfString;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,6 +52,7 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
     @JsonProperty("body")
     private String body;
 
+    @JsonDeserialize(using = MapOfString.class)
     @JsonProperty("translatedBody")
     private Map<String, String> translatedBody = new HashMap<>();
 
