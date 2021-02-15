@@ -183,9 +183,9 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                     .setQuery(edt_search.getText().toString())
                     .setFilters("")
                     .setScrollId(""); //Scroll id - fresh search pass blank
-                if(UserUtils.isLogin()){
+                if (UserUtils.isLogin()) {
                     searchBusinessStoreApiAuthenticCalls.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery);
-                }else {
+                } else {
                     searchBusinessStoreModels.search(UserUtils.getDeviceId(), searchStoreQuery);
                 }
             } else {
