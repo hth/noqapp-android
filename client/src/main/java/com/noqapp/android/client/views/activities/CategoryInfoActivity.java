@@ -32,7 +32,7 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DisplayCaseApiCalls;
+import com.noqapp.android.client.model.DisplayCaseApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.model.types.AmenityEnum;
@@ -196,8 +196,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 } else {
                     btn_register.setVisibility(View.VISIBLE);
                 }
-                DisplayCaseApiCalls displayCaseApiCalls = new DisplayCaseApiCalls(this);
-                displayCaseApiCalls.storeDisplayCase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                DisplayCaseApiCall displayCaseApiCall = new DisplayCaseApiCall(this);
+                displayCaseApiCall.storeDisplayCase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             }
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);

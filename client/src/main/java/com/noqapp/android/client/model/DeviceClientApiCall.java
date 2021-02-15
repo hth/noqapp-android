@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.api.DeviceApiUrls;
+import com.noqapp.android.client.model.response.api.DeviceClientApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.DeviceRegistered;
@@ -19,11 +19,10 @@ import retrofit2.Response;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
+public class DeviceClientApiCall {
+    private final String TAG = DeviceClientApiCall.class.getSimpleName();
 
-public class DeviceApiAuthenticCalls {
-    private final String TAG = DeviceApiAuthenticCalls.class.getSimpleName();
-
-    private static final DeviceApiUrls deviceApiUrls;
+    private static final DeviceClientApiUrls deviceClientApiUrls;
     private DeviceRegisterPresenter deviceRegisterPresenter;
 
     public void setDeviceRegisterPresenter(DeviceRegisterPresenter deviceRegisterPresenter) {
@@ -31,7 +30,7 @@ public class DeviceApiAuthenticCalls {
     }
 
     static {
-        deviceApiUrls = RetrofitClient.getClient().create(DeviceApiUrls.class);
+        deviceClientApiUrls = RetrofitClient.getClient().create(DeviceClientApiUrls.class);
     }
 
     /**
@@ -43,7 +42,7 @@ public class DeviceApiAuthenticCalls {
      * @param deviceToken
      */
     public void register(String did, String mail, String auth, DeviceToken deviceToken) {
-        deviceApiUrls.registration(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+        deviceClientApiUrls.registration(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
