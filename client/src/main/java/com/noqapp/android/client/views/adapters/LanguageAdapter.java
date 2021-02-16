@@ -63,8 +63,6 @@ public class LanguageAdapter extends RecyclerView.Adapter {
                 AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
             }
             notifyDataSetChanged();
-            new CustomToast().showToast(context, " Language changed successfully");
-            context.finish();
             if (null != listener) {
                 listener.onLanguageSelected(languageInfo);
             }
