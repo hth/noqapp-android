@@ -63,6 +63,9 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("ic")
     private String inviteCode;
 
+    @JsonProperty("ps")
+    private int points;
+
     @JsonProperty("bd")
     private String birthday;
 
@@ -178,6 +181,15 @@ public final class JsonProfile implements Serializable {
 
     public JsonProfile setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
+        return this;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public JsonProfile setPoints(int points) {
+        this.points = points;
         return this;
     }
 
