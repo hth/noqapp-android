@@ -358,8 +358,8 @@
     <string name="empty_noti_title">ಖಾಲಿ ಸೂಚನೆ</string>
     <string name="empty_noti_subtitle">ಯಾವುದೇ ಸೂಚನೆಯಿಲ್ಲ</string>
     <string name="empty_queue_title">ಖಾಲಿ ಸರದಿ</string>
-    <string name="empty_search_title">Search Store/Queue</string>
-    <string name="empty_search_subtitle">Search your favourite Store/Queue here. If available then store will be in list.</string>
+    <string name="empty_search_title">ಇಲ್ಲಿ ಹುಡುಕಿ</string>
+    <string name="empty_search_subtitle">ನಿಮ್ಮ ಹುಡುಕಾಟ ಫಲಿತಾಂಶವನ್ನು ಇಲ್ಲಿ ಪ್ರದರ್ಶಿಸಲಾಗುತ್ತದೆ.</string>
     <string name="empty_queue_subtitle">NoQueue ನ ಅದ್ಭುತವನ್ನು \n ನೀವಿನ್ನೂ ನೋಡಬೇಕಾಗಿದೆ. \n\n ಅದನ್ನು ನೋಡಲು ಸರದಿಯನ್ನು ಸೇರಿಕೊಳ್ಳಿ.</string>
     <string name="empty_medical_h_title">ಖಾಲಿ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ</string>
     <string name="empty_medical_h_subtitle">ಅಭಿನಂದನೆಗಳು !!! \nನೀವು ಆರೋಗ್ಯವಾಗಿದ್ದೀರಿ. \n\nನಿಮಗೆ ಯಾವುದೇ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸವಿಲ್ಲ.</string>

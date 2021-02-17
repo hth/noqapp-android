@@ -358,8 +358,8 @@
     <string name="empty_noti_title">Notification de vide</string>
     <string name="empty_noti_subtitle">Il n\'y a pas de notification</string>
     <string name="empty_queue_title">Une file d\'attente vide.</string>
-    <string name="empty_search_title">Search Store/Queue</string>
-    <string name="empty_search_subtitle">Search your favourite Store/Queue here. If available then store will be in list.</string>
+    <string name="empty_search_title">Cherche ici</string>
+    <string name="empty_search_subtitle">Votre résultat de recherche affiché ici.</string>
     <string name="empty_queue_subtitle">Vous n’avez pas encore vu l’impressionnante de Noqueue. joindre une file d’attente pour le voir.</string>
     <string name="empty_medical_h_title">Antécédents médicaux de vide</string>
     <string name="empty_medical_h_subtitle">Félicitations! Vous êtes en bonne santé. Vous n’avez pas d’antécédents médicaux.</string>

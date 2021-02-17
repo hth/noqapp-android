@@ -165,13 +165,11 @@
 
             <TextView
                 style="@style/style_register_tv"
-                android:text="@string/invitecode"
-                android:visibility="gone"/>
+                android:text="@string/invitecode" />
 
             <EditText
                 android:id="@+id/edt_inviteCode"
-                style="@style/style_register_edt"
-                android:visibility="gone"/>
+                style="@style/style_register_edt" />
 
             <Button
                 android:id="@+id/btnRegistration"

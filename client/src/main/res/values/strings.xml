@@ -362,8 +362,8 @@
     <string name="empty_noti_title">Empty notification</string>
     <string name="empty_noti_subtitle">There are no notification</string>
     <string name="empty_queue_title">Empty Queue</string>
-    <string name="empty_search_title">Search Store/Queue</string>
-    <string name="empty_search_subtitle">Search your favourite Store/Queue here. If available then store will be in list.</string>
+    <string name="empty_search_title">Search Here</string>
+    <string name="empty_search_subtitle">Your Search result displayed here.</string>
     <string name="empty_queue_subtitle">You have yet to see the \n awesomeness of NoQueue. \n\n Join a queue to see it.</string>
     <string name="empty_medical_h_title">Empty Medical History</string>
     <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n\n You don\'t have any medical history.</string>
