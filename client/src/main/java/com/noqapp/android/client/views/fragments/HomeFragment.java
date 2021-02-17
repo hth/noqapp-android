@@ -26,10 +26,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
@@ -72,6 +70,7 @@ import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
 import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
+import com.noqapp.android.client.views.activities.ChangeLanguageActivity;
 import com.noqapp.android.client.views.activities.EventsDetailActivity;
 import com.noqapp.android.client.views.activities.FeedActivity;
 import com.noqapp.android.client.views.activities.ImageViewerActivity;
@@ -112,10 +111,10 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class HomeFragment extends NoQueueBaseFragment implements View.OnClickListener,
-    FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
-    CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
-    StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
-    FeedPresenter, AdvertisementPresenter {
+        FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
+        CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
+        StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
+        FeedPresenter, AdvertisementPresenter {
 
     private final String TAG = HomeFragment.class.getSimpleName();
     private TextView tv_active_title;
@@ -175,7 +174,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
     private View rl_helper;
-    private Button btnLogin, btnSkip;
+    private Button btnLogin, btnSkip, btnChangeLanguage;
 
     public HomeFragment() {
         // default constructor required
@@ -216,6 +215,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         rl_helper = view.findViewById(R.id.rl_helper);
         btnLogin = view.findViewById(R.id.btnLogin);
         btnSkip = view.findViewById(R.id.btnSkip);
+        btnChangeLanguage = view.findViewById(R.id.btnChangeLanguage);
         tv_active_title = view.findViewById(R.id.tv_active_title);
         tv_deviceId = view.findViewById(R.id.tv_deviceId);
 
@@ -320,9 +320,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             advertisementApiCalls.setAdvertisementPresenter(this);
             LocationPref locationPref = AppInitialize.getLocationPreference();
             Location location = new Location()
-                .setCityName(locationPref.getCity())
-                .setLatitude(String.valueOf(locationPref.getLatitude()))
-                .setLongitude(String.valueOf(locationPref.getLongitude()));
+                    .setCityName(locationPref.getCity())
+                    .setLatitude(String.valueOf(locationPref.getLatitude()))
+                    .setLongitude(String.valueOf(locationPref.getLongitude()));
             advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
         } else {
@@ -346,7 +346,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
     }
 
-    /** Method to update the current Queue list when time slot changed for a particular token. */
+    /**
+     * Method to update the current Queue list when time slot changed for a particular token.
+     */
     public void updateCurrentQueueList() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             callCurrentAndHistoryQueue();
@@ -463,6 +465,11 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //                if (AppUtils.isRelease()) {
 //                    presentShowcaseSequence();
 //                }
+                btnChangeLanguage.setOnClickListener(v -> {
+                    Intent claIntent = new Intent(requireActivity(), ChangeLanguageActivity.class);
+                    startActivity(claIntent);
+                    AppInitialize.setShowHelper(true);
+                });
                 rl_helper.setVisibility(View.VISIBLE);
                 btnSkip.setOnClickListener(v -> rl_helper.setVisibility(View.GONE));
                 btnLogin.setOnClickListener(v -> {
@@ -1021,13 +1028,13 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             });
             sequence.setConfig(config);
             sequence.addSequenceItem(
-                //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
-                new MaterialShowcaseView.Builder(getActivity())
-                    .setTarget(LaunchActivity.getLaunchActivity().tv_location)
-                    .setDismissText("GOT IT")
-                    .setContentText("Search your preferred location")
-                    .withRectangleShape(true)
-                    .build()
+                    //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(LaunchActivity.getLaunchActivity().tv_location)
+                            .setDismissText("GOT IT")
+                            .setContentText("Search your preferred location")
+                            .withRectangleShape(true)
+                            .build()
             );
 //            sequence.addSequenceItem(
 //                    new MaterialShowcaseView.Builder(getActivity())
@@ -1038,12 +1045,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 //                            .build()
 //            );
             sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(getActivity())
-                    .setTarget(rl_current_activity)
-                    .setDismissText("DONE")
-                    .setContentText("Your current join queue or order will be visible here")
-                    .withRectangleShape(true)
-                    .build()
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(rl_current_activity)
+                            .setDismissText("DONE")
+                            .setContentText("Your current join queue or order will be visible here")
+                            .withRectangleShape(true)
+                            .build()
             );
             sequence.start();
         } catch (Exception e) {
@@ -1076,4 +1083,5 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
+
 }

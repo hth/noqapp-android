@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.adapters.LanguageAdapter;
 import com.noqapp.android.client.views.pojos.LanguageInfo;
+import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
 
@@ -39,7 +42,8 @@ public class ChangeLanguageActivity extends BaseActivity implements LanguageAdap
 
     @Override
     public void onLanguageSelected(LanguageInfo languageInfo) {
-        // new CustomToast().showToast(this, " Language changed successfully");
+        new CustomToast().showToast(this, " Language changed successfully");
+        finish();
     }
 
     private ArrayList<LanguageInfo> getEnabledIndianLanguage() {
