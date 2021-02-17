@@ -100,6 +100,9 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("cbs")
     private Map<String, String> codeQRAndBizStoreIds = new HashMap<>();
 
+    @JsonProperty("pv")
+    private boolean profileVerified;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -288,6 +291,15 @@ public final class JsonProfile implements Serializable {
 
     public JsonProfile setCodeQRAndBizStoreIds(Map<String, String> codeQRAndBizStoreIds) {
         this.codeQRAndBizStoreIds = codeQRAndBizStoreIds;
+        return this;
+    }
+
+    public boolean isProfileVerified() {
+        return profileVerified;
+    }
+
+    public JsonProfile setProfileVerified(boolean profileVerified) {
+        this.profileVerified = profileVerified;
         return this;
     }
 
