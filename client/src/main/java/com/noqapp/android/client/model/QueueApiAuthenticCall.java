@@ -209,6 +209,7 @@ public class QueueApiAuthenticCall {
             }
         });
     }
+
     public void cashFreeQNotify(String did, String mail, String auth, JsonCashfreeNotification jsonCashfreeNotification) {
         tokenQueueApiUrls.cashfreeNotify(did, Constants.DEVICE_TYPE, mail, auth, jsonCashfreeNotification).enqueue(new Callback<JsonToken>() {
             @Override
