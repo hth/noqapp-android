@@ -1126,7 +1126,7 @@ public class LaunchActivity
                                 : ((JsonAlertData) jsonData).getBusinessType().getName(),
                             jsonData.getImageURL());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) jsonData).getToken());
@@ -1257,7 +1257,7 @@ public class LaunchActivity
                                 ? BusinessTypeEnum.PA.getName()
                                 : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
                         /* Show some meaningful msg to the end user */
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonChangeServiceTimeData) {
                         JsonTokenAndQueue jsonTokenAndQueue = TokenAndQueueDB.findByQRCode(((JsonChangeServiceTimeData) jsonData).getCodeQR());

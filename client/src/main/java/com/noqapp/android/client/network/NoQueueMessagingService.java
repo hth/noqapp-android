@@ -335,7 +335,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                         : ((JsonAlertData) jsonData).getBusinessType().getName(),
                                     imageUrl);
 
-                                sendNotification(title, body, false, imageUrl);
+                                sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
                             } else if (jsonData instanceof JsonClientData) {
                                 Log.e("IN JsonClientData", jsonData.toString());
                                 String token = String.valueOf(((JsonClientData) jsonData).getToken());
@@ -363,7 +363,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                         ReviewDB.insert(cv);
                                     }
-                                    sendNotification(title, body, codeQR, true, token, imageUrl); //pass codeQR to open review screen
+                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), codeQR, true, token, imageUrl); //pass codeQR to open review screen
                                 } else if (((JsonClientData) jsonData).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                                     ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                                     if (null != reviewData) {
@@ -383,7 +383,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                         ReviewDB.insert(cv);
                                     }
-                                    sendNotification(title, body, codeQR, false, token, imageUrl); //pass codeQR to open skip screen
+                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), codeQR, false, token, imageUrl); //pass codeQR to open skip screen
                                 }
                             } else if (jsonData instanceof JsonClientTokenAndQueueData) {
                                 List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) jsonData).getTokenAndQueues();
@@ -400,16 +400,16 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                 for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                                     NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
                                 }
-                                sendNotification(title, body, false, imageUrl);
+                                sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
                             } else if (jsonData instanceof JsonMedicalFollowUp) {
                                 Log.e("Alert set:", "data is :" + title + " ---- " + body);
-                                sendNotification(title, body, true, imageUrl);
+                                sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), true, imageUrl);
                                 setAlarm((JsonMedicalFollowUp) jsonData);
                             } else {
-                                sendNotification(title, body, false, imageUrl);
+                                sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
                             }
                         } else {
-                            sendNotification(title, body, false, imageUrl);
+                            sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
                             // add notification to DB
                             if (jsonData instanceof JsonAlertData) {
                                 Log.e("IN JsonAlertData", jsonData.toString());
@@ -577,7 +577,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error reading message " + e.getLocalizedMessage(), e);
-                sendNotification(title, body, false, imageUrl);
+                sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
             }
         }
     }
