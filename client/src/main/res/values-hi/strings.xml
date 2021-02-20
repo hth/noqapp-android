@@ -478,4 +478,15 @@
     <string name="canteen_near">सीएसडी/यूआरसी</string>
     <string name="place_of_worship">पूजा का स्थान</string>
     <string name="appointment">नियुक्ति</string>
+
+    <!-- location related -->
+    <string name="address_found">Address found</string>
+    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
+    <string name="no_address_found">Sorry, no address found</string>
+    <string name="no_geocoder_available">No geocoder available</string>
+    <string name="no_location_data_provided">No location selfStoryDetails provided</string>
+    <string name="service_not_available">Sorry, the service is not available</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+    <string name="permission_contacts_rationale">Contacts permission is needed for core functionality</string>
 </resources>
