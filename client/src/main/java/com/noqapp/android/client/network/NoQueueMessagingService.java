@@ -31,6 +31,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.NotificationApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -43,11 +44,14 @@ import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.TokenStatusUtils;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.receivers.AlarmReceiver;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonQueueChangeServiceTime;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
@@ -63,13 +67,13 @@ import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
+import com.noqapp.android.common.presenter.NotificationPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -86,7 +90,7 @@ import static com.noqapp.android.client.utils.Constants.ISREVIEW;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
 import static com.noqapp.android.client.utils.Constants.TOKEN;
 
-public class NoQueueMessagingService extends FirebaseMessagingService {
+public class NoQueueMessagingService extends FirebaseMessagingService implements NotificationPresenter {
     private final static String TAG = NoQueueMessagingService.class.getSimpleName();
 
     public NoQueueMessagingService() {
@@ -267,7 +271,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 default:
                     // object = null;
             }
-
+            if (jsonData != null) {
+                callNotificationViewApi(jsonData.getId());
+            }
             try {
                 if (!AppUtils.isAppIsInBackground(getApplicationContext())) {
                     // app is in foreground, broadcast the push message
@@ -625,6 +631,26 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         }
     }
 
+    @Override
+    public void notificationResponse(JsonResponse jsonResponse) {
+        // do nothing
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        // do nothing
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        // do nothing
+    }
+
+    @Override
+    public void authenticationFailure() {
+        // do nothing
+    }
+
     private class CreateBigImageQueueNotification extends AsyncTask<String, Void, Bitmap> {
         private String imageUrl = "";
         private String title, messageBody;
@@ -903,6 +929,24 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             mBuilder.setContentIntent(resultPendingIntent);
 
             notificationManager.notify(notificationId, mBuilder.build());
+        }
+    }
+
+
+    private void callNotificationViewApi(String notificationId) {
+        com.noqapp.android.common.beans.body.Notification notification = new com.noqapp.android.common.beans.body.Notification();
+        notification.setId(notificationId);
+        NotificationApiCall notificationApiCall = new NotificationApiCall(this);
+        if (UserUtils.isLogin()) {
+            notificationApiCall.notificationViewed(
+                    UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(),
+                    notification);
+        } else {
+            notificationApiCall.notificationViewed(
+                    UserUtils.getDeviceId(),
+                    notification);
         }
     }
 }

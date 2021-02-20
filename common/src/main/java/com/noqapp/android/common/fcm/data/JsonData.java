@@ -107,6 +107,15 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public JsonData setId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public List<JsonTextToSpeech> getJsonTextToSpeeches() {
         return jsonTextToSpeeches;
     }
@@ -127,11 +136,14 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("JsonData{");
+        final StringBuilder sb = new StringBuilder("JsonData{");
         sb.append("firebaseMessageType=").append(firebaseMessageType);
+        sb.append(", id='").append(id).append('\'');
         sb.append(", title='").append(title).append('\'');
         sb.append(", body='").append(body).append('\'');
+        sb.append(", translatedBody=").append(translatedBody);
         sb.append(", imageURL='").append(imageURL).append('\'');
+        sb.append(", jsonTextToSpeeches=").append(jsonTextToSpeeches);
         sb.append('}');
         return sb.toString();
     }
