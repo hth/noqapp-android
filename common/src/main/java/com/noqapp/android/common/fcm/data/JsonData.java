@@ -82,6 +82,15 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public JsonData setId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -118,15 +127,6 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public JsonData setId(String id) {
-        this.id = id;
-        return this;
-    }
-
     public List<JsonTextToSpeech> getJsonTextToSpeeches() {
         return jsonTextToSpeeches;
     }
@@ -142,7 +142,6 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         } else {
             return body;
         }
-
     }
 
     @Override
