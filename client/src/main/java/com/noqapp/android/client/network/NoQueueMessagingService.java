@@ -328,7 +328,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                 NotificationDB.insertNotification(
                                     NotificationDB.KEY_NOTIFY,
                                     ((JsonAlertData) jsonData).getCodeQR(),
-                                    body,
+                                    jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                                     title,
                                     ((JsonAlertData) jsonData).getBusinessType() == null
                                         ? BusinessTypeEnum.PA.getName()
@@ -393,7 +393,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                 NotificationDB.insertNotification(
                                     NotificationDB.KEY_NOTIFY,
                                     ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
-                                    jsonData.getBody(),
+                                    jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                                     jsonData.getTitle(),
                                     BusinessTypeEnum.PA.getName(),
                                     imageUrl);
