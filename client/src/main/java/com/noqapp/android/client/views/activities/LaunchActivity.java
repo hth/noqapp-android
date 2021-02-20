@@ -1116,10 +1116,11 @@ public class LaunchActivity
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     if (jsonData instanceof JsonAlertData) {
+                        /* Executed when app is in foreground. */
                         NotificationDB.insertNotification(
                             NotificationDB.KEY_NOTIFY,
                             ((JsonAlertData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
+                            jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                             jsonData.getTitle(),
                             ((JsonAlertData) jsonData).getBusinessType() == null
                                 ? BusinessTypeEnum.PA.getName()
