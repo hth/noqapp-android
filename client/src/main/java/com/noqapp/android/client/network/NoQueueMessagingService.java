@@ -932,21 +932,20 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
         }
     }
 
-
     private void callNotificationViewApi(String notificationId) {
         com.noqapp.android.common.beans.body.Notification notification = new com.noqapp.android.common.beans.body.Notification();
         notification.setId(notificationId);
         NotificationApiCall notificationApiCall = new NotificationApiCall(this);
         if (UserUtils.isLogin()) {
             notificationApiCall.notificationViewed(
-                    UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth(),
-                    notification);
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
+                notification);
         } else {
             notificationApiCall.notificationViewed(
-                    UserUtils.getDeviceId(),
-                    notification);
+                UserUtils.getDeviceId(),
+                notification);
         }
     }
 }

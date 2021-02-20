@@ -1,5 +1,3 @@
-
-
 package com.noqapp.android.client.model;
 
 import android.util.Log;
@@ -90,4 +88,3 @@ public class NotificationApiCall {
         });
     }
 }
-
