@@ -54,7 +54,10 @@ public enum BusinessTypeEnum implements Serializable {
     PA("PA", "Park", Q, "Queue", QQ),
 
     //For Marketplace
-    PR("PR", "Property Rental", M, "Marketplace", MP);
+    PR("PR", "Property Rental", M, "Marketplace", MP),
+
+    //For All, to support when sending to all
+    ZZ("ZZ", "Global", Q, "Queue", QQ);
 
     private final String description;
     private final String name;
