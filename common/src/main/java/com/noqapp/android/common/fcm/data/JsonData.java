@@ -1,5 +1,7 @@
 package com.noqapp.android.common.fcm.data;
 
+import android.text.TextUtils;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
@@ -61,6 +63,15 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
 
     @JsonProperty("textToSpeeches")
     private List<JsonTextToSpeech> jsonTextToSpeeches;
+
+    public String getLocalLanguageMessageBody(String language) {
+        String localLanguageMessageBody = translatedBody.get(language);
+        if(TextUtils.isEmpty(localLanguageMessageBody)){
+            return body;
+        }else{
+            return localLanguageMessageBody;
+        }
+    }
 
     public FirebaseMessageTypeEnum getFirebaseMessageType() {
         return firebaseMessageType;
