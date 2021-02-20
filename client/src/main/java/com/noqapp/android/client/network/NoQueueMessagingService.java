@@ -271,7 +271,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                 default:
                     // object = null;
             }
-            if (jsonData != null) {
+            if (jsonData != null && !TextUtils.isEmpty(jsonData.getId())) {
                 callNotificationViewApi(jsonData.getId());
             }
             try {
@@ -931,7 +931,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
             notificationManager.notify(notificationId, mBuilder.build());
         }
     }
-
 
     private void callNotificationViewApi(String notificationId) {
         com.noqapp.android.common.beans.body.Notification notification = new com.noqapp.android.common.beans.body.Notification();
