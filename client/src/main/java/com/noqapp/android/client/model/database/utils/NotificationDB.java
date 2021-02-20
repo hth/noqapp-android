@@ -28,11 +28,11 @@ public class NotificationDB {
     public static final String KEY_NOTIFY = "KY_NOTI";
     private static final String TAG = NotificationDB.class.getSimpleName();
 
-    public static void insertNotification(String key, String codeQR, String value, String title, String businessType, String imageUrl) {
+    public static void insertNotification(String key, String codeQR, String body, String title, String businessType, String imageUrl) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseTable.Notification.KEY, key);
         cv.put(DatabaseTable.Notification.CODE_QR, codeQR);
-        cv.put(DatabaseTable.Notification.BODY, value);
+        cv.put(DatabaseTable.Notification.BODY, body);
         cv.put(DatabaseTable.Notification.TITLE, title);
         cv.put(DatabaseTable.Notification.STATUS, KEY_UNREAD); // added default
         // Returns the current date with the same format as Javascript's new Date().toJSON(), ISO 8601

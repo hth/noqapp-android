@@ -1116,14 +1116,13 @@ public class LaunchActivity
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     if (jsonData instanceof JsonAlertData) {
+                        /* Executed when app is in foreground. */
                         NotificationDB.insertNotification(
                             NotificationDB.KEY_NOTIFY,
                             ((JsonAlertData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
+                            jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                             jsonData.getTitle(),
-                            ((JsonAlertData) jsonData).getBusinessType() == null
-                                ? BusinessTypeEnum.PA.getName()
-                                : ((JsonAlertData) jsonData).getBusinessType().getName(),
+                            ((JsonAlertData) jsonData).getBusinessType().getName(),
                             jsonData.getImageURL());
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
@@ -1253,9 +1252,8 @@ public class LaunchActivity
                             ((JsonAlertData) jsonData).getCodeQR(),
                             jsonData.getBody(),
                             jsonData.getTitle(),
-                            ((JsonAlertData) jsonData).getBusinessType() == null
-                                ? BusinessTypeEnum.PA.getName()
-                                : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
+                            ((JsonAlertData) jsonData).getBusinessType().getName(),
+                            jsonData.getImageURL());
                         /* Show some meaningful msg to the end user */
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
                         updateNotificationBadgeCount();

@@ -20,8 +20,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
-
 /**
  * User: hitender
  * Date: 4/2/17 6:40 PM
@@ -103,7 +101,7 @@ public class DeviceApiCall {
      */
     public void register(String did, String mail, String auth, DeviceToken deviceToken) {
         Log.d(TAG, "Registered device api called");
-        deviceClientApiUrls.registration(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+        deviceClientApiUrls.registration(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

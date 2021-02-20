@@ -328,11 +328,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                 NotificationDB.insertNotification(
                                     NotificationDB.KEY_NOTIFY,
                                     ((JsonAlertData) jsonData).getCodeQR(),
-                                    body,
+                                    jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                                     title,
-                                    ((JsonAlertData) jsonData).getBusinessType() == null
-                                        ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(),
+                                    ((JsonAlertData) jsonData).getBusinessType().getName(),
                                     imageUrl);
 
                                 sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
@@ -393,7 +391,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                 NotificationDB.insertNotification(
                                     NotificationDB.KEY_NOTIFY,
                                     ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
-                                    jsonData.getBody(),
+                                    jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                                     jsonData.getTitle(),
                                     BusinessTypeEnum.PA.getName(),
                                     imageUrl);
@@ -410,17 +408,15 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                             }
                         } else {
                             sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
-                            // add notification to DB
                             if (jsonData instanceof JsonAlertData) {
+                                /* When app is on background. Adding to notification table. */
                                 Log.e("IN JsonAlertData", jsonData.toString());
                                 NotificationDB.insertNotification(
                                     NotificationDB.KEY_NOTIFY,
                                     ((JsonAlertData) jsonData).getCodeQR(),
-                                    body,
+                                    jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                                     title,
-                                    ((JsonAlertData) jsonData).getBusinessType() == null
-                                        ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(),
+                                    ((JsonAlertData) jsonData).getBusinessType().getName(),
                                     imageUrl);
                             }
                         }

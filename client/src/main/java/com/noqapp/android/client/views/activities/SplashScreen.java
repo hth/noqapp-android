@@ -155,9 +155,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 /* Call this api only once in life time. */
                 DeviceApiCall deviceModel = new DeviceApiCall();
                 deviceModel.setDeviceRegisterPresenter(this);
-                if(UserUtils.isLogin()) {
+                if (UserUtils.isLogin()) {
                     deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
-                }else{
+                } else {
                     deviceModel.register(deviceToken);
                 }
             } else {
