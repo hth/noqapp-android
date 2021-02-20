@@ -40,11 +40,6 @@ import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.nlopez.smartlocation.SmartLocation;
-import io.nlopez.smartlocation.location.config.LocationAccuracy;
-import io.nlopez.smartlocation.location.config.LocationParams;
-
-///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
 public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
 
     static SplashScreen splashScreen;
@@ -52,9 +47,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     private static String tokenFCM = "";
     private static String deviceId = "";
     private final int REQUEST_PERMISSION_SETTING = 23;
-    public final int GPS_ENABLE_REQUEST = 24;
     private Location location;
-    private GPSTracker gpsTracker;
     private LocationPref locationPref;
 
     @Override
@@ -70,20 +63,6 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         locationPref = AppInitialize.getLocationPreference();
         location.setLatitude(locationPref.getLatitude());
         location.setLongitude(locationPref.getLongitude());
-        // gpsTracker = new GPSTracker(this, null);
-//        if (gpsTracker.isLocationEnabled()) {
-//            callLocationManager();
-//        } else {
-//            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-//            dialog.setTitle("Enable Location")
-//                    .setMessage("Location is disabled, in order to use the application you need to enable location in your device")
-//                    .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
-//                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                        startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
-//                    })
-//                    .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> finish());
-//            dialog.show();
-//        }
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashScreen.this, instanceIdResult -> {
             tokenFCM = instanceIdResult.getToken();
@@ -197,43 +176,6 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
-    private void callLocationManager() {
-        if (hasAccessTo(Manifest.permission.ACCESS_FINE_LOCATION) && hasAccessTo(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            ActivityCompat.requestPermissions(
-                this,
-                new String[]{PermissionUtils.LOCATION_PERMISSION},
-                PermissionUtils.PERMISSION_REQUEST_LOCATION);
-            return;
-        }
-
-        long mLocTrackingInterval = 1000; // 5 sec
-        float trackingDistance = 1;
-        LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
-
-        LocationParams.Builder builder = new LocationParams.Builder()
-            .setAccuracy(trackingAccuracy)
-            .setDistance(trackingDistance)
-            .setInterval(mLocTrackingInterval);
-
-        SmartLocation.with(this)
-            .location()
-            // .continuous()
-            .config(builder.build())
-            .start(location -> {
-                if (null != location) {
-                    this.location = location;
-                    callLaunchScreen();
-                    try { // pseudo code
-                        SmartLocation.with(splashScreen).location().stop();
-                        Log.e("SmartLocation: ", "Stopped");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                }
-            });
-    }
-
     private boolean hasAccessTo(String permissionType) {
         return ActivityCompat.checkSelfPermission(this, permissionType) != PackageManager.PERMISSION_GRANTED;
     }
@@ -244,7 +186,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         switch (requestCode) {
             case PermissionUtils.PERMISSION_REQUEST_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    callLocationManager();
+                    callLaunchScreen();
                 } else {
                     //code for deny
                     if (ActivityCompat.shouldShowRequestPermissionRationale(SplashScreen.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -283,21 +225,10 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PERMISSION_SETTING) {
             if (hasAccessTo(Manifest.permission.ACCESS_FINE_LOCATION) && hasAccessTo(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                //("permissions not granted!")
                 finish();
             } else {
-                //("permissions granted!")
-                callLocationManager();
+                callLaunchScreen();
             }
-        }
-        if (requestCode == GPS_ENABLE_REQUEST) {
-            if (gpsTracker.isLocationEnabled()) {
-                callLocationManager();
-            } else {
-                finish();
-            }
-        } else {
-            finish();
         }
     }
 
@@ -307,13 +238,8 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
-            i.putExtra("latitude", location.getLatitude());
-            i.putExtra("longitude", location.getLongitude());
             splashScreen.startActivity(i);
             splashScreen.finish();
-        }
-        if (null == location) {
-            Log.d(TAG, "Location not found");
         }
     }
 }

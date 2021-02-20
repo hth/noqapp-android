@@ -12,26 +12,36 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.location.LocationManager;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.activities.AppInitialize;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.utils.GeoIP;
 
-public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
+import kotlin.Unit;
+import kotlin.jvm.functions.Function3;
+
+public class ChangeLocationFragment extends Fragment implements Function3<String, Double, Double, Unit> {
     private double lat, lng;
     private String city = "";
-    private GPSTracker gpsTracker;
     private AutoCompleteTextView autoCompleteTextView;
+    private ChangeLocationFragmentInteractionListener changeLocationFragmentInteractionListener;
 
-    public ChangeLocationFragment() {
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof LaunchActivity) {
+            changeLocationFragmentInteractionListener = (ChangeLocationFragmentInteractionListener) context;
+        } else
+            throw new IllegalStateException("LaunchActivity must implement ChangeLocationFragmentInteractionListener.");
     }
 
     @Override
@@ -55,32 +65,24 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 city = AppInitialize.cityName;
                 AppUtils.hideKeyBoard(getActivity());
             }
-            LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city);
+            changeLocationFragmentInteractionListener.updateLocationInfo(lat, lng, city);
         });
+
         tv_auto.setOnClickListener((View v) -> {
-            gpsTracker = new GPSTracker(getActivity(), this);
-            if (gpsTracker.isLocationEnabled()) {
-                gpsTracker.getLocation();
-            } else {
-                gpsTracker.showSettingsAlert();
-            }
+            LocationManager.INSTANCE.fetchCurrentLocationAddress(requireContext(), this);
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
         autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
             try {
-                String city_name = (String) parent.getItemAtPosition(position);
-                GeoIP latLng = AppUtils.getLocationFromAddress(getActivity(), city_name);
+                String cityName = (String) parent.getItemAtPosition(position);
+                GeoIP latLng = AppUtils.getLocationFromAddress(getActivity(), cityName);
                 if (null != latLng) {
                     lat = latLng.getLatitude();
                     lng = latLng.getLongitude();
-                    LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city_name);
-                    //finish();
-                } else {
-                    //lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-                    //lng = LaunchActivity.getLaunchActivity().getDefaultLongitude();
+                    changeLocationFragmentInteractionListener.updateLocationInfo(lat, lng, cityName);
                 }
-                city = city_name;
+                city = cityName;
                 AppUtils.hideKeyBoard(getActivity());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -121,40 +123,36 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
     @Override
     public void onResume() {
         super.onResume();
+        LocationManager.INSTANCE.startLocationUpdate(requireContext());
         LaunchActivity.getLaunchActivity().getSupportActionBar().hide();
     }
 
     @Override
-    public void updateLocationUI() {
-        // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
-        if (gpsTracker.getLatitude() == 0) {
+    public void onStop() {
+        LocationManager.INSTANCE.stopLocationUpdate(requireContext());
+        super.onStop();
+    }
+
+    @Override
+    public Unit invoke(String address, Double latitude, Double longitude) {
+        if (latitude == 0 && longitude == 0) {
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = locationPref.getLatitude();
             lng = locationPref.getLongitude();
             city = locationPref.getCity();
         } else {
-            lat = gpsTracker.getLatitude();
-            lng = gpsTracker.getLongitude();
-            city = gpsTracker.getCityName();
+            lat = latitude;
+            lng = longitude;
+            city = address;
         }
-        LaunchActivity.getLaunchActivity().updateLocationInfo(lat, lng, city);
+
+        changeLocationFragmentInteractionListener.updateLocationInfo(latitude, longitude, city);
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);
-        AppUtils.hideKeyBoard(getActivity());
+        AppUtils.hideKeyBoard(requireActivity());
+        return null;
     }
 
-    @Override
-    public void onDetach() {
-        if (null != gpsTracker) {
-            gpsTracker.stopUsingGPS();
-        }
-        super.onDetach();
-    }
-
-    @Override
-    public void onStop() {
-        if (null != gpsTracker) {
-            gpsTracker.stopUsingGPS();
-        }
-        super.onStop();
+    public interface ChangeLocationFragmentInteractionListener {
+        void updateLocationInfo(Double latitude, Double longitude, String address);
     }
 }

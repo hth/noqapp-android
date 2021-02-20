@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,7 +33,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -93,7 +91,6 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
-import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.utils.TextToSpeechHelper;
@@ -107,17 +104,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import io.nlopez.smartlocation.SmartLocation;
-import io.nlopez.smartlocation.location.config.LocationAccuracy;
-import io.nlopez.smartlocation.location.config.LocationParams;
-
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class LaunchActivity
-    extends ScannerActivity
-    implements OnClickListener, AppBlacklistPresenter,
-    SharedPreferences.OnSharedPreferenceChangeListener,
-    DeviceRegisterPresenter {
+        extends ScannerActivity
+        implements OnClickListener, AppBlacklistPresenter,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        DeviceRegisterPresenter, ChangeLocationFragment.ChangeLocationFragmentInteractionListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static Locale locale;
     public static SharedPreferences languagePref;
@@ -245,9 +238,9 @@ public class LaunchActivity
         tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
-            AppUtils.isRelease()
-                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                : getString(R.string.version_no, "Not for release"));
+                AppUtils.isRelease()
+                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                        : getString(R.string.version_no, "Not for release"));
         setUpExpandableList(UserUtils.isLogin());
 
         /* Call to check if the current version of app blacklist or old. */
@@ -256,23 +249,12 @@ public class LaunchActivity
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.isSupportedAppVersion();
         }
-        if (null != getIntent().getExtras()) {
-            try {
-                AppInitialize.location.setLatitude(getIntent().getDoubleExtra("latitude", Constants.DEFAULT_LATITUDE));
-                AppInitialize.location.setLongitude(getIntent().getDoubleExtra("longitude", Constants.DEFAULT_LONGITUDE));
-                AppInitialize.cityName = CommonHelper.getAddress(
-                    AppInitialize.location.getLatitude(),
-                    AppInitialize.location.getLongitude(),
-                    this);
-
-                Log.d(TAG, "Launch Activity City Name =" + AppInitialize.cityName);
-                //updateLocationUI();
-                tv_location.setText(AppInitialize.cityName);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         setKioskMode();
+    }
+
+    @Override
+    public void displayAddress(String addressOutput, Double latitude, Double longitude) {
+        updateLocationInfo(latitude, longitude, addressOutput);
     }
 
     private void setKioskMode() {
@@ -306,14 +288,15 @@ public class LaunchActivity
     public void updateLocationUI() {
         if (null != homeFragment) {
             homeFragment.updateUIWithNewLocation(
-                AppInitialize.location.getLatitude(),
-                AppInitialize.location.getLongitude(),
-                AppInitialize.cityName);
+                    AppInitialize.location.getLatitude(),
+                    AppInitialize.location.getLongitude(),
+                    AppInitialize.cityName);
             //tv_location.setText(cityName);
         }
     }
 
-    public void updateLocationInfo(double lat, double lng, String city) {
+    @Override
+    public void updateLocationInfo(Double lat, Double lng, String city) {
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
         getSupportActionBar().show();
         AppInitialize.location.setLatitude(lat);
@@ -321,46 +304,11 @@ public class LaunchActivity
         AppInitialize.cityName = city;
         tv_location.setText(AppInitialize.cityName);
         LocationPref locationPref = AppInitialize.getLocationPreference()
-            .setCity(AppInitialize.cityName)
-            .setLatitude(lat)
-            .setLongitude(lng);
+                .setCity(AppInitialize.cityName)
+                .setLatitude(lat)
+                .setLongitude(lng);
         AppInitialize.setLocationPreference(locationPref);
         updateLocationUI();
-    }
-
-    private void callLocationManager() {
-        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        ) {
-            ActivityCompat.requestPermissions(this, new String[]{PermissionUtils.LOCATION_PERMISSION}, PermissionUtils.PERMISSION_REQUEST_LOCATION);
-            return;
-        }
-
-        long mLocTrackingInterval = 1000 * 60 * 2; // 5 sec
-        float trackingDistance = 1;
-        LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
-
-        LocationParams.Builder builder = new LocationParams.Builder()
-            .setAccuracy(trackingAccuracy)
-            .setDistance(trackingDistance)
-            .setInterval(mLocTrackingInterval);
-
-        SmartLocation.with(this)
-            .location()
-            .continuous()
-            .config(builder.build())
-            .start(location -> {
-                if (null != location) {
-                    AppInitialize.location.setLatitude(location.getLatitude());
-                    AppInitialize.location.setLongitude(location.getLongitude());
-                    Log.e("Location found: ", "Location detected: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
-                    AppInitialize.cityName = CommonHelper.getAddress(
-                        AppInitialize.location.getLatitude(),
-                        AppInitialize.location.getLongitude(),
-                        this);
-                    updateLocationUI();
-                }
-            });
     }
 
     @Override
@@ -467,18 +415,6 @@ public class LaunchActivity
                 e.printStackTrace();
             }
         }
-        if (requestCode == PermissionUtils.PERMISSION_REQUEST_LOCATION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                /* Permission was granted. */
-                if (ContextCompat.checkSelfPermission(this, PermissionUtils.LOCATION_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
-                    callLocationManager();
-                }
-            } else {
-                /* Permission denied, Disable the functionality that depends on this permission. */
-                new CustomToast().showToast(this, "Permission denied");
-            }
-            return;
-        }
     }
 
     public boolean isOnline() {
@@ -528,10 +464,10 @@ public class LaunchActivity
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
-                    .placeholder(ImageUtils.getProfilePlaceholder(this))
-                    .error(ImageUtils.getProfileErrorPlaceholder(this))
-                    .into(iv_profile);
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(iv_profile);
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -574,9 +510,9 @@ public class LaunchActivity
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (f instanceof ChangeLocationFragment) {
             updateLocationInfo(
-                AppInitialize.location.getLatitude(),
-                AppInitialize.location.getLongitude(),
-                AppInitialize.cityName);
+                    AppInitialize.location.getLatitude(),
+                    AppInitialize.location.getLongitude(),
+                    AppInitialize.cityName);
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -676,10 +612,10 @@ public class LaunchActivity
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
                         ShowAlertInformation.showThemePlayStoreDialog(
-                            this,
-                            getString(R.string.playstore_update_title),
-                            getString(R.string.playstore_update_msg),
-                            true);
+                                this,
+                                getString(R.string.playstore_update_title),
+                                getString(R.string.playstore_update_msg),
+                                true);
                     }
                 } catch (Exception e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -1103,21 +1039,21 @@ public class LaunchActivity
                 } else if (jsonData instanceof JsonTopicAppointmentData) {
                     Log.e("JsonTopicAppointData", jsonData.toString());
                     NotificationDB.insertNotification(
-                        NotificationDB.KEY_NOTIFY,
-                        "",
-                        jsonData.getBody(),
-                        jsonData.getTitle(),
-                        BusinessTypeEnum.PA.getName(),
-                        jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            "",
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            jsonData.getImageURL());
                 } else if (jsonData instanceof JsonMedicalFollowUp) {
                     Log.e("JsonMedicalFollowUp", jsonData.toString());
                     NotificationDB.insertNotification(
-                        NotificationDB.KEY_NOTIFY,
-                        ((JsonMedicalFollowUp) jsonData).getCodeQR(),
-                        jsonData.getBody(),
-                        jsonData.getTitle(),
-                        BusinessTypeEnum.PA.getName(),
-                        jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonMedicalFollowUp) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            BusinessTypeEnum.PA.getName(),
+                            jsonData.getImageURL());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
@@ -1236,12 +1172,12 @@ public class LaunchActivity
                             TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
                         }
                         NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            BusinessTypeEnum.PA.getName(),
-                            jsonData.getImageURL());
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                BusinessTypeEnum.PA.getName(),
+                                jsonData.getImageURL());
 
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                             NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
@@ -1270,17 +1206,17 @@ public class LaunchActivity
                             for (JsonQueueChangeServiceTime jsonQueueChangeServiceTime : jsonQueueChangeServiceTimes) {
                                 if (jsonQueueChangeServiceTime.getToken() == jsonTokenAndQueue.getToken()) {
                                     String body = jsonData.getBody() + "\n " + "Token: " + jsonQueueChangeServiceTime.getDisplayToken()
-                                        + "\n " + "Previous: " + jsonQueueChangeServiceTime.getOldTimeSlotMessage()
-                                        + "\n " + "Updated: " + jsonQueueChangeServiceTime.getUpdatedTimeSlotMessage();
+                                            + "\n " + "Previous: " + jsonQueueChangeServiceTime.getOldTimeSlotMessage()
+                                            + "\n " + "Updated: " + jsonQueueChangeServiceTime.getUpdatedTimeSlotMessage();
                                     ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), body);
 
                                     NotificationDB.insertNotification(
-                                        NotificationDB.KEY_NOTIFY,
-                                        ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                                        body,
-                                        jsonData.getTitle(),
-                                        ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
-                                        jsonData.getImageURL());
+                                            NotificationDB.KEY_NOTIFY,
+                                            ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
+                                            body,
+                                            jsonData.getTitle(),
+                                            ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
+                                            jsonData.getImageURL());
                                     updateNotificationBadgeCount();
                                     if (null != homeFragment) {
                                         homeFragment.updateCurrentQueueList();

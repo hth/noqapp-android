@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.location.LocationManager;
 import com.noqapp.android.client.model.SearchBusinessStoreApiAuthenticCalls;
 import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -27,7 +28,6 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -42,11 +42,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function3;
+
 /**
  * Created by chandra on 5/7/17.
  */
 public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener,
-    SearchBusinessStorePresenter, GPSTracker.LocationCommunicator {
+        SearchBusinessStorePresenter, Function3<String, Double, Double, Unit> {
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
     private String scrollId = "";
@@ -60,7 +63,6 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private LinearLayout ll_search;
     private final String TAG = SearchActivity.class.getSimpleName();
     private RelativeLayout rl_empty;
-    private GPSTracker gpsTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,12 +117,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         });
 
         tv_auto.setOnClickListener((View v) -> {
-            gpsTracker = new GPSTracker(this, this);
-            if (gpsTracker.isLocationEnabled()) {
-                gpsTracker.getLocation();
-            } else {
-                gpsTracker.showSettingsAlert();
-            }
+            LocationManager.INSTANCE.fetchCurrentLocationAddress(this, this);
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
@@ -344,22 +341,21 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
-    public void updateLocationUI() {
-        // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Lng: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
-        double latitude, longitude;
-        if (gpsTracker.getLatitude() == 0) {
+    public Unit invoke(String address, Double latitude, Double longitude) {
+        if (latitude == 0 && longitude == 0) {
             LocationPref locationPref = AppInitialize.getLocationPreference();
-            latitude = locationPref.getLatitude();
-            longitude = locationPref.getLongitude();
+            lat = String.valueOf(locationPref.getLatitude());
+            lng = String.valueOf(locationPref.getLongitude());
             city = locationPref.getCity();
         } else {
-            latitude = gpsTracker.getLatitude();
-            longitude = gpsTracker.getLongitude();
-            city = gpsTracker.getCityName();
+            lat = String.valueOf(latitude);
+            lng = String.valueOf(longitude);
+            city = address;
         }
-        lat = String.valueOf(latitude);
-        lng = String.valueOf(longitude);
+
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);
         AppUtils.hideKeyBoard(this);
+        return null;
     }
+
 }
