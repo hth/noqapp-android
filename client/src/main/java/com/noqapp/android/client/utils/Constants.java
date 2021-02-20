@@ -16,6 +16,11 @@ public class Constants extends BaseConstants{
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeAfterJoinQActivity = 12;
     public static final int requestCodeNotification = 2;
+
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 10001;
+    public static final int RESULT_CURRENT_LOCATION = 10002;
+    public static final int REQUEST_CHECK_SETTINGS = 10003;
+
     public static final int SCREEN_TIME_OUT = 5000;
     public static final int DISCONNECT_TIMEOUT = 60000; //// 1 min = 1 * 60 * 1000 ms
     public static final String PUSH_NOTIFICATION = "pushNotification";
@@ -55,6 +60,19 @@ public class Constants extends BaseConstants{
     public static final String CURRENTLY_SERVING_PREF_KEY = "%s_currently_serving";
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
     public static final String PRE_REGISTER = "pre_approve";
+
+    public interface LocationConstants {
+        int SUCCESS_RESULT = 10001;
+        int FAILURE_RESULT = 10002;
+        int FETCH_LOCATION_JOB_ID = 10003;
+        String RECEIVER = "locationaddress.receiver";
+        String RESULT_DATA_KEY = "locationaddress.resultdatakey";
+        String PLACE = "locationaddress.place";
+        String LOCATION_DATA_EXTRA = "locationaddress.locationdataextra";
+        String PLACE_NAME = "locationaddress.placename";
+        String LOCATION_LAT_DATA_EXTRA = "locationaddress.latextra";
+        String LOCATION_LNG_DATA_EXTRA = "locationaddress.lngextra";
+    }
 
     /**
      * Computes App version.
