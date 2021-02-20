@@ -18,7 +18,7 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/search.json")
+    @POST("open/search")
     Call<BizStoreElasticList> search(
             @Header("X-R-DID")
             String did,
@@ -34,7 +34,7 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/search/kiosk.json")
+    @POST("open/search/kiosk")
     Call<BizStoreElasticList> kiosk(
             @Header("X-R-DID")
             String did,
@@ -51,7 +51,7 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/search/healthCare.json")
+    @POST("open/search/healthCare")
     Call<BizStoreElasticList> healthCare(
             @Header("X-R-DID")
             String did,
@@ -67,7 +67,7 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/search/otherMerchant.json")
+    @POST("open/search/otherMerchant")
     Call<BizStoreElasticList> otherMerchant(
             @Header("X-R-DID")
             String did,
@@ -83,7 +83,7 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/search/canteen.json")
+    @POST("open/search/canteen")
     Call<BizStoreElasticList> canteen(
             @Header("X-R-DID")
             String did,
@@ -99,7 +99,7 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/search/placeOfWorship.json")
+    @POST("open/search/placeOfWorship")
     Call<BizStoreElasticList> placeOfWorship(
         @Header("X-R-DID")
         String did,

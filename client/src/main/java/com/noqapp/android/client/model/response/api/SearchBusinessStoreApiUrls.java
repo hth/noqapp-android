@@ -14,7 +14,7 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("api/c/search.json")
+    @POST("api/c/search")
     Call<BizStoreElasticList> search(
             @Header("X-R-DID")
             String did,

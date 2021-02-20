@@ -13,7 +13,7 @@ public interface MedicalRecordApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/h/medicalRecord/history.json")
+    @GET("api/c/h/medicalRecord/history")
     Call<JsonMedicalRecordList> history(
             @Header("X-R-MAIL")
             String mail,

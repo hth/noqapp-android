@@ -17,7 +17,7 @@ public interface KioskApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_JOIN_FAILED_PAYMENT_CALL_REQUEST}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/kiosk/queue.json")
+    @POST("api/c/kiosk/queue")
     Call<JsonToken> joinQueue(
             @Header("X-R-DID")
             String did,

@@ -9,7 +9,7 @@ import retrofit2.http.Header;
 
 public interface HistoricalApiUrls {
 
-    @GET("api/c/historical/orders.json")
+    @GET("api/c/historical/orders")
     Call<JsonPurchaseOrderHistoricalList> orders(
             @Header("X-R-MAIL")
             String mail,
@@ -18,7 +18,7 @@ public interface HistoricalApiUrls {
             String auth
     );
 
-    @GET("api/c/historical/queues.json")
+    @GET("api/c/historical/queues")
     Call<JsonQueueHistoricalList> queues(
             @Header("X-R-MAIL")
             String mail,

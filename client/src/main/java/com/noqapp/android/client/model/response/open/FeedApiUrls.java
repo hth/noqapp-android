@@ -15,7 +15,7 @@ public interface FeedApiUrls {
      * ERROR
      * {@link com.noqapp.android.client.presenter.beans.JsonFeedList#jsonFeeds} is empty when not found
      */
-    @GET("open/feed/v1/active.json")
+    @GET("open/feed/v1/active")
     Call<JsonFeedList> activeFeed(
             @Header("X-R-DID")
             String did,
