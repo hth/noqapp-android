@@ -330,9 +330,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                     ((JsonAlertData) jsonData).getCodeQR(),
                                     jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                                     title,
-                                    ((JsonAlertData) jsonData).getBusinessType() == null
-                                        ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(),
+                                    ((JsonAlertData) jsonData).getBusinessType().getName(),
                                     imageUrl);
 
                                 sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
@@ -418,9 +416,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                     ((JsonAlertData) jsonData).getCodeQR(),
                                     jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
                                     title,
-                                    ((JsonAlertData) jsonData).getBusinessType() == null
-                                        ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(),
+                                    ((JsonAlertData) jsonData).getBusinessType().getName(),
                                     imageUrl);
                             }
                         }
