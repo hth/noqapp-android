@@ -471,11 +471,11 @@
     <!-- 07/04 -->
     <string name="location_search_hint">ನಗರದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
     <string name="search_hint">ಹುಡುಕಲು ನಮೂದಿಸಿ</string>
-    <string name="lang_indian_language">Indian Language</string>
-    <string name="lang_foreign_language">Foreign Language</string>
+    <string name="lang_indian_language">ಭಾರತೀಯ ಭಾಷೆ</string>
+    <string name="lang_foreign_language">ವಿದೇಶಿ ಭಾಷೆ</string>
     <string name="french">ಫ್ರೆಂಚ್</string>
-    <string name="business_too_far_from_location">Business is too far from your location. Click OK to continue joining the queue.</string>
-    <string name="canteen_near">CSD/URC</string>
+    <string name="business_too_far_from_location">ವ್ಯಾಪಾರವು ನಿಮ್ಮ ಸ್ಥಳದಿಂದ ತುಂಬಾ ದೂರದಲ್ಲಿದೆ. ಸರದಿಯಲ್ಲಿ ಸೇರುವುದನ್ನು ಮುಂದುವರಿಸಲು ಸರಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</string>
+    <string name="canteen_near">ಸಿ.ಎಸ್ಡೀ/ಯುಆರ್‌ಸಿ</string>
     <string name="place_of_worship">ಪೂಜಾ ಸ್ಥಳ</string>
-    <string name="appointment">Appointment</string>
+    <string name="appointment">ನೇಮಕಾತಿ</string>
 </resources>
