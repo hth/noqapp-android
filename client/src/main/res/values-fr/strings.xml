@@ -477,7 +477,7 @@
     <string name="business_too_far_from_location">Les affaires sont trop loin de chez vous. Cliquez sur OK pour continuer à rejoindre la file d\'attente.</string>
     <string name="canteen_near">CSD/URC</string>
     <string name="place_of_worship">Lieu de culte</string>
-    <string name="appointment">Appointment</string>
+    <string name="appointment">Rendez-vous</string>
 
     <!-- location related -->
     <string name="address_found">Address found</string>
