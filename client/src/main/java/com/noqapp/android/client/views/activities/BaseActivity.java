@@ -155,8 +155,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         this.codeQR = codeQR;
         isFavourite = AppInitialize.getFavouriteList().contains(codeQR);
         iv_favourite.setVisibility(View.VISIBLE);
-        iv_favourite.setBackground(isFavourite ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
-                : ContextCompat.getDrawable(this, R.drawable.heart_orange));
+        iv_favourite.setBackground(isFavourite
+            ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
+            : ContextCompat.getDrawable(this, R.drawable.heart_orange));
     }
 
     private void markFavourite() {
@@ -175,9 +176,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         if (null != jsonResponse) {
             if (jsonResponse.getResponse() == Constants.SUCCESS) {
                 ArrayList<String> favouriteList = AppInitialize.getFavouriteList();
-                if(isFavourite){
+                if (isFavourite) {
                     favouriteList.remove(codeQR);
-                }else{
+                } else {
                     favouriteList.add(codeQR);
                 }
                 AppInitialize.saveFavouriteList(favouriteList);
