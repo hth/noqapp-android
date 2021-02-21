@@ -26,6 +26,8 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.GPSTracker;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -132,7 +134,11 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 /* Call this api only once in life time. */
                 DeviceApiCall deviceModel = new DeviceApiCall();
                 deviceModel.setDeviceRegisterPresenter(this);
-                deviceModel.register(deviceToken);
+                if (UserUtils.isLogin()) {
+                    deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+                } else {
+                    deviceModel.register(deviceToken);
+                }
             } else {
                 Log.e("Launch", "launching from sendRegistrationToServer");
                 Log.d(TAG, "Exist deviceId=" + deviceId);

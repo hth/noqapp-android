@@ -471,13 +471,13 @@
     <!-- 07/04 -->
     <string name="location_search_hint">Saissez le nom de la ville</string>
     <string name="search_hint">Entrer pour rechercher</string>
-    <string name="lang_indian_language">Indian Language</string>
-    <string name="lang_foreign_language">Foreign Language</string>
+    <string name="lang_indian_language">Langue indienne</string>
+    <string name="lang_foreign_language">Une langue étrangère</string>
     <string name="french">Français</string>
-    <string name="business_too_far_from_location">Business is too far from your location. Click OK to continue joining the queue.</string>
+    <string name="business_too_far_from_location">Les affaires sont trop loin de chez vous. Cliquez sur OK pour continuer à rejoindre la file d\'attente.</string>
     <string name="canteen_near">CSD/URC</string>
     <string name="place_of_worship">Lieu de culte</string>
-    <string name="appointment">Appointment</string>
+    <string name="appointment">Rendez-vous</string>
 
     <!-- location related -->
     <string name="address_found">Address found</string>

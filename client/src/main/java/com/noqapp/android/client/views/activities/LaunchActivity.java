@@ -1052,17 +1052,17 @@ public class LaunchActivity
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     if (jsonData instanceof JsonAlertData) {
+                        /* Executed when app is in foreground. */
                         NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonAlertData) jsonData).getCodeQR(),
-                                jsonData.getBody(),
-                                jsonData.getTitle(),
-                                ((JsonAlertData) jsonData).getBusinessType() == null
-                                        ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(),
-                                jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonAlertData) jsonData).getCodeQR(),
+                            jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
+                            jsonData.getTitle(),
+                            ((JsonAlertData) jsonData).getBusinessType().getName(),
+                            jsonData.getImageURL());
+
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) jsonData).getToken());
@@ -1185,15 +1185,14 @@ public class LaunchActivity
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     if (jsonData instanceof JsonAlertData) {
                         NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonAlertData) jsonData).getCodeQR(),
-                                jsonData.getBody(),
-                                jsonData.getTitle(),
-                                ((JsonAlertData) jsonData).getBusinessType() == null
-                                        ? BusinessTypeEnum.PA.getName()
-                                        : ((JsonAlertData) jsonData).getBusinessType().getName(), jsonData.getImageURL());
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonAlertData) jsonData).getCodeQR(),
+                            jsonData.getBody(),
+                            jsonData.getTitle(),
+                            ((JsonAlertData) jsonData).getBusinessType().getName(),
+                            jsonData.getImageURL());
                         /* Show some meaningful msg to the end user */
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonChangeServiceTimeData) {
                         JsonTokenAndQueue jsonTokenAndQueue = TokenAndQueueDB.findByQRCode(((JsonChangeServiceTimeData) jsonData).getCodeQR());

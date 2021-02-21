@@ -471,13 +471,13 @@
     <!-- 07/04 -->
     <string name="location_search_hint">नगर का नाम डालें</string>
     <string name="search_hint">खोज करें</string>
-    <string name="lang_indian_language">Indian Language</string>
-    <string name="lang_foreign_language">Foreign Language</string>
-    <string name="french">French</string>
-    <string name="business_too_far_from_location">Business is too far from your location. Click OK to continue joining the queue.</string>
-    <string name="canteen_near">CSD/URC</string>
+    <string name="lang_indian_language">भारतीय भाषा</string>
+    <string name="lang_foreign_language">विदेशी भाषा</string>
+    <string name="french">फ्रेंच</string>
+    <string name="business_too_far_from_location">व्यवसाय आपके स्थान से बहुत दूर है। कतार में शामिल होना जारी रखने के लिए ठीक क्लिक करें।</string>
+    <string name="canteen_near">सीएसडी/यूआरसी</string>
     <string name="place_of_worship">पूजा का स्थान</string>
-    <string name="appointment">Appointment</string>
+    <string name="appointment">नियुक्ति</string>
 
     <!-- location related -->
     <string name="address_found">Address found</string>

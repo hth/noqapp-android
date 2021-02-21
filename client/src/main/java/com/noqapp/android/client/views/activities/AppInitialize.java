@@ -18,6 +18,7 @@ import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
@@ -422,11 +423,15 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static void fetchDeviceId(DeviceRegisterPresenter deviceRegisterPresenter) {
         DeviceApiCall deviceModel = new DeviceApiCall();
         deviceModel.setDeviceRegisterPresenter(deviceRegisterPresenter);
-        deviceModel.register(
-            new DeviceToken(
-                AppInitialize.getTokenFCM(),
-                Constants.appVersion(),
-                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude())));
+        DeviceToken deviceToken = new DeviceToken(
+            AppInitialize.getTokenFCM(),
+            Constants.appVersion(),
+            CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
+        if (UserUtils.isLogin()) {
+            deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+        } else {
+            deviceModel.register(deviceToken);
+        }
     }
 
     public static void processRegisterDeviceIdResponse(DeviceRegistered deviceRegistered, Context context) {

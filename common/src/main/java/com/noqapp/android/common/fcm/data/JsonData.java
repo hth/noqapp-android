@@ -1,5 +1,8 @@
 package com.noqapp.android.common.fcm.data;
 
+import android.text.TextUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
@@ -71,6 +74,15 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public JsonData setId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -107,15 +119,6 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public JsonData setId(String id) {
-        this.id = id;
-        return this;
-    }
-
     public List<JsonTextToSpeech> getJsonTextToSpeeches() {
         return jsonTextToSpeeches;
     }
@@ -131,7 +134,17 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         } else {
             return body;
         }
+    }
 
+    /** Transient. */
+    @JsonIgnore
+    public String getLocalLanguageMessageBody(String language) {
+        String localLanguageMessageBody = translatedBody.get(language);
+        if (TextUtils.isEmpty(localLanguageMessageBody)) {
+            return body;
+        } else {
+            return localLanguageMessageBody;
+        }
     }
 
     @Override
