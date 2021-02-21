@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 
 import java.io.Serializable;
@@ -37,6 +38,9 @@ public class FavoriteElastic implements Serializable {
 
     @JsonProperty("qr")
     private String codeQR;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public List<BizStoreElastic> getFavoriteSuggested() {
         return favoriteSuggested;
@@ -72,5 +76,25 @@ public class FavoriteElastic implements Serializable {
     public FavoriteElastic setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("FavoriteElastic{");
+        sb.append("favoriteSuggested=").append(favoriteSuggested);
+        sb.append(", favoriteTagged=").append(favoriteTagged);
+        sb.append(", actionType=").append(actionType);
+        sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

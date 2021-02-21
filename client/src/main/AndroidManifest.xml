@@ -132,6 +132,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
+            android:name=".views.activities.FavouriteListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
             android:name=".views.activities.AllFeedsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />

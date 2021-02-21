@@ -326,6 +326,7 @@
     <string name="error_mobile_no_length">Phone number has to be 10 digits</string>
     <string name="profile"> <u>PROFILE</u></string>
     <string name="merchant_account">Register Your Business</string>
+    <string name="favourite">Favourite</string>
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
     <string name="order_history">Order &amp; Queue History</string>

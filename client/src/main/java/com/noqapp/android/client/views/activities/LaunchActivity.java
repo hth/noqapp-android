@@ -864,6 +864,7 @@ public class LaunchActivity
         menuDrawerItems.add(new MenuDrawer(getString(R.string.order_history), true, false, R.drawable.purchase_order));
         if (isLogin) {
             menuDrawerItems.add(new MenuDrawer(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
+            menuDrawerItems.add(new MenuDrawer(getString(R.string.favourite), true, false, R.drawable.ic_favorite));
         }
         menuDrawerItems.add(new MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers));
         menuDrawerItems.add(new MenuDrawer(getString(R.string.notification_setting), true, false, R.drawable.ic_notification));
@@ -923,6 +924,11 @@ public class LaunchActivity
                 break;
             case R.drawable.purchase_order: {
                 Intent in = new Intent(LaunchActivity.this, OrderQueueHistoryActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_favorite: {
+                Intent in = new Intent(LaunchActivity.this, FavouriteListActivity.class);
                 startActivity(in);
                 break;
             }

@@ -322,6 +322,7 @@
     <string name="error_mobile_no_length">फोन नंबर १० अंकों का होना चाहिए</string>
     <string name="profile"> <u>प्रोफ़ाइल</u></string>
     <string name="merchant_account">व्यापारी बने</string>
+    <string name="favourite">Favourite</string>
     <string name="address">पता</string>
     <string name="privacy_in_short">गोपनीयता त्वरित अवलोकन</string>
     <string name="order_history">आदेश और कतार इतिहास</string>

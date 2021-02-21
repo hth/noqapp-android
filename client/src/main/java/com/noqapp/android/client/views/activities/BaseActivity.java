@@ -161,7 +161,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
 
     private void markFavourite() {
         showProgress();
-        FavouriteApiCall favouriteApiCall = new FavouriteApiCall(this);
+        FavouriteApiCall favouriteApiCall = new FavouriteApiCall();
+        favouriteApiCall.setFavouritePresenter(this);
         FavoriteElastic favoriteElastic = new FavoriteElastic();
         favoriteElastic.setActionType(isFavourite ? ActionTypeEnum.REMOVE : ActionTypeEnum.ADD);
         favoriteElastic.setCodeQR(codeQR);

@@ -322,6 +322,7 @@
     <string name="error_mobile_no_length">ಫೋನ್ ಸಂಖ್ಯೆ 10 ಅಂಕೆಗಳಿರಬೇಕು</string>
     <string name="profile"> <u>ಪ್ರೊಫೈಲ್</u></string>
     <string name="merchant_account">ನಿಮ್ಮ ವ್ಯಾಪಾರವನ್ನು ನೋಂದಾಯಿಸಿ</string>
+    <string name="favourite">Favourite</string>
     <string name="address">ವಿಳಾಸ</string>
     <string name="privacy_in_short">ಗೌಪ್ಯತೆಯ ತ್ವರಿತ ಅವಲೋಕನ</string>
     <string name="order_history">ಆರ್ಡರ್ ಹಾಗೂ ಸರದಿಯ ಇತಿಹಾಸ</string>
