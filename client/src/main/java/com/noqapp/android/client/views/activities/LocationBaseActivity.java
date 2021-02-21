@@ -15,15 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.noqapp.android.client.BuildConfig;
@@ -57,36 +54,38 @@ public abstract class LocationBaseActivity extends BaseActivity {
         }
     }
 
-    public void showSnackbar(
+    public void showSnackBar(
             int mainTextStringId,
             int actionStringId,
             View.OnClickListener listener
     ) {
         Snackbar.make(findViewById(android.R.id.content), getString(mainTextStringId),
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(actionStringId), listener)
-                .show();
+            Snackbar.LENGTH_INDEFINITE)
+            .setAction(getString(actionStringId), listener)
+            .show();
     }
 
     private boolean checkLocationPermission() {
-        int permissionState = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+        int permissionState = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermissions() {
-        boolean shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+        boolean shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (shouldProvideRationale) {
-            showSnackbar(R.string.permission_rationale, android.R.string.ok,
-                    v -> ActivityCompat.requestPermissions(LocationBaseActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            REQUEST_PERMISSIONS_REQUEST_CODE));
+            showSnackBar(R.string.permission_rationale, android.R.string.ok,
+                    v -> ActivityCompat.requestPermissions(
+                        LocationBaseActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_PERMISSIONS_REQUEST_CODE));
         } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
+            ActivityCompat.requestPermissions(
+                this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
 
@@ -99,7 +98,7 @@ public abstract class LocationBaseActivity extends BaseActivity {
         } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             getCurrentLocation();
         } else {
-            showSnackbar(R.string.permission_denied_explanation, R.string.action_settings,
+            showSnackBar(R.string.permission_denied_explanation, R.string.action_settings,
                     v -> {
                         // Build intent that displays the App settings screen.
                         Intent intent = new Intent();
@@ -112,17 +111,14 @@ public abstract class LocationBaseActivity extends BaseActivity {
     }
 
     private void checkLocationSettings() {
-
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setNeedBle(true);
 
         Task<LocationSettingsResponse> task =
-                LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
+            LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
 
         task.addOnSuccessListener(response -> {
             LocationSettingsStates locationSettingsStates = response.getLocationSettingsStates();

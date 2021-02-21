@@ -23,7 +23,7 @@ class AddressResultReceiver constructor(
 
         if (resultCode == Constants.LocationConstants.SUCCESS_RESULT) {
             address(addressOutput, latitude, longitude)
-        }else{
+        } else {
             address(addressOutput, 0.0, 0.0)
         }
     }
