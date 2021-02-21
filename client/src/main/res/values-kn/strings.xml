@@ -478,7 +478,7 @@
     <string name="canteen_near">ಸಿ.ಎಸ್ಡೀ/ಯುಆರ್‌ಸಿ</string>
     <string name="place_of_worship">ಪೂಜಾ ಸ್ಥಳ</string>
     <string name="appointment">ನೇಮಕಾತಿ</string>
-  
+
     <!-- location related -->
     <string name="address_found">Address found</string>
     <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
