@@ -11,7 +11,6 @@ import com.google.android.gms.location.*
 import com.noqapp.android.client.utils.Constants
 
 internal object LocationManager {
-
     private var lastLocation: Location? = null
 
     private var locationCallback = object : LocationCallback() {
@@ -80,5 +79,4 @@ internal object LocationManager {
         intent.putExtra(Constants.LocationConstants.LOCATION_LNG_DATA_EXTRA, longitude)
         FetchAddressIntentService.enqueueWork(context, intent)
     }
-
 }
