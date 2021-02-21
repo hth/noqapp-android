@@ -135,7 +135,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         sp_name_list = findViewById(R.id.sp_name_list);
 
         initActionsViews(true);
-
         tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(BeforeJoinActivity.this, tv_mobile.getText().toString()));
         tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(BeforeJoinActivity.this, tv_address.getText().toString()));
         tv_add.setOnClickListener((View v) -> {
@@ -150,6 +149,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, 
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
+            enableFavourite(codeQR);
             isCategoryData = bundle.getBoolean(IBConstant.KEY_IS_CATEGORY, false);
             String imageUrl = bundle.getString(IBConstant.KEY_IMAGE_URL);
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable(IBConstant.KEY_DATA_OBJECT);

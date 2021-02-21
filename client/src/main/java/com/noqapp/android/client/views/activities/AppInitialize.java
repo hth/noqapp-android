@@ -14,6 +14,7 @@ import androidx.multidex.MultiDexApplication;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
@@ -35,6 +36,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -64,6 +66,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     private static final String KEY_SHOW_HELPER = "showHelper";
     private static final String KEY_PREVIOUS_USER_QID = "previousUserQID";
     private static final String KEY_USER_PROFILE = "userProfile";
+    private static final String KEY_FAVOURITE_CODE_QRS = "favouriteCodeQR";
     /* Secured Shared Preference. */
     static final String TOKEN_FCM = "tokenFCM";
     public static ActivityCommunicator activityCommunicator;
@@ -459,5 +462,22 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
                 Log.e("BadTokenException :", "Exception caught while showing the window" + e.getLocalizedMessage());
             }
         }
+    }
+
+    public static void saveFavouriteList(ArrayList<String> list) {
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(KEY_FAVOURITE_CODE_QRS, json);
+        editor.apply();
+    }
+
+    public static ArrayList<String> getFavouriteList() {
+        Gson gson = new Gson();
+        String json = preferences.getString(KEY_FAVOURITE_CODE_QRS, null);
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        ArrayList<String> favouriteList = gson.fromJson(json, type);
+        return null == favouriteList ? new ArrayList<>() : favouriteList;
     }
 }

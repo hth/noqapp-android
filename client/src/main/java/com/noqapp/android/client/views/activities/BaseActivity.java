@@ -7,26 +7,39 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.FavouriteApiCall;
+import com.noqapp.android.client.presenter.beans.FavoriteElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.presenter.FavouritePresenter;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 import com.noqapp.android.common.utils.CustomProgressBar;
 import com.noqapp.android.common.utils.NetworkUtil;
 
-public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter {
+import java.util.ArrayList;
+
+public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter, FavouritePresenter {
     private CustomProgressBar customProgressBar;
     protected ImageView iv_home;
     protected ImageView actionbarBack;
+    protected ImageView iv_favourite;
     protected TextView tv_toolbar_title;
     private NetworkUtil networkUtil;
+    protected boolean isFavourite = false;
+    protected String codeQR = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
 
     protected void initActionsViews(boolean isHomeVisible) {
         iv_home = findViewById(R.id.iv_home);
+        iv_favourite = findViewById(R.id.iv_favourite);
         actionbarBack = findViewById(R.id.actionbarBack);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         iv_home.setVisibility(isHomeVisible ? View.VISIBLE : View.INVISIBLE);
@@ -72,6 +86,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
             Intent goToA = new Intent(BaseActivity.this, LaunchActivity.class);
             goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(goToA);
+        });
+        iv_favourite.setOnClickListener((View v) -> {
+            markFavourite();
         });
     }
 
@@ -132,5 +149,44 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
 
     protected boolean isOnline() {
         return networkUtil.isOnline();
+    }
+
+    protected void enableFavourite(String codeQR) {
+        this.codeQR = codeQR;
+        isFavourite = AppInitialize.getFavouriteList().contains(codeQR);
+        iv_favourite.setVisibility(View.VISIBLE);
+        iv_favourite.setBackground(isFavourite ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
+                : ContextCompat.getDrawable(this, R.drawable.heart_orange));
+    }
+
+    private void markFavourite() {
+        showProgress();
+        FavouriteApiCall favouriteApiCall = new FavouriteApiCall(this);
+        FavoriteElastic favoriteElastic = new FavoriteElastic();
+        favoriteElastic.setActionType(isFavourite ? ActionTypeEnum.REMOVE : ActionTypeEnum.ADD);
+        favoriteElastic.setCodeQR(codeQR);
+        favouriteApiCall.actionOnFavorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), favoriteElastic);
+    }
+
+    @Override
+    public void favouriteResponse(JsonResponse jsonResponse) {
+        dismissProgress();
+        if (null != jsonResponse) {
+            if (jsonResponse.getResponse() == Constants.SUCCESS) {
+                ArrayList<String> favouriteList = AppInitialize.getFavouriteList();
+                if(isFavourite){
+                    favouriteList.remove(codeQR);
+                }else{
+                    favouriteList.add(codeQR);
+                }
+                AppInitialize.saveFavouriteList(favouriteList);
+                enableFavourite(codeQR);
+                new CustomToast().showToast(this, "Favourite updated successfully!!!");
+            } else {
+                new CustomToast().showToast(this, "Favourite update failed!!!");
+            }
+        } else {
+            new CustomToast().showToast(this, "Favourite update failed!!!");
+        }
     }
 }

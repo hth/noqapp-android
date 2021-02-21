@@ -122,13 +122,13 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
         tv_rating = findViewById(R.id.tv_rating);
 
         initActionsViews(true);
-
         tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(BeforeJoinOrderQueueActivity.this, tv_mobile.getText().toString()));
         tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(BeforeJoinOrderQueueActivity.this, tv_address.getText().toString()));
         swipeRefreshLayout.setOnRefreshListener(this);
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
+            enableFavourite(codeQR);
             bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
             isCategoryData = bundle.getBoolean(IBConstant.KEY_IS_CATEGORY, false);
             String imageUrl = bizStoreElastic.getDisplayImage();
