@@ -54,7 +54,7 @@ public abstract class LocationBaseActivity extends BaseActivity {
         }
     }
 
-    public void showSnackBar(
+    public void showSnackbar(
             int mainTextStringId,
             int actionStringId,
             View.OnClickListener listener
@@ -76,7 +76,7 @@ public abstract class LocationBaseActivity extends BaseActivity {
             Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (shouldProvideRationale) {
-            showSnackBar(R.string.permission_rationale, android.R.string.ok,
+            showSnackbar(R.string.permission_rationale, android.R.string.ok,
                     v -> ActivityCompat.requestPermissions(
                         LocationBaseActivity.this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -98,7 +98,7 @@ public abstract class LocationBaseActivity extends BaseActivity {
         } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             getCurrentLocation();
         } else {
-            showSnackBar(R.string.permission_denied_explanation, R.string.action_settings,
+            showSnackbar(R.string.permission_denied_explanation, R.string.action_settings,
                     v -> {
                         // Build intent that displays the App settings screen.
                         Intent intent = new Intent();
