@@ -8,8 +8,8 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -28,10 +28,10 @@ import java.util.List;
 public class FavoriteElastic implements Serializable {
 
     @JsonProperty("fs")
-    private List<BizStoreElastic> favoriteSuggested = new ArrayList<>();
+    private Set<BizStoreElastic> favoriteSuggested = new HashSet<>();
 
     @JsonProperty("ft")
-    private List<BizStoreElastic> favoriteTagged = new ArrayList<>();
+    private Set<BizStoreElastic> favoriteTagged = new HashSet<>();
 
     @JsonProperty("at")
     private ActionTypeEnum actionType;
@@ -42,7 +42,7 @@ public class FavoriteElastic implements Serializable {
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public List<BizStoreElastic> getFavoriteSuggested() {
+    public Set<BizStoreElastic> getFavoriteSuggested() {
         return favoriteSuggested;
     }
 
@@ -51,7 +51,7 @@ public class FavoriteElastic implements Serializable {
         return this;
     }
 
-    public List<BizStoreElastic> getFavoriteTagged() {
+    public Set<BizStoreElastic> getFavoriteTagged() {
         return favoriteTagged;
     }
 
