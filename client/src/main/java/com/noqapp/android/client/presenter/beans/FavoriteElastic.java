@@ -9,7 +9,9 @@ import com.noqapp.android.common.model.types.ActionTypeEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -32,6 +34,12 @@ public class FavoriteElastic implements Serializable {
 
     @JsonProperty("ft")
     private List<BizStoreElastic> favoriteTagged = new ArrayList<>();
+
+    @JsonProperty("fsb")
+    private Set<String> favoriteSuggestedBizNameIds = new HashSet<>();
+
+    @JsonProperty("ftb")
+    private Set<String> favoriteTaggedBizNameIds = new HashSet<>();
 
     @JsonProperty("at")
     private ActionTypeEnum actionType;
@@ -57,6 +65,24 @@ public class FavoriteElastic implements Serializable {
 
     public FavoriteElastic addFavoriteTagged(BizStoreElastic favoriteTagged) {
         this.favoriteTagged.add(favoriteTagged);
+        return this;
+    }
+
+    public Set<String> getFavoriteSuggestedBizNameIds() {
+        return favoriteSuggestedBizNameIds;
+    }
+
+    public FavoriteElastic setFavoriteSuggestedBizNameIds(Set<String> favoriteSuggestedBizNameIds) {
+        this.favoriteSuggestedBizNameIds = favoriteSuggestedBizNameIds;
+        return this;
+    }
+
+    public Set<String> getFavoriteTaggedBizNameIds() {
+        return favoriteTaggedBizNameIds;
+    }
+
+    public FavoriteElastic setFavoriteTaggedBizNameIds(Set<String> favoriteTaggedBizNameIds) {
+        this.favoriteTaggedBizNameIds = favoriteTaggedBizNameIds;
         return this;
     }
 
