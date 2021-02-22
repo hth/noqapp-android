@@ -16,6 +16,7 @@ import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by chandra on 5/7/17.
@@ -31,7 +32,7 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
         initActionsViews(false);
         RecyclerView rv_merchant_around_you = findViewById(R.id.rv_merchant_around_you);
         tv_toolbar_title.setText(getString(R.string.screen_view_all));
-        ArrayList<BizStoreElastic> listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
+        List<BizStoreElastic> listData = (List<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         if (null == listData) {
             listData = new ArrayList<>();
         }
@@ -45,7 +46,6 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
         StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this, Double.parseDouble(lat), Double.parseDouble(lng));
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
-
     }
 
     @Override
