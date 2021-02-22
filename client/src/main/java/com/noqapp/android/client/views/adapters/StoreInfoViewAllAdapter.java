@@ -28,17 +28,17 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
     private final OnItemClickListener listener;
-    private ArrayList<BizStoreElastic> dataSet;
+    private List<BizStoreElastic> dataSet;
     private double lat, log;
 
-    public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
+    public StoreInfoViewAllAdapter(List<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;

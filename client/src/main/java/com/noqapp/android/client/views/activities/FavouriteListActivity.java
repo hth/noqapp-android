@@ -21,7 +21,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FavouriteListActivity extends BaseActivity implements StoreInfoViewAllAdapter.OnItemClickListener,
         FavouriteListPresenter {
@@ -112,7 +112,7 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
     public void favouriteListResponse(FavoriteElastic favoriteElastic) {
         String lat = String.valueOf(AppInitialize.location.getLatitude());
         String lng = String.valueOf(AppInitialize.location.getLongitude());
-        ArrayList<BizStoreElastic> list = (ArrayList<BizStoreElastic>) favoriteElastic.getFavoriteTagged();
+        List<BizStoreElastic> list = favoriteElastic.getFavoriteTagged();
         StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(list, this, this, Double.parseDouble(lat), Double.parseDouble(lng));
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
     }
