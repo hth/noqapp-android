@@ -3,6 +3,8 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,21 +28,23 @@ import java.util.List;
 public class FavouriteListActivity extends BaseActivity implements StoreInfoViewAllAdapter.OnItemClickListener,
         FavouriteListPresenter {
     private final String TAG = FavouriteListActivity.class.getSimpleName();
-    private RecyclerView rv_merchant_around_you;
+    private RecyclerView rcv_favourite;
     private boolean isFirstTime = false;
+    private RelativeLayout rl_empty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_all);
+        setContentView(R.layout.activity_favourite);
         initActionsViews(false);
-        rv_merchant_around_you = findViewById(R.id.rv_merchant_around_you);
+        rcv_favourite = findViewById(R.id.rcv_favourite);
+        rl_empty = findViewById(R.id.rl_empty);
         tv_toolbar_title.setText(getString(R.string.favourite));
-        rv_merchant_around_you.setHasFixedSize(true);
+        rcv_favourite.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        rv_merchant_around_you.setLayoutManager(horizontalLayoutManager);
-        rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
+        rcv_favourite.setLayoutManager(horizontalLayoutManager);
+        rcv_favourite.setItemAnimator(new DefaultItemAnimator());
 
         callFavouriteApi();
     }
@@ -98,8 +102,13 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         String lat = String.valueOf(AppInitialize.location.getLatitude());
         String lng = String.valueOf(AppInitialize.location.getLongitude());
         List<BizStoreElastic> list = favoriteElastic.getFavoriteTagged();
+        if (null != list && list.size() == 0) {
+            rl_empty.setVisibility(View.VISIBLE);
+        } else {
+            rl_empty.setVisibility(View.GONE);
+        }
         StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(list, this, this, Double.parseDouble(lat), Double.parseDouble(lng));
-        rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
+        rcv_favourite.setAdapter(storeInfoViewAllAdapter);
         isFirstTime = true;
     }
 

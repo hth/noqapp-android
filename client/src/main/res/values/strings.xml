@@ -358,6 +358,8 @@
     <string name="pay_and_join">Pay &amp; Confirm Queue</string>
 
     <!-- Empty Screens labels -->
+    <string name="empty_favourite_title">Oops no store is favourite</string>
+    <string name="empty_favourite_subtitle">favourite list is empty</string>
     <string name="empty_order_title">Your bag is empty</string>
     <string name="empty_order_subtitle">There is nothing selected</string>
     <string name="empty_noti_title">Empty notification</string>
