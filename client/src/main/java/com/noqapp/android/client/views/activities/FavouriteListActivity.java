@@ -27,6 +27,8 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         FavouriteListPresenter {
     private final String TAG = FavouriteListActivity.class.getSimpleName();
     private RecyclerView rv_merchant_around_you;
+    private boolean isFirstTime = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
@@ -40,13 +42,7 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManager);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
-        if (NetworkUtils.isConnectingToInternet(this)) {
-            FavouriteApiCall favouriteApiCall = new FavouriteApiCall();
-            favouriteApiCall.setFavouriteListPresenter(this);
-            favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
-        } else {
-            ShowAlertInformation.showNetworkDialog(this);
-        }
+        callFavouriteApi();
     }
 
     @Override
@@ -115,5 +111,24 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         List<BizStoreElastic> list = favoriteElastic.getFavoriteTagged();
         StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(list, this, this, Double.parseDouble(lat), Double.parseDouble(lng));
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
+        isFirstTime = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isFirstTime) {
+            callFavouriteApi();
+        }
+    }
+
+    private void callFavouriteApi() {
+        if (NetworkUtils.isConnectingToInternet(this)) {
+            FavouriteApiCall favouriteApiCall = new FavouriteApiCall();
+            favouriteApiCall.setFavouriteListPresenter(this);
+            favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
     }
 }
