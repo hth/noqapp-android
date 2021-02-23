@@ -50,23 +50,6 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         Intent in;
         Bundle b = new Bundle();
         switch (item.getBusinessType()) {
-            //Level up
-            case DO:
-            case CD:
-            case CDQ:
-            case BK:
-            case HS:
-            case PW:
-                // open hospital/Bank profile
-                b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
-                b.putBoolean(IBConstant.KEY_FROM_LIST, false);
-                b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
-                b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
-                b.putSerializable("BizStoreElastic", item);
-                in = new Intent(this, CategoryInfoActivity.class);
-                in.putExtra("bundle", b);
-                startActivity(in);
-                break;
             case PH:
                 // open order screen
                 in = new Intent(this, StoreDetailActivity.class);
@@ -80,6 +63,12 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
             case CFQ:
             case FTQ:
             case STQ:
+            case DO:
+            case CD:
+            case CDQ:
+            case BK:
+            case HS:
+            case PW:
                 //@TODO Modification done due to corona crisis, Re-check all the functionality
                 //proper testing required
                 if (BusinessSupportEnum.OQ == item.getBusinessType().getBusinessSupport()) {

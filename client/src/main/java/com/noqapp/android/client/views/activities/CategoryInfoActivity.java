@@ -160,7 +160,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         btn_register.setOnClickListener((View v) -> register());
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
-            enableFavourite(codeQR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
             if (null != bizStoreElastic) {
                 switch (bizStoreElastic.getBusinessType()) {
