@@ -11,17 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FavouriteApiCall;
 import com.noqapp.android.client.presenter.FavouriteListPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.FavoriteElastic;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
-        initActionsViews(false);
+        initActionsViews(true);
         rcv_favourite = findViewById(R.id.rcv_favourite);
         rl_empty = findViewById(R.id.rl_empty);
         tv_toolbar_title.setText(getString(R.string.favourite));
@@ -54,6 +57,19 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         Intent in;
         Bundle b = new Bundle();
         switch (item.getBusinessType()) {
+            case DO:
+            case CD:
+            case CDQ:
+            case BK:
+                // open hospital profile
+                in = new Intent(this, BeforeJoinActivity.class);
+                in.putExtra(IBConstant.KEY_IS_DO, item.getBusinessType() == BusinessTypeEnum.DO);
+                in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(IBConstant.KEY_FROM_LIST, false);
+                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
+                startActivity(in);
+                break;
             case PH:
                 // open order screen
                 in = new Intent(this, StoreDetailActivity.class);
@@ -67,10 +83,6 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
             case CFQ:
             case FTQ:
             case STQ:
-            case DO:
-            case CD:
-            case CDQ:
-            case BK:
             case HS:
             case PW:
                 //@TODO Modification done due to corona crisis, Re-check all the functionality
