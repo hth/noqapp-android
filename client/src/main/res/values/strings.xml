@@ -326,6 +326,7 @@
     <string name="error_mobile_no_length">Phone number has to be 10 digits</string>
     <string name="profile"> <u>PROFILE</u></string>
     <string name="merchant_account">Register Your Business</string>
+    <string name="favourite">Favourite</string>
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
     <string name="order_history">Order &amp; Queue History</string>
@@ -357,6 +358,8 @@
     <string name="pay_and_join">Pay &amp; Confirm Queue</string>
 
     <!-- Empty Screens labels -->
+    <string name="empty_favourite_title">No store marked as favorite</string>
+    <string name="empty_favourite_subtitle">Tag your favorite store for quick access</string>
     <string name="empty_order_title">Your bag is empty</string>
     <string name="empty_order_subtitle">There is nothing selected</string>
     <string name="empty_noti_title">Empty notification</string>
