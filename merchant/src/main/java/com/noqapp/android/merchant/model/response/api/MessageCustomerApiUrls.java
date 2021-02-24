@@ -15,7 +15,7 @@ public interface MessageCustomerApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/message/customer.json")
+    @POST("api/m/message/customer")
     Call<JsonResponse> messageCustomer(
             @Header("X-R-DID")
             String did,

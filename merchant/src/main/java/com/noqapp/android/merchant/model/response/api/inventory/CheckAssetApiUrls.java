@@ -15,7 +15,7 @@ public interface CheckAssetApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/i/checkAsset/bizName.json")
+    @POST("api/m/i/checkAsset/bizName")
     Call<CheckAsset> bizName(
             @Header("X-R-DID")
             String did,
@@ -38,7 +38,7 @@ public interface CheckAssetApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/i/checkAsset/floors.json")
+    @POST("api/m/i/checkAsset/floors")
     Call<JsonCheckAssetList> floors(
             @Header("X-R-DID")
             String did,
@@ -61,7 +61,7 @@ public interface CheckAssetApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/i/checkAsset/rooms.json")
+    @POST("api/m/i/checkAsset/rooms")
     Call<JsonCheckAssetList> rooms(
             @Header("X-R-DID")
             String did,
@@ -84,7 +84,7 @@ public interface CheckAssetApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/i/checkAsset/assetsInRoom.json")
+    @POST("api/m/i/checkAsset/assetsInRoom")
     Call<JsonCheckAssetList> assetsInRoom(
             @Header("X-R-DID")
             String did,

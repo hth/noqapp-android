@@ -22,7 +22,7 @@ public interface StoreSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/ss/state/{codeQR}.json")
+    @GET("api/m/ss/state/{codeQR}")
     Call<StoreSetting> getQueueState(
         @Header("X-R-DID")
         String did,
@@ -46,7 +46,7 @@ public interface StoreSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/ss/removeSchedule/{codeQR}.json")
+    @POST("api/m/ss/removeSchedule/{codeQR}")
     Call<StoreSetting> removeSchedule(
         @Header("X-R-DID")
         String did,
@@ -71,7 +71,7 @@ public interface StoreSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_ACTION_NOT_PERMITTED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/ss/modify.json")
+    @POST("api/m/ss/modify")
     Call<StoreSetting> modify(
         @Header("X-R-DID")
         String did,
@@ -97,7 +97,7 @@ public interface StoreSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SERVICE_PAYMENT_NOT_ALLOWED_FOR_THIS_BUSINESS_TYPE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/ss/serviceCost.json")
+    @POST("api/m/ss/serviceCost")
     Call<StoreSetting> serviceCost(
         @Header("X-R-DID")
         String did,
@@ -123,7 +123,7 @@ public interface StoreSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CANNOT_ACCEPT_APPOINTMENT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/ss/appointment.json")
+    @POST("api/m/ss/appointment")
     Call<StoreSetting> appointment(
         @Header("X-R-DID")
         String did,
@@ -141,7 +141,7 @@ public interface StoreSettingApiUrls {
         StoreSetting storeSetting
     );
 
-    @GET("api/m/ss/storeHours/{codeQR}.json")
+    @GET("api/m/ss/storeHours/{codeQR}")
     Call<StoreHours> storeHours(
         @Header("X-R-DID")
         String did,
@@ -159,7 +159,7 @@ public interface StoreSettingApiUrls {
         String codeQR
     );
 
-    @POST("api/m/ss/storeHours.json")
+    @POST("api/m/ss/storeHours")
     Call<JsonResponse> storeHoursUpdate(
         @Header("X-R-DID")
         String did,
@@ -178,7 +178,7 @@ public interface StoreSettingApiUrls {
     );
 
 
-    @POST("api/m/ss/notifyFreshStockArrival.json")
+    @POST("api/m/ss/notifyFreshStockArrival")
     Call<JsonResponse> notifyFreshStockArrival(
         @Header("X-R-DID")
         String did,
