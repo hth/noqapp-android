@@ -37,7 +37,7 @@ public interface DeviceApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPGRADE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      */
-    @POST("open/device/version")
+    @POST("open/device/versionCheck")
     Call<JsonLatestAppVersion> isSupportedAppVersion(
             @Header("X-R-DT")
             String dt,

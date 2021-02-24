@@ -22,7 +22,7 @@ public interface ScheduleApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      */
-    @GET("api/m/schedule/scheduleForMonth/{month}/{codeQR}.json")
+    @GET("api/m/schedule/scheduleForMonth/{month}/{codeQR}")
     Call<JsonScheduleList> scheduleForMonth(
             @Header("X-R-DID")
             String did,
@@ -49,7 +49,7 @@ public interface ScheduleApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      */
-    @GET("api/m/schedule/scheduleForDay/{day}/{codeQR}.json")
+    @GET("api/m/schedule/scheduleForDay/{day}/{codeQR}")
     Call<JsonScheduleList> scheduleForDay(
             @Header("X-R-DID")
             String did,
@@ -78,7 +78,7 @@ public interface ScheduleApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#FAILED_TO_FIND_APPOINTMENT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/schedule/action.json")
+    @POST("api/m/schedule/action")
     Call<JsonSchedule> scheduleAction(
             @Header("X-R-DID")
             String did,
@@ -103,7 +103,7 @@ public interface ScheduleApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CANNOT_BOOK_APPOINTMENT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/schedule/bookSchedule.json")
+    @POST("api/m/schedule/bookSchedule")
     Call<JsonSchedule> bookSchedule(
             @Header("X-R-DID")
             String did,

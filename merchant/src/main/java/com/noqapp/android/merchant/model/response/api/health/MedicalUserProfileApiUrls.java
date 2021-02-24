@@ -21,7 +21,7 @@ public interface MedicalUserProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ENTRY_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalUserProfile/fetch.json")
+    @POST("api/m/h/medicalUserProfile/fetch")
     Call<JsonProfile> fetch(
             @Header("X-R-DID")
             String did,

@@ -17,7 +17,7 @@ public interface MerchantStatsApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/stats/healthCare.json")
+    @GET("api/m/stats/healthCare")
     Call<HealthCareStatList> healthCare(
             @Header("X-R-DID")
             String did,

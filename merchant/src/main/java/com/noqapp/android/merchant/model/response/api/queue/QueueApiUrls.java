@@ -28,7 +28,7 @@ public interface QueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/q/queues.json")
+    @GET("api/m/q/queues")
     Call<JsonTopicList> getQueues(
             @Header("X-R-DID")
             String did,
@@ -53,7 +53,7 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/q/served.json")
+    @POST("api/m/q/served")
     Call<JsonToken> served(
             @Header("X-R-DID")
             String did,
@@ -77,7 +77,7 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/q/showClients/{codeQR}.json")
+    @POST("api/m/q/showClients/{codeQR}")
     Call<JsonQueuePersonList> showClients(
             @Header("X-R-DID")
             String did,
@@ -101,7 +101,7 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/q/showClients/historical.json")
+    @POST("api/m/q/showClients/historical")
     Call<JsonQueuePersonList> showClientsHistorical(
             @Header("X-R-DID")
             String did,
@@ -126,7 +126,7 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MERCHANT_COULD_NOT_ACQUIRE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/q/acquire.json")
+    @POST("api/m/q/acquire")
     Call<JsonToken> acquire(
             @Header("X-R-DID")
             String did,
@@ -152,7 +152,7 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/q/dispenseToken.json")
+    @POST("api/m/q/dispenseToken")
     Call<JsonToken> dispenseTokenWithClientInfo(
             @Header("X-R-DID")
             String did,
@@ -178,7 +178,7 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_ALREADY_IN_QUEUE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CHANGE_USER_IN_QUEUE}
      */
-    @POST("api/m/q/changeUserInQueue.json")
+    @POST("api/m/q/changeUserInQueue")
     Call<JsonQueuePersonList> changeUserInQueue(
             @Header("X-R-DID")
             String did,
@@ -201,7 +201,7 @@ public interface QueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ORDER_PAYMENT_UPDATE_FAILED}
      */
-    @POST("api/m/q/counterPayment.json")
+    @POST("api/m/q/counterPayment")
     Call<JsonQueuedPerson> counterPayment(
             @Header("X-R-DID")
             String did,
@@ -225,7 +225,7 @@ public interface QueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/q/cancel.json")
+    @POST("api/m/q/cancel")
     Call<JsonQueuedPerson> cancel(
             @Header("X-R-DID")
             String did,

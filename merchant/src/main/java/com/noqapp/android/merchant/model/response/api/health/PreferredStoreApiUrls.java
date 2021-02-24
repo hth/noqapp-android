@@ -20,7 +20,7 @@ public interface PreferredStoreApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/h/preferredStore/all.json")
+    @GET("api/m/h/preferredStore/all")
     Call<JsonPreferredBusinessBucket> getAllPreferredStores(
             @Header("X-R-DID")
             String did,
@@ -39,7 +39,7 @@ public interface PreferredStoreApiUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      */
-    @GET("api/m/h/preferredStore/file/{codeQR}/{bizStoreId}.json")
+    @GET("api/m/h/preferredStore/file/{codeQR}/{bizStoreId}")
     Call<ResponseBody> file(
 
             @Header("X-R-DID")
