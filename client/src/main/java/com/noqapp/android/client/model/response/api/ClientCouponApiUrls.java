@@ -23,7 +23,7 @@ public interface ClientCouponApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/coupon/available.json")
+    @GET("api/c/coupon/available")
     Call<JsonCouponList> availableCoupon(
             @Header("X-R-DID")
             String did,
@@ -43,7 +43,7 @@ public interface ClientCouponApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/coupon/filter/{codeQR}.json")
+    @GET("api/c/coupon/filter/{codeQR}")
     Call<JsonCouponList> filterCoupon(
             @Header("X-R-DID")
             String did,
@@ -66,7 +66,7 @@ public interface ClientCouponApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/coupon/global.json")
+    @POST("api/c/coupon/global")
     Call<JsonCouponList> globalCoupon(
             @Header("X-R-DID")
             String did,
@@ -92,7 +92,7 @@ public interface ClientCouponApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#COUPON_NOT_APPLICABLE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/coupon/apply.json")
+    @POST("api/c/coupon/apply")
     Call<JsonPurchaseOrder> apply(
             @Header("X-R-DID")
             String did,
@@ -117,7 +117,7 @@ public interface ClientCouponApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#COUPON_REMOVAL_FAILED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/coupon/remove.json")
+    @POST("api/c/coupon/remove")
     Call<JsonPurchaseOrder> remove(
             @Header("X-R-DID")
             String did,

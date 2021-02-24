@@ -33,7 +33,7 @@ public interface ClientProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE}
      */
-    @GET("api/c/profile/fetch.json")
+    @GET("api/c/profile/fetch")
     Call<JsonProfile> fetch(
             @Header("X-R-MAIL")
             String mail,
@@ -49,7 +49,7 @@ public interface ClientProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE}
      */
-    @POST("api/c/profile/update.json")
+    @POST("api/c/profile/update")
     Call<JsonProfile> update(
             @Header("X-R-MAIL")
             String mail,
@@ -68,7 +68,7 @@ public interface ClientProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_EXISTING}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/profile/changeMail.json")
+    @POST("api/c/profile/changeMail")
     Call<JsonResponse> changeMail(
             @Header("X-R-MAIL")
             String mail,
@@ -87,7 +87,7 @@ public interface ClientProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_EXISTING}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/profile/migrate.json")
+    @POST("api/c/profile/migrate")
     Call<JsonProfile> migrate(
             @Header("X-R-MAIL")
             String mail,
@@ -99,7 +99,7 @@ public interface ClientProfileApiUrls {
             MigratePhone migratePhone
     );
 
-    @POST("api/c/profile/migrateMail.json")
+    @POST("api/c/profile/migrateMail")
     Call<JsonProfile> migrateMail(
             @Header("X-R-MAIL")
             String mail,
@@ -115,7 +115,7 @@ public interface ClientProfileApiUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      */
-    @GET("api/c/profile/address.json")
+    @GET("api/c/profile/address")
     Call<JsonUserAddressList> address(
             @Header("X-R-MAIL")
             String mail,
@@ -129,7 +129,7 @@ public interface ClientProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("api/c/profile/address/add.json")
+    @POST("api/c/profile/address/add")
     Call<JsonUserAddressList> addressAdd(
             @Header("X-R-MAIL")
             String mail,
@@ -146,7 +146,7 @@ public interface ClientProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("api/c/profile/address/delete.json")
+    @POST("api/c/profile/address/delete")
     Call<JsonUserAddressList> addressDelete(
             @Header("X-R-MAIL")
             String mail,
@@ -168,7 +168,7 @@ public interface ClientProfileApiUrls {
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
     @Multipart
-    @POST("api/c/profile/upload.json")
+    @POST("api/c/profile/upload")
     Call<JsonResponse> upload(
             @Header("X-R-DID")
             String did,
@@ -194,7 +194,7 @@ public interface ClientProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/c/profile/remove.json")
+    @POST("api/c/profile/remove")
     Call<JsonResponse> remove(
             @Header("X-R-DID")
             String did,

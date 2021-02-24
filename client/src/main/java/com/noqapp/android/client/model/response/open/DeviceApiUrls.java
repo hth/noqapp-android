@@ -20,7 +20,7 @@ public interface DeviceApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/device/register.json")
+    @POST("open/device/register")
     Call<DeviceRegistered> register(
             @Header("X-R-DT")
             String dt,
@@ -37,7 +37,7 @@ public interface DeviceApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPGRADE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      */
-    @POST("open/device/version.json")
+    @POST("open/device/version")
     Call<JsonLatestAppVersion> isSupportedAppVersion(
             @Header("X-R-DT")
             String dt,

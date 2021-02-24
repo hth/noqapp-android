@@ -25,7 +25,7 @@ public interface DependentApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/dependent/add.json")
+    @POST("api/c/dependent/add")
     Call<JsonProfile> add(
             @Header("X-R-DID")
             String did,
