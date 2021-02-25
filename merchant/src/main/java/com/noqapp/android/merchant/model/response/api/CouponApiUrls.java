@@ -24,7 +24,7 @@ public interface CouponApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PROMOTION_ACCESS_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/coupon/available/{codeQR}.json")
+    @GET("api/m/coupon/available/{codeQR}")
     Call<JsonCouponList> availableCoupon(
             @Header("X-R-DID")
             String did,
@@ -51,7 +51,7 @@ public interface CouponApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#COUPON_NOT_APPLICABLE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/coupon/apply.json")
+    @POST("api/m/coupon/apply")
     Call<JsonPurchaseOrder> apply(
             @Header("X-R-DID")
             String did,
@@ -77,7 +77,7 @@ public interface CouponApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#COUPON_REMOVAL_FAILED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/coupon/remove.json")
+    @POST("api/m/coupon/remove")
     Call<JsonPurchaseOrder> remove(
             @Header("X-R-DID")
             String did,

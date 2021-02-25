@@ -37,7 +37,7 @@ public interface MedicalRecordApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalRecord/update.json")
+    @POST("api/m/h/medicalRecord/update")
     Call<JsonResponse> update(
             @Header("X-R-DID")
             String did,
@@ -63,7 +63,7 @@ public interface MedicalRecordApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalRecord/retrieve.json")
+    @POST("api/m/h/medicalRecord/retrieve")
     Call<JsonMedicalRecord> retrieve(
             @Header("X-R-DID")
             String did,
@@ -88,7 +88,7 @@ public interface MedicalRecordApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ENTRY_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalRecord/historical.json")
+    @POST("api/m/h/medicalRecord/historical")
     Call<JsonMedicalRecordList> historical(
             @Header("X-R-DID")
             String did,
@@ -113,7 +113,7 @@ public interface MedicalRecordApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ENTRY_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalRecord/historical/{md}.json")
+    @POST("api/m/h/medicalRecord/historical/{md}")
     Call<JsonMedicalRecordList> historicalFiltered(
             @Header("X-R-DID")
             String did,
@@ -135,7 +135,7 @@ public interface MedicalRecordApiUrls {
     );
 
 
-    @POST("api/m/h/medicalRecord/hospitalVisitSchedule.json")
+    @POST("api/m/h/medicalRecord/hospitalVisitSchedule")
     Call<JsonHospitalVisitScheduleList> hospitalVisitSchedule(
             @Header("X-R-DID")
             String did,
@@ -153,7 +153,7 @@ public interface MedicalRecordApiUrls {
             FindMedicalProfile findMedicalProfile
     );
 
-    @POST("api/m/h/medicalRecord/modifyVisitingFor.json")
+    @POST("api/m/h/medicalRecord/modifyVisitingFor")
     Call<JsonHospitalVisitSchedule> modifyVisitingFor(
             @Header("X-R-DID")
             String did,
@@ -176,7 +176,7 @@ public interface MedicalRecordApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalRecord/updateObservation.json")
+    @POST("api/m/h/medicalRecord/updateObservation")
     Call<JsonResponse> updateObservation(
             @Header("X-R-DID")
             String did,
@@ -200,7 +200,7 @@ public interface MedicalRecordApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/h/medicalRecord/{codeQR}/followup.json")
+    @GET("api/m/h/medicalRecord/{codeQR}/followup")
     Call<JsonQueuePersonList> followUp(
             @Header("X-R-MAIL")
             String mail,
@@ -221,7 +221,7 @@ public interface MedicalRecordApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/h/medicalRecord/exists/{codeQR}/{recordReferenceId}.json")
+    @GET("api/m/h/medicalRecord/exists/{codeQR}/{recordReferenceId}")
     Call<JsonMedicalRecord> exists(
             @Header("X-R-DID")
             String did,
@@ -253,7 +253,7 @@ public interface MedicalRecordApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @Multipart
-    @POST("api/m/h/medicalRecord/appendImage.json")
+    @POST("api/m/h/medicalRecord/appendImage")
     Call<JsonResponse> appendImage(
             @Header("X-R-DID")
             String did,
@@ -279,7 +279,7 @@ public interface MedicalRecordApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      */
-    @POST("api/m/h/medicalRecord/removeImage.json")
+    @POST("api/m/h/medicalRecord/removeImage")
     Call<JsonResponse> removeImage(
             @Header("X-R-DID")
             String did,
@@ -297,7 +297,7 @@ public interface MedicalRecordApiUrls {
             JsonMedicalRecord jsonMedicalRecord
     );
 
-    @POST("api/m/h/medicalRecord/workHistory.json")
+    @POST("api/m/h/medicalRecord/workHistory")
     Call<JsonMedicalRecordList> workHistory(
             @Header("X-R-DID")
             String did,

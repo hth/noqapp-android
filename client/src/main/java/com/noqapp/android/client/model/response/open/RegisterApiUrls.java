@@ -24,7 +24,7 @@ public interface RegisterApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
      */
-    @POST("open/client/registration.json")
+    @POST("open/client/registration")
     Call<JsonProfile> register(
             @Header("X-R-DID")
             String did,
@@ -44,7 +44,7 @@ public interface RegisterApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE}
      */
-    @POST("open/client/login.json")
+    @POST("open/client/login")
     Call<JsonProfile> login(
             @Header("X-R-DID")
             String did,

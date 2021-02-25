@@ -27,7 +27,7 @@ public interface BusinessCustomerApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/bc/addId.json")
+    @POST("api/m/bc/addId")
     Call<JsonQueuePersonList> addId(
             @Header("X-R-DID")
             String did,
@@ -52,7 +52,7 @@ public interface BusinessCustomerApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_CUSTOMER_ID_DOES_NOT_EXISTS}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/bc/editId.json")
+    @POST("api/m/bc/editId")
     Call<JsonQueuePersonList> editId(
             @Header("X-R-DID")
             String did,
@@ -80,7 +80,7 @@ public interface BusinessCustomerApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE
      */
-    @POST("api/m/bc/findCustomer.json")
+    @POST("api/m/bc/findCustomer")
     Call<JsonProfile> findCustomer(
             @Header("X-R-DID")
             String did,
@@ -98,7 +98,7 @@ public interface BusinessCustomerApiUrls {
             JsonBusinessCustomerLookup jsonBusinessCustomerLookup
     );
 
-    @POST("api/m/bc/access/action.json")
+    @POST("api/m/bc/access/action")
     Call<JsonQueuedPerson> accessAction(
             @Header("X-R-DID")
             String did,

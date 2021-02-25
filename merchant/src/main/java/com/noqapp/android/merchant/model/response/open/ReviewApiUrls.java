@@ -9,7 +9,7 @@ import retrofit2.http.Path;
 
 public interface ReviewApiUrls {
 
-    @GET("open/review/reviews/{codeQR}.json")
+    @GET("open/review/reviews/{codeQR}")
     Call<JsonReviewList> review(
             @Header("X-R-DID")
             String did,

@@ -19,7 +19,7 @@ public interface DisplayCaseAPIUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      */
-    @GET("api/c/display/{codeQR}.json")
+    @GET("api/c/display/{codeQR}")
     Call<JsonStoreProductList> storeDisplayCase(
         @Header("X-R-DID")
         String did,

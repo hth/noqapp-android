@@ -22,7 +22,7 @@ public interface AppointmentApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      */
-    @GET("api/c/appointment/scheduleForMonth/{month}/{codeQR}.json")
+    @GET("api/c/appointment/scheduleForMonth/{month}/{codeQR}")
     Call<JsonScheduleList> scheduleForMonth(
             @Header("X-R-DID")
             String did,
@@ -50,7 +50,7 @@ public interface AppointmentApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      */
-    @GET("api/c/appointment/scheduleForDay/{day}/{codeQR}.json")
+    @GET("api/c/appointment/scheduleForDay/{day}/{codeQR}")
     Call<JsonScheduleList> scheduleForDay(
             @Header("X-R-DID")
             String did,
@@ -77,7 +77,7 @@ public interface AppointmentApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CANNOT_BOOK_APPOINTMENT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/appointment/bookAppointment.json")
+    @POST("api/c/appointment/bookAppointment")
     Call<JsonSchedule> bookAppointment(
             @Header("X-R-DID")
             String did,
@@ -100,7 +100,7 @@ public interface AppointmentApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/appointment/cancelAppointment.json")
+    @POST("api/c/appointment/cancelAppointment")
     Call<JsonResponse> cancelAppointment(
             @Header("X-R-DID")
             String did,
@@ -123,7 +123,7 @@ public interface AppointmentApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/appointment/all.json")
+    @GET("api/c/appointment/all")
     Call<JsonScheduleList> allAppointments(
             @Header("X-R-DID")
             String did,
@@ -143,7 +143,7 @@ public interface AppointmentApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/appointment/allPast.json")
+    @GET("api/c/appointment/allPast")
     Call<JsonScheduleList> allPastAppointments(
             @Header("X-R-DID")
             String did,
