@@ -190,10 +190,10 @@ public class AllDaysSettingActivity extends BaseActivity implements StoreHoursSe
             if (jsonResponse.getResponse() == Constants.SUCCESS) {
                 new CustomToast().showToast(this, "Settings updated successfully!!!");
             } else {
-                new CustomToast().showToast(this, "Settings updated failed!!!" + "\n" + jsonResponse.getError().getReason());
+                new CustomToast().showToast(this, "Settings update failed!!!" + "\n" + jsonResponse.getError().getReason());
             }
         } else {
-            new CustomToast().showToast(this, "Settings updated failed!!!");
+            new CustomToast().showToast(this, "Settings update failed!!!");
         }
     }
 
