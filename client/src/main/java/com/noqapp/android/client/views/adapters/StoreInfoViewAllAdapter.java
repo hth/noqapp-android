@@ -37,6 +37,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<BizStoreElastic> dataSet;
     private double lat, log;
+    private boolean isFavourite = false;
 
     public StoreInfoViewAllAdapter(List<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
         this.dataSet = data;
@@ -44,6 +45,15 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         this.listener = listener;
         this.lat = lat;
         this.log = log;
+    }
+
+    public StoreInfoViewAllAdapter(List<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log, boolean isFavourite) {
+        this.dataSet = data;
+        this.context = context;
+        this.listener = listener;
+        this.lat = lat;
+        this.log = log;
+        this.isFavourite = isFavourite;
     }
 
     @Override
@@ -129,7 +139,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.GONE);
                     holder.tv_category_name.setText("");
-                    holder.tv_name.setText(bizStoreElastic.getBusinessName());
+                    holder.tv_name.setText(isFavourite? bizStoreElastic.getDisplayName(): bizStoreElastic.getBusinessName());
                     holder.tv_status.setText("");
                     break;
                 default:

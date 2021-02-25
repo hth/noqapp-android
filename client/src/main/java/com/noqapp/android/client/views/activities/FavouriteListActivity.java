@@ -119,7 +119,7 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         } else {
             rl_empty.setVisibility(View.GONE);
         }
-        StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(list, this, this, Double.parseDouble(lat), Double.parseDouble(lng));
+        StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(list, this, this, Double.parseDouble(lat), Double.parseDouble(lng), true);
         rcv_favourite.setAdapter(storeInfoViewAllAdapter);
         isFirstTime = true;
     }
