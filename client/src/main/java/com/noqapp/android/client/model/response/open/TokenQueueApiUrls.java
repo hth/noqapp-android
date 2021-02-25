@@ -114,6 +114,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("open/token/queue/{codeQR}")
+    @Deprecated
     Call<JsonToken> joinQueue(
             @Header("X-R-DID")
             String did,
