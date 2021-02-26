@@ -369,7 +369,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 callCurrentAndHistoryQueue();
             }
 
-            if(UserUtils.isLogin() && isFirstTime){
+            if (UserUtils.isLogin() && isFirstTime) {
                 callFavouriteApi();
             }
         }

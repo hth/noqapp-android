@@ -476,7 +476,7 @@ public class AppUtils extends CommonHelper {
         ShowAlertInformation.showAuthenticErrorDialog(activity);
     }
 
-      public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {
+    public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {
         if (isDayClosed)
             return "Closed";
         else
@@ -658,7 +658,7 @@ public class AppUtils extends CommonHelper {
         return true;
     }
 
-    public static void showAllDaysTiming(Context context, TextView textView, String codeQR){
+    public static void showAllDaysTiming(Context context, TextView textView, String codeQR) {
         textView.setTextColor(ContextCompat.getColor(context, R.color.btn_color));
         textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         textView.setOnClickListener((View v) -> {
@@ -670,8 +670,8 @@ public class AppUtils extends CommonHelper {
         });
     }
 
-    public static void saveFavouriteCodeQRs(List<BizStoreElastic> data){
-        ArrayList<String> codeQRs = new ArrayList<>();
+    public static void saveFavouriteCodeQRs(List<BizStoreElastic> data) {
+        List<String> codeQRs = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
             codeQRs.add(data.get(i).getCodeQR());
         }

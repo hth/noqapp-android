@@ -464,7 +464,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         }
     }
 
-    public static void saveFavouriteList(ArrayList<String> list) {
+    public static void saveFavouriteList(List<String> list) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         Gson gson = new Gson();
         String json = gson.toJson(list);
@@ -475,8 +475,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static ArrayList<String> getFavouriteList() {
         Gson gson = new Gson();
         String json = preferences.getString(KEY_FAVOURITE_CODE_QRS, null);
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
         ArrayList<String> favouriteList = gson.fromJson(json, type);
         return null == favouriteList ? new ArrayList<>() : favouriteList;
     }
