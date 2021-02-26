@@ -111,6 +111,7 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
 
     @Override
     public void favouriteListResponse(FavoriteElastic favoriteElastic) {
+        dismissProgress();
         String lat = String.valueOf(AppInitialize.location.getLatitude());
         String lng = String.valueOf(AppInitialize.location.getLongitude());
         List<BizStoreElastic> list = favoriteElastic.getFavoriteTagged();
@@ -121,6 +122,7 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         }
         StoreInfoViewAllAdapter storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(list, this, this, Double.parseDouble(lat), Double.parseDouble(lng), true);
         rcv_favourite.setAdapter(storeInfoViewAllAdapter);
+        AppUtils.saveFavouriteCodeQRs(list);
         isFirstTime = true;
     }
 
@@ -134,6 +136,8 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
 
     private void callFavouriteApi() {
         if (NetworkUtils.isConnectingToInternet(this)) {
+            setProgressMessage("Fetching the favourite list...");
+            showProgress();
             FavouriteApiCall favouriteApiCall = new FavouriteApiCall();
             favouriteApiCall.setFavouriteListPresenter(this);
             favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());

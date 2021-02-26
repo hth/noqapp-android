@@ -1,12 +1,12 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.merchant.model;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.NotificationApiUrls;
-import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.merchant.model.response.api.NotificationApiUrls;
+import com.noqapp.android.merchant.network.RetrofitClient;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.Notification;
 import com.noqapp.android.common.presenter.NotificationPresenter;
@@ -18,7 +18,7 @@ import retrofit2.Response;
 public class NotificationApiCall {
     private final String TAG = NotificationApiCall.class.getSimpleName();
     private static final NotificationApiUrls notificationApiUrls;
-    private static final com.noqapp.android.client.model.response.open.NotificationApiUrls notificationApiUrlsOpen;
+    private static final com.noqapp.android.merchant.model.response.open.NotificationApiUrls notificationApiUrlsOpen;
     private NotificationPresenter notificationPresenter;
 
     public NotificationApiCall(NotificationPresenter notificationPresenter) {
@@ -27,7 +27,8 @@ public class NotificationApiCall {
 
     static {
         notificationApiUrls = RetrofitClient.getClient().create(NotificationApiUrls.class);
-        notificationApiUrlsOpen = RetrofitClient.getClient().create(com.noqapp.android.client.model.response.open.NotificationApiUrls.class);
+        notificationApiUrlsOpen = RetrofitClient.getClient().create(com.noqapp.android.merchant.model.response.open.NotificationApiUrls.class);
+
     }
 
     public void notificationViewed(String did, String mail, String auth, Notification notification) {
@@ -87,4 +88,5 @@ public class NotificationApiCall {
             }
         });
     }
+
 }
