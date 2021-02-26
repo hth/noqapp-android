@@ -669,4 +669,12 @@ public class AppUtils extends CommonHelper {
             context.startActivity(in);
         });
     }
+
+    public static void saveFavouriteCodeQRs(List<BizStoreElastic> data){
+        ArrayList<String> codeQRs = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            codeQRs.add(data.get(i).getCodeQR());
+        }
+        AppInitialize.saveFavouriteList(codeQRs);
+    }
 }

@@ -31,6 +31,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
+import com.noqapp.android.client.model.FavouriteApiCall;
 import com.noqapp.android.client.model.FeedApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -39,12 +40,14 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.presenter.FavouriteListPresenter;
 import com.noqapp.android.client.presenter.FeedPresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.FavoriteElastic;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonInQueuePerson;
@@ -57,6 +60,7 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.RateTheAppManager;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
@@ -114,7 +118,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
         CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
         StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
-        FeedPresenter, AdvertisementPresenter {
+        FeedPresenter, AdvertisementPresenter, FavouriteListPresenter {
 
     private final String TAG = HomeFragment.class.getSimpleName();
     private TextView tv_active_title;
@@ -175,6 +179,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
     private View rl_helper;
     private Button btnLogin, btnSkip, btnChangeLanguage;
+    private boolean isFirstTime = true;
 
     public HomeFragment() {
         // default constructor required
@@ -362,6 +367,10 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             /* Update the current Queue & history queue so that user get the latest queue status & get reflected in DB. */
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 callCurrentAndHistoryQueue();
+            }
+
+            if(UserUtils.isLogin() && isFirstTime){
+                callFavouriteApi();
             }
         }
         try {
@@ -1082,6 +1091,23 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.show();
+    }
+
+    private void callFavouriteApi() {
+        if (NetworkUtils.isConnectingToInternet(getActivity())) {
+            FavouriteApiCall favouriteApiCall = new FavouriteApiCall();
+            favouriteApiCall.setFavouriteListPresenter(this);
+            favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
+    }
+
+    @Override
+    public void favouriteListResponse(FavoriteElastic favoriteElastic) {
+        List<BizStoreElastic> list = favoriteElastic.getFavoriteTagged();
+        AppUtils.saveFavouriteCodeQRs(list);
+        isFirstTime = false;
     }
 
 }
