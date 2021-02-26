@@ -310,9 +310,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                     UserUtils.getAuth(),
                     notification);
         } else {
-//            notificationApiCall.notificationViewed(
-//                    UserUtils.getDeviceId(),
-//                    notification);
+            notificationApiCall.notificationViewed(
+                    UserUtils.getDeviceId(),
+                    notification);
         }
     }
 
