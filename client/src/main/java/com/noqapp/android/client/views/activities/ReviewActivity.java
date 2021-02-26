@@ -38,6 +38,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
@@ -237,8 +238,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
     @Override
     public void onBackPressed() {
-        //@TODO revert this changes after corona issue
-        /*//super.onBackPressed();
+        //super.onBackPressed();
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
             backPressToast = new CustomToast().getToast(this, "Please review the service, It is valuable to us.");
@@ -250,13 +250,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             }
             returnResultBack();
             finish();
-        }*/
-        // @TODO revert all 3 below line
-        AppInitialize.setReviewShown(true);
-        ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
-        TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
-        super.onBackPressed();
-        // @TODO revert all 3 above line
+        }
     }
 
     @Override
