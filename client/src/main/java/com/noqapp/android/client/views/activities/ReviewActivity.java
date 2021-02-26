@@ -118,9 +118,9 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             jtk = (JsonTokenAndQueue) extras.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (null != jtk) {
                 if (jtk.getBusinessType() == BusinessTypeEnum.DO) {
-                    ll_thank_u.setVisibility(View.VISIBLE);
-                    ll_fill_review.setVisibility(View.GONE);
-                    btn_submit.setText(getString(R.string.go_back));
+                    ll_thank_u.setVisibility(View.GONE);
+                    ll_fill_review.setVisibility(View.VISIBLE);
+//                    btn_submit.setText(getString(R.string.go_back));
                 } else {
                     ll_thank_u.setVisibility(View.GONE);
                     ll_fill_review.setVisibility(View.VISIBLE);
