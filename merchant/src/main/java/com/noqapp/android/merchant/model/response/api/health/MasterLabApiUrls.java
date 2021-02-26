@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 
 public interface MasterLabApiUrls {
 
-    @GET("api/m/h/lab/file.json")
+    @GET("api/m/h/lab/file")
     Call<ResponseBody> file(
             @Header("X-R-DID")
             String did,
@@ -28,7 +28,7 @@ public interface MasterLabApiUrls {
     );
 
     @Deprecated
-    @POST("api/m/h/lab/add.json")
+    @POST("api/m/h/lab/add")
     Call<JsonResponse> add(
             @Header("X-R-DID")
             String did,
@@ -51,7 +51,7 @@ public interface MasterLabApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/lab/flag.json")
+    @POST("api/m/h/lab/flag")
     Call<JsonResponse> flag(
             @Header("X-R-DID")
             String did,

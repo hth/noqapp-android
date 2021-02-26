@@ -15,7 +15,7 @@ public interface AuthenticateClientInQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/a/inQueue/{codeQR}/{token}.json")
+    @GET("api/c/a/inQueue/{codeQR}/{token}")
     Call<JsonInQueuePerson> clientInQueue(
             @Header("X-R-DID")
             String did,

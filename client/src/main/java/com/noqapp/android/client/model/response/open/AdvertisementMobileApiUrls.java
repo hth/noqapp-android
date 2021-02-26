@@ -18,7 +18,7 @@ public interface AdvertisementMobileApiUrls {
      * ERROR
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("open/vigyapan/near.json")
+    @POST("open/vigyapan/near")
     Call<JsonAdvertisementList> getAdvertisementsByLocation(
             @Header("X-R-DID")
             String did,

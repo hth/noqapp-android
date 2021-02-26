@@ -33,7 +33,7 @@ public interface MerchantProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE}
      */
-    @GET("api/m/profile/fetch.json")
+    @GET("api/m/profile/fetch")
     Call<JsonMerchant> fetch(
             @Header("X-R-DID")
             String did,
@@ -59,7 +59,7 @@ public interface MerchantProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE}
      */
-    @POST("api/m/profile/update.json")
+    @POST("api/m/profile/update")
     Call<JsonProfile> update(
             @Header("X-R-MAIL")
             String mail,
@@ -76,7 +76,7 @@ public interface MerchantProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      */
-    @POST("api/m/profile/updateProfessionalProfile.json")
+    @POST("api/m/profile/updateProfessionalProfile")
     Call<JsonProfessionalProfilePersonal> update(
             @Header("X-R-MAIL")
             String mail,
@@ -97,7 +97,7 @@ public interface MerchantProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD}
      */
     @Multipart
-    @POST("api/m/profile/upload.json")
+    @POST("api/m/profile/upload")
     Call<JsonResponse> upload(
             @Header("X-R-DID")
             String did,
@@ -124,7 +124,7 @@ public interface MerchantProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/m/profile/remove.json")
+    @POST("api/m/profile/remove")
     Call<JsonResponse> remove(
             @Header("X-R-DID")
             String did,
@@ -148,7 +148,7 @@ public interface MerchantProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/profile/intellisense.json")
+    @POST("api/m/profile/intellisense")
     Call<JsonResponse> intellisense(
             @Header("X-R-DID")
             String did,
@@ -171,7 +171,7 @@ public interface MerchantProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/profile/reviews.json")
+    @GET("api/m/profile/reviews")
     Call<JsonReviewBucket> reviews(
             @Header("X-R-DID")
             String did,
@@ -191,7 +191,7 @@ public interface MerchantProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/profile/flagReview/{codeQR}.json")
+    @POST("api/m/profile/flagReview/{codeQR}")
     Call<JsonReview> flagReview(
             @Header("X-R-DID")
             String did,

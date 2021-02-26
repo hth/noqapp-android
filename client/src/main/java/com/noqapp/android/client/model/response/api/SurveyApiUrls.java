@@ -13,7 +13,7 @@ public interface SurveyApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/survey.json")
+    @GET("api/c/survey")
     Call<JsonQuestionnaire> survey(
             @Header("X-R-MAIL")
             String mail,

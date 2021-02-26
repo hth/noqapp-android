@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 
 public interface FeedbackApiUrls {
 
-    @POST("api/c/feedback.json")
+    @POST("api/c/feedback")
     Call<JsonResponse> review(
             @Header("X-R-DID")
             String did,

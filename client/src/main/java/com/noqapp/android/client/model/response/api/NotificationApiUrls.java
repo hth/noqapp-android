@@ -15,7 +15,7 @@ public interface NotificationApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      */
-    @POST("api/c/notification.json")
+    @POST("api/c/notification")
     Call<JsonResponse> notificationViewed(
         @Header("X-R-DID")
         String did,

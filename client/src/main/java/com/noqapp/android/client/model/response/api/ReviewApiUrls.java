@@ -21,7 +21,7 @@ public interface ReviewApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/c/review/queue.json")
+    @POST("api/c/review/queue")
     Call<JsonResponse> queue(
             @Header("X-R-DID")
             String did,
@@ -46,7 +46,7 @@ public interface ReviewApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/c/review/order.json")
+    @POST("api/c/review/order")
     Call<JsonResponse> order(
             @Header("X-R-DID")
             String did,
