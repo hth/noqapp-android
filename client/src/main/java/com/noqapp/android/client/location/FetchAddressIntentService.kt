@@ -6,6 +6,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.ResultReceiver
+import android.text.TextUtils
 import android.util.Log
 import androidx.core.app.JobIntentService
 import com.noqapp.android.client.R
@@ -73,8 +74,19 @@ class FetchAddressIntentService : JobIntentService() {
 
             Log.i(TAG, getString(R.string.address_found))
 
+            var cityName = address.getAddressLine(0);
+            if (!TextUtils.isEmpty(address.locality) && !TextUtils.isEmpty(address.subLocality)) {
+                cityName = address.subLocality + ", " + address.locality;
+            } else {
+                if (!TextUtils.isEmpty(address.subLocality)) {
+                    cityName = address.subLocality;
+                } else if (!TextUtils.isEmpty(address.locality)) {
+                    cityName = address.locality;
+                }
+            }
+
             deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT,
-                    address.subLocality + ", " + address.locality, latitude, longitude)
+                     cityName, latitude, longitude)
         }
     }
 
