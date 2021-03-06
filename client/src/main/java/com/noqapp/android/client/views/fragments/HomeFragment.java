@@ -196,7 +196,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 LaunchActivity.getLaunchActivity().tv_location.setText(city);
             } else {
                 // LaunchActivity.getLaunchActivity().tv_location.setText(city);
-                cv_update_location.setVisibility(View.GONE);
+                if (AppUtils.calculateDistance(lat, lng, latitude, longitude) > 0.5f){
+                    cv_update_location.setVisibility(View.VISIBLE);
+                }
                 tv_update.setOnClickListener((View v) -> {
                     getNearMeInfo(cityName, String.valueOf(latitude), String.valueOf(longitude));
                     lat = latitude;
