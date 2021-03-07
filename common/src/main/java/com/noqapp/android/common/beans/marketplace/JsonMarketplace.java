@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -35,7 +36,7 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
     private String queueUserId;
 
     @JsonProperty("bt")
-    private String businessType;
+    private BusinessTypeEnum businessType;
 
     @JsonProperty("cor")
     private double[] coordinate;
@@ -89,11 +90,11 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
         return this;
     }
 
-    public String getBusinessType() {
+    public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
 
-    public JsonMarketplace setBusinessType(String businessType) {
+    public JsonMarketplace setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
         return this;
     }
