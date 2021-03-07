@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
@@ -31,6 +32,9 @@ import java.util.Set;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class JsonMarketplace extends AbstractDomain implements Serializable {
+
+    @JsonProperty("id")
+    private String id;
 
     @JsonProperty("qid")
     private String queueUserId;
@@ -80,6 +84,18 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
 
     @JsonProperty("pu")
     private Date publishUntil;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
+    public String getId() {
+        return id;
+    }
+
+    public JsonMarketplace setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public String getQueueUserId() {
         return queueUserId;
@@ -222,6 +238,15 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
 
     public JsonMarketplace setPublishUntil(Date publishUntil) {
         this.publishUntil = publishUntil;
+        return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonMarketplace setError(ErrorEncounteredJson error) {
+        this.error = error;
         return this;
     }
 }
