@@ -471,9 +471,9 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'org.mockito:mockito-android:3.7.7'
+    androidTestImplementation 'org.mockito:mockito-android:3.8.0'
 
-    testImplementation 'org.mockito:mockito-core:3.7.7'
+    testImplementation 'org.mockito:mockito-core:3.8.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
 
