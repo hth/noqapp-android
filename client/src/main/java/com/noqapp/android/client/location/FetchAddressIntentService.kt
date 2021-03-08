@@ -46,21 +46,15 @@ class FetchAddressIntentService : JobIntentService() {
         }
 
         val geocoder = Geocoder(this, Locale.getDefault())
-
         var addresses: List<Address> = emptyList()
-
         try {
-            addresses = geocoder.getFromLocation(
-                    latitude,
-                    longitude,
-                    1)
+            addresses = geocoder.getFromLocation(latitude, longitude, 1)
         } catch (ioException: IOException) {
             errorMessage = getString(R.string.service_not_available)
             Log.e(TAG, errorMessage, ioException)
         } catch (illegalArgumentException: IllegalArgumentException) {
             errorMessage = getString(R.string.invalid_lat_long_used)
-            Log.e(TAG, "$errorMessage. Latitude = $latitude , " +
-                    "Longitude = $longitude", illegalArgumentException)
+            Log.e(TAG, "$errorMessage. Latitude = $latitude , " + "Longitude = $longitude", illegalArgumentException)
         }
 
         if (addresses.isEmpty()) {
@@ -85,8 +79,7 @@ class FetchAddressIntentService : JobIntentService() {
                 }
             }
 
-            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT,
-                     cityName, latitude, longitude)
+            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, cityName, latitude, longitude)
         }
     }
 
