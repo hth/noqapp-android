@@ -26,7 +26,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
@@ -112,9 +111,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             Log.d(TAG, "Splash City Name =" + cityName);
 
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setCity(cityName)
-                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                    .setCity(cityName)
+                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             AppInitialize.setLocationPreference(locationPref);
             AppInitialize.setDeviceID(deviceId);
             location.setLatitude(locationPref.getLatitude());
@@ -192,27 +191,27 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                     if (ActivityCompat.shouldShowRequestPermissionRationale(SplashScreen.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Permission needed")
-                            .setMessage(getString(R.string.gps_error_msg))
-                            .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
-                                intent.setData(uri);
-                                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                            })
-                            .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
+                                .setMessage(getString(R.string.gps_error_msg))
+                                .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                                })
+                                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
                         builder.show();
                     } else {
                         // user selected Don't ask again checkbox show proper msg
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Permission needed")
-                            .setMessage(getString(R.string.gps_error_msg_final))
-                            .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
-                                intent.setData(uri);
-                                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                            })
-                            .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
+                                .setMessage(getString(R.string.gps_error_msg_final))
+                                .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                                })
+                                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
                         builder.show();
                     }
                 }

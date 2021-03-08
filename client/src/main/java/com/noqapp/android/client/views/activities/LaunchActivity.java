@@ -254,7 +254,11 @@ public class LaunchActivity
 
     @Override
     public void displayAddress(String addressOutput, Double latitude, Double longitude) {
-        updateLocationInfo(latitude, longitude, addressOutput);
+        if (AppUtils.calculateDistance(latitude, longitude, AppInitialize.getLocationPreference().getLatitude(), AppInitialize.getLocationPreference().getLongitude()) <= 0.5f){
+            updateLocationInfo(latitude, longitude, addressOutput);
+        } else {
+            updateLocationUI();
+        }
     }
 
     private void setKioskMode() {
@@ -308,7 +312,6 @@ public class LaunchActivity
                 .setLatitude(lat)
                 .setLongitude(lng);
         AppInitialize.setLocationPreference(locationPref);
-        updateLocationUI();
     }
 
     @Override
@@ -1060,12 +1063,12 @@ public class LaunchActivity
                     if (jsonData instanceof JsonAlertData) {
                         /* Executed when app is in foreground. */
                         NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonAlertData) jsonData).getCodeQR(),
-                            jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
-                            jsonData.getTitle(),
-                            ((JsonAlertData) jsonData).getBusinessType().getName(),
-                            jsonData.getImageURL());
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonAlertData) jsonData).getCodeQR(),
+                                jsonData.getLocalLanguageMessageBody(LaunchActivity.language),
+                                jsonData.getTitle(),
+                                ((JsonAlertData) jsonData).getBusinessType().getName(),
+                                jsonData.getImageURL());
 
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
@@ -1191,12 +1194,12 @@ public class LaunchActivity
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     if (jsonData instanceof JsonAlertData) {
                         NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonAlertData) jsonData).getCodeQR(),
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            ((JsonAlertData) jsonData).getBusinessType().getName(),
-                            jsonData.getImageURL());
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonAlertData) jsonData).getCodeQR(),
+                                jsonData.getBody(),
+                                jsonData.getTitle(),
+                                ((JsonAlertData) jsonData).getBusinessType().getName(),
+                                jsonData.getImageURL());
                         /* Show some meaningful msg to the end user */
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
                         updateNotificationBadgeCount();
