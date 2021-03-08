@@ -60,7 +60,8 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/barcode_scan"
                 android:backgroundTint="@color/theme_color_red"
-                android:padding="12dp" />
+                android:padding="12dp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_home"

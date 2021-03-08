@@ -14,7 +14,7 @@ public interface ClientPreferenceApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/preference/notificationSound.json")
+    @POST("api/c/preference/notificationSound")
     Call<JsonUserPreference> notificationSound(
             @Header("X-R-DID")
             String did,
@@ -34,7 +34,7 @@ public interface ClientPreferenceApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/preference/promotionalSMS.json")
+    @POST("api/c/preference/promotionalSMS")
     Call<JsonUserPreference> promotionalSMS(
             @Header("X-R-DID")
             String did,
@@ -54,7 +54,7 @@ public interface ClientPreferenceApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/preference/order.json")
+    @POST("api/c/preference/order")
     Call<JsonUserPreference> order(
             @Header("X-R-DID")
             String did,

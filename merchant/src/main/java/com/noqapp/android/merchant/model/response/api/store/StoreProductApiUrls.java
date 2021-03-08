@@ -15,7 +15,7 @@ import retrofit2.http.Path;
 public interface StoreProductApiUrls {
 
 
-    @GET("api/m/s/product/store/{codeQR}.json")
+    @GET("api/m/s/product/store/{codeQR}")
     Call<JsonStore> storeProduct(
             @Header("X-R-DID")
             String did,
@@ -33,7 +33,7 @@ public interface StoreProductApiUrls {
             String codeQR
     );
 
-    @POST("api/m/s/product/store/{codeQR}/{action}.json")
+    @POST("api/m/s/product/store/{codeQR}/{action}")
     Call<JsonResponse> actionOnProduct(
             @Header("X-R-MAIL")
             String mail,

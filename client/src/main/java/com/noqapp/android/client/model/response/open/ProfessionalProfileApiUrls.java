@@ -17,7 +17,7 @@ public interface ProfessionalProfileApiUrls {
      * ERROR
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @GET("open/professional/profile/{webProfileId}.json")
+    @GET("open/professional/profile/{webProfileId}")
     Call<JsonProfessionalProfile> profile(
             @Header("X-R-DID")
             String did,

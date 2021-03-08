@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.response.open;
+package com.noqapp.android.merchant.model.response.open;
 
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.Notification;

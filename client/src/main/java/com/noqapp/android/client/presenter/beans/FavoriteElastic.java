@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -32,11 +35,20 @@ public class FavoriteElastic implements Serializable {
     @JsonProperty("ft")
     private List<BizStoreElastic> favoriteTagged = new ArrayList<>();
 
+    @JsonProperty("fsb")
+    private Set<String> favoriteSuggestedBizNameIds = new HashSet<>();
+
+    @JsonProperty("ftb")
+    private Set<String> favoriteTaggedBizNameIds = new HashSet<>();
+
     @JsonProperty("at")
     private ActionTypeEnum actionType;
 
     @JsonProperty("qr")
     private String codeQR;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public List<BizStoreElastic> getFavoriteSuggested() {
         return favoriteSuggested;
@@ -56,6 +68,24 @@ public class FavoriteElastic implements Serializable {
         return this;
     }
 
+    public Set<String> getFavoriteSuggestedBizNameIds() {
+        return favoriteSuggestedBizNameIds;
+    }
+
+    public FavoriteElastic setFavoriteSuggestedBizNameIds(Set<String> favoriteSuggestedBizNameIds) {
+        this.favoriteSuggestedBizNameIds = favoriteSuggestedBizNameIds;
+        return this;
+    }
+
+    public Set<String> getFavoriteTaggedBizNameIds() {
+        return favoriteTaggedBizNameIds;
+    }
+
+    public FavoriteElastic setFavoriteTaggedBizNameIds(Set<String> favoriteTaggedBizNameIds) {
+        this.favoriteTaggedBizNameIds = favoriteTaggedBizNameIds;
+        return this;
+    }
+
     public ActionTypeEnum getActionType() {
         return actionType;
     }
@@ -72,5 +102,25 @@ public class FavoriteElastic implements Serializable {
     public FavoriteElastic setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("FavoriteElastic{");
+        sb.append("favoriteSuggested=").append(favoriteSuggested);
+        sb.append(", favoriteTagged=").append(favoriteTagged);
+        sb.append(", actionType=").append(actionType);
+        sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

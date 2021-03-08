@@ -20,7 +20,7 @@ public interface DeviceRegistrationApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
      */
-    @POST("api/m/dv/registration.json")
+    @POST("api/m/dv/registration")
     Call<JsonResponse> registration(
         @Header("X-R-DID")
         String did,

@@ -22,7 +22,7 @@ public interface FavouriteAPIUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      */
-    @GET("api/c/favourite.json")
+    @GET("api/c/favourite")
     Call<FavoriteElastic> favorite(
         @Header("X-R-DID")
         String did,
@@ -42,7 +42,7 @@ public interface FavouriteAPIUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      */
-    @POST("api/c/favourite.json")
+    @POST("api/c/favourite")
     Call<JsonResponse> actionOnFavorite(
         @Header("X-R-DID")
         String did,

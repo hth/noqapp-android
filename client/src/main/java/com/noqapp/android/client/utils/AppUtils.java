@@ -164,7 +164,7 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public static double calculateDistance(float lat1, float lng1, float lat2, float lng2) {
+    public static double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 6371000; //meters
         double dLat = Math.toRadians(lat2 - lat1);
         double dLng = Math.toRadians(lng2 - lng1);
@@ -476,7 +476,7 @@ public class AppUtils extends CommonHelper {
         ShowAlertInformation.showAuthenticErrorDialog(activity);
     }
 
-      public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {
+    public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {
         if (isDayClosed)
             return "Closed";
         else
@@ -658,7 +658,7 @@ public class AppUtils extends CommonHelper {
         return true;
     }
 
-    public static void showAllDaysTiming(Context context, TextView textView, String codeQR){
+    public static void showAllDaysTiming(Context context, TextView textView, String codeQR) {
         textView.setTextColor(ContextCompat.getColor(context, R.color.btn_color));
         textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         textView.setOnClickListener((View v) -> {
@@ -668,5 +668,13 @@ public class AppUtils extends CommonHelper {
             in.putExtras(bundle);
             context.startActivity(in);
         });
+    }
+
+    public static void saveFavouriteCodeQRs(List<BizStoreElastic> data) {
+        List<String> codeQRs = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            codeQRs.add(data.get(i).getCodeQR());
+        }
+        AppInitialize.saveFavouriteList(codeQRs);
     }
 }

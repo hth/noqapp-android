@@ -28,22 +28,32 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
     private final OnItemClickListener listener;
-    private ArrayList<BizStoreElastic> dataSet;
+    private List<BizStoreElastic> dataSet;
     private double lat, log;
+    private boolean isFavourite = false;
 
-    public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
+    public StoreInfoViewAllAdapter(List<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
         this.lat = lat;
         this.log = log;
+    }
+
+    public StoreInfoViewAllAdapter(List<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log, boolean isFavourite) {
+        this.dataSet = data;
+        this.context = context;
+        this.listener = listener;
+        this.lat = lat;
+        this.log = log;
+        this.isFavourite = isFavourite;
     }
 
     @Override
@@ -129,7 +139,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.GONE);
                     holder.tv_category_name.setText("");
-                    holder.tv_name.setText(bizStoreElastic.getBusinessName());
+                    holder.tv_name.setText(isFavourite? bizStoreElastic.getDisplayName(): bizStoreElastic.getBusinessName());
                     holder.tv_status.setText("");
                     break;
                 default:

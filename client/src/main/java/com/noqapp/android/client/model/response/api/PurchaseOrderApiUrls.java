@@ -18,7 +18,7 @@ public interface PurchaseOrderApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("api/c/purchaseOrder/purchase.json")
+    @POST("api/c/purchaseOrder/purchase")
     Call<JsonPurchaseOrder> purchase(
             @Header("X-R-DID")
             String did,
@@ -41,7 +41,7 @@ public interface PurchaseOrderApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("api/c/purchaseOrder/cancel.json")
+    @POST("api/c/purchaseOrder/cancel")
     Call<JsonPurchaseOrder> cancel(
             @Header("X-R-DID")
             String did,
@@ -66,7 +66,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_CANNOT_ACTIVATE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/purchaseOrder/activate.json")
+    @POST("api/c/purchaseOrder/activate")
     Call<JsonPurchaseOrderHistorical> activate(
             @Header("X-R-DID")
             String did,
@@ -89,7 +89,7 @@ public interface PurchaseOrderApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("api/c/purchaseOrder/orderDetail.json")
+    @POST("api/c/purchaseOrder/orderDetail")
     Call<JsonPurchaseOrder> orderDetail(
             @Header("X-R-DID")
             String did,
@@ -113,7 +113,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/purchaseOrder/payNow.json")
+    @POST("api/c/purchaseOrder/payNow")
     Call<JsonPurchaseOrder> payNow(
             @Header("X-R-DID")
             String did,
@@ -137,7 +137,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/purchaseOrder/cancelPayBeforeOrder.json")
+    @POST("api/c/purchaseOrder/cancelPayBeforeOrder")
     Call<JsonResponse> cancelPayBeforeOrder(
             @Header("X-R-DID")
             String did,
@@ -161,7 +161,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/purchaseOrder/cf/notify.json")
+    @POST("api/c/purchaseOrder/cf/notify")
     Call<JsonPurchaseOrder> cashFreeNotify(
             @Header("X-R-DID")
             String did,
@@ -185,7 +185,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/purchaseOrder/payCash.json")
+    @POST("api/c/purchaseOrder/payCash")
     Call<JsonPurchaseOrder> payCash(
             @Header("X-R-DID")
             String did,

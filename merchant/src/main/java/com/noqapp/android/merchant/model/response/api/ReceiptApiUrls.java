@@ -16,7 +16,7 @@ public interface ReceiptApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/receipt/detail.json")
+    @POST("api/m/receipt/detail")
     Call<Receipt> detail(
             @Header("X-R-DID")
             String did,

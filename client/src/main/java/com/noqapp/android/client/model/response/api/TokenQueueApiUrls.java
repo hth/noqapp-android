@@ -32,7 +32,7 @@ public interface TokenQueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/token/{codeQR}.json")
+    @GET("api/c/token/{codeQR}")
     Call<JsonQueue> getQueueState(
             @Header("X-R-DID")
             String did,
@@ -56,7 +56,7 @@ public interface TokenQueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/token/queues.json")
+    @GET("api/c/token/queues")
     Call<JsonTokenAndQueueList> getAllJoinedQueue(
             @Header("X-R-DID")
             String did,
@@ -79,7 +79,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
      */
-    @GET("api/c/token/pendingOrder.json")
+    @GET("api/c/token/pendingOrder")
     Call<JsonTokenAndQueueList> pendingOrder(
             @Header("X-R-DID")
             String did,
@@ -102,7 +102,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
      */
-    @POST("api/c/token/historical.json")
+    @POST("api/c/token/historical")
     Call<JsonTokenAndQueueList> allHistoricalJoinedQueue(
             @Header("X-R-DID")
             String did,
@@ -130,7 +130,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_JOIN_FAILED_PAYMENT_CALL_REQUEST}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/token/queue.json")
+    @POST("api/c/token/joinQueue")
     Call<JsonToken> joinQueue(
             @Header("X-R-DID")
             String did,
@@ -154,7 +154,7 @@ public interface TokenQueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/token/payBeforeQueue.json")
+    @POST("api/c/token/payBeforeQueue")
     Call<JsonToken> payBeforeJoinQueue(
             @Header("X-R-DID")
             String did,
@@ -182,7 +182,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_JOIN_PAYMENT_FAILED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/token/cf/notify.json")
+    @POST("api/c/token/cf/notify")
     Call<JsonToken> cashfreeNotify(
             @Header("X-R-DID")
             String did,
@@ -208,7 +208,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_NO_SERVICE_NO_PAY}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/token/payNow.json")
+    @POST("api/c/token/payNow")
     Call<JsonResponseWithCFToken> payNow(
             @Header("X-R-DID")
             String did,
@@ -232,7 +232,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/token/cancelPayBeforeQueue.json")
+    @POST("api/c/token/cancelPayBeforeQueue")
     Call<JsonResponse> cancelPayBeforeQueue(
             @Header("X-R-DID")
             String did,
@@ -250,7 +250,7 @@ public interface TokenQueueApiUrls {
             JsonToken jsonToken
     );
 
-    @GET("api/c/token/purchaseOrder/{token}/{codeQR}.json")
+    @GET("api/c/token/purchaseOrder/{token}/{codeQR}")
     Call<JsonPurchaseOrder> purchaseOrder(
             @Header("X-R-DID")
             String did,
@@ -278,7 +278,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME}
      */
-    @POST("api/c/token/abort/{codeQR}.json")
+    @POST("api/c/token/abort/{codeQR}")
     Call<JsonResponse> abortQueue(
             @Header("X-R-DID")
             String did,
@@ -303,7 +303,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME}
      */
-    @POST("api/c/token/businessApprove.json")
+    @POST("api/c/token/businessApprove")
     Call<JsonResponse> businessApprove(
             @Header("X-R-DID")
             String did,

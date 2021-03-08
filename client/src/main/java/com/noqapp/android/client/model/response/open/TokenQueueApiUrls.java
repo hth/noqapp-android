@@ -27,7 +27,7 @@ public interface TokenQueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("open/token/{codeQR}.json")
+    @GET("open/token/{codeQR}")
     Call<JsonQueue> getQueueState(
             @Header("X-R-DID")
             String did,
@@ -44,7 +44,7 @@ public interface TokenQueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("open/token/v1/{codeQR}.json")
+    @GET("open/token/v1/{codeQR}")
     Call<BizStoreElasticList> getAllQueueState(
             @Header("X-R-DID")
             String did,
@@ -61,7 +61,7 @@ public interface TokenQueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("open/token/levelUp/{codeQR}.json")
+    @GET("open/token/levelUp/{codeQR}")
     Call<BizStoreElasticList> getAllQueueStateLevelUp(
             @Header("X-R-DID")
             String did,
@@ -77,7 +77,7 @@ public interface TokenQueueApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("open/token/queues.json")
+    @GET("open/token/queues")
     Call<JsonTokenAndQueueList> getAllJoinedQueue(
             @Header("X-R-DID")
             String did,
@@ -93,7 +93,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
      */
-    @POST("open/token/historical.json")
+    @POST("open/token/historical")
     Call<JsonTokenAndQueueList> getAllHistoricalJoinedQueue(
             @Header("X-R-DID")
             String did,
@@ -113,7 +113,8 @@ public interface TokenQueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("open/token/queue/{codeQR}.json")
+    @POST("open/token/queue/{codeQR}")
+    @Deprecated
     Call<JsonToken> joinQueue(
             @Header("X-R-DID")
             String did,
@@ -133,7 +134,7 @@ public interface TokenQueueApiUrls {
      * QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME will never happen in open api
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME}
      */
-    @POST("open/token/abort/{codeQR}.json")
+    @POST("open/token/abort/{codeQR}")
     Call<JsonResponse> abortQueue(
             @Header("X-R-DID")
             String did,

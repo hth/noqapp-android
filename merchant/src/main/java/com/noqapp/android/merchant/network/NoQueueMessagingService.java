@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -22,7 +23,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonQueueChangeServiceTime;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
@@ -35,12 +38,15 @@ import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.common.presenter.NotificationPresenter;
 import com.noqapp.android.common.utils.TextToSpeechHelper;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.NotificationApiCall;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.AppInitialize;
 
@@ -51,7 +57,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class NoQueueMessagingService extends FirebaseMessagingService {
+public class NoQueueMessagingService extends FirebaseMessagingService implements NotificationPresenter {
 
     private final static String TAG = NoQueueMessagingService.class.getSimpleName();
 
@@ -198,6 +204,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 default:
                     // object = null;
             }
+            if (jsonData != null && !TextUtils.isEmpty(jsonData.getId())) {
+                callNotificationViewApi(jsonData.getId());
+            }
             if (AppUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in background, show the notification in notification tray
                 if (null == AppInitialize.dbHandler) {
@@ -288,5 +297,42 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private int getNotificationIcon() {
         return R.mipmap.notification_icon;
+    }
+
+    private void callNotificationViewApi(String notificationId) {
+        com.noqapp.android.common.beans.body.Notification notification = new com.noqapp.android.common.beans.body.Notification();
+        notification.setId(notificationId);
+        NotificationApiCall notificationApiCall = new NotificationApiCall(this);
+        if (UserUtils.isLogin()) {
+            notificationApiCall.notificationViewed(
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
+                notification);
+        } else {
+            notificationApiCall.notificationViewed(
+                UserUtils.getDeviceId(),
+                notification);
+        }
+    }
+
+    @Override
+    public void notificationResponse(JsonResponse jsonResponse) {
+        // do nothing
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        // do nothing
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        // do nothing
+    }
+
+    @Override
+    public void authenticationFailure() {
+        // do nothing
     }
 }

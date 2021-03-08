@@ -17,7 +17,7 @@ public interface UserMedicalProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_PROFILE_DOES_NOT_EXISTS}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/h/medicalProfile/profile.json")
+    @POST("api/c/h/medicalProfile/profile")
     Call<JsonMedicalProfile> profile(
             @Header("X-R-MAIL")
             String mail,
@@ -29,7 +29,7 @@ public interface UserMedicalProfileApiUrls {
             MedicalProfile medicalProfile
     );
 
-    @POST("api/c/h/medicalProfile/hospitalVisitSchedule.json")
+    @POST("api/c/h/medicalProfile/hospitalVisitSchedule")
     Call<JsonHospitalVisitScheduleList> hospitalVisitSchedule(
             @Header("X-R-MAIL")
             String mail,
@@ -48,7 +48,7 @@ public interface UserMedicalProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_PROFILE_CANNOT_BE_CHANGED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/h/medicalProfile/updateUserMedicalProfile.json")
+    @POST("api/c/h/medicalProfile/updateUserMedicalProfile")
     Call<JsonMedicalProfile> updateUserMedicalProfile(
             @Header("X-R-MAIL")
             String mail,

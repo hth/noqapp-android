@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 public interface AdvertisementApiUrls {
 
     //TODO(chandra) implements this
-    @POST("api/tv/vigyapan/tsd/{codeQR}.json")
+    @POST("api/tv/vigyapan/tsd/{codeQR}")
     Call<JsonResponse> tagStoreAsDisplayed(
             @Header("X-R-DID")
             String did,
@@ -31,7 +31,7 @@ public interface AdvertisementApiUrls {
             String codeQR
     );
 
-    @GET("api/tv/vigyapan/all.json")
+    @GET("api/tv/vigyapan/all")
     Call<JsonAdvertisementList> getAllAdvertisements(
             @Header("X-R-DID")
             String did,
@@ -46,7 +46,7 @@ public interface AdvertisementApiUrls {
             String auth
     );
 
-    @GET("api/tv/vigyapan/professionalProfiles.json")
+    @GET("api/tv/vigyapan/professionalProfiles")
     Call<JsonProfessionalProfileTVList> professionalProfiles(
             @Header("X-R-DID")
             String did,

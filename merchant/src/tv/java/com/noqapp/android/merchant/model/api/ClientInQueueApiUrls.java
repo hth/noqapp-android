@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 
 public interface ClientInQueueApiUrls {
 
-    @POST("api/tv/queue/toBeServedClients.json")
+    @POST("api/tv/queue/toBeServedClients")
     Call<JsonQueueTVList> toBeServedClients(
             @Header("X-R-DID")
             String did,
