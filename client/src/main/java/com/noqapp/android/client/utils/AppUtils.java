@@ -164,7 +164,7 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public static double calculateDistance(float lat1, float lng1, float lat2, float lng2) {
+    public static double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 6371000; //meters
         double dLat = Math.toRadians(lat2 - lat1);
         double dLng = Math.toRadians(lng2 - lng1);

@@ -16,8 +16,13 @@ public class Constants extends BaseConstants{
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeAfterJoinQActivity = 12;
     public static final int requestCodeNotification = 2;
-    public static final int SCREEN_TIME_OUT = 5000;
-    public static final int DISCONNECT_TIMEOUT = 60000; //// 1 min = 1 * 60 * 1000 ms
+
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 10_001;
+    public static final int RESULT_CURRENT_LOCATION = 10_002;
+    public static final int REQUEST_CHECK_SETTINGS = 10_003;
+
+    public static final int SCREEN_TIME_OUT = 5_000;
+    public static final int DISCONNECT_TIMEOUT = 60_000; //// 1 min = 1 * 60 * 1000 ms
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String QRCODE = "qrcode";
     public static final String MESSAGE = "message";
@@ -48,13 +53,25 @@ public class Constants extends BaseConstants{
     private static String VERSION_RELEASE;
 
 
-
     // Shared Preferences keys
     public static final String APP_PACKAGE = "com.noqapp.android.client";
     // Pref key for Token status
     public static final String CURRENTLY_SERVING_PREF_KEY = "%s_currently_serving";
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
     public static final String PRE_REGISTER = "pre_approve";
+
+    public interface LocationConstants {
+        int SUCCESS_RESULT = 10_001;
+        int FAILURE_RESULT = 10_002;
+        int FETCH_LOCATION_JOB_ID = 10_003;
+        String RECEIVER = "locationaddress.receiver";
+        String RESULT_DATA_KEY = "locationaddress.resultdatakey";
+        String PLACE = "locationaddress.place";
+        String LOCATION_DATA_EXTRA = "locationaddress.locationdataextra";
+        String PLACE_NAME = "locationaddress.placename";
+        String LOCATION_LAT_DATA_EXTRA = "locationaddress.latextra";
+        String LOCATION_LNG_DATA_EXTRA = "locationaddress.lngextra";
+    }
 
     /**
      * Computes App version.
