@@ -34,6 +34,11 @@ import com.noqapp.android.client.location.LocationManager;
 
 import static com.noqapp.android.client.utils.Constants.REQUEST_CHECK_SETTINGS;
 
+/**
+ * Base class to perform location related work
+ * It can be used as a base class where ever current address, latitude, longitude comes into picture
+ * Created by Vivek Jha on 23/02/2021
+ */
 public abstract class LocationBaseActivity extends BaseActivity {
 
     public abstract void displayAddressOutput(String addressOutput, Double latitude, Double longitude);

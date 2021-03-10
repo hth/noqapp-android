@@ -7,9 +7,15 @@ import android.content.Intent
 import android.location.Location
 import android.os.ResultReceiver
 import android.util.Log
+import com.google.android.gms.common.util.CrashUtils
 import com.google.android.gms.location.*
+import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 import com.noqapp.android.client.utils.Constants
 
+/**
+ * Location manager class to perform location related queries
+ * Created by Vivek Jha on 23/02/2021
+ */
 internal object LocationManager {
     private var lastLocation: Location? = null
 
@@ -28,7 +34,9 @@ internal object LocationManager {
     @Synchronized
     @SuppressLint("MissingPermission")
     fun startLocationUpdate(context: Context) {
-        LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationCallback, null).addOnFailureListener { e: Exception? -> Log.e(LocationManager::class.java.simpleName, "getLastLocation:onFailure") }
+        LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationCallback, null).addOnFailureListener { e: Exception? ->
+            Log.e(LocationManager::class.java.simpleName, "getLastLocation:onFailure")
+        }
     }
 
     @Synchronized

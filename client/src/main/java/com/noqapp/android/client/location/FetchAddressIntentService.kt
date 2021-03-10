@@ -14,9 +14,13 @@ import com.noqapp.android.client.utils.Constants
 import java.io.IOException
 import java.util.*
 
+/**
+ * Intent service job class to get address from latitude/longitude in background
+ * Created by Vivek Jha on 23/02/2021
+ */
 class FetchAddressIntentService : JobIntentService() {
 
-    private val TAG = "FetchAddressService"
+    private val TAG = FetchAddressIntentService::class.java.simpleName
     private var receiver: ResultReceiver? = null
 
     companion object {
