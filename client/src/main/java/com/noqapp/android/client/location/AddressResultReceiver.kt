@@ -7,7 +7,8 @@ import android.os.ResultReceiver
 import com.noqapp.android.client.utils.Constants
 
 /**
- * Receiver for data sent from FetchAddressIntentService.
+ * Address Receiver class for data sent from FetchAddressIntentService.
+ * Created by Vivek Jha on 23/02/2021
  */
 class AddressResultReceiver constructor(
         val address: (String?, Double, Double) -> Unit

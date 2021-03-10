@@ -87,9 +87,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
             goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(goToA);
         });
-        iv_favourite.setOnClickListener((View v) -> {
-            markFavourite();
-        });
+        if (iv_favourite != null)
+            iv_favourite.setOnClickListener((View v) -> {
+                markFavourite();
+            });
     }
 
     @Override
@@ -131,11 +132,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     protected void hideSoftKeys(boolean isKioskMode) {
         if (isKioskMode) {
             final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE;
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE;
 
             getWindow().getDecorView().setSystemUiVisibility(flags);
             final View decorView = getWindow().getDecorView();
@@ -156,8 +157,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         isFavourite = AppInitialize.getFavouriteList().contains(codeQR);
         iv_favourite.setVisibility(View.VISIBLE);
         iv_favourite.setBackground(isFavourite
-            ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
-            : ContextCompat.getDrawable(this, R.drawable.heart_orange));
+                ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
+                : ContextCompat.getDrawable(this, R.drawable.heart_orange));
     }
 
     private void markFavourite() {
