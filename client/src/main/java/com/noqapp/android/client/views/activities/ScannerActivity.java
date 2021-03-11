@@ -153,7 +153,7 @@ public abstract class ScannerActivity extends LocationBaseActivity implements Cl
     }
 
     private void barcodeResult(String codeQR, String contents) {
-        if (contents.endsWith("b.htm")) {
+        if (contents.endsWith("b")) {
             Intent in = new Intent(this, CategoryInfoActivity.class);
             Bundle b = new Bundle();
             b.putString(IBConstant.KEY_CODE_QR, codeQR);
@@ -161,7 +161,7 @@ public abstract class ScannerActivity extends LocationBaseActivity implements Cl
             b.putBoolean(IBConstant.KEY_IS_TEMPLE, false);
             in.putExtra("bundle", b);
             startActivity(in);
-        } else if (contents.endsWith("o.htm")) {
+        } else if (contents.endsWith("o")) {
             //Show orders instead
             BizStoreElastic bizStoreElastic = new BizStoreElastic();
             bizStoreElastic.setCodeQR(codeQR);
