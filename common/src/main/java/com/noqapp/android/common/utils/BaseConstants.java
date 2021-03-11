@@ -4,8 +4,8 @@ public class BaseConstants {
 
     //Urls
     public static final String URL_MERCHANT_LOGIN = "https://q.noqapp.com/";
-    public static final String URL_MERCHANT_REGISTER = "https://q.noqapp.com/open/register.htm";
-    public static final String URL_FORGET_PWD = "https://q.noqapp.com/open/forgot/password.htm";
+    public static final String URL_MERCHANT_REGISTER = "https://q.noqapp.com/open/register";
+    public static final String URL_FORGET_PWD = "https://q.noqapp.com/open/forgot/password";
     public static final String URL_ABOUT_US = "https://noqapp.com/#/pages/about";
     public static final String URL_TERM_CONDITION = "https://noqapp.com/#/pages/terms";
     public static final String URL_PRIVACY_POLICY = "https://noqapp.com/#/pages/privacy";
