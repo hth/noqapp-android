@@ -120,6 +120,12 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("e")
     private String expectedServiceBegin;
 
+    @JsonProperty("vs")
+    private boolean clientVisitedThisStore;
+
+    @JsonProperty("vsd")
+    private String clientVisitedThisStoreDate;
+
     @JsonProperty("ti")
     private String transactionId;
 
@@ -370,6 +376,24 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setExpectedServiceBegin(String expectedServiceBegin) {
         this.expectedServiceBegin = expectedServiceBegin;
+        return this;
+    }
+
+    public boolean isClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public JsonPurchaseOrder setClientVisitedThisStore(boolean clientVisitedThisStore) {
+        this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getClientVisitedThisStoreDate() {
+        return clientVisitedThisStoreDate;
+    }
+
+    public JsonPurchaseOrder setClientVisitedThisStoreDate(String clientVisitedThisStoreDate) {
+        this.clientVisitedThisStoreDate = clientVisitedThisStoreDate;
         return this;
     }
 
