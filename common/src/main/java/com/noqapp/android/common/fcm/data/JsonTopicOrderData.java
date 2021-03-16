@@ -45,6 +45,9 @@ public class JsonTopicOrderData extends JsonData {
     @JsonProperty("cs")
     private int currentlyServing;
 
+    @JsonProperty("dsn")
+    private String displayServingNow;
+
     @JsonProperty("qr")
     private String codeQR;
 
@@ -99,6 +102,15 @@ public class JsonTopicOrderData extends JsonData {
 
     public JsonTopicOrderData setCurrentlyServing(int currentlyServing) {
         this.currentlyServing = currentlyServing;
+        return this;
+    }
+
+    public String getDisplayServingNow() {
+        return displayServingNow;
+    }
+
+    public JsonTopicOrderData setDisplayServingNow(String displayServingNow) {
+        this.displayServingNow = displayServingNow;
         return this;
     }
 
