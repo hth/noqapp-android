@@ -238,9 +238,9 @@ public class LaunchActivity
         tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
-                AppUtils.isRelease()
-                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                        : getString(R.string.version_no, "Not for release"));
+            AppUtils.isRelease()
+                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                : getString(R.string.version_no, "Not for release"));
         setUpExpandableList(UserUtils.isLogin());
 
         /* Call to check if the current version of app blacklist or old. */
