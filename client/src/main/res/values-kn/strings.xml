@@ -222,6 +222,7 @@
     <string name="active_token">ಸಕ್ರಿಯ ಟೋಕನ್</string>
     <string name="health_care">ಆಸ್ಪತ್ರೆಗಳು</string>
     <string name="business_near">ವ್ಯಾಪಾರ / ಸಂಸ್ಥೆ</string>
+    <string name="restaurants_near">ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು</string>
     <string name="view_all">ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ</string>
     <string name="scan_info">ಸರದಿ ಸೇರಲು ಅಥವಾ ಆರ್ಡರ್ ಮಾಡಲು NoQueue QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ</string>
     <string name="prompt_address_status">ವಿಳಾಸ</string>

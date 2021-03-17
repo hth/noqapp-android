@@ -21,6 +21,10 @@ public interface SearchBusinessStorePresenter extends ResponseErrorPresenter {
 
     void nearMeCanteenError();
 
+    void nearMeRestaurantsResponse(BizStoreElasticList bizStoreElasticList);
+
+    void nearMeRestaurantsError();
+
     void nearMeTempleResponse(BizStoreElasticList bizStoreElasticList);
 
     void nearMeTempleError();
