@@ -391,8 +391,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         dialog.setCanceledOnTouchOutside(true);
 
         final AutoCompleteTextView actv_counter = dialog.findViewById(R.id.actv_counter);
-        final ArrayList<String> names = AppInitialize.getCounterNames();
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, names);
+        final List<String> names = AppInitialize.getCounterNames();
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, names);
         actv_counter.setAdapter(adapter1);
         actv_counter.setThreshold(1);
         actv_counter.setDropDownBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
