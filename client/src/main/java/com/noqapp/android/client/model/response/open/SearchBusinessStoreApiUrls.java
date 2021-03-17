@@ -99,6 +99,23 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
+    //TODO @Hitendder update the end point
+    @POST("open/search/canteen")
+    Call<BizStoreElasticList> restaurants(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Body
+            SearchStoreQuery searchStoreQuery
+    );
+
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("open/search/placeOfWorship")
     Call<BizStoreElasticList> placeOfWorship(
         @Header("X-R-DID")

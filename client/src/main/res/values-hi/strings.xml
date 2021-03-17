@@ -222,6 +222,7 @@
     <string name="active_token">सक्रिय टोकन</string>
     <string name="health_care">अस्पताल</string>
     <string name="business_near">बिजनेस/संस्थाये</string>
+    <string name="restaurants_near">रेस्टोरेंट</string>
     <string name="view_all">सभी को देखें</string>
     <string name="scan_info">कतार में शामिल होने के लिए QR कोड स्कैन करें / मौके पर ऑर्डर</string>
     <string name="prompt_address_status">पता</string>

@@ -222,6 +222,7 @@
     <string name="active_token">jeton activé</string>
     <string name="health_care">des hôpitaux </string>
     <string name="business_near">affaires/ institution</string>
+    <string name="restaurants_near">Restaurants</string>
     <string name="view_all">voir tout</string>
     <string name="scan_info">Scan Noqueue QR Code pour rejoindre la file d’attente ou passer une commande</string>
     <string name="prompt_address_status">L\'adresse </string>

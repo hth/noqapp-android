@@ -322,6 +322,16 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
+    public void nearMeRestaurantsResponse(BizStoreElasticList bizStoreElasticList) {
+        // Do nothing
+    }
+
+    @Override
+    public void nearMeRestaurantsError() {
+        // Do nothing
+    }
+
+    @Override
     public void nearMeTempleResponse(BizStoreElasticList bizStoreElasticList) {
         // Do nothing
     }

@@ -115,6 +115,40 @@ public class SearchBusinessStoreApiCalls {
      * @param did
      * @param searchStoreQuery
      */
+    public void restaurants(String did, SearchStoreQuery searchStoreQuery) {
+        searchBusinessStoreApiUrls.restaurants(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+            @Override
+            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp- RestaurantNearMe", String.valueOf(response.body()));
+                        searchBusinessStorePresenter.nearMeRestaurantsResponse(response.body());
+                        bizStoreElasticList = response.body();
+                    } else {
+                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        searchBusinessStorePresenter.authenticationFailure();
+                    } else {
+                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+                responseReceived = true;
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
+                Log.e("NearMeRestaurant failed", t.getLocalizedMessage(), t);
+                searchBusinessStorePresenter.nearMeRestaurantsError();
+            }
+        });
+    }
+
+    /**
+     * @param did
+     * @param searchStoreQuery
+     */
     public void placeOfWorship(String did, SearchStoreQuery searchStoreQuery) {
         searchBusinessStoreApiUrls.placeOfWorship(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override

@@ -127,6 +127,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private RecyclerView rv_current_activity;
     private RecyclerView rv_events;
     private RecyclerView rv_canteen_around_you;
+    private RecyclerView rv_restaurants_around_you;
     private RecyclerView rv_merchant_around_you;
     private RecyclerView rv_place_of_worship_around_you;
     private RecyclerView rv_health_care;
@@ -136,9 +137,11 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private LinearLayout rl_canteen;
     private LinearLayout rl_place_of_worship;
     private LinearLayout rl_health_care;
+    private LinearLayout rl_restaurants_around_you;
 
     private TextView tv_events_view_all;
     private TextView tv_canteen_view_all;
+    private TextView tv_restaurants_view_all;
     private TextView tv_merchant_view_all;
     private TextView tv_place_of_worship_view_all;
     private TextView tv_health_care_view_all;
@@ -148,6 +151,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private ProgressBar pb_health_care;
     private ProgressBar pb_canteen;
     private ProgressBar pb_place_of_worship;
+    private ProgressBar pb_restaurants;
     private ProgressBar pb_merchant;
     private ProgressBar pb_feed;
     private ProgressBar pb_events;
@@ -161,6 +165,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private ArrayList<BizStoreElastic> nearMeHospital;
     private ArrayList<BizStoreElastic> nearMePlaceOfWorship;
     private ArrayList<BizStoreElastic> nearMeCanteen;
+    private ArrayList<BizStoreElastic> nearMeRestaurants;
     private CurrentActivityAdapter.OnItemClickListener currentClickListener;
     private StoreInfoAdapter.OnItemClickListener storeListener;
     private String scrollId = "";
@@ -230,11 +235,13 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         rv_events = view.findViewById(R.id.rv_events);
         rv_canteen_around_you = view.findViewById(R.id.rv_canteen_around_you);
         rv_merchant_around_you = view.findViewById(R.id.rv_merchant_around_you);
+        rv_restaurants_around_you = view.findViewById(R.id.rv_restaurants_around_you);
         rv_place_of_worship_around_you = view.findViewById(R.id.rv_temple_around_you);
         rv_health_care = view.findViewById(R.id.rv_health_care);
 
         tv_events_view_all = view.findViewById(R.id.tv_events_view_all);
         tv_canteen_view_all = view.findViewById(R.id.tv_canteen_view_all);
+        tv_restaurants_view_all = view.findViewById(R.id.tv_restaurants_view_all);
         tv_merchant_view_all = view.findViewById(R.id.tv_merchant_view_all);
         tv_place_of_worship_view_all = view.findViewById(R.id.tv_temple_view_all);
         tv_health_care_view_all = view.findViewById(R.id.tv_health_care_view_all);
@@ -243,18 +250,21 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         pb_current = view.findViewById(R.id.pb_current);
         pb_events = view.findViewById(R.id.pb_events);
         pb_canteen = view.findViewById(R.id.pb_canteen);
+        pb_restaurants = view.findViewById(R.id.pb_restaurants);
         pb_merchant = view.findViewById(R.id.pb_merchant);
         pb_place_of_worship = view.findViewById(R.id.pb_temple);
         pb_health_care = view.findViewById(R.id.pb_health_care);
         pb_feed = view.findViewById(R.id.pb_feed);
 
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
+        rl_restaurants_around_you = view.findViewById(R.id.rl_restaurants_around_you);
         rl_canteen = view.findViewById(R.id.rl_canteen);
         rl_place_of_worship = view.findViewById(R.id.rl_temple_around_you);
         rl_health_care = view.findViewById(R.id.rl_health_care);
 
         tv_events_view_all.setOnClickListener(this);
         tv_canteen_view_all.setOnClickListener(this);
+        tv_restaurants_view_all.setOnClickListener(this);
         tv_merchant_view_all.setOnClickListener(this);
         tv_place_of_worship_view_all.setOnClickListener(this);
         tv_health_care_view_all.setOnClickListener(this);
@@ -275,6 +285,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         if (!LaunchActivity.getLaunchActivity().isCountryIndia()) {
             if (AppUtils.isRelease()) {
                 rl_canteen.setVisibility(View.GONE);
+                rl_restaurants_around_you.setVisibility(View.GONE);
                 rl_health_care.setVisibility(View.GONE);
                 rl_place_of_worship.setVisibility(View.GONE);
             }
@@ -303,6 +314,11 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         rv_current_activity.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_current_activity.setItemAnimator(new DefaultItemAnimator());
         rv_current_activity.addItemDecoration(new CirclePagerIndicatorDecoration());
+
+        //
+        rv_restaurants_around_you.setHasFixedSize(true);
+        rv_restaurants_around_you.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rv_restaurants_around_you.setItemAnimator(new DefaultItemAnimator());
 
         //
         rv_merchant_around_you.setHasFixedSize(true);
@@ -435,6 +451,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 pb_merchant.setVisibility(View.VISIBLE);
                 if (LaunchActivity.COUNTRY_CODE.equalsIgnoreCase("IN")) {
                     pb_canteen.setVisibility(View.VISIBLE);
+                    pb_restaurants.setVisibility(View.VISIBLE);
                 }
             }
             SearchBusinessStoreApiCalls searchBusinessStoreApiCalls = new SearchBusinessStoreApiCalls(this);
@@ -443,10 +460,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             // Applicable for INDIA only
             if (LaunchActivity.COUNTRY_CODE.equalsIgnoreCase("IN")) {
                 searchBusinessStoreApiCalls.canteen(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreApiCalls.restaurants(UserUtils.getDeviceId(), searchStoreQuery);
                 searchBusinessStoreApiCalls.placeOfWorship(UserUtils.getDeviceId(), searchStoreQuery);
                 searchBusinessStoreApiCalls.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 rl_canteen.setVisibility(View.GONE);
+                rl_restaurants_around_you.setVisibility(View.GONE);
                 rl_place_of_worship.setVisibility(View.GONE);
                 rl_health_care.setVisibility(View.GONE);
             }
@@ -541,6 +560,26 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     @Override
     public void nearMeCanteenError() {
         pb_canteen.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void nearMeRestaurantsResponse(BizStoreElasticList bizStoreElasticList) {
+        nearMeRestaurants = new ArrayList<>();
+        nearMeRestaurants.addAll(bizStoreElasticList.getBizStoreElastics());
+
+        //sort the list, give the Comparator the current location
+        Collections.sort(nearMeRestaurants, new SortPlaces(new GeoIP(lat, lng)));
+        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeRestaurants, getActivity(), storeListener, lat, lng);
+        rv_restaurants_around_you.setAdapter(storeInfoAdapter);
+        Log.v("NearMe restaurants", bizStoreElasticList.toString());
+        scrollId = bizStoreElasticList.getScrollId();
+        pb_restaurants.setVisibility(View.GONE);
+        tv_restaurants_view_all.setVisibility(nearMeRestaurants.size() == 0 ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void nearMeRestaurantsError() {
+        pb_restaurants.setVisibility(View.GONE);
     }
 
     @Override
@@ -691,6 +730,16 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     private void allCanteenClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
         intent.putExtra("list", nearMeCanteen);
+        intent.putExtra("scrollId", scrollId);
+        intent.putExtra("lat", "" + lat);
+        intent.putExtra("lng", "" + lng);
+        intent.putExtra("city", city);
+        startActivity(intent);
+    }
+
+    private void allRestaurantClick() {
+        Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
+        intent.putExtra("list", nearMeRestaurants);
         intent.putExtra("scrollId", scrollId);
         intent.putExtra("lat", "" + lat);
         intent.putExtra("lng", "" + lng);
@@ -953,6 +1002,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 break;
             case R.id.tv_canteen_view_all:
                 allCanteenClick();
+                break;
+            case R.id.tv_restaurants_view_all:
+                allRestaurantClick();
                 break;
             case R.id.tv_temple_view_all:
                 allTempleClick();
