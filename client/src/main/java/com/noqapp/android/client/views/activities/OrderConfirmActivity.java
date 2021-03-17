@@ -141,7 +141,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 if (isProductWithoutPrice) {
                     new CustomToast().showToast(
                         OrderConfirmActivity.this,
-                        "Merchant have not set the price of the product. Hence payment cannot be proceed");
+                        "Payment cannot proceed as business has not set the price of the product");
                 } else {
                     if (AppInitialize.isEmailVerified()) {
                         if (isOnline()) {
@@ -154,7 +154,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     } else {
                         new CustomToast().showToast(
                             OrderConfirmActivity.this,
-                            "To pay, email is mandatory. In your profile add and verify email");
+                            "To pay, email is mandatory. In your profile add and verify email.");
                     }
                 }
             }
