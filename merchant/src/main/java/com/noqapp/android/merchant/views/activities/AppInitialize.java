@@ -201,14 +201,14 @@ public class AppInitialize extends Application {
         preferences.edit().putString(KEY_SUGGESTION_PRODUCT_PREF, strInput).apply();
     }
 
-    public static ArrayList<String> getCounterNames() {
+    public static List<String> getCounterNames() {
         //Retrieve the values
         String jsonText = preferences.getString(KEY_COUNTER_NAME_LIST, null);
-        ArrayList<String> nameList = new Gson().fromJson(jsonText, ArrayList.class);
-        return null != nameList ? nameList : new ArrayList<String>();
+        List<String> nameList = new Gson().fromJson(jsonText, ArrayList.class);
+        return null != nameList ? nameList : new ArrayList<>();
     }
 
-    public static void setCounterNames(ArrayList<String> mHashmap) {
+    public static void setCounterNames(List<String> mHashmap) {
         String strInput = new Gson().toJson(mHashmap);
         preferences.edit().putString(KEY_COUNTER_NAME_LIST, strInput).apply();
     }
