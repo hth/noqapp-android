@@ -302,14 +302,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                      */
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         if (StringUtils.isNotBlank(codeQR)) {
-                            String current_serving = mappedData.get(Constants.CURRENTLY_SERVING);
-                            if (null != current_serving) {
-                                ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+                            String currentServing = mappedData.get(Constants.CURRENTLY_SERVING);
+                            if (null != currentServing) {
+                                List<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                                 for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
                                     JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
                                     if (null != jtk) {
                                         //update DB & after join screen
-                                        jtk.setServingNumber(Integer.parseInt(current_serving));
+                                        jtk.setServingNumber(Integer.parseInt(currentServing));
                                         /*
                                          * Save codeQR of goto & show it in after join screen on app
                                          * Review DB for review key && current serving == token no.
