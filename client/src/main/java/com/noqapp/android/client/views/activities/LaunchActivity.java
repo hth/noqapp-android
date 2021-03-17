@@ -646,12 +646,14 @@ public class LaunchActivity
             String go_to = "";
             String messageOrigin = "";
             String currentServing = "";
+            String displayServingNumber = "";
             List<JsonTextToSpeech> jsonTextToSpeeches = null;
             String msgId = "";
             PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
             if (jsonData instanceof JsonTopicQueueData) {
                 JsonTopicQueueData jsonTopicQueueData = (JsonTopicQueueData) jsonData;
                 currentServing = String.valueOf(jsonTopicQueueData.getCurrentlyServing());
+                displayServingNumber = jsonTopicQueueData.getDisplayServingNumber();
                 go_to = jsonTopicQueueData.getGoTo();
                 messageOrigin = jsonTopicQueueData.getMessageOrigin().name();
                 jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
@@ -659,6 +661,7 @@ public class LaunchActivity
             } else if (jsonData instanceof JsonTopicOrderData) {
                 JsonTopicOrderData jsonTopicOrderData = (JsonTopicOrderData) jsonData;
                 currentServing = String.valueOf(jsonTopicOrderData.getCurrentlyServing());
+                displayServingNumber = jsonTopicOrderData.getDisplayServingNumber();
                 go_to = jsonTopicOrderData.getGoTo();
                 messageOrigin = jsonTopicOrderData.getMessageOrigin().name();
                 purchaseOrderStateEnum = jsonTopicOrderData.getPurchaseOrderState();
@@ -674,8 +677,8 @@ public class LaunchActivity
                     if (Integer.parseInt(currentServing) < jtk.getServingNumber()) {
                         /* Do nothing - In Case of getting service no less than what the object have */
                     } else {
-                        TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                         jtk.setServingNumber(Integer.parseInt(currentServing));
+                        TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, String.valueOf(jtk.getToken()));
                     }
 
                     if (jsonData instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(currentServing) <= 0) {
