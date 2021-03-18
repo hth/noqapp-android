@@ -905,7 +905,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     }
 
     public void updateListFromNotification(JsonTokenAndQueue jq, List<JsonTextToSpeech> jsonTextToSpeeches, String msgId) {
-        boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
+        boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), String.valueOf(jq.getServingNumber()), jq.getDisplayServingNumber(), String.valueOf(jq.getToken()));
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {
             boolean showBuzzer;

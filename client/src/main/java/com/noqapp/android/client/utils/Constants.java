@@ -30,6 +30,7 @@ public class Constants extends BaseConstants{
     public static final String ISREVIEW = "isreview";
     public static final String FIREBASE_TYPE = "f";
     public static final String CURRENTLY_SERVING = "cs";
+    public static final String DISPLAY_SERVING_NUMBER = "ds";
     public static final String CODE_QR = "qr";
     public static final String TOKEN = "t";
     public static final String QID = "qid";
@@ -57,6 +58,7 @@ public class Constants extends BaseConstants{
     public static final String APP_PACKAGE = "com.noqapp.android.client";
     // Pref key for Token status
     public static final String CURRENTLY_SERVING_PREF_KEY = "%s_currently_serving";
+    public static final String DISPLAY_SERVING_NUMBER_PREF_KEY = "%s_display_serving_number";
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
     public static final String PRE_REGISTER = "pre_approve";
 

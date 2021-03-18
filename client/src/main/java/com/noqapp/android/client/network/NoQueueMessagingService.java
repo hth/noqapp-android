@@ -286,6 +286,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                         // Update Currently serving in app preferences
                         SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                         prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, mappedData.get(CODE_QR)), Integer.parseInt(mappedData.get(Constants.CURRENTLY_SERVING))).apply();
+                        prefs.edit().putInt(String.format(Constants.DISPLAY_SERVING_NUMBER_PREF_KEY, mappedData.get(CODE_QR)), Integer.parseInt(mappedData.get(Constants.DISPLAY_SERVING_NUMBER))).apply();
                     }
                 } else {
                     // app is in background, show the notification in notification tray
@@ -302,14 +303,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                      */
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         if (StringUtils.isNotBlank(codeQR)) {
-                            String current_serving = mappedData.get(Constants.CURRENTLY_SERVING);
-                            if (null != current_serving) {
-                                ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+                            String currentServing = mappedData.get(Constants.CURRENTLY_SERVING);
+                            if (null != currentServing) {
+                                List<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                                 for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
                                     JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
                                     if (null != jtk) {
                                         //update DB & after join screen
-                                        jtk.setServingNumber(Integer.parseInt(current_serving));
+                                        jtk.setServingNumber(Integer.parseInt(currentServing));
                                         /*
                                          * Save codeQR of goto & show it in after join screen on app
                                          * Review DB for review key && current serving == token no.
@@ -319,7 +320,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                             //TODO @chandra write logic for unsubscribe
                                             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                                         }
-                                        TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                                        TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, mappedData.get(Constants.DISPLAY_SERVING_NUMBER), String.valueOf(jtk.getToken()));
                                     }
                                 }
                             }
@@ -446,14 +447,17 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                         } else {
                             String goTo = "";
                             String currentServing = "";
+                            String displayServingNumber = "";
                             if (jsonData instanceof JsonTopicQueueData) {
                                 Log.e("In JsonTopicQueueData", jsonData.toString());
                                 currentServing = String.valueOf(((JsonTopicQueueData) jsonData).getCurrentlyServing());
+                                displayServingNumber = ((JsonTopicQueueData) jsonData).getDisplayServingNumber();
                                 goTo = ((JsonTopicQueueData) jsonData).getGoTo();
                             }
                             if (jsonData instanceof JsonTopicOrderData) {
                                 Log.e("In JsonTopicOrderData", jsonData.toString());
                                 currentServing = String.valueOf(((JsonTopicOrderData) jsonData).getCurrentlyServing());
+                                displayServingNumber = ((JsonTopicOrderData) jsonData).getDisplayServingNumber();
                                 goTo = ((JsonTopicOrderData) jsonData).getGoTo();
                             }
                             ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
@@ -493,7 +497,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                                         //un-subscribe from the topic
                                         NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                                     }
-                                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, String.valueOf(jtk.getToken()));
+                                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, String.valueOf(jtk.getToken()));
 
                                     // Check if user needs to be notified
                                     int currentlyServingNumber = Integer.parseInt(currentServing);
@@ -573,6 +577,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error reading message " + e.getLocalizedMessage(), e);
+                FirebaseCrashlytics.getInstance().log("Failed to parse message " + e.getLocalizedMessage());
+                FirebaseCrashlytics.getInstance().recordException(e);
                 sendNotification(title, jsonData.getLocalLanguageMessageBody(LaunchActivity.language), false, imageUrl);
             }
         }

@@ -645,20 +645,23 @@ public class LaunchActivity
         try {
             String go_to = "";
             String messageOrigin = "";
-            String current_serving = "";
+            String currentServing = "";
+            String displayServingNumber = "";
             List<JsonTextToSpeech> jsonTextToSpeeches = null;
             String msgId = "";
             PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
             if (jsonData instanceof JsonTopicQueueData) {
                 JsonTopicQueueData jsonTopicQueueData = (JsonTopicQueueData) jsonData;
-                current_serving = String.valueOf(jsonTopicQueueData.getCurrentlyServing());
+                currentServing = String.valueOf(jsonTopicQueueData.getCurrentlyServing());
+                displayServingNumber = jsonTopicQueueData.getDisplayServingNumber();
                 go_to = jsonTopicQueueData.getGoTo();
                 messageOrigin = jsonTopicQueueData.getMessageOrigin().name();
                 jsonTextToSpeeches = jsonData.getJsonTextToSpeeches();
                 msgId = jsonTopicQueueData.getMessageId();
             } else if (jsonData instanceof JsonTopicOrderData) {
                 JsonTopicOrderData jsonTopicOrderData = (JsonTopicOrderData) jsonData;
-                current_serving = String.valueOf(jsonTopicOrderData.getCurrentlyServing());
+                currentServing = String.valueOf(jsonTopicOrderData.getCurrentlyServing());
+                displayServingNumber = jsonTopicOrderData.getDisplayServingNumber();
                 go_to = jsonTopicOrderData.getGoTo();
                 messageOrigin = jsonTopicOrderData.getMessageOrigin().name();
                 purchaseOrderStateEnum = jsonTopicOrderData.getPurchaseOrderState();
@@ -671,34 +674,34 @@ public class LaunchActivity
                 JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
                 if (null != jtk) {
                     /* update DB & after join screen */
-                    if (Integer.parseInt(current_serving) < jtk.getServingNumber()) {
+                    if (Integer.parseInt(currentServing) < jtk.getServingNumber()) {
                         /* Do nothing - In Case of getting service no less than what the object have */
                     } else {
-                        jtk.setServingNumber(Integer.parseInt(current_serving));
-                        TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                        jtk.setServingNumber(Integer.parseInt(currentServing));
+                        TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, String.valueOf(jtk.getToken()));
                     }
 
-                    if (jsonData instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
+                    if (jsonData instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(currentServing) <= 0) {
                         jtk.setPurchaseOrderState(purchaseOrderStateEnum);
                     }
                     /*
                      * Save codeQR of goto & show it in after join screen on app
                      * Review DB for review key && current serving == token no.
                      */
-                    if (Integer.parseInt(current_serving) == jtk.getToken()) {
+                    if (Integer.parseInt(currentServing) == jtk.getToken()) {
                         // if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-                        ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                        ReviewData reviewData = ReviewDB.getValue(codeQR, currentServing);
                         if (null != reviewData) {
                             ContentValues cv = new ContentValues();
                             cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
-                            ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                            ReviewDB.updateReviewRecord(codeQR, currentServing, cv);
                             /* update */
                         } else {
                             /* insert */
                             ContentValues cv = new ContentValues();
                             cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                            cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                            cv.put(DatabaseTable.Review.TOKEN, currentServing);
                             cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
                             cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                             cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
@@ -716,12 +719,12 @@ public class LaunchActivity
                         boolean isUpdated = AppInitialize.activityCommunicator.updateUI(codeQR, jtk, go_to);
 
                         if (isUpdated || (jtk.getServingNumber() == jtk.getToken())) {
-                            ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                            ReviewData reviewData = ReviewDB.getValue(codeQR, currentServing);
                             if (null != reviewData) {
                                 if (!reviewData.getIsBuzzerShow().equals("1")) {
                                     ContentValues cv = new ContentValues();
                                     cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
-                                    ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                                    ReviewDB.updateReviewRecord(codeQR, currentServing, cv);
                                     Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
                                     blinker.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     getApplicationContext().startActivity(blinker);
@@ -737,7 +740,7 @@ public class LaunchActivity
                                 ContentValues cv = new ContentValues();
                                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                 cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                                cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                                cv.put(DatabaseTable.Review.TOKEN, currentServing);
                                 cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
                                 cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                                 cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
@@ -755,7 +758,7 @@ public class LaunchActivity
                     try {
                         /* In case of order update the order status */
                         if (jsonData instanceof JsonTopicOrderData) {
-                            if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
+                            if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(currentServing) == jtk.getToken()) {
                                 jtk.setPurchaseOrderState(((JsonTopicOrderData) jsonData).getPurchaseOrderState());
                                 TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
                             }
@@ -766,7 +769,7 @@ public class LaunchActivity
                         throw e;
                     }
                 } else {
-                    Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
+                    Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + currentServing + " goTo=" + go_to);
                 }
             }
         } catch (Exception e) {
