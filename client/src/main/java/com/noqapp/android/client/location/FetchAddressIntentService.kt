@@ -19,7 +19,6 @@ import java.util.*
  * Created by Vivek Jha on 23/02/2021
  */
 class FetchAddressIntentService : JobIntentService() {
-
     private val TAG = FetchAddressIntentService::class.java.simpleName
     private var receiver: ResultReceiver? = null
 
@@ -33,7 +32,6 @@ class FetchAddressIntentService : JobIntentService() {
         var errorMessage = ""
 
         receiver = intent.getParcelableExtra(Constants.LocationConstants.RECEIVER)
-
         if (receiver == null) {
             Log.wtf(TAG, "No receiver received. There is nowhere to send the results.")
             return
@@ -41,7 +39,6 @@ class FetchAddressIntentService : JobIntentService() {
 
         val latitude = intent.getDoubleExtra(Constants.LocationConstants.LOCATION_LAT_DATA_EXTRA, 0.0)
         val longitude = intent.getDoubleExtra(Constants.LocationConstants.LOCATION_LNG_DATA_EXTRA, 0.0)
-
         if (latitude == 0.0 || longitude == 0.0) {
             errorMessage = getString(R.string.no_location_data_provided)
             Log.wtf(TAG, errorMessage)
@@ -58,7 +55,7 @@ class FetchAddressIntentService : JobIntentService() {
             Log.e(TAG, errorMessage, ioException)
         } catch (illegalArgumentException: IllegalArgumentException) {
             errorMessage = getString(R.string.invalid_lat_long_used)
-            Log.e(TAG, "$errorMessage. Latitude = $latitude , " + "Longitude = $longitude", illegalArgumentException)
+            Log.e(TAG, "$errorMessage, Latitude=$latitude, Longitude=$longitude", illegalArgumentException)
         }
 
         if (addresses.isEmpty()) {
@@ -69,9 +66,7 @@ class FetchAddressIntentService : JobIntentService() {
             deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, latitude, longitude)
         } else {
             val address = addresses[0]
-
             Log.i(TAG, getString(R.string.address_found))
-
             var cityName = address.getAddressLine(0);
             if (!TextUtils.isEmpty(address.locality) && !TextUtils.isEmpty(address.subLocality)) {
                 cityName = address.subLocality + ", " + address.locality;
@@ -87,9 +82,7 @@ class FetchAddressIntentService : JobIntentService() {
         }
     }
 
-    /**
-     * Sends a resultCode and message to the receiver.
-     */
+    /** Sends a resultCode and message to the receiver. */
     private fun deliverResultToReceiver(resultCode: Int, message: String, latitude: Double, longitude: Double) {
         val bundle = Bundle().apply {
             putString(Constants.LocationConstants.RESULT_DATA_KEY, message)
@@ -98,5 +91,4 @@ class FetchAddressIntentService : JobIntentService() {
         }
         receiver?.send(resultCode, bundle)
     }
-
 }
