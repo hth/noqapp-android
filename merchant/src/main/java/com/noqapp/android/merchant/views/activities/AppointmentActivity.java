@@ -69,7 +69,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         scroll_view = findViewById(R.id.scroll_view);
         if (!CommonHelper.isHealthCare(this)) {
             TextView tv_list_header = findViewById(R.id.tv_list_header);
-            tv_list_header.setText("No of customer Date wise");
+            tv_list_header.setText("No of customer by date");
         }
         if (LaunchActivity.isTablet) {
             RelativeLayout rl_parent = findViewById(R.id.rl_parent);
