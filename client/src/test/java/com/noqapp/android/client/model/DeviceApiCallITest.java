@@ -47,7 +47,7 @@ class DeviceApiCallITest extends ITest {
     void isSupportedAppVersion() {
         this.deviceApiCall.isSupportedAppVersion();
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
-        assertEquals("1.2.230", deviceApiCall.getJsonLatestAppVersion().getLatestAppVersion());
+        assertEquals("1.3.50", deviceApiCall.getJsonLatestAppVersion().getLatestAppVersion());
     }
 
     private Callable<Boolean> awaitUntilResponseFromServer() {

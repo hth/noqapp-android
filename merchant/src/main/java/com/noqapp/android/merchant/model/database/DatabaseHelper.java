@@ -58,15 +58,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private static final Patch[] PATCHES = new Patch[]{
-            new Patch(1, 2, "1.2.21") {
-                public void apply(SQLiteDatabase db) {
-                    CreateTable.createTablePreferredStore(db);
-                }
-            }, new Patch(2, 3, "1.2.3") {
-        public void apply(SQLiteDatabase db) {
+        new Patch(1, 2, "1.2.21") {
+            public void apply(SQLiteDatabase db) {
+                CreateTable.createTablePreferredStore(db);
+            }
+        }, new Patch(2, 3, "1.2.3") {
+            public void apply(SQLiteDatabase db) {
             CreateTable.createTableMedicalFiles(db);
         }
-    }
+        }
     };
 
 }

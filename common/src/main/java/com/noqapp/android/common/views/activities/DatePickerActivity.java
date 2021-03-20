@@ -1,6 +1,5 @@
 package com.noqapp.android.common.views.activities;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +31,6 @@ public class DatePickerActivity extends AppCompatActivity {
     private final int SELECTION_MODE_DEFAULT = 0;
     private final int SELECTION_MODE_TODAY = 1;
     private final int SELECTION_MODE_NEXT = 2;
-
 
     private static Calendar getClearedUtc() {
         Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -74,17 +72,14 @@ public class DatePickerActivity extends AppCompatActivity {
     }
 
     private void openCalender() {
-        MaterialDatePicker.Builder<?> builder =
-                setupDateSelectorBuilder(SELECTION_MODE_DEFAULT, SELECTION_MODE_TODAY);
-        CalendarConstraints.Builder constraintsBuilder =
-                setupConstraintsBuilder(false);
+        MaterialDatePicker.Builder<?> builder = setupDateSelectorBuilder(SELECTION_MODE_DEFAULT, SELECTION_MODE_TODAY);
+        CalendarConstraints.Builder constraintsBuilder = setupConstraintsBuilder(false);
         int dialogTheme = resolveOrThrow(this, R.attr.materialCalendarTheme);
         int fullscreenTheme = resolveOrThrow(this, R.attr.materialCalendarFullscreenTheme);
 
         builder.setTheme(dialogTheme);
        // builder.setTheme(fullscreenTheme);
         builder.setTitleText(R.string.cat_picker_title_custom);
-
 
         try {
              builder.setCalendarConstraints(constraintsBuilder.build());
@@ -94,6 +89,7 @@ public class DatePickerActivity extends AppCompatActivity {
                 picker.dismiss();
                 resultBack("");
             });
+
             picker.addOnPositiveButtonClickListener((MaterialPickerOnPositiveButtonClickListener<Object>) selection -> {
                 String output = picker.getHeaderText();
                 picker.dismiss();
@@ -112,8 +108,7 @@ public class DatePickerActivity extends AppCompatActivity {
         throw new IllegalArgumentException(context.getResources().getResourceName(attributeResId));
     }
 
-    private MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
-            int selectionModeChoice, int selectionChoice) {
+    private MaterialDatePicker.Builder<?> setupDateSelectorBuilder(int selectionModeChoice, int selectionChoice) {
         if (selectionModeChoice == SELECTION_MODE_DEFAULT) {
             MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
             if (selectionChoice == SELECTION_MODE_TODAY) {
@@ -123,8 +118,7 @@ public class DatePickerActivity extends AppCompatActivity {
             }
             return builder;
         } else {
-            MaterialDatePicker.Builder<Pair<Long, Long>> builder =
-                    MaterialDatePicker.Builder.dateRangePicker();
+            MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
 //            if (selectionChoice == R.id.cat_picker_selection_today) {
 //                builder.setSelection(TODAY_PAIR);
 //            } else if (selectionChoice == R.id.cat_picker_selection_next_month) {
@@ -134,8 +128,7 @@ public class DatePickerActivity extends AppCompatActivity {
         }
     }
 
-    private CalendarConstraints.Builder setupConstraintsBuilder(
-            boolean isFuture) {
+    private CalendarConstraints.Builder setupConstraintsBuilder(boolean isFuture) {
         CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
         if (isFuture) {
             constraintsBuilder.setStart(today);
