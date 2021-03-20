@@ -48,12 +48,12 @@ public abstract class LocationBaseActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getCurrentLocation();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        getCurrentLocation();
     }
 
     private void getCurrentLocation() {
@@ -162,5 +162,11 @@ public abstract class LocationBaseActivity extends BaseActivity {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CHECK_SETTINGS) {
             getCurrentLocation();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocationManager.INSTANCE.stopLocationUpdate(this);
     }
 }
