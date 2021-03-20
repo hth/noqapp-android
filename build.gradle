@@ -12,6 +12,8 @@ buildscript {
         classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.5.1.0'
         classpath 'org.jacoco:org.jacoco.core:0.8.5'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31"
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.1'
         classpath 'org.codehaus.groovy:groovy-all:2.4.15'
 

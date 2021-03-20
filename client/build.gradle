@@ -2,6 +2,9 @@ import groovy.xml.Namespace
 
 apply plugin: 'com.android.application'
 apply from: '../config/quality.gradle'
+apply plugin: 'kotlin-android'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'kotlin-kapt'
 
 if (!hasProperty('env')) {
     env = System.env['GRADLE_ENV']
@@ -448,6 +451,16 @@ dependencies {
     implementation project(':common')
     implementation project(':cashfreeSDK')
     implementation 'com.google.zxing:core:3.4.1'
+
+    //Dependencies for Navigation UI component
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.4'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'
+
+    //Dependencies for view model and livedata
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.3.0'
+
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -475,7 +488,6 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'kotlin-android'
 
 /** Gradle default task. */
 defaultTasks 'clean', 'assembleDebug'
