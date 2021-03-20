@@ -1,24 +1,15 @@
 package com.noqapp.android.client.views.activities;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -35,19 +26,33 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
-import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
+public class SplashScreen extends LocationBaseActivity implements DeviceRegisterPresenter {
 
     static SplashScreen splashScreen;
     private String TAG = SplashScreen.class.getSimpleName();
     private static String tokenFCM = "";
     private static String deviceId = "";
-    private final int REQUEST_PERMISSION_SETTING = 23;
-    private Location location;
-    private LocationPref locationPref;
+
+    @Override
+    public void displayAddressOutput(String addressOutput, Double latitude, Double longitude) {
+        AppInitialize.location.setLatitude(latitude);
+        AppInitialize.location.setLongitude(longitude);
+        AppInitialize.cityName = addressOutput;
+        LocationPref locationPref = AppInitialize.getLocationPreference()
+                .setCity(AppInitialize.cityName)
+                .setLatitude(latitude)
+                .setLongitude(longitude);
+        AppInitialize.setLocationPreference(locationPref);
+
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
+            tokenFCM = token;
+            Log.d(TAG, "New FCM Token=" + tokenFCM);
+            sendRegistrationToServer(tokenFCM, AppInitialize.location);
+        });
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,16 +63,6 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         animationView.setAnimation("data.json");
         animationView.playAnimation();
         animationView.setRepeatCount(10);
-        location = new Location("");
-        locationPref = AppInitialize.getLocationPreference();
-        location.setLatitude(locationPref.getLatitude());
-        location.setLongitude(locationPref.getLongitude());
-
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
-            tokenFCM = token;
-            Log.d(TAG, "New FCM Token=" + tokenFCM);
-            sendRegistrationToServer(tokenFCM);
-        });
 
         if (StringUtils.isBlank(tokenFCM) && new NetworkUtil(this).isNotOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -109,15 +104,19 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: " + deviceRegistered);
             String cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
             Log.d(TAG, "Splash City Name =" + cityName);
+            LocationPref locationPref = AppInitialize.getLocationPreference();
 
-            LocationPref locationPref = AppInitialize.getLocationPreference()
-                    .setCity(cityName)
-                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
-            AppInitialize.setLocationPreference(locationPref);
-            AppInitialize.setDeviceID(deviceId);
-            location.setLatitude(locationPref.getLatitude());
-            location.setLongitude(locationPref.getLongitude());
+            if (locationPref.getLatitude() == 0.0 && locationPref.getLatitude() == 0.0) {
+                locationPref.setCity(cityName)
+                        .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                        .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                AppInitialize.setLocationPreference(locationPref);
+                AppInitialize.setDeviceID(deviceId);
+                Location location = new Location("");
+                location.setLatitude(locationPref.getLatitude());
+                location.setLongitude(locationPref.getLongitude());
+            }
+
             callLaunchScreen();
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
@@ -125,7 +124,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         }
     }
 
-    private void sendRegistrationToServer(String refreshToken) {
+    private void sendRegistrationToServer(String refreshToken, Location location) {
         if (new NetworkUtil(this).isOnline()) {
             DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(), location);
             deviceId = AppInitialize.getDeviceId();
@@ -175,64 +174,8 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
-    private boolean hasAccessTo(String permissionType) {
-        return ActivityCompat.checkSelfPermission(this, permissionType) != PackageManager.PERMISSION_GRANTED;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PermissionUtils.PERMISSION_REQUEST_LOCATION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    callLaunchScreen();
-                } else {
-                    //code for deny
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(SplashScreen.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setTitle("Permission needed")
-                                .setMessage(getString(R.string.gps_error_msg))
-                                .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
-                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                    Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
-                                    intent.setData(uri);
-                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                                })
-                                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
-                        builder.show();
-                    } else {
-                        // user selected Don't ask again checkbox show proper msg
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setTitle("Permission needed")
-                                .setMessage(getString(R.string.gps_error_msg_final))
-                                .setPositiveButton("Location Settings", (paramDialogInterface, paramInt) -> {
-                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                    Uri uri = Uri.fromParts("package", splashScreen.getPackageName(), null);
-                                    intent.setData(uri);
-                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                                })
-                                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> splashScreen.finish());
-                        builder.show();
-                    }
-                }
-                break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PERMISSION_SETTING) {
-            if (hasAccessTo(Manifest.permission.ACCESS_FINE_LOCATION) && hasAccessTo(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                finish();
-            } else {
-                callLaunchScreen();
-            }
-        }
-    }
-
     private void callLaunchScreen() {
-        if (!StringUtils.isBlank(deviceId) && null != location) {
+        if (!StringUtils.isBlank(deviceId)) {
             Intent i = new Intent(splashScreen, LaunchActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);

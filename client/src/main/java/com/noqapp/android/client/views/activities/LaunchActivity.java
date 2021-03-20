@@ -257,6 +257,13 @@ public class LaunchActivity
         if (AppUtils.calculateDistance(latitude, longitude, AppInitialize.getLocationPreference().getLatitude(), AppInitialize.getLocationPreference().getLongitude()) <= 0.5f){
             updateLocationInfo(latitude, longitude, addressOutput);
         } else {
+            AppInitialize.location.setLatitude(latitude);
+            AppInitialize.location.setLongitude(longitude);
+            LocationPref locationPref = AppInitialize.getLocationPreference()
+                    .setCity(AppInitialize.cityName)
+                    .setLatitude(latitude)
+                    .setLongitude(longitude);
+            AppInitialize.setLocationPreference(locationPref);
             updateLocationUI();
         }
     }
