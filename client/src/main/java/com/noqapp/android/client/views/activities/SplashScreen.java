@@ -42,9 +42,9 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         AppInitialize.location.setLongitude(longitude);
         AppInitialize.cityName = addressOutput;
         LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setCity(AppInitialize.cityName)
-                .setLatitude(latitude)
-                .setLongitude(longitude);
+            .setCity(AppInitialize.cityName)
+            .setLatitude(latitude)
+            .setLongitude(longitude);
         AppInitialize.setLocationPreference(locationPref);
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
@@ -106,10 +106,10 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             Log.d(TAG, "Splash City Name =" + cityName);
             LocationPref locationPref = AppInitialize.getLocationPreference();
 
-            if (locationPref.getLatitude() == 0.0 && locationPref.getLatitude() == 0.0) {
+            if (0.0 == locationPref.getLatitude() && 0.0 == locationPref.getLatitude()) {
                 locationPref.setCity(cityName)
-                        .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                        .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
                 AppInitialize.setLocationPreference(locationPref);
                 AppInitialize.setDeviceID(deviceId);
                 Location location = new Location("");
