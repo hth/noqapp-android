@@ -83,10 +83,10 @@ public abstract class LocationBaseActivity extends BaseActivity {
 
         if (shouldProvideRationale) {
             showSnackbar(R.string.permission_rationale, android.R.string.ok,
-                    v -> ActivityCompat.requestPermissions(
-                        LocationBaseActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        REQUEST_PERMISSIONS_REQUEST_CODE));
+                v -> ActivityCompat.requestPermissions(
+                    LocationBaseActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_PERMISSIONS_REQUEST_CODE));
         } else {
             ActivityCompat.requestPermissions(
                 this,
@@ -105,14 +105,14 @@ public abstract class LocationBaseActivity extends BaseActivity {
             getCurrentLocation();
         } else {
             showSnackbar(R.string.permission_denied_explanation, R.string.action_settings,
-                    v -> {
-                        // Build intent that displays the App settings screen.
-                        Intent intent = new Intent();
-                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        intent.setData(Uri.fromParts("package", BuildConfig.APPLICATION_ID, null));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    });
+                v -> {
+                    // Build intent that displays the App settings screen.
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.fromParts("package", BuildConfig.APPLICATION_ID, null));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                });
         }
     }
 
@@ -139,9 +139,7 @@ public abstract class LocationBaseActivity extends BaseActivity {
             try {
                 // Cast to a resolvable exception.
                 ResolvableApiException resolvable = (ResolvableApiException) e;
-                resolvable.startResolutionForResult(
-                        LocationBaseActivity.this,
-                        REQUEST_CHECK_SETTINGS);
+                resolvable.startResolutionForResult(LocationBaseActivity.this, REQUEST_CHECK_SETTINGS);
             } catch (IntentSender.SendIntentException ie) {
                 // Ignore the error.
             } catch (ClassCastException ce) {
