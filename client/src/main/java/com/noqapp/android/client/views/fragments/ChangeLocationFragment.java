@@ -26,9 +26,9 @@ import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.utils.GeoIP;
 
 import kotlin.Unit;
-import kotlin.jvm.functions.Function3;
+import kotlin.jvm.functions.Function4;
 
-public class ChangeLocationFragment extends Fragment implements Function3<String, Double, Double, Unit> {
+public class ChangeLocationFragment extends Fragment implements Function4<String, String, Double, Double, Unit> {
     private double lat, lng;
     private String city = "";
     private AutoCompleteTextView autoCompleteTextView;
@@ -134,7 +134,7 @@ public class ChangeLocationFragment extends Fragment implements Function3<String
     }
 
     @Override
-    public Unit invoke(String address, Double latitude, Double longitude) {
+    public Unit invoke(String address, String cityName, Double latitude, Double longitude) {
         if (latitude == 0 && longitude == 0) {
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = locationPref.getLatitude();
@@ -143,7 +143,7 @@ public class ChangeLocationFragment extends Fragment implements Function3<String
         } else {
             lat = latitude;
             lng = longitude;
-            city = address;
+            city = cityName;
         }
 
         changeLocationFragmentInteractionListener.updateLocationInfo(latitude, longitude, city);

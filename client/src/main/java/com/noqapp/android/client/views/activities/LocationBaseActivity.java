@@ -41,7 +41,7 @@ import static com.noqapp.android.client.utils.Constants.REQUEST_CHECK_SETTINGS;
  */
 public abstract class LocationBaseActivity extends BaseActivity {
 
-    public abstract void displayAddressOutput(String addressOutput, Double latitude, Double longitude);
+    public abstract void displayAddressOutput(String addressOutput, String cityName, Double latitude, Double longitude);
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
@@ -128,8 +128,8 @@ public abstract class LocationBaseActivity extends BaseActivity {
             LocationSettingsStates locationSettingsStates = response.getLocationSettingsStates();
             if (locationSettingsStates.isLocationPresent()) {
                 LocationManager.INSTANCE.startLocationUpdate(this);
-                LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, latitude, longitude) -> {
-                    displayAddressOutput(address, latitude, longitude);
+                LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, city, latitude, longitude) -> {
+                    displayAddressOutput(address, city, latitude, longitude);
                     return null;
                 });
             }

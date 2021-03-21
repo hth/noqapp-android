@@ -43,13 +43,13 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 
 import kotlin.Unit;
-import kotlin.jvm.functions.Function3;
+import kotlin.jvm.functions.Function4;
 
 /**
  * Created by chandra on 5/7/17.
  */
 public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener,
-        SearchBusinessStorePresenter, Function3<String, Double, Double, Unit> {
+        SearchBusinessStorePresenter, Function4<String, String, Double, Double, Unit> {
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
     private String scrollId = "";
@@ -174,12 +174,12 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
-                    .setCityName(city)
-                    .setLatitude(lat)
-                    .setLongitude(lng)
-                    .setQuery(edt_search.getText().toString())
-                    .setFilters("")
-                    .setScrollId(""); //Scroll id - fresh search pass blank
+                        .setCityName(city)
+                        .setLatitude(lat)
+                        .setLongitude(lng)
+                        .setQuery(edt_search.getText().toString())
+                        .setFilters("")
+                        .setScrollId(""); //Scroll id - fresh search pass blank
                 if (UserUtils.isLogin()) {
                     searchBusinessStoreApiAuthenticCalls.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery);
                 } else {
@@ -197,13 +197,13 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
-                    .setCityName(city)
-                    .setLatitude(lat)
-                    .setLongitude(lng)
-                    .setQuery(edt_search.getText().toString())
-                    .setCodeQR(getIntent().getStringExtra("codeQR"))
-                    .setFilters("")
-                    .setScrollId(""); //Scroll id - fresh search pass blank
+                        .setCityName(city)
+                        .setLatitude(lat)
+                        .setLongitude(lng)
+                        .setQuery(edt_search.getText().toString())
+                        .setCodeQR(getIntent().getStringExtra("codeQR"))
+                        .setFilters("")
+                        .setScrollId(""); //Scroll id - fresh search pass blank
                 searchBusinessStoreModels.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -351,7 +351,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
-    public Unit invoke(String address, Double latitude, Double longitude) {
+    public Unit invoke(String address, String cityName, Double latitude, Double longitude) {
         if (latitude == 0 && longitude == 0) {
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = String.valueOf(locationPref.getLatitude());
@@ -360,7 +360,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         } else {
             lat = String.valueOf(latitude);
             lng = String.valueOf(longitude);
-            city = address;
+            city = cityName;
         }
 
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);

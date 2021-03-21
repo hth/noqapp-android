@@ -44,20 +44,20 @@ internal object LocationManager {
         LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(locationCallback)
     }
 
-    fun fetchLocationAddress(latitude: Double, longitude: Double, context: Context, complete: (String, Double, Double) -> Unit) {
-        val addressResultReceiver = AddressResultReceiver { address, latitude, longitude ->
+    fun fetchLocationAddress(latitude: Double, longitude: Double, context: Context, complete: (String?, String?, Double, Double) -> Unit) {
+        val addressResultReceiver = AddressResultReceiver { address, cityName, latitude, longitude ->
             address?.let {
-                complete(address, latitude, longitude)
+                complete(address, cityName, latitude, longitude)
             }
         }
         startFetchLocationService(context, latitude, longitude, addressResultReceiver)
     }
 
     @SuppressLint("MissingPermission")
-    fun fetchCurrentLocationAddress(context: Context, complete: (String, Double, Double) -> Unit) {
-        val addressResultReceiver = AddressResultReceiver { address, latitude, longitude ->
+    fun fetchCurrentLocationAddress(context: Context, complete: (String?, String?, Double, Double) -> Unit) {
+        val addressResultReceiver = AddressResultReceiver { address, cityName, latitude, longitude ->
             address?.let {
-                complete(address, latitude, longitude)
+                complete(address, cityName, latitude, longitude)
             }
         }
 

@@ -44,11 +44,11 @@ public abstract class ScannerActivity extends LocationBaseActivity implements Cl
     private final String TAG = ScannerActivity.class.getSimpleName();
     private int requestCode;
     private CustomProgressBar customProgressBar;
-    public abstract void displayAddress(String addressOutput, Double latitude, Double longitude);
+    public abstract void displayAddress(String addressOutput, String city, Double latitude, Double longitude);
 
     @Override
-    public void displayAddressOutput(String addressOutput, Double latitude, Double longitude) {
-        displayAddress(addressOutput, latitude, longitude);
+    public void displayAddressOutput(String addressOutput, String city, Double latitude, Double longitude) {
+        displayAddress(addressOutput, city, latitude, longitude);
     }
 
     @Override

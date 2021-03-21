@@ -42,7 +42,7 @@ class FetchAddressIntentService : JobIntentService() {
         if (latitude == 0.0 || longitude == 0.0) {
             errorMessage = getString(R.string.no_location_data_provided)
             Log.wtf(TAG, errorMessage)
-            deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, latitude, longitude)
+            deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, errorMessage, latitude, longitude)
             return
         }
 
@@ -63,11 +63,12 @@ class FetchAddressIntentService : JobIntentService() {
                 errorMessage = getString(R.string.no_address_found)
                 Log.e(TAG, errorMessage)
             }
-            deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, latitude, longitude)
+            deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, errorMessage, latitude, longitude)
         } else {
             val address = addresses[0]
             Log.i(TAG, getString(R.string.address_found))
-            var cityName = address.getAddressLine(0);
+            var cityName = address.getAddressLine(0)
+            var addressOutput = address.getAddressLine(0)
             if (!TextUtils.isEmpty(address.locality) && !TextUtils.isEmpty(address.subLocality)) {
                 cityName = address.subLocality + ", " + address.locality;
             } else {
@@ -78,14 +79,17 @@ class FetchAddressIntentService : JobIntentService() {
                 }
             }
 
-            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, cityName, latitude, longitude)
+            addressOutput = addressOutput+address.adminArea +"-"+ address.postalCode
+
+            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressOutput, cityName, latitude, longitude)
         }
     }
 
     /** Sends a resultCode and message to the receiver. */
-    private fun deliverResultToReceiver(resultCode: Int, message: String, latitude: Double, longitude: Double) {
+    private fun deliverResultToReceiver(resultCode: Int, addressOutput: String, cityName: String, latitude: Double, longitude: Double) {
         val bundle = Bundle().apply {
-            putString(Constants.LocationConstants.RESULT_DATA_KEY, message)
+            putString(Constants.LocationConstants.PLACE, cityName)
+            putString(Constants.LocationConstants.RESULT_DATA_KEY, addressOutput)
             putDouble(Constants.LocationConstants.LOCATION_LAT_DATA_EXTRA, latitude)
             putDouble(Constants.LocationConstants.LOCATION_LNG_DATA_EXTRA, longitude)
         }

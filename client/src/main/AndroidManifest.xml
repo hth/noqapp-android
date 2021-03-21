@@ -349,6 +349,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".views.activities.AddAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme"/>
+
         <service
             android:name=".network.NoQueueMessagingService"
             android:enabled="true"

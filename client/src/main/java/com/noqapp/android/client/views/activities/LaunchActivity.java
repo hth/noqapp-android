@@ -253,14 +253,14 @@ public class LaunchActivity
     }
 
     @Override
-    public void displayAddress(String addressOutput, Double latitude, Double longitude) {
+    public void displayAddress(String addressOutput, String city, Double latitude, Double longitude) {
         if (AppUtils.calculateDistance(latitude, longitude, AppInitialize.getLocationPreference().getLatitude(), AppInitialize.getLocationPreference().getLongitude()) <= 0.5f){
-            updateLocationInfo(latitude, longitude, addressOutput);
+            updateLocationInfo(latitude, longitude, city);
         } else {
             AppInitialize.location.setLatitude(latitude);
             AppInitialize.location.setLongitude(longitude);
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                    .setCity(AppInitialize.cityName)
+                    .setCity(city)
                     .setLatitude(latitude)
                     .setLongitude(longitude);
             AppInitialize.setLocationPreference(locationPref);
