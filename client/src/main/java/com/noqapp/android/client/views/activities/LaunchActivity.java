@@ -94,6 +94,7 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.utils.TextToSpeechHelper;
+import com.noqapp.android.common.utils.Version;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.noqapp.android.common.views.activities.AppsLinksActivity;
 import com.squareup.picasso.Picasso;
@@ -617,20 +618,19 @@ public class LaunchActivity
     @Override
     public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
         if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
-            if (AppUtils.isRelease()) {
-                try {
-                    String currentVersion = Constants.appVersion();
-                    if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
-                        ShowAlertInformation.showThemePlayStoreDialog(
-                            this,
-                            getString(R.string.playstore_update_title),
-                            getString(R.string.playstore_update_msg),
-                            true);
-                    }
-                } catch (Exception e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                    Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
+            try {
+                Version appVersion = new Version(Constants.appVersion()) ;
+                Version serverSupportedVersion = new Version(jsonLatestAppVersion.getLatestAppVersion());
+                if (appVersion.compareTo(serverSupportedVersion) < 0) {
+                    ShowAlertInformation.showThemePlayStoreDialog(
+                        this,
+                        getString(R.string.playstore_update_title),
+                        getString(R.string.playstore_update_msg),
+                        true);
                 }
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
             }
         }
     }
