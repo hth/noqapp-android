@@ -53,7 +53,6 @@ public class Constants extends BaseConstants{
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
     private static String VERSION_RELEASE;
 
-
     // Shared Preferences keys
     public static final String APP_PACKAGE = "com.noqapp.android.client";
     // Pref key for Token status
