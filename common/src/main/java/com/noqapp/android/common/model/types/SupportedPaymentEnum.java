@@ -39,10 +39,14 @@ public enum SupportedPaymentEnum {
 
     public static Map<String, String> asMapWithNameAsKey(Set<SupportedPaymentEnum> supportedPayments) {
         HashMap<String, String> availableOptions = new LinkedHashMap<>();
-        for (SupportedPaymentEnum supportedPayment : supportedPayments) {
-            availableOptions.put(supportedPayment.name, supportedPayment.description);
+        try {
+            for (SupportedPaymentEnum supportedPayment : supportedPayments) {
+                availableOptions.put(supportedPayment.name, supportedPayment.description);
+            }
+            return availableOptions;
+        } catch (Exception e) {
+            return availableOptions;
         }
-        return availableOptions;
     }
 
     @Override

@@ -32,10 +32,14 @@ public enum SupportedDeliveryEnum {
 
     public static Map<String, String> asMapWithNameAsKey(Set<SupportedDeliveryEnum> supportedDeliveries) {
         HashMap<String, String> availableOptions = new LinkedHashMap<>();
-        for (SupportedDeliveryEnum supportedDelivery : supportedDeliveries) {
-            availableOptions.put(supportedDelivery.name, supportedDelivery.description);
+        try {
+            for (SupportedDeliveryEnum supportedDelivery : supportedDeliveries) {
+                availableOptions.put(supportedDelivery.name, supportedDelivery.description);
+            }
+            return availableOptions;
+        } catch (Exception e) {
+            return availableOptions;
         }
-        return availableOptions;
     }
 
     @Override
