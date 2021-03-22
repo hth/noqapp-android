@@ -41,6 +41,27 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
     @JsonProperty("cs")
     private String countryShortName;
 
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
+
+    @JsonProperty("dt")
+    private String district;
+
+    @JsonProperty("st")
+    private String state;
+
+    @JsonProperty("ss")
+    private String stateShortName;
+
+    @JsonProperty("lat")
+    private String latitude;
+
+    @JsonProperty("lng")
+    private String longitude;
+
     public String getId() {
         return id;
     }
@@ -77,14 +98,83 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getArea() {
+        return area;
+    }
+
+    public JsonUserAddress setArea(String area) {
+        this.area = area;
+        return this;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public JsonUserAddress setTown(String town) {
+        this.town = town;
+        return this;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public JsonUserAddress setDistrict(String district) {
+        this.district = district;
+        return this;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public JsonUserAddress setState(String state) {
+        this.state = state;
+        return this;
+    }
+
+    public String getStateShortName() {
+        return stateShortName;
+    }
+
+    public JsonUserAddress setStateShortName(String stateShortName) {
+        this.stateShortName = stateShortName;
+        return this;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public JsonUserAddress setLatitude(String latitude) {
+        this.latitude = latitude;
+        return this;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public JsonUserAddress setLongitude(String longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "JsonUserAddress{" +
-                "id='" + id + '\'' +
-                ", address='" + address + '\'' +
-                ", geoHash='" + geoHash + '\'' +
-                ", countryShortName='" + countryShortName + '\'' +
-                '}';
+            "id='" + id + '\'' +
+            ", address='" + address + '\'' +
+            ", geoHash='" + geoHash + '\'' +
+            ", countryShortName='" + countryShortName + '\'' +
+            ", area='" + area + '\'' +
+            ", town='" + town + '\'' +
+            ", district='" + district + '\'' +
+            ", state='" + state + '\'' +
+            ", stateShortName='" + stateShortName + '\'' +
+            ", latitude='" + latitude + '\'' +
+            ", longitude='" + longitude + '\'' +
+            '}';
     }
 }
-
