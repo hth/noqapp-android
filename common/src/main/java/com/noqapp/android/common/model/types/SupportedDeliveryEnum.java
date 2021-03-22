@@ -30,10 +30,10 @@ public enum SupportedDeliveryEnum {
         return description;
     }
 
-    public static Map<String, String> asMapWithNameAsKey(Set<SupportedDeliveryEnum> hset) {
+    public static Map<String, String> asMapWithNameAsKey(Set<SupportedDeliveryEnum> supportedDeliveries) {
         HashMap<String, String> availableOptions = new LinkedHashMap<>();
-        for (SupportedDeliveryEnum supportedDeliveryEnum : hset) {
-            availableOptions.put(supportedDeliveryEnum.name, supportedDeliveryEnum.description);
+        for (SupportedDeliveryEnum supportedDelivery : supportedDeliveries) {
+            availableOptions.put(supportedDelivery.name, supportedDelivery.description);
         }
         return availableOptions;
     }
