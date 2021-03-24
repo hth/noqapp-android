@@ -377,7 +377,7 @@
     <string name="user_list">उपयोगकर्ता</string>
     <string name="update_via_front_desk">रक्त प्रकार को बदलने के लिए चिकित्सक से संपर्क करें।</string>
     <string name="share_medical_profile_info">बेहतर सेवा हेतु आपकी चिकित्सा प्रोफ़ाइल डॉक्टर और अस्पताल के साथ साझा की जाती है। कृपया चिकित्सा प्रोफ़ाइल को अप-टू-डेट रखे।</string>
-    <string name="screen_addressbook">पता</string>
+    <string name="screen_user_address">पता</string>
     <string name="delivery_mode_home">घर पर डिलीवरी</string>
     <string name="delivery_mode_takeaway">पिक अप</string>
     <string name="delivery_mode">वितरण</string>

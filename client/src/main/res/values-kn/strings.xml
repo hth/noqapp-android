@@ -377,7 +377,7 @@
     <string name="user_list">ಬಳಕೆದಾರರು</string>
     <string name="update_via_front_desk">ರಕ್ತ ಪ್ರಕಾರವನ್ನು ಮಾರ್ಪಡಿಸಲು ವೈದ್ಯಕೀಯ ವೃತ್ತಿಪರರನ್ನು ಸಂಪರ್ಕಿಸಿ</string>
     <string name="share_medical_profile_info">ಉತ್ತಮ ಸೇವೆಯನ್ನು ಒದಗಿಸಲು ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್ ಅನ್ನು ವೈದ್ಯರು ಹಾಗೂ ಆಸ್ಪತ್ರೆಯ ಜೊತೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್ ಅನ್ನು ನವೀಕರಿಸಿಡಿ.</string>
-    <string name="screen_addressbook">ನನ್ನ ವಿಳಾಸ</string>
+    <string name="screen_user_address">ನನ್ನ ವಿಳಾಸ</string>
     <string name="delivery_mode_home">ಹೋಂ ಡೆಲಿವರಿ</string>
     <string name="delivery_mode_takeaway">ಪಿಕಪ್</string>
     <string name="delivery_mode">ಡೆಲಿವರಿ</string>

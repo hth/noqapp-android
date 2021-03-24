@@ -383,7 +383,7 @@
     <string name="user_list">Users</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
     <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>
-    <string name="screen_addressbook">My address</string>
+    <string name="screen_user_address">My Address</string>
     <string name="delivery_mode_home">Home Delivery</string>
     <string name="delivery_mode_takeaway">Pick up</string>
     <string name="delivery_mode">Delivery</string>

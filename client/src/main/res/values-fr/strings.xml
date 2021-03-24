@@ -377,7 +377,7 @@
     <string name="user_list">L\'utilisateur</string>
     <string name="update_via_front_desk">Pour modifier un groupe sanguin"> contacter un médecin</string>
     <string name="share_medical_profile_info">"Pour fournir un meilleur service"> votre profil médical est partagé avec le médecin et l’hôpital. Veuillez conserver..Pour fournir un meilleur service"> votre profil médical est partagé avec le médecin et l’hôpital. Veuillez bien conserver trés récent"</string>
-    <string name="screen_addressbook">Mon l\'adresse</string>
+    <string name="screen_user_address">Mon l\'adresse</string>
     <string name="delivery_mode_home">La livraison à domicile</string>
     <string name="delivery_mode_takeaway">Ramassage</string>
     <string name="delivery_mode">Livraison</string>

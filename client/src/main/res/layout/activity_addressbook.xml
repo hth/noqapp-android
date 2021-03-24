@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             app:titleTextColor="@android:color/black"
             app:navigationIcon="@drawable/ic_back_new"
-            app:title="@string/screen_addressbook" />
+            app:title="@string/screen_user_address" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
