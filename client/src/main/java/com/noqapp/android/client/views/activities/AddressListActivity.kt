@@ -18,7 +18,7 @@ import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
 import com.noqapp.android.common.beans.JsonUserPreference
 
-class AddressListActivity: BaseActivity(), ProfileAddressPresenter, ClientPreferencePresenter {
+class AddressListActivity : BaseActivity(), ProfileAddressPresenter, ClientPreferencePresenter {
 
     private lateinit var activityAddressBookBinding: ActivityAddressbookBinding
     private lateinit var addressAdapter: AddressListAdapter
@@ -59,7 +59,7 @@ class AddressListActivity: BaseActivity(), ProfileAddressPresenter, ClientPrefer
     }
 
     private fun handleClickListener(jsonUserAddress: JsonUserAddress, view: View) {
-        when(view.id){
+        when (view.id) {
             R.id.ivDelete -> {
                 removeAddress(jsonUserAddress)
             }
@@ -108,7 +108,6 @@ class AddressListActivity: BaseActivity(), ProfileAddressPresenter, ClientPrefer
         }
 
         addressAdapter.addItems(addressList)
-
         dismissProgress()
     }
 
@@ -129,5 +128,4 @@ class AddressListActivity: BaseActivity(), ProfileAddressPresenter, ClientPrefer
         }
         dismissProgress()
     }
-
 }

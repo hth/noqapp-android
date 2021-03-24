@@ -14,7 +14,6 @@ import com.noqapp.android.common.beans.JsonUserAddress
 class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, val clickListener: (JsonUserAddress, View) -> Unit) : RecyclerView.Adapter<AddressListAdapter.AddressListViewHolder>() {
 
     inner class AddressListViewHolder(private val addressListItemView: View) : RecyclerView.ViewHolder(addressListItemView) {
-
         private val tvPrimary: TextView
         private val tvAddress: TextView
         private val tvArea: TextView
@@ -56,12 +55,10 @@ class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, 
                 clickListener(jsonUserAddress, it)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressListViewHolder {
-        val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.address_list_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.address_list_item, parent, false)
         return AddressListViewHolder(view)
     }
 
@@ -73,11 +70,9 @@ class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, 
         holder.bind(addressList[position])
     }
 
-    fun addItems(jsonUserAddressList: List<JsonUserAddress>){
+    fun addItems(jsonUserAddressList: List<JsonUserAddress>) {
         addressList.clear()
         addressList.addAll(jsonUserAddressList)
         notifyDataSetChanged()
     }
-
-
 }
