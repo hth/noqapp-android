@@ -50,10 +50,21 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     }
 
     private fun addAddress() {
-        val address = addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddressLine1.text.toString() +
+        val address = addAddressBinding.etHouseBuilding.text.toString() +
+                ", " + addAddressBinding.etAddressLine1.text.toString() +
                 ", " + addAddressBinding.etAddressLine2.text.toString()
 
-        val jsonUserAddress = JsonUserAddress().setAddress(address).setLatitude(latitude.toString()).setLongitude(longitude.toString()).setArea(area)
+        val jsonUserAddress = JsonUserAddress()
+                .setAddress(address)
+                .setCountryShortName("")
+                .setArea(area)
+                .setTown("")
+                .setDistrict("")
+                .setState("")
+                .setStateShortName("")
+                .setLatitude(latitude.toString())
+                .setLongitude(longitude.toString())
+
         showProgress()
         clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
     }
