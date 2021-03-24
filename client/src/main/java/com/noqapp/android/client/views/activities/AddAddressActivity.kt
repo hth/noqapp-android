@@ -13,11 +13,20 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityAddAddressBinding
+import com.noqapp.android.client.model.ClientProfileApiCall
+import com.noqapp.android.client.presenter.ProfileAddressPresenter
+import com.noqapp.android.client.utils.UserUtils
+import com.noqapp.android.common.beans.JsonUserAddress
+import com.noqapp.android.common.beans.JsonUserAddressList
 
-class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback {
+class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAddressPresenter {
 
     private lateinit var addAddressBinding: ActivityAddAddressBinding
     private var googleMap: GoogleMap? = null
+    private lateinit var clientProfileApiCall: ClientProfileApiCall
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+    private var area: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +38,24 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback {
             onBackPressed()
         }
 
+        clientProfileApiCall = ClientProfileApiCall()
+        clientProfileApiCall.setProfileAddressPresenter(this)
+
+        addAddressBinding.btnAddAddress.setOnClickListener {
+            addAddress()
+        }
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
+    }
+
+    private fun addAddress() {
+        val address = addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddressLine1.text.toString() +
+                ", " + addAddressBinding.etAddressLine2.text.toString()
+
+        val jsonUserAddress = JsonUserAddress().setAddress(address).setLatitude(latitude.toString()).setLongitude(longitude.toString()).setArea(area)
+        showProgress()
+        clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -45,6 +70,9 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback {
         googleMap?.apply {
             latitude?.let { lat ->
                 longitude?.let { lng ->
+                    city?.let {
+                        area = it
+                    }
                     val currentLatLng = LatLng(lat, lng)
                     addAddressBinding.tvLocality.text = city
                     addAddressBinding.tvSublocality.text = addressOutput
@@ -52,5 +80,10 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback {
                 }
             }
         }
+    }
+
+    override fun profileAddressResponse(jsonUserAddressList: JsonUserAddressList?) {
+        dismissProgress()
+        finish()
     }
 }

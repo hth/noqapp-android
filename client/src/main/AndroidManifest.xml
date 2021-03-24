@@ -82,10 +82,6 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.activities.AddressBookActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme" />
-        <activity
             android:name=".views.activities.NotificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
@@ -350,6 +346,10 @@
         </activity>
 
         <activity android:name=".views.activities.AddAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme"/>
+
+        <activity android:name=".views.activities.AddressListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"/>
 

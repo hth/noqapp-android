@@ -497,4 +497,8 @@
     <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
     <string name="permission_rationale">Location permission is needed for core functionality</string>
     <string name="permission_contacts_rationale">Contacts permission is needed for core functionality</string>
+    <string name="txt_house_no_building">House No./Building</string>
+    <string name="txt_address_line_1">Address line 1</string>
+    <string name="txt_address_line_2">Address line 2</string>
+    <string name="txt_primary">Primary</string>
 </resources>

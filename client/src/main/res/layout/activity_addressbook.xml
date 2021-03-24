@@ -1,104 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#99ffffff"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout" />
-
-    <FrameLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:titleTextColor="@android:color/black"
+            app:navigationIcon="@drawable/ic_back_new"
+            app:title="@string/screen_addressbook" />
 
-            <TextView
-                android:id="@+id/tv_add_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/add_address"
-                android:drawablePadding="10dp"
-                android:drawableTint="@color/colorAccent"
-                android:padding="10dp"
-                android:text="Add Address"
-                android:textSize="@dimen/text_size_sixteen" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAddress"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btnAddAddress"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
-            <ListView
-                android:id="@+id/listview_address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_margin="0dp"
-                android:background="@color/white"
-                android:divider="#F1F1F1"
-                android:dividerHeight="1dp"
-                android:visibility="visible" />
+    <Button
+        android:id="@+id/btnAddAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/button_color"
+        android:text="@string/add_address"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_add_address"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:visibility="visible"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/iv_close"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:layout_gravity="right"
-                android:background="@drawable/ic_cancel"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="10dp"
-                android:text="Add address"
-                android:textColor="@color/theme_color_dark" />
-
-
-            <EditText
-                android:id="@+id/edt_add_address"
-                style="@style/style_register_edt"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:hint="Enter address"
-                android:visibility="visible" />
-
-            <Button
-                android:id="@+id/btn_add_address"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_standard_height"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/btn_bg_inactive"
-                android:clickable="true"
-                android:fontFamily="sans-serif-medium"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:gravity="center"
-                android:text="@string/update"
-                android:textAllCaps="true"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/text_size_sixteen"
-                android:textStyle="normal" />
-
-        </LinearLayout>
-    </FrameLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

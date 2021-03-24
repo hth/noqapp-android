@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvAddressItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:fontFamily="@font/roboto_regular"
+            android:maxLines="2"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_fourteen"
+            app:layout_constraintEnd_toStartOf="@id/tvPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Lorem epsum" />
+
+        <TextView
+            android:id="@+id/tvArea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:fontFamily="@font/roboto_regular"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            android:textColor="@color/color_list_text"
+            android:textSize="@dimen/text_size_twelve"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tvAddress"
+            app:layout_constraintStart_toStartOf="@id/tvAddress"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddress"
+            tools:text="Lorem epsum" />
+
+        <TextView
+            android:id="@+id/tvPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/txt_primary"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_twelve"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ivDelete"
+            app:layout_constraintEnd_toStartOf="@+id/ivDelete"
+            app:layout_constraintTop_toTopOf="@id/ivDelete" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_delete_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
