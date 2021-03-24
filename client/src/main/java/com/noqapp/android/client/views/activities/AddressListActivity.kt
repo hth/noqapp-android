@@ -102,9 +102,9 @@ class AddressListActivity: BaseActivity(), ProfileAddressPresenter, ClientPrefer
         AppInitialize.setUserProfile(jp)
 
         addressList?.forEach {
-            it.isPrimary = false
+            it.isPrimaryAddress = false
             if (it.id == jp.jsonUserPreference.userAddressId)
-                it.isPrimary = true
+                it.isPrimaryAddress = true
         }
 
         addressAdapter.addItems(addressList)

@@ -32,7 +32,7 @@ class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, 
             tvArea.text = jsonUserAddress.area
             tvAddress.text = jsonUserAddress.address
 
-            if (jsonUserAddress.isPrimary) {
+            if (jsonUserAddress.isPrimaryAddress) {
                 tvPrimary.visibility = View.VISIBLE
             } else {
                 tvPrimary.visibility = View.GONE

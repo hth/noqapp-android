@@ -62,16 +62,8 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
     @JsonProperty("lng")
     private String longitude;
 
-    @JsonProperty("isPrimaruy")
-    private boolean isPrimary;
-
-    public boolean isPrimary() {
-        return isPrimary;
-    }
-
-    public void setPrimary(boolean isPrimary) {
-        this.isPrimary = isPrimary;
-    }
+    @JsonProperty("pa")
+    private boolean isPrimaryAddress;
 
     public String getId() {
         return id;
@@ -172,6 +164,15 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public boolean isPrimaryAddress() {
+        return isPrimaryAddress;
+    }
+
+    public JsonUserAddress setPrimaryAddress(boolean primaryAddress) {
+        isPrimaryAddress = primaryAddress;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "JsonUserAddress{" +
@@ -186,7 +187,7 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
                 ", stateShortName='" + stateShortName + '\'' +
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
-                ", isPrimary='" + isPrimary + '\'' +
+                ", isPrimaryAddress='" + isPrimaryAddress + '\'' +
                 '}';
     }
 }
