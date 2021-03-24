@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
+import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.TransactionViaEnum;
@@ -58,8 +59,11 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("p")
     private String customerPhone;
 
-    @JsonProperty("da")
-    private String deliveryAddress;
+    @JsonProperty("ai")
+    private String userAddressId;
+
+    @JsonProperty("jua")
+    private JsonUserAddress jsonUserAddress;
 
     @JsonProperty("sd")
     private int storeDiscount;
@@ -204,12 +208,21 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    public String getUserAddressId() {
+        return userAddressId;
     }
 
-    public JsonPurchaseOrder setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+    public JsonPurchaseOrder setUserAddressId(String userAddressId) {
+        this.userAddressId = userAddressId;
+        return this;
+    }
+
+    public JsonUserAddress getJsonUserAddress() {
+        return jsonUserAddress;
+    }
+
+    public JsonPurchaseOrder setJsonUserAddress(JsonUserAddress jsonUserAddress) {
+        this.jsonUserAddress = jsonUserAddress;
         return this;
     }
 
@@ -548,7 +561,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
                 .append("codeQR", codeQR)
                 .append("queueUserId", queueUserId)
                 .append("customerPhone", customerPhone)
-                .append("deliveryAddress", deliveryAddress)
+                .append("userAddressId", userAddressId)
                 .append("storeDiscount", storeDiscount)
                 .append("partialPayment", partialPayment)
                 .append("orderPrice", orderPrice)
