@@ -1,5 +1,6 @@
 package com.noqapp.android.common.beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.GenderEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -310,6 +311,17 @@ public final class JsonProfile implements Serializable {
     public JsonProfile setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    @JsonIgnore
+    public String findUserAddressId() {
+        for (JsonUserAddress jsonUserAddress : jsonUserAddresses) {
+            if (address.equalsIgnoreCase(jsonUserAddress.getAddress())) {
+                return jsonUserAddress.getId();
+            }
+        }
+
+        return jsonUserAddresses.isEmpty() ? null : jsonUserAddresses.get(0).getId();
     }
 
     @Override

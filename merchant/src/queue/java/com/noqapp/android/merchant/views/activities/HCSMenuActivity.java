@@ -705,9 +705,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                                 .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
                                 .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-
-
-                        jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
+                        jsonPurchaseOrder.setUserAddressId(jsonProfile.findUserAddressId());
                         jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
                         jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
