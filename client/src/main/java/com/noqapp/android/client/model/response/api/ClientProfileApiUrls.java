@@ -146,6 +146,23 @@ public interface ClientProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
+    @POST("api/c/profile/address/primary")
+    Call<JsonUserAddressList> addressPrimary(
+        @Header("X-R-MAIL")
+        String mail,
+
+        @Header("X-R-AUTH")
+        String auth,
+
+        @Body
+        JsonUserAddress jsonUserAddress
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("api/c/profile/address/delete")
     Call<JsonUserAddressList> addressDelete(
             @Header("X-R-MAIL")
