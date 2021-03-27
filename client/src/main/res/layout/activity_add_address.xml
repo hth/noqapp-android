@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,11 +32,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="@id/map"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/cvAddress"
         app:layout_constraintEnd_toEndOf="@id/map"
         app:layout_constraintStart_toStartOf="@id/map"
-        app:layout_constraintTop_toTopOf="@id/map">
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
         <View
             android:id="@+id/viewShadow"
@@ -86,91 +85,110 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivAddress"
-                    android:layout_width="@dimen/preview_btn_height"
-                    android:layout_height="@dimen/preview_btn_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:tint="@color/open_queue"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_map_place" />
+                    app:srcCompat="@drawable/ic_location" />
 
                 <TextView
                     android:id="@+id/tvLocality"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_eight"
                     android:fontFamily="@font/roboto_bold"
                     android:maxLines="1"
                     android:textColor="@color/open_queue"
                     android:textSize="@dimen/text_size_sixteen"
                     app:layout_constraintStart_toEndOf="@id/ivAddress"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="ABC, Hemishire" />
-
-                <TextView
-                    android:id="@+id/tvSublocality"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
-                    android:maxLines="1"
-                    android:textColor="@color/open_queue"
-                    android:textSize="@dimen/text_size_fourteen"
-                    app:layout_constraintStart_toStartOf="@id/tvLocality"
-                    app:layout_constraintTop_toBottomOf="@id/tvLocality"
-                    tools:text="ABC Road, Bend Street, Texas, UK..." />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/viewDivider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/list_item_margin"
+                    android:layout_marginTop="@dimen/nav_header_vertical_spacing"
                     android:background="@drawable/grey_gradient_square_dark"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvSublocality" />
+                    app:layout_constraintTop_toBottomOf="@id/ivAddress" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/etHouseBuilding"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
+                android:layout_marginTop="@dimen/padding_eight"
+                app:layout_constraintTop_toBottomOf="@+id/clAddress">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_bottom_border"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="@string/txt_name_required"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilHouseBuilding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_eight"
                 android:hint="@string/txt_house_no_building"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:maxLines="1"
-                app:layout_constraintTop_toBottomOf="@+id/clAddress" />
+                app:layout_constraintTop_toBottomOf="@+id/tilName">
 
-            <EditText
-                android:id="@+id/etAddressLine1"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHouseBuilding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_bottom_border"
+                    android:fontFamily="@font/roboto_regular"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
+                android:layout_marginTop="@dimen/padding_eight"
                 android:hint="@string/txt_address_line_1"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:maxLines="1"
-                app:layout_constraintTop_toBottomOf="@+id/etHouseBuilding" />
+                app:layout_constraintTop_toBottomOf="@+id/tilHouseBuilding">
 
-            <EditText
-                android:id="@+id/etAddressLine2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="@string/txt_address_line_1"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:maxLines="1"
-                app:layout_constraintTop_toBottomOf="@+id/etAddressLine1" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:background="@drawable/edit_text_bottom_border"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="start"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:scrollbars="vertical" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btnAddAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_eight"
                 android:background="@color/colorAccent"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/add_address"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/etAddressLine2" />
+                app:layout_constraintTop_toBottomOf="@+id/tilAddress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

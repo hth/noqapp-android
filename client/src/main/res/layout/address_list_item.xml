@@ -18,31 +18,13 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fontFamily="@font/roboto_regular"
-            android:maxLines="2"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_fourteen"
             app:layout_constraintEnd_toStartOf="@id/tvPrimary"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rbAddress"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Lorem epsum" />
-
-        <TextView
-            android:id="@+id/tvArea"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:fontFamily="@font/roboto_regular"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:singleLine="true"
-            android:textColor="@color/color_list_text"
-            android:textSize="@dimen/text_size_twelve"
-            app:layout_constraintBottom_toTopOf="@+id/viewDivider"
-            app:layout_constraintEnd_toEndOf="@id/tvAddress"
-            app:layout_constraintStart_toStartOf="@id/tvAddress"
-            app:layout_constraintTop_toBottomOf="@+id/tvAddress"
             tools:text="Lorem epsum" />
 
         <TextView
@@ -80,6 +62,15 @@
             android:background="@color/color_light_grey"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rbAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            app:layout_constraintTop_toTopOf="@id/tvAddress"
+            app:layout_constraintTop_toBottomOf="@id/tvAddress"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

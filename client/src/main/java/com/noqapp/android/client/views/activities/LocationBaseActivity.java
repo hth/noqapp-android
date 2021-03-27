@@ -71,6 +71,12 @@ public abstract class LocationBaseActivity extends BaseActivity {
             .show();
     }
 
+    public void showSnackbar(int mainTextStringId) {
+        Snackbar.make(findViewById(android.R.id.content), getString(mainTextStringId),
+                Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
     private boolean checkLocationPermission() {
         int permissionState = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         return permissionState == PackageManager.PERMISSION_GRANTED;

@@ -33,28 +33,13 @@
 
     <Button
         android:id="@+id/btnAddAddress"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/button_color"
         android:text="@string/add_address"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnSelectPrimaryAddress"
-        android:layout_marginEnd="2dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <Button
-        android:id="@+id/btnSelectPrimaryAddress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/button_color"
-        android:text="@string/set_address"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:layout_marginStart="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnAddAddress"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,13 +40,6 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
             startActivityForResult(`in`, 78)
         }
 
-        activityAddressBookBinding.btnSelectPrimaryAddress.setOnClickListener {
-            val intent = Intent()
-            intent.putExtra(Constants.JSON_USER_ADDRESS, primaryJsonUserAddress)
-            setResult(Constants.REQUEST_CODE_SELECT_ADDRESS, intent)
-            finish()
-        }
-
         clientProfileApiCall = ClientProfileApiCall()
         clientProfileApiCall.setProfileAddressPresenter(this)
 
@@ -71,6 +64,14 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         when (view.id) {
             R.id.ivDelete -> {
                 removeAddress(jsonUserAddress)
+            }
+
+            R.id.rbAddress -> {
+                AppInitialize.setSelectedAddressId(jsonUserAddress.id)
+                val intent = Intent()
+                intent.putExtra(Constants.JSON_USER_ADDRESS, jsonUserAddress)
+                setResult(Constants.REQUEST_CODE_SELECT_ADDRESS, intent)
+                finish()
             }
 
             else -> {
@@ -102,17 +103,21 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
 
     override fun profileAddressResponse(jsonUserAddressList: JsonUserAddressList) {
         dismissProgress()
+
         val addressList = jsonUserAddressList.jsonUserAddresses
+
         val jp = AppInitialize.getUserProfile()
         jp.jsonUserAddresses = addressList
         AppInitialize.setUserProfile(jp)
-        addressAdapter.addItems(addressList)
 
         addressList.forEach {
             if (it.isPrimaryAddress){
                 primaryJsonUserAddress = it
+                AppInitialize.setAddress(it.address)
             }
         }
+
+        addressAdapter.addItems(addressList)
 
         dismissProgress()
     }

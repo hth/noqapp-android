@@ -58,6 +58,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     private static final String PREKEY_MAIL = "mail";
     private static final String PREKEY_DOB = "dateOfBirth";
     private static final String PREKEY_ADD = "address";
+    private static final String PREKEY_ADDRESS_ID = "addressId";
     private static final String PREKEY_PROFILE_IMAGE = "imageUri";
     private static final String PREKEY_GENDER = "gender";
     private static final String PREKEY_INVITECODE = "invitecode";
@@ -214,6 +215,18 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
 
     public static String getAddress() {
         return preferences.getString(PREKEY_ADD, "");
+    }
+
+    public static void setAddress(String address) {
+        preferences.edit().putString(PREKEY_ADD, address).apply();
+    }
+
+    public static String getSelectedAddressId() {
+        return preferences.getString(PREKEY_ADDRESS_ID, "");
+    }
+
+    public static void setSelectedAddressId(String addressId) {
+        preferences.edit().putString(PREKEY_ADDRESS_ID, addressId).apply();
     }
 
     public static String getCountryShortName() {

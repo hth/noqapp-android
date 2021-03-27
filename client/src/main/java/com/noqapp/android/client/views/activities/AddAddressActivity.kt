@@ -47,16 +47,43 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
         clientProfileApiCall.setProfileAddressPresenter(this)
 
         addAddressBinding.btnAddAddress.setOnClickListener {
-            addAddress()
+            if (validData())
+                addAddress()
         }
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
     }
 
+    private fun validData(): Boolean {
+        addAddressBinding.etName.let {
+            if (it.text.toString().isEmpty()){
+                showSnackbar(R.string.txt_please_enter_full_name)
+                return false
+            }
+        }
+
+        addAddressBinding.etName.let {
+            if (it.text.toString().isEmpty()){
+                showSnackbar(R.string.txt_house_no_building)
+                return false
+            }
+        }
+
+        addAddressBinding.etName.let {
+            if (it.text.toString().isEmpty()){
+                showSnackbar(R.string.txt_please_enter_address)
+                return false
+            }
+        }
+
+        return true
+    }
+
     private fun addAddress() {
-        val address = addAddressBinding.etHouseBuilding.text.toString() +
-                ", " + addAddressBinding.etAddressLine2.text.toString()
+        val address = addAddressBinding.etName.text.toString() +
+                ", " + addAddressBinding.etHouseBuilding.text.toString() +
+                ", " + addAddressBinding.etAddress.text.toString()
 
         val jsonUserAddress = JsonUserAddress()
                 .setAddress(address)
@@ -94,7 +121,9 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
                 }
                 val currentLatLng = LatLng(lat, lng)
                 addAddressBinding.tvLocality.text = city
-                addAddressBinding.tvSublocality.text = addressOutput
+
+                addAddressBinding.etAddress.setText(addressOutput)
+
                 animateCamera((CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLatLng, 16.0f))))
             }
         }
@@ -102,6 +131,11 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     }
 
     override fun profileAddressResponse(jsonUserAddressList: JsonUserAddressList?) {
+        val primaryAddress = jsonUserAddressList?.jsonUserAddresses?.last()
+        primaryAddress?.let {
+            AppInitialize.setAddress(it.address)
+            AppInitialize.setSelectedAddressId(it.id)
+        }
         dismissProgress()
         finish()
     }

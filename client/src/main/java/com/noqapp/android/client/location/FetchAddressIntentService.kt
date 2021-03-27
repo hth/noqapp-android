@@ -48,6 +48,7 @@ class FetchAddressIntentService : JobIntentService() {
 
         val geocoder = Geocoder(this, Locale.getDefault())
         var addresses: List<Address> = emptyList()
+
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1)
         } catch (ioException: IOException) {
@@ -67,8 +68,11 @@ class FetchAddressIntentService : JobIntentService() {
         } else {
             val address = addresses[0]
             Log.i(TAG, getString(R.string.address_found))
-            var cityName = address.getAddressLine(0)
-            var addressOutput = address.getAddressLine(0)
+
+            var cityName = ""
+
+            val addressStr = address.getAddressLine(0) + ", " + address.subAdminArea
+
             if (!TextUtils.isEmpty(address.locality) && !TextUtils.isEmpty(address.subLocality)) {
                 cityName = address.subLocality + ", " + address.locality;
             } else {
@@ -79,9 +83,7 @@ class FetchAddressIntentService : JobIntentService() {
                 }
             }
 
-            addressOutput = addressOutput+address.adminArea +"-"+ address.postalCode
-
-            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressOutput, cityName, latitude, longitude)
+            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressStr, cityName, latitude, longitude)
         }
     }
 

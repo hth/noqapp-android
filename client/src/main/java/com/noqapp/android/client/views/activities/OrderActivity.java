@@ -177,9 +177,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().getJsonUserAddresses()) {
             List<JsonUserAddress> jsonUserAddressList = AppInitialize.getUserProfile().getJsonUserAddresses();
             for (int i = 0; i < jsonUserAddressList.size(); i++) {
-                if (jsonUserAddressList.get(i).getId().equals(jsonUserPreference.getUserAddressId())) {
+                if (jsonUserAddressList.get(i).isPrimaryAddress()) {
                     jsonUserAddress = jsonUserAddressList.get(i);
                     tv_address.setText(jsonUserAddress.getAddress());
+                    AppInitialize.setSelectedAddressId(jsonUserAddress.getId());
                     break;
                 }
             }
