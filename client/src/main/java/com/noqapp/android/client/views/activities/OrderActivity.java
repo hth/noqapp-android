@@ -289,7 +289,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             showProgress();
                             setProgressMessage("Order placing in progress..");
                             jsonPurchaseOrder
-                                    .setUserAddressId("") //TODO add address Id and do not sent delivery address
+                                    .setUserAddressId(jsonUserAddress.getId()) //TODO add address Id and do not sent delivery address
                                     .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                     .setPaymentMode(null) //not required here
                                     .setCustomerPhone(AppInitialize.getPhoneNo())
@@ -314,9 +314,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 78 && data != null) {
+        if (requestCode == Constants.REQUEST_CODE_SELECT_ADDRESS && data != null) {
             if (null != data.getExtras()) {
-                jsonUserAddress = (JsonUserAddress) data.getExtras().getSerializable("jsonUserAddress");
+                jsonUserAddress = (JsonUserAddress) data.getExtras().getSerializable(Constants.JSON_USER_ADDRESS);
                 if (null != jsonUserAddress) {
                     tv_address.setText(jsonUserAddress.getAddress());
                 }
@@ -429,7 +429,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 if (TextUtils.isEmpty(AppInitialize.getAddress())) {
                     String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
-                    updateProfile.setAddress(address);
                     updateProfile.setFirstName(AppInitialize.getUserName());
                     updateProfile.setBirthday(AppInitialize.getUserDOB());
                     updateProfile.setGender(AppInitialize.getGender());

@@ -16,6 +16,7 @@ public class Constants extends BaseConstants{
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeAfterJoinQActivity = 12;
     public static final int requestCodeNotification = 2;
+    public static final int REQUEST_CODE_SELECT_ADDRESS = 78;
 
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 10_001;
     public static final int RESULT_CURRENT_LOCATION = 10_002;
@@ -35,6 +36,7 @@ public class Constants extends BaseConstants{
     public static final String TOKEN = "t";
     public static final String QID = "qid";
     public static final String MESSAGE_ID = "mi";
+    public static final String JSON_USER_ADDRESS = "jsonUserAddress";
 
     public static final int VALID_DOCTOR_STORE_DISTANCE_FOR_TOKEN = 150;
     public static final int VALID_STORE_DISTANCE_FOR_TOKEN = 5;

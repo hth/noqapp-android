@@ -40,6 +40,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Created by chandra on 5/20/17.
@@ -300,7 +301,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         editor.putString(PREKEY_MAIL, profile.getMail());
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
-        editor.putString(PREKEY_ADD, profile.findPrimaryOrAnyExistingAddress());
+        editor.putString(PREKEY_ADD, Objects.requireNonNull(profile.findPrimaryOrAnyExistingAddress()).getAddress());
         editor.putString(PREKEY_PROFILE_IMAGE, profile.getProfileImage());
         editor.putString(APIConstant.Key.XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);

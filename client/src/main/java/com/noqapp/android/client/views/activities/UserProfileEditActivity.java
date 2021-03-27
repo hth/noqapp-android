@@ -51,6 +51,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import okhttp3.MediaType;
@@ -312,7 +313,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 if (isDependent) {
                     if (null != dependentProfile) {
                         UpdateProfile updateProfile = new UpdateProfile();
-                        updateProfile.setAddress(address);
                         updateProfile.setFirstName(name);
                         updateProfile.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                         updateProfile.setGender(gender);
@@ -338,7 +338,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     }
                 } else {
                     UpdateProfile updateProfile = new UpdateProfile();
-                    updateProfile.setAddress(address);
                     updateProfile.setFirstName(name);
                     updateProfile.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                     updateProfile.setGender(gender);
@@ -385,7 +384,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             if (null != dependentProfile) {
                 edt_Name.setText(dependentProfile.getName());
                 tv_name.setText(dependentProfile.getName());
-                edt_address.setText(dependentProfile.findPrimaryOrAnyExistingAddress());
+                edt_address.setText(Objects.requireNonNull(dependentProfile.findPrimaryOrAnyExistingAddress()).getAddress());
                 imageUrl = dependentProfile.getProfileImage();
                 qUserId = dependentProfile.getQueueUserId();
                 if (dependentProfile.getGender().name().equals("M")) {

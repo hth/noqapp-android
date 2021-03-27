@@ -501,4 +501,5 @@
     <string name="txt_address_line_1">Address line 1</string>
     <string name="txt_address_line_2">Address line 2</string>
     <string name="txt_primary">Primary</string>
+    <string name="set_address">Set Address</string>
 </resources>

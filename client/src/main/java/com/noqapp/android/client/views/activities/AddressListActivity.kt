@@ -11,6 +11,7 @@ import com.noqapp.android.client.model.ClientPreferenceApiCalls
 import com.noqapp.android.client.model.ClientProfileApiCall
 import com.noqapp.android.client.presenter.ClientPreferencePresenter
 import com.noqapp.android.client.presenter.ProfileAddressPresenter
+import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.client.views.adapters.AddressListAdapter
@@ -23,6 +24,7 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
     private lateinit var activityAddressBookBinding: ActivityAddressbookBinding
     private lateinit var addressAdapter: AddressListAdapter
     private lateinit var clientProfileApiCall: ClientProfileApiCall
+    private var primaryJsonUserAddress: JsonUserAddress? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,13 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         activityAddressBookBinding.btnAddAddress.setOnClickListener {
             val `in` = Intent(this, AddAddressActivity::class.java)
             startActivityForResult(`in`, 78)
+        }
+
+        activityAddressBookBinding.btnSelectPrimaryAddress.setOnClickListener {
+            val intent = Intent()
+            intent.putExtra(Constants.JSON_USER_ADDRESS, primaryJsonUserAddress)
+            setResult(Constants.REQUEST_CODE_SELECT_ADDRESS, intent)
+            finish()
         }
 
         clientProfileApiCall = ClientProfileApiCall()
@@ -98,6 +107,13 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         jp.jsonUserAddresses = addressList
         AppInitialize.setUserProfile(jp)
         addressAdapter.addItems(addressList)
+
+        addressList.forEach {
+            if (it.isPrimaryAddress){
+                primaryJsonUserAddress = it
+            }
+        }
+
         dismissProgress()
     }
 
