@@ -76,21 +76,21 @@ public class OrderDetailActivity
     private TextView tv_paid_amount_value, tv_remaining_amount_value, tv_notes;
     private Spinner sp_payment_mode;
     private final String[] payment_modes = {
-            "Cash",
-            "Cheque",
-            "Credit Card",
-            "Debit Card",
-            "Internet Banking",
-            "Paytm"
+        "Cash",
+        "Cheque",
+        "Credit Card",
+        "Debit Card",
+        "Internet Banking",
+        "Paytm"
     };
 
     private final PaymentModeEnum[] payment_modes_enum = {
-            PaymentModeEnum.CA,
-            PaymentModeEnum.CQ,
-            PaymentModeEnum.CC,
-            PaymentModeEnum.DC,
-            PaymentModeEnum.NTB,
-            PaymentModeEnum.PTM
+        PaymentModeEnum.CA,
+        PaymentModeEnum.CQ,
+        PaymentModeEnum.CC,
+        PaymentModeEnum.DC,
+        PaymentModeEnum.NTB,
+        PaymentModeEnum.PTM
     };
 
     private Button btn_update_price;
