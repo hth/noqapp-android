@@ -52,9 +52,6 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("cs")
     private String countryShortName;
 
-    @JsonProperty("ad")
-    private String address;
-
     @JsonProperty("pr")
     private String phoneRaw;
 
@@ -149,15 +146,6 @@ public final class JsonProfile implements Serializable {
 
     public JsonProfile setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
-        return this;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public JsonProfile setAddress(String address) {
-        this.address = address;
         return this;
     }
 
@@ -314,14 +302,24 @@ public final class JsonProfile implements Serializable {
     }
 
     @JsonIgnore
-    public String findUserAddressId() {
+    public String findPrimaryOrAnyExistingAddressId() {
+        JsonUserAddress jsonUserAddress = findPrimaryOrAnyExistingAddress();
+        if (null == jsonUserAddress) {
+            return null;
+        }
+
+        return jsonUserAddress.getId();
+    }
+
+    @JsonIgnore
+    public JsonUserAddress findPrimaryOrAnyExistingAddress() {
         for (JsonUserAddress jsonUserAddress : jsonUserAddresses) {
-            if (address.equalsIgnoreCase(jsonUserAddress.getAddress())) {
-                return jsonUserAddress.getId();
+            if (jsonUserAddress.isPrimaryAddress()) {
+                return jsonUserAddress;
             }
         }
 
-        return jsonUserAddresses.isEmpty() ? null : jsonUserAddresses.get(0).getId();
+        return jsonUserAddresses.isEmpty() ? null : jsonUserAddresses.get(0);
     }
 
     @Override
@@ -332,7 +330,6 @@ public final class JsonProfile implements Serializable {
                 ", name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
-                ", address='" + address + '\'' +
                 ", phoneRaw='" + phoneRaw + '\'' +
                 ", timeZone='" + timeZone + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
