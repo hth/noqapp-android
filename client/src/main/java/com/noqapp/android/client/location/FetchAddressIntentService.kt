@@ -68,11 +68,8 @@ class FetchAddressIntentService : JobIntentService() {
         } else {
             val address = addresses[0]
             Log.i(TAG, getString(R.string.address_found))
-
-            var cityName = ""
-
             val addressStr = address.getAddressLine(0) + ", " + address.subAdminArea
-
+            var cityName = ""
             if (!TextUtils.isEmpty(address.locality) && !TextUtils.isEmpty(address.subLocality)) {
                 cityName = address.subLocality + ", " + address.locality;
             } else {
