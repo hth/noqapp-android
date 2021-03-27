@@ -426,8 +426,8 @@ public class OrderDetailActivity
             tv_tax.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
             btn_remove_discount.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
-            if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
-                    PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
+            if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()
+                || PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
                 if (isProductWithoutPrice) {
                     rl_payment.setVisibility(View.GONE);
                     btn_update_price.setVisibility(View.VISIBLE);

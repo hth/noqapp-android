@@ -188,7 +188,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         edt_email.setText(jsonProfile.getMail());
         edt_phoneNo.setEnabled(false);
         edt_email.setEnabled(false);
-        edt_address.setText(jsonProfile.getAddress());
+        edt_address.setText(jsonProfile.findPrimaryOrAnyExistingAddress().getAddress());
         gender = jsonProfile.getGender().name();
         if (jsonProfile.getGender().name().equals("M")) {
             sc_gender.setSelectedSegment(0);
