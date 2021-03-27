@@ -328,8 +328,10 @@ public class ClientProfileApiCall {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response migrateMail", String.valueOf(response.body()));
-                        profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
-                                response.headers().get(APIConstant.Key.XR_AUTH));
+                        profilePresenter.profileResponse(
+                            response.body(),
+                            response.headers().get(APIConstant.Key.XR_MAIL),
+                            response.headers().get(APIConstant.Key.XR_AUTH));
                     } else {
                         Log.e(TAG, "error migrateMail");
                         profilePresenter.responseErrorPresenter(response.body().getError());
