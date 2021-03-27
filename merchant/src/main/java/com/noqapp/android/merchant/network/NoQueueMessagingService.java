@@ -56,6 +56,7 @@ import org.json.JSONObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class NoQueueMessagingService extends FirebaseMessagingService implements NotificationPresenter {
 
@@ -113,8 +114,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                     try {
                         List<JsonTextToSpeech> jsonTextToSpeeches = null;
                         if (StringUtils.isNotBlank(mappedData.get("textToSpeeches"))) {
-                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {
-                            });
+                            jsonTextToSpeeches = mapper.readValue(mappedData.get("textToSpeeches"), new TypeReference<List<JsonTextToSpeech>>() {});
                         }
                         //TODO(hth) Temp code. Removed as parsing issue.
                         mappedData.remove("textToSpeeches");
@@ -212,17 +212,17 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                 if (null == AppInitialize.dbHandler) {
                     AppInitialize.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                 }
-                if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                if (Objects.requireNonNull(mappedData.get(Constants.FIREBASE_TYPE)).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 sendNotification(title, body, remoteMessage);
             } else {
                 // app is in foreground, broadcast the push message
                 // add notification to DB
-                if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                if (Objects.requireNonNull(mappedData.get(Constants.FIREBASE_TYPE)).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
-                if (getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
+                if ("com.noqapp.android.merchant.tv".equalsIgnoreCase(getPackageName())) {
                     if (null != jsonData && null != jsonData.getJsonTextToSpeeches()) {
                         new TextToSpeechHelper(getApplicationContext()).makeAnnouncement(jsonData.getJsonTextToSpeeches());
                     }
@@ -267,8 +267,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelName = "Channel Name";
             int importance = AppInitialize.isNotificationSoundEnable()
-                    ? NotificationManager.IMPORTANCE_HIGH
-                    : NotificationManager.IMPORTANCE_LOW;
+                ? NotificationManager.IMPORTANCE_HIGH
+                : NotificationManager.IMPORTANCE_LOW;
             NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
             notificationManager.createNotificationChannel(mChannel);
         }

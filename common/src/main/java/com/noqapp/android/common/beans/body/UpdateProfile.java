@@ -23,9 +23,6 @@ public class UpdateProfile {
     @JsonProperty("QID")
     private String queueUserId;
 
-    @JsonProperty("AD")
-    private String address;
-
     @JsonProperty("FN")
     private String firstName;
 
@@ -44,15 +41,6 @@ public class UpdateProfile {
 
     public UpdateProfile setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
-        return this;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public UpdateProfile setAddress(String address) {
-        this.address = address;
         return this;
     }
 

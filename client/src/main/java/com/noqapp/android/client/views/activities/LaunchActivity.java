@@ -622,10 +622,10 @@ public class LaunchActivity
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
                         ShowAlertInformation.showThemePlayStoreDialog(
-                                this,
-                                getString(R.string.playstore_update_title),
-                                getString(R.string.playstore_update_msg),
-                                true);
+                            this,
+                            getString(R.string.playstore_update_title),
+                            getString(R.string.playstore_update_msg),
+                            true);
                     }
                 } catch (Exception e) {
                     FirebaseCrashlytics.getInstance().recordException(e);

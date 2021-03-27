@@ -418,7 +418,7 @@ public class OrderDetailActivity
             tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
             tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
             cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
-            tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
+            tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getUserAddressId()) ? "N/A" : jsonPurchaseOrder.getJsonUserAddress().getAddress()));
             tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
             tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
             tv_paid_amount_value.setText(currencySymbol + jsonPurchaseOrder.computePaidAmount());

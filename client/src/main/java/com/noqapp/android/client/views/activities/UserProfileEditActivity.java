@@ -362,7 +362,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         finish();
     }
 
-
     @Override
     public void profileError() {
         dismissProgress();
@@ -386,7 +385,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             if (null != dependentProfile) {
                 edt_Name.setText(dependentProfile.getName());
                 tv_name.setText(dependentProfile.getName());
-                edt_address.setText(dependentProfile.getAddress());
+                edt_address.setText(dependentProfile.findPrimaryOrAnyExistingAddress());
                 imageUrl = dependentProfile.getProfileImage();
                 qUserId = dependentProfile.getQueueUserId();
                 if (dependentProfile.getGender().name().equals("M")) {
