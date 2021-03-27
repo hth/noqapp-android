@@ -150,6 +150,13 @@ public abstract class LocationBaseActivity extends BaseActivity {
         });
     }
 
+    protected void getMapLocation(Double latitude, Double longitude){
+        LocationManager.INSTANCE.getLocationAddress(this, latitude, longitude, (address, city, lat, lng) -> {
+            displayAddressOutput(address, city, lat, lng);
+            return null;
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

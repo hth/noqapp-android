@@ -17,6 +17,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.JsonUserAddressList;
+import com.noqapp.android.common.beans.JsonUserPreference;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 
@@ -346,6 +347,36 @@ public class ClientProfileApiCall {
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("onFailure migrateMail", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
+            }
+        });
+    }
+
+    public void setPrimaryAddress(String mail, String auth, JsonUserAddress jsonUserAddress) {
+        clientProfileApiUrls.addressPrimary(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        profileAddressPresenter.profileAddressResponse(response.body());
+                        Log.e("order address", String.valueOf(response.body()));
+                    } else {
+                        Log.d(TAG, "Empty order address");
+                        profileAddressPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profileAddressPresenter.authenticationFailure();
+                    } else {
+                        profileAddressPresenter.responseErrorPresenter(response.code());
+                        Log.e(TAG, "" + response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
+                Log.e("onFail address", t.getLocalizedMessage(), t);
+                profileAddressPresenter.responseErrorPresenter(null);
             }
         });
     }

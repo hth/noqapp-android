@@ -80,6 +80,16 @@ internal object LocationManager {
         }
     }
 
+    fun getLocationAddress(context: Context, latitude: Double, longitude: Double, complete: (String?, String?, Double, Double) -> Unit){
+        val addressResultReceiver = AddressResultReceiver { address, cityName, lat, lng ->
+            address?.let {
+                complete(address, cityName, lat, lng)
+            }
+        }
+
+        startFetchLocationService(context, latitude, longitude, addressResultReceiver)
+    }
+
     private fun startFetchLocationService(context: Context, latitude: Double, longitude: Double, resultReceiver: ResultReceiver){
         val intent = Intent()
         intent.putExtra(Constants.LocationConstants.RECEIVER, resultReceiver)

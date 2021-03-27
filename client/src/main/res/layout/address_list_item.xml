@@ -39,7 +39,7 @@
             android:singleLine="true"
             android:textColor="@color/color_list_text"
             android:textSize="@dimen/text_size_twelve"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/viewDivider"
             app:layout_constraintEnd_toEndOf="@id/tvAddress"
             app:layout_constraintStart_toStartOf="@id/tvAddress"
             app:layout_constraintTop_toBottomOf="@+id/tvAddress"
@@ -54,6 +54,11 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_twelve"
             android:visibility="gone"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/bg_rounded_rectangle"
             app:layout_constraintBottom_toBottomOf="@id/ivDelete"
             app:layout_constraintEnd_toStartOf="@+id/ivDelete"
             app:layout_constraintTop_toTopOf="@id/ivDelete" />
@@ -63,10 +68,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/viewDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_delete_24" />
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_light_grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

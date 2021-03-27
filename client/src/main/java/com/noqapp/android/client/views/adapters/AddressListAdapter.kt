@@ -18,6 +18,7 @@ class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, 
         private val tvAddress: TextView
         private val tvArea: TextView
         private val ivDelete: AppCompatImageView
+        private val viewDivider: View
 
         init {
             val binding = AddressListItemBinding.bind(addressListItemView)
@@ -25,9 +26,10 @@ class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, 
             tvAddress = binding.tvAddress
             tvArea = binding.tvArea
             ivDelete = binding.ivDelete
+            viewDivider = binding.viewDivider
         }
 
-        fun bind(jsonUserAddress: JsonUserAddress) {
+        fun bind(jsonUserAddress: JsonUserAddress, position: Int) {
             tvArea.text = jsonUserAddress.area
             tvAddress.text = jsonUserAddress.address
 
@@ -35,6 +37,12 @@ class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, 
                 tvPrimary.visibility = View.VISIBLE
             } else {
                 tvPrimary.visibility = View.GONE
+            }
+
+            if (position == addressList.size - 1) {
+                viewDivider.visibility = View.GONE
+            } else {
+                viewDivider.visibility = View.VISIBLE
             }
 
             ivDelete.setOnClickListener {
@@ -67,7 +75,7 @@ class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, 
     }
 
     override fun onBindViewHolder(holder: AddressListViewHolder, position: Int) {
-        holder.bind(addressList[position])
+        holder.bind(addressList[position], position)
     }
 
     fun addItems(jsonUserAddressList: List<JsonUserAddress>) {

@@ -271,6 +271,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
         lv_product.setAdapter(storeProductFinalOrderAdapter);
         checkProductWithZeroPrice();
+
         tv_place_order.setOnClickListener((View v) -> {
             if (AppInitialize.getUserProfile().isAccountValidated()) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
@@ -287,7 +288,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         if (isOnline()) {
                             showProgress();
                             setProgressMessage("Order placing in progress..");
-                            jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
+                            jsonPurchaseOrder
                                     .setUserAddressId("") //TODO add address Id and do not sent delivery address
                                     .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                     .setPaymentMode(null) //not required here
@@ -307,6 +308,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 new CustomToast().showToast(OrderActivity.this, "Please verify email address. Go to profile to verify.");
             }
         });
+
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

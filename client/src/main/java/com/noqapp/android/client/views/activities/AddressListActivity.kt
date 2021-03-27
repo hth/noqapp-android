@@ -18,7 +18,7 @@ import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
 import com.noqapp.android.common.beans.JsonUserPreference
 
-class AddressListActivity : BaseActivity(), ProfileAddressPresenter, ClientPreferencePresenter {
+class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
 
     private lateinit var activityAddressBookBinding: ActivityAddressbookBinding
     private lateinit var addressAdapter: AddressListAdapter
@@ -64,7 +64,7 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter, ClientPrefe
                 removeAddress(jsonUserAddress)
             }
 
-            R.id.cvAddress -> {
+            else -> {
                 setPrimaryAddress(jsonUserAddress)
             }
         }
@@ -84,48 +84,21 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter, ClientPrefe
         if (isOnline) {
             showProgress()
             setProgressMessage("Updating address...")
-            val clientProfileApiCall = ClientPreferenceApiCalls()
-            clientProfileApiCall.setClientPreferencePresenter(this)
-            val jsonUserPreference = AppInitialize.getUserProfile().jsonUserPreference
-            jsonUserPreference.userAddressId = jsonUserAddress.id
 
-            clientProfileApiCall.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
+            clientProfileApiCall.setPrimaryAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
         } else {
             ShowAlertInformation.showNetworkDialog(this)
         }
     }
 
     override fun profileAddressResponse(jsonUserAddressList: JsonUserAddressList) {
+        dismissProgress()
         val addressList = jsonUserAddressList.jsonUserAddresses
         val jp = AppInitialize.getUserProfile()
         jp.jsonUserAddresses = addressList
         AppInitialize.setUserProfile(jp)
-
-        addressList?.forEach {
-            it.isPrimaryAddress = false
-            if (it.id == jp.jsonUserPreference.userAddressId)
-                it.isPrimaryAddress = true
-        }
-
         addressAdapter.addItems(addressList)
         dismissProgress()
     }
 
-    override fun clientPreferencePresenterResponse(jsonUserPreference: JsonUserPreference?) {
-        if (null != jsonUserPreference) {
-            val jp = AppInitialize.getUserProfile()
-            jp.jsonUserPreference = jsonUserPreference
-            AppInitialize.setUserProfile(jp)
-            val jsonUserAddressList = JsonUserAddressList()
-            jsonUserAddressList.jsonUserAddresses = AppInitialize.getUserProfile().jsonUserAddresses
-            for (i in jsonUserAddressList.jsonUserAddresses.indices) {
-                if (jsonUserAddressList.jsonUserAddresses[i].id == jsonUserPreference.userAddressId) {
-                    jsonUserAddressList.jsonUserAddresses[i].id = jsonUserPreference.userAddressId
-                    break
-                }
-            }
-            profileAddressResponse(jsonUserAddressList)
-        }
-        dismissProgress()
-    }
 }

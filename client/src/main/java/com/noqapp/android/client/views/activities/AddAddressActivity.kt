@@ -3,18 +3,19 @@ package com.noqapp.android.client.views.activities
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
+import android.view.View
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityAddAddressBinding
 import com.noqapp.android.client.model.ClientProfileApiCall
 import com.noqapp.android.client.presenter.ProfileAddressPresenter
+import com.noqapp.android.client.utils.AnimationUtil
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
@@ -27,6 +28,10 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private var area: String = ""
+    private var isCameraMoving = false
+    private var wasCameraChangeManual = false
+    private var isAnimatingCamera = false
+    private val queryHandler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +56,6 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
 
     private fun addAddress() {
         val address = addAddressBinding.etHouseBuilding.text.toString() +
-                ", " + addAddressBinding.etAddressLine1.text.toString() +
                 ", " + addAddressBinding.etAddressLine2.text.toString()
 
         val jsonUserAddress = JsonUserAddress()
@@ -75,26 +79,71 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
             return
         }
         googleMap?.isMyLocationEnabled = true
+        googleMap?.setOnCameraMoveStartedListener(onCameraMoveStartedListener)
+        googleMap?.setOnCameraIdleListener(onCameraIdleListener)
     }
 
     override fun displayAddressOutput(addressOutput: String?, city: String?, latitude: Double?, longitude: Double?) {
-        googleMap?.apply {
-            latitude?.let { lat ->
-                longitude?.let { lng ->
-                    city?.let {
-                        area = it
-                    }
-                    val currentLatLng = LatLng(lat, lng)
-                    addAddressBinding.tvLocality.text = city
-                    addAddressBinding.tvSublocality.text = addressOutput
-                    this.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLatLng, 16.0f)))
+
+        latitude?.let { lat ->
+            longitude?.let { lng ->
+                this@AddAddressActivity.latitude = lat
+                this@AddAddressActivity.longitude = lng
+                city?.let {
+                    area = it
                 }
+                val currentLatLng = LatLng(lat, lng)
+                addAddressBinding.tvLocality.text = city
+                addAddressBinding.tvSublocality.text = addressOutput
+                animateCamera((CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLatLng, 16.0f))))
             }
         }
+
     }
 
     override fun profileAddressResponse(jsonUserAddressList: JsonUserAddressList?) {
         dismissProgress()
         finish()
     }
+
+    private val onCameraIdleListener = GoogleMap.OnCameraIdleListener {
+        isCameraMoving = false
+        if (wasCameraChangeManual) {
+            queryHandler.postDelayed(queryRunnable, 200)
+        } else {
+            wasCameraChangeManual = true
+        }
+        AnimationUtil.stopMarkerAnimation(addAddressBinding.ivCenterMarker)
+        addAddressBinding.viewShadow.visibility = View.GONE
+    }
+
+    private val onCameraMoveStartedListener = GoogleMap.OnCameraMoveStartedListener {
+        wasCameraChangeManual = !isAnimatingCamera
+        isCameraMoving = true
+        queryHandler.removeCallbacks(queryRunnable)
+        if (wasCameraChangeManual) {
+            AnimationUtil.stopMarkerAnimation(addAddressBinding.ivCenterMarker)
+            addAddressBinding.viewShadow.visibility = View.VISIBLE
+        }
+    }
+
+    private val queryRunnable = Runnable {
+        val cameraPosition = googleMap?.cameraPosition
+        getMapLocation(cameraPosition?.target?.latitude, cameraPosition?.target?.longitude)
+    }
+
+    private fun animateCamera(update: CameraUpdate) {
+        isAnimatingCamera = true
+        googleMap?.animateCamera(update, 200, object : GoogleMap.CancelableCallback {
+
+            override fun onFinish() {
+                isAnimatingCamera = false
+            }
+
+            override fun onCancel() {
+                isAnimatingCamera = false
+            }
+        })
+    }
+
 }
