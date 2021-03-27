@@ -270,7 +270,7 @@ public class ProductMenuListFragment
                             .setTax(String.valueOf(tax));
                     jsonPurchaseOrder.setCustomerName(jsonProfile.getName());
                     jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-                    jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
+                    jsonPurchaseOrder.setUserAddressId(jsonProfile.findPrimaryOrAnyExistingAddressId());
                     jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.TO);
                     jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
                     jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
