@@ -42,7 +42,7 @@ class FetchAddressIntentService : JobIntentService() {
         if (latitude == 0.0 || longitude == 0.0) {
             errorMessage = getString(R.string.no_location_data_provided)
             Log.wtf(TAG, errorMessage)
-            deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, errorMessage, latitude, longitude)
+            deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, latitude, longitude)
             return
         }
 
@@ -64,31 +64,41 @@ class FetchAddressIntentService : JobIntentService() {
                 errorMessage = getString(R.string.no_address_found)
                 Log.e(TAG, errorMessage)
             }
-            deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, errorMessage, latitude, longitude)
+            deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, latitude, longitude)
         } else {
             val address = addresses[0]
             Log.i(TAG, getString(R.string.address_found))
-            val addressStr = address.getAddressLine(0) + ", " + address.subAdminArea
-            var cityName = ""
-            if (!TextUtils.isEmpty(address.locality) && !TextUtils.isEmpty(address.subLocality)) {
-                cityName = address.subLocality + ", " + address.locality;
-            } else {
-                if (!TextUtils.isEmpty(address.subLocality)) {
-                    cityName = address.subLocality;
-                } else if (!TextUtils.isEmpty(address.locality)) {
-                    cityName = address.locality;
-                }
+            //TODO(hth) may be subAdminArea would not be needed
+//            val addressStr = address.getAddressLine(0) + ", " + address.subAdminArea
+            val addressStr = address.getAddressLine(0)
+            var area = ""
+            var town = ""
+            if (!TextUtils.isEmpty(address.subLocality)) {
+                area = address.subLocality;
+            } else if (!TextUtils.isEmpty(address.locality)) {
+                town = address.locality;
             }
 
-            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressStr, cityName, latitude, longitude)
+            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressStr, area, town, latitude, longitude)
         }
     }
 
     /** Sends a resultCode and message to the receiver. */
-    private fun deliverResultToReceiver(resultCode: Int, addressOutput: String, cityName: String, latitude: Double, longitude: Double) {
+    private fun deliverResultToReceiver(resultCode: Int, addressOutput: String, area: String, town: String, latitude: Double, longitude: Double) {
         val bundle = Bundle().apply {
-            putString(Constants.LocationConstants.PLACE, cityName)
+            putString(Constants.LocationConstants.AREA, area)
+            putString(Constants.LocationConstants.TOWN, town)
             putString(Constants.LocationConstants.RESULT_DATA_KEY, addressOutput)
+            putDouble(Constants.LocationConstants.LOCATION_LAT_DATA_EXTRA, latitude)
+            putDouble(Constants.LocationConstants.LOCATION_LNG_DATA_EXTRA, longitude)
+        }
+        receiver?.send(resultCode, bundle)
+    }
+
+    /** Sends a resultCode and message to the receiver. */
+    private fun deliverResultToReceiver(resultCode: Int, errorMessage: String, latitude: Double, longitude: Double) {
+        val bundle = Bundle().apply {
+            putString(Constants.LocationConstants.RESULT_DATA_KEY, errorMessage)
             putDouble(Constants.LocationConstants.LOCATION_LAT_DATA_EXTRA, latitude)
             putDouble(Constants.LocationConstants.LOCATION_LNG_DATA_EXTRA, longitude)
         }

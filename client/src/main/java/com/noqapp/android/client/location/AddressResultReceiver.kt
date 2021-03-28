@@ -11,7 +11,7 @@ import com.noqapp.android.client.utils.Constants
  * Created by Vivek Jha on 23/02/2021
  */
 class AddressResultReceiver constructor(
-        val address: (String?, String?, Double, Double) -> Unit
+        val address: (String?, String?, String?, Double, Double) -> Unit
 ) : ResultReceiver(Handler(Looper.getMainLooper())) {
 
     /**
@@ -21,12 +21,16 @@ class AddressResultReceiver constructor(
         val addressOutput = resultData.getString(Constants.LocationConstants.RESULT_DATA_KEY)
         val latitude = resultData.getDouble(Constants.LocationConstants.LOCATION_LAT_DATA_EXTRA)
         val longitude = resultData.getDouble(Constants.LocationConstants.LOCATION_LNG_DATA_EXTRA)
-        val cityName = resultData.getString(Constants.LocationConstants.PLACE)
+        val area = resultData.getString(Constants.LocationConstants.AREA)
+        val town = resultData.getString(Constants.LocationConstants.TOWN)
+
+        //SUBLOCALITY_LEVEL_1 = AREA
+        //LOCALITY = TOWN
 
         if (resultCode == Constants.LocationConstants.SUCCESS_RESULT) {
-            address(addressOutput, cityName, latitude, longitude)
+            address(addressOutput, area, town, latitude, longitude)
         } else {
-            address(addressOutput, cityName, 0.0, 0.0)
+            address(addressOutput, area, town, 0.0, 0.0)
         }
     }
 }

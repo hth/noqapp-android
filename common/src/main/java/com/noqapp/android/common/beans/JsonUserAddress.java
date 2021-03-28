@@ -1,10 +1,13 @@
 package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 
@@ -31,6 +34,9 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
 
     @JsonProperty("id")
     private String id;
+
+    @JsonProperty("cn")
+    private String customerName;
 
     @JsonProperty("ad")
     private String address;
@@ -65,12 +71,24 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
     @JsonProperty("pa")
     private boolean primaryAddress;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public String getId() {
         return id;
     }
 
     public JsonUserAddress setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public JsonUserAddress setCustomerName(String customerName) {
+        this.customerName = customerName;
         return this;
     }
 
@@ -173,21 +191,39 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonUserAddress setError(ErrorEncounteredJson error) {
+        this.error = error;
+        return this;
+    }
+
+    @JsonIgnore
+    public String getLocationAsString() {
+        if (StringUtils.isNotBlank(area) && StringUtils.isNotBlank(town)) {
+            return area + ", " + town;
+        }
+        return StringUtils.isNotBlank(town) ? town : "";
+    }
+
     @Override
     public String toString() {
         return "JsonUserAddress{" +
-                "id='" + id + '\'' +
-                ", address='" + address + '\'' +
-                ", geoHash='" + geoHash + '\'' +
-                ", countryShortName='" + countryShortName + '\'' +
-                ", area='" + area + '\'' +
-                ", town='" + town + '\'' +
-                ", district='" + district + '\'' +
-                ", state='" + state + '\'' +
-                ", stateShortName='" + stateShortName + '\'' +
-                ", latitude='" + latitude + '\'' +
-                ", longitude='" + longitude + '\'' +
-                ", primaryAddress='" + primaryAddress + '\'' +
-                '}';
+            "id='" + id + '\'' +
+            ", customerName='" + customerName + '\'' +
+            ", address='" + address + '\'' +
+            ", geoHash='" + geoHash + '\'' +
+            ", countryShortName='" + countryShortName + '\'' +
+            ", area='" + area + '\'' +
+            ", town='" + town + '\'' +
+            ", district='" + district + '\'' +
+            ", state='" + state + '\'' +
+            ", stateShortName='" + stateShortName + '\'' +
+            ", latitude='" + latitude + '\'' +
+            ", longitude='" + longitude + '\'' +
+            ", primaryAddress=" + primaryAddress +
+            '}';
     }
 }

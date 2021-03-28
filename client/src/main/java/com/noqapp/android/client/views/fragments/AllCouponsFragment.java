@@ -67,7 +67,7 @@ public class AllCouponsFragment
                 LocationPref locationPref = AppInitialize.getLocationPreference();
                 location.setLatitude(String.valueOf(locationPref.getLatitude()))
                     .setLongitude(String.valueOf(locationPref.getLongitude()))
-                    .setCityName(locationPref.getCity());
+                    .setCityName(locationPref.getLocationAsString());
                 tv_location_enable.setVisibility(View.VISIBLE);
             } else {
                 location.setLatitude(String.valueOf(AppInitialize.location.getLatitude()))

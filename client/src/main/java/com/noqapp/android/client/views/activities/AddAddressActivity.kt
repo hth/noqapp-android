@@ -21,13 +21,13 @@ import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
 
 class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAddressPresenter {
-
     private lateinit var addAddressBinding: ActivityAddAddressBinding
     private var googleMap: GoogleMap? = null
     private lateinit var clientProfileApiCall: ClientProfileApiCall
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private var area: String = ""
+    private var town: String = ""
     private var isCameraMoving = false
     private var wasCameraChangeManual = false
     private var isAnimatingCamera = false
@@ -81,20 +81,22 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     }
 
     private fun addAddress() {
-        val address = addAddressBinding.etName.text.toString() +
-                ", " + addAddressBinding.etHouseBuilding.text.toString() +
-                ", " + addAddressBinding.etAddress.text.toString()
+        var address = addAddressBinding.etAddress.text.toString();
+        if (!addAddressBinding.etHouseBuilding.text.isNullOrBlank()) {
+            address = addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddress.text.toString()
+        }
 
+        val customerName = addAddressBinding.etName.text.toString();
         val jsonUserAddress = JsonUserAddress()
-                .setAddress(address)
-                .setCountryShortName("")
-                .setArea(area)
-                .setTown("")
-                .setDistrict("")
-                .setState("")
-                .setStateShortName("")
-                .setLatitude(latitude.toString())
-                .setLongitude(longitude.toString())
+            .setAddress(address)
+            .setCountryShortName("")
+            .setArea(area)
+            .setTown(town)
+            .setDistrict("")
+            .setState("")
+            .setStateShortName("")
+            .setLatitude(latitude.toString())
+            .setLongitude(longitude.toString())
 
         showProgress()
         clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
@@ -102,7 +104,9 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
             return
         }
         googleMap?.isMyLocationEnabled = true
@@ -110,24 +114,29 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
         googleMap?.setOnCameraIdleListener(onCameraIdleListener)
     }
 
-    override fun displayAddressOutput(addressOutput: String?, city: String?, latitude: Double?, longitude: Double?) {
-
+    override fun displayAddressOutput(addressOutput: String?, area: String?, town: String?, latitude: Double?, longitude: Double?) {
         latitude?.let { lat ->
             longitude?.let { lng ->
                 this@AddAddressActivity.latitude = lat
                 this@AddAddressActivity.longitude = lng
-                city?.let {
-                    area = it
+                area?.let {
+                    this.area = it
                 }
+                town?.let {
+                    this.town = it
+                }
+
                 val currentLatLng = LatLng(lat, lng)
-                addAddressBinding.tvLocality.text = city
+                var locationAsString = this.town
+                if (!area.isNullOrBlank()) {
+                    locationAsString = this.area + ", " + this.town
+                }
+                addAddressBinding.tvLocality.text = locationAsString
 
                 addAddressBinding.etAddress.setText(addressOutput)
-
                 animateCamera((CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLatLng, 16.0f))))
             }
         }
-
     }
 
     override fun profileAddressResponse(jsonUserAddressList: JsonUserAddressList?) {
@@ -179,5 +188,4 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
             }
         })
     }
-
 }

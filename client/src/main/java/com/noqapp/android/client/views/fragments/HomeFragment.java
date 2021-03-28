@@ -343,9 +343,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             advertisementApiCalls.setAdvertisementPresenter(this);
             LocationPref locationPref = AppInitialize.getLocationPreference();
             Location location = new Location()
-                    .setCityName(locationPref.getCity())
-                    .setLatitude(String.valueOf(locationPref.getLatitude()))
-                    .setLongitude(String.valueOf(locationPref.getLongitude()));
+                .setCityName(locationPref.getLocationAsString())
+                .setLatitude(String.valueOf(locationPref.getLatitude()))
+                .setLongitude(String.valueOf(locationPref.getLongitude()));
             advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
         } else {
@@ -358,7 +358,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = locationPref.getLatitude();
             lng = locationPref.getLongitude();
-            city = locationPref.getCity();
+            city = locationPref.getLocationAsString();
         } else {
             lat = AppInitialize.location.getLatitude();
             lng = AppInitialize.location.getLongitude();
