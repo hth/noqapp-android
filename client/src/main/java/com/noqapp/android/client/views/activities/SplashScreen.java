@@ -38,7 +38,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     private static String deviceId = "";
 
     @Override
-    public void displayAddressOutput(String addressOutput, String area, String town, Double latitude, Double longitude) {
+    public void displayAddressOutput(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         AppInitialize.location.setLatitude(latitude);
         AppInitialize.location.setLongitude(longitude);
 

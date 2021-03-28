@@ -44,20 +44,20 @@ internal object LocationManager {
         LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(locationCallback)
     }
 
-    fun fetchLocationAddress(latitude: Double, longitude: Double, context: Context, complete: (String?, String?, String?, Double, Double) -> Unit) {
-        val addressResultReceiver = AddressResultReceiver { address, area, town, latitude, longitude ->
+    fun fetchLocationAddress(latitude: Double, longitude: Double, context: Context, complete: (String?, String?, String?, String?, String?, String?, String?,Double, Double) -> Unit) {
+        val addressResultReceiver = AddressResultReceiver { address, countryShortName, area, town, district, state, stateShortName, latitude, longitude ->
             address?.let {
-                complete(address, area, town, latitude, longitude)
+                complete(address, countryShortName, area, town, district, state, stateShortName, latitude, longitude)
             }
         }
         startFetchLocationService(context, latitude, longitude, addressResultReceiver)
     }
 
     @SuppressLint("MissingPermission")
-    fun fetchCurrentLocationAddress(context: Context, complete: (String?, String?, String?, Double, Double) -> Unit) {
-        val addressResultReceiver = AddressResultReceiver { address, area, town, latitude, longitude ->
+    fun fetchCurrentLocationAddress(context: Context, complete: (String?, String?, String?, String?, String?, String?, String?, Double, Double) -> Unit) {
+        val addressResultReceiver = AddressResultReceiver { address, countryShortName, area, town, district, state, stateShortName, latitude, longitude ->
             address?.let {
-                complete(address, area, town, latitude, longitude)
+                complete(address, countryShortName, area, town, district, state, stateShortName, latitude, longitude)
             }
         }
 
@@ -80,10 +80,10 @@ internal object LocationManager {
         }
     }
 
-    fun getLocationAddress(context: Context, latitude: Double, longitude: Double, complete: (String?, String?, String?, Double, Double) -> Unit) {
-        val addressResultReceiver = AddressResultReceiver { address, area, town, lat, lng ->
+    fun getLocationAddress(context: Context, latitude: Double, longitude: Double, complete: (String?, String?, String?, String?, String?, String?, String?, Double, Double) -> Unit) {
+        val addressResultReceiver = AddressResultReceiver { address, countryShortName, area, town, district, state, stateShortName, lat, lng ->
             address?.let {
-                complete(address, area, town, lat, lng)
+                complete(address, countryShortName, area, town, district, state, stateShortName, lat, lng)
             }
         }
 

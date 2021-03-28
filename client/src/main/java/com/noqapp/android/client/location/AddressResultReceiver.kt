@@ -11,7 +11,7 @@ import com.noqapp.android.client.utils.Constants
  * Created by Vivek Jha on 23/02/2021
  */
 class AddressResultReceiver constructor(
-        val address: (String?, String?, String?, Double, Double) -> Unit
+        val address: (String?, String?, String?, String?, String?, String?, String?, Double, Double) -> Unit
 ) : ResultReceiver(Handler(Looper.getMainLooper())) {
 
     /**
@@ -21,16 +21,17 @@ class AddressResultReceiver constructor(
         val addressOutput = resultData.getString(Constants.LocationConstants.RESULT_DATA_KEY)
         val latitude = resultData.getDouble(Constants.LocationConstants.LOCATION_LAT_DATA_EXTRA)
         val longitude = resultData.getDouble(Constants.LocationConstants.LOCATION_LNG_DATA_EXTRA)
+        val countryShortName = resultData.getString(Constants.LocationConstants.COUNTRY_SHORT_NAME)
         val area = resultData.getString(Constants.LocationConstants.AREA)
         val town = resultData.getString(Constants.LocationConstants.TOWN)
+        val district = resultData.getString(Constants.LocationConstants.DISTRICT)
+        val state = resultData.getString(Constants.LocationConstants.STATE)
+        val stateShortName = resultData.getString(Constants.LocationConstants.STATE_SHORT_NAME)
 
-        //SUBLOCALITY_LEVEL_1 = AREA
-        //LOCALITY = TOWN
-
-        if (resultCode == Constants.LocationConstants.SUCCESS_RESULT) {
-            address(addressOutput, area, town, latitude, longitude)
+        if (Constants.LocationConstants.SUCCESS_RESULT == resultCode) {
+            address(addressOutput, countryShortName, area, town, district, state, stateShortName, latitude, longitude)
         } else {
-            address(addressOutput, area, town, 0.0, 0.0)
+            address(addressOutput, countryShortName, area, town, district, state, stateShortName, 0.0, 0.0)
         }
     }
 }

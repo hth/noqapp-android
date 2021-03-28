@@ -254,7 +254,7 @@ public class LaunchActivity
     }
 
     @Override
-    public void displayAddress(String addressOutput, String area, String town, Double latitude, Double longitude) {
+    public void displayAddress(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         if (AppUtils.calculateDistance(latitude, longitude, AppInitialize.getLocationPreference().getLatitude(), AppInitialize.getLocationPreference().getLongitude()) <= 0.5f){
             updateLocationInfo(latitude, longitude, area, town);
         } else {

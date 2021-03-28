@@ -497,11 +497,11 @@
     <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
     <string name="permission_rationale">Location permission is needed for core functionality</string>
     <string name="permission_contacts_rationale">Contacts permission is needed for core functionality</string>
-    <string name="txt_house_no_building">House No./Building (Required)*</string>
+    <string name="txt_name_required">Full Name (Required)*</string>
+    <string name="txt_house_no_building">House No./Building</string>
     <string name="txt_address_line_1">Address (Required)*</string>
     <string name="txt_primary">Primary</string>
     <string name="set_address">Set Address</string>
-    <string name="txt_name_required">Full Name (Required)*</string>
     <string name="txt_please_enter_full_name">Please enter full name.</string>
     <string name="txt_please_enter_house_number">Please enter house number/building name.</string>
     <string name="txt_please_enter_address">Please enter address.</string>

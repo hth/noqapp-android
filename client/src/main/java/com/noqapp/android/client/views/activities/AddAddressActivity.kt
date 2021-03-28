@@ -26,8 +26,12 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     private lateinit var clientProfileApiCall: ClientProfileApiCall
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    private var countryShortName: String = ""
     private var area: String = ""
     private var town: String = ""
+    private var district: String = ""
+    private var state: String = ""
+    private var stateShortName: String = ""
     private var isCameraMoving = false
     private var wasCameraChangeManual = false
     private var isAnimatingCamera = false
@@ -88,13 +92,14 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
 
         val customerName = addAddressBinding.etName.text.toString();
         val jsonUserAddress = JsonUserAddress()
+            .setCustomerName(customerName)
             .setAddress(address)
-            .setCountryShortName("")
+            .setCountryShortName(countryShortName)
             .setArea(area)
             .setTown(town)
-            .setDistrict("")
-            .setState("")
-            .setStateShortName("")
+            .setDistrict(district)
+            .setState(state)
+            .setStateShortName(stateShortName)
             .setLatitude(latitude.toString())
             .setLongitude(longitude.toString())
 
@@ -114,16 +119,38 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
         googleMap?.setOnCameraIdleListener(onCameraIdleListener)
     }
 
-    override fun displayAddressOutput(addressOutput: String?, area: String?, town: String?, latitude: Double?, longitude: Double?) {
+    override fun displayAddressOutput(
+            addressOutput: String?,
+            countryShortName: String?,
+            area: String?,
+            town: String?,
+            district: String?,
+            state: String?,
+            stateShortName: String?,
+            latitude: Double?,
+            longitude: Double?
+        ) {
         latitude?.let { lat ->
             longitude?.let { lng ->
                 this@AddAddressActivity.latitude = lat
                 this@AddAddressActivity.longitude = lng
+                countryShortName?.let {
+                    this.countryShortName = it
+                }
                 area?.let {
                     this.area = it
                 }
                 town?.let {
                     this.town = it
+                }
+                district?.let {
+                    this.district = it
+                }
+                state?.let {
+                    this.state = it
+                }
+                stateShortName?.let {
+                    this.stateShortName = it
                 }
 
                 val currentLatLng = LatLng(lat, lng)
@@ -178,7 +205,6 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     private fun animateCamera(update: CameraUpdate) {
         isAnimatingCamera = true
         googleMap?.animateCamera(update, 200, object : GoogleMap.CancelableCallback {
-
             override fun onFinish() {
                 isAnimatingCamera = false
             }

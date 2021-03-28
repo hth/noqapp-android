@@ -43,16 +43,17 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 
 import kotlin.Unit;
-import kotlin.jvm.functions.Function5;
+import kotlin.jvm.functions.Function9;
 
 /**
  * Created by chandra on 5/7/17.
  */
 public class SearchActivity
     extends BaseActivity
-    implements SearchAdapter.OnItemClickListener,
+    implements
+        SearchAdapter.OnItemClickListener,
         SearchBusinessStorePresenter,
-        Function5<String, String, String, Double, Double, Unit>
+        Function9<String, String, String, String, String, String, String, Double, Double, Unit>
 {
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
@@ -359,7 +360,7 @@ public class SearchActivity
     }
 
     @Override
-    public Unit invoke(String address, String area, String town, Double latitude, Double longitude) {
+    public Unit invoke(String address, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         if (latitude == 0 && longitude == 0) {
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = String.valueOf(locationPref.getLatitude());

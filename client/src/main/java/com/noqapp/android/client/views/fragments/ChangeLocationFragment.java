@@ -28,9 +28,9 @@ import com.noqapp.android.common.utils.GeoIP;
 import org.apache.commons.lang3.StringUtils;
 
 import kotlin.Unit;
-import kotlin.jvm.functions.Function5;
+import kotlin.jvm.functions.Function9;
 
-public class ChangeLocationFragment extends Fragment implements Function5<String, String, String, Double, Double, Unit> {
+public class ChangeLocationFragment extends Fragment implements Function9<String, String, String, String, String, String, String, Double, Double, Unit> {
     private double lat, lng;
     private String city = "";
     private String area = "";
@@ -142,7 +142,7 @@ public class ChangeLocationFragment extends Fragment implements Function5<String
     }
 
     @Override
-    public Unit invoke(String address, String area, String town, Double latitude, Double longitude) {
+    public Unit invoke(String address, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         if (latitude == 0 && longitude == 0) {
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = locationPref.getLatitude();

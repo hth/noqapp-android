@@ -69,8 +69,14 @@ public class Constants extends BaseConstants{
         int FETCH_LOCATION_JOB_ID = 10_003;
         String RECEIVER = "locationaddress.receiver";
         String RESULT_DATA_KEY = "locationaddress.resultdatakey";
-        String AREA = "locationaddress.area";
-        String TOWN = "locationaddress.town";
+
+        String COUNTRY_SHORT_NAME = "locationaddress.country.shortName";
+        String AREA = "locationaddress.sublocality.level1.longName";
+        String TOWN = "locationaddress.locality.longName";
+        String DISTRICT = "locationaddress.administrative.area.level2.longName";
+        String STATE = "locationaddress.administrative.area.level1.longName";
+        String STATE_SHORT_NAME = "locationaddress.administrative.area.level1.shortName";
+
         String LOCATION_DATA_EXTRA = "locationaddress.locationdataextra";
         String PLACE_NAME = "locationaddress.placename";
         String LOCATION_LAT_DATA_EXTRA = "locationaddress.latextra";

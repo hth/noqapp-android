@@ -71,23 +71,40 @@ class FetchAddressIntentService : JobIntentService() {
             //TODO(hth) may be subAdminArea would not be needed
 //            val addressStr = address.getAddressLine(0) + ", " + address.subAdminArea
             val addressStr = address.getAddressLine(0)
+            var countryShortName = ""
             var area = ""
             var town = ""
+            var district = ""
+            var state = ""
+            var stateShortName = ""
+            if (!TextUtils.isEmpty(address.countryCode)) {
+                countryShortName = address.countryCode
+            }
             if (!TextUtils.isEmpty(address.subLocality)) {
                 area = address.subLocality;
             } else if (!TextUtils.isEmpty(address.locality)) {
                 town = address.locality;
             }
+            if (!TextUtils.isEmpty(address.subAdminArea)) {
+                district = address.subAdminArea
+            }
+            if (!TextUtils.isEmpty(address.adminArea)) {
+                state = address.adminArea
+            }
 
-            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressStr, area, town, latitude, longitude)
+            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressStr, countryShortName, area, town, district, state, stateShortName, latitude, longitude)
         }
     }
 
     /** Sends a resultCode and message to the receiver. */
-    private fun deliverResultToReceiver(resultCode: Int, addressOutput: String, area: String, town: String, latitude: Double, longitude: Double) {
+    private fun deliverResultToReceiver(resultCode: Int, addressOutput: String, countryShortName: String, area: String, town: String, district: String, state: String, stateShortName: String, latitude: Double, longitude: Double) {
         val bundle = Bundle().apply {
+            putString(Constants.LocationConstants.COUNTRY_SHORT_NAME, countryShortName)
             putString(Constants.LocationConstants.AREA, area)
             putString(Constants.LocationConstants.TOWN, town)
+            putString(Constants.LocationConstants.DISTRICT, district)
+            putString(Constants.LocationConstants.STATE, state)
+            putString(Constants.LocationConstants.STATE_SHORT_NAME, stateShortName)
             putString(Constants.LocationConstants.RESULT_DATA_KEY, addressOutput)
             putDouble(Constants.LocationConstants.LOCATION_LAT_DATA_EXTRA, latitude)
             putDouble(Constants.LocationConstants.LOCATION_LNG_DATA_EXTRA, longitude)

@@ -40,7 +40,17 @@ import static com.noqapp.android.client.utils.Constants.REQUEST_CHECK_SETTINGS;
  * Created by Vivek Jha on 23/02/2021
  */
 public abstract class LocationBaseActivity extends BaseActivity {
-    public abstract void displayAddressOutput(String addressOutput, String area, String town, Double latitude, Double longitude);
+    public abstract void displayAddressOutput(
+        String addressOutput,
+        String countryShortName,
+        String area,
+        String town,
+        String district,
+        String state,
+        String stateShortName,
+        Double latitude,
+        Double longitude
+    );
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
@@ -133,8 +143,8 @@ public abstract class LocationBaseActivity extends BaseActivity {
             LocationSettingsStates locationSettingsStates = response.getLocationSettingsStates();
             if (locationSettingsStates.isLocationPresent()) {
                 LocationManager.INSTANCE.startLocationUpdate(this);
-                LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, area, town, latitude, longitude) -> {
-                    displayAddressOutput(address, area, town, latitude, longitude);
+                LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, countryShortName, area, town, district, state, stateShortName, latitude, longitude) -> {
+                    displayAddressOutput(address, countryShortName, area, town, district, state, stateShortName, latitude, longitude);
                     return null;
                 });
             }
@@ -154,8 +164,8 @@ public abstract class LocationBaseActivity extends BaseActivity {
     }
 
     protected void getMapLocation(Double latitude, Double longitude){
-        LocationManager.INSTANCE.getLocationAddress(this, latitude, longitude, (address, area, town, lat, lng) -> {
-            displayAddressOutput(address, area, town, lat, lng);
+        LocationManager.INSTANCE.getLocationAddress(this, latitude, longitude, (address, countryShortName, area, town, district, state, stateShortName, lat, lng) -> {
+            displayAddressOutput(address, countryShortName, area, town, district, state, stateShortName, lat, lng);
             return null;
         });
     }

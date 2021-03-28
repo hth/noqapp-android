@@ -20,7 +20,6 @@ import com.noqapp.android.common.beans.JsonUserAddressList
 import com.noqapp.android.common.beans.JsonUserPreference
 
 class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
-
     private lateinit var activityAddressBookBinding: ActivityAddressbookBinding
     private lateinit var addressAdapter: AddressListAdapter
     private lateinit var clientProfileApiCall: ClientProfileApiCall
@@ -121,5 +120,4 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
 
         dismissProgress()
     }
-
 }
