@@ -33,8 +33,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonUserAddressList extends AbstractDomain implements Parcelable {
 
+    /* List cannot be passed directly through intent so we had to use ArrayList for same. */
     @JsonProperty("ads")
-    private List<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
+    private ArrayList<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -72,7 +73,7 @@ public class JsonUserAddressList extends AbstractDomain implements Parcelable {
         return jsonUserAddresses;
     }
 
-    public JsonUserAddressList setJsonUserAddresses(List<JsonUserAddress> jsonUserAddresses) {
+    public JsonUserAddressList setJsonUserAddresses(ArrayList<JsonUserAddress> jsonUserAddresses) {
         this.jsonUserAddresses = jsonUserAddresses;
         return this;
     }
