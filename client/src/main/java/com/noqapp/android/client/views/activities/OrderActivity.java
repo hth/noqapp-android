@@ -188,7 +188,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         TextView tv_change_address = findViewById(R.id.tv_change_address);
         tv_change_address.setOnClickListener((View v) -> {
             Intent in = new Intent(OrderActivity.this, AddressListActivity.class);
-            startActivityForResult(in, 78);
+            startActivityForResult(in, Constants.REQUEST_CODE_SELECT_ADDRESS);
         });
         edt_optional = findViewById(R.id.edt_optional);
         edt_optional.setOnTouchListener((view, event) -> {
@@ -317,7 +317,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.REQUEST_CODE_SELECT_ADDRESS && data != null) {
             if (null != data.getExtras()) {
-                jsonUserAddress = (JsonUserAddress) data.getExtras().getSerializable(Constants.JSON_USER_ADDRESS);
+                jsonUserAddress = data.getExtras().getParcelable(Constants.JSON_USER_ADDRESS);
                 if (null != jsonUserAddress) {
                     tv_address.setText(jsonUserAddress.getAddress());
                 }

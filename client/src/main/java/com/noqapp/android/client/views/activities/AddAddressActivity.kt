@@ -1,6 +1,8 @@
 package com.noqapp.android.client.views.activities
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +18,7 @@ import com.noqapp.android.client.databinding.ActivityAddAddressBinding
 import com.noqapp.android.client.model.ClientProfileApiCall
 import com.noqapp.android.client.presenter.ProfileAddressPresenter
 import com.noqapp.android.client.utils.AnimationUtil
+import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
@@ -60,22 +63,16 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     }
 
     private fun validData(): Boolean {
-        addAddressBinding.etName.let {
-            if (it.text.toString().isEmpty()){
-                showSnackbar(R.string.txt_please_enter_full_name)
-                return false
-            }
-        }
 
-        addAddressBinding.etName.let {
-            if (it.text.toString().isEmpty()){
+        addAddressBinding.etHouseBuilding.let {
+            if (it.text.toString().isEmpty()) {
                 showSnackbar(R.string.txt_house_no_building)
                 return false
             }
         }
 
-        addAddressBinding.etName.let {
-            if (it.text.toString().isEmpty()){
+        addAddressBinding.etAddress.let {
+            if (it.text.toString().isEmpty()) {
                 showSnackbar(R.string.txt_please_enter_address)
                 return false
             }
@@ -85,23 +82,19 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     }
 
     private fun addAddress() {
-        var address = addAddressBinding.etAddress.text.toString();
-        if (!addAddressBinding.etHouseBuilding.text.isNullOrBlank()) {
-            address = addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddress.text.toString()
-        }
+        val address = AppInitialize.getUserProfile().name +", " + addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddress.text.toString()
 
-        val customerName = addAddressBinding.etName.text.toString();
         val jsonUserAddress = JsonUserAddress()
-            .setCustomerName(customerName)
-            .setAddress(address)
-            .setCountryShortName(countryShortName)
-            .setArea(area)
-            .setTown(town)
-            .setDistrict(district)
-            .setState(state)
-            .setStateShortName(stateShortName)
-            .setLatitude(latitude.toString())
-            .setLongitude(longitude.toString())
+                .setCustomerName(AppInitialize.getUserProfile().name)
+                .setAddress(address)
+                .setCountryShortName(countryShortName)
+                .setArea(area)
+                .setTown(town)
+                .setDistrict(district)
+                .setState(state)
+                .setStateShortName(stateShortName)
+                .setLatitude(latitude.toString())
+                .setLongitude(longitude.toString())
 
         showProgress()
         clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
@@ -129,7 +122,7 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
             stateShortName: String?,
             latitude: Double?,
             longitude: Double?
-        ) {
+    ) {
         latitude?.let { lat ->
             longitude?.let { lng ->
                 this@AddAddressActivity.latitude = lat
@@ -172,6 +165,11 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
             AppInitialize.setAddress(it.address)
             AppInitialize.setSelectedAddressId(it.id)
         }
+
+        val intent = Intent()
+        intent.putExtra(Constants.ADDRESS_LIST, jsonUserAddressList)
+        setResult(Activity.RESULT_OK, intent)
+
         dismissProgress()
         finish()
     }

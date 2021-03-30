@@ -1,5 +1,8 @@
 package com.noqapp.android.common.beans;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,7 +33,7 @@ import java.io.Serializable;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonUserAddress extends AbstractDomain implements Serializable {
+public class JsonUserAddress extends AbstractDomain implements Parcelable {
 
     @JsonProperty("id")
     private String id;
@@ -73,6 +76,58 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public JsonUserAddress(){}
+
+    protected JsonUserAddress(Parcel in) {
+        id = in.readString();
+        customerName = in.readString();
+        address = in.readString();
+        geoHash = in.readString();
+        countryShortName = in.readString();
+        area = in.readString();
+        town = in.readString();
+        district = in.readString();
+        state = in.readString();
+        stateShortName = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        primaryAddress = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(customerName);
+        dest.writeString(address);
+        dest.writeString(geoHash);
+        dest.writeString(countryShortName);
+        dest.writeString(area);
+        dest.writeString(town);
+        dest.writeString(district);
+        dest.writeString(state);
+        dest.writeString(stateShortName);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeByte((byte) (primaryAddress ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<JsonUserAddress> CREATOR = new Creator<JsonUserAddress>() {
+        @Override
+        public JsonUserAddress createFromParcel(Parcel in) {
+            return new JsonUserAddress(in);
+        }
+
+        @Override
+        public JsonUserAddress[] newArray(int size) {
+            return new JsonUserAddress[size];
+        }
+    };
 
     public String getId() {
         return id;

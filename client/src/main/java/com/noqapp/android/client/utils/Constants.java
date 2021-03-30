@@ -6,6 +6,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.common.utils.BaseConstants;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * User: hitender
@@ -17,6 +18,7 @@ public class Constants extends BaseConstants{
     public static final int requestCodeAfterJoinQActivity = 12;
     public static final int requestCodeNotification = 2;
     public static final int REQUEST_CODE_SELECT_ADDRESS = 78;
+    public static final int REQUEST_CODE_ADD_ADDRESS = 79;
 
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 10_001;
     public static final int RESULT_CURRENT_LOCATION = 10_002;
@@ -62,6 +64,7 @@ public class Constants extends BaseConstants{
     public static final String DISPLAY_SERVING_NUMBER_PREF_KEY = "%s_display_serving_number";
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
     public static final String PRE_REGISTER = "pre_approve";
+    public static final String ADDRESS_LIST = "addresslist";
 
     public interface LocationConstants {
         int SUCCESS_RESULT = 10_001;

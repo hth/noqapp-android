@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.noqapp.android.client.views.adapters.AddressListAdapter
 import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
 import com.noqapp.android.common.beans.JsonUserPreference
+import java.util.ArrayList
 
 class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
     private lateinit var activityAddressBookBinding: ActivityAddressbookBinding
@@ -36,18 +38,15 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
 
         activityAddressBookBinding.btnAddAddress.setOnClickListener {
             val `in` = Intent(this, AddAddressActivity::class.java)
-            startActivityForResult(`in`, 78)
+            startActivityForResult(`in`, Constants.REQUEST_CODE_ADD_ADDRESS)
         }
 
         clientProfileApiCall = ClientProfileApiCall()
         clientProfileApiCall.setProfileAddressPresenter(this)
 
-        setUpRecyclerView()
-    }
-
-    override fun onResume() {
-        super.onResume()
         clientProfileApiCall.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth())
+
+        setUpRecyclerView()
     }
 
     private fun setUpRecyclerView() {
@@ -104,20 +103,35 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         dismissProgress()
 
         val addressList = jsonUserAddressList.jsonUserAddresses
+        showAddresses(addressList)
+    }
 
+    private fun showAddresses(addressList: List<JsonUserAddress>?) {
         val jp = AppInitialize.getUserProfile()
         jp.jsonUserAddresses = addressList
         AppInitialize.setUserProfile(jp)
 
-        addressList.forEach {
+        addressList?.forEach {
             if (it.isPrimaryAddress){
                 primaryJsonUserAddress = it
                 AppInitialize.setAddress(it.address)
+                return@forEach
             }
         }
 
-        addressAdapter.addItems(addressList)
+        addressList?.let {
+            addressAdapter.addItems(it)
+        }
 
-        dismissProgress()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_ADD_ADDRESS){
+            val jsonUserAddressList = data?.getParcelableExtra<JsonUserAddressList>(Constants.ADDRESS_LIST)
+            jsonUserAddressList?.jsonUserAddresses?.let {
+                showAddresses(it)
+            }
+        }
     }
 }

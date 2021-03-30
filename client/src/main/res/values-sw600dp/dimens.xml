@@ -15,9 +15,6 @@
     <dimen name="survey_padding">12sp</dimen>
     <dimen name="sp_text_item">24sp</dimen>
 
-    <dimen name="padding_sixteen">28dp</dimen>
-    <dimen name="padding_eight">14dp</dimen>
-
     <dimen name="join_section_small_text">26sp</dimen>
     <dimen name="text_size_ten">15sp</dimen>
     <dimen name="text_size_twelve">18sp</dimen>
