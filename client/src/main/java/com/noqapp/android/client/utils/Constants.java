@@ -19,6 +19,8 @@ public class Constants extends BaseConstants{
     public static final int requestCodeNotification = 2;
     public static final int REQUEST_CODE_SELECT_ADDRESS = 78;
     public static final int REQUEST_CODE_ADD_ADDRESS = 79;
+    public static final int FROM_EDIT_PROFILE = 10010;
+    public static final int FROM_ADDRESS_LIST = 10011;
 
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 10_001;
     public static final int RESULT_CURRENT_LOCATION = 10_002;
@@ -65,6 +67,8 @@ public class Constants extends BaseConstants{
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
     public static final String PRE_REGISTER = "pre_approve";
     public static final String ADDRESS_LIST = "addresslist";
+    public static final String ADD_ADDRESS_PAGE_TITLE = "addAddressPageTitle";
+    public static final String FROM = "from";
 
     public interface LocationConstants {
         int SUCCESS_RESULT = 10_001;

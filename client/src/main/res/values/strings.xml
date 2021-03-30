@@ -506,4 +506,5 @@
     <string name="txt_please_enter_house_number">Please enter house number/building name</string>
     <string name="txt_please_enter_address">Please enter address</string>
     <string name="txt_delivery_at">DELIVERY AT</string>
+    <string name="txt_edit_address">Edit address</string>
 </resources>

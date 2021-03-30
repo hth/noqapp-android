@@ -117,12 +117,33 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_eight"
+                android:hint="@string/txt_name_required"
+                app:layout_constraintTop_toBottomOf="@+id/clAddress">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_bottom_border"
+                    android:fontFamily="@font/roboto_regular"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilHouseBuilding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_eight"
                 android:hint="@string/txt_house_no_building"
-                app:layout_constraintTop_toBottomOf="@+id/clAddress">
+                app:layout_constraintTop_toBottomOf="@+id/tilName">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etHouseBuilding"
@@ -148,10 +169,12 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etAddress"
                     android:layout_width="match_parent"
-                    android:layout_height="90dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bottom_border"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="start"
+                    android:imeOptions="actionNone"
+                    android:lines="3"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine"
                     android:scrollbars="vertical" />

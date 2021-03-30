@@ -35,6 +35,8 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonUserAddress;
+import com.noqapp.android.common.beans.JsonUserAddressList;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
@@ -59,14 +61,14 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener,
-    ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
+        ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
     private static final String TAG = UserProfileEditActivity.class.getSimpleName();
 
     private ImageView iv_profile;
     private String gender = "";
     private TextView tv_name;
     private TextView tv_birthday;
-    private EditText edt_address;
+    private TextView tvAddress;
     private Button btn_update;
     private EditText edt_phoneNo;
     private EditText edt_Name;
@@ -90,7 +92,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
         tv_name = findViewById(R.id.tv_name);
         tv_birthday = findViewById(R.id.tv_birthday);
-        edt_address = findViewById(R.id.edt_address);
+        tvAddress = findViewById(R.id.tv_address);
         btn_update = findViewById(R.id.btn_update);
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
@@ -118,7 +120,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         tv_transgender.setOnClickListener(this);
         btn_update.setOnClickListener(this);
         tv_remove_image.setOnClickListener(this);
-        edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        tvAddress.setOnClickListener(this);
     }
 
 
@@ -127,10 +129,10 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
-                    .placeholder(ImageUtils.getProfilePlaceholder(this))
-                    .error(ImageUtils.getProfileErrorPlaceholder(this))
-                    .into(iv_profile);
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(iv_profile);
                 tv_remove_image.setVisibility(View.VISIBLE);
             } else {
                 tv_remove_image.setVisibility(View.GONE);
@@ -309,7 +311,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 String name = edt_Name.getText().toString();
                 //   String mail = edt_Mail.getText().toString();
                 String birthday = tv_birthday.getText().toString();
-                String address = edt_address.getText().toString();
                 if (isDependent) {
                     if (null != dependentProfile) {
                         UpdateProfile updateProfile = new UpdateProfile();
@@ -384,7 +385,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             if (null != dependentProfile) {
                 edt_Name.setText(dependentProfile.getName());
                 tv_name.setText(dependentProfile.getName());
-                edt_address.setText(Objects.requireNonNull(dependentProfile.findPrimaryOrAnyExistingAddress()).getAddress());
+                tvAddress.setText(Objects.requireNonNull(dependentProfile.findPrimaryOrAnyExistingAddress()).getAddress());
                 imageUrl = dependentProfile.getProfileImage();
                 qUserId = dependentProfile.getQueueUserId();
                 if (dependentProfile.getGender().name().equals("M")) {
@@ -411,7 +412,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         } else {
             edt_Name.setText(AppInitialize.getUserName());
             tv_name.setText(AppInitialize.getUserName());
-            edt_address.setText(AppInitialize.getAddress());
+            tvAddress.setText(AppInitialize.getAddress());
             imageUrl = AppInitialize.getUserProfileUri();
             qUserId = AppInitialize.getUserProfile().getQueueUserId();
             if (AppInitialize.getGender().equals("M")) {
@@ -453,8 +454,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             isValid = false;
         }
         if (((null == dependentProfile && isDependent && nameList.contains(name)))
-            || (null == dependentProfile && !isDependent && !AppInitialize.getUserName().toUpperCase().equals(name) && nameList.contains(name))
-            || (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
+                || (null == dependentProfile && !isDependent && !AppInitialize.getUserName().toUpperCase().equals(name) && nameList.contains(name))
+                || (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
             edt_Name.setError(getString(R.string.error_name_exist));
             isValid = false;
         }

@@ -13,6 +13,10 @@ import com.noqapp.android.client.utils.ShowCustomDialog
 import com.noqapp.android.client.views.activities.AppInitialize
 import com.noqapp.android.common.beans.JsonUserAddress
 
+/**
+ * Adapter class for showing address list
+ * Created by Vivek Jha on 21/03/2021
+ */
 class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, val clickListener: (JsonUserAddress, View) -> Unit) : RecyclerView.Adapter<AddressListAdapter.AddressListViewHolder>() {
 
     inner class AddressListViewHolder(private val addressListItemView: View) : RecyclerView.ViewHolder(addressListItemView) {

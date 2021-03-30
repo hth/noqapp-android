@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
@@ -24,6 +26,8 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonUserAddress;
+import com.noqapp.android.common.beans.JsonUserAddressList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.GenderEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
@@ -36,7 +40,7 @@ import java.util.List;
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ProfilePresenter {
     private TextView tv_name;
     private TextView tv_birthday;
-    private EditText edt_address;
+    private TextView tvAddress;
     private EditText edt_phoneNo;
     private EditText edt_Name;
     private EditText edt_Mail;
@@ -61,8 +65,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         ImageView iv_edit = findViewById(R.id.iv_edit);
         ImageView iv_edit_mail = findViewById(R.id.iv_edit_mail);
         ImageView iv_add_dependent = findViewById(R.id.iv_add_dependent);
+        ImageView ivEditAddress = findViewById(R.id.iv_edit_address);
         tv_birthday = findViewById(R.id.tv_birthday);
-        edt_address = findViewById(R.id.edt_address);
+        tvAddress = findViewById(R.id.tv_address);
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
         edt_Mail = findViewById(R.id.edt_email);
@@ -88,6 +93,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         tv_migrate.setOnClickListener(this);
         edt_Mail.setOnClickListener(this);
         tv_modify_email.setOnClickListener(this);
+        ivEditAddress.setOnClickListener(this);
         iv_add_dependent.setOnClickListener(v -> {
             Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
             in.putExtra(IBConstant.IS_DEPENDENT, true);
@@ -119,6 +125,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 in.putExtra(IBConstant.IS_DEPENDENT, false);
                 in.putStringArrayListExtra("nameList", nameList);
                 startActivity(in);
+                break;
+
+            case R.id.iv_edit_address:
+                Intent addAddressIntent = new Intent(this, AddEditAddressActivity.class);
+                addAddressIntent.putExtra(Constants.ADD_ADDRESS_PAGE_TITLE, getString(R.string.txt_edit_address));
+                addAddressIntent.putExtra(Constants.FROM, Constants.FROM_EDIT_PROFILE);
+                startActivityForResult(addAddressIntent, Constants.REQUEST_CODE_ADD_ADDRESS);
                 break;
 
             case R.id.tv_migrate:
@@ -194,8 +207,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         edt_Mail.setClickable(true);
         edt_Name.setEnabled(false);
         tv_birthday.setEnabled(false);
-        edt_address.setEnabled(false);
-        edt_address.setText(AppInitialize.getAddress());
+        tvAddress.setText(AppInitialize.getAddress());
         int id;
         if (AppInitialize.getGender().equals(GenderEnum.M.name())) {
             id = R.id.tv_male;
@@ -272,5 +284,18 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
         updateUI();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_CODE_ADD_ADDRESS && resultCode == Activity.RESULT_OK) {
+            JsonUserAddressList jsonUserAddressList = data.getParcelableExtra(Constants.ADDRESS_LIST);
+            for (JsonUserAddress address : jsonUserAddressList.getJsonUserAddresses()) {
+                if (address.isPrimaryAddress()) {
+                    tvAddress.setText(address.getAddress());
+                }
+            }
+        }
     }
 }

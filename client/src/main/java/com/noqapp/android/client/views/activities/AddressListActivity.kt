@@ -8,9 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityAddressbookBinding
-import com.noqapp.android.client.model.ClientPreferenceApiCalls
 import com.noqapp.android.client.model.ClientProfileApiCall
-import com.noqapp.android.client.presenter.ClientPreferencePresenter
 import com.noqapp.android.client.presenter.ProfileAddressPresenter
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.ShowAlertInformation
@@ -18,9 +16,11 @@ import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.client.views.adapters.AddressListAdapter
 import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
-import com.noqapp.android.common.beans.JsonUserPreference
-import java.util.ArrayList
 
+/**
+ * This class is used to list down all the addresses added by user
+ * Created by Vivek Jha on 21/03/2021
+ */
 class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
     private lateinit var activityAddressBookBinding: ActivityAddressbookBinding
     private lateinit var addressAdapter: AddressListAdapter
@@ -37,8 +37,10 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         }
 
         activityAddressBookBinding.btnAddAddress.setOnClickListener {
-            val `in` = Intent(this, AddAddressActivity::class.java)
-            startActivityForResult(`in`, Constants.REQUEST_CODE_ADD_ADDRESS)
+            val addAddressIntent = Intent(this, AddEditAddressActivity::class.java)
+            addAddressIntent.putExtra(Constants.ADD_ADDRESS_PAGE_TITLE, getString(R.string.add_address))
+            addAddressIntent.putExtra(Constants.FROM, Constants.FROM_ADDRESS_LIST)
+            startActivityForResult(addAddressIntent, Constants.REQUEST_CODE_ADD_ADDRESS)
         }
 
         clientProfileApiCall = ClientProfileApiCall()

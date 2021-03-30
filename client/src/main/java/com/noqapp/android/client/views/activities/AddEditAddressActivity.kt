@@ -23,7 +23,11 @@ import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
 
-class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAddressPresenter {
+/**
+ * This class is used to add/edit address
+ * Created by Vivek Jha on 21/03/2021
+ */
+class AddEditAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAddressPresenter {
     private lateinit var addAddressBinding: ActivityAddAddressBinding
     private var googleMap: GoogleMap? = null
     private lateinit var clientProfileApiCall: ClientProfileApiCall
@@ -46,6 +50,15 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
         setContentView(addAddressBinding.root)
         setSupportActionBar(addAddressBinding.toolbar)
 
+        val title = intent.getStringExtra(Constants.ADD_ADDRESS_PAGE_TITLE)
+        addAddressBinding.toolbar.title = title
+
+        if (intent.getIntExtra(Constants.FROM, 0) == Constants.FROM_ADDRESS_LIST) {
+            addAddressBinding.btnAddAddress.text = getString(R.string.add_address)
+        } else {
+            addAddressBinding.btnAddAddress.text = getString(R.string.txt_edit_address)
+        }
+
         addAddressBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -64,9 +77,16 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
 
     private fun validData(): Boolean {
 
+        addAddressBinding.etName.let {
+            if (it.text.toString().isEmpty()) {
+                showSnackbar(R.string.txt_please_enter_full_name)
+                return false
+            }
+        }
+
         addAddressBinding.etHouseBuilding.let {
             if (it.text.toString().isEmpty()) {
-                showSnackbar(R.string.txt_house_no_building)
+                showSnackbar(R.string.txt_please_enter_house_number)
                 return false
             }
         }
@@ -82,10 +102,10 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     }
 
     private fun addAddress() {
-        val address = AppInitialize.getUserProfile().name +", " + addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddress.text.toString()
+        val address = addAddressBinding.etName.text.toString() + ", " + addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddress.text.toString()
 
         val jsonUserAddress = JsonUserAddress()
-                .setCustomerName(AppInitialize.getUserProfile().name)
+                .setCustomerName(addAddressBinding.etName.text.toString())
                 .setAddress(address)
                 .setCountryShortName(countryShortName)
                 .setArea(area)
@@ -125,8 +145,8 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     ) {
         latitude?.let { lat ->
             longitude?.let { lng ->
-                this@AddAddressActivity.latitude = lat
-                this@AddAddressActivity.longitude = lng
+                this@AddEditAddressActivity.latitude = lat
+                this@AddEditAddressActivity.longitude = lng
                 countryShortName?.let {
                     this.countryShortName = it
                 }
@@ -152,6 +172,7 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
                     locationAsString = this.area + ", " + this.town
                 }
                 addAddressBinding.tvLocality.text = locationAsString
+                addAddressBinding.etName.setText(AppInitialize.getUserProfile().name)
 
                 addAddressBinding.etAddress.setText(addressOutput)
                 animateCamera((CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLatLng, 16.0f))))
