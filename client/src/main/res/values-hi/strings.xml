@@ -482,13 +482,22 @@
     <string name="appointment">नियुक्ति</string>
 
     <!-- location related -->
-    <string name="address_found">Address found</string>
-    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
-    <string name="no_address_found">Could not find the address</string>
-    <string name="no_geocoder_available">No geocoder available</string>
-    <string name="no_location_data_provided">No location provided</string>
-    <string name="service_not_available">Sorry, the service is not available</string>
-    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
-    <string name="permission_rationale">Location permission is needed for core functionality</string>
-    <string name="permission_contacts_rationale">Contacts permission is needed for core functionality</string>
+    <string name="address_found">पता मिला</string>
+    <string name="invalid_lat_long_used">वैध अक्षांश या देशांतर नहीं</string>
+    <string name="no_address_found">पता नहीं चल पाया</string>
+    <string name="no_geocoder_available">कोई जियोकोड उपलब्ध नहीं है</string>
+    <string name="no_location_data_provided">कोई स्थान प्रदान नहीं किया गया</string>
+    <string name="service_not_available">क्षमा करें, सेवा उपलब्ध नहीं है</string>
+    <string name="permission_denied_explanation">अनुमति से इनकार कर दिया गया था, लेकिन कोर कार्यक्षमता के लिए आवश्यक है।</string>
+    <string name="permission_rationale">कोर कार्यक्षमता के लिए स्थान की अनुमति आवश्यक है</string>
+    <string name="permission_contacts_rationale">कोर कार्यक्षमता के लिए स्थान की अनुमति आवश्यक है</string>
+    <string name="txt_name_required">पूरा नाम (आवश्यक)*</string>
+    <string name="txt_house_no_building">घर का नंबर / भवन (आवश्यक)*</string>
+    <string name="txt_address_line_1">पता (आवश्यक)*</string>
+    <string name="txt_primary">मुख्य</string>
+    <string name="set_address">पता सेट करें</string>
+    <string name="txt_please_enter_full_name">कृपया पूरा नाम दर्ज करें</string>
+    <string name="txt_please_enter_house_number">कृपया मकान नंबर / भवन का नाम दर्ज करें</string>
+    <string name="txt_please_enter_address">कृपया पता दर्ज करें</string>
+    <string name="txt_delivery_at">प्रसव पूर्व</string>
 </resources>
