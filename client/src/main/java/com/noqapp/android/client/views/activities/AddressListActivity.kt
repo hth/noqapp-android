@@ -37,9 +37,7 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         }
 
         activityAddressBookBinding.btnAddAddress.setOnClickListener {
-            val addAddressIntent = Intent(this, AddEditAddressActivity::class.java)
-            addAddressIntent.putExtra(Constants.ADD_ADDRESS_PAGE_TITLE, getString(R.string.add_address))
-            addAddressIntent.putExtra(Constants.FROM, Constants.FROM_ADDRESS_LIST)
+            val addAddressIntent = Intent(this, AddAddressActivity::class.java)
             startActivityForResult(addAddressIntent, Constants.REQUEST_CODE_ADD_ADDRESS)
         }
 

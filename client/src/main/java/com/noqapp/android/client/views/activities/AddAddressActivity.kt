@@ -24,10 +24,10 @@ import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.JsonUserAddressList
 
 /**
- * This class is used to add/edit address
+ * This class is used to add address
  * Created by Vivek Jha on 21/03/2021
  */
-class AddEditAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAddressPresenter {
+class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAddressPresenter {
     private lateinit var addAddressBinding: ActivityAddAddressBinding
     private var googleMap: GoogleMap? = null
     private lateinit var clientProfileApiCall: ClientProfileApiCall
@@ -49,15 +49,6 @@ class AddEditAddressActivity : LocationBaseActivity(), OnMapReadyCallback, Profi
         addAddressBinding = ActivityAddAddressBinding.inflate(LayoutInflater.from(this))
         setContentView(addAddressBinding.root)
         setSupportActionBar(addAddressBinding.toolbar)
-
-        val title = intent.getStringExtra(Constants.ADD_ADDRESS_PAGE_TITLE)
-        addAddressBinding.toolbar.title = title
-
-        if (intent.getIntExtra(Constants.FROM, 0) == Constants.FROM_ADDRESS_LIST) {
-            addAddressBinding.btnAddAddress.text = getString(R.string.add_address)
-        } else {
-            addAddressBinding.btnAddAddress.text = getString(R.string.txt_edit_address)
-        }
 
         addAddressBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
@@ -145,8 +136,8 @@ class AddEditAddressActivity : LocationBaseActivity(), OnMapReadyCallback, Profi
     ) {
         latitude?.let { lat ->
             longitude?.let { lng ->
-                this@AddEditAddressActivity.latitude = lat
-                this@AddEditAddressActivity.longitude = lng
+                this@AddAddressActivity.latitude = lat
+                this@AddAddressActivity.longitude = lng
                 countryShortName?.let {
                     this.countryShortName = it
                 }

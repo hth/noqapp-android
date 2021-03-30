@@ -128,9 +128,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 break;
 
             case R.id.iv_edit_address:
-                Intent addAddressIntent = new Intent(this, AddEditAddressActivity.class);
-                addAddressIntent.putExtra(Constants.ADD_ADDRESS_PAGE_TITLE, getString(R.string.txt_edit_address));
-                addAddressIntent.putExtra(Constants.FROM, Constants.FROM_EDIT_PROFILE);
+                Intent addAddressIntent = new Intent(this, AddAddressActivity.class);
                 startActivityForResult(addAddressIntent, Constants.REQUEST_CODE_ADD_ADDRESS);
                 break;
 
