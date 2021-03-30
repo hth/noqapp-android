@@ -24,16 +24,16 @@ import java.util.List;
         "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonUserAddressList extends AbstractDomain implements Parcelable {
 
-    /* List cannot be passed directly through intent so we had to use ArrayList for same. */
+    /* List cannot be passed directly through intent so we need to use ArrayList for same. */
     @JsonProperty("ads")
     private ArrayList<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
 
