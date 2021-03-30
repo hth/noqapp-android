@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * hitender
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 public class JsonUserAddressList extends AbstractDomain implements Parcelable {
 
     @JsonProperty("ads")
-    private ArrayList<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
+    private List<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -67,11 +68,11 @@ public class JsonUserAddressList extends AbstractDomain implements Parcelable {
         }
     };
 
-    public ArrayList<JsonUserAddress> getJsonUserAddresses() {
+    public List<JsonUserAddress> getJsonUserAddresses() {
         return jsonUserAddresses;
     }
 
-    public JsonUserAddressList setJsonUserAddresses(ArrayList<JsonUserAddress> jsonUserAddresses) {
+    public JsonUserAddressList setJsonUserAddresses(List<JsonUserAddress> jsonUserAddresses) {
         this.jsonUserAddresses = jsonUserAddresses;
         return this;
     }
