@@ -1,7 +1,8 @@
 package com.noqapp.android.common.utils;
 
 public class GeoIP {
-    private String ipAddress;
+    private String area;
+    private String town;
     private String cityName;
     private double latitude;
     private double longitude;
@@ -9,8 +10,9 @@ public class GeoIP {
     public GeoIP() {
     }
 
-    public GeoIP(String ipAddress, String cityName, double latitude, double longitude) {
-        this.ipAddress = ipAddress;
+    public GeoIP(String area, String town, String cityName, double latitude, double longitude) {
+        this.area = area;
+        this.town = town;
         this.cityName = cityName;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -21,8 +23,12 @@ public class GeoIP {
         this.longitude = longitude;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public String getArea() {
+        return area;
+    }
+
+    public String getTown() {
+        return town;
     }
 
     public String getCityName() {
@@ -40,10 +46,11 @@ public class GeoIP {
     @Override
     public String toString() {
         return "GeoIP{" +
-                "ipAddress='" + ipAddress + '\'' +
-                ", cityName='" + cityName + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
+            "area='" + area + '\'' +
+            ", town='" + town + '\'' +
+            ", cityName='" + cityName + '\'' +
+            ", latitude=" + latitude +
+            ", longitude=" + longitude +
+            '}';
     }
 }

@@ -240,20 +240,32 @@
                         </LinearLayout>
 
 
-                        <TextView
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
                                 style="@style/style_register_tv"
                                 android:text="@string/prompt_address_status"/>
 
+                            <ImageView
+                                android:id="@+id/iv_edit_address"
+                                android:layout_width="@dimen/image_height"
+                                android:layout_height="@dimen/image_height"
+                                android:layout_alignParentEnd="true"
+                                android:background="@drawable/edit"
+                                android:backgroundTint="@color/button_color"
+                                android:scaleType="centerInside"/>
+                        </RelativeLayout>
 
-                        <EditText
-                                android:id="@+id/edt_address"
-                                style="@style/style_register_edt"
-                                android:gravity="top|left"
-                                android:inputType="textMultiLine"
-                                android:lines="2"
-                                android:maxLines="2"
-                                android:minLines="2"
-                                android:singleLine="false"/>
+                        <TextView
+                            android:id="@+id/tv_address"
+                            style="@style/style_register_edt"
+                            android:gravity="top|left"
+                            android:lines="2"
+                            android:maxLines="2"
+                            android:minLines="2"
+                            android:singleLine="false"/>
 
                         <View
                                 android:layout_width="match_parent"

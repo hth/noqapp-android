@@ -377,7 +377,7 @@
     <string name="user_list">L\'utilisateur</string>
     <string name="update_via_front_desk">Pour modifier un groupe sanguin"> contacter un médecin</string>
     <string name="share_medical_profile_info">"Pour fournir un meilleur service"> votre profil médical est partagé avec le médecin et l’hôpital. Veuillez conserver..Pour fournir un meilleur service"> votre profil médical est partagé avec le médecin et l’hôpital. Veuillez bien conserver trés récent"</string>
-    <string name="screen_addressbook">Mon l\'adresse</string>
+    <string name="screen_user_address">Mon l\'adresse</string>
     <string name="delivery_mode_home">La livraison à domicile</string>
     <string name="delivery_mode_takeaway">Ramassage</string>
     <string name="delivery_mode">Livraison</string>
@@ -482,13 +482,22 @@
     <string name="appointment">Rendez-vous</string>
 
     <!-- location related -->
-    <string name="address_found">Address found</string>
-    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
-    <string name="no_address_found">Could not find the address</string>
+    <string name="address_found">Adresse trouvée</string>
+    <string name="invalid_lat_long_used">Pas une latitude ou une longitude valide</string>
+    <string name="no_address_found">Impossible de trouver l\'adresse</string>
     <string name="no_geocoder_available">No geocoder available</string>
-    <string name="no_location_data_provided">No location provided</string>
-    <string name="service_not_available">Sorry, the service is not available</string>
-    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
-    <string name="permission_rationale">Location permission is needed for core functionality</string>
-    <string name="permission_contacts_rationale">Contacts permission is needed for core functionality</string>
+    <string name="no_location_data_provided">Aucun géocodeur disponible</string>
+    <string name="service_not_available">Désolé, le service n\'est pas disponible</string>
+    <string name="permission_denied_explanation">L\'autorisation a été refusée, mais est nécessaire pour les fonctionnalités de base</string>
+    <string name="permission_rationale">L\'autorisation de localisation est nécessaire pour les fonctionnalités de base</string>
+    <string name="permission_contacts_rationale">L\'autorisation des contacts est nécessaire pour les fonctionnalités de base</string>
+    <string name="txt_name_required">Nom complet (obligatoire)*</string>
+    <string name="txt_house_no_building">N ° de maison/bâtiment (obligatoire)*</string>
+    <string name="txt_address_line_1">Adresse (obligatoire)*</string>
+    <string name="txt_primary">Primaire</string>
+    <string name="set_address">Définir l\'adresse</string>
+    <string name="txt_please_enter_full_name">Veuillez entrer le nom complet</string>
+    <string name="txt_please_enter_house_number">Veuillez saisir le numéro de la maison/le nom du bâtiment</string>
+    <string name="txt_please_enter_address">Veuillez saisir une adresse</string>
+    <string name="txt_delivery_at">LIVRAISON AU</string>
 </resources>

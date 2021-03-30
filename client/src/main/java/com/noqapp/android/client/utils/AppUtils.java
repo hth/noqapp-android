@@ -291,20 +291,18 @@ public class AppUtils extends CommonHelper {
     public static GeoIP getLocationFromAddress(Context context, String strAddress) {
         Geocoder coder = new Geocoder(context);
         List<Address> address;
-        GeoIP latLng = null;
+        GeoIP geoIP = null;
         try {
-            // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
+            if (null == address) {
                 return null;
-                //TODO @Chandra get proper lat long
             }
             Address location = address.get(0);
-            latLng = new GeoIP(location.getLatitude(), location.getLongitude());
+            geoIP = new GeoIP(location.getSubLocality(), location.getSubAdminArea(), strAddress, location.getLatitude(), location.getLongitude());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return latLng;
+        return geoIP;
     }
 
     public static List<String> autoCompleteWithOkHttp(String input) {

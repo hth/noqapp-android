@@ -12,7 +12,8 @@
     <dimen name="seekbar_height">12dp</dimen>
     <dimen name="seekbar_thumb_height">25dp</dimen>
 
-
+    <dimen name="padding_sixteen">28dp</dimen>
+    <dimen name="padding_eight">14dp</dimen>
     <dimen name="message_label">15sp</dimen>
     <dimen name="card_padding">30dp</dimen>
 

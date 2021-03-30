@@ -61,7 +61,10 @@ import java.util.List;
 
 public class ProductMenuListFragment
     extends BaseFragment
-    implements StoreMenuOrderAdapter.CartOrderUpdate, FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
+    implements StoreMenuOrderAdapter.CartOrderUpdate, FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack
+{
+    private final String TAG = ProductMenuListFragment.class.getSimpleName();
+
     private RecyclerView rcv_order_list;
     private List<StoreCartItem> childData;
     private StoreMenuActivity storeMenuActivity;
@@ -270,7 +273,7 @@ public class ProductMenuListFragment
                             .setTax(String.valueOf(tax));
                     jsonPurchaseOrder.setCustomerName(jsonProfile.getName());
                     jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-                    jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
+                    jsonPurchaseOrder.setUserAddressId(jsonProfile.findPrimaryOrAnyExistingAddressId());
                     jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.TO);
                     jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
                     jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
@@ -296,11 +299,11 @@ public class ProductMenuListFragment
     public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         dismissProgress();
         if (null != jsonPurchaseOrder) {
-            Log.v("order data:", jsonPurchaseOrder.toString());
+            Log.d(TAG, "After order placed data=" + jsonPurchaseOrder.toString());
             // Navigate to order detail screen
             try {
                 StoreMenuActivity.storeMenuActivity.updateAndCallPayment(jsonPurchaseOrder);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             StoreMenuActivity.updateList();

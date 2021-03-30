@@ -25,23 +25,27 @@ import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.utils.GeoIP;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function3;
+import org.apache.commons.lang3.StringUtils;
 
-public class ChangeLocationFragment extends Fragment implements Function3<String, Double, Double, Unit> {
+import kotlin.Unit;
+import kotlin.jvm.functions.Function9;
+
+public class ChangeLocationFragment extends Fragment implements Function9<String, String, String, String, String, String, String, Double, Double, Unit> {
     private double lat, lng;
     private String city = "";
+    private String area = "";
+    private String town = "";
     private AutoCompleteTextView autoCompleteTextView;
     private ChangeLocationFragmentInteractionListener changeLocationFragmentInteractionListener;
-
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof LaunchActivity) {
             changeLocationFragmentInteractionListener = (ChangeLocationFragmentInteractionListener) context;
-        } else
+        } else {
             throw new IllegalStateException("LaunchActivity must implement ChangeLocationFragmentInteractionListener.");
+        }
     }
 
     @Override
@@ -58,14 +62,16 @@ public class ChangeLocationFragment extends Fragment implements Function3<String
                 LocationPref locationPref = AppInitialize.getLocationPreference();
                 lat = locationPref.getLatitude();
                 lng = locationPref.getLongitude();
-                city = locationPref.getCity();
+                area = locationPref.getArea();
+                town = locationPref.getTown();
             } else {
                 lat = AppInitialize.location.getLatitude();
                 lng = AppInitialize.location.getLongitude();
-                city = AppInitialize.cityName;
+                area = AppInitialize.area;
+                town = AppInitialize.town;
                 AppUtils.hideKeyBoard(getActivity());
             }
-            changeLocationFragmentInteractionListener.updateLocationInfo(lat, lng, city);
+            changeLocationFragmentInteractionListener.updateLocationInfo(lat, lng, area, town);
         });
 
         tv_auto.setOnClickListener((View v) -> {
@@ -76,11 +82,13 @@ public class ChangeLocationFragment extends Fragment implements Function3<String
         autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
             try {
                 String cityName = (String) parent.getItemAtPosition(position);
-                GeoIP latLng = AppUtils.getLocationFromAddress(getActivity(), cityName);
-                if (null != latLng) {
-                    lat = latLng.getLatitude();
-                    lng = latLng.getLongitude();
-                    changeLocationFragmentInteractionListener.updateLocationInfo(lat, lng, cityName);
+                GeoIP geoIP = AppUtils.getLocationFromAddress(getActivity(), cityName);
+                if (null != geoIP) {
+                    lat = geoIP.getLatitude();
+                    lng = geoIP.getLongitude();
+                    area = geoIP.getArea();
+                    town = geoIP.getTown();
+                    changeLocationFragmentInteractionListener.updateLocationInfo(lat, lng, area, town);
                 }
                 city = cityName;
                 AppUtils.hideKeyBoard(getActivity());
@@ -134,25 +142,28 @@ public class ChangeLocationFragment extends Fragment implements Function3<String
     }
 
     @Override
-    public Unit invoke(String address, Double latitude, Double longitude) {
+    public Unit invoke(String address, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         if (latitude == 0 && longitude == 0) {
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = locationPref.getLatitude();
             lng = locationPref.getLongitude();
-            city = locationPref.getCity();
+            city = locationPref.getLocationAsString();
         } else {
             lat = latitude;
             lng = longitude;
-            city = address;
+            city = town;
+            if (StringUtils.isNotBlank(area)) {
+                city = area + ", " + town;
+            }
         }
 
-        changeLocationFragmentInteractionListener.updateLocationInfo(latitude, longitude, city);
+        changeLocationFragmentInteractionListener.updateLocationInfo(latitude, longitude, area, town);
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);
         AppUtils.hideKeyBoard(requireActivity());
         return null;
     }
 
     public interface ChangeLocationFragmentInteractionListener {
-        void updateLocationInfo(Double latitude, Double longitude, String address);
+        void updateLocationInfo(Double latitude, Double longitude, String area, String town);
     }
 }

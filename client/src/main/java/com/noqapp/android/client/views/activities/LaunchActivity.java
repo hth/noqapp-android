@@ -254,16 +254,17 @@ public class LaunchActivity
     }
 
     @Override
-    public void displayAddress(String addressOutput, Double latitude, Double longitude) {
+    public void displayAddress(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         if (AppUtils.calculateDistance(latitude, longitude, AppInitialize.getLocationPreference().getLatitude(), AppInitialize.getLocationPreference().getLongitude()) <= 0.5f){
-            updateLocationInfo(latitude, longitude, addressOutput);
+            updateLocationInfo(latitude, longitude, area, town);
         } else {
             AppInitialize.location.setLatitude(latitude);
             AppInitialize.location.setLongitude(longitude);
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                    .setCity(AppInitialize.cityName)
-                    .setLatitude(latitude)
-                    .setLongitude(longitude);
+                .setArea(area)
+                .setTown(town)
+                .setLatitude(latitude)
+                .setLongitude(longitude);
             AppInitialize.setLocationPreference(locationPref);
             updateLocationUI();
         }
@@ -308,18 +309,20 @@ public class LaunchActivity
     }
 
     @Override
-    public void updateLocationInfo(Double lat, Double lng, String city) {
+    public void updateLocationInfo(Double lat, Double lng, String area, String town) {
         replaceFragmentWithoutBackStack(R.id.frame_layout, homeFragment);
         getSupportActionBar().show();
+        LocationPref locationPref = AppInitialize.getLocationPreference()
+            .setArea(area)
+            .setTown(town)
+            .setLatitude(lat)
+            .setLongitude(lng);
+        AppInitialize.setLocationPreference(locationPref);
+
         AppInitialize.location.setLatitude(lat);
         AppInitialize.location.setLongitude(lng);
-        AppInitialize.cityName = city;
+        AppInitialize.cityName = locationPref.getLocationAsString();
         tv_location.setText(AppInitialize.cityName);
-        LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setCity(AppInitialize.cityName)
-                .setLatitude(lat)
-                .setLongitude(lng);
-        AppInitialize.setLocationPreference(locationPref);
     }
 
     @Override
@@ -521,9 +524,10 @@ public class LaunchActivity
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (f instanceof ChangeLocationFragment) {
             updateLocationInfo(
-                    AppInitialize.location.getLatitude(),
-                    AppInitialize.location.getLongitude(),
-                    AppInitialize.cityName);
+                AppInitialize.location.getLatitude(),
+                AppInitialize.location.getLongitude(),
+                AppInitialize.area,
+                AppInitialize.town);
             return;
         }
         long currentTime = System.currentTimeMillis();

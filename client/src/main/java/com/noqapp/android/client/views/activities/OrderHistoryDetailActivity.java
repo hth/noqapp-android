@@ -178,7 +178,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         } else {
             tv_payment_mode.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
         }
-        tv_delivery_address.setText(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress());
+        tv_delivery_address.setText(StringUtils.isBlank(jsonPurchaseOrder.getUserAddressId()) ? "N/A" : jsonPurchaseOrder.getJsonUserAddress().getAddress());
         tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
         tv_order_number.setText("ORDER NO.  " + jsonPurchaseOrder.getDisplayToken());
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonPurchaseOrder.getCreated()));

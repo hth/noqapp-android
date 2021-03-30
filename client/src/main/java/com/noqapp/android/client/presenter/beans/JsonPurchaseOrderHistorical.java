@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
@@ -49,8 +50,11 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("da")
-    private String deliveryAddress;
+    @JsonProperty("ai")
+    private String userAddressId;
+
+    @JsonProperty("jua")
+    private JsonUserAddress jsonUserAddress;
 
     @JsonProperty("sd")
     private int storeDiscount;
@@ -151,12 +155,21 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
         return this;
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    public String getUserAddressId() {
+        return userAddressId;
     }
 
-    public JsonPurchaseOrderHistorical setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+    public JsonPurchaseOrderHistorical setUserAddressId(String userAddressId) {
+        this.userAddressId = userAddressId;
+        return this;
+    }
+
+    public JsonUserAddress getJsonUserAddress() {
+        return jsonUserAddress;
+    }
+
+    public JsonPurchaseOrderHistorical setJsonUserAddress(JsonUserAddress jsonUserAddress) {
+        this.jsonUserAddress = jsonUserAddress;
         return this;
     }
 
@@ -406,7 +419,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
         return "JsonPurchaseOrderHistorical{" +
                 "queueUserId='" + queueUserId + '\'' +
                 ", codeQR='" + codeQR + '\'' +
-                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", userAddressId='" + userAddressId + '\'' +
                 ", storeDiscount=" + storeDiscount +
                 ", orderPrice='" + orderPrice + '\'' +
                 ", deliveryMode=" + deliveryMode +

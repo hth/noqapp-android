@@ -1,5 +1,8 @@
 package com.noqapp.android.common.beans;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,26 +24,56 @@ import java.util.List;
         "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonUserAddressList extends AbstractDomain {
+public class JsonUserAddressList extends AbstractDomain implements Parcelable {
 
+    /* List cannot be passed directly through intent so we need to use ArrayList for same. */
     @JsonProperty("ads")
-    private List<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
+    private ArrayList<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public JsonUserAddressList() {
+    }
+
+    protected JsonUserAddressList(Parcel in) {
+        jsonUserAddresses = in.createTypedArrayList(JsonUserAddress.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(jsonUserAddresses);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<JsonUserAddressList> CREATOR = new Creator<JsonUserAddressList>() {
+        @Override
+        public JsonUserAddressList createFromParcel(Parcel in) {
+            return new JsonUserAddressList(in);
+        }
+
+        @Override
+        public JsonUserAddressList[] newArray(int size) {
+            return new JsonUserAddressList[size];
+        }
+    };
 
     public List<JsonUserAddress> getJsonUserAddresses() {
         return jsonUserAddresses;
     }
 
-    public JsonUserAddressList setJsonUserAddresses(List<JsonUserAddress> jsonUserAddresses) {
+    public JsonUserAddressList setJsonUserAddresses(ArrayList<JsonUserAddress> jsonUserAddresses) {
         this.jsonUserAddresses = jsonUserAddresses;
         return this;
     }

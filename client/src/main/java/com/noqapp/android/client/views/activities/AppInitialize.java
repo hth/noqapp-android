@@ -26,6 +26,7 @@ import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
@@ -40,6 +41,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Created by chandra on 5/20/17.
@@ -57,6 +59,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     private static final String PREKEY_MAIL = "mail";
     private static final String PREKEY_DOB = "dateOfBirth";
     private static final String PREKEY_ADD = "address";
+    private static final String PREKEY_ADDRESS_ID = "addressId";
     private static final String PREKEY_PROFILE_IMAGE = "imageUri";
     private static final String PREKEY_GENDER = "gender";
     private static final String PREKEY_INVITECODE = "invitecode";
@@ -72,6 +75,8 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static ActivityCommunicator activityCommunicator;
     public static Location location;
     public static String cityName = "";
+    public static String area = "";
+    public static String town = "";
     public static DatabaseHelper dbHandler;
     public static boolean isLockMode = false;
     private static AppInitialize appInitialize;
@@ -215,6 +220,18 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         return preferences.getString(PREKEY_ADD, "");
     }
 
+    public static void setAddress(String address) {
+        preferences.edit().putString(PREKEY_ADD, address).apply();
+    }
+
+    public static String getSelectedAddressId() {
+        return preferences.getString(PREKEY_ADDRESS_ID, "");
+    }
+
+    public static void setSelectedAddressId(String addressId) {
+        preferences.edit().putString(PREKEY_ADDRESS_ID, addressId).apply();
+    }
+
     public static String getCountryShortName() {
         return preferences.getString(PREKEY_COUNTRY_SHORT_NAME, Constants.DEFAULT_COUNTRY_CODE);
     }
@@ -300,7 +317,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         editor.putString(PREKEY_MAIL, profile.getMail());
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
-        editor.putString(PREKEY_ADD, profile.getAddress());
+        editor.putString(PREKEY_ADD, Objects.requireNonNull(profile.findPrimaryOrAnyExistingAddress()).getAddress());
         editor.putString(PREKEY_PROFILE_IMAGE, profile.getProfileImage());
         editor.putString(APIConstant.Key.XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
@@ -438,13 +455,15 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     }
 
     public static void processRegisterDeviceIdResponse(DeviceRegistered deviceRegistered, Context context) {
-        if (deviceRegistered.getRegistered() == 1) {
+        if (1 == deviceRegistered.getRegistered()) {
             Log.e("Device register", "deviceRegister Success");
-            AppInitialize.cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), context);
+            JsonUserAddress jsonUserAddress = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), context);
+            AppInitialize.cityName = jsonUserAddress.getLocationAsString();
             Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
 
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setCity(AppInitialize.cityName)
+                .setArea(jsonUserAddress.getArea())
+                .setTown(jsonUserAddress.getTown())
                 .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                 .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             AppInitialize.setLocationPreference(locationPref);

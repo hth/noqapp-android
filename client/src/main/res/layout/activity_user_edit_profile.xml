@@ -159,33 +159,27 @@
                     android:inputType="phone"
                     android:maxLength="15" />
 
-
                 <TextView
                     style="@style/style_register_tv"
                     android:text="@string/mail" />
-
 
                 <EditText
                     android:id="@+id/edt_email"
                     style="@style/style_register_edt"
                     android:inputType="textEmailAddress" />
 
-
                 <TextView
                     style="@style/style_register_tv"
                     android:text="@string/prompt_address_status" />
 
-
-                <EditText
-                    android:id="@+id/edt_address"
+                <TextView
+                    android:id="@+id/tv_address"
                     style="@style/style_register_edt"
                     android:gravity="top|left"
-                    android:inputType="textMultiLine"
                     android:lines="2"
                     android:maxLines="2"
                     android:minLines="2"
                     android:singleLine="false" />
-
 
                 <Button
                     android:id="@+id/btn_update"

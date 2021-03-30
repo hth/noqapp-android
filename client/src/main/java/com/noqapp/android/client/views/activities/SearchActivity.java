@@ -43,17 +43,24 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 
 import kotlin.Unit;
-import kotlin.jvm.functions.Function3;
+import kotlin.jvm.functions.Function9;
 
 /**
  * Created by chandra on 5/7/17.
  */
-public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener,
-        SearchBusinessStorePresenter, Function3<String, Double, Double, Unit> {
+public class SearchActivity
+    extends BaseActivity
+    implements
+        SearchAdapter.OnItemClickListener,
+        SearchBusinessStorePresenter,
+        Function9<String, String, String, String, String, String, String, Double, Double, Unit>
+{
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
     private String scrollId = "";
     private String city = "";
+    private String area = "";
+    private String town = "";
     private String lat = "";
     private String lng = "";
     private SearchBusinessStoreApiCalls searchBusinessStoreModels;
@@ -116,19 +123,19 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             return false;
         });
 
-        tv_auto.setOnClickListener((View v) -> {
-            LocationManager.INSTANCE.fetchCurrentLocationAddress(this, this);
-        });
+        tv_auto.setOnClickListener((View v) -> LocationManager.INSTANCE.fetchCurrentLocationAddress(this, this));
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
-            String city_name = (String) parent.getItemAtPosition(position);
-            GeoIP latLng = AppUtils.getLocationFromAddress(SearchActivity.this, city_name);
-            if (null != latLng) {
-                lat = String.valueOf(latLng.getLatitude());
-                lng = String.valueOf(latLng.getLongitude());
+            String city = (String) parent.getItemAtPosition(position);
+            GeoIP geoIP = AppUtils.getLocationFromAddress(SearchActivity.this, city);
+            if (null != geoIP) {
+                lat = String.valueOf(geoIP.getLatitude());
+                lng = String.valueOf(geoIP.getLongitude());
+                area = geoIP.getArea();
+                town = geoIP.getTown();
             }
-            city = city_name;
+            this.city = city;
             AppUtils.hideKeyBoard(SearchActivity.this);
             initDefaultLatLng();
             edt_search.setText("");
@@ -165,7 +172,9 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = String.valueOf(locationPref.getLatitude());
             lng = String.valueOf(locationPref.getLongitude());
-            city = locationPref.getCity();
+            city = locationPref.getLocationAsString();
+            area = locationPref.getArea();
+            town = locationPref.getTown();
         }
     }
 
@@ -174,12 +183,12 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
-                    .setCityName(city)
-                    .setLatitude(lat)
-                    .setLongitude(lng)
-                    .setQuery(edt_search.getText().toString())
-                    .setFilters("")
-                    .setScrollId(""); //Scroll id - fresh search pass blank
+                        .setCityName(city)
+                        .setLatitude(lat)
+                        .setLongitude(lng)
+                        .setQuery(edt_search.getText().toString())
+                        .setFilters("")
+                        .setScrollId(""); //Scroll id - fresh search pass blank
                 if (UserUtils.isLogin()) {
                     searchBusinessStoreApiAuthenticCalls.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery);
                 } else {
@@ -197,13 +206,13 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             if (isOnline()) {
                 showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
-                    .setCityName(city)
-                    .setLatitude(lat)
-                    .setLongitude(lng)
-                    .setQuery(edt_search.getText().toString())
-                    .setCodeQR(getIntent().getStringExtra("codeQR"))
-                    .setFilters("")
-                    .setScrollId(""); //Scroll id - fresh search pass blank
+                        .setCityName(city)
+                        .setLatitude(lat)
+                        .setLongitude(lng)
+                        .setQuery(edt_search.getText().toString())
+                        .setCodeQR(getIntent().getStringExtra("codeQR"))
+                        .setFilters("")
+                        .setScrollId(""); //Scroll id - fresh search pass blank
                 searchBusinessStoreModels.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -351,18 +360,24 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
-    public Unit invoke(String address, Double latitude, Double longitude) {
+    public Unit invoke(String address, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         if (latitude == 0 && longitude == 0) {
             LocationPref locationPref = AppInitialize.getLocationPreference();
             lat = String.valueOf(locationPref.getLatitude());
             lng = String.valueOf(locationPref.getLongitude());
-            city = locationPref.getCity();
+            this.area = locationPref.getArea();
+            this.town = locationPref.getTown();
         } else {
             lat = String.valueOf(latitude);
             lng = String.valueOf(longitude);
-            city = address;
+            this.area = area;
+            this.town = town;
         }
 
+        String city = town;
+        if (StringUtils.isNotBlank(area)) {
+            city = this.area + ", " + this.town;
+        }
         AppUtils.setAutoCompleteText(autoCompleteTextView, city);
         AppUtils.hideKeyBoard(this);
         return null;

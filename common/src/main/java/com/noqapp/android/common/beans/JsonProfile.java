@@ -1,5 +1,6 @@
 package com.noqapp.android.common.beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.GenderEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -50,9 +51,6 @@ public final class JsonProfile implements Serializable {
 
     @JsonProperty("cs")
     private String countryShortName;
-
-    @JsonProperty("ad")
-    private String address;
 
     @JsonProperty("pr")
     private String phoneRaw;
@@ -148,15 +146,6 @@ public final class JsonProfile implements Serializable {
 
     public JsonProfile setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
-        return this;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public JsonProfile setAddress(String address) {
-        this.address = address;
         return this;
     }
 
@@ -312,6 +301,27 @@ public final class JsonProfile implements Serializable {
         return this;
     }
 
+    @JsonIgnore
+    public String findPrimaryOrAnyExistingAddressId() {
+        JsonUserAddress jsonUserAddress = findPrimaryOrAnyExistingAddress();
+        if (null == jsonUserAddress) {
+            return null;
+        }
+
+        return jsonUserAddress.getId();
+    }
+
+    @JsonIgnore
+    public JsonUserAddress findPrimaryOrAnyExistingAddress() {
+        for (JsonUserAddress jsonUserAddress : jsonUserAddresses) {
+            if (jsonUserAddress.isPrimaryAddress()) {
+                return jsonUserAddress;
+            }
+        }
+
+        return jsonUserAddresses.isEmpty() ? null : jsonUserAddresses.get(0);
+    }
+
     @Override
     public String toString() {
         return "JsonProfile{" +
@@ -320,7 +330,6 @@ public final class JsonProfile implements Serializable {
                 ", name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
-                ", address='" + address + '\'' +
                 ", phoneRaw='" + phoneRaw + '\'' +
                 ", timeZone='" + timeZone + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +

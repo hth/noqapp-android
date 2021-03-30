@@ -76,21 +76,21 @@ public class OrderDetailActivity
     private TextView tv_paid_amount_value, tv_remaining_amount_value, tv_notes;
     private Spinner sp_payment_mode;
     private final String[] payment_modes = {
-            "Cash",
-            "Cheque",
-            "Credit Card",
-            "Debit Card",
-            "Internet Banking",
-            "Paytm"
+        "Cash",
+        "Cheque",
+        "Credit Card",
+        "Debit Card",
+        "Internet Banking",
+        "Paytm"
     };
 
     private final PaymentModeEnum[] payment_modes_enum = {
-            PaymentModeEnum.CA,
-            PaymentModeEnum.CQ,
-            PaymentModeEnum.CC,
-            PaymentModeEnum.DC,
-            PaymentModeEnum.NTB,
-            PaymentModeEnum.PTM
+        PaymentModeEnum.CA,
+        PaymentModeEnum.CQ,
+        PaymentModeEnum.CC,
+        PaymentModeEnum.DC,
+        PaymentModeEnum.NTB,
+        PaymentModeEnum.PTM
     };
 
     private Button btn_update_price;
@@ -418,7 +418,7 @@ public class OrderDetailActivity
             tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
             tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
             cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
-            tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
+            tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getUserAddressId()) ? "N/A" : jsonPurchaseOrder.getJsonUserAddress().getAddress()));
             tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
             tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
             tv_paid_amount_value.setText(currencySymbol + jsonPurchaseOrder.computePaidAmount());
@@ -426,8 +426,8 @@ public class OrderDetailActivity
             tv_tax.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
             btn_remove_discount.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
-            if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
-                    PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
+            if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()
+                || PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
                 if (isProductWithoutPrice) {
                     rl_payment.setVisibility(View.GONE);
                     btn_update_price.setVisibility(View.VISIBLE);

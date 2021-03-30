@@ -282,7 +282,7 @@
     <string name="grand_total">Grand Total:</string>
     <string name="order_details">Order Details</string>
     <string name="deliver_address">Delivery Address</string>
-    <string name="add_address">Add address</string>
+    <string name="add_address">Add Address</string>
     <string name="mobile_no">Mobile no</string>
     <string name="payment_mode">Payment</string>
     <string name="payment_mode_cash">Cash</string>
@@ -383,7 +383,7 @@
     <string name="user_list">Users</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
     <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>
-    <string name="screen_addressbook">My address</string>
+    <string name="screen_user_address">My Address</string>
     <string name="delivery_mode_home">Home Delivery</string>
     <string name="delivery_mode_takeaway">Pick up</string>
     <string name="delivery_mode">Delivery</string>
@@ -489,12 +489,21 @@
 
     <!-- location related -->
     <string name="address_found">Address found</string>
-    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
+    <string name="invalid_lat_long_used">Not a valid latitude or longitude</string>
     <string name="no_address_found">Could not find the address</string>
     <string name="no_geocoder_available">No geocoder available</string>
     <string name="no_location_data_provided">No location provided</string>
     <string name="service_not_available">Sorry, the service is not available</string>
-    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality</string>
     <string name="permission_rationale">Location permission is needed for core functionality</string>
     <string name="permission_contacts_rationale">Contacts permission is needed for core functionality</string>
+    <string name="txt_name_required">Full Name (Required)*</string>
+    <string name="txt_house_no_building">House No./Building (Required)*</string>
+    <string name="txt_address_line_1">Address (Required)*</string>
+    <string name="txt_primary">Primary</string>
+    <string name="set_address">Set Address</string>
+    <string name="txt_please_enter_full_name">Please enter full name</string>
+    <string name="txt_please_enter_house_number">Please enter house number/building name</string>
+    <string name="txt_please_enter_address">Please enter address</string>
+    <string name="txt_delivery_at">DELIVERY AT</string>
 </resources>

@@ -172,18 +172,18 @@
                     android:layout_marginBottom="5dp"
                     android:background="@android:color/holo_blue_dark"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="6dp"
                     android:visibility="visible">
 
                     <TextView
                         android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
                         android:gravity="bottom"
-                        android:text="DELIVERY AT"
+                        android:text="@string/txt_delivery_at"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_fourteen" />
 
@@ -195,17 +195,13 @@
                             android:id="@+id/tv_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_marginBottom="5dp"
-                            android:layout_toLeftOf="@+id/tv_change_address"
+                            android:layout_toStartOf="@+id/tv_change_address"
                             android:background="@null"
                             android:ellipsize="end"
-                            android:focusable="true"
                             android:hint="@string/add_address"
-                            android:maxLines="1"
-                            android:minLines="1"
                             android:textColor="@android:color/white"
                             android:textColorHint="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen" />
