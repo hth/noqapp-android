@@ -225,7 +225,7 @@
     <string name="restaurants_near">Restaurants</string>
     <string name="view_all">voir tout</string>
     <string name="scan_info">Scan Noqueue QR Code pour rejoindre la file d’attente ou passer une commande</string>
-    <string name="prompt_address_status">L\'adresse </string>
+    <string name="prompt_address_status">Adresse (principale)</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">Vous n’avez pas d’antécédents médicaux.</string>
     <string name="screen_order">Récapitulatif de Commande</string>

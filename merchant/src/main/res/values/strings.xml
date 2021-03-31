@@ -115,7 +115,7 @@
     <string name="birthday">Birthday <font color='red'>\u002A</font></string>
     <string name="mail">Mail </string>
     <string name="gender">Gender <font color='red'>\u002A</font></string>
-    <string name="prompt_address_status">Address</string>
+    <string name="prompt_address_status">Address (Primary)</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
 

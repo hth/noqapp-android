@@ -226,7 +226,7 @@
     <string name="restaurants_near">Restaurants</string>
     <string name="view_all">View All</string>
     <string name="scan_info">Scan NoQueue QR Code to join queue or place an order</string>
-    <string name="prompt_address_status">Address</string>
+    <string name="prompt_address_status">Address (Primary)</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
     <string name="screen_order">Order Summary</string>
