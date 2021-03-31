@@ -77,8 +77,6 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public JsonUserAddress(){}
-
     public String getId() {
         return id;
     }
