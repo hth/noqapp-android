@@ -41,9 +41,6 @@ public class JsonUserAddressList extends AbstractDomain implements Serializable 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public JsonUserAddressList() {
-    }
-
     public List<JsonUserAddress> getJsonUserAddresses() {
         return jsonUserAddresses;
     }
