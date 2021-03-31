@@ -317,7 +317,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.REQUEST_CODE_SELECT_ADDRESS && data != null) {
             if (null != data.getExtras()) {
-                jsonUserAddress = data.getExtras().getParcelable(Constants.JSON_USER_ADDRESS);
+                jsonUserAddress = (JsonUserAddress) data.getSerializableExtra(Constants.JSON_USER_ADDRESS);
                 if (null != jsonUserAddress) {
                     tv_address.setText(jsonUserAddress.getAddress());
                 }

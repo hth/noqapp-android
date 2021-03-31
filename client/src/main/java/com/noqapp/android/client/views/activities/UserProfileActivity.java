@@ -288,7 +288,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.REQUEST_CODE_ADD_ADDRESS && resultCode == Activity.RESULT_OK) {
-            JsonUserAddressList jsonUserAddressList = data.getParcelableExtra(Constants.ADDRESS_LIST);
+            JsonUserAddressList jsonUserAddressList = (JsonUserAddressList) data.getSerializableExtra(Constants.ADDRESS_LIST);
             for (JsonUserAddress address : jsonUserAddressList.getJsonUserAddresses()) {
                 if (address.isPrimaryAddress()) {
                     tvAddress.setText(address.getAddress());
