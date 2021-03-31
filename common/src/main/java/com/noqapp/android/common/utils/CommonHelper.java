@@ -519,7 +519,8 @@ public class CommonHelper {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            FirebaseCrashlytics.getInstance().log("Failed getting address " + e.getLocalizedMessage());
+            Log.e(TAG, "Failed getting address" + e.getLocalizedMessage(), e);
         }
         return jsonUserAddress;
     }
