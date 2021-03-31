@@ -508,13 +508,15 @@ public class CommonHelper {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            Address obj = addresses.get(0);
-            if (!TextUtils.isEmpty(obj.getSubLocality())) {
-                jsonUserAddress.setArea(obj.getSubLocality());
-            } else if (!TextUtils.isEmpty(obj.getLocality())) {
-                jsonUserAddress.setTown(obj.getLocality());
-            } else {
-                jsonUserAddress.setTown(addresses.get(0).getAddressLine(0));
+            if (!addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                if (!TextUtils.isEmpty(address.getSubLocality())) {
+                    jsonUserAddress.setArea(address.getSubLocality());
+                } else if (!TextUtils.isEmpty(address.getLocality())) {
+                    jsonUserAddress.setTown(address.getLocality());
+                } else {
+                    jsonUserAddress.setTown(addresses.get(0).getAddressLine(0));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
