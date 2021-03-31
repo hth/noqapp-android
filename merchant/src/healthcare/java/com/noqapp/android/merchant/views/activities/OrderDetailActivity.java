@@ -361,9 +361,9 @@ public class OrderDetailActivity
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
         tv_token.setText("Token/Order No. " + jsonQueuedPerson.getDisplayToken());
         tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
-        tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress())
+        tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getUserAddressId())
             ? getApplicationContext().getString(R.string.name_unavailable)
-            : jsonPurchaseOrder.getDeliveryAddress()));
+            : jsonPurchaseOrder.getUserAddressId()));
 
         tv_paid_amount_value.setText(currencySymbol + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + jsonPurchaseOrder.computeBalanceAmount());

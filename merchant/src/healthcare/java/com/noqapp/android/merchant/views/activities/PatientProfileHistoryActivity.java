@@ -164,10 +164,10 @@ public class PatientProfileHistoryActivity
 
     private void updateUI(JsonProfile jsonProfile) {
         tv_patient_name.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
-        if (TextUtils.isEmpty(jsonProfile.getAddress())) {
+        if (TextUtils.isEmpty(jsonProfile.findPrimaryOrAnyExistingAddress().getAddress())) {
             tv_address.setText(Html.fromHtml("<b> Address: </b> N/A"));
         } else {
-            tv_address.setText(Html.fromHtml("<b> Address: </b>" + jsonProfile.getAddress()));
+            tv_address.setText(Html.fromHtml("<b> Address: </b>" + jsonProfile.findPrimaryOrAnyExistingAddress().getAddress()));
         }
         loadProfilePic(jsonProfile.getProfileImage());
     }
