@@ -128,9 +128,11 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_ADD_ADDRESS){
-            val jsonUserAddressList = data?.getParcelableExtra<JsonUserAddressList>(Constants.ADDRESS_LIST)
-            jsonUserAddressList?.jsonUserAddresses?.let {
-                showAddresses(it)
+            val jsonUserAddressList = data?.getSerializableExtra(Constants.ADDRESS_LIST)
+            if (jsonUserAddressList is JsonUserAddressList){
+                jsonUserAddressList.jsonUserAddresses?.let {
+                    showAddresses(it)
+                }
             }
         }
     }
