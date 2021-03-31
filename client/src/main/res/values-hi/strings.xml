@@ -225,7 +225,7 @@
     <string name="restaurants_near">रेस्टोरेंट</string>
     <string name="view_all">सभी को देखें</string>
     <string name="scan_info">कतार में शामिल होने के लिए QR कोड स्कैन करें / मौके पर ऑर्डर</string>
-    <string name="prompt_address_status">पता</string>
+    <string name="prompt_address_status">पता (प्राथमिक)</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">आपका कोई मेडिकल इतिहास नहीं है।</string>
     <string name="screen_order">ऑर्डर विवरण</string>

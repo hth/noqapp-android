@@ -225,7 +225,7 @@
     <string name="restaurants_near">ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು</string>
     <string name="view_all">ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ</string>
     <string name="scan_info">ಸರದಿ ಸೇರಲು ಅಥವಾ ಆರ್ಡರ್ ಮಾಡಲು NoQueue QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ</string>
-    <string name="prompt_address_status">ವಿಳಾಸ</string>
+    <string name="prompt_address_status">ವಿಳಾಸ (ಪ್ರಾಥಮಿಕ)</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">ನಿಮಗೆ ಯಾವುದೇ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸವಿಲ್ಲ.</string>
     <string name="screen_order">ಆರ್ಡರ್ ಸಾರಾಂಶ</string>
