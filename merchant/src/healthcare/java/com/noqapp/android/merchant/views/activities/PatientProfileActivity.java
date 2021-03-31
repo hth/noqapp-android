@@ -117,7 +117,7 @@ public class PatientProfileActivity
                 if (permissionHelper.isStoragePermissionAllowed()) {
                     CaseHistory caseHistory = new CaseHistory();
                     caseHistory.setName(jsonProfile.getName());
-                    caseHistory.setAddress(jsonProfile.getAddress());
+                    caseHistory.setAddress(jsonProfile.findPrimaryOrAnyExistingAddress().getAddress());
                     caseHistory.setAge(AppUtils.calculateAge(jsonProfile.getBirthday()));
                     caseHistory.setGender(jsonProfile.getGender().name());
                     BlankPdfGenerator pdfGenerator = new BlankPdfGenerator(this);
@@ -269,10 +269,10 @@ public class PatientProfileActivity
     private void updateUI(JsonProfile jsonProfile) {
         this.jsonProfile = jsonProfile;
         tv_patient_name.setText(jsonProfile.getName() + " (" + AppUtils.calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
-        if (TextUtils.isEmpty(jsonProfile.getAddress())) {
+        if (TextUtils.isEmpty(jsonProfile.findPrimaryOrAnyExistingAddress().getAddress())) {
             tv_address.setText(Html.fromHtml("<b> Address: </b> " + notAvailable));
         } else {
-            tv_address.setText(Html.fromHtml("<b> Address: </b>" + jsonProfile.getAddress()));
+            tv_address.setText(Html.fromHtml("<b> Address: </b>" + jsonProfile.findPrimaryOrAnyExistingAddress().getAddress()));
         }
         loadProfilePic(jsonProfile.getProfileImage());
     }

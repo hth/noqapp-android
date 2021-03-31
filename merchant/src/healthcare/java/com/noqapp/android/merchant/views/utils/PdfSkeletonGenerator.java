@@ -214,7 +214,7 @@ public class PdfSkeletonGenerator extends PdfHelper {
         table.addCell(getCellWithTextAndImage(jsonProfile.getGender().getDescription() + ", " + AppUtils.calculateAge(jsonProfile.getBirthday()), "gender.png"));
         table.addCell(getCellWithTextAndImage(bloodPressure, "blood.png"));
         table.addCell(getCellWithTextAndImage(respiration, "respiration.png"));
-        table.addCell(getCellWithTextAndImage(checkNull(jsonProfile.getAddress()), "address.png"));
+        table.addCell(getCellWithTextAndImage(checkNull(jsonProfile.findPrimaryOrAnyExistingAddress().getAddress()), "address.png"));
         table.addCell(getCellWithTextAndImage(weight, "weight.png"));
         table.addCell(getCellWithTextAndImage(temperature, "temperature.png"));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
