@@ -46,7 +46,7 @@ android {
 
     if (versionPropsFile.canRead()) {
         if (env == "release" || env == "sandbox") {
-            def Properties versionProps = new Properties()
+            Properties versionProps = new Properties()
             versionProps.load(new FileInputStream(versionPropsFile))
             versionMajor = versionProps['VERSION_MAJOR'].toInteger()
             versionMinor = versionProps['VERSION_MINOR'].toInteger()
@@ -61,7 +61,7 @@ android {
 
     if (env == "release" || env == "sandbox") {
         if (versionBuildPropsFile.canRead()) {
-            def Properties versionBuildProps = new Properties()
+            Properties versionBuildProps = new Properties()
             versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
 
             if (versionBuildProps['VERSION_MAJOR'].toInteger() != versionMajor ||
