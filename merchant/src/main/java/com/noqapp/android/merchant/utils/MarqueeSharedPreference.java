@@ -31,6 +31,7 @@ public class MarqueeSharedPreference {
             mSharedPref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
             sharedPreferenceChangeListener = (sharedPreferences, key) -> {
                 Log.e("Marquee update", "preference change");
+                //TODO Note: key should not be null. There is another issue that needs to be fixed. Better to remove null from shared preferences
                 if (StringUtils.isNotBlank(key) && key.equals(KEY_MARQUEE_LIST)) {
                     if (null != onPreferenceChangeListener)
                         onPreferenceChangeListener.onPreferenceChange();
