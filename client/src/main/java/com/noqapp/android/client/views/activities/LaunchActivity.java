@@ -641,7 +641,7 @@ public class LaunchActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("pref_language")) {
+        if (StringUtils.isNotBlank(key) && key.equals("pref_language")) {
             ((AppInitialize) getApplication()).setLocale(this);
             this.recreate();
         }
