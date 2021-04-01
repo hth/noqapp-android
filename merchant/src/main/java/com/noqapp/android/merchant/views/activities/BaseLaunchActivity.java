@@ -640,6 +640,7 @@ public abstract class BaseLaunchActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        //TODO Note: key should not be null. There is another issue that needs to be fixed. Better to remove null from shared preferences
         if (StringUtils.isNotBlank(key) && key.equals("pref_language")) {
             ((AppInitialize) getApplication()).setLocale(this);
             this.recreate();

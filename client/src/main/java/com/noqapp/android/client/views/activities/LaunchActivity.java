@@ -150,7 +150,7 @@ public class LaunchActivity
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
         } else {
-            COUNTRY_CODE = getCountryCode();
+            COUNTRY_CODE = "IN";
         }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
@@ -641,6 +641,7 @@ public class LaunchActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        //TODO Note: key should not be null. There is another issue that needs to be fixed. Better to remove null from shared preferences
         if (StringUtils.isNotBlank(key) && key.equals("pref_language")) {
             ((AppInitialize) getApplication()).setLocale(this);
             this.recreate();
