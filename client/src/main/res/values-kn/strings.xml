@@ -225,7 +225,7 @@
     <string name="restaurants_near">ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು</string>
     <string name="view_all">ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ</string>
     <string name="scan_info">ಸರದಿ ಸೇರಲು ಅಥವಾ ಆರ್ಡರ್ ಮಾಡಲು NoQueue QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ</string>
-    <string name="prompt_address_status">ವಿಳಾಸ</string>
+    <string name="prompt_address_status">ವಿಳಾಸ (ಪ್ರಾಥಮಿಕ)</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">ನಿಮಗೆ ಯಾವುದೇ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸವಿಲ್ಲ.</string>
     <string name="screen_order">ಆರ್ಡರ್ ಸಾರಾಂಶ</string>
@@ -377,7 +377,7 @@
     <string name="user_list">ಬಳಕೆದಾರರು</string>
     <string name="update_via_front_desk">ರಕ್ತ ಪ್ರಕಾರವನ್ನು ಮಾರ್ಪಡಿಸಲು ವೈದ್ಯಕೀಯ ವೃತ್ತಿಪರರನ್ನು ಸಂಪರ್ಕಿಸಿ</string>
     <string name="share_medical_profile_info">ಉತ್ತಮ ಸೇವೆಯನ್ನು ಒದಗಿಸಲು ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್ ಅನ್ನು ವೈದ್ಯರು ಹಾಗೂ ಆಸ್ಪತ್ರೆಯ ಜೊತೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ಪ್ರೊಫೈಲ್ ಅನ್ನು ನವೀಕರಿಸಿಡಿ.</string>
-    <string name="screen_addressbook">ನನ್ನ ವಿಳಾಸ</string>
+    <string name="screen_user_address">ನನ್ನ ವಿಳಾಸ</string>
     <string name="delivery_mode_home">ಹೋಂ ಡೆಲಿವರಿ</string>
     <string name="delivery_mode_takeaway">ಪಿಕಪ್</string>
     <string name="delivery_mode">ಡೆಲಿವರಿ</string>
@@ -482,13 +482,22 @@
     <string name="appointment">ನೇಮಕಾತಿ</string>
 
     <!-- location related -->
-    <string name="address_found">Address found</string>
-    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
-    <string name="no_address_found">Could not find the address</string>
-    <string name="no_geocoder_available">No geocoder available</string>
-    <string name="no_location_data_provided">No location provided</string>
-    <string name="service_not_available">Sorry, the service is not available</string>
-    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
-    <string name="permission_rationale">Location permission is needed for core functionality</string>
-    <string name="permission_contacts_rationale">Contacts permission is needed for core functionality</string>
+    <string name="address_found">ವಿಳಾಸ ಕಂಡುಬಂದಿದೆ</string>
+    <string name="invalid_lat_long_used">ಮಾನ್ಯ ಅಕ್ಷಾಂಶ ಅಥವಾ ರೇಖಾಂಶವಲ್ಲ</string>
+    <string name="no_address_found">ವಿಳಾಸವನ್ನು ಕಂಡುಹಿಡಿಯಲಾಗಲಿಲ್ಲ</string>
+    <string name="no_geocoder_available">ಯಾವುದೇ ಜಿಯೋಕೋಡರ್ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="no_location_data_provided">ಯಾವುದೇ ಸ್ಥಳವನ್ನು ಒದಗಿಸಿಲ್ಲ</string>
+    <string name="service_not_available">ಕ್ಷಮಿಸಿ, ಸೇವೆ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="permission_denied_explanation">ಅನುಮತಿಯನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಆದರೆ ಕೋರ್ ಕ್ರಿಯಾತ್ಮಕತೆಗೆ ಇದು ಅಗತ್ಯವಾಗಿರುತ್ತದೆ</string>
+    <string name="permission_rationale">ಕೋರ್ ಕಾರ್ಯಕ್ಕಾಗಿ ಸ್ಥಳ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ</string>
+    <string name="permission_contacts_rationale">ಕೋರ್ ಕ್ರಿಯಾತ್ಮಕತೆಗಾಗಿ ಸಂಪರ್ಕಗಳ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ</string>
+    <string name="txt_name_required">ಪೂರ್ಣ ಹೆಸರು (ಅಗತ್ಯವಿದೆ)*</string>
+    <string name="txt_house_no_building">ಮನೆ ಸಂಖ್ಯೆ / ಬಿಲ್ಡಿಂಗ್ (ಅಗತ್ಯವಿದೆ)*</string>
+    <string name="txt_address_line_1">ವಿಳಾಸ (ಅಗತ್ಯವಿದೆ)*</string>
+    <string name="txt_primary">ಪ್ರಾಥಮಿಕ</string>
+    <string name="set_address">ವಿಳಾಸವನ್ನು ಹೊಂದಿಸಿ</string>
+    <string name="txt_please_enter_full_name">ದಯವಿಟ್ಟು ಪೂರ್ಣ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="txt_please_enter_house_number">ದಯವಿಟ್ಟು ಮನೆಯ ಸಂಖ್ಯೆ/ಕಟ್ಟಡದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="txt_please_enter_address">ದಯವಿಟ್ಟು ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="txt_delivery_at">ವಿತರಣೆ</string>
 </resources>

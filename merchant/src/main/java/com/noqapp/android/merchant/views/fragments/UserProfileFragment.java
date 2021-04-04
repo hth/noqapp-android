@@ -145,7 +145,6 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
                 String birthday = edt_birthday.getText().toString();
                 String address = edt_address.getText().toString();
                 UpdateProfile updateProfile = new UpdateProfile();
-                updateProfile.setAddress(address);
                 updateProfile.setFirstName(name);
                 updateProfile.setBirthday(convertDOBToValidFormat(birthday));
                 updateProfile.setGender(gender);
@@ -183,14 +182,13 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         dismissProgress();
     }
 
-
     public void updateUI(JsonProfile jsonProfile) {
         edt_name.setText(jsonProfile.getName());
         edt_phoneNo.setText(jsonProfile.getPhoneRaw());
         edt_email.setText(jsonProfile.getMail());
         edt_phoneNo.setEnabled(false);
         edt_email.setEnabled(false);
-        edt_address.setText(jsonProfile.getAddress());
+        edt_address.setText(jsonProfile.findPrimaryOrAnyExistingAddress().getAddress());
         gender = jsonProfile.getGender().name();
         if (jsonProfile.getGender().name().equals("M")) {
             sc_gender.setSelectedSegment(0);

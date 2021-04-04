@@ -6,6 +6,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.common.utils.BaseConstants;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * User: hitender
@@ -16,6 +17,8 @@ public class Constants extends BaseConstants{
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeAfterJoinQActivity = 12;
     public static final int requestCodeNotification = 2;
+    public static final int REQUEST_CODE_SELECT_ADDRESS = 78;
+    public static final int REQUEST_CODE_ADD_ADDRESS = 79;
 
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 10_001;
     public static final int RESULT_CURRENT_LOCATION = 10_002;
@@ -35,6 +38,7 @@ public class Constants extends BaseConstants{
     public static final String TOKEN = "t";
     public static final String QID = "qid";
     public static final String MESSAGE_ID = "mi";
+    public static final String JSON_USER_ADDRESS = "jsonUserAddress";
 
     public static final int VALID_DOCTOR_STORE_DISTANCE_FOR_TOKEN = 150;
     public static final int VALID_STORE_DISTANCE_FOR_TOKEN = 5;
@@ -53,7 +57,6 @@ public class Constants extends BaseConstants{
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
     private static String VERSION_RELEASE;
 
-
     // Shared Preferences keys
     public static final String APP_PACKAGE = "com.noqapp.android.client";
     // Pref key for Token status
@@ -61,6 +64,7 @@ public class Constants extends BaseConstants{
     public static final String DISPLAY_SERVING_NUMBER_PREF_KEY = "%s_display_serving_number";
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
     public static final String PRE_REGISTER = "pre_approve";
+    public static final String ADDRESS_LIST = "addresslist";
 
     public interface LocationConstants {
         int SUCCESS_RESULT = 10_001;
@@ -68,7 +72,14 @@ public class Constants extends BaseConstants{
         int FETCH_LOCATION_JOB_ID = 10_003;
         String RECEIVER = "locationaddress.receiver";
         String RESULT_DATA_KEY = "locationaddress.resultdatakey";
-        String PLACE = "locationaddress.place";
+
+        String COUNTRY_SHORT_NAME = "locationaddress.country.shortName";
+        String AREA = "locationaddress.sublocality.level1.longName";
+        String TOWN = "locationaddress.locality.longName";
+        String DISTRICT = "locationaddress.administrative.area.level2.longName";
+        String STATE = "locationaddress.administrative.area.level1.longName";
+        String STATE_SHORT_NAME = "locationaddress.administrative.area.level1.shortName";
+
         String LOCATION_DATA_EXTRA = "locationaddress.locationdataextra";
         String PLACE_NAME = "locationaddress.placename";
         String LOCATION_LAT_DATA_EXTRA = "locationaddress.latextra";
@@ -84,7 +95,7 @@ public class Constants extends BaseConstants{
         if (StringUtils.isBlank(VERSION_RELEASE)) {
             switch (BuildConfig.BUILD_TYPE) {
                 case "debug":
-                    VERSION_RELEASE = "1.3.50";
+                    VERSION_RELEASE = "1.3.150";
                     break;
                 default:
                     VERSION_RELEASE = BuildConfig.VERSION_NAME;

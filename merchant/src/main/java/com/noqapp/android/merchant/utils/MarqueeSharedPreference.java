@@ -8,6 +8,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +29,14 @@ public class MarqueeSharedPreference {
     {
         if(mSharedPref == null) {
             mSharedPref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-            sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(
-                        SharedPreferences sharedPreferences, String key) {
-                    Log.e("Marquee update", "preference change");
-                    if (key.equals(KEY_MARQUEE_LIST)) {
-                        if (null != onPreferenceChangeListener)
-                            onPreferenceChangeListener.onPreferenceChange();
-                    }
-
+            sharedPreferenceChangeListener = (sharedPreferences, key) -> {
+                Log.e("Marquee update", "preference change");
+                //TODO Note: key should not be null. There is another issue that needs to be fixed. Better to remove null from shared preferences
+                if (StringUtils.isNotBlank(key) && key.equals(KEY_MARQUEE_LIST)) {
+                    if (null != onPreferenceChangeListener)
+                        onPreferenceChangeListener.onPreferenceChange();
                 }
+
             };
             mSharedPref.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
         }

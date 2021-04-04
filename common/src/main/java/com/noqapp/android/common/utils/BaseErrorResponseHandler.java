@@ -70,6 +70,7 @@ public abstract class BaseErrorResponseHandler {
                     case USER_MAX_DEPENDENT:
                     case CHANGE_USER_IN_QUEUE:
                     case FAILED_FINDING_ADDRESS:
+                    case ONE_ADDRESS_AT_LEAST:
                     case DEVICE_TIMEZONE_OFF:
 
                     case MEDICAL_RECORD_ENTRY_DENIED:

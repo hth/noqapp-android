@@ -70,7 +70,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             tv_cash.setTextColor(Color.BLACK)
         }
         cv_address.setOnClickListener {
-            val intent = Intent(this@PreferenceSettings, AddressBookActivity::class.java)
+            val intent = Intent(this@PreferenceSettings, AddressListActivity::class.java)
             startActivity(intent)
         }
         btn_update.setOnClickListener {

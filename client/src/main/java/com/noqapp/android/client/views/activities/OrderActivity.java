@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -81,8 +80,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter,
-    ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter,
-    StoreProductFinalOrderAdapter.CartOrderUpdate, ClientPreferencePresenter {
+        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter,
+        StoreProductFinalOrderAdapter.CartOrderUpdate, ClientPreferencePresenter {
     private TextView tv_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -178,17 +177,18 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().getJsonUserAddresses()) {
             List<JsonUserAddress> jsonUserAddressList = AppInitialize.getUserProfile().getJsonUserAddresses();
             for (int i = 0; i < jsonUserAddressList.size(); i++) {
-                if (jsonUserAddressList.get(i).getId().equals(jsonUserPreference.getUserAddressId())) {
+                if (jsonUserAddressList.get(i).isPrimaryAddress()) {
                     jsonUserAddress = jsonUserAddressList.get(i);
                     tv_address.setText(jsonUserAddress.getAddress());
+                    AppInitialize.setSelectedAddressId(jsonUserAddress.getId());
                     break;
                 }
             }
         }
         TextView tv_change_address = findViewById(R.id.tv_change_address);
         tv_change_address.setOnClickListener((View v) -> {
-            Intent in = new Intent(OrderActivity.this, AddressBookActivity.class);
-            startActivityForResult(in, 78);
+            Intent in = new Intent(OrderActivity.this, AddressListActivity.class);
+            startActivityForResult(in, Constants.REQUEST_CODE_SELECT_ADDRESS);
         });
         edt_optional = findViewById(R.id.edt_optional);
         edt_optional.setOnTouchListener((view, event) -> {
@@ -265,13 +265,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         }
         tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         StoreProductFinalOrderAdapter storeProductFinalOrderAdapter = new StoreProductFinalOrderAdapter(
-            this,
-            jsonPurchaseOrder.getPurchaseOrderProducts(),
-            this,
-            currencySymbol);
+                this,
+                jsonPurchaseOrder.getPurchaseOrderProducts(),
+                this,
+                currencySymbol);
 
         lv_product.setAdapter(storeProductFinalOrderAdapter);
         checkProductWithZeroPrice();
+
         tv_place_order.setOnClickListener((View v) -> {
             if (AppInitialize.getUserProfile().isAccountValidated()) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
@@ -287,12 +288,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     } else {
                         if (isOnline()) {
                             showProgress();
-                            setProgressMessage("Order placing in progress..");
-                            jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
-                                .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
-                                .setPaymentMode(null) //not required here
-                                .setCustomerPhone(AppInitialize.getPhoneNo())
-                                .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
+                            setProgressMessage("Order placing in progress...");
+                            jsonPurchaseOrder
+                                    .setUserAddressId(jsonUserAddress.getId())
+                                    .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
+                                    .setPaymentMode(null) //not required here
+                                    .setCustomerPhone(AppInitialize.getPhoneNo())
+                                    .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
                             purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
                         } else {
@@ -307,13 +309,15 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 new CustomToast().showToast(OrderActivity.this, "Please verify email address. Go to profile to verify.");
             }
         });
+
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 78) {
+        if (requestCode == Constants.REQUEST_CODE_SELECT_ADDRESS && data != null) {
             if (null != data.getExtras()) {
-                jsonUserAddress = (JsonUserAddress) data.getExtras().getSerializable("jsonUserAddress");
+                jsonUserAddress = (JsonUserAddress) data.getSerializableExtra(Constants.JSON_USER_ADDRESS);
                 if (null != jsonUserAddress) {
                     tv_address.setText(jsonUserAddress.getAddress());
                 }
@@ -336,8 +340,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 tv_coupon_name.setText(jsonCoupon.getDiscountName());
                 jsonPurchaseOrder.setCouponId(jsonCoupon.getCouponId());
                 updateDiscountUI();
-                if(jsonPurchaseOrder.getStoreDiscount()>0) {
-                     tv_coupon_discount_label.setText(getString(R.string.discount_with_coupon, jsonCoupon.getDiscountName()));
+                if (jsonPurchaseOrder.getStoreDiscount() > 0) {
+                    tv_coupon_discount_label.setText(getString(R.string.discount_with_coupon, jsonCoupon.getDiscountName()));
                 }
             }
         }
@@ -365,25 +369,25 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     private boolean isAddressRequired() {
-        return  acrb_home_delivery.isChecked();
+        return acrb_home_delivery.isChecked();
     }
 
     private boolean validateForm() {
         boolean isValid = true;
         tv_address.setError(null);
         if (!AppInitialize.isEmailVerified()) {
-            ShowAlertInformation.showInfoDisplayDialog(this, "Email Required","To pay, email is mandatory. In your profile add and verify email");
+            ShowAlertInformation.showInfoDisplayDialog(this, "Email Required", "To pay, email is mandatory. In your profile add and verify email");
             isValid = false;
         }
         if (isAddressRequired()) {
             if (tv_address.getText().toString().equals("")) {
-                ShowAlertInformation.showInfoDisplayDialog(this, "Address Required","Please enter delivery address.");
+                ShowAlertInformation.showInfoDisplayDialog(this, "Address Required", "Please enter delivery address.");
                 isValid = false;
             } else {
                 String storeGeoHash = getIntent().getExtras().getString("GeoHash");
                 if (!TextUtils.isEmpty(storeGeoHash)) {
                     if (null == jsonUserAddress || TextUtils.isEmpty(jsonUserAddress.getGeoHash())) {
-                        ShowAlertInformation.showInfoDisplayDialog(this,"Address not valid","Please select a valid address");
+                        ShowAlertInformation.showInfoDisplayDialog(this, "Address not valid", "Please select a valid address");
                         isValid = false;
                     } else {
                         float lat_s = (float) GeoHashUtils.decodeLatitude(storeGeoHash);
@@ -395,13 +399,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             case RS:
                             case FT:
                                 if (distance > getIntent().getExtras().getInt("deliveryRange")) {
-                                    ShowAlertInformation.showInfoDisplayDialog(this,"Address too far","Please change the address. This address is very far from the store");
+                                    ShowAlertInformation.showInfoDisplayDialog(this, "Address too far", "Please change the address. This address is very far from the store");
                                     isValid = false;
                                 }
                                 break;
                             default:
                                 if (distance > 150) { // Set for washing car stores
-                                    ShowAlertInformation.showInfoDisplayDialog(this,"Address too far","Please change the address. This address is very far from the store");
+                                    ShowAlertInformation.showInfoDisplayDialog(this, "Address too far", "Please change the address. This address is very far from the store");
                                     isValid = false;
                                 }
                         }
@@ -426,7 +430,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 if (TextUtils.isEmpty(AppInitialize.getAddress())) {
                     String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
-                    updateProfile.setAddress(address);
                     updateProfile.setFirstName(AppInitialize.getUserName());
                     updateProfile.setBirthday(AppInitialize.getUserDOB());
                     updateProfile.setGender(AppInitialize.getGender());

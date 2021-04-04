@@ -95,7 +95,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         LoginActivity.LoginCallBack {
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private RecyclerView rcv_menu, rcv_menu_select;
     private long lastPress;
@@ -282,15 +282,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
     public void uncompressTarGZ(File tarFile, File dest) {
         try {
             dest.mkdir();
-            TarArchiveInputStream tarIn = new TarArchiveInputStream(
-                    new GzipCompressorInputStream(
-                            new BufferedInputStream(
-                                    new FileInputStream(
-                                            tarFile
-                                    )
-                            )
-                    )
-            );
+            TarArchiveInputStream tarIn = new TarArchiveInputStream(new GzipCompressorInputStream(new BufferedInputStream(new FileInputStream(tarFile))));
             TarArchiveEntry tarEntry = tarIn.getNextTarEntry();
             while (tarEntry != null) {
                 File destPath = new File(dest, tarEntry.getName());
@@ -713,9 +705,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                                 .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
                                 .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-
-
-                        jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
+                        jsonPurchaseOrder.setUserAddressId(jsonProfile.findPrimaryOrAnyExistingAddressId());
                         jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
                         jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());

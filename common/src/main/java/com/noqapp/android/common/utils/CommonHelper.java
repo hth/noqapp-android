@@ -16,6 +16,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ExpandableListView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -502,28 +503,26 @@ public class CommonHelper {
         return WordUtils.capitalizeFully(input);
     }
 
-    public static String getAddress(double lat, double lng, Context context) {
-        String cityName = "";
+    public static JsonUserAddress getAddress(double lat, double lng, Context context) {
+        JsonUserAddress jsonUserAddress = new JsonUserAddress();
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            Address obj = addresses.get(0);
-            cityName = addresses.get(0).getAddressLine(0);
-            if (!TextUtils.isEmpty(obj.getLocality()) && !TextUtils.isEmpty(obj.getSubLocality())) {
-                cityName = obj.getSubLocality() + ", " + obj.getLocality();
-            } else {
-                if (!TextUtils.isEmpty(obj.getSubLocality())) {
-                    cityName = obj.getSubLocality();
-                } else if (!TextUtils.isEmpty(obj.getLocality())) {
-                    cityName = obj.getLocality();
+            if (!addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                if (!TextUtils.isEmpty(address.getSubLocality())) {
+                    jsonUserAddress.setArea(address.getSubLocality());
+                } else if (!TextUtils.isEmpty(address.getLocality())) {
+                    jsonUserAddress.setTown(address.getLocality());
                 } else {
-                    cityName = addresses.get(0).getAddressLine(0);
+                    jsonUserAddress.setTown(addresses.get(0).getAddressLine(0));
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            FirebaseCrashlytics.getInstance().log("Failed getting address " + e.getLocalizedMessage());
+            Log.e(TAG, "Failed getting address" + e.getLocalizedMessage(), e);
         }
-        return cityName;
+        return jsonUserAddress;
     }
 
     public static boolean isHealthCare(Context context) {

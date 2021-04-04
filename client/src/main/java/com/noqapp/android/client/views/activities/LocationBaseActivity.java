@@ -40,8 +40,17 @@ import static com.noqapp.android.client.utils.Constants.REQUEST_CHECK_SETTINGS;
  * Created by Vivek Jha on 23/02/2021
  */
 public abstract class LocationBaseActivity extends BaseActivity {
-
-    public abstract void displayAddressOutput(String addressOutput, Double latitude, Double longitude);
+    public abstract void displayAddressOutput(
+        String addressOutput,
+        String countryShortName,
+        String area,
+        String town,
+        String district,
+        String state,
+        String stateShortName,
+        Double latitude,
+        Double longitude
+    );
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
@@ -64,15 +73,17 @@ public abstract class LocationBaseActivity extends BaseActivity {
         }
     }
 
-    public void showSnackbar(
-            int mainTextStringId,
-            int actionStringId,
-            View.OnClickListener listener
-    ) {
+    public void showSnackbar(int mainTextStringId, int actionStringId, View.OnClickListener listener) {
         Snackbar.make(findViewById(android.R.id.content), getString(mainTextStringId),
             Snackbar.LENGTH_INDEFINITE)
             .setAction(getString(actionStringId), listener)
             .show();
+    }
+
+    public void showSnackbar(int mainTextStringId) {
+        Snackbar.make(findViewById(android.R.id.content), getString(mainTextStringId),
+                Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     private boolean checkLocationPermission() {
@@ -87,10 +98,10 @@ public abstract class LocationBaseActivity extends BaseActivity {
 
         if (shouldProvideRationale) {
             showSnackbar(R.string.permission_rationale, android.R.string.ok,
-                    v -> ActivityCompat.requestPermissions(
-                        LocationBaseActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        REQUEST_PERMISSIONS_REQUEST_CODE));
+                v -> ActivityCompat.requestPermissions(
+                    LocationBaseActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_PERMISSIONS_REQUEST_CODE));
         } else {
             ActivityCompat.requestPermissions(
                 this,
@@ -105,18 +116,18 @@ public abstract class LocationBaseActivity extends BaseActivity {
 
         if (grantResults.length == 0) {
             Log.i("LocationRequest", "User interaction was cancelled.");
-        } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        } else if (PackageManager.PERMISSION_GRANTED == grantResults[0]) {
             getCurrentLocation();
         } else {
             showSnackbar(R.string.permission_denied_explanation, R.string.action_settings,
-                    v -> {
-                        // Build intent that displays the App settings screen.
-                        Intent intent = new Intent();
-                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        intent.setData(Uri.fromParts("package", BuildConfig.APPLICATION_ID, null));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    });
+                v -> {
+                    // Build intent that displays the App settings screen.
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.fromParts("package", BuildConfig.APPLICATION_ID, null));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                });
         }
     }
 
@@ -127,15 +138,13 @@ public abstract class LocationBaseActivity extends BaseActivity {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setNeedBle(false);
 
-        Task<LocationSettingsResponse> task =
-            LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
-
+        Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
         task.addOnSuccessListener(response -> {
             LocationSettingsStates locationSettingsStates = response.getLocationSettingsStates();
             if (locationSettingsStates.isLocationPresent()) {
                 LocationManager.INSTANCE.startLocationUpdate(this);
-                LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, latitude, longitude) -> {
-                    displayAddressOutput(address, latitude, longitude);
+                LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, countryShortName, area, town, district, state, stateShortName, latitude, longitude) -> {
+                    displayAddressOutput(address, countryShortName, area, town, district, state, stateShortName, latitude, longitude);
                     return null;
                 });
             }
@@ -145,9 +154,7 @@ public abstract class LocationBaseActivity extends BaseActivity {
             try {
                 // Cast to a resolvable exception.
                 ResolvableApiException resolvable = (ResolvableApiException) e;
-                resolvable.startResolutionForResult(
-                        LocationBaseActivity.this,
-                        REQUEST_CHECK_SETTINGS);
+                resolvable.startResolutionForResult(LocationBaseActivity.this, REQUEST_CHECK_SETTINGS);
             } catch (IntentSender.SendIntentException ie) {
                 // Ignore the error.
             } catch (ClassCastException ce) {
@@ -156,10 +163,17 @@ public abstract class LocationBaseActivity extends BaseActivity {
         });
     }
 
+    protected void getMapLocation(Double latitude, Double longitude){
+        LocationManager.INSTANCE.getLocationAddress(this, latitude, longitude, (address, countryShortName, area, town, district, state, stateShortName, lat, lng) -> {
+            displayAddressOutput(address, countryShortName, area, town, district, state, stateShortName, lat, lng);
+            return null;
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CHECK_SETTINGS) {
+        if (Activity.RESULT_OK == resultCode && REQUEST_CHECK_SETTINGS == requestCode) {
             getCurrentLocation();
         }
     }

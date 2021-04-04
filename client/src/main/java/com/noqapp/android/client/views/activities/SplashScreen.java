@@ -21,6 +21,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
@@ -37,14 +38,20 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     private static String deviceId = "";
 
     @Override
-    public void displayAddressOutput(String addressOutput, Double latitude, Double longitude) {
+    public void displayAddressOutput(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         AppInitialize.location.setLatitude(latitude);
         AppInitialize.location.setLongitude(longitude);
-        AppInitialize.cityName = addressOutput;
+
+        String city = town;
+        if (StringUtils.isNotBlank(area)) {
+            city = area + ", " + town;
+        }
+        AppInitialize.cityName = city;
         LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setCity(AppInitialize.cityName)
-                .setLatitude(latitude)
-                .setLongitude(longitude);
+            .setArea(area)
+            .setTown(town)
+            .setLatitude(latitude)
+            .setLongitude(longitude);
         AppInitialize.setLocationPreference(locationPref);
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
@@ -102,14 +109,16 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             Log.e("Launch", "launching from deviceRegisterResponse");
             deviceId = deviceRegistered.getDeviceId();
             Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: " + deviceRegistered);
-            String cityName = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
-            Log.d(TAG, "Splash City Name =" + cityName);
+            JsonUserAddress jsonUserAddress = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
+            Log.d(TAG, "Splash City Name =" + jsonUserAddress.getLocationAsString());
             LocationPref locationPref = AppInitialize.getLocationPreference();
 
-            if (locationPref.getLatitude() == 0.0 && locationPref.getLatitude() == 0.0) {
-                locationPref.setCity(cityName)
-                        .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                        .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+            if (0.0 == locationPref.getLatitude() && 0.0 == locationPref.getLatitude()) {
+                locationPref
+                    .setArea(jsonUserAddress.getArea())
+                    .setTown(jsonUserAddress.getTown())
+                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
                 AppInitialize.setLocationPreference(locationPref);
                 AppInitialize.setDeviceID(deviceId);
                 Location location = new Location("");
