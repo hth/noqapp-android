@@ -42,6 +42,9 @@ public class DeviceToken {
     @JsonProperty("av")
     private String appVersion;
 
+    @JsonProperty("dl")
+    private String deviceLanguage;
+
     @JsonProperty("ip")
     private String ipAddress;
 
@@ -56,6 +59,21 @@ public class DeviceToken {
         this.model = Build.MODEL;
         this.osVersion = Build.VERSION.RELEASE;
         this.appVersion = appVersion;
+        this.ipAddress = CommonHelper.getIPAddress();
+        if (null != location) {
+            this.longitude = String.valueOf(location.getLongitude());
+            this.latitude = String.valueOf(location.getLatitude());
+            Log.e("Location Device token", location.toString());
+        }
+    }
+
+    //TODO use deviceLanguage going forward
+    public DeviceToken(String tokenFCM, String appVersion, String deviceLanguage, Location location) {
+        this.tokenFCM = tokenFCM;
+        this.model = Build.MODEL;
+        this.osVersion = Build.VERSION.RELEASE;
+        this.appVersion = appVersion;
+        this.deviceLanguage = deviceLanguage;
         this.ipAddress = CommonHelper.getIPAddress();
         if (null != location) {
             this.longitude = String.valueOf(location.getLongitude());
