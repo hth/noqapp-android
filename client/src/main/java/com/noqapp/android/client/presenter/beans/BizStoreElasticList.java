@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,9 @@ public class BizStoreElasticList {
 
     @JsonProperty("result")
     private List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
+
+    @JsonProperty("bt")
+    private BusinessTypeEnum searchedOnBusinessType;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -81,6 +85,15 @@ public class BizStoreElasticList {
         return this;
     }
 
+    public BusinessTypeEnum getSearchedOnBusinessType() {
+        return searchedOnBusinessType;
+    }
+
+    public BizStoreElasticList setSearchedOnBusinessType(BusinessTypeEnum searchedOnBusinessType) {
+        this.searchedOnBusinessType = searchedOnBusinessType;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -91,13 +104,13 @@ public class BizStoreElasticList {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("BizStoreElasticList{");
-        sb.append("scrollId='").append(scrollId).append('\'');
-        sb.append(", cityName='").append(cityName).append('\'');
-        sb.append(", jsonCategories=").append(jsonCategories);
-        sb.append(", bizStoreElastics=").append(bizStoreElastics);
-        sb.append(", error=").append(error);
-        sb.append('}');
-        return sb.toString();
+        return "BizStoreElasticList{" +
+            "scrollId='" + scrollId + '\'' +
+            ", cityName='" + cityName + '\'' +
+            ", jsonCategories=" + jsonCategories +
+            ", bizStoreElastics=" + bizStoreElastics +
+            ", searchedOnBusinessType=" + searchedOnBusinessType +
+            ", error=" + error +
+            '}';
     }
 }

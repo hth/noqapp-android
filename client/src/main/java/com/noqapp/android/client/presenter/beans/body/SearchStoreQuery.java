@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.BusinessSupportEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 /**
  * User: hitender
@@ -46,6 +48,9 @@ public class SearchStoreQuery {
 
     @JsonProperty("qr")
     private String codeQR;
+
+    @JsonProperty("bt")
+    private BusinessTypeEnum searchedOnBusinessType = BusinessTypeEnum.ZZ;
 
     public String getQuery() {
         return query;
@@ -107,6 +112,15 @@ public class SearchStoreQuery {
 
     public SearchStoreQuery setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public BusinessTypeEnum getSearchedOnBusinessType() {
+        return searchedOnBusinessType;
+    }
+
+    public SearchStoreQuery setSearchedOnBusinessType(BusinessTypeEnum searchedOnBusinessType) {
+        this.searchedOnBusinessType = searchedOnBusinessType;
         return this;
     }
 

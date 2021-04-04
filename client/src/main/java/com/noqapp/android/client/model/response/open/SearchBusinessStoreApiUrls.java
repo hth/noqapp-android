@@ -46,77 +46,12 @@ public interface SearchBusinessStoreApiUrls {
             SearchStoreQuery searchStoreQuery
     );
 
-
     /**
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/search/healthCare")
-    Call<BizStoreElasticList> healthCare(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Body
-            SearchStoreQuery searchStoreQuery
-    );
-
-    /**
-     * Errors
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     */
-    @POST("open/search/otherMerchant")
-    Call<BizStoreElasticList> otherMerchant(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Body
-            SearchStoreQuery searchStoreQuery
-    );
-
-    /**
-     * Errors
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     */
-    @POST("open/search/canteen")
-    Call<BizStoreElasticList> canteen(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Body
-            SearchStoreQuery searchStoreQuery
-    );
-
-    /**
-     * Errors
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     */
-    @POST("open/search/restaurant")
-    Call<BizStoreElasticList> restaurants(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Body
-            SearchStoreQuery searchStoreQuery
-    );
-
-    /**
-     * Errors
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     */
-    @POST("open/search/placeOfWorship")
-    Call<BizStoreElasticList> placeOfWorship(
+    @POST("open/search/business")
+    Call<BizStoreElasticList> business(
         @Header("X-R-DID")
         String did,
 

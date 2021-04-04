@@ -43,174 +43,6 @@ public class SearchBusinessStoreApiCalls {
         searchBusinessStoreApiUrls = RetrofitClient.getClient().create(SearchBusinessStoreApiUrls.class);
     }
 
-    /**
-     * @param did
-     * @param searchStoreQuery
-     */
-    public void otherMerchant(String did, SearchStoreQuery searchStoreQuery) {
-        searchBusinessStoreApiUrls.otherMerchant(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
-            @Override
-            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Response NearMe", String.valueOf(response.body()));
-                        searchBusinessStorePresenter.nearMeMerchant(response.body());
-                        bizStoreElasticList = response.body();
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        searchBusinessStorePresenter.authenticationFailure();
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
-                    }
-                }
-                responseReceived = true;
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
-                Log.e("NearMe failed", t.getLocalizedMessage(), t);
-                searchBusinessStorePresenter.nearMeMerchantError();
-            }
-        });
-    }
-
-    /**
-     * @param did
-     * @param searchStoreQuery
-     */
-    public void canteen(String did, SearchStoreQuery searchStoreQuery) {
-        searchBusinessStoreApiUrls.canteen(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
-            @Override
-            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Response Canteen NearMe", String.valueOf(response.body()));
-                        searchBusinessStorePresenter.nearMeCanteenResponse(response.body());
-                        bizStoreElasticList = response.body();
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        searchBusinessStorePresenter.authenticationFailure();
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
-                    }
-                }
-                responseReceived = true;
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
-                Log.e("NearMe canteen failed", t.getLocalizedMessage(), t);
-                searchBusinessStorePresenter.nearMeCanteenError();
-            }
-        });
-    }
-
-    /**
-     * @param did
-     * @param searchStoreQuery
-     */
-    public void restaurants(String did, SearchStoreQuery searchStoreQuery) {
-        searchBusinessStoreApiUrls.restaurants(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
-            @Override
-            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Resp- RestaurantNearMe", String.valueOf(response.body()));
-                        searchBusinessStorePresenter.nearMeRestaurantsResponse(response.body());
-                        bizStoreElasticList = response.body();
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        searchBusinessStorePresenter.authenticationFailure();
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
-                    }
-                }
-                responseReceived = true;
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
-                Log.e("NearMeRestaurant failed", t.getLocalizedMessage(), t);
-                searchBusinessStorePresenter.nearMeRestaurantsError();
-            }
-        });
-    }
-
-    /**
-     * @param did
-     * @param searchStoreQuery
-     */
-    public void placeOfWorship(String did, SearchStoreQuery searchStoreQuery) {
-        searchBusinessStoreApiUrls.placeOfWorship(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
-            @Override
-            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Response temple NearMe", String.valueOf(response.body()));
-                        searchBusinessStorePresenter.nearMeTempleResponse(response.body());
-                        bizStoreElasticList = response.body();
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        searchBusinessStorePresenter.authenticationFailure();
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
-                    }
-                }
-                responseReceived = true;
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
-                Log.e("NearMe temple failed", t.getLocalizedMessage(), t);
-                searchBusinessStorePresenter.nearMeTempleError();
-            }
-        });
-    }
-
-    /**
-     * @param did
-     * @param searchStoreQuery
-     */
-    public void healthCare(String did, SearchStoreQuery searchStoreQuery) {
-        searchBusinessStoreApiUrls.healthCare(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
-            @Override
-            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Response NearMeHospital", String.valueOf(response.body()));
-                        searchBusinessStorePresenter.nearMeHospitalResponse(response.body());
-                    } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        searchBusinessStorePresenter.authenticationFailure();
-                    } else {
-                         searchBusinessStorePresenter.responseErrorPresenter(response.code());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
-                Log.e("NearMeHospital failed", t.getLocalizedMessage(), t);
-                searchBusinessStorePresenter.nearMeHospitalError();
-            }
-        });
-    }
-
     public void search(String did, SearchStoreQuery searchStoreQuery) {
         searchBusinessStoreApiUrls.search(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
@@ -267,6 +99,77 @@ public class SearchBusinessStoreApiCalls {
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("onFailure search", t.getLocalizedMessage(), t);
                 searchBusinessStorePresenter.nearMeMerchantError();
+            }
+        });
+    }
+
+    /**
+     * @param did
+     * @param searchStoreQuery
+     */
+    public void business(String did, SearchStoreQuery searchStoreQuery) {
+        searchBusinessStoreApiUrls.business(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+            @Override
+            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        bizStoreElasticList = response.body();
+                        Log.d("Response business near", "For businessType " + bizStoreElasticList.getSearchedOnBusinessType() + " " + response.body());
+                        switch (bizStoreElasticList.getSearchedOnBusinessType()) {
+                            case CD:
+                            case CDQ:
+                                searchBusinessStorePresenter.nearMeCanteenResponse(response.body());
+                                break;
+                            case RS:
+                            case RSQ:
+                                searchBusinessStorePresenter.nearMeRestaurantsResponse(response.body());
+                                break;
+                            case DO:
+                            case HS:
+                                searchBusinessStorePresenter.nearMeHospitalResponse(response.body());
+                                break;
+                            case PW:
+                                searchBusinessStorePresenter.nearMeTempleResponse(response.body());
+                                break;
+                            case ZZ:
+                            default:
+                                searchBusinessStorePresenter.nearMeMerchant(response.body());
+                        }
+                    } else {
+                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        searchBusinessStorePresenter.authenticationFailure();
+                    } else {
+                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
+                Log.e("Failed business near", t.getLocalizedMessage(), t);
+                switch (searchStoreQuery.getSearchedOnBusinessType()) {
+                    case CD:
+                    case CDQ:
+                        searchBusinessStorePresenter.nearMeCanteenError();
+                        break;
+                    case RS:
+                    case RSQ:
+                        searchBusinessStorePresenter.nearMeRestaurantsError();
+                        break;
+                    case DO:
+                    case HS:
+                        searchBusinessStorePresenter.nearMeHospitalError();
+                        break;
+                    case PW:
+                        searchBusinessStorePresenter.nearMeTempleError();
+                        break;
+                    case ZZ:
+                    default:
+                        searchBusinessStorePresenter.nearMeMerchantError();
+                }
             }
         });
     }
