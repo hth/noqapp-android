@@ -455,14 +455,14 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 }
             }
             SearchBusinessStoreApiCalls searchBusinessStoreApiCalls = new SearchBusinessStoreApiCalls(this);
-            searchBusinessStoreApiCalls.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
+            searchBusinessStoreApiCalls.business(UserUtils.getDeviceId(), searchStoreQuery);
 
             // Applicable for INDIA only
             if (LaunchActivity.COUNTRY_CODE.equalsIgnoreCase("IN")) {
-                searchBusinessStoreApiCalls.canteen(UserUtils.getDeviceId(), searchStoreQuery);
-                searchBusinessStoreApiCalls.restaurants(UserUtils.getDeviceId(), searchStoreQuery);
-                searchBusinessStoreApiCalls.placeOfWorship(UserUtils.getDeviceId(), searchStoreQuery);
-                searchBusinessStoreApiCalls.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreApiCalls.business(UserUtils.getDeviceId(), searchStoreQuery.setSearchedOnBusinessType(BusinessTypeEnum.CD));
+                searchBusinessStoreApiCalls.business(UserUtils.getDeviceId(), searchStoreQuery.setSearchedOnBusinessType(BusinessTypeEnum.RS));
+                searchBusinessStoreApiCalls.business(UserUtils.getDeviceId(), searchStoreQuery.setSearchedOnBusinessType(BusinessTypeEnum.DO));
+                searchBusinessStoreApiCalls.business(UserUtils.getDeviceId(), searchStoreQuery.setSearchedOnBusinessType(BusinessTypeEnum.PW));
             } else {
                 rl_canteen.setVisibility(View.GONE);
                 rl_restaurants_around_you.setVisibility(View.GONE);
