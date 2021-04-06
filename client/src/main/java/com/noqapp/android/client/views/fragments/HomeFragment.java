@@ -105,6 +105,8 @@ import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.GeoIP;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -191,7 +193,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     }
 
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
-        if (latitude != 0.0 && latitude != Constants.DEFAULT_LATITUDE && Double.compare(lat, latitude) != 0 && !cityName.equals(city)) {
+        if (latitude != 0.0 && latitude != Constants.DEFAULT_LATITUDE && Double.compare(lat, latitude) != 0 && (StringUtils.isNotBlank(cityName) && !cityName.equals(city))) {
             if (isFirstTimeUpdate) {
                 getNearMeInfo(cityName, String.valueOf(latitude), String.valueOf(longitude));
                 lat = latitude;
@@ -201,7 +203,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 LaunchActivity.getLaunchActivity().tv_location.setText(city);
             } else {
                 // LaunchActivity.getLaunchActivity().tv_location.setText(city);
-                if (AppUtils.calculateDistance(lat, lng, latitude, longitude) > 0.5f){
+                if (0.5f < AppUtils.calculateDistance(lat, lng, latitude, longitude)){
                     cv_update_location.setVisibility(View.VISIBLE);
                 }
                 tv_update.setOnClickListener((View v) -> {
