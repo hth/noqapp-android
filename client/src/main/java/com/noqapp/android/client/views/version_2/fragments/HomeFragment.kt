@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.version_2.fragments
 
-class HomeFragment {
+import com.noqapp.android.client.views.fragments.BaseFragment
+
+class HomeFragment: BaseFragment() {
 
 }

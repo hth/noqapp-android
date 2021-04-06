@@ -19,6 +19,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.pojos.LocationPref;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonUserAddress;
@@ -185,7 +186,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
     private void callLaunchScreen() {
         if (!StringUtils.isBlank(deviceId)) {
-            Intent i = new Intent(splashScreen, LaunchActivity.class);
+            Intent i = new Intent(splashScreen, HomeActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
