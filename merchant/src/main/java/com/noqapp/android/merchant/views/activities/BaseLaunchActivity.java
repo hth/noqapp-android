@@ -62,7 +62,6 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
@@ -101,7 +100,7 @@ public abstract class BaseLaunchActivity
     protected TextView tv_toolbar_title;
     protected ImageView actionbarBack;
     public static Locale locale;
-    public static SharedPreferences languagepref;
+    public static SharedPreferences preferences;
     public static String language;
     protected DrawerLayout mDrawerLayout;
     protected ExpandableListView mDrawerList;
@@ -123,9 +122,9 @@ public abstract class BaseLaunchActivity
             isTablet = false;
         }
         super.onCreate(savedInstanceState);
-        languagepref = PreferenceManager.getDefaultSharedPreferences(this);
-        languagepref.registerOnSharedPreferenceChangeListener(this);
-        language = languagepref.getString("pref_language", "");
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.registerOnSharedPreferenceChangeListener(this);
+        language = preferences.getString("pref_language", "");
 
         if (null != getIntent().getExtras()) {
             if (!TextUtils.isEmpty(getIntent().getStringExtra(AppInitialize.TOKEN_FCM))) {

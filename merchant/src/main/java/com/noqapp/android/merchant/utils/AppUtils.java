@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -72,16 +70,16 @@ public class AppUtils extends CommonHelper {
             if (language.equals("en")) {
                 LaunchActivity.language = "en_US";
                 LaunchActivity.locale = Locale.ENGLISH;
-                LaunchActivity.languagepref.edit().putString("pref_language", "en").apply();
+                LaunchActivity.preferences.edit().putString("pref_language", "en").apply();
             } else {
                 LaunchActivity.language = "hi";
                 LaunchActivity.locale = new Locale("hi");
-                LaunchActivity.languagepref.edit().putString("pref_language", "hi").apply();
+                LaunchActivity.preferences.edit().putString("pref_language", "hi").apply();
             }
         } else {
             LaunchActivity.language = "en_US";
             LaunchActivity.locale = Locale.ENGLISH;
-            LaunchActivity.languagepref.edit().putString("pref_language", "en").apply();
+            LaunchActivity.preferences.edit().putString("pref_language", "en").apply();
         }
 
     }
