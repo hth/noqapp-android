@@ -2,6 +2,9 @@
 
 buildscript {
     ext.kotlin_version = '1.4.32'
+    ext.lifecycle_version = '2.3.1'
+    ext.nav_version = '2.3.5'
+
     repositories {
         jcenter()
         google()
@@ -12,10 +15,10 @@ buildscript {
         classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.5.1.0'
         classpath 'org.jacoco:org.jacoco.core:0.8.5'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31"
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
         classpath 'org.codehaus.groovy:groovy-all:2.4.15'
+
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
