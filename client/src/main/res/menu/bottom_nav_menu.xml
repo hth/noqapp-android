@@ -10,6 +10,10 @@
         android:title="@string/search_hint"
         android:icon="@drawable/ic_search"/>
 
+    <item android:id="@+id/menuPost"
+        android:title="@string/txt_post"
+        android:icon="@drawable/ic_baseline_add_circle_outline_24"/>
+
     <item android:id="@+id/menuFavourite"
         android:title="@string/favourite"
         android:icon="@drawable/ic_favorite"/>
