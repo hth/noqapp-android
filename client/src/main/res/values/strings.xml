@@ -506,4 +506,6 @@
     <string name="txt_please_enter_house_number">Please enter house number/building name</string>
     <string name="txt_please_enter_address">Please enter address</string>
     <string name="txt_delivery_at">DELIVERY AT</string>
+    <string name="txt_post">Post</string>
+    <string name="txt_time_slot">Time slot: $%1s - $%2s</string>
 </resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvToken"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:cardUseCompatPadding="false"
+    app:contentPadding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTokenName"
+            style="@style/style_mdh_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Serving Grocery" />
+
+        <TextView
+            android:id="@+id/tvTokenNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_appointment_select"
+            android:fontFamily="@font/roboto_medium"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTokenName"
+            tools:text="Q101" />
+
+        <TextView
+            android:id="@+id/tvToken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/token"
+            android:textColor="@color/text_header_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/tvTokenNumber"
+            app:layout_constraintStart_toStartOf="@id/tvTokenNumber"
+            app:layout_constraintTop_toBottomOf="@id/tvTokenNumber" />
+
+        <TextView
+            android:id="@+id/tvQueueStatus"
+            style="@style/style_mdh_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/booked_slot"
+            android:textSize="@dimen/text_size_fourteen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvToken"
+            tools:text="Queue not yet started" />
+
+        <TextView
+            android:id="@+id/tvTimeSlot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/text_header_color"
+            android:textSize="@dimen/text_size_twelve"
+            app:layout_constraintEnd_toEndOf="@id/tvQueueStatus"
+            app:layout_constraintStart_toStartOf="@id/tvQueueStatus"
+            app:layout_constraintTop_toBottomOf="@id/tvQueueStatus"
+            tools:text="Time slot: 04:00 - 05:00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
