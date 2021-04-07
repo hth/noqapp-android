@@ -2,6 +2,7 @@ import groovy.xml.Namespace
 
 apply plugin: 'com.android.application'
 apply from: '../config/quality.gradle'
+
 apply plugin: 'kotlin-android'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'kotlin-kapt'
@@ -446,20 +447,19 @@ dependencies {
     implementation 'com.hbb20:ccp:2.5.0'
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.xw.repo:bubbleseekbar:3.20'
     implementation project(':common')
     implementation project(':cashfreeSDK')
     implementation 'com.google.zxing:core:3.4.1'
 
     //Dependencies for Navigation UI component
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.4'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     //Dependencies for view model and livedata
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.3.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
