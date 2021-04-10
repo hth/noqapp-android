@@ -13,7 +13,7 @@ import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 
-class HomeViewModel: ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePresenter {
+class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePresenter {
 
     val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
@@ -32,10 +32,10 @@ class HomeViewModel: ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePre
     }
 
     fun fetchNearMeRecentVisits(deviceId: String, searchStoreQuery: SearchStoreQuery) {
-        searchBusinessStoreApiCalls.restaurants(deviceId, searchStoreQuery)
+        searchBusinessStoreApiCalls.business(deviceId, searchStoreQuery)
     }
 
-    fun fetchActiveTokenQueueList(){
+    fun fetchActiveTokenQueueList() {
         queueApiAuthenticCall.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
     }
 
