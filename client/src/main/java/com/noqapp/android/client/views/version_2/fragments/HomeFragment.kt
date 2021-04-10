@@ -26,7 +26,6 @@ import com.noqapp.android.common.utils.GeoIP
 import java.util.*
 
 class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
-
     private lateinit var fragmentHomeNewBinding: FragmentHomeNewBinding
     private lateinit var tokenAndQueueAndQueueAdapter: TokenAndQueueAdapter
     private lateinit var homeFragmentInteractionListener: HomeFragmentInteractionListener
@@ -61,14 +60,13 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     private fun observeValues() {
-
         homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, Observer {
             searchStoreQuery = it
             fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.VISIBLE
             homeViewModel.fetchNearMeRecentVisits(UserUtils.getDeviceId(), it)
         })
 
-        homeViewModel.nearMeRecentVisitsResponse.observe(viewLifecycleOwner, Observer { bizStoreElasticList ->
+        homeViewModel.nearMeResponse.observe(viewLifecycleOwner, Observer { bizStoreElasticList ->
             bizStoreElasticList?.bizStoreElastics?.let {
                 searchStoreQuery?.let { searchStoreQueryVal ->
                     Collections.sort(it, SortPlaces(GeoIP(searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())))
@@ -80,8 +78,9 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         })
 
         homeViewModel.nearMeErrorLiveData.observe(viewLifecycleOwner, Observer {
-            if (it)
+            if (it) {
                 fragmentHomeNewBinding.cvRecentVisits.visibility = View.GONE
+            }
         })
 
         homeViewModel.currentQueueResponse.observe(viewLifecycleOwner, Observer { tokenAndQueuesList ->
@@ -98,10 +97,10 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         })
 
         homeViewModel.currentQueueErrorLiveData.observe(viewLifecycleOwner, Observer {
-            if (it)
+            if (it) {
                 fragmentHomeNewBinding.cvTokens.visibility = View.GONE
+            }
         })
-
     }
 
     private fun setUpRecyclerView() {
@@ -126,7 +125,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         intent.putExtra("BizStoreElastic", item)
         startActivity(intent)
     }
-
 }
 
 interface HomeFragmentInteractionListener {}

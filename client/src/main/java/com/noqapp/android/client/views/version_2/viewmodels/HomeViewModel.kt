@@ -18,7 +18,7 @@ class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePr
     val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
-    val nearMeRecentVisitsResponse = MutableLiveData<BizStoreElasticList?>()
+    val nearMeResponse = MutableLiveData<BizStoreElasticList?>()
     val currentQueueResponse = MutableLiveData<JsonTokenAndQueueList?>()
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall
@@ -67,10 +67,10 @@ class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePr
     }
 
     override fun nearMeMerchant(bizStoreElasticList: BizStoreElasticList?) {
+        nearMeResponse.value = bizStoreElasticList
     }
 
     override fun nearMeRestaurantsResponse(bizStoreElasticList: BizStoreElasticList?) {
-        nearMeRecentVisitsResponse.value = bizStoreElasticList
     }
 
     override fun authenticationFailure() {
@@ -93,5 +93,4 @@ class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePr
 
     override fun nearMeTempleError() {
     }
-
 }
