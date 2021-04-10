@@ -35,10 +35,12 @@ class CouponActivity : BaseActivity(), CouponAdapter.OnItemClickListener, Coupon
 
         showProgress()
         setProgressMessage("Getting coupons...")
-        couponApiCalls!!.availableDiscount(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                UserUtils.getAuth(), intent.getStringExtra(IBConstant.KEY_CODE_QR))
+        couponApiCalls!!.availableDiscount(
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
+                intent.getStringExtra(IBConstant.KEY_CODE_QR))
     }
-
 
     override fun discountItemClick(jsonCoupon: JsonCoupon?) {
         val intent = Intent()
