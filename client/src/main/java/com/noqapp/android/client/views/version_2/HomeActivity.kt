@@ -19,6 +19,7 @@ import android.widget.ExpandableListView.OnGroupClickListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.common.cache.CacheBuilder
@@ -26,10 +27,13 @@ import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.model.database.utils.NotificationDB
 import com.noqapp.android.client.model.database.utils.ReviewDB
+import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
 import com.noqapp.android.client.views.customviews.BadgeDrawable
+import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
+import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.pojos.MenuDrawer
@@ -38,10 +42,25 @@ import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 
-class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPreferences.OnSharedPreferenceChangeListener, HomeFragmentInteractionListener {
 
     override fun displayAddressOutput(addressOutput: String?, countryShortName: String?, area: String?, town: String?, district: String?, state: String?, stateShortName: String?, latitude: Double?, longitude: Double?) {
         activityHomeBinding.tvLocation.text = area
+
+        val searchStoreQuery = SearchStoreQuery()
+        area?.let {
+            searchStoreQuery.cityName = it
+        }
+        latitude?.let {
+            searchStoreQuery.latitude = it.toString()
+        }
+        longitude?.let {
+            searchStoreQuery.longitude = it.toString()
+        }
+        searchStoreQuery.filters = "xyz"
+        searchStoreQuery.scrollId = ""
+
+        homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
     }
 
     private val menuDrawerItems = mutableListOf<MenuDrawer>()
@@ -49,10 +68,9 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private val TAG = HomeActivity::class.java.simpleName
     private var expandableListAdapter: DrawerExpandableListAdapter? = null
     private lateinit var navHostFragment: NavHostFragment
-    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
-    private val MSG_IDS = "messageIds"
-
-
+    private val homeViewModel: HomeViewModel by lazy {
+        ViewModelProvider(this)[HomeViewModel::class.java]
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
@@ -321,5 +339,4 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         } else
             super.onBackPressed()
     }
-
 }
