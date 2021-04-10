@@ -58,7 +58,7 @@ public enum BusinessTypeEnum implements Serializable {
     HI("HI", "Household Items", M, "Marketplace", MP),
 
     //For All, to support when sending to all
-    ZZ("ZZ", "Global", Q, "Queue", QQ);
+    ZZ("ZZ", "Z-To-A", Q, "Queue", QQ);
 
     private final String description;
     private final String name;
