@@ -17,6 +17,7 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvTokens"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
@@ -34,7 +35,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/active_token"
-                        android:textColor="@color/text_header_color" />
+                        android:textColor="@color/color_black"
+                        android:textSize="16sp" />
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewpager"
@@ -54,29 +56,68 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvRecentVisits"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:cardBackgroundColor="@color/white"
-                app:cardUseCompatPadding="false"
-                app:contentPadding="16dp">
+                app:cardUseCompatPadding="false">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TableLayout
+                    <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tabIndicatorColor="@color/colorAccent"
+                        app:tabMode="fixed"
+                        app:tabSelectedTextColor="@color/color_black"
+                        app:tabTextColor="@color/text_header_color">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="?attr/actionBarSize"
+                            android:text="@string/tab_recent_visits" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="?attr/actionBarSize"
+                            android:text="@string/tab_near_me" />
+
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvRecentVisitsNearMe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+
+                    <ProgressBar
+                        android:id="@+id/pbRecentVisitsNearMe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvServices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardUseCompatPadding="false"
                 app:contentPadding="16dp">
@@ -91,14 +132,364 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="@string/active_token"
-                        android:textColor="@color/text_header_color" />
+                        android:text="@string/txt_services"
+                        android:textColor="@color/color_black"
+                        android:textSize="16sp" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivHousing"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvHousing"
+                                app:layout_constraintStart_toStartOf="@id/tvHousing"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_home_24" />
+
+                            <TextView
+                                android:id="@+id/tvHousing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_housing"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivHousing" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivMarketPlace"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvMarketPlace"
+                                app:layout_constraintStart_toStartOf="@id/tvMarketPlace"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_market_24" />
+
+                            <TextView
+                                android:id="@+id/tvMarketPlace"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="24dp"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_market_place"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivMarketPlace" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivJobs"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvJobs"
+                                app:layout_constraintStart_toStartOf="@id/tvJobs"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_jobs_24" />
+
+                            <TextView
+                                android:id="@+id/tvJobs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="24dp"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_jobs"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivJobs" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvBusinesses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardUseCompatPadding="false"
+                app:contentPadding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvBusinesses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/txt_businesses"
+                        android:textColor="@color/color_black"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivUsrCsd"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvUrcCsd"
+                                app:layout_constraintStart_toStartOf="@id/tvUrcCsd"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_market_24" />
+
+                            <TextView
+                                android:id="@+id/tvUrcCsd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_usr_csd"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivUsrCsd" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivRestaurant"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvRestaurant"
+                                app:layout_constraintStart_toStartOf="@id/tvRestaurant"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_restaurant_24" />
+
+                            <TextView
+                                android:id="@+id/tvRestaurant"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_restaurant"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivRestaurant" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivGrocery"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvGrocery"
+                                app:layout_constraintStart_toStartOf="@id/tvGrocery"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_local_grocery_store_24" />
+
+                            <TextView
+                                android:id="@+id/tvGrocery"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_grocery"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivGrocery" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivHospital"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvHospital"
+                                app:layout_constraintStart_toStartOf="@id/tvHospital"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_local_hospital_24" />
+
+                            <TextView
+                                android:id="@+id/tvHospital"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_hospital"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivHospital" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivSchool"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvSchool"
+                                app:layout_constraintStart_toStartOf="@id/tvSchool"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_school_24" />
+
+                            <TextView
+                                android:id="@+id/tvSchool"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_school"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivSchool" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivCafeteria"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvCafeteria"
+                                app:layout_constraintStart_toStartOf="@id/tvCafeteria"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_local_cafe_24" />
+
+                            <TextView
+                                android:id="@+id/tvCafeteria"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_cafeteria"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivCafeteria" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivGenericStore"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="@id/tvGenericStore"
+                                app:layout_constraintStart_toStartOf="@id/tvGenericStore"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_baseline_business_center_24" />
+
+                            <TextView
+                                android:id="@+id/tvGenericStore"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/txt_generic_store"
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ivGenericStore" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
