@@ -508,4 +508,19 @@
     <string name="txt_delivery_at">DELIVERY AT</string>
     <string name="txt_post">Post</string>
     <string name="txt_time_slot">Time slot: $%1s - $%2s</string>
+    <string name="txt_services">Services</string>
+    <string name="txt_housing">Housing</string>
+    <string name="txt_market_place">Marketplace</string>
+    <string name="txt_jobs">Jobs</string>
+    <string name="txt_businesses">Businesses</string>
+    <string name="txt_usr_csd">USR/CSD</string>
+    <string name="txt_hospital">Hospital</string>
+    <string name="txt_grocery">Grocery</string>
+    <string name="txt_restaurant">Restaurant</string>
+    <string name="txt_school">School</string>
+    <string name="txt_cafeteria">Cafeteria</string>
+    <string name="txt_generic_store">Generic store</string>
+    <string name="tab_recent_visits">Recent Visits</string>
+    <string name="tab_near_me">Near me</string>
+
 </resources>
