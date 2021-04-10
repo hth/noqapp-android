@@ -81,12 +81,12 @@
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="?attr/actionBarSize"
-                            android:text="@string/tab_recent_visits" />
+                            android:text="@string/tab_near_me" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="?attr/actionBarSize"
-                            android:text="@string/tab_near_me" />
+                            android:text="@string/tab_recent_visits" />
 
                     </com.google.android.material.tabs.TabLayout>
 
