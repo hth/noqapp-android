@@ -301,9 +301,9 @@ public class LaunchActivity
     public void updateLocationUI() {
         if (null != homeFragment) {
             homeFragment.updateUIWithNewLocation(
-                    AppInitialize.location.getLatitude(),
-                    AppInitialize.location.getLongitude(),
-                    AppInitialize.cityName);
+                AppInitialize.location.getLatitude(),
+                AppInitialize.location.getLongitude(),
+                AppInitialize.cityName);
             //tv_location.setText(cityName);
         }
     }

@@ -52,7 +52,7 @@ public class MerchantNearMeTest extends ITest {
         searchStoreQuery.setLongitude("72.8777");
         searchStoreQuery.setFilters("xyz");
         searchStoreQuery.setScrollId("");
-        searchBusinessStoreApiCalls.otherMerchant(did, searchStoreQuery);
+        searchBusinessStoreApiCalls.business(did, searchStoreQuery);
         System.out.println("Merchant list api called");
 
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
