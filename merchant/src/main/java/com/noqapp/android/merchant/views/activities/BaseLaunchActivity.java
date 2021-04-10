@@ -353,7 +353,7 @@ public abstract class BaseLaunchActivity
         }
         mDrawerList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
             if (menuDrawerItems.get(groupPosition).isGroup()) {
-                if (!menuDrawerItems.get(groupPosition).isHasChildren()) {
+                if (!menuDrawerItems.get(groupPosition).hasChildren()) {
                     int drawableId = menuDrawerItems.get(groupPosition).getIcon();
                     menuClick(drawableId);
                     mDrawerLayout.closeDrawer(GravityCompat.START);

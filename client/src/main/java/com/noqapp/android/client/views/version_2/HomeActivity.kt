@@ -22,7 +22,6 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.google.common.cache.CacheBuilder
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.model.database.utils.NotificationDB
@@ -43,6 +42,7 @@ import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 
 class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPreferences.OnSharedPreferenceChangeListener, HomeFragmentInteractionListener {
+    private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(addressOutput: String?, countryShortName: String?, area: String?, town: String?, district: String?, state: String?, stateShortName: String?, latitude: Double?, longitude: Double?) {
         activityHomeBinding.tvLocation.text = area
@@ -65,24 +65,20 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
     private val menuDrawerItems = mutableListOf<MenuDrawer>()
     private lateinit var activityHomeBinding: ActivityHomeBinding
-    private val TAG = HomeActivity::class.java.simpleName
     private var expandableListAdapter: DrawerExpandableListAdapter? = null
     private lateinit var navHostFragment: NavHostFragment
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(this)[HomeViewModel::class.java]
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
         setContentView(activityHomeBinding.root)
         setSupportActionBar(activityHomeBinding.toolbar)
-
         setUpExpandableList(UserUtils.isLogin())
-
         updateNotificationBadgeCount()
-
         setUpNavigation()
-
     }
 
     private fun setUpNavigation() {
@@ -139,7 +135,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         }
         activityHomeBinding.expandableDrawerListView.setOnGroupClickListener(OnGroupClickListener { parent: ExpandableListView?, v: View?, groupPosition: Int, id: Long ->
             if (menuDrawerItems.get(groupPosition).isGroup()) {
-                if (!menuDrawerItems.get(groupPosition).isHasChildren()) {
+                if (!menuDrawerItems.get(groupPosition).hasChildren()) {
                     val drawableId: Int = menuDrawerItems.get(groupPosition).getIcon()
                     menuClick(drawableId)
                     activityHomeBinding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -304,7 +300,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     }
 
     override fun deviceRegisterResponse(deviceRegistered: DeviceRegistered?) {
-
         /* dismissProgress(); no progress bar silent call here */
         AppInitialize.processRegisterDeviceIdResponse(deviceRegistered, this)
         val loginIntent = Intent(this, LoginActivity::class.java)
@@ -321,7 +316,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-
             if (activityHomeBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 activityHomeBinding.drawerLayout.closeDrawer(GravityCompat.START)
             } else {
@@ -336,7 +330,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     override fun onBackPressed() {
         if (activityHomeBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             activityHomeBinding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else
+        } else {
             super.onBackPressed()
+        }
     }
 }

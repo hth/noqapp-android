@@ -80,7 +80,7 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.list_group_header, null);
         }
         TextView tv_header_title = convertView.findViewById(R.id.tv_header_title);
-        if (headerItem.isHasChildren()) {
+        if (headerItem.hasChildren()) {
             tv_header_title.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,

@@ -192,7 +192,7 @@
                                 android:layout_marginStart="24dp"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="@string/txt_market_place"
+                                android:text="@string/txt_household"
                                 android:textColor="@color/text_header_color"
                                 android:textSize="@dimen/text_size_fourteen"
                                 app:layout_constraintEnd_toEndOf="parent"

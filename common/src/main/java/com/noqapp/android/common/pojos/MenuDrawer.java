@@ -6,21 +6,21 @@ import java.util.List;
 public class MenuDrawer {
     private String title;
     private int icon;
-    private boolean hasChildren, isGroup;
+    private boolean children, isGroup;
     private List<MenuDrawer> childList = new ArrayList<>();
 
-    public MenuDrawer(String title, boolean isGroup, boolean hasChildren, int icon) {
+    public MenuDrawer(String title, boolean isGroup, boolean children, int icon) {
         this.title = title;
         this.icon = icon;
         this.isGroup = isGroup;
-        this.hasChildren = hasChildren;
+        this.children = children;
     }
 
-    public MenuDrawer(String title, boolean isGroup, boolean hasChildren, int icon, List<MenuDrawer> childList) {
+    public MenuDrawer(String title, boolean isGroup, boolean children, int icon, List<MenuDrawer> childList) {
         this.title = title;
         this.icon = icon;
         this.isGroup = isGroup;
-        this.hasChildren = hasChildren;
+        this.children = children;
         this.childList = childList;
     }
 
@@ -40,12 +40,12 @@ public class MenuDrawer {
         this.icon = icon;
     }
 
-    public boolean isHasChildren() {
-        return hasChildren;
+    public boolean hasChildren() {
+        return children;
     }
 
-    public void setHasChildren(boolean hasChildren) {
-        this.hasChildren = hasChildren;
+    public void setChildren(boolean children) {
+        this.children = children;
     }
 
     public boolean isGroup() {
@@ -70,7 +70,7 @@ public class MenuDrawer {
         final StringBuilder sb = new StringBuilder("MenuDrawer{");
         sb.append("title='").append(title).append('\'');
         sb.append(", icon=").append(icon);
-        sb.append(", hasChildren=").append(hasChildren);
+        sb.append(", children=").append(children);
         sb.append(", isGroup=").append(isGroup);
         sb.append(", childList=").append(childList);
         sb.append('}');
