@@ -843,7 +843,7 @@ public class LaunchActivity
         }
         expandable_drawer_listView.setOnGroupClickListener((parent, v, groupPosition, id) -> {
             if (menuDrawerItems.get(groupPosition).isGroup()) {
-                if (!menuDrawerItems.get(groupPosition).isHasChildren()) {
+                if (!menuDrawerItems.get(groupPosition).hasChildren()) {
                     int drawableId = menuDrawerItems.get(groupPosition).getIcon();
                     menuClick(drawableId);
                     drawer.closeDrawer(GravityCompat.START);

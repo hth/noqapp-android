@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.noqapp.android.client.model.QueueApiAuthenticCall
 import com.noqapp.android.client.model.SearchBusinessStoreApiCalls
-import com.noqapp.android.client.model.response.api.TokenQueueApiUrls
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList

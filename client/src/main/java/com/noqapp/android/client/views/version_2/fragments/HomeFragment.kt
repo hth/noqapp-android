@@ -38,9 +38,11 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is HomeFragmentInteractionListener)
+        if (context is HomeFragmentInteractionListener) {
             homeFragmentInteractionListener = context
-        else throw IllegalStateException("HomeActivity must implement HomeFragmentInteractionListener.")
+        } else {
+            throw IllegalStateException("HomeActivity must implement HomeFragmentInteractionListener.")
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

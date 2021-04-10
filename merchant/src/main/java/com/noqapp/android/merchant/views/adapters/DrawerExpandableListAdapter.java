@@ -85,7 +85,7 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_group_header, null);
         }
         TextView tv_header_title = convertView.findViewById(R.id.tv_header_title);
-        if (headerItem.isHasChildren()) {
+        if (headerItem.hasChildren()) {
             tv_header_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, isExpanded ?
                     R.drawable.arrow_up_black : R.drawable.arrow_down_black, 0);
         } else {
