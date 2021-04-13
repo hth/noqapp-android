@@ -20,8 +20,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.model.database.utils.NotificationDB
@@ -41,7 +43,7 @@ import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 
-class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPreferences.OnSharedPreferenceChangeListener, HomeFragmentInteractionListener {
+class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPreferences.OnSharedPreferenceChangeListener, HomeFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
     private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(addressOutput: String?, countryShortName: String?, area: String?, town: String?, district: String?, state: String?, stateShortName: String?, latitude: Double?, longitude: Double?) {
@@ -67,6 +69,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private lateinit var activityHomeBinding: ActivityHomeBinding
     private var expandableListAdapter: DrawerExpandableListAdapter? = null
     private lateinit var navHostFragment: NavHostFragment
+    private lateinit var navController: NavController
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(this)[HomeViewModel::class.java]
     }
@@ -83,7 +86,9 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
     private fun setUpNavigation() {
         navHostFragment = supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
-        NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navHostFragment.navController)
+        navController = navHostFragment.navController
+        NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
+        activityHomeBinding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
     }
 
     private fun updateNotificationBadgeCount() {
@@ -272,7 +277,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
             builder.setTitle(null)
             val customDialogView = inflater.inflate(R.layout.dialog_general, null, false)
             val tvTitle = customDialogView.findViewById<TextView>(R.id.tvtitle)
-            val tvMsg = customDialogView.findViewById<TextView>(R.id.tv_msg)
+            val tvMsg = customDialogView.findViewById<TextView>(R.id.tvMsg)
             tvTitle.text = context.getString(R.string.networkerror)
             tvMsg.text = context.getString(R.string.offline)
             builder.setView(customDialogView)
@@ -333,5 +338,29 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuHome -> {
+                navController.navigate(R.id.homeFragment)
+                return true
+            }
+            R.id.menuNotification -> {
+                navController.navigate(R.id.notificationFragment)
+                return true
+            }
+            R.id.menuSearch -> {
+                return true
+            }
+            R.id.menuFavourite -> {
+                navController.navigate(R.id.favouritesFragment)
+                return true
+            }
+            R.id.menuPost -> {
+                return true
+            }
+        }
+        return false
     }
 }

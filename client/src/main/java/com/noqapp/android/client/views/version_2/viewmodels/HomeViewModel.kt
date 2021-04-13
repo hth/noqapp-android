@@ -1,15 +1,20 @@
 package com.noqapp.android.client.views.version_2.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.noqapp.android.client.model.FavouriteApiCall
 import com.noqapp.android.client.model.QueueApiAuthenticCall
 import com.noqapp.android.client.model.SearchBusinessStoreApiCalls
+import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.utils.NetworkUtils
+import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 
@@ -37,6 +42,16 @@ class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePr
 
     fun fetchActiveTokenQueueList() {
         queueApiAuthenticCall.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
+    }
+
+    fun fetchFavouritesList(context: Context, favouritesListPresenter: FavouriteListPresenter) {
+        if (NetworkUtils.isConnectingToInternet(context)) {
+            val favouriteApiCall = FavouriteApiCall()
+            favouriteApiCall.setFavouriteListPresenter(favouritesListPresenter)
+            favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
+        } else {
+            ShowAlertInformation.showNetworkDialog(context)
+        }
     }
 
     override fun nearMeTempleResponse(bizStoreElasticList: BizStoreElasticList?) {

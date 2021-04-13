@@ -2,10 +2,10 @@ package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -13,21 +13,22 @@ import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
+import com.noqapp.android.client.views.version_2.adapter.NotificationAdapter;
 import com.noqapp.android.common.pojos.DisplayNotification;
 
 import java.util.List;
 
 public class NotificationActivity extends BaseActivity implements NotificationListAdapter.DeleteRecord {
-    private ListView listview;
+    private RecyclerView rvNotification;
     private RelativeLayout rl_empty;
 
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
+        setContentView(R.layout.fragment_notification);
         initActionsViews(false);
-        listview = findViewById(R.id.listview);
-        rl_empty = findViewById(R.id.rl_empty);
+        rvNotification = findViewById(R.id.rvNotification);
+        rl_empty = findViewById(R.id.rlEmpty);
         tv_toolbar_title.setText(getString(R.string.screen_notification));
         iv_home.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_all));
         loadListData();
@@ -45,15 +46,18 @@ public class NotificationActivity extends BaseActivity implements NotificationLi
 
     private void loadListData() {
         List<DisplayNotification> notificationsList = NotificationDB.getNotificationsList();
-        NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList, this);
-        listview.setAdapter(adapter);
+        NotificationAdapter adapter = new NotificationAdapter(notificationsList, displayNotification -> {
+
+            return null;
+        });
+        rvNotification.setAdapter(adapter);
         if (notificationsList.size() <= 0) {
-            listview.setVisibility(View.GONE);
+            rvNotification.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
             iv_home.setVisibility(View.INVISIBLE);
         } else {
             iv_home.setVisibility(View.VISIBLE);
-            listview.setVisibility(View.VISIBLE);
+            rvNotification.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
             iv_home.setOnClickListener(v -> {
                 ShowCustomDialog showDialog = new ShowCustomDialog(NotificationActivity.this, true);
