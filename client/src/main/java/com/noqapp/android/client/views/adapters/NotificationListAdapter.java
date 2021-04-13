@@ -54,13 +54,13 @@ public class NotificationListAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (view == null) {
             recordHolder = new RecordHolder();
-            view = layoutInflater.inflate(R.layout.listitem_notification, viewGroup, false);
-            recordHolder.tv_msg = view.findViewById(R.id.tv_msg);
-            recordHolder.tv_title = view.findViewById(R.id.tv_title);
-            recordHolder.tv_create = view.findViewById(R.id.tv_create);
-            recordHolder.iv_business = view.findViewById(R.id.iv_business);
-            recordHolder.iv_big_image = view.findViewById(R.id.iv_big_image);
-            recordHolder.iv_delete = view.findViewById(R.id.iv_delete);
+            view = layoutInflater.inflate(R.layout.list_item_notification, viewGroup, false);
+            recordHolder.tv_msg = view.findViewById(R.id.tvMsg);
+            recordHolder.tv_title = view.findViewById(R.id.tvTitle);
+            recordHolder.tv_create = view.findViewById(R.id.tvCreate);
+            recordHolder.iv_business = view.findViewById(R.id.ivBusiness);
+            recordHolder.iv_big_image = view.findViewById(R.id.ivBigImage);
+            recordHolder.iv_delete = view.findViewById(R.id.ivDelete);
             recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
