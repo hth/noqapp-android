@@ -75,7 +75,9 @@ public class DatabaseTable {
         public static final String CREATE_DATE = "createDate";
         public static final String BUSINESS_TYPE = "businessType";
         public static final String IMAGE_URL = "imageUrl";
-
+        public static final String KEY_READ = "1";
+        public static final String KEY_UNREAD = "0";
+        public static final String KEY_NOTIFY = "KY_NOTI";
 
         private Notification() {
         }

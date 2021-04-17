@@ -68,6 +68,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private val menuDrawerItems = mutableListOf<MenuDrawer>()
     private lateinit var activityHomeBinding: ActivityHomeBinding
     private var expandableListAdapter: DrawerExpandableListAdapter? = null
+    private val fcmNotificationReceiver: LaunchActivity.FcmNotificationReceiver? = null
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private val homeViewModel: HomeViewModel by lazy {

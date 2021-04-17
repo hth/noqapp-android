@@ -1,21 +1,42 @@
 package com.noqapp.android.common.pojos;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 /**
  * Created by chandra on 3/16/18.
  */
+@Entity(tableName = "notification")
 public class DisplayNotification {
 
-    private String title;
-    private String msg;
-    private String status;
-    private String notificationCreate;
-    private BusinessTypeEnum businessType;
-    private String imageUrl;
-    private Integer sequence;
+    @PrimaryKey
+    @ColumnInfo(name = "key")
     private String key;
+    @ColumnInfo(name = "title")
+    private String title;
+    @ColumnInfo(name = "msg")
+    private String msg;
+    @ColumnInfo(name = "status")
+    private String status;
+    @ColumnInfo(name = "notification_create")
+    private String notificationCreate;
+    @ColumnInfo(name = "business_type")
+    private BusinessTypeEnum businessType;
+    @ColumnInfo(name = "image_url")
+    private String imageUrl;
+    @ColumnInfo(name = "sequence")
+    private Integer sequence;
+    @ColumnInfo(name = "code_qr")
     private String codeQR;
+    @ColumnInfo(name = "type")
+    private String type;
+    @ColumnInfo(name = "body")
+    private String body;
+    @ColumnInfo(name = "created_date")
+    private String createdDate;
 
     public DisplayNotification() {
 
@@ -102,6 +123,33 @@ public class DisplayNotification {
         return this;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public DisplayNotification setType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public DisplayNotification setBody(String body) {
+        this.body = body;
+        return this;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public DisplayNotification setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DisplayNotification{");
@@ -114,6 +162,9 @@ public class DisplayNotification {
         sb.append(", sequence=").append(sequence);
         sb.append(", key='").append(key).append('\'');
         sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", body='").append(body).append('\'');
+        sb.append(", createdDate='").append(createdDate).append('\'');
         sb.append('}');
         return sb.toString();
     }

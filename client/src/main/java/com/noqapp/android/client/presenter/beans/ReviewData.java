@@ -1,13 +1,26 @@
 package com.noqapp.android.client.presenter.beans;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "review_data")
 public class ReviewData {
 
-    private String codeQR;
+    @PrimaryKey
+    @ColumnInfo(name = "token")
     private String token;
+    @ColumnInfo(name = "code_qr")
+    private String codeQR;
+    @ColumnInfo(name = "q_user_id")
     private String qUserId;
+    @ColumnInfo(name = "is_review_shown")
     private String isReviewShown;
+    @ColumnInfo(name = "is_skipped")
     private String isSkipped;
+    @ColumnInfo(name = "go_to_counter")
     private String gotoCounter;
+    @ColumnInfo(name = "is_buzzer_show")
     private String isBuzzerShow;
 
     public String getCodeQR() {
