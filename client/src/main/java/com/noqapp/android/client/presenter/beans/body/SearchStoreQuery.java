@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 4/2/17 6:37 PM
@@ -51,6 +53,12 @@ public class SearchStoreQuery {
 
     @JsonProperty("bt")
     private BusinessTypeEnum searchedOnBusinessType = BusinessTypeEnum.ZZ;
+
+    @JsonProperty("ps")
+    private List<String> pastSearch;
+
+    @JsonProperty("ss")
+    private List<String> suggestedSearch;
 
     public String getQuery() {
         return query;
@@ -121,6 +129,24 @@ public class SearchStoreQuery {
 
     public SearchStoreQuery setSearchedOnBusinessType(BusinessTypeEnum searchedOnBusinessType) {
         this.searchedOnBusinessType = searchedOnBusinessType;
+        return this;
+    }
+
+    public List<String> getPastSearch() {
+        return pastSearch;
+    }
+
+    public SearchStoreQuery setPastSearch(List<String> pastSearch) {
+        this.pastSearch = pastSearch;
+        return this;
+    }
+
+    public List<String> getSuggestedSearch() {
+        return suggestedSearch;
+    }
+
+    public SearchStoreQuery setSuggestedSearch(List<String> suggestedSearch) {
+        this.suggestedSearch = suggestedSearch;
         return this;
     }
 
