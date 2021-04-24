@@ -1,5 +1,6 @@
 package com.noqapp.android.client.presenter.beans;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,13 +8,14 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "review_data")
 public class ReviewData {
 
+    @NonNull
     @PrimaryKey
     @ColumnInfo(name = "token")
-    private String token;
+    private String token = "";
     @ColumnInfo(name = "code_qr")
     private String codeQR;
-    @ColumnInfo(name = "q_user_id")
-    private String qUserId;
+    @ColumnInfo(name = "queue_user_id")
+    private String queueUserId;
     @ColumnInfo(name = "is_review_shown")
     private String isReviewShown;
     @ColumnInfo(name = "is_skipped")
@@ -23,67 +25,61 @@ public class ReviewData {
     @ColumnInfo(name = "is_buzzer_show")
     private String isBuzzerShow;
 
-    public String getCodeQR() {
-        return codeQR;
-    }
-
-    public ReviewData setCodeQR(String codeQR) {
-        this.codeQR = codeQR;
-        return this;
-    }
-
+    @NonNull
     public String getToken() {
         return token;
     }
 
-    public ReviewData setToken(String token) {
+    public void setToken(@NonNull String token) {
         this.token = token;
-        return this;
     }
 
-    public String getqUserId() {
-        return qUserId;
+    public String getCodeQR() {
+        return codeQR;
     }
 
-    public ReviewData setqUserId(String qUserId) {
-        this.qUserId = qUserId;
-        return this;
+    public void setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public void setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
     }
 
     public String getIsReviewShown() {
         return isReviewShown;
     }
 
-    public ReviewData setIsReviewShown(String isReviewShown) {
+    public void setIsReviewShown(String isReviewShown) {
         this.isReviewShown = isReviewShown;
-        return this;
     }
 
     public String getIsSkipped() {
         return isSkipped;
     }
 
-    public ReviewData setIsSkipped(String isSkipped) {
+    public void setIsSkipped(String isSkipped) {
         this.isSkipped = isSkipped;
-        return this;
     }
 
     public String getGotoCounter() {
         return gotoCounter;
     }
 
-    public ReviewData setGotoCounter(String gotoCounter) {
+    public void setGotoCounter(String gotoCounter) {
         this.gotoCounter = gotoCounter;
-        return this;
     }
 
     public String getIsBuzzerShow() {
         return isBuzzerShow;
     }
 
-    public ReviewData setIsBuzzerShow(String isBuzzerShow) {
+    public void setIsBuzzerShow(String isBuzzerShow) {
         this.isBuzzerShow = isBuzzerShow;
-        return this;
     }
 
     @Override
@@ -91,7 +87,7 @@ public class ReviewData {
         return "ReviewData{" +
                 ", codeQR='" + codeQR + '\'' +
                 ", token='" + token + '\'' +
-                ", qUserId='" + qUserId + '\'' +
+                ", qUserId='" + queueUserId + '\'' +
                 ", isReviewShown='" + isReviewShown + '\'' +
                 ", isSkipped='" + isSkipped + '\'' +
                 ", gotoCounter='" + gotoCounter + '\'' +

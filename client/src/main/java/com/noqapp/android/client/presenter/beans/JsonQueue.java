@@ -124,7 +124,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("ds")
     private String displayServingNumber;
 
-    @JsonProperty ("dt")
+    @JsonProperty("dt")
     private String displayToken;
 
     @JsonProperty("l")
@@ -790,30 +790,30 @@ public class JsonQueue implements Serializable {
     }
 
     public JsonTokenAndQueue getJsonTokenAndQueue() {
-        JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue()
-            .setCodeQR(codeQR)
-            .setGeoHash(geoHash)
-            .setBusinessName(businessName)
-            .setDisplayName(displayName)
-            .setStoreAddress(storeAddress)
-            .setArea(area)
-            .setTown(town)
-            .setCountryShortName(countryShortName)
-            .setStorePhone(storePhone)
-            .setTokenAvailableFrom(tokenAvailableFrom)
-            .setStartHour(startHour)
-            .setEndHour(endHour)
-            .setDelayedInMinutes(delayedInMinutes)
-            .setTopic(topic)
-            .setServingNumber(servingNumber)
-            .setDisplayServingNumber(displayServingNumber)
-            .setLastNumber(lastNumber)
-            .setQueueStatus(queueStatus)
-            .setServiceEndTime(serviceEndTime)
-            .setAverageServiceTime(averageServiceTime)
-            .setCreateDate(created)
-            .setBusinessType(businessType)
-            .setPurchaseOrderState(PurchaseOrderStateEnum.IN);
+        JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
+        jsonTokenAndQueue.setCodeQR(codeQR);
+        jsonTokenAndQueue.setGeoHash(geoHash);
+        jsonTokenAndQueue.setBusinessName(businessName);
+        jsonTokenAndQueue.setDisplayName(displayName);
+        jsonTokenAndQueue.setStoreAddress(storeAddress);
+        jsonTokenAndQueue.setArea(area);
+        jsonTokenAndQueue.setTown(town);
+        jsonTokenAndQueue.setCountryShortName(countryShortName);
+        jsonTokenAndQueue.setStorePhone(storePhone);
+        jsonTokenAndQueue.setTokenAvailableFrom(tokenAvailableFrom);
+        jsonTokenAndQueue.setStartHour(startHour);
+        jsonTokenAndQueue.setEndHour(endHour);
+        jsonTokenAndQueue.setDelayedInMinutes(delayedInMinutes);
+        jsonTokenAndQueue.setTopic(topic);
+        jsonTokenAndQueue.setServingNumber(servingNumber);
+        jsonTokenAndQueue.setDisplayServingNumber(displayServingNumber);
+        jsonTokenAndQueue.setLastNumber(lastNumber);
+        jsonTokenAndQueue.setQueueStatus(queueStatus);
+        jsonTokenAndQueue.setServiceEndTime(serviceEndTime);
+        jsonTokenAndQueue.setAverageServiceTime(averageServiceTime);
+        jsonTokenAndQueue.setCreateDate(created);
+        jsonTokenAndQueue.setBusinessType(businessType);
+        jsonTokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.IN);
         return jsonTokenAndQueue;
     }
 
