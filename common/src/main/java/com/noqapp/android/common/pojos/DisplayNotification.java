@@ -1,5 +1,6 @@
 package com.noqapp.android.common.pojos;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -12,9 +13,10 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 @Entity(tableName = "notification")
 public class DisplayNotification {
 
+    @NonNull
     @PrimaryKey
     @ColumnInfo(name = "key")
-    private String key;
+    private String key="";
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "msg")
@@ -46,108 +48,96 @@ public class DisplayNotification {
         return title;
     }
 
-    public DisplayNotification setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    public DisplayNotification setMsg(String msg) {
+    public void setMsg(String msg) {
         this.msg = msg;
-        return this;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public DisplayNotification setStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
-        return this;
     }
 
     public String getNotificationCreate() {
         return notificationCreate;
     }
 
-    public DisplayNotification setNotificationCreate(String notificationCreate) {
+    public void setNotificationCreate(String notificationCreate) {
         this.notificationCreate = notificationCreate;
-        return this;
     }
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
 
-    public DisplayNotification setBusinessType(BusinessTypeEnum businessType) {
+    public void setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
-        return this;
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public DisplayNotification setImageUrl(String imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        return this;
     }
 
     public Integer getSequence() {
         return sequence;
     }
 
-    public DisplayNotification setSequence(Integer sequence) {
+    public void setSequence(Integer sequence) {
         this.sequence = sequence;
-        return this;
     }
 
     public String getKey() {
         return key;
     }
 
-    public DisplayNotification setKey(String key) {
+    public void setKey(String key) {
         this.key = key;
-        return this;
     }
 
     public String getCodeQR() {
         return codeQR;
     }
 
-    public DisplayNotification setCodeQR(String codeQR) {
+    public void setCodeQR(String codeQR) {
         this.codeQR = codeQR;
-        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public DisplayNotification setType(String type) {
+    public void setType(String type) {
         this.type = type;
-        return this;
     }
 
     public String getBody() {
         return body;
     }
 
-    public DisplayNotification setBody(String body) {
+    public void setBody(String body) {
         this.body = body;
-        return this;
     }
 
     public String getCreatedDate() {
         return createdDate;
     }
 
-    public DisplayNotification setCreatedDate(String createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
-        return this;
     }
 
     @Override

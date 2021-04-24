@@ -71,7 +71,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     private static final String KEY_USER_PROFILE = "userProfile";
     private static final String KEY_FAVOURITE_CODE_QRS = "favouriteCodeQR";
     /* Secured Shared Preference. */
-    static final String TOKEN_FCM = "tokenFCM";
+    public static final String TOKEN_FCM = "tokenFCM";
     public static ActivityCommunicator activityCommunicator;
     public static Location location;
     public static String cityName = "";

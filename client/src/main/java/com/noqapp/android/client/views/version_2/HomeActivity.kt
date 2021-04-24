@@ -83,6 +83,16 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         setUpExpandableList(UserUtils.isLogin())
         updateNotificationBadgeCount()
         setUpNavigation()
+
+        activityHomeBinding.llOldVersion.setOnClickListener {
+            val intent = Intent(this, LaunchActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                putExtra(AppInitialize.TOKEN_FCM, intent.getStringExtra(AppInitialize.TOKEN_FCM))
+                putExtra("deviceId", intent.getStringExtra("deviceId"))
+            }
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun setUpNavigation() {

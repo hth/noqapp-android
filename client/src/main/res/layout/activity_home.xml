@@ -46,8 +46,8 @@
                         android:textColor="#000000"
                         android:textSize="@dimen/toolbar_text_size"
                         android:textStyle="bold"
-                        app:drawableStartCompat="@drawable/map_icon"
-                        app:drawableEndCompat="@drawable/ic_arrow_down" />
+                        app:drawableEndCompat="@drawable/ic_arrow_down"
+                        app:drawableStartCompat="@drawable/map_icon" />
 
                     <RelativeLayout
                         android:id="@+id/rl_right"
@@ -101,14 +101,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            app:itemTextColor="@color/bottom_nav_color"
             app:itemIconTint="@color/bottom_nav_color"
-            app:itemTextAppearanceActive="@color/colorAccent"
             app:itemRippleColor='@color/black_transparent'
+            app:itemTextAppearanceActive="@color/colorAccent"
+            app:itemTextColor="@color/bottom_nav_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_nav_menu" />
+
+        <LinearLayout
+            android:id="@+id/llOldVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            android:background="@drawable/bg_rounded_rectangle"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivOldVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_home" />
+
+            <TextView
+                android:id="@+id/tvOldVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Old version" />
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

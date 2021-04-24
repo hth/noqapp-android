@@ -41,7 +41,7 @@ public class ReviewDB {
                         ReviewData reviewData = new ReviewData();
                         reviewData.setCodeQR(cursor.getString(0));
                         reviewData.setToken(cursor.getString(1));
-                        reviewData.setqUserId(cursor.getString(2));
+                        reviewData.setQueueUserId(cursor.getString(2));
                         reviewData.setIsReviewShown(cursor.getString(3));
                         reviewData.setIsSkipped(cursor.getString(4));
                         reviewData.setGotoCounter(cursor.getString(5));
@@ -69,7 +69,7 @@ public class ReviewDB {
                     cursor.moveToNext();
                     reviewData.setCodeQR(cursor.getString(0));
                     reviewData.setToken(cursor.getString(1));
-                    reviewData.setqUserId(cursor.getString(2));
+                    reviewData.setQueueUserId(cursor.getString(2));
                     reviewData.setIsReviewShown(cursor.getString(3));
                     reviewData.setIsSkipped(cursor.getString(4));
                     reviewData.setGotoCounter(cursor.getString(5));
@@ -91,7 +91,7 @@ public class ReviewDB {
                     cursor.moveToNext();
                     reviewData.setCodeQR(cursor.getString(0));
                     reviewData.setToken(cursor.getString(1));
-                    reviewData.setqUserId(cursor.getString(2));
+                    reviewData.setQueueUserId(cursor.getString(2));
                     reviewData.setIsReviewShown(cursor.getString(3));
                     reviewData.setIsSkipped(cursor.getString(4));
                     reviewData.setGotoCounter(cursor.getString(5));
