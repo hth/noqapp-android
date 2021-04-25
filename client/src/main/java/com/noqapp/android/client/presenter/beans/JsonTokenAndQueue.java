@@ -16,11 +16,8 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-
-import javax.annotation.Nonnull;
 
 /**
  * User: hitender
@@ -189,8 +186,8 @@ public class JsonTokenAndQueue implements Serializable {
     @ColumnInfo(name = "transaction_id")
     private String transactionId;
 
-    @ColumnInfo(name = "is_history_queue")
-    private Integer isHistoryQueue;
+    @ColumnInfo(name = "history_queue")
+    private Integer historyQueue;
 
     public String getCodeQR() {
         return codeQR;
@@ -496,53 +493,53 @@ public class JsonTokenAndQueue implements Serializable {
         this.timeSlotMessage = timeSlotMessage;
     }
 
-    public void setIsHistoryQueue(Integer isHistoryQueue) {
-        this.isHistoryQueue = isHistoryQueue;
+    public void setHistoryQueue(Integer historyQueue) {
+        this.historyQueue = historyQueue;
     }
 
-    public Integer getIsHistoryQueue() {
-        return isHistoryQueue;
+    public Integer getHistoryQueue() {
+        return historyQueue;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("codeQR", codeQR)
-                .append("geoHash", geoHash)
-                .append("businessName", businessName)
-                .append("displayImage", displayImage)
-                .append("displayName", displayName)
-                .append("storeAddress", storeAddress)
-                .append("area", area)
-                .append("town", town)
-                .append("countryShortName", countryShortName)
-                .append("storePhone", storePhone)
-                .append("businessType", businessType)
-                .append("tokenAvailableFrom", tokenAvailableFrom)
-                .append("startHour", startHour)
-                .append("endHour", endHour)
-                .append("lunchTimeStart", lunchTimeStart)
-                .append("lunchTimeEnd", lunchTimeEnd)
-                .append("delayedInMinutes", delayedInMinutes)
-                .append("topic", topic)
-                .append("servingNumber", servingNumber)
-                .append("displayServingNumber", displayServingNumber)
-                .append("lastNumber", lastNumber)
-                .append("token", token)
-                .append("displayToken", displayToken)
-                .append("queueUserId", queueUserId)
-                .append("queueStatus", queueStatus)
-                .append("purchaseOrderState", purchaseOrderState)
-                .append("serviceEndTime", serviceEndTime)
-                .append("ratingCount", ratingCount)
-                .append("averageServiceTime", averageServiceTime)
-                .append("hoursSaved", hoursSaved)
-                .append("createDate", createDate)
-                .append("jsonPurchaseOrder", jsonPurchaseOrder)
-                .append("bizCategoryId", bizCategoryId)
-                .append("transactionId", transactionId)
-                .append("timeSlotMessage", timeSlotMessage)
-                .append("isHistoryQueue", isHistoryQueue)
-                .toString();
+            .append("codeQR", codeQR)
+            .append("geoHash", geoHash)
+            .append("businessName", businessName)
+            .append("displayImage", displayImage)
+            .append("displayName", displayName)
+            .append("storeAddress", storeAddress)
+            .append("area", area)
+            .append("town", town)
+            .append("countryShortName", countryShortName)
+            .append("storePhone", storePhone)
+            .append("businessType", businessType)
+            .append("tokenAvailableFrom", tokenAvailableFrom)
+            .append("startHour", startHour)
+            .append("endHour", endHour)
+            .append("lunchTimeStart", lunchTimeStart)
+            .append("lunchTimeEnd", lunchTimeEnd)
+            .append("delayedInMinutes", delayedInMinutes)
+            .append("topic", topic)
+            .append("servingNumber", servingNumber)
+            .append("displayServingNumber", displayServingNumber)
+            .append("lastNumber", lastNumber)
+            .append("token", token)
+            .append("displayToken", displayToken)
+            .append("queueUserId", queueUserId)
+            .append("queueStatus", queueStatus)
+            .append("purchaseOrderState", purchaseOrderState)
+            .append("serviceEndTime", serviceEndTime)
+            .append("ratingCount", ratingCount)
+            .append("averageServiceTime", averageServiceTime)
+            .append("hoursSaved", hoursSaved)
+            .append("createDate", createDate)
+            .append("jsonPurchaseOrder", jsonPurchaseOrder)
+            .append("bizCategoryId", bizCategoryId)
+            .append("transactionId", transactionId)
+            .append("timeSlotMessage", timeSlotMessage)
+            .append("historyQueue", historyQueue)
+            .toString();
     }
 }
