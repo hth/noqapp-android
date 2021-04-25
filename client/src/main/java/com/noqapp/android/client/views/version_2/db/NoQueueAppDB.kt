@@ -15,20 +15,20 @@ import com.noqapp.android.common.pojos.DisplayNotification
 
 @Database(entities = [DisplayNotification::class, ReviewData::class, JsonTokenAndQueue::class], version = 1)
 @TypeConverters(BusinessTypeConverter::class, QueueStatusTypeConverter::class, PurchaseOrderStateTypeConverter::class, JsonPurchaseOrderTypeConverter::class)
-abstract class NoqAppDB : RoomDatabase() {
+abstract class NoQueueAppDB : RoomDatabase() {
 
     abstract fun notificationDao(): NotificationDao
     abstract fun reviewDao(): ReviewDao
     abstract fun tokenAndQueueDao(): TokenAndQueueDao
 
     companion object {
-        private var instance: NoqAppDB? = null
+        private var instance: NoQueueAppDB? = null
 
         @Synchronized
-        fun getNoqAppDbInstance(context: Context): NoqAppDB {
+        fun dbInstance(context: Context): NoQueueAppDB {
             if (instance == null) {
-                synchronized(NoqAppDB::class) {
-                    instance = Room.databaseBuilder(context, NoqAppDB::class.java, "noq_app_database").build()
+                synchronized(NoQueueAppDB::class) {
+                    instance = Room.databaseBuilder(context, NoQueueAppDB::class.java, "noq_app_database").build()
                 }
             }
             return instance!!

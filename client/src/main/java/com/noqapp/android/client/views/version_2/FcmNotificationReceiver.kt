@@ -15,7 +15,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.views.activities.AppInitialize
 import com.noqapp.android.client.views.activities.BlinkerActivity
 import com.noqapp.android.client.views.activities.LaunchActivity
-import com.noqapp.android.client.views.version_2.db.NoqAppDB.Companion.getNoqAppDbInstance
+import com.noqapp.android.client.views.version_2.db.NoQueueAppDB.Companion.dbInstance
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.fcm.data.*
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
@@ -89,7 +89,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                 displayNotification.setImageUrl(jsonData.imageURL)
                 displayNotification.setStatus(DatabaseTable.Notification.KEY_UNREAD)
                 displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
-                getNoqAppDbInstance(context).notificationDao().insertNotification(displayNotification)
+                dbInstance(context).notificationDao().insertNotification(displayNotification)
 
             } else if (jsonData is JsonMedicalFollowUp) {
                 Log.e("JsonMedicalFollowUp", jsonData.toString())
@@ -103,7 +103,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                 displayNotification.setImageUrl(jsonData.imageURL)
                 displayNotification.setStatus(DatabaseTable.Notification.KEY_UNREAD)
                 displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
-                getNoqAppDbInstance(context).notificationDao().insertNotification(displayNotification)
+                dbInstance(context).notificationDao().insertNotification(displayNotification)
 
             }
             if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.P.getName(), ignoreCase = true)) {
@@ -118,7 +118,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     displayNotification.setImageUrl(jsonData.imageURL)
                     displayNotification.setStatus(DatabaseTable.Notification.KEY_UNREAD)
                     displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
-                    getNoqAppDbInstance(context).notificationDao().insertNotification(displayNotification)
+                    dbInstance(context).notificationDao().insertNotification(displayNotification)
 
                     //Show some meaningful msg to the end user
                     ShowAlertInformation.showInfoDisplayDialog(context, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(LaunchActivity.language))
@@ -130,9 +130,9 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                              * Save codeQR of review & show the review screen on app
                              * resume if there is any record in Review DB for queue review key
                              */
-                        getNoqAppDbInstance(context).reviewDao().getReviewData(codeQR, token).value?.let {
+                        dbInstance(context).reviewDao().getReviewData(codeQR, token).value?.let {
                             it.isReviewShown = "1"
-                            getNoqAppDbInstance(context).reviewDao().update(it)
+                            dbInstance(context).reviewDao().update(it)
                         } ?: run {
                             val reviewData = ReviewData()
                             reviewData.setIsReviewShown("1")
@@ -142,7 +142,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                             reviewData.setIsBuzzerShow("-1")
                             reviewData.setIsSkipped("-1")
                             reviewData.setGotoCounter("")
-                            getNoqAppDbInstance(context).reviewDao().insertReviewData(reviewData)
+                            dbInstance(context).reviewDao().insertReviewData(reviewData)
                         }
 
 
@@ -159,9 +159,9 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                         }
                     } else if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.N.getName(), ignoreCase = true)) {
 
-                        getNoqAppDbInstance(context).reviewDao().getReviewData(codeQR, token).value?.let {
+                        dbInstance(context).reviewDao().getReviewData(codeQR, token).value?.let {
                             it.isReviewShown = "1"
-                            getNoqAppDbInstance(context).reviewDao().update(it)
+                            dbInstance(context).reviewDao().update(it)
                         } ?: run {
                             val reviewData = ReviewData()
                             reviewData.setIsReviewShown("-1")
@@ -171,7 +171,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                             reviewData.setIsBuzzerShow("-1")
                             reviewData.setIsSkipped("-1")
                             reviewData.setGotoCounter("")
-                            getNoqAppDbInstance(context).reviewDao().insertReviewData(reviewData)
+                            dbInstance(context).reviewDao().insertReviewData(reviewData)
                         }
 
                         //       callSkipScreen(codeQR, token, qid)
@@ -187,9 +187,9 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                              * resume if there is any record in Review DB for queue review key
                              */
 
-                        getNoqAppDbInstance(context).reviewDao().getReviewData(codeQR, token).value?.let {
+                        dbInstance(context).reviewDao().getReviewData(codeQR, token).value?.let {
                             it.isReviewShown = "1"
-                            getNoqAppDbInstance(context).reviewDao().update(it)
+                            dbInstance(context).reviewDao().update(it)
                         } ?: run {
                             val reviewData = ReviewData()
                             reviewData.setIsReviewShown("1")
@@ -199,7 +199,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                             reviewData.setIsBuzzerShow("-1")
                             reviewData.setIsSkipped("-1")
                             reviewData.setGotoCounter("")
-                            getNoqAppDbInstance(context).reviewDao().insertReviewData(reviewData)
+                            dbInstance(context).reviewDao().insertReviewData(reviewData)
                         }
 
 
@@ -220,7 +220,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     val jsonTokenAndQueueList = jsonData.tokenAndQueues
 
                     if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size > 0) {
-                        getNoqAppDbInstance(context).tokenAndQueueDao().saveCurrentQueue(jsonTokenAndQueueList)
+                        dbInstance(context).tokenAndQueueDao().saveCurrentQueue(jsonTokenAndQueueList)
                     }
 
                     val displayNotification = DisplayNotification()
@@ -232,7 +232,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     displayNotification.setImageUrl(jsonData.imageURL)
                     displayNotification.setStatus(DatabaseTable.Notification.KEY_UNREAD)
                     displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
-                    getNoqAppDbInstance(context).notificationDao().insertNotification(displayNotification)
+                    dbInstance(context).notificationDao().insertNotification(displayNotification)
 
 
 
@@ -252,13 +252,13 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     displayNotification.setImageUrl(jsonData.imageURL)
                     displayNotification.setStatus(DatabaseTable.Notification.KEY_UNREAD)
                     displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
-                    getNoqAppDbInstance(context).notificationDao().insertNotification(displayNotification)
+                    dbInstance(context).notificationDao().insertNotification(displayNotification)
                     /* Show some meaningful msg to the end user */
                     ShowAlertInformation.showInfoDisplayDialog(context, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(LaunchActivity.language))
 
                 } else if (jsonData is JsonChangeServiceTimeData) {
 
-                    getNoqAppDbInstance(context).tokenAndQueueDao().findByQRCode(jsonData.codeQR).value?.let { jsonTokenAndQueue ->
+                    dbInstance(context).tokenAndQueueDao().findByQRCode(jsonData.codeQR).value?.let { jsonTokenAndQueue ->
                         val jsonQueueChangeServiceTimes = jsonData.jsonQueueChangeServiceTimes
                         for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
                             if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
@@ -273,7 +273,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                                 displayNotification.setImageUrl(jsonData.imageURL)
                                 displayNotification.setStatus(DatabaseTable.Notification.KEY_UNREAD)
                                 displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
-                                getNoqAppDbInstance(context).notificationDao().insertNotification(displayNotification)
+                                dbInstance(context).notificationDao().insertNotification(displayNotification)
 
                             }
                         }
@@ -316,7 +316,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                 msgId = jsonTopicOrderData.messageId
             }
 
-            getNoqAppDbInstance(context).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).value?.let {
+            dbInstance(context).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).value?.let {
                 val jsonTokenAndQueueArrayList = it
                 for (i in jsonTokenAndQueueArrayList.indices) {
                     val jtk = jsonTokenAndQueueArrayList[i]
@@ -326,7 +326,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                             /* Do nothing - In Case of getting service no less than what the object have */
                         } else {
                             jtk.servingNumber = currentServing.toInt()
-                            getNoqAppDbInstance(context).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jtk.token)
+                            dbInstance(context).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jtk.token)
                         }
                         if (jsonData is JsonTopicOrderData && jtk.token - currentServing.toInt() <= 0) {
                             jtk.purchaseOrderState = purchaseOrderStateEnum
@@ -336,9 +336,9 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                          * Review DB for review key && current serving == token no.
                          */
                         if (currentServing.toInt() == jtk.token) {
-                            getNoqAppDbInstance(context).reviewDao().getReviewData(codeQR, currentServing).value?.let {
+                            dbInstance(context).reviewDao().getReviewData(codeQR, currentServing).value?.let {
                                 it.gotoCounter = go_to
-                                getNoqAppDbInstance(context).reviewDao().update(it)
+                                dbInstance(context).reviewDao().update(it)
                             } ?: run {
                                 val reviewData = ReviewData()
                                 reviewData.setIsReviewShown("-1")
@@ -348,7 +348,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                                 reviewData.setIsBuzzerShow("-1")
                                 reviewData.setIsSkipped("-1")
                                 reviewData.setGotoCounter("")
-                                getNoqAppDbInstance(context).reviewDao().insertReviewData(reviewData)
+                                dbInstance(context).reviewDao().insertReviewData(reviewData)
                             }
 
                         }
@@ -400,7 +400,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                             if (jsonData is JsonTopicOrderData) {
                                 if (messageOrigin.equals(MessageOriginEnum.O.name, ignoreCase = true) && currentServing.toInt() == jtk.token) {
                                     jtk.purchaseOrderState = jsonData.purchaseOrderState
-                                    getNoqAppDbInstance(context).tokenAndQueueDao().updateCurrentListOrderObject(codeQR, jtk.purchaseOrderState.getName(), jtk.token)
+                                    dbInstance(context).tokenAndQueueDao().updateCurrentListOrderObject(codeQR, jtk.purchaseOrderState.getName(), jtk.token)
                                 }
                             }
                         } catch (e: java.lang.Exception) {
