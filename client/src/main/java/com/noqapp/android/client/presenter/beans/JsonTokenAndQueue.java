@@ -151,7 +151,7 @@ public class JsonTokenAndQueue implements Serializable {
     private QueueStatusEnum queueStatus;
 
     @JsonProperty ("os")
-    @ColumnInfo(name = "puchase_order_state")
+    @ColumnInfo(name = "purchase_order_state")
     private PurchaseOrderStateEnum purchaseOrderState;
 
     @JsonProperty("se")
