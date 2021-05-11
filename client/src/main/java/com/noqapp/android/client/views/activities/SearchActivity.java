@@ -346,6 +346,11 @@ public class SearchActivity
     }
 
     @Override
+    public void businessList(BizStoreElasticList bizStoreElasticList) {
+
+    }
+
+    @Override
     public void nearMeTempleError() {
         // Do nothing
     }

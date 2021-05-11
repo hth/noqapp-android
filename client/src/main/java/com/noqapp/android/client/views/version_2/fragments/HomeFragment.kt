@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -21,7 +22,9 @@ import com.noqapp.android.client.views.activities.StoreWithMenuActivity
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter
 import com.noqapp.android.client.views.adapters.TokenAndQueueAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
+import com.noqapp.android.client.views.fragments.HomeFragment
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
+import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.utils.GeoIP
 import java.util.*
 
@@ -32,7 +35,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private var searchStoreQuery: SearchStoreQuery? = null
 
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -56,7 +59,47 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
         homeViewModel.fetchActiveTokenQueueList()
 
+        setClickListeners()
+
         observeValues()
+    }
+
+    private fun setClickListeners() {
+        fragmentHomeNewBinding.ivRestaurant.setOnClickListener {
+            
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
+            findNavController().navigate(navigationDirections)
+        }
+
+        fragmentHomeNewBinding.ivHospital.setOnClickListener {
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
+            findNavController().navigate(navigationDirections)
+        }
+
+        fragmentHomeNewBinding.ivUsrCsd.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.CD))
+        }
+
+        fragmentHomeNewBinding.ivGrocery.setOnClickListener {
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
+            findNavController().navigate(navigationDirections)
+        }
+
+        fragmentHomeNewBinding.ivSchool.setOnClickListener {
+     //       val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
+       //     findNavController().navigate(navigationDirections)
+        }
+
+        fragmentHomeNewBinding.ivCafeteria.setOnClickListener {
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.CF)
+            findNavController().navigate(navigationDirections)
+        }
+
+        fragmentHomeNewBinding.ivGenericStore.setOnClickListener {
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.ST)
+            findNavController().navigate(navigationDirections)
+        }
+
     }
 
     private fun observeValues() {
@@ -83,14 +126,14 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
-        homeViewModel.currentQueueResponse.observe(viewLifecycleOwner, Observer { tokenAndQueuesList ->
+        homeViewModel.getCurrentTokenAndQueue().observe(viewLifecycleOwner, Observer { tokenAndQueuesList ->
             tokenAndQueuesList?.let {
-                if (tokenAndQueuesList.tokenAndQueues.isNullOrEmpty()) {
+                if (tokenAndQueuesList.isNullOrEmpty()) {
                     fragmentHomeNewBinding.cvTokens.visibility = View.GONE
                 }
-                tokenAndQueueAndQueueAdapter.addItems(tokenAndQueuesList.tokenAndQueues)
+                tokenAndQueueAndQueueAdapter.addItems(tokenAndQueuesList)
                 fragmentHomeNewBinding.llIndicator.removeAllViews()
-                tokenAndQueuesList.tokenAndQueues.forEach { _ ->
+                tokenAndQueuesList.forEach { _ ->
                     addIndicator()
                 }
             }

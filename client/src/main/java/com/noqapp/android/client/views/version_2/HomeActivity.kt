@@ -72,7 +72,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(this)[HomeViewModel::class.java]
+        ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))[HomeViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
