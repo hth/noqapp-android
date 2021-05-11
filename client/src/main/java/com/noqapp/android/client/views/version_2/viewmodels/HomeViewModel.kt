@@ -1,6 +1,9 @@
 package com.noqapp.android.client.views.version_2.viewmodels
 
+import android.app.Application
 import android.content.Context
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.noqapp.android.client.model.FavouriteApiCall
@@ -16,15 +19,17 @@ import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.NetworkUtils
 import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.utils.UserUtils
+import com.noqapp.android.client.views.version_2.db.NoqAppDB
 import com.noqapp.android.common.beans.ErrorEncounteredJson
+import com.noqapp.android.common.pojos.DisplayNotification
 
-class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePresenter {
+class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext), SearchBusinessStorePresenter, TokenAndQueuePresenter {
 
     val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
     val nearMeResponse = MutableLiveData<BizStoreElasticList?>()
-    val currentQueueResponse = MutableLiveData<JsonTokenAndQueueList?>()
+    val businessListResponse = MutableLiveData<BizStoreElasticList?>()
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall
 
@@ -54,7 +59,27 @@ class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePr
         }
     }
 
+    fun fetchBusinessList(searchStoreQuery: SearchStoreQuery?) {
+        searchBusinessStoreApiCalls.search(UserUtils.getDeviceId(), searchStoreQuery)
+    }
+
+    fun getNotificationsList(): LiveData<List<DisplayNotification>> {
+        return NoqAppDB.getNoqAppDbInstance(applicationContext).notificationDao().getNotificationsList()
+    }
+
+    fun getCurrentTokenAndQueue(): LiveData<List<JsonTokenAndQueue>> {
+        return NoqAppDB.getNoqAppDbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
+    }
+
+    fun getHistoryTokenAndQueue(): LiveData<List<JsonTokenAndQueue>> {
+        return NoqAppDB.getNoqAppDbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
+    }
+
     override fun nearMeTempleResponse(bizStoreElasticList: BizStoreElasticList?) {
+    }
+
+    override fun businessList(bizStoreElasticList: BizStoreElasticList?) {
+        businessListResponse.value = bizStoreElasticList
     }
 
     override fun nearMeMerchantError() {
@@ -76,6 +101,13 @@ class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePr
     }
 
     override fun historyQueueResponse(tokenAndQueues: MutableList<JsonTokenAndQueue>?, sinceBeginning: Boolean) {
+        tokenAndQueues?.let {
+            NoqAppDB.getNoqAppDbInstance(applicationContext).tokenAndQueueDao().deleteHistoryQueue()
+            it.forEach { tokenAndQueue ->
+                tokenAndQueue.isHistoryQueue = 1
+            }
+            NoqAppDB.getNoqAppDbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it)
+        }
     }
 
     override fun nearMeHospitalError() {
@@ -93,7 +125,13 @@ class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePr
     }
 
     override fun currentQueueResponse(tokenAndQueues: JsonTokenAndQueueList?) {
-        currentQueueResponse.value = tokenAndQueues
+        tokenAndQueues?.let {
+            NoqAppDB.getNoqAppDbInstance(applicationContext).tokenAndQueueDao().deleteCurrentQueue()
+            it.tokenAndQueues.forEach { tokenAndQueue ->
+                tokenAndQueue.isHistoryQueue = 0
+            }
+            NoqAppDB.getNoqAppDbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it.tokenAndQueues)
+        }
     }
 
     override fun historyQueueError() {
@@ -108,4 +146,5 @@ class HomeViewModel : ViewModel(), SearchBusinessStorePresenter, TokenAndQueuePr
 
     override fun nearMeTempleError() {
     }
+
 }

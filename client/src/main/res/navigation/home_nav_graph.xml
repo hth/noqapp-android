@@ -8,7 +8,10 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.HomeFragment"
-        tools:layout="@layout/fragment_home_new"/>
+        tools:layout="@layout/fragment_home_new">
+        <action android:id="@+id/actionHomeToViewBusinessDestination"
+            app:destination="@id/viewBusinessListFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/notificationFragment"
@@ -19,5 +22,14 @@
         android:id="@+id/favouritesFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.FavouritesFragment"
         tools:layout="@layout/fragment_favourites"/>
+
+    <fragment android:id="@+id/viewBusinessListFragment"
+        android:name="com.noqapp.android.client.views.version_2.fragments.ViewBusinessListFragment"
+        tools:layout="@layout/fragment_view_business_list">
+        <argument
+            android:name="businessType"
+            app:argType="com.noqapp.android.common.model.types.BusinessTypeEnum"
+            android:defaultValue="RS" />
+    </fragment>
 
 </navigation>

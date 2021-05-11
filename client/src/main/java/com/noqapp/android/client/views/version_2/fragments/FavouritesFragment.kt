@@ -33,10 +33,10 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
     private val TAG = FavouritesFragment::class.java.simpleName
     private lateinit var fragmentFavouritesBinding: FragmentFavouritesBinding
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragmentFavouritesBinding = FragmentFavouritesBinding.inflate(LayoutInflater.from(requireContext()), container, false)
         return fragmentFavouritesBinding.root
     }

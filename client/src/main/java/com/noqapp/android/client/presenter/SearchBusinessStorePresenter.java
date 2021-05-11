@@ -27,5 +27,7 @@ public interface SearchBusinessStorePresenter extends ResponseErrorPresenter {
 
     void nearMeTempleResponse(BizStoreElasticList bizStoreElasticList);
 
+    void businessList(BizStoreElasticList bizStoreElasticList);
+
     void nearMeTempleError();
 }

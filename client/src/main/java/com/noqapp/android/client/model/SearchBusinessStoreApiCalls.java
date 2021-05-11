@@ -51,6 +51,7 @@ public class SearchBusinessStoreApiCalls {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response search", String.valueOf(response.body()));
                         searchBusinessStorePresenter.nearMeMerchant(response.body());
+                        searchBusinessStorePresenter.businessList(response.body());
                         bizStoreElasticList = response.body();
                     } else {
                         searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());

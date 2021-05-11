@@ -15,7 +15,7 @@ import com.noqapp.android.common.utils.CommonHelper
 import com.squareup.picasso.Picasso
 import java.util.*
 
-class NotificationAdapter(private val notificationList: MutableList<DisplayNotification>, val onClickListener: (DisplayNotification) -> Unit) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
+class NotificationAdapter(private val notificationList: List<DisplayNotification>, val onClickListener: (DisplayNotification) -> Unit) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     inner class NotificationViewHolder(private val listItemNotificationBinding: ListItemNotificationBinding) : RecyclerView.ViewHolder(listItemNotificationBinding.root), View.OnClickListener {
 
