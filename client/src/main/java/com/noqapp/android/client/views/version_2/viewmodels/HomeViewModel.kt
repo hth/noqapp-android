@@ -120,13 +120,13 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     override fun currentQueueResponse(tokenAndQueues: JsonTokenAndQueueList?) {
-        tokenAndQueues?.let {
-            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteCurrentQueue()
-            it.tokenAndQueues.forEach { tokenAndQueue ->
-                tokenAndQueue.historyQueue = 0
-            }
-            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it.tokenAndQueues)
-        }
+//        tokenAndQueues?.let {
+//            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteCurrentQueue()
+//            it.tokenAndQueues.forEach { tokenAndQueue ->
+//                tokenAndQueue.historyQueue = 0
+//            }
+//            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it.tokenAndQueues)
+//        }
     }
 
     override fun historyQueueError() {

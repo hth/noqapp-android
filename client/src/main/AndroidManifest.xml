@@ -67,6 +67,8 @@
 
         <activity android:name=".views.version_2.HomeActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/BaseTheme"/>
 
         <activity
@@ -76,6 +78,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
         <activity
             android:name=".views.activities.ReviewActivity"
             android:screenOrientation="portrait"

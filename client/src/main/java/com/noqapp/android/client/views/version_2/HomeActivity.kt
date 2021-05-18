@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -25,8 +26,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
+import com.noqapp.android.client.databinding.NavHeaderMainBinding
 import com.noqapp.android.client.model.database.utils.NotificationDB
 import com.noqapp.android.client.model.database.utils.ReviewDB
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
@@ -43,6 +47,7 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter
 import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.views.activities.AppsLinksActivity
+import com.squareup.picasso.Picasso
 
 class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPreferences.OnSharedPreferenceChangeListener, HomeFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
     private val TAG = HomeActivity::class.java.simpleName
@@ -68,8 +73,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
     private val menuDrawerItems = mutableListOf<MenuDrawer>()
     private lateinit var activityHomeBinding: ActivityHomeBinding
+    private lateinit var navHeaderMainBinding: NavHeaderMainBinding
     private var expandableListAdapter: DrawerExpandableListAdapter? = null
-    private val fcmNotificationReceiver: LaunchActivity.FcmNotificationReceiver? = null
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private val homeViewModel: HomeViewModel by lazy {
@@ -85,13 +90,20 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         updateNotificationBadgeCount()
         setUpNavigation()
 
+        addHeaderView()
         setListeners()
+        updateDrawerUI()
 
         observeValues()
     }
 
+    private fun addHeaderView() {
+        navHeaderMainBinding = NavHeaderMainBinding.inflate(LayoutInflater.from(this))
+        activityHomeBinding.expandableDrawerListView.addHeaderView(navHeaderMainBinding.root)
+    }
+
     private fun observeValues() {
-        homeViewModel.searchStoreQueryLiveData.observe(this, {
+        homeViewModel.searchStoreQueryLiveData.observe(this, Observer {
             activityHomeBinding.tvLocation.text = it.cityName
         })
     }
@@ -109,6 +121,50 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
         activityHomeBinding.tvLocation.setOnClickListener {
             navController.navigate(R.id.changeLocationFragment)
+        }
+
+        navHeaderMainBinding.root.setOnClickListener {
+            if (UserUtils.isLogin()) {
+                val intent = Intent(this, UserProfileActivity::class.java)
+                startActivity(intent)
+            } else {
+                CustomToast().showToast(this, "Please login to view profile")
+                val loginIntent = Intent(this, LoginActivity::class.java)
+                loginIntent.putExtra("fromHome", true)
+                startActivity(loginIntent)
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let {
+            if (it.getBooleanExtra("fromLogin", false)){
+                updateDrawerUI()
+            }
+        }
+    }
+
+    private fun updateDrawerUI() {
+        if (UserUtils.isLogin()) {
+            navHeaderMainBinding.tvEmail.text = AppInitialize.getActualMail()
+            navHeaderMainBinding.tvName.text = AppInitialize.getUserName()
+        } else {
+            navHeaderMainBinding.tvEmail.text = getString(R.string.txt_please_login)
+            navHeaderMainBinding.tvName.text = getString(R.string.txt_guest_user)
+        }
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(navHeaderMainBinding.ivProfile)
+        try {
+            if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
+                Picasso.get()
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(navHeaderMainBinding.ivProfile)
+            }
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+            Log.e(TAG, "Failed Update Drawer UI", e)
         }
     }
 
