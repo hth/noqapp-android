@@ -32,4 +32,8 @@
             android:defaultValue="RS" />
     </fragment>
 
+    <fragment android:id="@+id/changeLocationFragment"
+        android:name="com.noqapp.android.client.views.version_2.fragments.ChangeLocationFragmentNew"
+        tools:layout="@layout/fragment_change_location"/>
+
 </navigation>

@@ -109,6 +109,8 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Launch", "launching from deviceRegisterResponse");
             deviceId = deviceRegistered.getDeviceId();
+            AppInitialize.setDeviceID(deviceId);
+
             Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: " + deviceRegistered);
             JsonUserAddress jsonUserAddress = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
             Log.d(TAG, "Splash City Name =" + jsonUserAddress.getLocationAsString());
@@ -121,7 +123,6 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
                     .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                     .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
                 AppInitialize.setLocationPreference(locationPref);
-                AppInitialize.setDeviceID(deviceId);
                 Location location = new Location("");
                 location.setLatitude(locationPref.getLatitude());
                 location.setLongitude(locationPref.getLongitude());
