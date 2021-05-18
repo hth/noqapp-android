@@ -522,5 +522,7 @@
     <string name="txt_generic_store">Generic store</string>
     <string name="tab_recent_visits">Recent Visits</string>
     <string name="tab_near_me">Near Me</string>
+    <string name="txt_please_login">Please login</string>
+    <string name="txt_guest_user">Guest User</string>
 
 </resources>
