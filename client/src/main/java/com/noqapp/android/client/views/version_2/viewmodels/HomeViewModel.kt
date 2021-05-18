@@ -30,7 +30,6 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
     val nearMeResponse = MutableLiveData<BizStoreElasticList?>()
-    val businessListResponse = MutableLiveData<BizStoreElasticList?>()
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall
@@ -62,14 +61,6 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         }
     }
 
-    fun fetchBusinessList(searchStoreQuery: SearchStoreQuery?) {
-        if (UserUtils.isLogin()){
-            searchBusinessStoreApiAuthenticCalls.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery)
-        }else{
-            searchBusinessStoreApiCalls.search(AppInitialize.getDeviceId(), searchStoreQuery)
-        }
-    }
-
     fun getNotificationsList(): LiveData<List<DisplayNotification>> {
         return NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
     }
@@ -83,10 +74,6 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     override fun nearMeTempleResponse(bizStoreElasticList: BizStoreElasticList?) {
-    }
-
-    override fun businessList(bizStoreElasticList: BizStoreElasticList?) {
-        businessListResponse.value = bizStoreElasticList
     }
 
     override fun nearMeMerchantError() {
