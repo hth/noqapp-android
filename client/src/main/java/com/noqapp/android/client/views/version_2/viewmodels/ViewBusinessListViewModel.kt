@@ -12,7 +12,6 @@ import com.noqapp.android.client.views.activities.AppInitialize
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 
 class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
-
     val errorLiveData = MutableLiveData<Boolean>()
     val businessListResponse = MutableLiveData<BizStoreElasticList?>()
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
@@ -24,10 +23,10 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     }
 
     fun fetchBusinessList(searchStoreQuery: SearchStoreQuery?) {
-        if (UserUtils.isLogin()){
-            searchBusinessStoreApiAuthenticCalls.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery)
-        }else{
-            searchBusinessStoreApiCalls.search(AppInitialize.getDeviceId(), searchStoreQuery)
+        if (UserUtils.isLogin()) {
+            searchBusinessStoreApiAuthenticCalls.business(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery)
+        } else {
+            searchBusinessStoreApiCalls.business(AppInitialize.getDeviceId(), searchStoreQuery)
         }
     }
 
@@ -81,5 +80,4 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     override fun nearMeTempleError() {
         errorLiveData.value = true
     }
-
 }
