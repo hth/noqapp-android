@@ -16,6 +16,7 @@ import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -73,7 +74,7 @@ public class LoginActivity extends OTPActivity {
 
         if (getIntent().getBooleanExtra("fromLogin", false)) {
             // To refresh the launch activity
-            Intent intent = new Intent(this, LaunchActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }

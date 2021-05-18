@@ -47,7 +47,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragmentHomeNewBinding = FragmentHomeNewBinding.bind(LayoutInflater.from(context).inflate(R.layout.fragment_home_new, container, false))
         return fragmentHomeNewBinding.root
     }

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.GeoHashUtils;
@@ -27,6 +28,8 @@ import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -159,6 +162,12 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    public void addItems(@NotNull List<? extends BizStoreElastic> bizStoreElastics) {
+        dataSet.clear();
+        dataSet.addAll(bizStoreElastics);
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {

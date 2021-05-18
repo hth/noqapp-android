@@ -19,6 +19,7 @@ import android.widget.ExpandableListView.OnGroupClickListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -47,11 +48,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(addressOutput: String?, countryShortName: String?, area: String?, town: String?, district: String?, state: String?, stateShortName: String?, latitude: Double?, longitude: Double?) {
-        activityHomeBinding.tvLocation.text = area
+        activityHomeBinding.tvLocation.text = town
 
         val searchStoreQuery = SearchStoreQuery()
         area?.let {
-            searchStoreQuery.cityName = it
+            searchStoreQuery.cityName = town
         }
         latitude?.let {
             searchStoreQuery.latitude = it.toString()
@@ -59,7 +60,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         longitude?.let {
             searchStoreQuery.longitude = it.toString()
         }
-        searchStoreQuery.filters = "xyz"
+        searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
 
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
@@ -84,6 +85,18 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         updateNotificationBadgeCount()
         setUpNavigation()
 
+        setListeners()
+
+        observeValues()
+    }
+
+    private fun observeValues() {
+        homeViewModel.searchStoreQueryLiveData.observe(this, {
+            activityHomeBinding.tvLocation.text = it.cityName
+        })
+    }
+
+    private fun setListeners() {
         activityHomeBinding.llOldVersion.setOnClickListener {
             val intent = Intent(this, LaunchActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -92,6 +105,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
             }
             startActivity(intent)
             finish()
+        }
+
+        activityHomeBinding.tvLocation.setOnClickListener {
+            navController.navigate(R.id.changeLocationFragment)
         }
     }
 
