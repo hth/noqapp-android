@@ -430,7 +430,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.mediarouter:mediarouter:1.2.2'
+    implementation 'androidx.mediarouter:mediarouter:1.2.3'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
@@ -471,9 +471,9 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'org.mockito:mockito-android:3.9.0'
+    androidTestImplementation 'org.mockito:mockito-android:3.10.0'
 
-    testImplementation 'org.mockito:mockito-core:3.9.0'
+    testImplementation 'org.mockito:mockito-core:3.10.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
 
@@ -487,7 +487,7 @@ dependencies {
     // (Optional) If you also have JUnit 4-based tests
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.1'
-    testImplementation 'org.awaitility:awaitility:4.0.3'
+    testImplementation 'org.awaitility:awaitility:4.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
