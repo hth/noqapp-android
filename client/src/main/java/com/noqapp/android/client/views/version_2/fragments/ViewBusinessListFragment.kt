@@ -17,6 +17,7 @@ import com.noqapp.android.client.views.activities.StoreWithMenuActivity
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
+import com.noqapp.android.client.views.version_2.viewmodels.ViewBusinessListViewModel
 
 class ViewBusinessListFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickListener {
 
@@ -26,6 +27,10 @@ class ViewBusinessListFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemC
     private lateinit var storeInfoViewAllAdapter: StoreInfoViewAllAdapter
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
+    }
+
+    private val viewBusinessListViewModel: ViewBusinessListViewModel by lazy {
+        ViewModelProvider(this)[ViewBusinessListViewModel::class.java]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -47,10 +52,10 @@ class ViewBusinessListFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemC
         homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, Observer {
             it.searchedOnBusinessType = viewBusinessArgs.businessType
             setUpRecyclerView(it)
-            homeViewModel.fetchBusinessList(it)
+            viewBusinessListViewModel.fetchBusinessList(it)
         })
 
-        homeViewModel.businessListResponse.observe(viewLifecycleOwner, Observer {
+        viewBusinessListViewModel.businessListResponse.observe(viewLifecycleOwner, Observer {
             it?.let { bizStoreElasticList ->
                 storeInfoViewAllAdapter.addItems(bizStoreElasticList.bizStoreElastics)
             }

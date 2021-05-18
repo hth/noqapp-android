@@ -601,11 +601,6 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     }
 
     @Override
-    public void businessList(BizStoreElasticList bizStoreElasticList) {
-
-    }
-
-    @Override
     public void nearMeTempleError() {
         pb_place_of_worship.setVisibility(View.GONE);
     }
