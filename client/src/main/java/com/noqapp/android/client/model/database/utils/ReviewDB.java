@@ -119,11 +119,13 @@ public class ReviewDB {
 
 
     public static void updateReviewRecord(String codeQR, String token, ContentValues cv) {
-
         try {
-            long successCount = dbHandler.getWritableDb().
-                    update(DatabaseTable.Review.TABLE_NAME, cv, DatabaseTable.Review.CODE_QR + "=? AND " +
-                            DatabaseTable.Review.TOKEN + "=?", new String[]{codeQR, token});
+            long successCount = dbHandler.getWritableDb()
+                .update(
+                    DatabaseTable.Review.TABLE_NAME,
+                    cv,
+                    DatabaseTable.Review.CODE_QR + "=? AND " + DatabaseTable.Review.TOKEN + "=?",
+                    new String[]{codeQR, token});
             Log.d(TAG, "ReviewRecord updated " + String.valueOf(successCount));
         } catch (SQLException e) {
             Log.e(TAG, "Error update ReviewRecord reason=" + e.getLocalizedMessage(), e);
