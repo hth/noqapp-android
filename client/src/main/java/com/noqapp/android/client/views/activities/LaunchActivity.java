@@ -1340,5 +1340,4 @@ public class LaunchActivity
         icon.setDrawableByLayerId(R.id.ic_main_icon, mainIcon);
         return icon;
     }
-
 }
