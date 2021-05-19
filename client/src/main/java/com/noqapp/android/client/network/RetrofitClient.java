@@ -1,7 +1,6 @@
 package com.noqapp.android.client.network;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.AppInitialize;
 
 import java.util.concurrent.TimeUnit;
