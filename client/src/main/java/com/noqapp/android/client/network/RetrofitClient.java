@@ -1,6 +1,7 @@
 package com.noqapp.android.client.network;
 
 import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.AppInitialize;
 
 import java.util.concurrent.TimeUnit;
@@ -26,6 +27,8 @@ public class RetrofitClient {
 
             builder.addInterceptor(chain -> {
                 Request request = chain.request().newBuilder()
+                    .addHeader("x-r-ver", BuildConfig.VERSION_NAME)
+                    .addHeader("x-r-fla", BuildConfig.APP_FLAVOR)
                     .addHeader("x-r-lat", String.valueOf(AppInitialize.location.getLatitude()))
                     .addHeader("x-r-lng", String.valueOf(AppInitialize.location.getLongitude())).build();
                 return chain.proceed(request);
