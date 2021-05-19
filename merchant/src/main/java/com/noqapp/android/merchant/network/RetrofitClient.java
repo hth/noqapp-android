@@ -20,14 +20,14 @@ public class RetrofitClient {
     public static Retrofit getClient() {
         if (null == retrofit) {
             final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-                    .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-                    .build();
+                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .build();
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.NOQAPP_MOBILE)
-                    .addConverterFactory(JacksonConverterFactory.create())
-                    .client(okHttpClient)
-                    .build();
+                .baseUrl(BuildConfig.NOQAPP_MOBILE)
+                .addConverterFactory(JacksonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
         }
         return retrofit;
     }
