@@ -59,8 +59,10 @@ public class LocationPref implements Serializable {
     }
 
     public String getLocationAsString() {
-        if (StringUtils.isNotBlank(area)) {
+        if (StringUtils.isNotBlank(area) && StringUtils.isNotBlank(town)) {
             return area + ", " + town;
+        } else if (StringUtils.isNotBlank(area)) {
+            return area;
         }
         return StringUtils.isNotBlank(town) ? town : "";
     }
