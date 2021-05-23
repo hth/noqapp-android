@@ -1,8 +1,8 @@
 package com.noqapp.android.client.views.version_2.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,15 +18,14 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.SortPlaces
 import com.noqapp.android.client.utils.UserUtils
-import com.noqapp.android.client.views.activities.StoreWithMenuActivity
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter
 import com.noqapp.android.client.views.adapters.TokenAndQueueAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.fragments.HomeFragment
+import com.noqapp.android.client.views.version_2.NavigationBundleUtils
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.utils.GeoIP
-import java.util.*
+import java.util.Collections
 
 class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private lateinit var fragmentHomeNewBinding: FragmentHomeNewBinding
@@ -164,9 +163,12 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     override fun onStoreItemClick(item: BizStoreElastic?) {
-        val intent = Intent(activity, StoreWithMenuActivity::class.java)
-        intent.putExtra("BizStoreElastic", item)
-        startActivity(intent)
+        item?.let {
+            val navigationBundleUtils = NavigationBundleUtils()
+            navigationBundleUtils.navigateToStore(requireActivity(), item)
+        } ?: run {
+            Log.d(HomeFragment::class.java.simpleName, "BizStoreElastic is null")
+        }
     }
 }
 
