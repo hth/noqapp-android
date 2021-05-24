@@ -254,6 +254,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                     FirebaseCrashlytics.getInstance().log("Still reading QCT message on client");
                     FirebaseCrashlytics.getInstance().recordException(new Exception("Still reading QCT message on client"));
                     break;
+                case M:
+                    //TODO implement
+                    break;
+                case IE:
+                    //TODO implement
+                    break;
                 default:
                     // object = null;
             }
