@@ -268,6 +268,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                         e.printStackTrace();
                     }
                     break;
+                case M:
+                    //TODO implement
+                    break;
+                case IE:
+                    //TODO implement
+                    break;
                 default:
                     // object = null;
             }
