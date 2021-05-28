@@ -129,6 +129,9 @@ public abstract class BaseErrorResponseHandler {
                     case COUPON_NOT_APPLICABLE:
                     case COUPON_REMOVAL_FAILED:
 
+                    case INCIDENT_EVENT_NOT_FOUND:
+                    case INCIDENT_EVENT_INCORRECT:
+
                     case WEB_APPLICATION:
                         break;
                     default:
