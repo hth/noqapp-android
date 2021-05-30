@@ -49,4 +49,5 @@
                 android:textSize="@dimen/empty_subtitle_size" />
         </LinearLayout>
     </RelativeLayout>
+
 </FrameLayout>

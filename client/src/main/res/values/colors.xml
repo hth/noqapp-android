@@ -65,5 +65,6 @@
     <color name="off_white">#F2F2F2</color>
     <color name="color_light_grey">#DEDEDE</color>
     <color name="color_black">#000000</color>
+    <color name="progress_bar_background">#A6000000</color>
 
 </resources>

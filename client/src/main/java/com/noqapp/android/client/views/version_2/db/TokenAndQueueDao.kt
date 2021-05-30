@@ -28,24 +28,24 @@ interface TokenAndQueueDao {
     fun getHistoryQueueList(): LiveData<List<JsonTokenAndQueue>>
 
     @Insert
-    fun saveCurrentQueue(list: List<JsonTokenAndQueue>)
+    suspend fun saveCurrentQueue(list: List<JsonTokenAndQueue>)
 
     @Insert
-    fun saveJoinQueueObject(list: JsonTokenAndQueue)
+    suspend fun saveJoinQueueObject(list: JsonTokenAndQueue)
 
     @Query("UPDATE token_queue SET serving_number=:servingNumber, display_serving_number=:displayServingNumber WHERE qr_code=:qrCode AND token=:token")
-    fun updateCurrentListQueueObject(qrCode: String?, servingNumber: String, displayServingNumber: String, token: Int)
+    suspend fun updateCurrentListQueueObject(qrCode: String?, servingNumber: String, displayServingNumber: String, token: Int)
 
     @Query("UPDATE token_queue SET purchase_order_state=:orderState WHERE qr_code=:qrCode AND token=:token")
-    fun updateCurrentListOrderObject(qrCode: String?, orderState: String, token: Int)
+    suspend fun updateCurrentListOrderObject(qrCode: String?, orderState: String, token: Int)
 
     @Query("DELETE FROM token_queue WHERE history_queue!=1")
-    fun deleteCurrentQueue()
+    suspend fun deleteCurrentQueue()
 
     @Query("DELETE FROM token_queue WHERE history_queue=1")
-    fun deleteHistoryQueue()
+    suspend fun deleteHistoryQueue()
 
     @Query("DELETE FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode AND token=:token")
-    fun deleteTokenQueue(qrCode: String, token: Int)
+    suspend fun deleteTokenQueue(qrCode: String, token: Int)
 
 }

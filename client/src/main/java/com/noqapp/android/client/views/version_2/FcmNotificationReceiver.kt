@@ -26,6 +26,10 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.DisplayNotification
 import com.noqapp.android.common.utils.CommonHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.apache.commons.lang3.StringUtils
 import java.util.*
 
@@ -220,7 +224,11 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     val jsonTokenAndQueueList = jsonData.tokenAndQueues
 
                     if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size > 0) {
-                        dbInstance(context).tokenAndQueueDao().saveCurrentQueue(jsonTokenAndQueueList)
+                        GlobalScope.launch {
+                            withContext(Dispatchers.IO) {
+                                dbInstance(context).tokenAndQueueDao().saveCurrentQueue(jsonTokenAndQueueList)
+                            }
+                        }
                     }
 
                     val displayNotification = DisplayNotification()
@@ -257,24 +265,27 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     ShowAlertInformation.showInfoDisplayDialog(context, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(LaunchActivity.language))
 
                 } else if (jsonData is JsonChangeServiceTimeData) {
+                    GlobalScope.launch {
+                        withContext(Dispatchers.IO) {
+                            dbInstance(context).tokenAndQueueDao().findByQRCode(jsonData.codeQR).observeForever { jsonTokenAndQueue ->
+                                val jsonQueueChangeServiceTimes = jsonData.jsonQueueChangeServiceTimes
+                                for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
+                                    if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
+                                        val body = """${jsonData.getBody()} Token: ${jsonQueueChangeServiceTime.displayToken} Previous: ${jsonQueueChangeServiceTime.oldTimeSlotMessage} Updated: ${jsonQueueChangeServiceTime.updatedTimeSlotMessage}"""
+                                        ShowAlertInformation.showInfoDisplayDialog(context, jsonData.getTitle(), body)
+                                        val displayNotification = DisplayNotification()
+                                        displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
+                                        displayNotification.codeQR = jsonData.codeQR
+                                        displayNotification.body = jsonData.body
+                                        displayNotification.title = jsonData.title
+                                        displayNotification.businessType = BusinessTypeEnum.PA
+                                        displayNotification.imageUrl = jsonData.imageURL
+                                        displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
+                                        displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                                        dbInstance(context).notificationDao().insertNotification(displayNotification)
 
-                    dbInstance(context).tokenAndQueueDao().findByQRCode(jsonData.codeQR).value?.let { jsonTokenAndQueue ->
-                        val jsonQueueChangeServiceTimes = jsonData.jsonQueueChangeServiceTimes
-                        for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
-                            if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
-                                val body = """${jsonData.getBody()} Token: ${jsonQueueChangeServiceTime.displayToken} Previous: ${jsonQueueChangeServiceTime.oldTimeSlotMessage} Updated: ${jsonQueueChangeServiceTime.updatedTimeSlotMessage}"""
-                                ShowAlertInformation.showInfoDisplayDialog(context, jsonData.getTitle(), body)
-                                val displayNotification = DisplayNotification()
-                                displayNotification.setType(DatabaseTable.Notification.KEY_NOTIFY)
-                                displayNotification.setCodeQR(jsonData.codeQR)
-                                displayNotification.setBody(jsonData.body)
-                                displayNotification.setTitle(jsonData.title)
-                                displayNotification.setBusinessType(BusinessTypeEnum.PA)
-                                displayNotification.setImageUrl(jsonData.imageURL)
-                                displayNotification.setStatus(DatabaseTable.Notification.KEY_UNREAD)
-                                displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
-                                dbInstance(context).notificationDao().insertNotification(displayNotification)
-
+                                    }
+                                }
                             }
                         }
                     }
@@ -316,102 +327,114 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                 msgId = jsonTopicOrderData.messageId
             }
 
-            dbInstance(context).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).value?.let {
-                val jsonTokenAndQueueArrayList = it
-                for (i in jsonTokenAndQueueArrayList.indices) {
-                    val jtk = jsonTokenAndQueueArrayList[i]
-                    if (null != jtk) {
-                        /* update DB & after join screen */
-                        if (currentServing.toInt() < jtk.servingNumber) {
-                            /* Do nothing - In Case of getting service no less than what the object have */
-                        } else {
-                            jtk.servingNumber = currentServing.toInt()
-                            dbInstance(context).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jtk.token)
-                        }
-                        if (jsonData is JsonTopicOrderData && jtk.token - currentServing.toInt() <= 0) {
-                            jtk.purchaseOrderState = purchaseOrderStateEnum
-                        }
-                        /*
-                         * Save codeQR of goto & show it in after join screen on app
-                         * Review DB for review key && current serving == token no.
-                         */
-                        if (currentServing.toInt() == jtk.token) {
-                            dbInstance(context).reviewDao().getReviewData(codeQR, currentServing).value?.let {
-                                it.gotoCounter = go_to
-                                dbInstance(context).reviewDao().update(it)
-                            } ?: run {
-                                val reviewData = ReviewData()
-                                reviewData.setIsReviewShown("-1")
-                                reviewData.setCodeQR(codeQR)
-                                reviewData.setToken(currentServing)
-                                reviewData.setQueueUserId(jtk.queueUserId)
-                                reviewData.setIsBuzzerShow("-1")
-                                reviewData.setIsSkipped("-1")
-                                reviewData.setGotoCounter("")
-                                dbInstance(context).reviewDao().insertReviewData(reviewData)
-                            }
-
-                        }
-                        if (jtk.isTokenExpired && jsonTokenAndQueueArrayList.size == 1) {
-                            /* Un-subscribe the topic */
-                            NoQueueMessagingService.unSubscribeTopics(jtk.topic)
-                        }
-                        if (AppInitialize.activityCommunicator != null) {
-                            val isUpdated = AppInitialize.activityCommunicator.updateUI(codeQR, jtk, go_to)
-                            if (isUpdated || jtk.servingNumber == jtk.token) {
-                                val reviewData = ReviewDB.getValue(codeQR, currentServing)
-                                if (null != reviewData) {
-                                    if (reviewData.isBuzzerShow != "1") {
-                                        val cv = ContentValues()
-                                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1")
-                                        ReviewDB.updateReviewRecord(codeQR, currentServing, cv)
-                                        val blinker = Intent(context, BlinkerActivity::class.java)
-                                        blinker.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        context.startActivity(blinker)
-                                        if (AppInitialize.isMsgAnnouncementEnable()) {
-                                            //          makeAnnouncement(jsonTextToSpeeches, msgId)
-                                        }
-                                    } else {
-                                        /* Blinker already shown */
-                                    }
-                                    /* update */
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    dbInstance(context).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).observeForever {
+                        val jsonTokenAndQueueArrayList = it
+                        for (i in jsonTokenAndQueueArrayList.indices) {
+                            val jtk = jsonTokenAndQueueArrayList[i]
+                            if (null != jtk) {
+                                /* update DB & after join screen */
+                                if (currentServing.toInt() < jtk.servingNumber) {
+                                    /* Do nothing - In Case of getting service no less than what the object have */
                                 } else {
-                                    /* insert */
-                                    val cv = ContentValues()
-                                    cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1)
-                                    cv.put(DatabaseTable.Review.CODE_QR, codeQR)
-                                    cv.put(DatabaseTable.Review.TOKEN, currentServing)
-                                    cv.put(DatabaseTable.Review.QID, jtk.queueUserId)
-                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1")
-                                    cv.put(DatabaseTable.Review.KEY_SKIP, "-1")
-                                    cv.put(DatabaseTable.Review.KEY_GOTO, "")
-                                    ReviewDB.insert(cv)
-                                    val blinker = Intent(context, BlinkerActivity::class.java)
-                                    blinker.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                    context.startActivity(blinker)
-                                    if (AppInitialize.isMsgAnnouncementEnable()) {
-                                        //        makeAnnouncement(jsonTextToSpeeches, msgId)
+                                    jtk.servingNumber = currentServing.toInt()
+                                    GlobalScope.launch {
+                                        withContext(Dispatchers.IO) {
+                                            dbInstance(context).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jtk.token)
+                                        }
                                     }
                                 }
-                            }
-                        }
-                        try {
-                            /* In case of order update the order status */
-                            if (jsonData is JsonTopicOrderData) {
-                                if (messageOrigin.equals(MessageOriginEnum.O.name, ignoreCase = true) && currentServing.toInt() == jtk.token) {
-                                    jtk.purchaseOrderState = jsonData.purchaseOrderState
-                                    dbInstance(context).tokenAndQueueDao().updateCurrentListOrderObject(codeQR, jtk.purchaseOrderState.getName(), jtk.token)
+                                if (jsonData is JsonTopicOrderData && jtk.token - currentServing.toInt() <= 0) {
+                                    jtk.purchaseOrderState = purchaseOrderStateEnum
                                 }
+                                /*
+                                 * Save codeQR of goto & show it in after join screen on app
+                                 * Review DB for review key && current serving == token no.
+                                 */
+                                if (currentServing.toInt() == jtk.token) {
+                                    dbInstance(context).reviewDao().getReviewData(codeQR, currentServing).value?.let {
+                                        it.gotoCounter = go_to
+                                        dbInstance(context).reviewDao().update(it)
+                                    } ?: run {
+                                        val reviewData = ReviewData()
+                                        reviewData.setIsReviewShown("-1")
+                                        reviewData.setCodeQR(codeQR)
+                                        reviewData.setToken(currentServing)
+                                        reviewData.setQueueUserId(jtk.queueUserId)
+                                        reviewData.setIsBuzzerShow("-1")
+                                        reviewData.setIsSkipped("-1")
+                                        reviewData.setGotoCounter("")
+                                        dbInstance(context).reviewDao().insertReviewData(reviewData)
+                                    }
+
+                                }
+                                if (jtk.isTokenExpired && jsonTokenAndQueueArrayList.size == 1) {
+                                    /* Un-subscribe the topic */
+                                    NoQueueMessagingService.unSubscribeTopics(jtk.topic)
+                                }
+                                if (AppInitialize.activityCommunicator != null) {
+                                    val isUpdated = AppInitialize.activityCommunicator.updateUI(codeQR, jtk, go_to)
+                                    if (isUpdated || jtk.servingNumber == jtk.token) {
+                                        val reviewData = ReviewDB.getValue(codeQR, currentServing)
+                                        if (null != reviewData) {
+                                            if (reviewData.isBuzzerShow != "1") {
+                                                val cv = ContentValues()
+                                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1")
+                                                ReviewDB.updateReviewRecord(codeQR, currentServing, cv)
+                                                val blinker = Intent(context, BlinkerActivity::class.java)
+                                                blinker.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                                context.startActivity(blinker)
+                                                if (AppInitialize.isMsgAnnouncementEnable()) {
+                                                    //          makeAnnouncement(jsonTextToSpeeches, msgId)
+                                                }
+                                            } else {
+                                                /* Blinker already shown */
+                                            }
+                                            /* update */
+                                        } else {
+                                            /* insert */
+                                            val cv = ContentValues()
+                                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1)
+                                            cv.put(DatabaseTable.Review.CODE_QR, codeQR)
+                                            cv.put(DatabaseTable.Review.TOKEN, currentServing)
+                                            cv.put(DatabaseTable.Review.QID, jtk.queueUserId)
+                                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1")
+                                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1")
+                                            cv.put(DatabaseTable.Review.KEY_GOTO, "")
+                                            ReviewDB.insert(cv)
+                                            val blinker = Intent(context, BlinkerActivity::class.java)
+                                            blinker.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                            context.startActivity(blinker)
+                                            if (AppInitialize.isMsgAnnouncementEnable()) {
+                                                //        makeAnnouncement(jsonTextToSpeeches, msgId)
+                                            }
+                                        }
+                                    }
+                                }
+                                try {
+                                    /* In case of order update the order status */
+                                    if (jsonData is JsonTopicOrderData) {
+                                        if (messageOrigin.equals(MessageOriginEnum.O.name, ignoreCase = true) && currentServing.toInt() == jtk.token) {
+                                            jtk.purchaseOrderState = jsonData.purchaseOrderState
+                                            GlobalScope.launch {
+                                                withContext(Dispatchers.IO){
+                                                    dbInstance(context).tokenAndQueueDao().updateCurrentListOrderObject(codeQR, jtk.purchaseOrderState.getName(), jtk.token)
+                                                }
+                                            }
+                                        }
+                                    }
+                                } catch (e: java.lang.Exception) {
+                                    e.printStackTrace()
+                                    throw e
+                                }
+                            } else {
+                                Log.e(TAG, "codeQR=$codeQR current_serving=$currentServing goTo=$go_to")
                             }
-                        } catch (e: java.lang.Exception) {
-                            e.printStackTrace()
-                            throw e
                         }
-                    } else {
-                        Log.e(TAG, "codeQR=$codeQR current_serving=$currentServing goTo=$go_to")
+
                     }
                 }
-
             }
 
         } catch (e: java.lang.Exception) {

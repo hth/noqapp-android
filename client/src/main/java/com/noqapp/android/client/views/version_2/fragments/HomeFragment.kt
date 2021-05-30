@@ -64,8 +64,20 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     private fun setClickListeners() {
+
+        fragmentHomeNewBinding.ivJobs.setOnClickListener {
+            findNavController().navigate(R.id.underDevelopmentFragment)
+        }
+
+        fragmentHomeNewBinding.ivHousing.setOnClickListener {
+            findNavController().navigate(R.id.underDevelopmentFragment)
+        }
+
+        fragmentHomeNewBinding.ivMarketPlace.setOnClickListener {
+            findNavController().navigate(R.id.underDevelopmentFragment)
+        }
+
         fragmentHomeNewBinding.ivRestaurant.setOnClickListener {
-            
             val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
             findNavController().navigate(navigationDirections)
         }
@@ -85,8 +97,9 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.ivSchool.setOnClickListener {
-     //       val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
-       //     findNavController().navigate(navigationDirections)
+            //       val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
+            //     findNavController().navigate(navigationDirections)
+            findNavController().navigate(R.id.underDevelopmentFragment)
         }
 
         fragmentHomeNewBinding.ivCafeteria.setOnClickListener {
@@ -125,10 +138,12 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
-        homeViewModel.getCurrentTokenAndQueue().observe(viewLifecycleOwner, Observer { tokenAndQueuesList ->
+        homeViewModel.currentTokenAndQueueListLiveData.observe(viewLifecycleOwner, Observer { tokenAndQueuesList ->
             tokenAndQueuesList?.let {
                 if (tokenAndQueuesList.isNullOrEmpty()) {
                     fragmentHomeNewBinding.cvTokens.visibility = View.GONE
+                } else {
+                    fragmentHomeNewBinding.cvTokens.visibility = View.VISIBLE
                 }
                 tokenAndQueueAndQueueAdapter.addItems(tokenAndQueuesList)
                 fragmentHomeNewBinding.llIndicator.removeAllViews()

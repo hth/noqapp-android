@@ -19,13 +19,12 @@ class TokenAndQueueAdapter(private val context: Context, private val tokenAndQue
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TokenAndQueueViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_token, parent, false)
-        return TokenAndQueueViewHolder(LayoutTokenBinding.bind(view))
+        val viewBinding = LayoutTokenBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TokenAndQueueViewHolder(viewBinding)
     }
 
     override fun getItemCount(): Int {
         return tokenAndQueueList.size
-
     }
 
     override fun onBindViewHolder(holder: TokenAndQueueViewHolder, position: Int) {
@@ -35,5 +34,6 @@ class TokenAndQueueAdapter(private val context: Context, private val tokenAndQue
     fun addItems(tokenAndQueueListItems: List<JsonTokenAndQueue>) {
         tokenAndQueueList.clear()
         tokenAndQueueList.addAll(tokenAndQueueListItems)
+        notifyDataSetChanged()
     }
 }

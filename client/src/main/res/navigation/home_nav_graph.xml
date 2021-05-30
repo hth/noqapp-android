@@ -36,4 +36,8 @@
         android:name="com.noqapp.android.client.views.version_2.fragments.ChangeLocationFragmentNew"
         tools:layout="@layout/fragment_change_location"/>
 
+    <fragment android:id="@+id/underDevelopmentFragment"
+        android:name="com.noqapp.android.client.views.version_2.fragments.UnderDevelopmentFragment"
+        tools:layout="@layout/fragment_under_development"/>
+
 </navigation>
