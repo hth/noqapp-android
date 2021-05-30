@@ -10,8 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.databinding.FragmentViewBusinessListBinding
+import com.noqapp.android.client.databinding.LayoutProgressBarBinding
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.utils.ShowAlertInformation
+import com.noqapp.android.client.views.activities.StoreWithMenuActivity
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.NavigationBundleUtils
@@ -22,8 +25,10 @@ class ViewBusinessListFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemC
 
     private val TAG = ViewBusinessListFragment::class.java.simpleName
     private lateinit var fragmentViewBusinessListBinding: FragmentViewBusinessListBinding
+    private lateinit var progressLoaderBinding: LayoutProgressBarBinding
     private lateinit var viewBusinessArgs: ViewBusinessListFragmentArgs
     private lateinit var storeInfoViewAllAdapter: StoreInfoViewAllAdapter
+
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
     }
@@ -34,10 +39,12 @@ class ViewBusinessListFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemC
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragmentViewBusinessListBinding = FragmentViewBusinessListBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+        progressLoaderBinding = LayoutProgressBarBinding.inflate(inflater)
+        fragmentViewBusinessListBinding.root.addView(progressLoaderBinding.clProgressBar)
+
         arguments?.let {
             viewBusinessArgs = ViewBusinessListFragmentArgs.fromBundle(it)
         }
-
         return fragmentViewBusinessListBinding.root
     }
 
@@ -48,13 +55,22 @@ class ViewBusinessListFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemC
     }
 
     private fun observeData() {
-        homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, Observer {
+
+        viewBusinessListViewModel.errorLiveData.observe(viewLifecycleOwner, {
+            progressLoaderBinding.clProgressBar.visibility = View.GONE
+            ShowAlertInformation.showErrorDialog(context, it)
+        })
+
+        homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, {
             it.searchedOnBusinessType = viewBusinessArgs.businessType
             setUpRecyclerView(it)
+            progressLoaderBinding.clProgressBar.visibility = View.VISIBLE
+            progressLoaderBinding.tvProgressMessage.text = "Loading business list, please wait..."
             viewBusinessListViewModel.fetchBusinessList(it)
         })
 
-        viewBusinessListViewModel.businessListResponse.observe(viewLifecycleOwner, Observer {
+        viewBusinessListViewModel.businessListResponse.observe(viewLifecycleOwner, {
+            progressLoaderBinding.clProgressBar.visibility = View.GONE
             it?.let { bizStoreElasticList ->
                 storeInfoViewAllAdapter.addItems(bizStoreElasticList.bizStoreElastics)
             }

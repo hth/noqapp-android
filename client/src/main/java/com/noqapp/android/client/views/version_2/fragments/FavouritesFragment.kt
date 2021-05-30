@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.databinding.FragmentFavouritesBinding
+import com.noqapp.android.client.databinding.LayoutProgressBarBinding
 import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.presenter.beans.FavoriteElastic
@@ -25,6 +26,7 @@ import com.noqapp.android.client.views.activities.StoreWithMenuActivity
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
+import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.model.types.BusinessSupportEnum
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
@@ -32,12 +34,16 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
 
     private val TAG = FavouritesFragment::class.java.simpleName
     private lateinit var fragmentFavouritesBinding: FragmentFavouritesBinding
+    private lateinit var progressLoaderBinding: LayoutProgressBarBinding
+
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragmentFavouritesBinding = FragmentFavouritesBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+        progressLoaderBinding = LayoutProgressBarBinding.inflate(inflater)
+        fragmentFavouritesBinding.root.addView(progressLoaderBinding.clProgressBar)
         return fragmentFavouritesBinding.root
     }
 
@@ -45,8 +51,9 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
 
-        setProgressMessage("Fetching the favourite list...")
-        showProgress()
+        progressLoaderBinding.clProgressBar.visibility = View.VISIBLE
+        fragmentFavouritesBinding.rlEmpty.visibility = View.GONE
+        progressLoaderBinding.tvProgressMessage.text = "Fetching the favourite list..."
         homeViewModel.fetchFavouritesList(requireContext(), this)
     }
 
@@ -102,8 +109,16 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
         }
     }
 
+    override fun responseErrorPresenter(eej: ErrorEncounteredJson?) {
+        super.responseErrorPresenter(eej)
+        progressLoaderBinding.clProgressBar.visibility = View.GONE
+        fragmentFavouritesBinding.rlEmpty.visibility = View.VISIBLE
+        fragmentFavouritesBinding.rvFavourite.visibility = View.GONE
+    }
+
     override fun favouriteListResponse(favoriteElastic: FavoriteElastic) {
-        dismissProgress()
+        progressLoaderBinding.clProgressBar.visibility = View.GONE
+
         val list = favoriteElastic.favoriteTagged
         if (list != null && list.size != 0) {
             fragmentFavouritesBinding.rlEmpty.visibility = View.GONE

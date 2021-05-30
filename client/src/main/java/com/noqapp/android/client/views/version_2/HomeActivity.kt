@@ -141,6 +141,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         intent?.let {
             if (it.getBooleanExtra("fromLogin", false)){
                 updateDrawerUI()
+                setUpExpandableList(UserUtils.isLogin())
             }
         }
     }
@@ -435,6 +436,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
                 return true
             }
             R.id.menuSearch -> {
+                navController.navigate(R.id.underDevelopmentFragment)
                 return true
             }
             R.id.menuFavourite -> {
@@ -442,6 +444,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
                 return true
             }
             R.id.menuPost -> {
+                navController.navigate(R.id.underDevelopmentFragment)
                 return true
             }
         }

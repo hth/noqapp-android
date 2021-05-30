@@ -12,15 +12,10 @@ import com.noqapp.android.client.views.activities.AppInitialize
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 
 class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
-    val errorLiveData = MutableLiveData<Boolean>()
+    val errorLiveData = MutableLiveData<String>()
     val businessListResponse = MutableLiveData<BizStoreElasticList?>()
-    private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
-    private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
-
-    init {
-        searchBusinessStoreApiCalls = SearchBusinessStoreApiCalls(this)
-        searchBusinessStoreApiAuthenticCalls = SearchBusinessStoreApiAuthenticCalls(this)
-    }
+    private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls = SearchBusinessStoreApiCalls(this)
+    private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls = SearchBusinessStoreApiAuthenticCalls(this)
 
     fun fetchBusinessList(searchStoreQuery: SearchStoreQuery?) {
         if (UserUtils.isLogin()) {
@@ -34,11 +29,14 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     }
 
     override fun responseErrorPresenter(eej: ErrorEncounteredJson?) {
-        errorLiveData.value = true
+        errorLiveData.value = "Oops! Something went wrong!"
+        eej?.run {
+            errorLiveData.value = reason
+        }
     }
 
     override fun responseErrorPresenter(errorCode: Int) {
-        errorLiveData.value = true
+        errorLiveData.value = "Oops! Something went wrong!"
     }
 
     override fun nearMeMerchant(bizStoreElasticList: BizStoreElasticList?) {
@@ -46,7 +44,7 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     }
 
     override fun nearMeMerchantError() {
-        errorLiveData.value = true
+        //errorLiveData.value = true
     }
 
     override fun nearMeHospitalResponse(bizStoreElasticList: BizStoreElasticList?) {
@@ -54,7 +52,7 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     }
 
     override fun nearMeHospitalError() {
-        errorLiveData.value = true
+        //errorLiveData.value = true
     }
 
     override fun nearMeCanteenResponse(bizStoreElasticList: BizStoreElasticList?) {
@@ -62,7 +60,7 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     }
 
     override fun nearMeCanteenError() {
-        errorLiveData.value = true
+        //errorLiveData.value = true
     }
 
     override fun nearMeRestaurantsResponse(bizStoreElasticList: BizStoreElasticList?) {
@@ -70,7 +68,7 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     }
 
     override fun nearMeRestaurantsError() {
-        errorLiveData.value = true
+        //errorLiveData.value = true
     }
 
     override fun nearMeTempleResponse(bizStoreElasticList: BizStoreElasticList?) {
@@ -78,6 +76,6 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     }
 
     override fun nearMeTempleError() {
-        errorLiveData.value = true
+        //errorLiveData.value = true
     }
 }

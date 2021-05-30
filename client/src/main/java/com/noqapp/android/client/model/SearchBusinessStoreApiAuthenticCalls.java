@@ -10,6 +10,7 @@ import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -87,13 +88,19 @@ public class SearchBusinessStoreApiAuthenticCalls {
                                 searchBusinessStorePresenter.nearMeMerchant(response.body());
                         }
                     } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
+                        if (response.body() != null)
+                            searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
+                        else
+                            searchBusinessStorePresenter.responseErrorPresenter(response.code());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         searchBusinessStorePresenter.authenticationFailure();
                     } else {
-                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
+                        if (response.body() != null)
+                            searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
+                        else
+                            searchBusinessStorePresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
@@ -101,26 +108,7 @@ public class SearchBusinessStoreApiAuthenticCalls {
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("Failed business near", t.getLocalizedMessage(), t);
-                switch (searchStoreQuery.getSearchedOnBusinessType()) {
-                    case CD:
-                    case CDQ:
-                        searchBusinessStorePresenter.nearMeCanteenError();
-                        break;
-                    case RS:
-                    case RSQ:
-                        searchBusinessStorePresenter.nearMeRestaurantsError();
-                        break;
-                    case DO:
-                    case HS:
-                        searchBusinessStorePresenter.nearMeHospitalError();
-                        break;
-                    case PW:
-                        searchBusinessStorePresenter.nearMeTempleError();
-                        break;
-                    case ZZ:
-                    default:
-                        searchBusinessStorePresenter.nearMeMerchantError();
-                }
+                searchBusinessStorePresenter.responseErrorPresenter(new ErrorEncounteredJson());
             }
         });
     }

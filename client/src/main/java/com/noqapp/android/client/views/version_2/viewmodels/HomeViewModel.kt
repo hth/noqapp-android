@@ -2,9 +2,7 @@ package com.noqapp.android.client.views.version_2.viewmodels
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.noqapp.android.client.model.FavouriteApiCall
 import com.noqapp.android.client.model.QueueApiAuthenticCall
 import com.noqapp.android.client.model.SearchBusinessStoreApiAuthenticCalls
@@ -19,10 +17,12 @@ import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.NetworkUtils
 import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.utils.UserUtils
-import com.noqapp.android.client.views.activities.AppInitialize
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.pojos.DisplayNotification
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext), SearchBusinessStorePresenter, TokenAndQueuePresenter {
 
@@ -33,6 +33,16 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall
+
+    val currentTokenAndQueueListLiveData : LiveData<List<JsonTokenAndQueue>> = liveData {
+        val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
+        emitSource(tokenAndQueueList)
+    }
+
+    val historyTokenAndQueueListLiveData : LiveData<List<JsonTokenAndQueue>> = liveData {
+        val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
+        emitSource(tokenAndQueueList)
+    }
 
     init {
         currentQueueErrorLiveData.value = false
@@ -65,14 +75,6 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         return NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
     }
 
-    fun getCurrentTokenAndQueue(): LiveData<List<JsonTokenAndQueue>> {
-        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
-    }
-
-    fun getHistoryTokenAndQueue(): LiveData<List<JsonTokenAndQueue>> {
-        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
-    }
-
     override fun nearMeTempleResponse(bizStoreElasticList: BizStoreElasticList?) {
     }
 
@@ -95,12 +97,14 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     override fun historyQueueResponse(tokenAndQueues: MutableList<JsonTokenAndQueue>?, sinceBeginning: Boolean) {
-        tokenAndQueues?.let {
-            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteHistoryQueue()
-            it.forEach { tokenAndQueue ->
-                tokenAndQueue.historyQueue = 1
+        viewModelScope.launch {
+            tokenAndQueues?.let {
+                NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteHistoryQueue()
+                it.forEach { tokenAndQueue ->
+                    tokenAndQueue.historyQueue = 1
+                }
+                NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it)
             }
-            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it)
         }
     }
 
@@ -120,13 +124,17 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     override fun currentQueueResponse(tokenAndQueues: JsonTokenAndQueueList?) {
-//        tokenAndQueues?.let {
-//            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteCurrentQueue()
-//            it.tokenAndQueues.forEach { tokenAndQueue ->
-//                tokenAndQueue.historyQueue = 0
-//            }
-//            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it.tokenAndQueues)
-//        }
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                tokenAndQueues?.let {
+                    NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteCurrentQueue()
+                    it.tokenAndQueues.forEach { tokenAndQueue ->
+                        tokenAndQueue.historyQueue = 0
+                    }
+                    NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it.tokenAndQueues)
+                }
+            }
+        }
     }
 
     override fun historyQueueError() {
