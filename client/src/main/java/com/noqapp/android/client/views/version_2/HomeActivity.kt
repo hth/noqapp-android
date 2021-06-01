@@ -164,10 +164,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(navHeaderMainBinding.ivProfile)
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                    .placeholder(ImageUtils.getProfilePlaceholder(this))
+                    .error(ImageUtils.getProfileErrorPlaceholder(this))
+                    .into(navHeaderMainBinding.ivProfile)
             }
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
@@ -229,7 +229,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         if (activityHomeBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             activityHomeBinding.drawerLayout.closeDrawer(GravityCompat.START)
         }
-        activityHomeBinding.expandableDrawerListView.setOnGroupClickListener(OnGroupClickListener { parent: ExpandableListView?, v: View?, groupPosition: Int, id: Long ->
+        activityHomeBinding.expandableDrawerListView.setOnGroupClickListener { parent: ExpandableListView?, v: View?, groupPosition: Int, id: Long ->
             if (menuDrawerItems.get(groupPosition).isGroup()) {
                 if (!menuDrawerItems.get(groupPosition).hasChildren()) {
                     val drawableId: Int = menuDrawerItems.get(groupPosition).getIcon()
@@ -238,14 +238,14 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
                 }
             }
             false
-        })
-        activityHomeBinding.expandableDrawerListView.setOnChildClickListener(OnChildClickListener { _: ExpandableListView?, v: View?, groupPosition: Int, childPosition: Int, _: Long ->
+        }
+        activityHomeBinding.expandableDrawerListView.setOnChildClickListener { _: ExpandableListView?, v: View?, groupPosition: Int, childPosition: Int, _: Long ->
             val model: MenuDrawer = menuDrawerItems[groupPosition].childList[childPosition]
             val drawableId = model.icon
             menuClick(drawableId)
             activityHomeBinding.drawerLayout.closeDrawer(GravityCompat.START)
             false
-        })
+        }
     }
 
     private fun menuClick(drawable: Int) {
