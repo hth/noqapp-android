@@ -53,9 +53,12 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         queueApiAuthenticCall.setTokenAndQueuePresenter(this)
     }
 
-    fun fetchNearMeRecentVisits(deviceId: String, searchStoreQuery: SearchStoreQuery) {
+    fun fetchNearMe(deviceId: String, searchStoreQuery: SearchStoreQuery) {
         searchBusinessStoreApiCalls.business(deviceId, searchStoreQuery)
     }
+
+    fun fetchRecentVisits(deviceId: String, searchStoreQuery: SearchStoreQuery){}
+
 
     fun fetchActiveTokenQueueList() {
         queueApiAuthenticCall.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())

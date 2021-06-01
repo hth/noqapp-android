@@ -163,12 +163,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         AppInitialize.activityCommunicator = this;
         initActionsViews(true);
         iv_home.setOnClickListener((View v) -> {
-            Intent goToA = new Intent(OrderConfirmActivity.this, LaunchActivity.class);
-            if (AppInitialize.isLockMode) {
-                goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            } else {
-                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            }
+            Intent goToA = new Intent(OrderConfirmActivity.this, HomeActivity.class);
             startActivity(goToA);
         });
         purchaseOrderApiCall = new PurchaseOrderApiCall(this);
@@ -381,7 +376,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         iv_home.performClick();
         AppInitialize.activityCommunicator = null;
     }

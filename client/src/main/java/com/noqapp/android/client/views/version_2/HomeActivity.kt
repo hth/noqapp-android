@@ -53,11 +53,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(addressOutput: String?, countryShortName: String?, area: String?, town: String?, district: String?, state: String?, stateShortName: String?, latitude: Double?, longitude: Double?) {
-        activityHomeBinding.tvLocation.text = town
+        activityHomeBinding.tvLocation.text = "$area, $town"
 
         val searchStoreQuery = SearchStoreQuery()
         area?.let {
-            searchStoreQuery.cityName = town
+            searchStoreQuery.cityName = "$area, $town"
         }
         latitude?.let {
             searchStoreQuery.latitude = it.toString()
