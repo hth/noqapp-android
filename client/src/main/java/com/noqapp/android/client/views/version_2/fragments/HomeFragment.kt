@@ -130,7 +130,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             searchStoreQuery = it
             it.searchedOnBusinessType = BusinessTypeEnum.ZZ
             fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.VISIBLE
-            homeViewModel.fetchNearMeRecentVisits(UserUtils.getDeviceId(), it)
+            homeViewModel.fetchNearMe(UserUtils.getDeviceId(), it)
         })
 
         homeViewModel.nearMeResponse.observe(viewLifecycleOwner, Observer { bizStoreElasticList ->
@@ -144,7 +144,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
-        homeViewModel.fetchNearMeRecentVisits()
+      //  homeViewModel.fetchRecentVisits()
 
         homeViewModel.nearMeErrorLiveData.observe(viewLifecycleOwner, Observer {
             if (it) {
