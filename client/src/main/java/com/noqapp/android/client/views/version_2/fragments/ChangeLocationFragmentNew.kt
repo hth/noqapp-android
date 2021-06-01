@@ -52,7 +52,7 @@ class ChangeLocationFragmentNew: Fragment(), (String?, String?, String?, String?
     @SuppressLint("ClickableViewAccessibility")
     private fun setUpAutoCompleteTextView() {
         changeLocationBinding.autoCompleteTextView.setAdapter(GooglePlacesAutocompleteAdapter(requireActivity(), R.layout.list_item))
-        changeLocationBinding.autoCompleteTextView.setOnItemClickListener(AdapterView.OnItemClickListener { parent: AdapterView<*>, view1: View?, position: Int, id: Long ->
+        changeLocationBinding.autoCompleteTextView.setOnItemClickListener { parent: AdapterView<*>, _: View?, position: Int, _: Long ->
             try {
                 val cityName = parent.getItemAtPosition(position) as String
                 val geoIP = AppUtils.getLocationFromAddress(activity, cityName)
@@ -68,8 +68,8 @@ class ChangeLocationFragmentNew: Fragment(), (String?, String?, String?, String?
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        })
-        changeLocationBinding.autoCompleteTextView.setThreshold(3)
+        }
+        changeLocationBinding.autoCompleteTextView.threshold = 3
         changeLocationBinding.autoCompleteTextView.setOnTouchListener { v: View?, event: MotionEvent ->
             val DRAWABLE_RIGHT = 2
             val DRAWABLE_LEFT = 0

@@ -1,31 +1,44 @@
 package com.noqapp.android.client.views.version_2.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentHomeNewBinding
+import com.noqapp.android.client.databinding.ViewIndicatorBinding
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.utils.AppUtils
+import com.noqapp.android.client.utils.IBConstant
 import com.noqapp.android.client.utils.SortPlaces
 import com.noqapp.android.client.utils.UserUtils
+import com.noqapp.android.client.views.activities.AfterJoinActivity
+import com.noqapp.android.client.views.activities.OrderConfirmActivity
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter
 import com.noqapp.android.client.views.adapters.TokenAndQueueAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.NavigationBundleUtils
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.model.types.BusinessTypeEnum
+import com.noqapp.android.common.model.types.QueueOrderTypeEnum
 import com.noqapp.android.common.utils.GeoIP
-import java.util.Collections
+import java.util.*
+import kotlin.math.abs
 
 class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private lateinit var fragmentHomeNewBinding: FragmentHomeNewBinding
@@ -47,7 +60,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentHomeNewBinding = FragmentHomeNewBinding.bind(LayoutInflater.from(context).inflate(R.layout.fragment_home_new, container, false))
+        fragmentHomeNewBinding = FragmentHomeNewBinding.inflate(inflater, container, false)
         return fragmentHomeNewBinding.root
     }
 
@@ -97,8 +110,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.ivSchool.setOnClickListener {
-            //       val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
-            //     findNavController().navigate(navigationDirections)
             findNavController().navigate(R.id.underDevelopmentFragment)
         }
 
@@ -117,6 +128,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private fun observeValues() {
         homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, Observer {
             searchStoreQuery = it
+            it.searchedOnBusinessType = BusinessTypeEnum.ZZ
             fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.VISIBLE
             homeViewModel.fetchNearMeRecentVisits(UserUtils.getDeviceId(), it)
         })
@@ -132,6 +144,8 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
+        homeViewModel.fetchNearMeRecentVisits()
+
         homeViewModel.nearMeErrorLiveData.observe(viewLifecycleOwner, Observer {
             if (it) {
                 fragmentHomeNewBinding.cvRecentVisits.visibility = View.GONE
@@ -146,10 +160,8 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                     fragmentHomeNewBinding.cvTokens.visibility = View.VISIBLE
                 }
                 tokenAndQueueAndQueueAdapter.addItems(tokenAndQueuesList)
-                fragmentHomeNewBinding.llIndicator.removeAllViews()
-                tokenAndQueuesList.forEach { _ ->
-                    addIndicator()
-                }
+
+                addIndicator(tokenAndQueuesList, 0)
             }
         })
 
@@ -167,14 +179,72 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     private fun setUpViewPager() {
-        tokenAndQueueAndQueueAdapter = TokenAndQueueAdapter(requireContext(), mutableListOf())
+        tokenAndQueueAndQueueAdapter = TokenAndQueueAdapter(requireContext(), mutableListOf()) {
+            onTokenClicked(it)
+        }
+
         fragmentHomeNewBinding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         fragmentHomeNewBinding.viewpager.adapter = tokenAndQueueAndQueueAdapter
+
+        fragmentHomeNewBinding.viewpager.clipToPadding = false
+        fragmentHomeNewBinding.viewpager.clipChildren = false
+        fragmentHomeNewBinding.viewpager.offscreenPageLimit = 3
+        fragmentHomeNewBinding.viewpager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+
+        val compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(40))
+        compositePageTransformer.addTransformer { page, position ->
+            val r = 1 - abs(position)
+            page.scaleY = 0.85f + r * 0.15f
+        }
+
+        fragmentHomeNewBinding.viewpager.setPageTransformer(compositePageTransformer)
+        fragmentHomeNewBinding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                homeViewModel.currentTokenAndQueueListLiveData.observe(viewLifecycleOwner, {
+                    addIndicator(it, position)
+                })
+            }
+        })
     }
 
-    private fun addIndicator() {
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.view_indicator, null)
-        fragmentHomeNewBinding.llIndicator.addView(view)
+    private fun onTokenClicked(jsonTokenAndQueue: JsonTokenAndQueue) {
+        if (jsonTokenAndQueue.businessType.queueOrderType == QueueOrderTypeEnum.Q) {
+            val intent = Intent(activity, AfterJoinActivity::class.java).apply {
+                putExtra(IBConstant.KEY_CODE_QR, jsonTokenAndQueue.codeQR)
+                putExtra("qUserId", jsonTokenAndQueue.queueUserId)
+                putExtra(IBConstant.KEY_FROM_LIST, true)
+                putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonTokenAndQueue)
+            }
+            startActivity(intent)
+        } else {
+            val intent = Intent(activity, OrderConfirmActivity::class.java).apply {
+                val bundle = Bundle()
+                bundle.putBoolean(IBConstant.KEY_FROM_LIST, true)
+                bundle.putString(IBConstant.KEY_CODE_QR, jsonTokenAndQueue.codeQR)
+                bundle.putInt("token", jsonTokenAndQueue.token)
+                bundle.putInt("currentServing", jsonTokenAndQueue.servingNumber)
+                bundle.putString("displayCurrentServing", jsonTokenAndQueue.displayServingNumber)
+                bundle.putString("GeoHash", jsonTokenAndQueue.geoHash)
+                bundle.putString(IBConstant.KEY_STORE_NAME, jsonTokenAndQueue.displayName)
+                bundle.putString(IBConstant.KEY_STORE_ADDRESS, jsonTokenAndQueue.storeAddress)
+                bundle.putString(AppUtils.CURRENCY_SYMBOL, AppUtils.getCurrencySymbol(jsonTokenAndQueue.countryShortName))
+                putExtras(bundle)
+            }
+            startActivity(intent)
+        }
+    }
+
+    private fun addIndicator(tokenANdQueueList: List<JsonTokenAndQueue>, selectedPosition: Int) {
+        fragmentHomeNewBinding.llIndicator.removeAllViews()
+        tokenANdQueueList.forEachIndexed { index, _ ->
+            val viewIndicatorBinding = ViewIndicatorBinding.inflate(LayoutInflater.from(requireContext()))
+            if (index == selectedPosition) {
+                viewIndicatorBinding.viewIndicator.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+            }
+            fragmentHomeNewBinding.llIndicator.addView(viewIndicatorBinding.root)
+        }
     }
 
     override fun onStoreItemClick(item: BizStoreElastic?) {
