@@ -34,7 +34,6 @@ import org.apache.commons.lang3.StringUtils
 import java.util.*
 
 class FcmNotificationReceiver : BroadcastReceiver() {
-
     val TAG = FcmNotificationReceiver::class.java.simpleName
 
     var isRegistered = false
