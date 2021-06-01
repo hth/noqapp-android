@@ -53,11 +53,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(addressOutput: String?, countryShortName: String?, area: String?, town: String?, district: String?, state: String?, stateShortName: String?, latitude: Double?, longitude: Double?) {
-        activityHomeBinding.tvLocation.text = "$area, $town"
+        activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
 
         val searchStoreQuery = SearchStoreQuery()
         area?.let {
-            searchStoreQuery.cityName = "$area, $town"
+            searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
         }
         latitude?.let {
             searchStoreQuery.latitude = it.toString()
@@ -89,6 +89,12 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         setUpExpandableList(UserUtils.isLogin())
         updateNotificationBadgeCount()
         setUpNavigation()
+
+        if (BuildConfig.DEBUG) {
+            activityHomeBinding.llOldVersion.visibility = View.VISIBLE
+        } else {
+            activityHomeBinding.llOldVersion.visibility = View.GONE
+        }
 
         addHeaderView()
         setListeners()
@@ -139,7 +145,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.let {
-            if (it.getBooleanExtra("fromLogin", false)){
+            if (it.getBooleanExtra("fromLogin", false)) {
                 updateDrawerUI()
                 setUpExpandableList(UserUtils.isLogin())
             }
