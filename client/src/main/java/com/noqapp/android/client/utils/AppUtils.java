@@ -675,4 +675,13 @@ public class AppUtils extends CommonHelper {
         }
         AppInitialize.saveFavouriteList(codeQRs);
     }
+
+    public static String getLocationAsString(String area, String town) {
+        if (StringUtils.isNotBlank(area) && StringUtils.isNotBlank(town)) {
+            return area + ", " + town;
+        } else if (StringUtils.isNotBlank(area)) {
+            return area;
+        }
+        return StringUtils.isNotBlank(town) ? town : "";
+    }
 }
