@@ -423,8 +423,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                                             }
                                         }
                                     }
-                                } catch (e: java.lang.Exception) {
-                                    e.printStackTrace()
+                                } catch (e: Exception) {
                                     throw e
                                 }
                             } else {
@@ -436,7 +435,7 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                 }
             }
 
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().log("Failed on update notification")
             FirebaseCrashlytics.getInstance().recordException(e)
             Log.e(TAG, "Failed on update notification " + e.localizedMessage)
