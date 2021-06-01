@@ -11,6 +11,7 @@ import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList
+import com.noqapp.android.client.presenter.beans.FavoriteElastic
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
@@ -24,12 +25,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext), SearchBusinessStorePresenter, TokenAndQueuePresenter {
+class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext), SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
 
     val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
     val nearMeResponse = MutableLiveData<BizStoreElasticList?>()
+    val favoritesListResponseLiveData = MutableLiveData<FavoriteElastic?>()
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall
@@ -57,17 +59,14 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         searchBusinessStoreApiCalls.business(deviceId, searchStoreQuery)
     }
 
-    fun fetchRecentVisits(deviceId: String, searchStoreQuery: SearchStoreQuery){}
-
-
     fun fetchActiveTokenQueueList() {
         queueApiAuthenticCall.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
     }
 
-    fun fetchFavouritesList(context: Context, favouritesListPresenter: FavouriteListPresenter) {
+    fun fetchFavouritesRecentVisitList(context: Context) {
         if (NetworkUtils.isConnectingToInternet(context)) {
             val favouriteApiCall = FavouriteApiCall()
-            favouriteApiCall.setFavouriteListPresenter(favouritesListPresenter)
+            favouriteApiCall.setFavouriteListPresenter(this)
             favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         } else {
             ShowAlertInformation.showNetworkDialog(context)
@@ -97,6 +96,10 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     override fun responseErrorPresenter(errorCode: Int) {
+    }
+
+    override fun favouriteListResponse(favoriteElastic: FavoriteElastic?) {
+        favoritesListResponseLiveData.value = favoriteElastic
     }
 
     override fun historyQueueResponse(tokenAndQueues: MutableList<JsonTokenAndQueue>?, sinceBeginning: Boolean) {

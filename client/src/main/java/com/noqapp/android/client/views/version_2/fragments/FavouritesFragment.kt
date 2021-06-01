@@ -14,9 +14,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.databinding.FragmentFavouritesBinding
 import com.noqapp.android.client.databinding.LayoutProgressBarBinding
-import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
-import com.noqapp.android.client.presenter.beans.FavoriteElastic
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.IBConstant
 import com.noqapp.android.client.views.activities.BeforeJoinActivity
@@ -30,7 +28,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.model.types.BusinessSupportEnum
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickListener, FavouriteListPresenter {
+class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickListener {
 
     private val TAG = FavouritesFragment::class.java.simpleName
     private lateinit var fragmentFavouritesBinding: FragmentFavouritesBinding
@@ -54,7 +52,36 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
         progressLoaderBinding.clProgressBar.visibility = View.VISIBLE
         fragmentFavouritesBinding.rlEmpty.visibility = View.GONE
         progressLoaderBinding.tvProgressMessage.text = "Fetching the favourite list..."
-        homeViewModel.fetchFavouritesList(requireContext(), this)
+        homeViewModel.fetchFavouritesRecentVisitList(requireContext())
+
+        observeValues()
+    }
+
+    private fun observeValues() {
+
+        homeViewModel.favoritesListResponseLiveData.observe(viewLifecycleOwner, { it ->
+
+            progressLoaderBinding.clProgressBar.visibility = View.GONE
+
+            it?.let { favoriteElastic ->
+                val list = favoriteElastic.favoriteTagged
+                if (list != null && list.size != 0) {
+                    fragmentFavouritesBinding.rlEmpty.visibility = View.GONE
+                    fragmentFavouritesBinding.rvFavourite.visibility = View.VISIBLE
+                } else {
+                    fragmentFavouritesBinding.rlEmpty.visibility = View.VISIBLE
+                    fragmentFavouritesBinding.rvFavourite.visibility = View.GONE
+                }
+
+                homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, {
+                    val storeInfoViewAllAdapter = StoreInfoViewAllAdapter(list, requireContext(), this, it.latitude.toDouble(), it.longitude.toDouble(), true)
+                    fragmentFavouritesBinding.rvFavourite.adapter = storeInfoViewAllAdapter
+                })
+
+                AppUtils.saveFavouriteCodeQRs(list)
+            }
+        })
+
     }
 
     private fun setUpRecyclerView() {
@@ -114,25 +141,6 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
         progressLoaderBinding.clProgressBar.visibility = View.GONE
         fragmentFavouritesBinding.rlEmpty.visibility = View.VISIBLE
         fragmentFavouritesBinding.rvFavourite.visibility = View.GONE
-    }
-
-    override fun favouriteListResponse(favoriteElastic: FavoriteElastic) {
-        progressLoaderBinding.clProgressBar.visibility = View.GONE
-
-        val list = favoriteElastic.favoriteTagged
-        if (list != null && list.size != 0) {
-            fragmentFavouritesBinding.rlEmpty.visibility = View.GONE
-            fragmentFavouritesBinding.rvFavourite.visibility = View.VISIBLE
-        } else {
-            fragmentFavouritesBinding.rlEmpty.visibility = View.VISIBLE
-            fragmentFavouritesBinding.rvFavourite.visibility = View.GONE
-        }
-
-        homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, Observer {
-            val storeInfoViewAllAdapter = StoreInfoViewAllAdapter(list, requireContext(), this, it.latitude.toDouble(), it.longitude.toDouble(), true)
-            fragmentFavouritesBinding.rvFavourite.adapter = storeInfoViewAllAdapter
-        })
-        AppUtils.saveFavouriteCodeQRs(list)
     }
 
 }
