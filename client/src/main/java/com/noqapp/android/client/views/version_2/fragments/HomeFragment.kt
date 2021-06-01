@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentHomeNewBinding
 import com.noqapp.android.client.databinding.ViewIndicatorBinding
@@ -66,6 +67,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        retainInstance = true
         setUpViewPager()
         setUpRecyclerView()
 
@@ -77,6 +79,35 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     private fun setClickListeners() {
+
+        fragmentHomeNewBinding.tabNearMeRecentVisits.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    if (it.position == 0) {
+                        searchStoreQuery?.let { searchStoreQuery ->
+                            homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
+                        }
+                    } else {
+                        homeViewModel.fetchFavouritesRecentVisitList(requireContext())
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    if (it.position == 0) {
+                        searchStoreQuery?.let { searchStoreQuery ->
+                            homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
+                        }
+                    } else {
+                        homeViewModel.fetchFavouritesRecentVisitList(requireContext())
+                    }
+                }
+            }
+        })
 
         fragmentHomeNewBinding.ivJobs.setOnClickListener {
             findNavController().navigate(R.id.underDevelopmentFragment)
@@ -126,14 +157,14 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     private fun observeValues() {
-        homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, Observer {
-            searchStoreQuery = it
+        homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, {
             it.searchedOnBusinessType = BusinessTypeEnum.ZZ
+            searchStoreQuery = it
             fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.VISIBLE
             homeViewModel.fetchNearMe(UserUtils.getDeviceId(), it)
         })
 
-        homeViewModel.nearMeResponse.observe(viewLifecycleOwner, Observer { bizStoreElasticList ->
+        homeViewModel.nearMeResponse.observe(viewLifecycleOwner, { bizStoreElasticList ->
             bizStoreElasticList?.bizStoreElastics?.let {
                 searchStoreQuery?.let { searchStoreQueryVal ->
                     Collections.sort(it, SortPlaces(GeoIP(searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())))
@@ -144,15 +175,24 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
-      //  homeViewModel.fetchRecentVisits()
+        homeViewModel.favoritesListResponseLiveData.observe(viewLifecycleOwner, {
+            it?.favoriteSuggested?.let {
+                searchStoreQuery?.let { searchStoreQueryVal ->
+                    Collections.sort(it, SortPlaces(GeoIP(searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())))
+                    val storeInfoAdapter = StoreInfoAdapter(it, activity, this, searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())
+                    fragmentHomeNewBinding.rvRecentVisitsNearMe.adapter = storeInfoAdapter
+                    fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.GONE
+                }
+            }
+        })
 
-        homeViewModel.nearMeErrorLiveData.observe(viewLifecycleOwner, Observer {
+        homeViewModel.nearMeErrorLiveData.observe(viewLifecycleOwner, {
             if (it) {
                 fragmentHomeNewBinding.cvRecentVisits.visibility = View.GONE
             }
         })
 
-        homeViewModel.currentTokenAndQueueListLiveData.observe(viewLifecycleOwner, Observer { tokenAndQueuesList ->
+        homeViewModel.currentTokenAndQueueListLiveData.observe(viewLifecycleOwner, { tokenAndQueuesList ->
             tokenAndQueuesList?.let {
                 if (tokenAndQueuesList.isNullOrEmpty()) {
                     fragmentHomeNewBinding.cvTokens.visibility = View.GONE
