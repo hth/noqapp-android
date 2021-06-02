@@ -241,8 +241,6 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
                     dbInstance(context).notificationDao().insertNotification(displayNotification)
 
-
-
                     for (i in jsonTokenAndQueueList!!.indices) {
                         NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList[i].topic)
                     }
