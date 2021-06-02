@@ -1165,5 +1165,4 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
         AppUtils.saveFavouriteCodeQRs(list);
         isFirstTime = false;
     }
-
 }
