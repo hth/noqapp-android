@@ -2,7 +2,9 @@ package com.noqapp.android.client.views.version_2.viewmodels
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.*
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.noqapp.android.client.model.FavouriteApiCall
 import com.noqapp.android.client.model.QueueApiAuthenticCall
 import com.noqapp.android.client.model.SearchBusinessStoreApiAuthenticCalls
@@ -26,6 +28,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext), SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
+    val TAG = HomeViewModel::class.java.simpleName
 
     val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
