@@ -191,7 +191,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         supportActionBar?.setDisplayShowCustomEnabled(true)
     }
 
-
     private fun setUpExpandableList(isLogin: Boolean) {
         /* Fill menu items */
         menuDrawerItems.clear()
