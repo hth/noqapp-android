@@ -109,47 +109,48 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
-        fragmentHomeNewBinding.ivJobs.setOnClickListener {
+        fragmentHomeNewBinding.clJobs.setOnClickListener {
             findNavController().navigate(R.id.underDevelopmentFragment)
         }
 
-        fragmentHomeNewBinding.ivHousing.setOnClickListener {
+        fragmentHomeNewBinding.clHousing.setOnClickListener {
+            
             findNavController().navigate(R.id.underDevelopmentFragment)
         }
 
-        fragmentHomeNewBinding.ivMarketPlace.setOnClickListener {
+        fragmentHomeNewBinding.clMarketplace.setOnClickListener {
             findNavController().navigate(R.id.underDevelopmentFragment)
         }
 
-        fragmentHomeNewBinding.ivRestaurant.setOnClickListener {
+        fragmentHomeNewBinding.clRestaurant.setOnClickListener {
             val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
             findNavController().navigate(navigationDirections)
         }
 
-        fragmentHomeNewBinding.ivHospital.setOnClickListener {
+        fragmentHomeNewBinding.clHospital.setOnClickListener {
             val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
             findNavController().navigate(navigationDirections)
         }
 
-        fragmentHomeNewBinding.ivUsrCsd.setOnClickListener {
+        fragmentHomeNewBinding.clUsrCsd.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.CD))
         }
 
-        fragmentHomeNewBinding.ivGrocery.setOnClickListener {
+        fragmentHomeNewBinding.clGrocery.setOnClickListener {
             val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
             findNavController().navigate(navigationDirections)
         }
 
-        fragmentHomeNewBinding.ivSchool.setOnClickListener {
+        fragmentHomeNewBinding.clSchool.setOnClickListener {
             findNavController().navigate(R.id.underDevelopmentFragment)
         }
 
-        fragmentHomeNewBinding.ivCafeteria.setOnClickListener {
+        fragmentHomeNewBinding.clCafe.setOnClickListener {
             val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.CF)
             findNavController().navigate(navigationDirections)
         }
 
-        fragmentHomeNewBinding.ivGenericStore.setOnClickListener {
+        fragmentHomeNewBinding.clGenericStore.setOnClickListener {
             val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.ST)
             findNavController().navigate(navigationDirections)
         }
@@ -232,7 +233,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         fragmentHomeNewBinding.viewpager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
         val compositePageTransformer = CompositePageTransformer()
-        compositePageTransformer.addTransformer(MarginPageTransformer(40))
+        compositePageTransformer.addTransformer(MarginPageTransformer(32))
         compositePageTransformer.addTransformer { page, position ->
             val r = 1 - abs(position)
             page.scaleY = 0.85f + r * 0.15f

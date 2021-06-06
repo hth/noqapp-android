@@ -39,7 +39,6 @@ import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.FavouriteListPresenter;
 import com.noqapp.android.client.presenter.FeedPresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
@@ -203,7 +202,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
                 LaunchActivity.getLaunchActivity().tv_location.setText(city);
             } else {
                 // LaunchActivity.getLaunchActivity().tv_location.setText(city);
-                if (0.5f < AppUtils.calculateDistance(lat, lng, latitude, longitude)){
+                if (0.5f < AppUtils.calculateDistance(lat, lng, latitude, longitude)) {
                     cv_update_location.setVisibility(View.VISIBLE);
                 }
                 tv_update.setOnClickListener((View v) -> {
@@ -345,9 +344,9 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             advertisementApiCalls.setAdvertisementPresenter(this);
             LocationPref locationPref = AppInitialize.getLocationPreference();
             Location location = new Location()
-                .setCityName(locationPref.getLocationAsString())
-                .setLatitude(String.valueOf(locationPref.getLatitude()))
-                .setLongitude(String.valueOf(locationPref.getLongitude()));
+                    .setCityName(locationPref.getLocationAsString())
+                    .setLatitude(String.valueOf(locationPref.getLatitude()))
+                    .setLongitude(String.valueOf(locationPref.getLongitude()));
             advertisementApiCalls.getAdvertisementsByLocation(UserUtils.getDeviceId(), location);
             pb_events.setVisibility(View.VISIBLE);
         } else {
@@ -414,7 +413,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             //Call the history queue
             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
                 String tokenFCM = instanceIdResult.getToken();
-                DeviceToken deviceToken = new DeviceToken(tokenFCM, Constants.appVersion(), CommonHelper.getLocation(lat, lng));
+                DeviceToken deviceToken = new DeviceToken(tokenFCM, Constants.appVersion(), AppUtils.getSelectedLanguage(requireContext()), CommonHelper.getLocation(lat, lng));
                 queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
             });
         } else {
@@ -426,7 +425,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
             //Call the history queue
             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
                 String tokenFCM = instanceIdResult.getToken();
-                DeviceToken deviceToken = new DeviceToken(tokenFCM, Constants.appVersion(), CommonHelper.getLocation(lat, lng));
+                DeviceToken deviceToken = new DeviceToken(tokenFCM, Constants.appVersion(), AppUtils.getSelectedLanguage(requireContext()), CommonHelper.getLocation(lat, lng));
                 queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
             });
         }

@@ -15,6 +15,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
@@ -137,7 +138,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
     private void sendRegistrationToServer(String refreshToken, Location location) {
         if (new NetworkUtil(this).isOnline()) {
-            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(), location);
+            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(), AppUtils.getSelectedLanguage(this), location);
             deviceId = AppInitialize.getDeviceId();
             if (TextUtils.isEmpty(deviceId)) {
                 /* Call this api only once in life time. */

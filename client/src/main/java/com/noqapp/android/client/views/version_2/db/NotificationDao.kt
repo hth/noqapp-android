@@ -16,11 +16,11 @@ interface NotificationDao {
     fun getNotificationCount(status: String): LiveData<Int>
 
     @Query("DELETE FROM notification")
-    fun deleteNotifications()
+    suspend fun deleteNotifications()
 
     @Insert
-    fun insertNotification(displayNotification: DisplayNotification)
+    suspend fun insertNotification(displayNotification: DisplayNotification)
 
     @Update
-    fun updateNotification(displayNotification: DisplayNotification)
+    suspend fun updateNotification(displayNotification: DisplayNotification)
 }

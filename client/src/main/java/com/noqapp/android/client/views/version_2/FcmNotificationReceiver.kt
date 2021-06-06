@@ -1,3 +1,4 @@
+/*
 package com.noqapp.android.client.views.version_2
 
 import android.annotation.SuppressLint
@@ -129,10 +130,12 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     val token = jsonData.token.toString()
                     val qid = jsonData.queueUserId
                     if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.S.getName(), ignoreCase = true)) {
-                        /*
+                        */
+/*
                              * Save codeQR of review & show the review screen on app
                              * resume if there is any record in Review DB for queue review key
-                             */
+                             *//*
+
                         dbInstance(context).reviewDao().getReviewData(codeQR, token).value?.let {
                             it.isReviewShown = "1"
                             dbInstance(context).reviewDao().update(it)
@@ -156,7 +159,9 @@ class FcmNotificationReceiver : BroadcastReceiver() {
 
                         //Todo call in HomeActivity
                         //callReviewActivity(codeQR, token)
-                        /* this code is added to close the join & after join screen if the request is processed */
+                        */
+/* this code is added to close the join & after join screen if the request is processed *//*
+
                         if (AppInitialize.activityCommunicator != null) {
                             AppInitialize.activityCommunicator.requestProcessed(codeQR, token)
                         }
@@ -185,10 +190,12 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     val token = jsonClientOrderData.orderNumber.toString()
                     val qid = jsonClientOrderData.queueUserId
                     if (jsonData.purchaseOrderState.getName().equals(PurchaseOrderStateEnum.OD.getName(), ignoreCase = true)) {
-                        /*
+                        */
+/*
                              * Save codeQR of review & show the review screen on app
                              * resume if there is any record in Review DB for queue review key
-                             */
+                             *//*
+
 
                         dbInstance(context).reviewDao().getReviewData(codeQR, token).value?.let {
                             it.isReviewShown = "1"
@@ -207,10 +214,12 @@ class FcmNotificationReceiver : BroadcastReceiver() {
 
 
                         //      callReviewActivity(codeQR, token)
-                        /*
+                        */
+/*
                              * this code is added to close the join & after join screen if the request is processed
                              * Update the order screen/ Join Screen if open
-                             */
+                             *//*
+
                         if (AppInitialize.activityCommunicator != null) {
                             AppInitialize.activityCommunicator.requestProcessed(codeQR, token)
                         }
@@ -258,7 +267,9 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                     displayNotification.setStatus(DatabaseTable.Notification.KEY_UNREAD)
                     displayNotification.setCreatedDate(CommonHelper.changeUTCDateToString(Date()))
                     dbInstance(context).notificationDao().insertNotification(displayNotification)
-                    /* Show some meaningful msg to the end user */
+                    */
+/* Show some meaningful msg to the end user *//*
+
                     ShowAlertInformation.showInfoDisplayDialog(context, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(LaunchActivity.language))
 
                 } else if (jsonData is JsonChangeServiceTimeData) {
@@ -331,9 +342,13 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                         for (i in jsonTokenAndQueueArrayList.indices) {
                             val jtk = jsonTokenAndQueueArrayList[i]
                             if (null != jtk) {
-                                /* update DB & after join screen */
+                                */
+/* update DB & after join screen *//*
+
                                 if (currentServing.toInt() < jtk.servingNumber) {
-                                    /* Do nothing - In Case of getting service no less than what the object have */
+                                    */
+/* Do nothing - In Case of getting service no less than what the object have *//*
+
                                 } else {
                                     jtk.servingNumber = currentServing.toInt()
                                     GlobalScope.launch {
@@ -345,10 +360,12 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                                 if (jsonData is JsonTopicOrderData && jtk.token - currentServing.toInt() <= 0) {
                                     jtk.purchaseOrderState = purchaseOrderStateEnum
                                 }
-                                /*
+                                */
+/*
                                  * Save codeQR of goto & show it in after join screen on app
                                  * Review DB for review key && current serving == token no.
-                                 */
+                                 *//*
+
                                 if (currentServing.toInt() == jtk.token) {
                                     dbInstance(context).reviewDao().getReviewData(codeQR, currentServing).value?.let {
                                         it.gotoCounter = go_to
@@ -367,7 +384,9 @@ class FcmNotificationReceiver : BroadcastReceiver() {
 
                                 }
                                 if (jtk.isTokenExpired && jsonTokenAndQueueArrayList.size == 1) {
-                                    /* Un-subscribe the topic */
+                                    */
+/* Un-subscribe the topic *//*
+
                                     NoQueueMessagingService.unSubscribeTopics(jtk.topic)
                                 }
                                 if (AppInitialize.activityCommunicator != null) {
@@ -386,11 +405,17 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                                                     //          makeAnnouncement(jsonTextToSpeeches, msgId)
                                                 }
                                             } else {
-                                                /* Blinker already shown */
+                                                */
+/* Blinker already shown *//*
+
                                             }
-                                            /* update */
+                                            */
+/* update *//*
+
                                         } else {
-                                            /* insert */
+                                            */
+/* insert *//*
+
                                             val cv = ContentValues()
                                             cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1)
                                             cv.put(DatabaseTable.Review.CODE_QR, codeQR)
@@ -410,7 +435,9 @@ class FcmNotificationReceiver : BroadcastReceiver() {
                                     }
                                 }
                                 try {
-                                    /* In case of order update the order status */
+                                    */
+/* In case of order update the order status *//*
+
                                     if (jsonData is JsonTopicOrderData) {
                                         if (messageOrigin.equals(MessageOriginEnum.O.name, ignoreCase = true) && currentServing.toInt() == jtk.token) {
                                             jtk.purchaseOrderState = jsonData.purchaseOrderState
@@ -440,4 +467,4 @@ class FcmNotificationReceiver : BroadcastReceiver() {
         }
     }
 
-}
+}*/
