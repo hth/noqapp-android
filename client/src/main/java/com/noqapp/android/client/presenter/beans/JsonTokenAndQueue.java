@@ -129,8 +129,6 @@ public class JsonTokenAndQueue implements Serializable {
     private Integer lastNumber;
 
     @JsonProperty("t")
-    @PrimaryKey
-    @NonNull
     @ColumnInfo(name = "token")
     private Integer token = 0;
 
@@ -183,8 +181,10 @@ public class JsonTokenAndQueue implements Serializable {
     private String bizCategoryId;
 
     @JsonProperty("ti")
+    @NonNull
+    @PrimaryKey
     @ColumnInfo(name = "transaction_id")
-    private String transactionId;
+    private String transactionId = "";
 
     @ColumnInfo(name = "history_queue")
     private Integer historyQueue;

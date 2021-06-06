@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;

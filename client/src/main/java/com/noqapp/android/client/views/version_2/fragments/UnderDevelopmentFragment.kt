@@ -7,11 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.noqapp.android.client.databinding.FragmentUnderDevelopmentBinding
 
-class UnderDevelopmentFragment: Fragment() {
+class UnderDevelopmentFragment : Fragment() {
+
+    private lateinit var fragmentUnderDevelopmentBinding: FragmentUnderDevelopmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val fragmentUnderDevelopmentBinding = FragmentUnderDevelopmentBinding.inflate(inflater, container, false)
+        fragmentUnderDevelopmentBinding = FragmentUnderDevelopmentBinding.inflate(inflater, container, false)
         return fragmentUnderDevelopmentBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        arguments?.let {
+            val underDevelopmentFragmentArgs = UnderDevelopmentFragmentArgs.fromBundle(it)
+            fragmentUnderDevelopmentBinding.tvFutureUpdateText.text = underDevelopmentFragmentArgs.futureUpdates
+        }
     }
 
 }

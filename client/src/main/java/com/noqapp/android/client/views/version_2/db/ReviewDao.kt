@@ -14,7 +14,7 @@ interface ReviewDao {
     fun getReviewData(codeQr: String?, token: String): LiveData<ReviewData>
 
     @Insert
-    fun insertReviewData(reviewData: ReviewData)
+    suspend fun insertReviewData(reviewData: ReviewData)
 
     @Query("SELECT * FROM review_data WHERE is_review_shown=1")
     fun getPendingReview(): LiveData<ReviewData>
@@ -26,7 +26,7 @@ interface ReviewDao {
     fun deleteReviewData(codeQr: String, token: String)
 
     @Update
-    fun update(reviewData: ReviewData)
+    suspend fun update(reviewData: ReviewData)
 
     @Query("DELETE FROM review_data")
     fun clearReviewData()

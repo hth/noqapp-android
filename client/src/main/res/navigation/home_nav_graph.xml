@@ -9,35 +9,48 @@
         android:id="@+id/homeFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.HomeFragment"
         tools:layout="@layout/fragment_home_new">
-        <action android:id="@+id/actionHomeToViewBusinessDestination"
-            app:destination="@id/viewBusinessListFragment"/>
+        <action
+            android:id="@+id/actionHomeToViewBusinessDestination"
+            app:destination="@id/viewBusinessListFragment" />
+
+        <action
+            android:id="@+id/actionHomeToUnderDevelopmentFragmentDestination"
+            app:destination="@id/underDevelopmentFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.NotificationFragment"
-        tools:layout="@layout/fragment_notification"/>
+        tools:layout="@layout/fragment_notification" />
 
     <fragment
         android:id="@+id/favouritesFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.FavouritesFragment"
-        tools:layout="@layout/fragment_favourites"/>
+        tools:layout="@layout/fragment_favourites" />
 
-    <fragment android:id="@+id/viewBusinessListFragment"
+    <fragment
+        android:id="@+id/viewBusinessListFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.ViewBusinessListFragment"
         tools:layout="@layout/fragment_view_business_list">
         <argument
             android:name="businessType"
-            app:argType="com.noqapp.android.common.model.types.BusinessTypeEnum"
-            android:defaultValue="RS" />
+            android:defaultValue="RS"
+            app:argType="com.noqapp.android.common.model.types.BusinessTypeEnum" />
     </fragment>
 
-    <fragment android:id="@+id/changeLocationFragment"
+    <fragment
+        android:id="@+id/changeLocationFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.ChangeLocationFragmentNew"
-        tools:layout="@layout/fragment_change_location"/>
+        tools:layout="@layout/fragment_change_location" />
 
-    <fragment android:id="@+id/underDevelopmentFragment"
+    <fragment
+        android:id="@+id/underDevelopmentFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.UnderDevelopmentFragment"
-        tools:layout="@layout/fragment_under_development"/>
+        tools:layout="@layout/fragment_under_development">
+        <argument
+            android:name="futureUpdates"
+            android:defaultValue="What to expect in future releases?"
+            app:argType="String" />
+    </fragment>
 
 </navigation>

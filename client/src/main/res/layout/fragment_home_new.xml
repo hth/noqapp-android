@@ -153,6 +153,7 @@
                         android:orientation="horizontal">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_housing"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -164,7 +165,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvHousing"
                                 app:layout_constraintStart_toStartOf="@id/tvHousing"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_home_24" />
+                                app:srcCompat="@drawable/metro_home" />
 
                             <TextView
                                 android:id="@+id/tvHousing"
@@ -182,6 +183,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_marketplace"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2">
@@ -193,7 +195,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvMarketPlace"
                                 app:layout_constraintStart_toStartOf="@id/tvMarketPlace"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_market_24" />
+                                app:srcCompat="@drawable/metro_shop" />
 
                             <TextView
                                 android:id="@+id/tvMarketPlace"
@@ -202,7 +204,7 @@
                                 android:layout_marginStart="24dp"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="@string/txt_household"
+                                android:text="@string/txt_market_place"
                                 android:textColor="@color/text_header_color"
                                 android:textSize="@dimen/text_size_fourteen"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -212,6 +214,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_jobs"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -223,7 +226,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvJobs"
                                 app:layout_constraintStart_toStartOf="@id/tvJobs"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_jobs_24" />
+                                app:srcCompat="@drawable/ionic_ios_briefcase" />
 
                             <TextView
                                 android:id="@+id/tvJobs"
@@ -280,6 +283,7 @@
                         android:orientation="horizontal">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_usr_csd"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -291,7 +295,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvUrcCsd"
                                 app:layout_constraintStart_toStartOf="@id/tvUrcCsd"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_market_24" />
+                                app:srcCompat="@drawable/material_store" />
 
                             <TextView
                                 android:id="@+id/tvUrcCsd"
@@ -308,8 +312,8 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_restaurant"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -321,7 +325,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvRestaurant"
                                 app:layout_constraintStart_toStartOf="@id/tvRestaurant"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_restaurant_24" />
+                                app:srcCompat="@drawable/ionic_md_restaurant" />
 
                             <TextView
                                 android:id="@+id/tvRestaurant"
@@ -339,6 +343,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_grocery"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -350,7 +355,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvGrocery"
                                 app:layout_constraintStart_toStartOf="@id/tvGrocery"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_local_grocery_store_24" />
+                                app:srcCompat="@drawable/map_grocery_or_supermarket" />
 
                             <TextView
                                 android:id="@+id/tvGrocery"
@@ -367,8 +372,8 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_hospital"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -380,7 +385,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvHospital"
                                 app:layout_constraintStart_toStartOf="@id/tvHospital"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_local_hospital_24" />
+                                app:srcCompat="@drawable/material_local_hospital" />
 
                             <TextView
                                 android:id="@+id/tvHospital"
@@ -406,6 +411,7 @@
                         android:orientation="horizontal">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_school"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -417,7 +423,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvSchool"
                                 app:layout_constraintStart_toStartOf="@id/tvSchool"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_school_24" />
+                                app:srcCompat="@drawable/ionic_md_school" />
 
                             <TextView
                                 android:id="@+id/tvSchool"
@@ -435,6 +441,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_cafe"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -446,7 +453,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvCafeteria"
                                 app:layout_constraintStart_toStartOf="@id/tvCafeteria"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_local_cafe_24" />
+                                app:srcCompat="@drawable/ionic_md_cafe" />
 
                             <TextView
                                 android:id="@+id/tvCafeteria"
@@ -464,6 +471,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_generic_store"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -475,7 +483,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvGenericStore"
                                 app:layout_constraintStart_toStartOf="@id/tvGenericStore"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_baseline_business_center_24" />
+                                app:srcCompat="@drawable/awesome_shopping_bag" />
 
                             <TextView
                                 android:id="@+id/tvGenericStore"
