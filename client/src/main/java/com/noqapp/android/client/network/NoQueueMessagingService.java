@@ -272,7 +272,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                         // Update Currently serving in app preferences
                         SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
                         prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, mappedData.get(CODE_QR)), Integer.parseInt(mappedData.get(Constants.CURRENTLY_SERVING))).apply();
-                        prefs.edit().putInt(String.format(Constants.DISPLAY_SERVING_NUMBER_PREF_KEY, mappedData.get(CODE_QR)), Integer.parseInt(mappedData.get(Constants.DISPLAY_SERVING_NUMBER))).apply();
+                        prefs.edit().putString(String.format(Constants.DISPLAY_SERVING_NUMBER_PREF_KEY, mappedData.get(CODE_QR)), mappedData.get(Constants.DISPLAY_SERVING_NUMBER)).apply();
                     }
                 } else {
                     // app is in background, show the notification in notification tray
