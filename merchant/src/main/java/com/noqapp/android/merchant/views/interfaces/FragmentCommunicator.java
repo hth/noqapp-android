@@ -20,5 +20,5 @@ public interface FragmentCommunicator {
      * This method to update the list of people in Q if user
      * cancel the token
      */
-    void updatePeopleQueue( String codeQR);
+    void updatePeopleQueue(String codeQR);
 }
