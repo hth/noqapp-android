@@ -50,10 +50,8 @@ import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.receivers.AlarmReceiver;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonQueueChangeServiceTime;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
-import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonData;
@@ -253,20 +251,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                     }
                     break;
                 case QCT:
-                    try {
-                        JsonChangeServiceTimeData jsonChangeServiceTimeData = mapper.readValue(new JSONObject(mappedData).toString(), JsonChangeServiceTimeData.class);
-                        List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = new LinkedList<>();
-                        if (null != mappedData.get("qcsts")) {
-                            jsonQueueChangeServiceTimes = mapper.readValue(mappedData.get("qcsts"), new TypeReference<List<JsonQueueChangeServiceTime>>() {});
-                        }
-                        jsonChangeServiceTimeData.setJsonQueueChangeServiceTimes(jsonQueueChangeServiceTimes);
-                        jsonData = jsonChangeServiceTimeData;
-                        Log.d("Update time slot", jsonChangeServiceTimeData.toString());
-                    } catch (Exception e) {
-                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QCT);
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                        e.printStackTrace();
-                    }
+                    FirebaseCrashlytics.getInstance().log("Still reading QCT message on client");
+                    FirebaseCrashlytics.getInstance().recordException(new Exception("Still reading QCT message on client"));
                     break;
                 default:
                     // object = null;
@@ -422,158 +408,134 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        if (jsonData instanceof JsonChangeServiceTimeData) {
-                            JsonTokenAndQueue jsonTokenAndQueue = TokenAndQueueDB.findByQRCode(((JsonChangeServiceTimeData) jsonData).getCodeQR());
-                            if (null != jsonTokenAndQueue) {
-                                List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes();
-                                for (JsonQueueChangeServiceTime jsonQueueChangeServiceTime : jsonQueueChangeServiceTimes) {
-                                    if (jsonQueueChangeServiceTime.getToken() == jsonTokenAndQueue.getToken()) {
-                                        Log.e("In JsonChangeServiceTimeData", jsonData.toString());
-                                        String msg = jsonData.getBody() + "\n" + "Token: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getDisplayToken()
-                                            + "\n" + "Previously: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getOldTimeSlotMessage()
-                                            + "\n" + "Updated: " + ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes().get(0).getUpdatedTimeSlotMessage();
-
-                                        NotificationDB.insertNotification(
-                                            NotificationDB.KEY_NOTIFY,
-                                            ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                                            msg,
-                                            jsonData.getTitle(),
-                                            ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
-                                            jsonData.getImageURL());
-                                        sendNotification(title, msg, true, imageUrl);
+                        String goTo = "";
+                        String currentServing = "";
+                        String displayServingNumber = "";
+                        if (jsonData instanceof JsonTopicQueueData) {
+                            Log.e("In JsonTopicQueueData", jsonData.toString());
+                            currentServing = String.valueOf(((JsonTopicQueueData) jsonData).getCurrentlyServing());
+                            displayServingNumber = ((JsonTopicQueueData) jsonData).getDisplayServingNumber();
+                            goTo = ((JsonTopicQueueData) jsonData).getGoTo();
+                        }
+                        if (jsonData instanceof JsonTopicOrderData) {
+                            Log.e("In JsonTopicOrderData", jsonData.toString());
+                            currentServing = String.valueOf(((JsonTopicOrderData) jsonData).getCurrentlyServing());
+                            displayServingNumber = ((JsonTopicOrderData) jsonData).getDisplayServingNumber();
+                            goTo = ((JsonTopicOrderData) jsonData).getGoTo();
+                        }
+                        ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+                        for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
+                            JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
+                            if (null != jtk) {
+                                boolean displayBuzzer = false;
+                                /*
+                                 * Save codeQR of goto & show it in after join screen on app
+                                 * Review DB for review key && current serving == token no.
+                                 */
+                                if (Integer.parseInt(currentServing) == jtk.getToken()) {
+                                    ReviewData reviewData = ReviewDB.getValue(codeQR, currentServing);
+                                    if (null != reviewData) {
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, goTo);
+                                        ReviewDB.updateReviewRecord(codeQR, currentServing, cv);
+                                        // update
+                                    } else {
+                                        //insert
+                                        displayBuzzer = true;
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                        cv.put(DatabaseTable.Review.TOKEN, currentServing);
+                                        cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
+                                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, goTo);
+                                        ReviewDB.insert(cv);
                                     }
+
                                 }
-                            }
-                        } else {
-                            String goTo = "";
-                            String currentServing = "";
-                            String displayServingNumber = "";
-                            if (jsonData instanceof JsonTopicQueueData) {
-                                Log.e("In JsonTopicQueueData", jsonData.toString());
-                                currentServing = String.valueOf(((JsonTopicQueueData) jsonData).getCurrentlyServing());
-                                displayServingNumber = ((JsonTopicQueueData) jsonData).getDisplayServingNumber();
-                                goTo = ((JsonTopicQueueData) jsonData).getGoTo();
-                            }
-                            if (jsonData instanceof JsonTopicOrderData) {
-                                Log.e("In JsonTopicOrderData", jsonData.toString());
-                                currentServing = String.valueOf(((JsonTopicOrderData) jsonData).getCurrentlyServing());
-                                displayServingNumber = ((JsonTopicOrderData) jsonData).getDisplayServingNumber();
-                                goTo = ((JsonTopicOrderData) jsonData).getGoTo();
-                            }
-                            ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
-                            for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
-                                JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
-                                if (null != jtk) {
-                                    boolean displayBuzzer = false;
-                                    /*
-                                     * Save codeQR of goto & show it in after join screen on app
-                                     * Review DB for review key && current serving == token no.
-                                     */
-                                    if (Integer.parseInt(currentServing) == jtk.getToken()) {
-                                        ReviewData reviewData = ReviewDB.getValue(codeQR, currentServing);
-                                        if (null != reviewData) {
-                                            ContentValues cv = new ContentValues();
-                                            cv.put(DatabaseTable.Review.KEY_GOTO, goTo);
-                                            ReviewDB.updateReviewRecord(codeQR, currentServing, cv);
-                                            // update
-                                        } else {
-                                            //insert
-                                            displayBuzzer = true;
-                                            ContentValues cv = new ContentValues();
-                                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
-                                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                                            cv.put(DatabaseTable.Review.TOKEN, currentServing);
-                                            cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
-                                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
-                                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                                            cv.put(DatabaseTable.Review.KEY_GOTO, goTo);
-                                            ReviewDB.insert(cv);
+                                //update DB & after join screen
+                                jtk.setServingNumber(Integer.parseInt(currentServing));
+                                if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
+                                    //un-subscribe from the topic
+                                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                                }
+                                TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, String.valueOf(jtk.getToken()));
+
+                                // Check if user needs to be notified
+                                int currentlyServingNumber = Integer.parseInt(currentServing);
+                                SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
+                                int lastServingNumber = prefs.getInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), 0);
+
+                                if (jtk.getToken() > currentlyServingNumber && lastServingNumber != currentlyServingNumber) {
+                                    String notificationMessage = String.format(getApplicationContext().getString(R.string.position_in_queue), jtk.afterHowLong());
+
+                                    prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), currentlyServingNumber).apply();
+                                    // Add wait time to notification message
+                                    try {
+                                        switch (jtk.getBusinessType()) {
+                                            case CD:
+                                            case CDQ:
+                                                String slot = jtk.getTimeSlotMessage();
+                                                notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.time_slot_formatted_newline), slot);
+                                                break;
+                                            default:
+                                                long avgServiceTime = jtk.getAverageServiceTime() != 0
+                                                    ? jtk.getAverageServiceTime()
+                                                    : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
+                                                String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
+                                                    avgServiceTime,
+                                                    jtk.afterHowLong(),
+                                                    QueueStatusEnum.N,
+                                                    jtk.getStartHour(),
+                                                    getApplicationContext());
+                                                if (!TextUtils.isEmpty(waitTime)) {
+                                                    notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
+                                                }
                                         }
-
+                                    } catch (Exception e) {
+                                        Log.e("", "Error setting wait time reason: " + e.getLocalizedMessage(), e);
                                     }
-                                    //update DB & after join screen
-                                    jtk.setServingNumber(Integer.parseInt(currentServing));
-                                    if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
-                                        //un-subscribe from the topic
-                                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-                                    }
-                                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, String.valueOf(jtk.getToken()));
+                                    sendNotification(title, notificationMessage, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
+                                }
 
-                                    // Check if user needs to be notified
-                                    int currentlyServingNumber = Integer.parseInt(currentServing);
-                                    SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-                                    int lastServingNumber = prefs.getInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), 0);
+                                if (jtk.getToken() <= currentlyServingNumber) {
+                                    // Clear the App Shared Preferences entry for this queue
+                                    prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply();
+                                    prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR)).apply();
+                                }
 
-                                    if (jtk.getToken() > currentlyServingNumber && lastServingNumber != currentlyServingNumber) {
-                                        String notificationMessage = String.format(getApplicationContext().getString(R.string.position_in_queue), jtk.afterHowLong());
-
-                                        prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), currentlyServingNumber).apply();
-                                        // Add wait time to notification message
-                                        try {
-                                            switch (jtk.getBusinessType()) {
-                                                case CD:
-                                                case CDQ:
-                                                    String slot = jtk.getTimeSlotMessage();
-                                                    notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.time_slot_formatted_newline), slot);
-                                                    break;
-                                                default:
-                                                    long avgServiceTime = jtk.getAverageServiceTime() != 0
-                                                        ? jtk.getAverageServiceTime()
-                                                        : prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0);
-                                                    String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
-                                                        avgServiceTime,
-                                                        jtk.afterHowLong(),
-                                                        QueueStatusEnum.N,
-                                                        jtk.getStartHour(),
-                                                        getApplicationContext());
-                                                    if (!TextUtils.isEmpty(waitTime)) {
-                                                        notificationMessage = notificationMessage + String.format(getApplicationContext().getString(R.string.wait_time_formatted_newline), waitTime);
-                                                    }
-                                            }
-                                        } catch (Exception e) {
-                                            Log.e("", "Error setting wait time reason: " + e.getLocalizedMessage(), e);
-                                        }
-                                        sendNotification(title, notificationMessage, true, imageUrl, jtk.getToken() - Integer.parseInt(currentServing)); // pass null to show only notification with no action
-                                    }
-
-                                    if (jtk.getToken() <= currentlyServingNumber) {
-                                        // Clear the App Shared Preferences entry for this queue
-                                        prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply();
-                                        prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR)).apply();
-                                    }
-
-                                    // Check if User's turn then start Buzzer.
-                                    if (displayBuzzer && currentlyServingNumber == jtk.getToken()) {
-                                        Intent buzzerIntent = new Intent(this, BlinkerActivity.class);
-                                        buzzerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(buzzerIntent);
-                                        if (AppInitialize.isMsgAnnouncementEnable() && null != LaunchActivity.getLaunchActivity()) {
-                                            LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData.getJsonTextToSpeeches(), mappedData.get("mi"));
-                                        }
+                                // Check if User's turn then start Buzzer.
+                                if (displayBuzzer && currentlyServingNumber == jtk.getToken()) {
+                                    Intent buzzerIntent = new Intent(this, BlinkerActivity.class);
+                                    buzzerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(buzzerIntent);
+                                    if (AppInitialize.isMsgAnnouncementEnable() && null != LaunchActivity.getLaunchActivity()) {
+                                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData.getJsonTextToSpeeches(), mappedData.get("mi"));
                                     }
                                 }
                             }
                         }
                     }
-                    if (jsonData instanceof JsonMedicalFollowUp) {
-                        Log.e("JsonMedicalFollowUp", jsonData.toString());
-                        NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            ((JsonMedicalFollowUp) jsonData).getCodeQR(),
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            BusinessTypeEnum.PA.getName(),
-                            imageUrl);
-                    } else if (jsonData instanceof JsonTopicAppointmentData) {
-                        Log.e("JsonTopicAppointData", jsonData.toString());
-                        NotificationDB.insertNotification(
-                            NotificationDB.KEY_NOTIFY,
-                            "",
-                            jsonData.getBody(),
-                            jsonData.getTitle(),
-                            BusinessTypeEnum.PA.getName(),
-                            jsonData.getImageURL());
-                    }
+                }
+                if (jsonData instanceof JsonMedicalFollowUp) {
+                    Log.e("JsonMedicalFollowUp", jsonData.toString());
+                    NotificationDB.insertNotification(
+                        NotificationDB.KEY_NOTIFY,
+                        ((JsonMedicalFollowUp) jsonData).getCodeQR(),
+                        jsonData.getBody(),
+                        jsonData.getTitle(),
+                        BusinessTypeEnum.PA.getName(),
+                        imageUrl);
+                } else if (jsonData instanceof JsonTopicAppointmentData) {
+                    Log.e("JsonTopicAppointData", jsonData.toString());
+                    NotificationDB.insertNotification(
+                        NotificationDB.KEY_NOTIFY,
+                        "",
+                        jsonData.getBody(),
+                        jsonData.getTitle(),
+                        BusinessTypeEnum.PA.getName(),
+                        jsonData.getImageURL());
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error reading message " + e.getLocalizedMessage(), e);
