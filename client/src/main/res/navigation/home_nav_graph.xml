@@ -50,7 +50,7 @@
         <argument
             android:name="futureUpdates"
             android:defaultValue="What to expect in future releases?"
-            app:argType="String" />
+            app:argType="string" />
     </fragment>
 
 </navigation>

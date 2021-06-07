@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientPreferenceApiCalls;
@@ -463,7 +464,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
             startActivity(in);
-            NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic"));
             callAddressPreference();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
@@ -545,7 +546,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         } else {
             new CustomToast().showToast(this, getString(R.string.fail_to_cancel_order));
         }
-        NoQueueMessagingService.unSubscribeTopics(getIntent().getExtras().getString("topic"));
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(getIntent().getExtras().getString("topic"));
         if (null != jsonPurchaseOrderServer) {
             TokenAndQueueDB.deleteTokenQueue(jsonPurchaseOrderServer.getCodeQR(), String.valueOf(jsonPurchaseOrderServer.getToken()));
         }
@@ -620,7 +621,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
             startActivity(in);
-            NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic"));
             callAddressPreference();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());

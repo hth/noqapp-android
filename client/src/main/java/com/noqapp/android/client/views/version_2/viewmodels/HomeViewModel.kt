@@ -49,6 +49,11 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         emitSource(tokenAndQueueList)
     }
 
+    val notificationListLiveData: LiveData<List<DisplayNotification>> = liveData {
+        val notificationList = NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
+        emitSource(notificationList)
+    }
+
     init {
         currentQueueErrorLiveData.value = false
         nearMeErrorLiveData.value = false
@@ -74,10 +79,6 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         } else {
             ShowAlertInformation.showNetworkDialog(context)
         }
-    }
-
-    fun getNotificationsList(): LiveData<List<DisplayNotification>> {
-        return NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
     }
 
     override fun nearMeTempleResponse(bizStoreElasticList: BizStoreElasticList?) {

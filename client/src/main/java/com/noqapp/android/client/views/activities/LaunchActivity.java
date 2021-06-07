@@ -43,6 +43,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.common.cache.Cache;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -448,7 +449,7 @@ public class LaunchActivity
         }
 
         /* Clear the notification area when the app is opened */
-        NoQueueMessagingService.clearNotifications(getApplicationContext());
+        //NoQueueMessagingService.clearNotifications(getApplicationContext());
 
         ReviewData reviewData = ReviewDB.getPendingReview();
         /* Shown only one time if the review is canceled */
@@ -563,7 +564,7 @@ public class LaunchActivity
                 ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                 if (jsonTokenAndQueueArrayList.size() == 1) {
                     /* Un-subscribe the topic. */
-                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic() + "_A");
                 }
             } else {
                 ReviewDB.deleteReview(codeQR, token);
@@ -723,7 +724,7 @@ public class LaunchActivity
 
                     if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
                         /* Un-subscribe the topic */
-                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic() + "_A");
                     }
 
                     if (AppInitialize.activityCommunicator != null) {
@@ -1198,7 +1199,7 @@ public class LaunchActivity
                                 jsonData.getImageURL());
 
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
-                            NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
+                            FirebaseMessaging.getInstance().subscribeToTopic(jsonTokenAndQueueList.get(i).getTopic());
                         }
                         updateNotificationBadgeCount();
                         if (null != homeFragment) {

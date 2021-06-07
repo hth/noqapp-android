@@ -32,6 +32,7 @@ import androidx.core.content.ContextCompat;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
@@ -447,7 +448,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         jsonTokenAndQueue.setJsonPurchaseOrder(jsonToken.getJsonPurchaseOrder());
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
-        NoQueueMessagingService.subscribeTopics(topic);
+        FirebaseMessaging.getInstance().subscribeToTopic(topic);
         Intent in = new Intent(this, AfterJoinActivity.class);
         in.putExtra(IBConstant.KEY_CODE_QR, jsonTokenAndQueue.getCodeQR());
         in.putExtra(IBConstant.KEY_FROM_LIST, false);
@@ -503,7 +504,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void responsePresenterResponse(JsonResponse response) {
-        NoQueueMessagingService.unSubscribeTopics(topic);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
         TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
         iv_home.performClick();
         dismissProgress();
