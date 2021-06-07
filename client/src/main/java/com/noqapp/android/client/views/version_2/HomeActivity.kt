@@ -38,6 +38,7 @@ import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
 import com.noqapp.android.client.views.customviews.BadgeDrawable
+import com.noqapp.android.client.views.version_2.fragments.HomeFragmentDirections
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
@@ -441,7 +442,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
                 return true
             }
             R.id.menuSearch -> {
-                navController.navigate(R.id.underDevelopmentFragment)
+                val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+                navController.navigate(homeFragmentDirections)
                 return true
             }
             R.id.menuFavourite -> {
@@ -449,7 +451,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
                 return true
             }
             R.id.menuPost -> {
-                navController.navigate(R.id.underDevelopmentFragment)
+                val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+                navController.navigate(homeFragmentDirections)
                 return true
             }
         }
