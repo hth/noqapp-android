@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
@@ -394,7 +395,7 @@ public class AfterJoinActivity
         } else {
             new CustomToast().showToast(this, getString(R.string.fail_to_cancel));
         }
-        NoQueueMessagingService.unSubscribeTopics(topic);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
         TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
         // Clear entry from App preferences
         SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
@@ -840,7 +841,7 @@ public class AfterJoinActivity
         this.jsonToken = jsonToken;
         tokenValue = String.valueOf(jsonToken.getToken());
         btn_cancel_queue.setEnabled(true);
-        NoQueueMessagingService.subscribeTopics(topic);
+        FirebaseMessaging.getInstance().subscribeToTopic(topic);
         jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
         jsonTokenAndQueue.setToken(jsonToken.getToken());
         jsonTokenAndQueue.setDisplayToken(jsonToken.getDisplayToken());

@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
@@ -526,7 +527,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         updateUI();
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             new CustomToast().showToast(this, "Order placed successfully.");
-            NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic"));
             closeKioskScreen();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());

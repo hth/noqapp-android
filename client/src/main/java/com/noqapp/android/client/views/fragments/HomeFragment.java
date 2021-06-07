@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
@@ -893,7 +894,7 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
 
             if (currentQueueList.size() > 0) {
                 for (JsonTokenAndQueue jtq : currentQueueList) {
-                    NoQueueMessagingService.subscribeTopics(jtq.getTopic());
+                    FirebaseMessaging.getInstance().subscribeToTopic(jtq.getTopic() + "_A");
                 }
             }
         }

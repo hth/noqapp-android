@@ -40,7 +40,7 @@ class NotificationFragment: BaseFragment() {
 
     private fun loadListData() {
 
-        homeViewModel.getNotificationsList().observe(viewLifecycleOwner, Observer {notificationsList->
+        homeViewModel.notificationListLiveData.observe(viewLifecycleOwner, { notificationsList->
 
             val adapter = NotificationAdapter(notificationsList) {
                 deleteNotification(it)
@@ -48,7 +48,7 @@ class NotificationFragment: BaseFragment() {
 
             fragmentNotificationBinding.rvNotification.layoutManager = LinearLayoutManager(requireContext())
             fragmentNotificationBinding.rvNotification.adapter = adapter
-            if (notificationsList.size <= 0) {
+            if (notificationsList.isEmpty()) {
                 fragmentNotificationBinding.rvNotification.visibility = View.GONE
                 fragmentNotificationBinding.rlEmpty.visibility = View.VISIBLE
             } else {
