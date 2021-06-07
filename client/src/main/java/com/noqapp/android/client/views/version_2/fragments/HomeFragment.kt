@@ -110,16 +110,18 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         })
 
         fragmentHomeNewBinding.clJobs.setOnClickListener {
-            findNavController().navigate(R.id.underDevelopmentFragment)
+            val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+            findNavController().navigate(homeFragmentDirections)
         }
 
         fragmentHomeNewBinding.clHousing.setOnClickListener {
-            
-            findNavController().navigate(R.id.underDevelopmentFragment)
+            val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+            findNavController().navigate(homeFragmentDirections)
         }
 
         fragmentHomeNewBinding.clMarketplace.setOnClickListener {
-            findNavController().navigate(R.id.underDevelopmentFragment)
+            val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+            findNavController().navigate(homeFragmentDirections)
         }
 
         fragmentHomeNewBinding.clRestaurant.setOnClickListener {
@@ -142,7 +144,8 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.clSchool.setOnClickListener {
-            findNavController().navigate(R.id.underDevelopmentFragment)
+            val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+            findNavController().navigate(homeFragmentDirections)
         }
 
         fragmentHomeNewBinding.clCafe.setOnClickListener {
