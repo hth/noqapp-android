@@ -17,6 +17,8 @@ import com.noqapp.android.client.databinding.LayoutProgressBarBinding
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.IBConstant
+import com.noqapp.android.client.utils.ShowAlertInformation
+import com.noqapp.android.client.utils.ShowCustomDialog
 import com.noqapp.android.client.views.activities.BeforeJoinActivity
 import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity
 import com.noqapp.android.client.views.activities.StoreDetailActivity
@@ -52,7 +54,7 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
         progressLoaderBinding.clProgressBar.visibility = View.VISIBLE
         fragmentFavouritesBinding.rlEmpty.visibility = View.GONE
         progressLoaderBinding.tvProgressMessage.text = "Fetching the favourite list..."
-        homeViewModel.fetchFavouritesRecentVisitList(requireContext())
+        homeViewModel.fetchFavouritesRecentVisitList()
 
         observeValues()
     }
@@ -79,6 +81,14 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
                 })
 
                 AppUtils.saveFavouriteCodeQRs(list)
+            }
+        })
+
+        homeViewModel.authenticationFailureLiveData.observe(viewLifecycleOwner, Observer {
+            progressLoaderBinding.clProgressBar.visibility = View.GONE
+
+            if (it) {
+                ShowAlertInformation.showAuthenticErrorDialog(requireActivity())
             }
         })
 

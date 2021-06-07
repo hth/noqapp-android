@@ -88,7 +88,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                             homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
                         }
                     } else {
-                        homeViewModel.fetchFavouritesRecentVisitList(requireContext())
+                        homeViewModel.fetchFavouritesRecentVisitList()
                     }
                 }
             }
@@ -103,7 +103,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                             homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
                         }
                     } else {
-                        homeViewModel.fetchFavouritesRecentVisitList(requireContext())
+                        homeViewModel.fetchFavouritesRecentVisitList()
                     }
                 }
             }

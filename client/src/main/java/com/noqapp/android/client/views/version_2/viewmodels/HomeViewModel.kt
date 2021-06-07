@@ -30,6 +30,7 @@ import kotlinx.coroutines.withContext
 class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext), SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
     val TAG = HomeViewModel::class.java.simpleName
 
+    val authenticationFailureLiveData = MutableLiveData<Boolean>()
     val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
@@ -64,20 +65,23 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     fun fetchNearMe(deviceId: String, searchStoreQuery: SearchStoreQuery) {
+        authenticationFailureLiveData.value = false
         searchBusinessStoreApiCalls.business(deviceId, searchStoreQuery)
     }
 
     fun fetchActiveTokenQueueList() {
+        authenticationFailureLiveData.value = false
         queueApiAuthenticCall.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
     }
 
-    fun fetchFavouritesRecentVisitList(context: Context) {
-        if (NetworkUtils.isConnectingToInternet(context)) {
+    fun fetchFavouritesRecentVisitList() {
+        authenticationFailureLiveData.value = false
+        if (NetworkUtils.isConnectingToInternet(applicationContext)) {
             val favouriteApiCall = FavouriteApiCall()
             favouriteApiCall.setFavouriteListPresenter(this)
             favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         } else {
-            ShowAlertInformation.showNetworkDialog(context)
+            ShowAlertInformation.showNetworkDialog(applicationContext)
         }
     }
 
@@ -130,6 +134,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     override fun authenticationFailure() {
+        authenticationFailureLiveData.value = true
         currentQueueErrorLiveData.value = true
     }
 
