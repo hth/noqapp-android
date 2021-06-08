@@ -29,7 +29,10 @@ public class RetrofitClient {
                     .addHeader("x-r-ver", BuildConfig.VERSION_NAME)
                     .addHeader("x-r-fla", BuildConfig.APP_FLAVOR)
                     .addHeader("x-r-lat", String.valueOf(AppInitialize.location.getLatitude()))
-                    .addHeader("x-r-lng", String.valueOf(AppInitialize.location.getLongitude())).build();
+                    .addHeader("x-r-lng", String.valueOf(AppInitialize.location.getLongitude()))
+                    .addHeader("x-r-did", AppInitialize.getDeviceId() == null ? "" : AppInitialize.getDeviceId())
+                    .addHeader("x-r-mail", AppInitialize.getMail())
+                    .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
                 return chain.proceed(request);
             });
 
