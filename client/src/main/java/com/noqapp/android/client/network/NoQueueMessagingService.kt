@@ -62,7 +62,6 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresenter {
-
     private val TAG = NoQueueMessagingService::class.java.simpleName
 
     // Clears notification tray messages
@@ -118,9 +117,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     //             mapper.readValue(JSONObject(remoteMessage.data).toString(), JsonTopicAppointmentData::class.java)
                     Log.d("FCM", jsonData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QA)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.Q -> try {
                     var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
@@ -138,9 +137,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     }
                     Log.d("FCM", jsonData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.Q)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.CQO -> try {
                     val jsonTokenAndQueueList = JsonTokenAndQueueList()
@@ -150,25 +149,25 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     jsonData = jsonClientTokenAndQueueData
                     Log.d("FCM", jsonData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.CQO)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.QR -> try {
                     jsonData = gson.fromJson(mappedData.toString(), JsonClientData::class.java)
                     Log.d("FCM Queue Review", jsonData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QR)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.OR -> try {
                     jsonData = gson.fromJson(mappedData.toString(), JsonClientOrderData::class.java)
                     Log.d("FCM Order Review", jsonData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.OR)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.O -> try {
                     var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
@@ -184,9 +183,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     }
                     Log.d("FCM order ", jsonData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.O)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.A, MessageOriginEnum.D -> try {
                     val objectMapper = ObjectMapper()
@@ -195,17 +194,17 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     //jsonData = gson.fromJson(jsonPayloadStr, JsonAlertData::class.java)
                     Log.d("FCM Review store", jsonData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.D)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.MF -> try {
                     jsonData = gson.fromJson(mappedData.toString(), JsonMedicalFollowUp::class.java)
                     Log.d("FCM Medical Followup", jsonData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.MF)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.QCT -> try {
                     val jsonChangeServiceTimeData = gson.fromJson(mappedData.toString(), JsonChangeServiceTimeData::class.java)
@@ -217,9 +216,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     jsonData = jsonChangeServiceTimeData
                     Log.d("Update time slot", jsonChangeServiceTimeData.toString())
                 } catch (e: Exception) {
+                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QCT)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    e.printStackTrace()
                 }
                 MessageOriginEnum.M -> {
                 }
