@@ -28,7 +28,7 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
         fun bind(displayNotification: DisplayNotification){
             this.displayNotification = displayNotification
             listItemNotificationBinding.tvTitle.text = displayNotification.title
-            listItemNotificationBinding.tvMsg.text = displayNotification.msg
+            listItemNotificationBinding.tvMsg.text = displayNotification.body
             try {
                 val dateString = displayNotification.notificationCreate
                 val startDate = Date().time - CommonHelper.stringToDate(dateString).time
