@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 
 @Dao
 interface TokenAndQueueDao {
@@ -37,7 +38,7 @@ interface TokenAndQueueDao {
     suspend fun updateCurrentListQueueObject(qrCode: String?, servingNumber: String, displayServingNumber: String, token: Int)
 
     @Query("UPDATE token_queue SET purchase_order_state=:orderState WHERE qr_code=:qrCode AND token=:token")
-    suspend fun updateCurrentListOrderObject(qrCode: String?, orderState: String, token: Int)
+    suspend fun updateCurrentListOrderObject(qrCode: String?, orderState: PurchaseOrderStateEnum, token: Int)
 
     @Query("DELETE FROM token_queue WHERE history_queue!=1")
     suspend fun deleteCurrentQueue()

@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.version_2.fragments
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,22 +22,24 @@ import com.google.android.material.tabs.TabLayout
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentHomeNewBinding
 import com.noqapp.android.client.databinding.ViewIndicatorBinding
+import com.noqapp.android.client.model.database.DatabaseTable
+import com.noqapp.android.client.model.database.utils.ReviewDB
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
+import com.noqapp.android.client.presenter.beans.ReviewData
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
-import com.noqapp.android.client.utils.AppUtils
-import com.noqapp.android.client.utils.IBConstant
-import com.noqapp.android.client.utils.SortPlaces
-import com.noqapp.android.client.utils.UserUtils
-import com.noqapp.android.client.views.activities.AfterJoinActivity
-import com.noqapp.android.client.views.activities.OrderConfirmActivity
+import com.noqapp.android.client.utils.*
+import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter
 import com.noqapp.android.client.views.adapters.TokenAndQueueAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.NavigationBundleUtils
+import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.utils.GeoIP
 import java.util.*
 import kotlin.math.abs
@@ -214,7 +217,125 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                 fragmentHomeNewBinding.cvTokens.visibility = View.GONE
             }
         })
+
+        homeViewModel.foregroundNotificationLiveData.observe(viewLifecycleOwner, { foregroundNotification ->
+            handleBuzzer(foregroundNotification)
+        })
+
+        homeViewModel.getReviewData(qr)
     }
+
+    private fun handleBuzzer(foregroundNotification: ForegroundNotificationModel) {
+
+        homeViewModel.currentQueueQrCodeLiveData.value = foregroundNotification.qrCode
+
+        homeViewModel.currentQueueObjectListLiveData.observe(viewLifecycleOwner, { jsonTokenAndQueueArrayList ->
+
+            for (i in jsonTokenAndQueueArrayList.indices) {
+                val jtk = jsonTokenAndQueueArrayList[i]
+
+                if (AppInitialize.activityCommunicator != null) {
+
+                    val isUpdated = AppInitialize.activityCommunicator.updateUI(foregroundNotification.qrCode, jtk, foregroundNotification.goTo)
+
+                    if (isUpdated || jtk.servingNumber == jtk.token) {
+
+                        homeViewModel.getReviewData(foregroundNotification.qrCode, foregroundNotification.currentServing).observe(viewLifecycleOwner, Observer {
+                            it?.let { reviewData ->
+                                if (reviewData.isBuzzerShow != "1") {
+                                    reviewData.isBuzzerShow = "1"
+                                    homeViewModel.updateReviewData(reviewData)
+                                    val blinkerIntent = Intent(requireContext(), BlinkerActivity::class.java)
+                                    blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(blinkerIntent)
+                                    if (AppInitialize.isMsgAnnouncementEnable()) {
+                                        foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
+                                            homeFragmentInteractionListener.makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
+                                        }
+                                    }
+                                }
+                            } ?: run {
+                                val reviewData = ReviewData()
+                                reviewData.isReviewShown = "-1"
+                                reviewData.codeQR = foregroundNotification.qrCode
+                                reviewData.token = foregroundNotification.currentServing
+                                reviewData.queueUserId = jtk.queueUserId
+                                reviewData.isBuzzerShow = "-1"
+                                reviewData.isSkipped = "-1"
+                                reviewData.gotoCounter = foregroundNotification.goTo
+                                reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
+
+                                homeViewModel.insertReviewData(reviewData)
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    }
+
+//    fun updateListFromNotification(jq: JsonTokenAndQueue, jsonTextToSpeeches: List<JsonTextToSpeech?>?, msgId: String?) {
+//        jq.displayServingNumber?.let { displayServingNumber ->
+//
+//            val isUserTurn = jq.afterHowLong() == 0
+//            if (isUserTurn) {
+//
+//                homeViewModel.getReviewData(jq.codeQR, jq.token.toString()).observe(viewLifecycleOwner, Observer {
+//                    val showBuzzer: Boolean = if (null != it) {
+//                        it.isBuzzerShow != "1"
+//                        // update
+//                    } else {
+//                        //insert
+//                        val reviewData = ReviewData()
+//                        reviewData.isReviewShown = "-1"
+//                        reviewData.codeQR = jq.codeQR
+//                        reviewData.token = jq.token.toString()
+//                        reviewData.queueUserId = jq.queueUserId
+//                        reviewData.isBuzzerShow = "-1"
+//                        reviewData.isSkipped = "-1"
+//                        reviewData.gotoCounter = ""
+//                        reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
+//
+//                        homeViewModel.insertReviewData(reviewData)
+//                        true
+//                    }
+//                    if (showBuzzer) {
+//                        if (QueueOrderTypeEnum.Q == jq.businessType.queueOrderType) {
+//
+//                            val cv = ContentValues()
+//                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1")
+//                            ReviewDB.updateReviewRecord(jq.codeQR, jq.token.toString(), cv)
+//                            val blinker = Intent(activity, BlinkerActivity::class.java)
+//                            blinker.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                            activity!!.applicationContext.startActivity(blinker)
+//                            if (AppInitialize.isMsgAnnouncementEnable()) {
+//                                LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId)
+//                            }
+//                        } else {
+//                            when (jq.purchaseOrderState) {
+//                                PurchaseOrderStateEnum.RP, PurchaseOrderStateEnum.RD -> {
+//                                    val cv = ContentValues()
+//                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1")
+//                                    ReviewDB.updateReviewRecord(jq.codeQR, jq.token.toString(), cv)
+//                                    val blinker = Intent(activity, BlinkerActivity::class.java)
+//                                    blinker.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                                    activity!!.applicationContext.startActivity(blinker)
+//                                    if (AppInitialize.isMsgAnnouncementEnable()) {
+//                                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId)
+//                                    }
+//                                }
+//                                PurchaseOrderStateEnum.CO -> {
+//                                }
+//                                else -> {
+//                                }
+//                            }
+//                        }
+//                    }
+//                })
+//            }
+//        }
+//    }
+
 
     private fun setUpRecyclerView() {
         fragmentHomeNewBinding.rvRecentVisitsNearMe.setHasFixedSize(true)
@@ -301,4 +422,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 }
 
-interface HomeFragmentInteractionListener {}
+interface HomeFragmentInteractionListener {
+    fun makeAnnouncement(jsonTextToSpeeches: List<JsonTextToSpeech?>, msgId: String)
+}

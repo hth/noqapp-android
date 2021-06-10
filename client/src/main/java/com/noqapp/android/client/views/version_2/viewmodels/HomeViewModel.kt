@@ -12,15 +12,13 @@ import com.noqapp.android.client.model.SearchBusinessStoreApiCalls
 import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
-import com.noqapp.android.client.presenter.beans.BizStoreElasticList
-import com.noqapp.android.client.presenter.beans.FavoriteElastic
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList
+import com.noqapp.android.client.presenter.beans.*
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.NetworkUtils
 import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
+import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.pojos.DisplayNotification
 import kotlinx.coroutines.Dispatchers
@@ -36,12 +34,20 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
     val nearMeResponse = MutableLiveData<BizStoreElasticList?>()
     val favoritesListResponseLiveData = MutableLiveData<FavoriteElastic?>()
+    val currentQueueQrCodeLiveData = MutableLiveData<String?>()
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall
 
     val currentTokenAndQueueListLiveData : LiveData<List<JsonTokenAndQueue>> = liveData {
         val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
+        emitSource(tokenAndQueueList)
+    }
+
+    val currentQueueObjectListLiveData : LiveData<List<JsonTokenAndQueue>> = liveData {
+        val tokenAndQueueList = Transformations.switchMap(currentQueueQrCodeLiveData) {
+            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueObjectList(it)
+        }
         emitSource(tokenAndQueueList)
     }
 
@@ -53,6 +59,11 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     val notificationListLiveData: LiveData<List<DisplayNotification>> = liveData {
         val notificationList = NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
         emitSource(notificationList)
+    }
+
+    val foregroundNotificationLiveData: LiveData<ForegroundNotificationModel> = liveData {
+        val foregroundNotification = NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao().getForegroundNotification()
+        emitSource(foregroundNotification)
     }
 
     init {
@@ -82,6 +93,26 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
             favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         } else {
             ShowAlertInformation.showNetworkDialog(applicationContext)
+        }
+    }
+
+    fun getReviewData(qrCode: String?, token: String?): LiveData<ReviewData> {
+        return NoQueueAppDB.dbInstance(applicationContext).reviewDao().getReviewData(qrCode, token)
+    }
+
+    fun updateReviewData(reviewData: ReviewData) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                NoQueueAppDB.dbInstance(applicationContext).reviewDao().update(reviewData)
+            }
+        }
+    }
+
+    fun insertReviewData(reviewData: ReviewData) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                NoQueueAppDB.dbInstance(applicationContext).reviewDao().insertReviewData(reviewData)
+            }
         }
     }
 
@@ -163,6 +194,14 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     override fun nearMeTempleError() {
+    }
+
+    fun updateCurrentListQueueObject(codeQR: String?, servingNumber: String, displayServingNumber: String, token: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, servingNumber, displayServingNumber, token)
+            }
+        }
     }
 
 }
