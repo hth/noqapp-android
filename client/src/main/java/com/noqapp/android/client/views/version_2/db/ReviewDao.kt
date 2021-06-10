@@ -10,6 +10,9 @@ interface ReviewDao {
     @Query("SELECT * FROM review_data WHERE code_qr=:codeQr AND token=:token")
     fun getReviewData(codeQr: String?, token: String?): LiveData<ReviewData>
 
+    @Query("SELECT * FROM review_data WHERE review_type=:reviewType")
+    fun getReviewData(reviewType: String): LiveData<ReviewData>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReviewData(reviewData: ReviewData)
 

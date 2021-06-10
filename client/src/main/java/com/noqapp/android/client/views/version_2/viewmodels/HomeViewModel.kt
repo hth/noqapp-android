@@ -1,10 +1,7 @@
 package com.noqapp.android.client.views.version_2.viewmodels
 
 import android.app.Application
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.*
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.noqapp.android.client.model.FavouriteApiCall
 import com.noqapp.android.client.model.QueueApiAuthenticCall
 import com.noqapp.android.client.model.SearchBusinessStoreApiAuthenticCalls
@@ -39,19 +36,19 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall
 
-    val currentTokenAndQueueListLiveData : LiveData<List<JsonTokenAndQueue>> = liveData {
+    val currentTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
         val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
         emitSource(tokenAndQueueList)
     }
 
-    val currentQueueObjectListLiveData : LiveData<List<JsonTokenAndQueue>> = liveData {
+    val currentQueueObjectListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
         val tokenAndQueueList = Transformations.switchMap(currentQueueQrCodeLiveData) {
             NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueObjectList(it)
         }
         emitSource(tokenAndQueueList)
     }
 
-    val historyTokenAndQueueListLiveData : LiveData<List<JsonTokenAndQueue>> = liveData {
+    val historyTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
         val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
         emitSource(tokenAndQueueList)
     }
@@ -98,6 +95,18 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     fun getReviewData(qrCode: String?, token: String?): LiveData<ReviewData> {
         return NoQueueAppDB.dbInstance(applicationContext).reviewDao().getReviewData(qrCode, token)
+    }
+
+    fun getReviewData(reviewType: String): LiveData<ReviewData> {
+        return NoQueueAppDB.dbInstance(applicationContext).reviewDao().getReviewData(reviewType)
+    }
+
+    fun getCurrentQueueObject(codeQR: String?, token: String?): LiveData<JsonTokenAndQueue> {
+        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueObject(codeQR, token?.toInt())
+    }
+
+    fun getHistoryQueueObject(codeQR: String?, token: String?): LiveData<JsonTokenAndQueue> {
+        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueObject(codeQR, token?.toInt())
     }
 
     fun updateReviewData(reviewData: ReviewData) {
@@ -200,6 +209,14 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, servingNumber, displayServingNumber, token)
+            }
+        }
+    }
+
+    fun deleteReview(codeQr: String, token: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                NoQueueAppDB.dbInstance(applicationContext).reviewDao().deleteReviewData(codeQr, token)
             }
         }
     }

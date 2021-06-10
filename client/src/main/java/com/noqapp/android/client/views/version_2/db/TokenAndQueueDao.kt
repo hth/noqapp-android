@@ -14,7 +14,7 @@ interface TokenAndQueueDao {
     fun getCurrentQueueList(): LiveData<List<JsonTokenAndQueue>>
 
     @Query("SELECT * FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode AND token=:token")
-    fun getCurrentQueueObject(qrCode: String, token: Int): LiveData<JsonTokenAndQueue>
+    fun getCurrentQueueObject(qrCode: String?, token: Int?): LiveData<JsonTokenAndQueue>
 
     @Query("SELECT * FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode")
     fun findByQRCode(qrCode: String): LiveData<JsonTokenAndQueue>
@@ -23,7 +23,7 @@ interface TokenAndQueueDao {
     fun getCurrentQueueObjectList(qrCode: String?): LiveData<List<JsonTokenAndQueue>>
 
     @Query("SELECT * FROM token_queue WHERE history_queue=1 AND qr_code=:qrCode AND token=:token")
-    fun getHistoryQueueObject(qrCode: String, token: Int): LiveData<JsonTokenAndQueue>
+    fun getHistoryQueueObject(qrCode: String?, token: Int?): LiveData<JsonTokenAndQueue>
 
     @Query("SELECT * , MAX(create_date) FROM token_queue WHERE history_queue=1 GROUP BY qr_code")
     fun getHistoryQueueList(): LiveData<List<JsonTokenAndQueue>>

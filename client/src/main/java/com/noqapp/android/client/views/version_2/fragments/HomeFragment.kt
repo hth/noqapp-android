@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.version_2.fragments
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -22,14 +21,15 @@ import com.google.android.material.tabs.TabLayout
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentHomeNewBinding
 import com.noqapp.android.client.databinding.ViewIndicatorBinding
-import com.noqapp.android.client.model.database.DatabaseTable
-import com.noqapp.android.client.model.database.utils.ReviewDB
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.ReviewData
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
-import com.noqapp.android.client.views.activities.*
+import com.noqapp.android.client.views.activities.AfterJoinActivity
+import com.noqapp.android.client.views.activities.AppInitialize
+import com.noqapp.android.client.views.activities.BlinkerActivity
+import com.noqapp.android.client.views.activities.OrderConfirmActivity
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter
 import com.noqapp.android.client.views.adapters.TokenAndQueueAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
@@ -39,7 +39,6 @@ import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.utils.GeoIP
 import java.util.*
 import kotlin.math.abs
@@ -222,7 +221,9 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             handleBuzzer(foregroundNotification)
         })
 
-        homeViewModel.getReviewData(qr)
+        homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND).observe(viewLifecycleOwner, Observer {
+            homeFragmentInteractionListener.callReviewActivity(it.codeQR, it.token)
+        })
     }
 
     private fun handleBuzzer(foregroundNotification: ForegroundNotificationModel) {
@@ -424,4 +425,5 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
 interface HomeFragmentInteractionListener {
     fun makeAnnouncement(jsonTextToSpeeches: List<JsonTextToSpeech?>, msgId: String)
+    fun callReviewActivity(codeQr: String, token: String)
 }

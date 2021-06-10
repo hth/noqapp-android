@@ -19,7 +19,7 @@ class ForegroundNotificationModel {
     @ColumnInfo(name = "display_serving_number")
     var displayServingNumber = ""
     @ColumnInfo(name = "text_to_speeches")
-    var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
+    var jsonTextToSpeeches: List<JsonTextToSpeech?>? = mutableListOf()
     @ColumnInfo(name = "message_id")
     var msgId = ""
     @ColumnInfo(name = "purchase_order_state")
