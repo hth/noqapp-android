@@ -218,11 +218,15 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         })
 
         homeViewModel.foregroundNotificationLiveData.observe(viewLifecycleOwner, { foregroundNotification ->
-            handleBuzzer(foregroundNotification)
+            foregroundNotification?.let {
+                handleBuzzer(foregroundNotification)
+            }
         })
 
         homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND).observe(viewLifecycleOwner, Observer {
-            homeFragmentInteractionListener.callReviewActivity(it.codeQR, it.token)
+            it?.let {
+                homeFragmentInteractionListener.callReviewActivity(it.codeQR, it.token)
+            }
         })
     }
 
