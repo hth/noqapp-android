@@ -1,19 +1,16 @@
 package com.noqapp.android.client.views.version_2.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.noqapp.android.client.presenter.beans.ReviewData
 
 @Dao
 interface ReviewDao {
 
     @Query("SELECT * FROM review_data WHERE code_qr=:codeQr AND token=:token")
-    fun getReviewData(codeQr: String?, token: String): LiveData<ReviewData>
+    fun getReviewData(codeQr: String?, token: String?): LiveData<ReviewData>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReviewData(reviewData: ReviewData)
 
     @Query("SELECT * FROM review_data WHERE is_review_shown=1")

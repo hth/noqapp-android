@@ -39,6 +39,7 @@ import com.noqapp.android.client.views.activities.BlinkerActivity
 import com.noqapp.android.client.views.receivers.AlarmReceiver
 import com.noqapp.android.client.views.version_2.HomeActivity
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
+import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonQueueChangeServiceTime
 import com.noqapp.android.common.beans.JsonResponse
@@ -46,6 +47,7 @@ import com.noqapp.android.common.beans.body.Notification
 import com.noqapp.android.common.fcm.data.*
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.model.types.*
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.DisplayNotification
 import com.noqapp.android.common.presenter.NotificationPresenter
 import com.noqapp.android.common.utils.CommonHelper
@@ -246,126 +248,304 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, mappedData[Constants.CODE_QR]), mappedData[Constants.CURRENTLY_SERVING]!!.toInt()).apply()
                         prefs.edit().putInt(String.format(Constants.DISPLAY_SERVING_NUMBER_PREF_KEY, mappedData[Constants.CODE_QR]), mappedData[Constants.DISPLAY_SERVING_NUMBER]!!.toInt()).apply()
                     }
-                } else {
-                    // app is in background, show the notification in notification tray
-                    //save data to database
                     val payload = mappedData[Constants.FIREBASE_TYPE]
                     val codeQR = mappedData[Constants.CODE_QR]
-                    if (null == AppInitialize.dbHandler) {
-                        AppInitialize.dbHandler = DatabaseHelper.getsInstance(applicationContext)
+                    if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
+                        if (!(jsonData is JsonChangeServiceTimeData)) {
+                            jsonData?.let {
+                                updateNotification(jsonData, codeQR)
+                            }
+                        }
                     }
-                    /*
-                     * When u==S then it is re-view
-                     *      u==N then it is skip(Rejoin) Pending task
-                     */
-                    if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.P.getName(), ignoreCase = true)) {
-                        if (StringUtils.isNotBlank(codeQR)) {
-                            val currentServing = mappedData[Constants.CURRENTLY_SERVING]
-                            if (currentServing != null) {
 
-                                NoQueueAppDB.dbInstance(this).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).observeForever {
-                                    it.forEach { jsonTokenAndQueue ->
-                                        jsonTokenAndQueue.servingNumber = currentServing.toInt()
-                                        if (jsonTokenAndQueue.isTokenExpired && it.size == 1) {
-                                            //TODO @chandra write logic for unsubscribe
-                                            unSubscribeTopics(jsonTokenAndQueue.topic)
-                                        }
+                }
+                // app is in background, show the notification in notification tray
+                //save data to database
+                val payload = mappedData[Constants.FIREBASE_TYPE]
+                val codeQR = mappedData[Constants.CODE_QR]
+                if (null == AppInitialize.dbHandler) {
+                    AppInitialize.dbHandler = DatabaseHelper.getsInstance(applicationContext)
+                }
+                /*
+                 * When u==S then it is re-view
+                 *      u==N then it is skip(Rejoin) Pending task
+                 */
+                if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.P.getName(), ignoreCase = true)) {
+                    if (StringUtils.isNotBlank(codeQR)) {
+                        val currentServing = mappedData[Constants.CURRENTLY_SERVING]
+                        if (currentServing != null) {
 
-                                        mappedData[Constants.DISPLAY_SERVING_NUMBER]?.let { displayServingNumber ->
-                                            GlobalScope.launch {
-                                                withContext(Dispatchers.IO) {
-                                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jsonTokenAndQueue.token)
-                                                }
+                            NoQueueAppDB.dbInstance(this).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).observeForever {
+                                it.forEach { jsonTokenAndQueue ->
+                                    jsonTokenAndQueue.servingNumber = currentServing.toInt()
+                                    if (jsonTokenAndQueue.isTokenExpired && it.size == 1) {
+                                        //TODO @chandra write logic for unsubscribe
+                                        unSubscribeTopics(jsonTokenAndQueue.topic)
+                                    }
+
+                                    mappedData[Constants.DISPLAY_SERVING_NUMBER]?.let { displayServingNumber ->
+                                        GlobalScope.launch {
+                                            withContext(Dispatchers.IO) {
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jsonTokenAndQueue.token)
                                             }
                                         }
                                     }
                                 }
                             }
+                        }
 
-                            if (jsonData is JsonAlertData) {
-                                Log.e("IN JsonAlertData", jsonData.toString())
-                                val displayNotification = DisplayNotification()
-                                displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
-                                displayNotification.codeQR = jsonData.codeQR
-                                //from my point of view it is wrong....lets discuss more bot it
-                                displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
-                                displayNotification.title = jsonData.title
-                                displayNotification.businessType = BusinessTypeEnum.PA
-                                displayNotification.imageUrl = jsonData.imageURL
-                                displayNotification.key = getKey(jsonData.id)
-                                displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                                displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                        if (jsonData is JsonAlertData) {
+                            Log.e("IN JsonAlertData", jsonData.toString())
+                            val displayNotification = DisplayNotification()
+                            displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
+                            displayNotification.codeQR = jsonData.codeQR
+                            //from my point of view it is wrong....lets discuss more bot it
+                            displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                            displayNotification.title = jsonData.title
+                            displayNotification.businessType = BusinessTypeEnum.PA
+                            displayNotification.imageUrl = jsonData.imageURL
+                            displayNotification.key = getKey(jsonData.id)
+                            displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
+                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
 
-                                GlobalScope.launch {
-                                    withContext(Dispatchers.IO) {
-                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
-                                    }
+                            GlobalScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
                                 }
-
-                                /*NotificationDB.insertNotification(
-                                        NotificationDB.KEY_NOTIFY,
-                                        jsonData.codeQR,
-                                        jsonData.getLocalLanguageMe*//**//*ssageBody(AppUtils.getSelectedLanguage(applicationContext))),
-                                        title,
-                                        jsonData.businessType.getName(),
-                                        imageUrl)*/
-                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
-                            } else if (jsonData is JsonClientData) {
-                                Log.e("IN JsonClientData", jsonData.toString())
-                                val token = jsonData.token.toString()
-                                val qid = jsonData.queueUserId
-                                if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.S.getName(), ignoreCase = true)) {
-                                    /*
-                                     * Save codeQR of review & show the review screen on app
-                                     * resume if there is any record in Review DB for queue review key
-                                     */
-                                    NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, token).observeForever {
-                                        it?.let {
-                                            it.isReviewShown = "1"
-                                            GlobalScope.launch {
-                                                withContext(Dispatchers.IO) {
-                                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
-                                                }
+                            }
+                            sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                        } else if (jsonData is JsonClientData) {
+                            Log.e("IN JsonClientData", jsonData.toString())
+                            val token = jsonData.token.toString()
+                            val qid = jsonData.queueUserId
+                            if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.S.getName(), ignoreCase = true)) {
+                                /*
+                                 * Save codeQR of review & show the review screen on app
+                                 * resume if there is any record in Review DB for queue review key
+                                 */
+                                NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, token).observeForever {
+                                    it?.let {
+                                        it.isReviewShown = "1"
+                                        GlobalScope.launch {
+                                            withContext(Dispatchers.IO) {
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
                                             }
-                                        } ?: run {
-                                            val reviewData = ReviewData()
-                                            reviewData.isReviewShown = "1"
-                                            reviewData.codeQR = codeQR
-                                            reviewData.token = token
-                                            reviewData.queueUserId = qid
-                                            reviewData.isBuzzerShow = "-1"
-                                            reviewData.isSkipped = "-1"
-                                            reviewData.gotoCounter = ""
+                                        }
+                                    } ?: run {
+                                        val reviewData = ReviewData()
+                                        reviewData.isReviewShown = "1"
+                                        reviewData.codeQR = codeQR
+                                        reviewData.token = token
+                                        reviewData.queueUserId = qid
+                                        reviewData.isBuzzerShow = "-1"
+                                        reviewData.isSkipped = "-1"
+                                        reviewData.gotoCounter = ""
 
-                                            GlobalScope.launch {
-                                                withContext(Dispatchers.IO) {
-                                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
-                                                }
+                                        GlobalScope.launch {
+                                            withContext(Dispatchers.IO) {
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
                                             }
                                         }
                                     }
+                                }
 
-                                    /*val reviewData: ReviewData = ReviewDB.getValue(codeQR, token)
-                                    if (null != reviewData) {
-                                        val cv = ContentValues()
-                                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1)
-                                        ReviewDB.updateReviewRecord(codeQR, token, cv)
-                                        // update
-                                    } else {
-                                        //insert
-                                        val cv = ContentValues()
-                                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1)
-                                        cv.put(DatabaseTable.Review.CODE_QR, codeQR)
-                                        cv.put(DatabaseTable.Review.TOKEN, token)
-                                        cv.put(DatabaseTable.Review.QID, qid)
-                                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1")
-                                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1")
-                                        cv.put(DatabaseTable.Review.KEY_GOTO, "")
-                                        ReviewDB.insert(cv)
-                                    }*/
-                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, true, token, imageUrl) //pass codeQR to open review screen
-                                } else if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.N.getName(), ignoreCase = true)) {
-                                    NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, token).observeForever {
+                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, true, token, imageUrl) //pass codeQR to open review screen
+                            } else if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.N.getName(), ignoreCase = true)) {
+                                NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, token).observeForever {
+                                    it?.let {
+                                        it.isReviewShown = "1"
+                                        GlobalScope.launch {
+                                            withContext(Dispatchers.IO) {
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
+                                            }
+                                        }
+                                    } ?: run {
+                                        val reviewData = ReviewData()
+                                        reviewData.isReviewShown = "-1"
+                                        reviewData.codeQR = codeQR
+                                        reviewData.token = token
+                                        reviewData.queueUserId = qid
+                                        reviewData.isBuzzerShow = "-1"
+                                        reviewData.isSkipped = "-1"
+                                        reviewData.gotoCounter = ""
+
+                                        GlobalScope.launch {
+                                            withContext(Dispatchers.IO) {
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
+                                            }
+                                        }
+                                    }
+                                }
+
+                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, false, token, imageUrl) //pass codeQR to open skip screen
+                            }
+                        } else if (jsonData is JsonClientOrderData) {
+                            val token = jsonData.orderNumber.toString()
+                            val qid = jsonData.queueUserId
+                            if (jsonData.purchaseOrderState.getName().equals(PurchaseOrderStateEnum.OD.getName(), ignoreCase = true)) {
+                                /*
+                                * Save codeQR of review & show the review screen on app
+                                * resume if there is any record in Review DB for queue review key
+                                */
+                                NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, token).observeForever {
+                                    it?.let {
+                                        it.isReviewShown = "1"
+                                        GlobalScope.launch {
+                                            withContext(Dispatchers.IO) {
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
+                                            }
+                                        }
+                                    } ?: run {
+                                        val reviewData = ReviewData()
+                                        reviewData.isReviewShown = "1"
+                                        reviewData.codeQR = codeQR
+                                        reviewData.token = token
+                                        reviewData.queueUserId = qid
+                                        reviewData.isBuzzerShow = "-1"
+                                        reviewData.isSkipped = "-1"
+                                        reviewData.gotoCounter = ""
+                                        reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
+
+                                        GlobalScope.launch {
+                                            withContext(Dispatchers.IO) {
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
+                                            }
+                                        }
+                                    }
+                                }
+
+                                /*
+                                * this code is added to close the join & after join screen if the request is processed
+                                * Update the order screen/ Join Screen if open
+                                */
+                                if (AppInitialize.activityCommunicator != null) {
+                                    AppInitialize.activityCommunicator.requestProcessed(codeQR, token)
+                                }
+                            }
+                        } else if (jsonData is JsonTopicOrderData) {
+                            updateNotification(jsonData, codeQR)
+                        } else if (jsonData is JsonTopicQueueData) {
+                            updateNotification(jsonData, codeQR)
+                        } else if (jsonData is JsonClientTokenAndQueueData) {
+                            val jsonTokenAndQueueList = jsonData.tokenAndQueues
+                            if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size > 0) {
+                                GlobalScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().saveCurrentQueue(jsonTokenAndQueueList)
+                                    }
+                                }
+                            }
+
+                            val displayNotification = DisplayNotification()
+                            displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
+                            displayNotification.codeQR = jsonData.codeQR
+                            displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                            displayNotification.title = jsonData.title
+                            displayNotification.businessType = BusinessTypeEnum.PA
+                            displayNotification.imageUrl = jsonData.imageURL
+                            displayNotification.key = getKey(jsonData.id)
+                            displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
+                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+
+                            GlobalScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                }
+                            }
+
+                            for (i in jsonTokenAndQueueList.indices) {
+                                subscribeTopics(jsonTokenAndQueueList[i].topic)
+                            }
+                            sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                        } else if (jsonData is JsonMedicalFollowUp) {
+                            Log.e("Alert set:", "data is :$title ---- $body")
+                            sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), true, imageUrl)
+                            setAlarm(jsonData as JsonMedicalFollowUp)
+                        } else {
+                            sendNotification(title, jsonData!!.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                        }
+                    } else {
+                        sendNotification(title, jsonData!!.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                        if (jsonData is JsonAlertData) {
+                            /* When app is on background. Adding to notification table. */
+                            Log.e("IN JsonAlertData", jsonData.toString())
+                            val displayNotification = DisplayNotification()
+                            displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
+                            displayNotification.codeQR = jsonData.codeQR
+                            displayNotification.key = getKey(jsonData.id)
+                            //from my point of view it is wrong....lets discuss more bot it
+                            displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                            displayNotification.title = jsonData.title
+                            displayNotification.businessType = BusinessTypeEnum.PA
+                            displayNotification.imageUrl = jsonData.imageURL
+                            displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
+                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+
+                            GlobalScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                }
+                            }
+                        }
+                    }
+                } else if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
+                    if (jsonData is JsonChangeServiceTimeData) {
+
+
+                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().findByQRCode(jsonData.codeQR).observeForever { jsonTokenAndQueue ->
+                            val jsonQueueChangeServiceTimes = jsonData.jsonQueueChangeServiceTimes
+                            for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
+                                if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
+                                    val msg = """${jsonData.getBody()} Token: ${jsonQueueChangeServiceTime.displayToken} Previously: ${jsonQueueChangeServiceTime.oldTimeSlotMessage} Updated: ${jsonQueueChangeServiceTime.updatedTimeSlotMessage}"""
+                                    ShowAlertInformation.showInfoDisplayDialog(this@NoQueueMessagingService, jsonData.getTitle(), body)
+                                    val displayNotification = DisplayNotification()
+                                    displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
+                                    displayNotification.codeQR = jsonData.codeQR
+                                    displayNotification.body = msg
+                                    displayNotification.key = getKey(jsonData.id)
+                                    displayNotification.title = jsonData.title
+                                    displayNotification.businessType = BusinessTypeEnum.PA
+                                    displayNotification.imageUrl = jsonData.imageURL
+                                    displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
+                                    displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+
+                                    GlobalScope.launch {
+                                        withContext(Dispatchers.IO) {
+                                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+                        var goTo: String? = ""
+                        var currentServing = ""
+                        var displayServingNumber: String? = ""
+                        if (jsonData is JsonTopicQueueData) {
+                            Log.e("In JsonTopicQueueData", jsonData.toString())
+                            currentServing = jsonData.currentlyServing.toString()
+                            displayServingNumber = jsonData.displayServingNumber
+                            goTo = jsonData.goTo
+                        }
+                        if (jsonData is JsonTopicOrderData) {
+                            Log.e("In JsonTopicOrderData", jsonData.toString())
+                            currentServing = jsonData.currentlyServing.toString()
+                            displayServingNumber = jsonData.displayServingNumber
+                            goTo = jsonData.goTo
+                        }
+
+                        NoQueueAppDB.dbInstance(this).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).observeForever { jsonTokenAndQueueArrayList ->
+                            for (i in jsonTokenAndQueueArrayList.indices) {
+                                val jtk = jsonTokenAndQueueArrayList[i]
+                                var displayBuzzer = false
+                                /*
+                             * Save codeQR of goto & show it in after join screen on app
+                             * Review DB for review key && current serving == token no.
+                             */
+                                if (currentServing.toInt() == jtk.token) {
+
+                                    NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, currentServing).observeForever {
                                         it?.let {
                                             it.isReviewShown = "1"
                                             GlobalScope.launch {
@@ -377,11 +557,11 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                             val reviewData = ReviewData()
                                             reviewData.isReviewShown = "-1"
                                             reviewData.codeQR = codeQR
-                                            reviewData.token = token
-                                            reviewData.queueUserId = qid
+                                            reviewData.token = currentServing
+                                            reviewData.queueUserId = jtk.queueUserId
                                             reviewData.isBuzzerShow = "-1"
                                             reviewData.isSkipped = "-1"
-                                            reviewData.gotoCounter = ""
+                                            reviewData.gotoCounter = goTo
 
                                             GlobalScope.launch {
                                                 withContext(Dispatchers.IO) {
@@ -391,333 +571,117 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                         }
                                     }
 
-                                    /* val reviewData: ReviewData = ReviewDB.getValue(codeQR, token)
-                                     if (null != reviewData) {
-                                         val cv = ContentValues()
-                                         cv.put(DatabaseTable.Review.KEY_SKIP, -1)
-                                         ReviewDB.updateReviewRecord(codeQR, token, cv)
-                                         // update
-                                     } else {
-                                         //insert
-                                         val cv = ContentValues()
-                                         cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1)
-                                         cv.put(DatabaseTable.Review.CODE_QR, codeQR)
-                                         cv.put(DatabaseTable.Review.TOKEN, token)
-                                         cv.put(DatabaseTable.Review.QID, qid)
-                                         cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1")
-                                         cv.put(DatabaseTable.Review.KEY_SKIP, "-1")
-                                         cv.put(DatabaseTable.Review.KEY_GOTO, "")
-                                         ReviewDB.insert(cv)
-                                     }*/
-
-                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, false, token, imageUrl) //pass codeQR to open skip screen
                                 }
-                            } else if (jsonData is JsonClientTokenAndQueueData) {
-                                val jsonTokenAndQueueList = jsonData.tokenAndQueues
-                                if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size > 0) {
-                                    GlobalScope.launch {
-                                        withContext(Dispatchers.IO) {
-                                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().saveCurrentQueue(jsonTokenAndQueueList)
+                                //update DB & after join screen
+                                jtk.servingNumber = currentServing.toInt()
+                                if (jtk.isTokenExpired && jsonTokenAndQueueArrayList.size == 1) {
+                                    //un-subscribe from the topic
+                                    unSubscribeTopics(jtk.topic)
+                                }
+
+                                GlobalScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        displayServingNumber?.let {
+                                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jtk.token.toInt())
                                         }
                                     }
-                                    //TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList)
                                 }
 
-                                val displayNotification = DisplayNotification()
-                                displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
-                                displayNotification.codeQR = jsonData.codeQR
-                                displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
-                                displayNotification.title = jsonData.title
-                                displayNotification.businessType = BusinessTypeEnum.PA
-                                displayNotification.imageUrl = jsonData.imageURL
-                                displayNotification.key = getKey(jsonData.id)
-                                displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                                displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
-
-                                GlobalScope.launch {
-                                    withContext(Dispatchers.IO) {
-                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                // Check if user needs to be notified
+                                val currentlyServingNumber = currentServing.toInt()
+                                val prefs = applicationContext.getSharedPreferences(Constants.APP_PACKAGE, MODE_PRIVATE)
+                                val lastServingNumber = prefs.getInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), 0)
+                                if (jtk.token > currentlyServingNumber && lastServingNumber != currentlyServingNumber) {
+                                    var notificationMessage = String.format(applicationContext.getString(R.string.position_in_queue), jtk.afterHowLong())
+                                    prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), currentlyServingNumber).apply()
+                                    // Add wait time to notification message
+                                    try {
+                                        when (jtk.businessType) {
+                                            BusinessTypeEnum.CD, BusinessTypeEnum.CDQ -> {
+                                                val slot = jtk.timeSlotMessage
+                                                notificationMessage += String.format(applicationContext.getString(R.string.time_slot_formatted_newline), slot)
+                                            }
+                                            else -> {
+                                                val avgServiceTime = if (jtk.averageServiceTime != 0L) jtk.averageServiceTime else prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0)
+                                                val waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
+                                                        avgServiceTime,
+                                                        jtk.afterHowLong(),
+                                                        QueueStatusEnum.N,
+                                                        jtk.startHour,
+                                                        applicationContext)
+                                                if (!TextUtils.isEmpty(waitTime)) {
+                                                    notificationMessage += String.format(applicationContext.getString(R.string.wait_time_formatted_newline), waitTime)
+                                                }
+                                            }
+                                        }
+                                    } catch (e: java.lang.Exception) {
+                                        Log.e("", "Error setting wait time reason: " + e.localizedMessage, e)
                                     }
+                                    sendNotification(title, notificationMessage, true, imageUrl, jtk.token - currentServing.toInt()) // pass null to show only notification with no action
+                                }
+                                if (jtk.token <= currentlyServingNumber) {
+                                    // Clear the App Shared Preferences entry for this queue
+                                    prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply()
+                                    prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR)).apply()
                                 }
 
-                                /*NotificationDB.insertNotification(
-                                        NotificationDB.KEY_NOTIFY,
-                                        jsonData.codeQR,
-                                        jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))),
-                                        jsonData.getTitle(),
-                                        BusinessTypeEnum.PA.getName(),
-                                        imageUrl)*/
-                                for (i in jsonTokenAndQueueList.indices) {
-                                    subscribeTopics(jsonTokenAndQueueList[i].topic)
-                                }
-                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
-                            } else if (jsonData is JsonMedicalFollowUp) {
-                                Log.e("Alert set:", "data is :$title ---- $body")
-                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), true, imageUrl)
-                                setAlarm(jsonData as JsonMedicalFollowUp)
-                            } else {
-                                sendNotification(title, jsonData!!.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
-                            }
-                        } else {
-                            sendNotification(title, jsonData!!.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
-                            if (jsonData is JsonAlertData) {
-                                /* When app is on background. Adding to notification table. */
-                                Log.e("IN JsonAlertData", jsonData.toString())
-                                val displayNotification = DisplayNotification()
-                                displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
-                                displayNotification.codeQR = jsonData.codeQR
-                                displayNotification.key = getKey(jsonData.id)
-                                //from my point of view it is wrong....lets discuss more bot it
-                                displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
-                                displayNotification.title = jsonData.title
-                                displayNotification.businessType = BusinessTypeEnum.PA
-                                displayNotification.imageUrl = jsonData.imageURL
-                                displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                                displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
-
-                                GlobalScope.launch {
-                                    withContext(Dispatchers.IO) {
-                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
-                                    }
+                                // Check if User's turn then start Buzzer.
+                                if (displayBuzzer && currentlyServingNumber == jtk.token) {
+                                    val buzzerIntent = Intent(this, BlinkerActivity::class.java)
+                                    buzzerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(buzzerIntent)
+                                    //   if (AppInitialize.isMsgAnnouncementEnable() && null != LaunchActivity.getLaunchActivity()) {
+                                    //LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData!!.jsonTextToSpeeches, mappedData["mi"])
+                                    //   }
                                 }
                             }
+
                         }
-                    } else if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
-                        if (jsonData is JsonChangeServiceTimeData) {
 
+                        //val jsonTokenAndQueueArrayList: ArrayList<JsonTokenAndQueue> = TokenAndQueueDB.getCurrentQueueObjectList(codeQR)
+                    }
+                }
 
-                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().findByQRCode(jsonData.codeQR).observeForever { jsonTokenAndQueue ->
-                                val jsonQueueChangeServiceTimes = jsonData.jsonQueueChangeServiceTimes
-                                for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
-                                    if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
-                                        val msg = """${jsonData.getBody()} Token: ${jsonQueueChangeServiceTime.displayToken} Previously: ${jsonQueueChangeServiceTime.oldTimeSlotMessage} Updated: ${jsonQueueChangeServiceTime.updatedTimeSlotMessage}"""
-                                        ShowAlertInformation.showInfoDisplayDialog(this@NoQueueMessagingService, jsonData.getTitle(), body)
-                                        val displayNotification = DisplayNotification()
-                                        displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
-                                        displayNotification.codeQR = jsonData.codeQR
-                                        displayNotification.body = msg
-                                        displayNotification.key = getKey(jsonData.id)
-                                        displayNotification.title = jsonData.title
-                                        displayNotification.businessType = BusinessTypeEnum.PA
-                                        displayNotification.imageUrl = jsonData.imageURL
-                                        displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                                        displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                if (jsonData is JsonMedicalFollowUp) {
+                    Log.e("JsonMedicalFollowUp", jsonData.toString())
+                    val displayNotification = DisplayNotification()
+                    displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
+                    displayNotification.codeQR = jsonData.codeQR
+                    //from my point of view it is wrong....lets discuss more bot it
+                    displayNotification.body = jsonData.body
+                    displayNotification.key = getKey(jsonData.id)
+                    displayNotification.title = jsonData.title
+                    displayNotification.businessType = BusinessTypeEnum.PA
+                    displayNotification.imageUrl = jsonData.imageURL
+                    displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
+                    displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
 
-                                        GlobalScope.launch {
-                                            withContext(Dispatchers.IO) {
-                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            /*val jsonTokenAndQueue: JsonTokenAndQueue = TokenAndQueueDB.findByQRCode(jsonData.codeQR)
-                            if (null != jsonTokenAndQueue) {
-                                val jsonQueueChangeServiceTimes = jsonData.jsonQueueChangeServiceTimes
-                                for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
-                                    if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
-                                        Log.e("In JsonChangeServiceTimeData", jsonData.toString())
-                                        val msg = """
-                                ${jsonData.getBody()}
-                                Token: ${(jsonData as JsonChangeServiceTimeData).jsonQueueChangeServiceTimes[0].displayToken}
-                                Previously: ${(jsonData as JsonChangeServiceTimeData).jsonQueueChangeServiceTimes[0].oldTimeSlotMessage}
-                                Updated: ${(jsonData as JsonChangeServiceTimeData).jsonQueueChangeServiceTimes[0].updatedTimeSlotMessage}
-                                """.trimIndent()
-                                        NotificationDB.insertNotification(
-                                                NotificationDB.KEY_NOTIFY,
-                                                jsonData.codeQR,
-                                                msg,
-                                                jsonData.getTitle(),
-                                                jsonData.businessType.getName(),
-                                                jsonData.getImageURL())
-                                        sendNotification(title, msg, true, imageUrl)
-                                    }
-                                }
-                            }*/
-                        } else {
-                            var goTo: String? = ""
-                            var currentServing = ""
-                            var displayServingNumber: String? = ""
-                            if (jsonData is JsonTopicQueueData) {
-                                Log.e("In JsonTopicQueueData", jsonData.toString())
-                                currentServing = jsonData.currentlyServing.toString()
-                                displayServingNumber = jsonData.displayServingNumber
-                                goTo = jsonData.goTo
-                            }
-                            if (jsonData is JsonTopicOrderData) {
-                                Log.e("In JsonTopicOrderData", jsonData.toString())
-                                currentServing = jsonData.currentlyServing.toString()
-                                displayServingNumber = jsonData.displayServingNumber
-                                goTo = jsonData.goTo
-                            }
-
-                            NoQueueAppDB.dbInstance(this).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).observeForever { jsonTokenAndQueueArrayList ->
-                                for (i in jsonTokenAndQueueArrayList.indices) {
-                                    val jtk = jsonTokenAndQueueArrayList[i]
-                                    var displayBuzzer = false
-                                    /*
-                                 * Save codeQR of goto & show it in after join screen on app
-                                 * Review DB for review key && current serving == token no.
-                                 */
-                                    if (currentServing.toInt() == jtk.token) {
-
-                                        NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, currentServing).observeForever {
-                                            it?.let {
-                                                it.isReviewShown = "1"
-                                                GlobalScope.launch {
-                                                    withContext(Dispatchers.IO) {
-                                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
-                                                    }
-                                                }
-                                            } ?: run {
-                                                val reviewData = ReviewData()
-                                                reviewData.isReviewShown = "-1"
-                                                reviewData.codeQR = codeQR
-                                                reviewData.token = currentServing
-                                                reviewData.queueUserId = jtk.queueUserId
-                                                reviewData.isBuzzerShow = "-1"
-                                                reviewData.isSkipped = "-1"
-                                                reviewData.gotoCounter = ""
-
-                                                GlobalScope.launch {
-                                                    withContext(Dispatchers.IO) {
-                                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
-                                                    }
-                                                }
-                                            }
-                                        }
-
-
-                                        /*val reviewData: ReviewData = ReviewDB.getValue(codeQR, currentServing)
-                                        if (null != reviewData) {
-                                            val cv = ContentValues()
-                                            cv.put(DatabaseTable.Review.KEY_GOTO, goTo)
-                                            ReviewDB.updateReviewRecord(codeQR, currentServing, cv)
-                                            // update
-                                        } else {
-                                            //insert
-                                            displayBuzzer = true
-                                            val cv = ContentValues()
-                                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1)
-                                            cv.put(DatabaseTable.Review.CODE_QR, codeQR)
-                                            cv.put(DatabaseTable.Review.TOKEN, currentServing)
-                                            cv.put(DatabaseTable.Review.QID, jtk.queueUserId)
-                                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1")
-                                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1")
-                                            cv.put(DatabaseTable.Review.KEY_GOTO, goTo)
-                                            ReviewDB.insert(cv)
-                                        }*/
-                                    }
-                                    //update DB & after join screen
-                                    jtk.servingNumber = currentServing.toInt()
-                                    if (jtk.isTokenExpired && jsonTokenAndQueueArrayList.size == 1) {
-                                        //un-subscribe from the topic
-                                        unSubscribeTopics(jtk.topic)
-                                    }
-
-                                    GlobalScope.launch {
-                                        withContext(Dispatchers.IO) {
-                                            displayServingNumber?.let {
-                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jtk.token.toInt())
-                                            }
-                                        }
-                                    }
-
-                                    // Check if user needs to be notified
-                                    val currentlyServingNumber = currentServing.toInt()
-                                    val prefs = applicationContext.getSharedPreferences(Constants.APP_PACKAGE, MODE_PRIVATE)
-                                    val lastServingNumber = prefs.getInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), 0)
-                                    if (jtk.token > currentlyServingNumber && lastServingNumber != currentlyServingNumber) {
-                                        var notificationMessage = String.format(applicationContext.getString(R.string.position_in_queue), jtk.afterHowLong())
-                                        prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), currentlyServingNumber).apply()
-                                        // Add wait time to notification message
-                                        try {
-                                            when (jtk.businessType) {
-                                                BusinessTypeEnum.CD, BusinessTypeEnum.CDQ -> {
-                                                    val slot = jtk.timeSlotMessage
-                                                    notificationMessage += String.format(applicationContext.getString(R.string.time_slot_formatted_newline), slot)
-                                                }
-                                                else -> {
-                                                    val avgServiceTime = if (jtk.averageServiceTime != 0L) jtk.averageServiceTime else prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0)
-                                                    val waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
-                                                            avgServiceTime,
-                                                            jtk.afterHowLong(),
-                                                            QueueStatusEnum.N,
-                                                            jtk.startHour,
-                                                            applicationContext)
-                                                    if (!TextUtils.isEmpty(waitTime)) {
-                                                        notificationMessage += String.format(applicationContext.getString(R.string.wait_time_formatted_newline), waitTime)
-                                                    }
-                                                }
-                                            }
-                                        } catch (e: java.lang.Exception) {
-                                            Log.e("", "Error setting wait time reason: " + e.localizedMessage, e)
-                                        }
-                                        sendNotification(title, notificationMessage, true, imageUrl, jtk.token - currentServing.toInt()) // pass null to show only notification with no action
-                                    }
-                                    if (jtk.token <= currentlyServingNumber) {
-                                        // Clear the App Shared Preferences entry for this queue
-                                        prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply()
-                                        prefs.edit().remove(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR)).apply()
-                                    }
-
-                                    // Check if User's turn then start Buzzer.
-                                    if (displayBuzzer && currentlyServingNumber == jtk.token) {
-                                        val buzzerIntent = Intent(this, BlinkerActivity::class.java)
-                                        buzzerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        startActivity(buzzerIntent)
-                                     //   if (AppInitialize.isMsgAnnouncementEnable() && null != LaunchActivity.getLaunchActivity()) {
-                                            //LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData!!.jsonTextToSpeeches, mappedData["mi"])
-                                     //   }
-                                    }
-                                }
-
-                            }
-
-                            //val jsonTokenAndQueueArrayList: ArrayList<JsonTokenAndQueue> = TokenAndQueueDB.getCurrentQueueObjectList(codeQR)
+                    GlobalScope.launch {
+                        withContext(Dispatchers.IO) {
+                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
                         }
                     }
-                    if (jsonData is JsonMedicalFollowUp) {
-                        Log.e("JsonMedicalFollowUp", jsonData.toString())
-                        val displayNotification = DisplayNotification()
-                        displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
-                        displayNotification.codeQR = jsonData.codeQR
-                        //from my point of view it is wrong....lets discuss more bot it
-                        displayNotification.body = jsonData.body
-                        displayNotification.key = getKey(jsonData.id)
-                        displayNotification.title = jsonData.title
-                        displayNotification.businessType = BusinessTypeEnum.PA
-                        displayNotification.imageUrl = jsonData.imageURL
-                        displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                        displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                } else if (jsonData is JsonTopicAppointmentData) {
+                    Log.e("JsonTopicAppointData", jsonData.toString())
+                    val displayNotification = DisplayNotification()
+                    displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
+                    displayNotification.codeQR = ""
+                    displayNotification.key = getKey(jsonData.id)
+                    //from my point of view it is wrong....lets discuss more bot it
+                    displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                    displayNotification.title = jsonData.title
+                    displayNotification.businessType = BusinessTypeEnum.PA
+                    displayNotification.imageUrl = jsonData.imageURL
+                    displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
+                    displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
 
-                        GlobalScope.launch {
-                            withContext(Dispatchers.IO) {
-                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
-                            }
-                        }
-                    } else if (jsonData is JsonTopicAppointmentData) {
-                        Log.e("JsonTopicAppointData", jsonData.toString())
-                        val displayNotification = DisplayNotification()
-                        displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
-                        displayNotification.codeQR = ""
-                        displayNotification.key = getKey(jsonData.id)
-                        //from my point of view it is wrong....lets discuss more bot it
-                        displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
-                        displayNotification.title = jsonData.title
-                        displayNotification.businessType = BusinessTypeEnum.PA
-                        displayNotification.imageUrl = jsonData.imageURL
-                        displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                        displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
-
-                        GlobalScope.launch {
-                            withContext(Dispatchers.IO) {
-                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
-                            }
+                    GlobalScope.launch {
+                        withContext(Dispatchers.IO) {
+                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
                         }
                     }
                 }
+
             } catch (e: java.lang.Exception) {
                 Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                 FirebaseCrashlytics.getInstance().log("Failed to parse message " + e.localizedMessage)
@@ -727,6 +691,153 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
         }
     }
+
+    private fun updateNotification(jsonData: JsonData, codeQR: String?) {
+        try {
+            var go_to = ""
+            var messageOrigin = ""
+            var currentServing = ""
+            var displayServingNumber = ""
+            var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
+            var msgId = ""
+            var purchaseOrderStateEnum = PurchaseOrderStateEnum.IN
+            if (jsonData is JsonTopicQueueData) {
+                val jsonTopicQueueData = jsonData
+                currentServing = jsonTopicQueueData.currentlyServing.toString()
+                displayServingNumber = jsonTopicQueueData.displayServingNumber
+                go_to = jsonTopicQueueData.goTo
+                messageOrigin = jsonTopicQueueData.messageOrigin.name
+                jsonTextToSpeeches = jsonData.getJsonTextToSpeeches()
+                msgId = jsonTopicQueueData.messageId
+            } else if (jsonData is JsonTopicOrderData) {
+                val jsonTopicOrderData = jsonData
+                currentServing = jsonTopicOrderData.currentlyServing.toString()
+                displayServingNumber = jsonTopicOrderData.displayServingNumber
+                go_to = jsonTopicOrderData.goTo
+                messageOrigin = jsonTopicOrderData.messageOrigin.name
+                purchaseOrderStateEnum = jsonTopicOrderData.purchaseOrderState
+                jsonTextToSpeeches = jsonData.getJsonTextToSpeeches()
+                msgId = jsonTopicOrderData.messageId
+            }
+
+            NoQueueAppDB.dbInstance(this).tokenAndQueueDao().getCurrentQueueObjectList(codeQR).observeForever { jsonTokenAndQueueArrayList ->
+
+                for (i in jsonTokenAndQueueArrayList.indices) {
+                    val jtk = jsonTokenAndQueueArrayList[i]
+                    /* update DB & after join screen */
+                    if (currentServing.toInt() < jtk.servingNumber) {
+                        /* Do nothing - In Case of getting service no less than what the object have */
+                    } else {
+                        jtk.servingNumber = currentServing.toInt()
+
+                        GlobalScope.launch {
+                            withContext(Dispatchers.IO) {
+                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jtk.token.toInt())
+                            }
+                        }
+
+                    }
+
+                    if (jsonData is JsonTopicOrderData && jtk.token - currentServing.toInt() <= 0) {
+                        jtk.purchaseOrderState = purchaseOrderStateEnum
+                    }
+
+                    /*
+                    * Save codeQR of goto & show it in after join screen on app
+                    * Review DB for review key && current serving == token no.
+                    */
+
+                    if (currentServing.toInt() == jtk.token) {
+                        NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, currentServing).observeForever {
+                            it?.let {
+                                it.gotoCounter = go_to
+                                GlobalScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
+                                    }
+                                }
+                            } ?: run {
+                                val reviewData = ReviewData()
+                                reviewData.isReviewShown = "-1"
+                                reviewData.codeQR = codeQR
+                                reviewData.token = currentServing
+                                reviewData.queueUserId = jtk.queueUserId
+                                reviewData.isBuzzerShow = "-1"
+                                reviewData.isSkipped = "-1"
+                                reviewData.gotoCounter = go_to
+                                reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
+
+                                GlobalScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (jtk.isTokenExpired && jsonTokenAndQueueArrayList.size == 1) {
+                        /* Un-subscribe the topic */
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.topic + "_A")
+                    }
+
+                    val foregroundNotificationModel = ForegroundNotificationModel()
+                    foregroundNotificationModel.currentServing = currentServing
+                    foregroundNotificationModel.displayServingNumber = displayServingNumber
+                    foregroundNotificationModel.jsonTextToSpeeches = jsonTextToSpeeches
+                    foregroundNotificationModel.goTo = go_to
+                    foregroundNotificationModel.messageOrigin = messageOrigin
+                    foregroundNotificationModel.msgId = msgId
+                    foregroundNotificationModel.purchaseOrderStateEnum = purchaseOrderStateEnum
+                    codeQR?.let {
+                        foregroundNotificationModel.qrCode = codeQR
+                    }
+                    foregroundNotificationModel.forUpdateFlag = false
+
+                    GlobalScope.launch {
+                        withContext(Dispatchers.IO) {
+                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).foregroundNotificationDao().insertForeGroundNotification(foregroundNotificationModel)
+                        }
+                    }
+
+                    try {
+                        //* In case of order update the order status *//*
+                        if (jsonData is JsonTopicOrderData) {
+                            if (messageOrigin.equals(MessageOriginEnum.O.name, ignoreCase = true) && currentServing.toInt() == jtk.token) {
+                                jtk.purchaseOrderState = jsonData.purchaseOrderState
+                                GlobalScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListOrderObject(codeQR, jtk.purchaseOrderState, jtk.token)
+                                    }
+                                }
+                            }
+                        }
+
+                        GlobalScope.launch {
+                            withContext(Dispatchers.IO) {
+                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListQueueObject(jtk.codeQR, jtk.servingNumber.toString(), displayServingNumber, jtk.token)
+                            }
+                        }
+
+//                        GlobalScope.launch {
+//                            withContext(Dispatchers.IO) {
+//                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).foregroundNotificationDao().insertForeGroundNotification(foregroundNotificationModel)
+//                            }
+//                        }
+
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                        throw e
+                    }
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            FirebaseCrashlytics.getInstance().log("Failed on update notification")
+            FirebaseCrashlytics.getInstance().recordException(e)
+            Log.e(TAG, "Failed on update notification " + e.localizedMessage)
+        }
+    }
+
 
     private fun sendNotification(title: String?, messageBody: String?, codeQR: String?, isReview: Boolean, token: String, imageUrl: String?) {
         CreateBigImageNotificationWithReview(title, messageBody, codeQR, isReview, token, imageUrl).execute()

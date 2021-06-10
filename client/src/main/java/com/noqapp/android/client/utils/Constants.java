@@ -86,6 +86,11 @@ public class Constants extends BaseConstants{
         String LOCATION_LNG_DATA_EXTRA = "locationaddress.lngextra";
     }
 
+    public interface NotificationTypeConstant {
+        String FOREGROUND = "foreground";
+        String BACKGROUND = "background";
+    }
+
     /**
      * Computes App version.
      *

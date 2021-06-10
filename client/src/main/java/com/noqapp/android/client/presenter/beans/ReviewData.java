@@ -5,11 +5,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "review_data")
+@Entity(tableName = "review_data", primaryKeys = {"token", "code_qr"})
 public class ReviewData {
 
-    @NonNull
-    @PrimaryKey
     @ColumnInfo(name = "token")
     private String token = "";
     @ColumnInfo(name = "code_qr")
@@ -24,6 +22,8 @@ public class ReviewData {
     private String gotoCounter;
     @ColumnInfo(name = "is_buzzer_show")
     private String isBuzzerShow;
+    @ColumnInfo(name = "review_type")
+    private String type;
 
     @NonNull
     public String getToken() {
@@ -82,6 +82,14 @@ public class ReviewData {
         this.isBuzzerShow = isBuzzerShow;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "ReviewData{" +
@@ -92,6 +100,7 @@ public class ReviewData {
                 ", isSkipped='" + isSkipped + '\'' +
                 ", gotoCounter='" + gotoCounter + '\'' +
                 ", isBuzzerShow='" + isBuzzerShow + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
