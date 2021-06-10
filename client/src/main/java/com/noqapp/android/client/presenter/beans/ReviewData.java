@@ -5,9 +5,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "review_data", primaryKeys = {"token", "code_qr"})
+@Entity(tableName = "review_data")
 public class ReviewData {
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "key")
+    private Long key = 1L;
     @ColumnInfo(name = "token")
     private String token = "";
     @ColumnInfo(name = "code_qr")
@@ -90,6 +93,14 @@ public class ReviewData {
         this.type = type;
     }
 
+    public Long getKey() {
+        return key;
+    }
+
+    public void setKey(Long key) {
+        this.key = key;
+    }
+
     @Override
     public String toString() {
         return "ReviewData{" +
@@ -101,6 +112,7 @@ public class ReviewData {
                 ", gotoCounter='" + gotoCounter + '\'' +
                 ", isBuzzerShow='" + isBuzzerShow + '\'' +
                 ", type='" + type + '\'' +
+                ", key='" + key + '\'' +
                 '}';
     }
 }

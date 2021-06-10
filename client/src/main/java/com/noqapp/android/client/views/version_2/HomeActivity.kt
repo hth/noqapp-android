@@ -15,8 +15,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ExpandableListView
-import android.widget.ExpandableListView.OnChildClickListener
-import android.widget.ExpandableListView.OnGroupClickListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -26,13 +24,17 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.common.cache.CacheBuilder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.messaging.FirebaseMessaging
 import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.databinding.NavHeaderMainBinding
 import com.noqapp.android.client.model.database.utils.NotificationDB
 import com.noqapp.android.client.model.database.utils.ReviewDB
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.*
@@ -43,10 +45,12 @@ import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteracti
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.customviews.CustomToast
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.pojos.MenuDrawer
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter
 import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
+import com.noqapp.android.common.utils.TextToSpeechHelper
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 
@@ -78,6 +82,9 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private var expandableListAdapter: DrawerExpandableListAdapter? = null
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
+    private var textToSpeechHelper: TextToSpeechHelper? = null
+    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val MSG_IDS = "messageIds"
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))[HomeViewModel::class.java]
     }
@@ -87,6 +94,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
         setContentView(activityHomeBinding.root)
         setSupportActionBar(activityHomeBinding.toolbar)
+        textToSpeechHelper = TextToSpeechHelper(applicationContext)
+
         setUpExpandableList(UserUtils.isLogin())
         updateNotificationBadgeCount()
         setUpNavigation()
@@ -165,10 +174,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
-                    .placeholder(ImageUtils.getProfilePlaceholder(this))
-                    .error(ImageUtils.getProfileErrorPlaceholder(this))
-                    .into(navHeaderMainBinding.ivProfile)
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(navHeaderMainBinding.ivProfile)
             }
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
@@ -457,5 +466,52 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
             }
         }
         return false
+    }
+
+    override fun makeAnnouncement(jsonTextToSpeeches: List<JsonTextToSpeech?>, msgId: String) {
+        if (null == cacheMsgIds.getIfPresent(MSG_IDS)) {
+            cacheMsgIds.put(MSG_IDS, java.util.ArrayList<String>())
+        }
+        cacheMsgIds.getIfPresent(MSG_IDS)?.let { msgIds ->
+            if (!TextUtils.isEmpty(msgId) && !msgIds.contains(msgId)) {
+                msgIds.add(msgId)
+                cacheMsgIds.put(MSG_IDS, msgIds)
+                textToSpeechHelper?.makeAnnouncement(jsonTextToSpeeches)
+            }
+        }
+    }
+
+    override fun callReviewActivity(codeQr: String, token: String) {
+        try {
+            homeViewModel.getCurrentQueueObject(codeQr, token).observe(this, Observer {
+                it?.let {
+                    callReviewActivity(it, codeQr, token)
+                } ?: run {
+                    homeViewModel.getHistoryQueueObject(codeQr, token).observe(this@HomeActivity, Observer {
+                        callReviewActivity(it, codeQr, token)
+                    })
+                }
+            })
+        } catch (e: java.lang.Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+        }
+    }
+
+    private fun callReviewActivity(jsonTokenAndQueue: JsonTokenAndQueue?, codeQr: String, token: String) {
+        if (jsonTokenAndQueue != null) {
+            val reviewIntent = Intent(this, ReviewActivity::class.java)
+            val bundle = Bundle()
+            bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jsonTokenAndQueue)
+            reviewIntent.putExtras(bundle)
+            startActivityForResult(reviewIntent, Constants.requestCodeJoinQActivity)
+            Log.v("Review screen call: ", jsonTokenAndQueue.toString())
+            val jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR)
+            if (jsonTokenAndQueueArrayList.size == 1) {
+                /* Un-subscribe the topic. */
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+            }
+        } else {
+            homeViewModel.deleteReview(codeQr, token)
+        }
     }
 }
