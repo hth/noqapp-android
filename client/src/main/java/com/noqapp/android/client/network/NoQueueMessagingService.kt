@@ -444,7 +444,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             displayNotification.codeQR = jsonData.codeQR
                             displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
                             displayNotification.title = jsonData.title
-                            displayNotification.businessType = BusinessTypeEnum.PA
+                            displayNotification.businessType = BusinessTypeEnum.ZZ
                             displayNotification.imageUrl = jsonData.imageURL
                             displayNotification.key = getKey(jsonData.id)
                             displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
@@ -677,7 +677,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     displayNotification.body = jsonData.body
                     displayNotification.key = getKey(jsonData.id)
                     displayNotification.title = jsonData.title
-                    displayNotification.businessType = BusinessTypeEnum.PA
+                    displayNotification.businessType = BusinessTypeEnum.ZZ
                     displayNotification.imageUrl = jsonData.imageURL
                     displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
                     displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
@@ -696,7 +696,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     //from my point of view it is wrong....lets discuss more bot it
                     displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
                     displayNotification.title = jsonData.title
-                    displayNotification.businessType = BusinessTypeEnum.PA
+                    displayNotification.businessType = BusinessTypeEnum.ZZ
                     displayNotification.imageUrl = jsonData.imageURL
                     displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
                     displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())

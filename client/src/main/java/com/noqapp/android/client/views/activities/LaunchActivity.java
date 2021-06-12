@@ -1061,7 +1061,7 @@ public class LaunchActivity
                             "",
                             jsonData.getBody(),
                             jsonData.getTitle(),
-                            BusinessTypeEnum.PA.getName(),
+                            BusinessTypeEnum.ZZ.name(),
                             jsonData.getImageURL());
                 } else if (jsonData instanceof JsonMedicalFollowUp) {
                     Log.e("JsonMedicalFollowUp", jsonData.toString());
@@ -1070,7 +1070,7 @@ public class LaunchActivity
                             ((JsonMedicalFollowUp) jsonData).getCodeQR(),
                             jsonData.getBody(),
                             jsonData.getTitle(),
-                            BusinessTypeEnum.PA.getName(),
+                            BusinessTypeEnum.ZZ.name(),
                             jsonData.getImageURL());
                 }
 
@@ -1195,7 +1195,7 @@ public class LaunchActivity
                                 ((JsonClientTokenAndQueueData) jsonData).getCodeQR(),
                                 jsonData.getBody(),
                                 jsonData.getTitle(),
-                                BusinessTypeEnum.PA.getName(),
+                                BusinessTypeEnum.ZZ.name(),
                                 jsonData.getImageURL());
 
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
