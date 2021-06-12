@@ -189,6 +189,9 @@ public class JsonTokenAndQueue implements Serializable {
     @ColumnInfo(name = "history_queue")
     private Integer historyQueue;
 
+    @ColumnInfo(name = "has_updated")
+    private Integer hasUpdated = -1;
+
     public String getCodeQR() {
         return codeQR;
     }
@@ -501,6 +504,14 @@ public class JsonTokenAndQueue implements Serializable {
         return historyQueue;
     }
 
+    public Integer getHasUpdated() {
+        return hasUpdated;
+    }
+
+    public void setHasUpdated(Integer hasUpdated) {
+        this.hasUpdated = hasUpdated;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -540,6 +551,7 @@ public class JsonTokenAndQueue implements Serializable {
             .append("transactionId", transactionId)
             .append("timeSlotMessage", timeSlotMessage)
             .append("historyQueue", historyQueue)
+            .append("hasUpdated", hasUpdated)
             .toString();
     }
 }

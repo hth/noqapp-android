@@ -1086,7 +1086,7 @@ public class LaunchActivity
                                 jsonData.getImageURL());
 
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
+
                         updateNotificationBadgeCount();
                     } else if (jsonData instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) jsonData).getToken());

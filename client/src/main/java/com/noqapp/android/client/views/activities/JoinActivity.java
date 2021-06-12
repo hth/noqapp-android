@@ -54,6 +54,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -297,8 +298,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 iv_home.performClick();
             });
             iv_home.setOnClickListener((View v) -> {
-                Intent goToA = new Intent(JoinActivity.this, LaunchActivity.class);
-                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent goToA = new Intent(JoinActivity.this, HomeActivity.class);
                 startActivity(goToA);
             });
             switch (jsonTokenAndQueue.getBusinessType()) {

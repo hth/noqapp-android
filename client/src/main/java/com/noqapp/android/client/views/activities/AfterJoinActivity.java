@@ -53,6 +53,7 @@ import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -299,12 +300,7 @@ public class AfterJoinActivity
             actionbarBack.setOnClickListener((View v) -> iv_home.performClick());
             iv_home.setOnClickListener((View v) -> {
                 AppInitialize.activityCommunicator = null;
-                Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
-                if (AppInitialize.isLockMode) {
-                    goToA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                } else {
-                    goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                }
+                Intent goToA = new Intent(AfterJoinActivity.this, HomeActivity.class);
                 startActivity(goToA);
                 finish();
             });

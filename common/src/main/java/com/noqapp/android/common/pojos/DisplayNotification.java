@@ -39,6 +39,8 @@ public class DisplayNotification {
     private String body;
     @ColumnInfo(name = "created_date")
     private String createdDate;
+    @ColumnInfo(name = "is_pop_up_shown")
+    private Boolean isPopUpShown;
 
     public DisplayNotification() {
 
@@ -140,6 +142,14 @@ public class DisplayNotification {
         this.createdDate = createdDate;
     }
 
+    public Boolean getPopUpShown() {
+        return isPopUpShown;
+    }
+
+    public void setPopUpShown(Boolean popUpShown) {
+        isPopUpShown = popUpShown;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DisplayNotification{");
@@ -155,6 +165,7 @@ public class DisplayNotification {
         sb.append(", type='").append(type).append('\'');
         sb.append(", body='").append(body).append('\'');
         sb.append(", createdDate='").append(createdDate).append('\'');
+        sb.append(", isPopUpShown='").append(isPopUpShown).append('\'');
         sb.append('}');
         return sb.toString();
     }
