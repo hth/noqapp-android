@@ -448,7 +448,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         jsonTokenAndQueue.setJsonPurchaseOrder(jsonToken.getJsonPurchaseOrder());
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
-        FirebaseMessaging.getInstance().subscribeToTopic(topic);
+        FirebaseMessaging.getInstance().subscribeToTopic(topic + "_A");
         Intent in = new Intent(this, AfterJoinActivity.class);
         in.putExtra(IBConstant.KEY_CODE_QR, jsonTokenAndQueue.getCodeQR());
         in.putExtra(IBConstant.KEY_FROM_LIST, false);
@@ -504,7 +504,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void responsePresenterResponse(JsonResponse response) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
         TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
         iv_home.performClick();
         dismissProgress();
