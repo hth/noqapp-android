@@ -39,10 +39,11 @@ import java.io.Serializable;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Entity(tableName = "token_queue")
+@Entity(tableName = "token_queue", primaryKeys = {"qr_code", "token"})
 public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("qr")
+    @NonNull
     @ColumnInfo(name = "qr_code")
     private String codeQR;
 
@@ -129,6 +130,7 @@ public class JsonTokenAndQueue implements Serializable {
     private Integer lastNumber;
 
     @JsonProperty("t")
+    @NonNull
     @ColumnInfo(name = "token")
     private Integer token = 0;
 
@@ -181,8 +183,6 @@ public class JsonTokenAndQueue implements Serializable {
     private String bizCategoryId;
 
     @JsonProperty("ti")
-    @NonNull
-    @PrimaryKey
     @ColumnInfo(name = "transaction_id")
     private String transactionId = "";
 
