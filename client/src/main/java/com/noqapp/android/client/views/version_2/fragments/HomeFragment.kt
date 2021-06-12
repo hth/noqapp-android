@@ -69,7 +69,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        retainInstance = true
         setUpViewPager()
         setUpRecyclerView()
 
@@ -216,82 +215,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
-        homeViewModel.foregroundNotificationLiveData.observe(viewLifecycleOwner, { foregroundNotification ->
-            foregroundNotification?.let {
-                handleBuzzer(foregroundNotification)
-            }
-        })
-
-        homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND).observe(viewLifecycleOwner, Observer {
-            it?.let {
-//                if (it.isReviewShown != 1){
-//                    homeFragmentInteractionListener.callReviewActivity(it.codeQR, it.token)
-//                }
-            }
-        })
-
-        homeViewModel.notificationListLiveData.observe(viewLifecycleOwner, Observer {
-            it?.let { displayNotificationList ->
-                if (displayNotificationList.isNotEmpty()) {
-                    val displayNotification = displayNotificationList.last()
-                    if (!displayNotification.popUpShown) {
-                        ShowAlertInformation.showInfoDisplayDialog(requireContext(), displayNotification.title, displayNotification.body)
-                        displayNotification.popUpShown = true
-                        homeViewModel.updateDisplayNotification(displayNotification)
-                    }
-                }
-            }
-        })
-
-    }
-
-    private fun handleBuzzer(foregroundNotification: ForegroundNotificationModel) {
-
-        homeViewModel.currentQueueQrCodeLiveData.value = foregroundNotification.qrCode
-
-        homeViewModel.currentQueueObjectListLiveData.observe(viewLifecycleOwner, { jsonTokenAndQueueArrayList ->
-
-            for (i in jsonTokenAndQueueArrayList.indices) {
-                val jtk = jsonTokenAndQueueArrayList[i]
-
-                if (AppInitialize.activityCommunicator != null) {
-                    val isUpdated = AppInitialize.activityCommunicator.updateUI(foregroundNotification.qrCode, jtk, foregroundNotification.goTo)
-                }
-
-                if (jtk.servingNumber == jtk.token) {
-
-                    homeViewModel.getReviewData(foregroundNotification.qrCode, foregroundNotification.currentServing).observe(viewLifecycleOwner, Observer {
-                        it?.let { reviewData ->
-                            if (reviewData.isBuzzerShow != "1") {
-                                reviewData.isBuzzerShow = "1"
-                                homeViewModel.updateReviewData(reviewData)
-                                val blinkerIntent = Intent(requireContext(), BlinkerActivity::class.java)
-                                blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(blinkerIntent)
-                                if (AppInitialize.isMsgAnnouncementEnable()) {
-                                    foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
-                                        homeFragmentInteractionListener.makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
-                                    }
-                                }
-                            }
-                        } ?: run {
-                            val reviewData = ReviewData()
-                            reviewData.isReviewShown = "-1"
-                            reviewData.codeQR = foregroundNotification.qrCode
-                            reviewData.token = foregroundNotification.currentServing
-                            reviewData.queueUserId = jtk.queueUserId
-                            reviewData.isBuzzerShow = "-1"
-                            reviewData.isSkipped = "-1"
-                            reviewData.gotoCounter = foregroundNotification.goTo
-                            reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
-
-                            homeViewModel.insertReviewData(reviewData)
-                        }
-                        homeViewModel.deleteForegroundNotification()
-                    })
-                }
-            }
-        })
     }
 
 //    fun updateListFromNotification(jq: JsonTokenAndQueue, jsonTextToSpeeches: List<JsonTextToSpeech?>?, msgId: String?) {
