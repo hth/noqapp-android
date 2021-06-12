@@ -391,7 +391,7 @@ public class AfterJoinActivity
         } else {
             new CustomToast().showToast(this, getString(R.string.fail_to_cancel));
         }
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
         TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
         // Clear entry from App preferences
         SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
@@ -837,7 +837,7 @@ public class AfterJoinActivity
         this.jsonToken = jsonToken;
         tokenValue = String.valueOf(jsonToken.getToken());
         btn_cancel_queue.setEnabled(true);
-        FirebaseMessaging.getInstance().subscribeToTopic(topic);
+        FirebaseMessaging.getInstance().subscribeToTopic(topic + "_A");
         jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
         jsonTokenAndQueue.setToken(jsonToken.getToken());
         jsonTokenAndQueue.setDisplayToken(jsonToken.getDisplayToken());

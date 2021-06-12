@@ -1199,7 +1199,7 @@ public class LaunchActivity
                                 jsonData.getImageURL());
 
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
-                            FirebaseMessaging.getInstance().subscribeToTopic(jsonTokenAndQueueList.get(i).getTopic());
+                            FirebaseMessaging.getInstance().subscribeToTopic(jsonTokenAndQueueList.get(i).getTopic() + "_A");
                         }
                         updateNotificationBadgeCount();
                         if (null != homeFragment) {
