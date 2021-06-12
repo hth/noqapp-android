@@ -62,7 +62,6 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
     @JsonProperty("imageURL")
     private String imageURL;
 
-    @JsonProperty("textToSpeeches")
     private List<JsonTextToSpeech> jsonTextToSpeeches;
 
     public FirebaseMessageTypeEnum getFirebaseMessageType() {

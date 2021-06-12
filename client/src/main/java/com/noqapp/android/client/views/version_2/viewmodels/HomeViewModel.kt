@@ -221,4 +221,20 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         }
     }
 
+    fun updateDisplayNotification(displayNotification: DisplayNotification) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                NoQueueAppDB.dbInstance(applicationContext).notificationDao().updateNotification(displayNotification)
+            }
+        }
+    }
+
+    fun deleteForegroundNotification() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao().deleteForegroundNotification()
+            }
+        }
+    }
+
 }
