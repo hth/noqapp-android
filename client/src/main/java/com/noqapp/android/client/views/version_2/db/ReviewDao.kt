@@ -23,7 +23,7 @@ interface ReviewDao {
     fun getSkippedQueue(): LiveData<ReviewData>
 
     @Query("DELETE FROM review_data WHERE code_qr=:codeQr AND token=:token")
-    fun deleteReviewData(codeQr: String, token: String)
+    suspend fun deleteReviewData(codeQr: String, token: String)
 
     @Update
     suspend fun update(reviewData: ReviewData)

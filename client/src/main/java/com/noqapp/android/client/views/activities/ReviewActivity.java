@@ -24,8 +24,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderReview;
@@ -36,6 +34,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.version_2.db.NoQueueAppDB;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -47,6 +46,15 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlin.jvm.functions.Function2;
+import kotlinx.coroutines.BuildersKt;
+import kotlinx.coroutines.CoroutineScope;
+import kotlinx.coroutines.CoroutineStart;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.GlobalScope;
 
 import static com.noqapp.android.common.model.types.QueueOrderTypeEnum.Q;
 
@@ -208,21 +216,21 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                                 new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
                             } else {
                                 QueueReview rr = new QueueReview()
-                                    .setCodeQR(jtk.getCodeQR())
-                                    .setToken(jtk.getToken())
-                                    .setHoursSaved(selectedRadio) // update according select radio
-                                    .setRatingCount(Math.round(ratingBar.getRating()))
-                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
-                                    .setQueueUserId(jtk.getQueueUserId());
+                                        .setCodeQR(jtk.getCodeQR())
+                                        .setToken(jtk.getToken())
+                                        .setHoursSaved(selectedRadio) // update according select radio
+                                        .setRatingCount(Math.round(ratingBar.getRating()))
+                                        .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
+                                        .setQueueUserId(jtk.getQueueUserId());
                                 new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
                             }
                         } else {
                             QueueReview rr = new QueueReview()
-                                .setCodeQR(jtk.getCodeQR())
-                                .setToken(jtk.getToken())
-                                .setHoursSaved(selectedRadio) // update according select radio
-                                .setRatingCount(Math.round(ratingBar.getRating()))
-                                .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+                                    .setCodeQR(jtk.getCodeQR())
+                                    .setToken(jtk.getToken())
+                                    .setHoursSaved(selectedRadio) // update according select radio
+                                    .setRatingCount(Math.round(ratingBar.getRating()))
+                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
 
                             ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
                             reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);
@@ -248,6 +256,12 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             if (backPressToast != null) {
                 backPressToast.cancel();
             }
+            if (jtk != null)
+                BuildersKt.launch(GlobalScope.INSTANCE, Dispatchers.getMain(), CoroutineStart.DEFAULT, (Function2<CoroutineScope, Continuation<? super Unit>, Object>) (coroutineScope, continuation) -> {
+                    NoQueueAppDB.Companion.dbInstance(ReviewActivity.this).tokenAndQueueDao().deleteTokenQueue(jtk.getCodeQR(), jtk.getToken(), continuation);
+                    NoQueueAppDB.Companion.dbInstance(ReviewActivity.this).reviewDao().deleteReviewData(jtk.getCodeQR(), jtk.getToken().toString(), continuation);
+                    return Unit.INSTANCE;
+                });
             returnResultBack();
             finish();
         }
@@ -262,9 +276,11 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             Toast.makeText(this, getString(R.string.review_thanks), Toast.LENGTH_LONG).show();
             returnResultBack();
         }
-        //Delete the value in ReviewDB
-        ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
-        TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
+        BuildersKt.launch(GlobalScope.INSTANCE, Dispatchers.getMain(), CoroutineStart.DEFAULT, (Function2<CoroutineScope, Continuation<? super Unit>, Object>) (coroutineScope, continuation) -> {
+            NoQueueAppDB.Companion.dbInstance(ReviewActivity.this).tokenAndQueueDao().deleteTokenQueue(jtk.getCodeQR(), jtk.getToken(), continuation);
+            NoQueueAppDB.Companion.dbInstance(ReviewActivity.this).reviewDao().deleteReviewData(jtk.getCodeQR(), jtk.getToken().toString(), continuation);
+            return Unit.INSTANCE;
+        });
         finish();
         dismissProgress();
     }
@@ -274,11 +290,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
         intent.putExtra(Constants.TOKEN, String.valueOf(jtk.getToken()));
-        // if (getParent() == null) {
         setResult(Activity.RESULT_OK, intent);
-//        } else {
-//            getParent().setResult(Activity.RESULT_OK, intent);
-//        }
     }
 
     private String getSeekbarLabel(int pos) {
@@ -299,8 +311,4 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }

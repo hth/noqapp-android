@@ -35,11 +35,13 @@ import com.noqapp.android.client.model.database.utils.NotificationDB
 import com.noqapp.android.client.model.database.utils.ReviewDB
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
+import com.noqapp.android.client.presenter.beans.ReviewData
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
 import com.noqapp.android.client.views.customviews.BadgeDrawable
+import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentDirections
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
@@ -121,6 +123,75 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private fun observeValues() {
         homeViewModel.searchStoreQueryLiveData.observe(this, Observer {
             activityHomeBinding.tvLocation.text = it.cityName
+        })
+
+        homeViewModel.foregroundNotificationLiveData.observe(this, { foregroundNotification ->
+            foregroundNotification?.let {
+                handleBuzzer(foregroundNotification)
+            }
+        })
+
+        homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND).observe(this, Observer {
+            it?.let {
+                if (it.isReviewShown.toInt() != 1){
+                    callReviewActivity(it.codeQR, it.token)
+                }
+            }
+        })
+
+        homeViewModel.notificationListLiveData.observe(this, Observer {
+            it?.let { displayNotificationList ->
+                if (displayNotificationList.isNotEmpty()) {
+                    val displayNotification = displayNotificationList.last()
+                    if (!displayNotification.popUpShown) {
+                        ShowAlertInformation.showInfoDisplayDialog(this, displayNotification.title, displayNotification.body)
+                        displayNotification.popUpShown = true
+                        homeViewModel.updateDisplayNotification(displayNotification)
+                    }
+                }
+            }
+        })
+
+    }
+
+    private fun handleBuzzer(foregroundNotification: ForegroundNotificationModel) {
+
+        homeViewModel.currentQueueQrCodeLiveData.value = foregroundNotification.qrCode
+
+        homeViewModel.currentQueueObjectListLiveData.observe(this, { jsonTokenAndQueueArrayList ->
+
+            for (i in jsonTokenAndQueueArrayList.indices) {
+                val jtk = jsonTokenAndQueueArrayList[i]
+
+                if (AppInitialize.activityCommunicator != null) {
+                    val isUpdated = AppInitialize.activityCommunicator.updateUI(foregroundNotification.qrCode, jtk, foregroundNotification.goTo)
+                }
+
+                if (foregroundNotification.currentServing.toInt() == jtk.token) {
+                    val blinkerIntent = Intent(this, BlinkerActivity::class.java)
+                    blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(blinkerIntent)
+                    if (AppInitialize.isMsgAnnouncementEnable()) {
+                        foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
+                            makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
+                        }
+                    }
+
+                    val reviewData = ReviewData()
+                    reviewData.isReviewShown = "-1"
+                    reviewData.codeQR = foregroundNotification.qrCode
+                    reviewData.token = foregroundNotification.currentServing
+                    reviewData.queueUserId = jtk.queueUserId
+                    reviewData.isBuzzerShow = "1"
+                    reviewData.isSkipped = "-1"
+                    reviewData.gotoCounter = foregroundNotification.goTo
+                    reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
+
+                    homeViewModel.insertReviewData(reviewData)
+
+                    homeViewModel.deleteForegroundNotification()
+                }
+            }
         })
     }
 
@@ -466,6 +537,13 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
             }
         }
         return false
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.requestCodeJoinQActivity && resultCode == Activity.RESULT_OK) {
+
+        }
     }
 
     override fun makeAnnouncement(jsonTextToSpeeches: List<JsonTextToSpeech?>, msgId: String) {
