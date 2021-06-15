@@ -41,11 +41,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         emitSource(tokenAndQueueList)
     }
 
-    val currentQueueObjectListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
-        val tokenAndQueueList = Transformations.switchMap(currentQueueQrCodeLiveData) {
-            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueObjectList(it)
-        }
-        emitSource(tokenAndQueueList)
+    suspend fun getCurrentQueueObjectList(codeQR: String?): List<JsonTokenAndQueue>? {
+        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueObjectList(codeQR)
     }
 
     val historyTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
@@ -101,11 +98,11 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         return NoQueueAppDB.dbInstance(applicationContext).reviewDao().getReviewData(reviewType)
     }
 
-    fun getCurrentQueueObject(codeQR: String?, token: String?): LiveData<JsonTokenAndQueue> {
+    suspend fun getCurrentQueueObject(codeQR: String?, token: String?): JsonTokenAndQueue? {
         return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueObject(codeQR, token?.toInt())
     }
 
-    fun getHistoryQueueObject(codeQR: String?, token: String?): LiveData<JsonTokenAndQueue> {
+    suspend fun getHistoryQueueObject(codeQR: String?, token: String?): JsonTokenAndQueue? {
         return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueObject(codeQR, token?.toInt())
     }
 
@@ -213,10 +210,18 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         }
     }
 
-    fun deleteReview(codeQr: String, token: String) {
+    fun deleteReview(codeQr: String?, token: String?) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 NoQueueAppDB.dbInstance(applicationContext).reviewDao().deleteReviewData(codeQr, token)
+            }
+        }
+    }
+
+    fun deleteToken(codeQr: String?, token: Int?) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteTokenQueue(codeQr, token)
             }
         }
     }

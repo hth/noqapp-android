@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.fragments
+ package com.noqapp.android.client.views.version_2.fragments
 
 import android.content.Context
 import android.content.Intent
