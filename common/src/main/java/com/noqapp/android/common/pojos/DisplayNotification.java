@@ -40,7 +40,7 @@ public class DisplayNotification {
     @ColumnInfo(name = "created_date")
     private String createdDate;
     @ColumnInfo(name = "is_pop_up_shown")
-    private Boolean isPopUpShown;
+    private Boolean isPopUpShown = false;
 
     public DisplayNotification() {
 

@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -35,7 +36,6 @@ import com.noqapp.android.client.model.database.utils.NotificationDB
 import com.noqapp.android.client.model.database.utils.ReviewDB
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
-import com.noqapp.android.client.presenter.beans.ReviewData
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.*
@@ -55,6 +55,9 @@ import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPreferences.OnSharedPreferenceChangeListener, HomeFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
     private val TAG = HomeActivity::class.java.simpleName
@@ -85,6 +88,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private var textToSpeechHelper: TextToSpeechHelper? = null
+    private var jsonTokenAndQueue: JsonTokenAndQueue? = null
     private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
     private val homeViewModel: HomeViewModel by lazy {
@@ -133,7 +137,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
         homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND).observe(this, Observer {
             it?.let {
-                if (it.isReviewShown.toInt() != 1){
+                if (it.isSkipped == "1") {
+                    CustomToast().showToast(this, "You were skipped")
+                    callSkipScreen(it.codeQR)
+                } else if (it.isReviewShown != "1" && it.isSkipped != "1") {
                     callReviewActivity(it.codeQR, it.token)
                 }
             }
@@ -154,45 +161,57 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
     }
 
+    private fun callSkipScreen(codeQR: String?) {
+        val skipIntent = Intent(this, BeforeJoinActivity::class.java)
+        skipIntent.putExtra(IBConstant.KEY_CODE_QR, codeQR)
+        skipIntent.putExtra(IBConstant.KEY_FROM_LIST, false)
+        skipIntent.putExtra(IBConstant.KEY_IS_REJOIN, true)
+        skipIntent.putExtra(IBConstant.KEY_IS_CATEGORY, false)
+        startActivity(skipIntent)
+    }
+
     private fun handleBuzzer(foregroundNotification: ForegroundNotificationModel) {
 
-        homeViewModel.currentQueueQrCodeLiveData.value = foregroundNotification.qrCode
+        homeViewModel.viewModelScope.launch {
+            withContext(Dispatchers.Main) {
+                val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(foregroundNotification.qrCode)
+                jsonTokenAndQueueArrayList?.let {
+                    for (i in jsonTokenAndQueueArrayList.indices) {
+                        val jtk = jsonTokenAndQueueArrayList[i]
 
-        homeViewModel.currentQueueObjectListLiveData.observe(this, { jsonTokenAndQueueArrayList ->
+                        if (AppInitialize.activityCommunicator != null) {
+                            val isUpdated = AppInitialize.activityCommunicator.updateUI(foregroundNotification.qrCode, jtk, foregroundNotification.goTo)
+                        }
 
-            for (i in jsonTokenAndQueueArrayList.indices) {
-                val jtk = jsonTokenAndQueueArrayList[i]
+                        if (foregroundNotification.currentServing.toInt() == jtk.token) {
+                            val blinkerIntent = Intent(this@HomeActivity, BlinkerActivity::class.java)
+                            blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(blinkerIntent)
+                            if (AppInitialize.isMsgAnnouncementEnable()) {
+                                foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
+                                    makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
+                                }
+                            }
 
-                if (AppInitialize.activityCommunicator != null) {
-                    val isUpdated = AppInitialize.activityCommunicator.updateUI(foregroundNotification.qrCode, jtk, foregroundNotification.goTo)
-                }
+//                    val reviewData = ReviewData()
+//                    reviewData.isReviewShown = "-1"
+//                    reviewData.codeQR = foregroundNotification.qrCode
+//                    reviewData.token = foregroundNotification.currentServing
+//                    reviewData.queueUserId = jtk.queueUserId
+//                    reviewData.isBuzzerShow = "1"
+//                    reviewData.isSkipped = "-1"
+//                    reviewData.gotoCounter = foregroundNotification.goTo
+//                    reviewData.type = Constants.NotificationTypeConstant.BACKGROUND
 
-                if (foregroundNotification.currentServing.toInt() == jtk.token) {
-                    val blinkerIntent = Intent(this, BlinkerActivity::class.java)
-                    blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(blinkerIntent)
-                    if (AppInitialize.isMsgAnnouncementEnable()) {
-                        foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
-                            makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
+                            //                   homeViewModel.insertReviewData(reviewData)
+
+                            homeViewModel.deleteForegroundNotification()
                         }
                     }
 
-                    val reviewData = ReviewData()
-                    reviewData.isReviewShown = "-1"
-                    reviewData.codeQR = foregroundNotification.qrCode
-                    reviewData.token = foregroundNotification.currentServing
-                    reviewData.queueUserId = jtk.queueUserId
-                    reviewData.isBuzzerShow = "1"
-                    reviewData.isSkipped = "-1"
-                    reviewData.gotoCounter = foregroundNotification.goTo
-                    reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
-
-                    homeViewModel.insertReviewData(reviewData)
-
-                    homeViewModel.deleteForegroundNotification()
                 }
             }
-        })
+        }
     }
 
     private fun setListeners() {
@@ -542,7 +561,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.requestCodeJoinQActivity && resultCode == Activity.RESULT_OK) {
-
+            val codeQr = data?.getStringExtra(Constants.QRCODE)
+            val token = data?.getStringExtra(Constants.TOKEN)
+            homeViewModel.deleteReview(codeQr, token)
+            homeViewModel.deleteToken(codeQr, token?.toInt())
         }
     }
 
@@ -561,15 +583,15 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
     override fun callReviewActivity(codeQr: String, token: String) {
         try {
-            homeViewModel.getCurrentQueueObject(codeQr, token).observe(this, Observer {
-                it?.let {
+            homeViewModel.viewModelScope.launch {
+                val jsonTokenAndQueueCurrent = homeViewModel.getCurrentQueueObject(codeQr, token)
+                val jsonTokenAndQueueHistory = homeViewModel.getHistoryQueueObject(codeQr, token)
+                jsonTokenAndQueueCurrent?.let {
                     callReviewActivity(it, codeQr, token)
                 } ?: run {
-                    homeViewModel.getHistoryQueueObject(codeQr, token).observe(this@HomeActivity, Observer {
-                        callReviewActivity(it, codeQr, token)
-                    })
+                    callReviewActivity(jsonTokenAndQueueHistory, codeQr, token)
                 }
-            })
+            }
         } catch (e: java.lang.Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
         }

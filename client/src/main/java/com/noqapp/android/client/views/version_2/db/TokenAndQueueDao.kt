@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.version_2.db
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
@@ -14,21 +15,21 @@ interface TokenAndQueueDao {
     fun getCurrentQueueList(): LiveData<List<JsonTokenAndQueue>>
 
     @Query("SELECT * FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode AND token=:token")
-    fun getCurrentQueueObject(qrCode: String?, token: Int?): LiveData<JsonTokenAndQueue>
+    suspend fun getCurrentQueueObject(qrCode: String?, token: Int?): JsonTokenAndQueue?
 
     @Query("SELECT * FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode")
     fun findByQRCode(qrCode: String): LiveData<JsonTokenAndQueue>
 
     @Query("SELECT * FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode")
-    fun getCurrentQueueObjectList(qrCode: String?): LiveData<List<JsonTokenAndQueue>>
+    suspend fun getCurrentQueueObjectList(qrCode: String?): List<JsonTokenAndQueue>?
 
     @Query("SELECT * FROM token_queue WHERE history_queue=1 AND qr_code=:qrCode AND token=:token")
-    fun getHistoryQueueObject(qrCode: String?, token: Int?): LiveData<JsonTokenAndQueue>
+    suspend fun getHistoryQueueObject(qrCode: String?, token: Int?): JsonTokenAndQueue?
 
     @Query("SELECT * , MAX(create_date) FROM token_queue WHERE history_queue=1 GROUP BY qr_code")
     fun getHistoryQueueList(): LiveData<List<JsonTokenAndQueue>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveCurrentQueue(list: List<JsonTokenAndQueue>)
 
     @Insert
@@ -53,6 +54,6 @@ interface TokenAndQueueDao {
     suspend fun deleteHistoryQueue()
 
     @Query("DELETE FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode AND token=:token")
-    suspend fun deleteTokenQueue(qrCode: String, token: Int)
+    suspend fun deleteTokenQueue(qrCode: String?, token: Int?)
 
 }

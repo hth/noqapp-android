@@ -256,12 +256,6 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             if (backPressToast != null) {
                 backPressToast.cancel();
             }
-            if (jtk != null)
-                BuildersKt.launch(GlobalScope.INSTANCE, Dispatchers.getMain(), CoroutineStart.DEFAULT, (Function2<CoroutineScope, Continuation<? super Unit>, Object>) (coroutineScope, continuation) -> {
-                    NoQueueAppDB.Companion.dbInstance(ReviewActivity.this).tokenAndQueueDao().deleteTokenQueue(jtk.getCodeQR(), jtk.getToken(), continuation);
-                    NoQueueAppDB.Companion.dbInstance(ReviewActivity.this).reviewDao().deleteReviewData(jtk.getCodeQR(), jtk.getToken().toString(), continuation);
-                    return Unit.INSTANCE;
-                });
             returnResultBack();
             finish();
         }
@@ -276,11 +270,6 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             Toast.makeText(this, getString(R.string.review_thanks), Toast.LENGTH_LONG).show();
             returnResultBack();
         }
-        BuildersKt.launch(GlobalScope.INSTANCE, Dispatchers.getMain(), CoroutineStart.DEFAULT, (Function2<CoroutineScope, Continuation<? super Unit>, Object>) (coroutineScope, continuation) -> {
-            NoQueueAppDB.Companion.dbInstance(ReviewActivity.this).tokenAndQueueDao().deleteTokenQueue(jtk.getCodeQR(), jtk.getToken(), continuation);
-            NoQueueAppDB.Companion.dbInstance(ReviewActivity.this).reviewDao().deleteReviewData(jtk.getCodeQR(), jtk.getToken().toString(), continuation);
-            return Unit.INSTANCE;
-        });
         finish();
         dismissProgress();
     }

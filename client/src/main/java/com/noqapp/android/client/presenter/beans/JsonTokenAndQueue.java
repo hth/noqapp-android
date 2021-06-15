@@ -187,7 +187,7 @@ public class JsonTokenAndQueue implements Serializable {
     private String transactionId = "";
 
     @ColumnInfo(name = "history_queue")
-    private Integer historyQueue;
+    private Integer historyQueue = -1;
 
     @ColumnInfo(name = "has_updated")
     private Integer hasUpdated = -1;
