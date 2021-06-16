@@ -15,9 +15,14 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 
-class TokenAndQueueAdapter(private val context: Context, private val tokenAndQueueList: MutableList<JsonTokenAndQueue>, val onItemClick: (JsonTokenAndQueue) -> Unit) : RecyclerView.Adapter<TokenAndQueueAdapter.TokenAndQueueViewHolder>() {
+class TokenAndQueueAdapter(
+    private val context: Context,
+    private val tokenAndQueueList: MutableList<JsonTokenAndQueue>,
+    val onItemClick: (JsonTokenAndQueue) -> Unit
+) : RecyclerView.Adapter<TokenAndQueueAdapter.TokenAndQueueViewHolder>() {
 
-    inner class TokenAndQueueViewHolder(private val layoutTokenBinding: LayoutTokenBinding) : RecyclerView.ViewHolder(layoutTokenBinding.root) {
+    inner class TokenAndQueueViewHolder(private val layoutTokenBinding: LayoutTokenBinding) :
+        RecyclerView.ViewHolder(layoutTokenBinding.root) {
         fun bind(tokenAndQueue: JsonTokenAndQueue) {
 
             layoutTokenBinding.root.setOnClickListener {
@@ -31,29 +36,44 @@ class TokenAndQueueAdapter(private val context: Context, private val tokenAndQue
                 layoutTokenBinding.tvToken.text = context.getString(R.string.token)
                 when {
                     tokenAndQueue.token <= tokenAndQueue.servingNumber -> {
-                        layoutTokenBinding.tvQueueStatus.text = context.getString(R.string.your_turn)
+                        layoutTokenBinding.tvQueueStatus.text =
+                            context.getString(R.string.your_turn)
                     }
                     tokenAndQueue.servingNumber == 0 -> {
-                        layoutTokenBinding.tvQueueStatus.text = context.getString(R.string.queue_not_started)
+                        layoutTokenBinding.tvQueueStatus.text =
+                            context.getString(R.string.queue_not_started)
                         when (tokenAndQueue.businessType) {
                             BusinessTypeEnum.CD, BusinessTypeEnum.CDQ -> {
-                                layoutTokenBinding.tvTimeSlot.text = String.format(context.getString(R.string.time_slot_formatted), tokenAndQueue.timeSlotMessage)
+                                layoutTokenBinding.tvTimeSlot.text = String.format(
+                                    context.getString(R.string.time_slot_formatted),
+                                    tokenAndQueue.timeSlotMessage
+                                )
                             }
                             else -> {
                                 val waitTime = displayWaitTimes(tokenAndQueue)
-                                layoutTokenBinding.tvTimeSlot.text = String.format(context.getString(R.string.time_slot_formatted), waitTime)
+                                layoutTokenBinding.tvTimeSlot.text = String.format(
+                                    context.getString(R.string.time_slot_formatted),
+                                    waitTime
+                                )
                             }
                         }
                     }
                     else -> {
-                        layoutTokenBinding.tvQueueStatus.text = context.getString(R.string.position_in_queue_label)
+                        layoutTokenBinding.tvQueueStatus.text =
+                            context.getString(R.string.position_in_queue_label) + " " + tokenAndQueue.afterHowLongForDisplay()
                         when (tokenAndQueue.businessType) {
                             BusinessTypeEnum.CD, BusinessTypeEnum.CDQ -> {
-                                layoutTokenBinding.tvTimeSlot.text = String.format(context.getString(R.string.time_slot_formatted), tokenAndQueue.timeSlotMessage)
+                                layoutTokenBinding.tvTimeSlot.text = String.format(
+                                    context.getString(R.string.time_slot_formatted),
+                                    tokenAndQueue.timeSlotMessage
+                                )
                             }
                             else -> {
                                 val waitTime = displayWaitTimes(tokenAndQueue)
-                                layoutTokenBinding.tvTimeSlot.text = String.format(context.getString(R.string.time_slot_formatted), waitTime)
+                                layoutTokenBinding.tvTimeSlot.text = String.format(
+                                    context.getString(R.string.time_slot_formatted),
+                                    waitTime
+                                )
                             }
                         }
                     }
@@ -63,15 +83,19 @@ class TokenAndQueueAdapter(private val context: Context, private val tokenAndQue
                 when {
                     tokenAndQueue.token - tokenAndQueue.servingNumber <= 0 -> {
                         when (tokenAndQueue.purchaseOrderState) {
-                            PurchaseOrderStateEnum.OP -> layoutTokenBinding.tvQueueStatus.text = context.getString(R.string.txt_order_being_prepared)
-                            else -> layoutTokenBinding.tvQueueStatus.text = tokenAndQueue.purchaseOrderState.friendlyDescription
+                            PurchaseOrderStateEnum.OP -> layoutTokenBinding.tvQueueStatus.text =
+                                context.getString(R.string.txt_order_being_prepared)
+                            else -> layoutTokenBinding.tvQueueStatus.text =
+                                tokenAndQueue.purchaseOrderState.friendlyDescription
                         }
                     }
                     tokenAndQueue.servingNumber == 0 -> {
-                        layoutTokenBinding.tvQueueStatus.text = context.getString(R.string.queue_not_started)
+                        layoutTokenBinding.tvQueueStatus.text =
+                            context.getString(R.string.queue_not_started)
                     }
                     else -> {
-                        layoutTokenBinding.tvQueueStatus.text = context.getString(R.string.serving_now)
+                        layoutTokenBinding.tvQueueStatus.text =
+                            context.getString(R.string.serving_now) + " " + tokenAndQueue.afterHowLongForDisplay()
                     }
                 }
             }
@@ -82,24 +106,36 @@ class TokenAndQueueAdapter(private val context: Context, private val tokenAndQue
             try {
                 var avgServiceTime = jsonTokenAndQueue.averageServiceTime
                 if (avgServiceTime == 0L) {
-                    val prefs: SharedPreferences = context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE)
-                    avgServiceTime = prefs.getLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, jsonTokenAndQueue.codeQR), 0)
+                    val prefs: SharedPreferences =
+                        context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE)
+                    avgServiceTime = prefs.getLong(
+                        String.format(
+                            Constants.ESTIMATED_WAIT_TIME_PREF_KEY,
+                            jsonTokenAndQueue.codeQR
+                        ), 0
+                    )
                 }
                 return TokenStatusUtils.calculateEstimatedWaitTime(
-                        avgServiceTime,
-                        jsonTokenAndQueue.afterHowLong(),
-                        jsonTokenAndQueue.queueStatus,
-                        jsonTokenAndQueue.startHour,
-                        context)
+                    avgServiceTime,
+                    jsonTokenAndQueue.afterHowLong(),
+                    jsonTokenAndQueue.queueStatus,
+                    jsonTokenAndQueue.startHour,
+                    context
+                )
             } catch (e: Exception) {
-                Log.e(TokenAndQueueAdapter::class.java.simpleName, "Error setting wait time reason: " + e.localizedMessage, e)
+                Log.e(
+                    TokenAndQueueAdapter::class.java.simpleName,
+                    "Error setting wait time reason: " + e.localizedMessage,
+                    e
+                )
             }
             return null
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TokenAndQueueViewHolder {
-        val viewBinding = LayoutTokenBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val viewBinding =
+            LayoutTokenBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TokenAndQueueViewHolder(viewBinding)
     }
 
