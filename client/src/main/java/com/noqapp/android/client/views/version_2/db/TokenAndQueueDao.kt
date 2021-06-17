@@ -32,7 +32,7 @@ interface TokenAndQueueDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveCurrentQueue(list: List<JsonTokenAndQueue>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveJoinQueueObject(list: JsonTokenAndQueue)
 
     @Query("UPDATE token_queue SET serving_number=:servingNumber, display_serving_number=:displayServingNumber WHERE qr_code=:qrCode AND token=:token")

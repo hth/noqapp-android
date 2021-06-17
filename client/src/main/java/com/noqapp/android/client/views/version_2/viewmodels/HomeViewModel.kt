@@ -31,7 +31,6 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
     val nearMeResponse = MutableLiveData<BizStoreElasticList?>()
     val favoritesListResponseLiveData = MutableLiveData<FavoriteElastic?>()
-    val currentQueueQrCodeLiveData = MutableLiveData<String?>()
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall

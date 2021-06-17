@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -37,8 +39,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
@@ -54,6 +54,7 @@ import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.version_2.HomeActivity;
+import com.noqapp.android.client.views.version_2.viewmodels.AfterJoinViewModel;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -78,6 +79,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import kotlinx.coroutines.BuildersKt;
+import kotlinx.coroutines.GlobalScope;
+
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
@@ -90,9 +94,9 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
  * Created by chandra on 5/7/17.
  */
 public class AfterJoinActivity
-    extends BaseActivity
-    implements ResponsePresenter, ActivityCommunicator, QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter,
-    CFClientInterface, CashFreeNotifyQPresenter {
+        extends BaseActivity
+        implements ResponsePresenter, ActivityCommunicator, QueueJsonPurchaseOrderPresenter, CouponApplyRemovePresenter,
+        CFClientInterface, CashFreeNotifyQPresenter {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_business_name;
@@ -133,12 +137,16 @@ public class AfterJoinActivity
     private CFPaymentService cfPaymentService;
     private ImageView iv_codeqr;
     private TextView tv_token_day, tv_token_time;
+    private AfterJoinViewModel afterJoinViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
+
+        afterJoinViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(AfterJoinViewModel.class);
+
         new InitPaymentGateway().execute();
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
@@ -202,15 +210,15 @@ public class AfterJoinActivity
                         clientCouponApiCalls.setCouponApplyRemovePresenter(AfterJoinActivity.this);
 
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
-                            .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                            // .setCouponId(jsonCoupon.getCouponId())
-                            .setTransactionId(jsonTokenAndQueue.getTransactionId());
+                                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                                // .setCouponId(jsonCoupon.getCouponId())
+                                .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
                         clientCouponApiCalls.remove(
-                            UserUtils.getDeviceId(),
-                            UserUtils.getEmail(),
-                            UserUtils.getAuth(),
-                            couponOnOrder);
+                                UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(),
+                                couponOnOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(AfterJoinActivity.this);
                     }
@@ -292,8 +300,8 @@ public class AfterJoinActivity
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl)
-                    .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
-                    .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                        .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
+                        .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
@@ -332,7 +340,15 @@ public class AfterJoinActivity
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
             tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString()));
             tv_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this, tv_address.getText().toString()));
-            gotoPerson = (null != ReviewDB.getValue(codeQR, tokenValue)) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
+
+            afterJoinViewModel.getReviewData(codeQR, tokenValue).observe(this, reviewData -> {
+                if (reviewData != null) {
+                    gotoPerson = reviewData.getGotoCounter();
+                } else {
+                    gotoPerson = "";
+                }
+            });
+
             //tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
             tv_token.setText(jsonTokenAndQueue.getDisplayToken());
             tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
@@ -355,11 +371,11 @@ public class AfterJoinActivity
                     setProgressMessage("Fetching Queue data...");
                     showProgress();
                     queueApiAuthenticCall.purchaseOrder(
-                        UserUtils.getDeviceId(),
-                        UserUtils.getEmail(),
-                        UserUtils.getAuth(),
-                        String.valueOf(jsonTokenAndQueue.getToken()),
-                        codeQR);
+                            UserUtils.getDeviceId(),
+                            UserUtils.getEmail(),
+                            UserUtils.getAuth(),
+                            String.valueOf(jsonTokenAndQueue.getToken()),
+                            codeQR);
                 }
             } else {
                 queueJsonPurchaseOrderResponse(jsonTokenAndQueue.getJsonPurchaseOrder());
@@ -392,7 +408,7 @@ public class AfterJoinActivity
             new CustomToast().showToast(this, getString(R.string.fail_to_cancel));
         }
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
-        TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
+        afterJoinViewModel.deleteTokenAndQueue(codeQR, tokenValue);
         // Clear entry from App preferences
         SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
         prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply();
@@ -459,15 +475,24 @@ public class AfterJoinActivity
         super.onResume();
         /* Added to update the screen if app is in background & notification received */
         if (!isResumeFirst) {
-            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, tokenValue);
-            if (null != jtk) {
-                if (TextUtils.isEmpty(gotoPerson)) {
-                    gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue)
-                        ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter()
-                        : "";
+            afterJoinViewModel.getCurrentQueueObject(codeQR, tokenValue);
+            afterJoinViewModel.getCurrentQueueObjectLiveData().observe(this, new Observer<JsonTokenAndQueue>() {
+                @Override
+                public void onChanged(JsonTokenAndQueue jsonTokenAndQueue) {
+                    if (jsonTokenAndQueue != null) {
+                        if (TextUtils.isEmpty(gotoPerson)) {
+                            afterJoinViewModel.getReviewData(codeQR, tokenValue).observe(AfterJoinActivity.this, reviewData -> {
+                                if (reviewData != null) {
+                                    gotoPerson = reviewData.getGotoCounter();
+                                } else {
+                                    gotoPerson = "";
+                                }
+                            });
+                        }
+                        setObject(jsonTokenAndQueue, gotoPerson);
+                    }
                 }
-                setObject(jtk, gotoPerson);
-            }
+            });
         }
         if (isResumeFirst) {
             isResumeFirst = false;
@@ -532,11 +557,11 @@ public class AfterJoinActivity
                     break;
                 default:
                     String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
-                        avgServiceTime,
-                        jsonTokenAndQueue.afterHowLong(),
-                        jsonTokenAndQueue.getQueueStatus(),
-                        jsonTokenAndQueue.getStartHour(),
-                        this);
+                            avgServiceTime,
+                            jsonTokenAndQueue.afterHowLong(),
+                            jsonTokenAndQueue.getQueueStatus(),
+                            jsonTokenAndQueue.getStartHour(),
+                            this);
                     if (!TextUtils.isEmpty(waitTime)) {
                         tv_estimated_time.setText(waitTime);
                         tv_left.setText(R.string.wait_time);
@@ -653,12 +678,12 @@ public class AfterJoinActivity
                     TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
                     TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
                     tv_title.setText(jsonPurchaseOrderProduct.getProductName()
-                        + " "
-                        + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())
-                        + " " + currencySymbol
-                        + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice())
-                        + " x "
-                        + jsonPurchaseOrderProduct.getProductQuantity());
+                            + " "
+                            + AppUtils.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())
+                            + " " + currencySymbol
+                            + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice())
+                            + " x "
+                            + jsonPurchaseOrderProduct.getProductQuantity());
                     tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
                     ll_order_details.addView(inflatedLayout);
                 }
@@ -746,14 +771,14 @@ public class AfterJoinActivity
                     ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
                     clientCouponApiCalls.setCouponApplyRemovePresenter(this);
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
-                        .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                        .setCouponId(jsonCoupon.getCouponId())
-                        .setTransactionId(jsonTokenAndQueue.getTransactionId());
+                            .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                            .setCouponId(jsonCoupon.getCouponId())
+                            .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
                     clientCouponApiCalls.apply(UserUtils.getDeviceId(),
-                        UserUtils.getEmail(),
-                        UserUtils.getAuth(),
-                        couponOnOrder);
+                            UserUtils.getEmail(),
+                            UserUtils.getAuth(),
+                            couponOnOrder);
                 } else {
                     ShowAlertInformation.showNetworkDialog(AfterJoinActivity.this);
                 }
@@ -775,9 +800,9 @@ public class AfterJoinActivity
             showProgress();
             setProgressCancel(false);
             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                .setCodeQR(codeQR)
-                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
+                    .setCodeQR(codeQR)
+                    .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                    .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
             queueApiAuthenticCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
         }
     }
@@ -843,7 +868,7 @@ public class AfterJoinActivity
         jsonTokenAndQueue.setDisplayToken(jsonToken.getDisplayToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
         //save data to DB
-        TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
+        afterJoinViewModel.insertTokenAndQueue(jsonTokenAndQueue);
         generateQRCode();
         dismissProgress();
     }
