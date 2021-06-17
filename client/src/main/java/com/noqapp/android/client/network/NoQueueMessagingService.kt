@@ -313,7 +313,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
                                 }
                             }
-                            sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                            if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
+                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
                         } else if (jsonData is JsonClientData) {
                             Log.e("IN JsonClientData", jsonData.toString())
                             val token = jsonData.token.toString()
@@ -355,8 +356,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     }
                                 }
 
-                                // if (AppUtils.isAppIsInBackground(applicationContext))
-                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, true, token, imageUrl) //pass codeQR to open review screen
+                                if (AppUtils.isAppIsInBackground(applicationContext))
+                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, true, token, imageUrl) //pass codeQR to open review screen
                             } else if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.N.getName(), ignoreCase = true)) {
 //                                GlobalScope.launch(Dispatchers.Main) {
 //                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().getReviewData(codeQR, token).observeForever {
@@ -390,7 +391,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     }
                                 }
 
-                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, false, token, imageUrl) //pass codeQR to open skip screen
+                                if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
+                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, false, token, imageUrl) //pass codeQR to open skip screen
                             }
                         } else if (jsonData is JsonClientOrderData) {
                             val token = jsonData.orderNumber.toString()
