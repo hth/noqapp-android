@@ -264,7 +264,7 @@
     <string name="queue_details">Queue Details</string>
     <string name="will_be_served">you will be served in %1$s</string>
     <string name="ack">Acknowledge</string>
-    <string name="your_turn">It\'s your turn !!!</string>
+    <string name="your_turn">It\'s your turn!!!</string>
     <string name="pre_approve">Pre-Approve</string>
     <string name="biz_announcement">Attention: COVID-19 Update</string>
     <string name="photo">Photos</string>

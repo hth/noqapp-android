@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:background="@android:color/black">
 
-
         <WebView
             android:id="@+id/myWebView"
             android:layout_width="match_parent"
@@ -23,16 +22,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
-            <TextView
+            <com.noqapp.android.client.views.customviews.EqualWidthHeightTextView
                 android:id="@+id/tv_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="80dp"
-                android:background="@android:color/transparent"
+                android:layout_width="142dp"
+                android:layout_height="118dp"
+                android:layout_x="64dp"
+                android:layout_y="233dp"
+                android:background="@drawable/white_circle_drawable"
                 android:gravity="center"
                 android:text="@string/your_turn"
-                android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textColor="@android:color/black"
+                android:textSize="25sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 

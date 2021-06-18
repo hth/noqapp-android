@@ -42,7 +42,7 @@ public class BlinkerActivity extends Activity {
             }
             finish();
         });
-        Animation animation = new AlphaAnimation(1, 0); // Change alpha
+        Animation animation = new AlphaAnimation(1, 0.7f); // Change alpha
         // from fully visible to invisible
         animation.setDuration(500); // duration - half a second
         animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
