@@ -87,11 +87,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
         super.onMessageReceived(remoteMessage)
 
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom())
-
-        // Check if message contains a data payload.
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().isNotEmpty()) {
@@ -246,16 +242,17 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     }
                     val payload = mappedData[Constants.FIREBASE_TYPE]
                     val codeQR = mappedData[Constants.CODE_QR]
-                    if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
-                        if (!(jsonData is JsonChangeServiceTimeData)) {
-                            jsonData?.let {
-                                updateNotification(jsonData, codeQR)
-                                return
-                            }
-                        }
-                    }
+//                    if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
+//                        if (!(jsonData is JsonChangeServiceTimeData)) {
+//                            jsonData?.let {
+//                                updateNotification(jsonData, codeQR)
+//                                return
+//                            }
+//                        }
+//                    }
 
                 }
+
                 // app is in background, show the notification in notification tray
                 //save data to database
                 val payload = mappedData[Constants.FIREBASE_TYPE]
@@ -263,6 +260,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 if (null == AppInitialize.dbHandler) {
                     AppInitialize.dbHandler = DatabaseHelper.getsInstance(applicationContext)
                 }
+
                 /*
                  * When u==S then it is re-view
                  * u==N then it is skip(Rejoin) Pending task
@@ -324,21 +322,6 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                  * Save codeQR of review & show the review screen on app
                                  * resume if there is any record in Review DB for queue review key
                                  */
-//                                GlobalScope.launch(Dispatchers.Main) {
-//                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().getReviewData(codeQR, token).observeForever {
-//                                        it?.let {
-//                                            it.isReviewShown = "1"
-//                                            it.type = Constants.NotificationTypeConstant.FOREGROUND
-//                                            GlobalScope.launch {
-//                                                withContext(Dispatchers.IO) {
-//                                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
-//                                                }
-//                                            }
-//                                        } ?: run {
-//
-//                                        }
-//                                    }
-//                                }
 
                                 val reviewData = ReviewData()
                                 reviewData.isReviewShown = "-1"
@@ -356,24 +339,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     }
                                 }
 
-                                if (AppUtils.isAppIsInBackground(applicationContext))
+                                if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
                                     sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, true, token, imageUrl) //pass codeQR to open review screen
                             } else if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.N.getName(), ignoreCase = true)) {
-//                                GlobalScope.launch(Dispatchers.Main) {
-//                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().getReviewData(codeQR, token).observeForever {
-//                                        it?.let {
-//                                            it.isReviewShown = "1"
-//                                            it.type = Constants.NotificationTypeConstant.FOREGROUND
-//                                            GlobalScope.launch {
-//                                                withContext(Dispatchers.IO) {
-//                                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
-//                                                }
-//                                            }
-//                                        } ?: run {
-//
-//                                        }
-//                                    }
-//                                }
 
                                 val reviewData = ReviewData()
                                 reviewData.isReviewShown = "-1"

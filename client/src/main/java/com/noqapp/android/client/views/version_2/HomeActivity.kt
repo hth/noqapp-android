@@ -48,6 +48,8 @@ import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
+import com.noqapp.android.common.model.types.MessageOriginEnum
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.MenuDrawer
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter
 import com.noqapp.android.common.utils.NetworkUtil
@@ -88,7 +90,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private var textToSpeechHelper: TextToSpeechHelper? = null
-    private var jsonTokenAndQueue: JsonTokenAndQueue? = null
     private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
     private val homeViewModel: HomeViewModel by lazy {
@@ -184,14 +185,29 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
                         }
 
                         if (foregroundNotification.currentServing.toInt() == jtk.token) {
-                            val blinkerIntent = Intent(this@HomeActivity, BlinkerActivity::class.java)
-                            blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(blinkerIntent)
-                            if (AppInitialize.isMsgAnnouncementEnable()) {
-                                foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
-                                    makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
+
+                            if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.Q){
+                                val blinkerIntent = Intent(this@HomeActivity, BlinkerActivity::class.java)
+                                blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(blinkerIntent)
+                                if (AppInitialize.isMsgAnnouncementEnable()) {
+                                    foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
+                                        makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
+                                    }
+                                }
+                            }else if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.O) {
+                                if (foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RD) {
+                                    val blinkerIntent = Intent(this@HomeActivity, BlinkerActivity::class.java)
+                                    blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(blinkerIntent)
+                                    if (AppInitialize.isMsgAnnouncementEnable()) {
+                                        foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
+                                            makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
+                                        }
+                                    }
                                 }
                             }
+
 
 //                    val reviewData = ReviewData()
 //                    reviewData.isReviewShown = "-1"

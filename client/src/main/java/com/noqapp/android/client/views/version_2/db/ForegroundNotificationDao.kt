@@ -16,5 +16,5 @@ interface ForegroundNotificationDao {
     fun getForegroundNotification(): LiveData<ForegroundNotificationModel>
 
     @Query("DELETE FROM foreground_notification")
-    fun deleteForegroundNotification()
+    suspend fun deleteForegroundNotification()
 }

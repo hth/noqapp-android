@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.google.common.cache.Cache;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Writer;
@@ -54,6 +55,7 @@ import com.noqapp.android.client.utils.TokenStatusUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.version_2.HomeActivity;
+import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel;
 import com.noqapp.android.client.views.version_2.viewmodels.AfterJoinViewModel;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -64,11 +66,14 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.utils.TextToSpeechHelper;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
@@ -79,9 +84,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import kotlinx.coroutines.BuildersKt;
-import kotlinx.coroutines.GlobalScope;
-
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
@@ -89,6 +91,7 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+import static com.google.common.cache.CacheBuilder.newBuilder;
 
 /**
  * Created by chandra on 5/7/17.
@@ -138,6 +141,9 @@ public class AfterJoinActivity
     private ImageView iv_codeqr;
     private TextView tv_token_day, tv_token_time;
     private AfterJoinViewModel afterJoinViewModel;
+    private TextToSpeechHelper textToSpeechHelper;
+    private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
+    private final String MSG_IDS = "messageIds";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +152,9 @@ public class AfterJoinActivity
         setContentView(R.layout.activity_after_join);
 
         afterJoinViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(AfterJoinViewModel.class);
+        textToSpeechHelper = new TextToSpeechHelper(this);
+
+        observeValues();
 
         new InitPaymentGateway().execute();
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
@@ -292,6 +301,8 @@ public class AfterJoinActivity
                 profileList = AppInitialize.getAllProfileList();
             }
 
+            afterJoinViewModel.insertTokenAndQueue(jsonTokenAndQueue);
+
             if (!TextUtils.isEmpty(queueUserId)) {
                 jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
                 tv_name.setText(TextUtils.isEmpty(jsonProfile.getName()) ? "" : jsonProfile.getName());
@@ -381,6 +392,19 @@ public class AfterJoinActivity
                 queueJsonPurchaseOrderResponse(jsonTokenAndQueue.getJsonPurchaseOrder());
             }
         }
+    }
+
+    private void observeValues() {
+
+        afterJoinViewModel.getForegroundNotificationLiveData().observe(this, new Observer<ForegroundNotificationModel>() {
+            @Override
+            public void onChanged(ForegroundNotificationModel foregroundNotificationModel) {
+                if (foregroundNotificationModel != null) {
+                    handleBuzzer(foregroundNotificationModel);
+                }
+            }
+        });
+
     }
 
     private class InitPaymentGateway extends AsyncTask<String, String, String> {
@@ -898,4 +922,57 @@ public class AfterJoinActivity
             e.printStackTrace();
         }
     }
+
+    private void handleBuzzer(ForegroundNotificationModel foregroundNotification) {
+        afterJoinViewModel.getCurrentQueueObjectList(foregroundNotification.getQrCode());
+
+        afterJoinViewModel.getCurrentQueueObjectListLiveData().observe(this, jsonTokenAndQueues -> {
+            if (jsonTokenAndQueues != null) {
+                for (JsonTokenAndQueue jtk : jsonTokenAndQueues) {
+                    if (Integer.parseInt(foregroundNotification.getCurrentServing()) == jtk.getToken()) {
+                        if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.Q) {
+                            Intent blinkerIntent =new Intent(AfterJoinActivity.this, BlinkerActivity.class);
+                            blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(blinkerIntent);
+                            if (AppInitialize.isMsgAnnouncementEnable()) {
+                                if(foregroundNotification.getJsonTextToSpeeches() != null) {
+                                    makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
+                                }
+                            }
+                        } else if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.O) {
+                            if (foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RD) {
+                                Intent blinkerIntent =new Intent(AfterJoinActivity.this, BlinkerActivity.class);
+                                blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(blinkerIntent);
+                                if (AppInitialize.isMsgAnnouncementEnable()) {
+                                    if(foregroundNotification.getJsonTextToSpeeches() != null) {
+                                        makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        afterJoinViewModel.deleteForegroundNotification();
+    }
+
+    private void makeAnnouncement(List<JsonTextToSpeech> jsonTextToSpeeches, String msgId) {
+        if (null == cacheMsgIds.getIfPresent(MSG_IDS)) {
+            cacheMsgIds.put(MSG_IDS, new ArrayList<>());
+        }
+
+        ArrayList<String> msgIds = cacheMsgIds.getIfPresent(MSG_IDS);
+        if (null == msgIds) {
+            msgIds = new ArrayList<>();
+        }
+        if (!TextUtils.isEmpty(msgId) && !msgIds.contains(msgId)) {
+            msgIds.add(msgId);
+            cacheMsgIds.put(MSG_IDS, msgIds);
+            textToSpeechHelper.makeAnnouncement(jsonTextToSpeeches);
+        }
+    }
+
 }
