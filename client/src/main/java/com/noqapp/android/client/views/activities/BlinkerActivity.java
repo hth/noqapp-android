@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
 
-
 public class BlinkerActivity extends Activity {
     private Thread thread;
     private Vibrator vibrator;
@@ -29,17 +27,19 @@ public class BlinkerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blinker);
         WebView view = findViewById(R.id.myWebView);
-        view.loadUrl("file:///android_asset/temp.gif");
+        view.loadUrl("file:///android_asset/multi_color.gif");
         view.getSettings().setLoadWithOverviewMode(true);
         view.getSettings().setUseWideViewPort(true);
         RelativeLayout rl_blinker = findViewById(R.id.rl_blinker);
         TextView tv_close = findViewById(R.id.tv_close);
         tv_close.setOnClickListener((View v) -> {
             stopVibrate = true;
-            if (null != vibrator)
+            if (null != vibrator) {
                 vibrator.cancel();
-            if (null != thread)
+            }
+            if (null != thread) {
                 thread.interrupt();
+            }
             finish();
         });
         Animation animation = new AlphaAnimation(1, 0); // Change alpha
@@ -64,8 +64,9 @@ public class BlinkerActivity extends Activity {
                         try {
                             Thread.sleep(4000); //the time, the complete pattern needs
                         } catch (InterruptedException e) {
-                            if (null != thread)
+                            if (null != thread) {
                                 thread.interrupt();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -82,10 +83,14 @@ public class BlinkerActivity extends Activity {
     @Override
     public void onBackPressed() {
         stopVibrate = true;
-        if (null != vibrator)
+        if (null != vibrator) {
             vibrator.cancel();
-        if (null != thread)
+        }
+
+        if (null != thread) {
             thread.interrupt();
+        }
+
         super.onBackPressed();
     }
 }
