@@ -33,9 +33,9 @@ class AfterJoinViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun getCurrentQueueObject(codeQR: String?, token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            currentQueueObjectLiveData.value =
+            currentQueueObjectLiveData.postValue(
                 NoQueueAppDB.dbInstance(getApplication()).tokenAndQueueDao()
-                    .getCurrentQueueObject(codeQR, token?.toInt())
+                    .getCurrentQueueObject(codeQR, token?.toInt()))
         }
     }
 
