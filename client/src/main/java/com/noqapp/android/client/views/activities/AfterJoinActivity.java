@@ -338,7 +338,7 @@ public class AfterJoinActivity
                     iv_left_bg.setVisibility(View.GONE);
                     iv_right_bg.setVisibility(View.GONE);
             }
-            if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
+            if (null != jsonTokenAndQueue.getDelayedInMinutes()) {
                 int hours = jsonTokenAndQueue.getDelayedInMinutes() / 60;
                 int minutes = jsonTokenAndQueue.getDelayedInMinutes() % 60;
                 String red = "<b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b>";

@@ -111,7 +111,7 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("de")
     @ColumnInfo(name = "delayed_minutes")
-    private Integer delayedInMinutes = 0;
+    private Integer delayedInMinutes;
 
     @JsonProperty("o")
     @ColumnInfo(name = "topic")
