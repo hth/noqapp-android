@@ -322,7 +322,6 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                  * Save codeQR of review & show the review screen on app
                                  * resume if there is any record in Review DB for queue review key
                                  */
-
                                 val reviewData = ReviewData()
                                 reviewData.isReviewShown = "-1"
                                 reviewData.codeQR = codeQR
@@ -370,33 +369,25 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 * Save codeQR of review & show the review screen on app
                                 * resume if there is any record in Review DB for queue review key
                                 */
-                                NoQueueAppDB.dbInstance(this).reviewDao().getReviewData(codeQR, token).observeForever {
-                                    it?.let {
-                                        it.isReviewShown = "1"
-                                        it.type = Constants.NotificationTypeConstant.FOREGROUND
-                                        GlobalScope.launch {
-                                            withContext(Dispatchers.IO) {
-                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().update(it)
-                                            }
-                                        }
-                                    } ?: run {
-                                        val reviewData = ReviewData()
-                                        reviewData.isReviewShown = "1"
-                                        reviewData.codeQR = codeQR
-                                        reviewData.token = token
-                                        reviewData.queueUserId = qid
-                                        reviewData.isBuzzerShow = "-1"
-                                        reviewData.isSkipped = "-1"
-                                        reviewData.gotoCounter = ""
-                                        reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
+                                val reviewData = ReviewData()
+                                reviewData.isReviewShown = "-1"
+                                reviewData.codeQR = codeQR
+                                reviewData.token = token
+                                reviewData.queueUserId = qid
+                                reviewData.isBuzzerShow = "1"
+                                reviewData.isSkipped = "-1"
+                                reviewData.gotoCounter = ""
+                                reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
 
-                                        GlobalScope.launch {
-                                            withContext(Dispatchers.IO) {
-                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
-                                            }
-                                        }
+                                GlobalScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
                                     }
                                 }
+
+                                if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
+                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, true, token, imageUrl) //pass codeQR to open review screen
+
 
                                 /*
                                 * this code is added to close the join & after join screen if the request is processed
