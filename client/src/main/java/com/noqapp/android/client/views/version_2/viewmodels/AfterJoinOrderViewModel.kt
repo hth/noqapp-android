@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AfterJoinViewModel(application: Application) : AndroidViewModel(application) {
+class AfterJoinOrderViewModel(application: Application) : AndroidViewModel(application) {
 
     val currentQueueObjectLiveData = MutableLiveData<JsonTokenAndQueue>()
     val currentQueueObjectListLiveData = MutableLiveData<List<JsonTokenAndQueue>?>()
@@ -70,6 +70,10 @@ class AfterJoinViewModel(application: Application) : AndroidViewModel(applicatio
                     .deleteForegroundNotification()
             }
         }
+    }
+
+    fun getReviewData(reviewType: String): LiveData<ReviewData> {
+        return NoQueueAppDB.dbInstance(getApplication()).reviewDao().getReviewData(reviewType)
     }
 
 }

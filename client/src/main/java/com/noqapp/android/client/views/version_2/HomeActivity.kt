@@ -196,7 +196,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
                                     }
                                 }
                             }else if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.O) {
-                                if (foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RD) {
+                                if (foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RD || foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RP) {
                                     val blinkerIntent = Intent(this@HomeActivity, BlinkerActivity::class.java)
                                     blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(blinkerIntent)

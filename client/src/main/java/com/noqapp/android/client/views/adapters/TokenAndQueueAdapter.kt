@@ -29,7 +29,7 @@ class TokenAndQueueAdapter(
                 onItemClick(tokenAndQueue)
             }
 
-            layoutTokenBinding.tvTokenNumber.text = tokenAndQueue.displayServingNumber
+            layoutTokenBinding.tvTokenNumber.text = tokenAndQueue.displayToken
             layoutTokenBinding.tvTokenName.text = tokenAndQueue.displayName
 
             if (tokenAndQueue.businessType.queueOrderType == QueueOrderTypeEnum.Q) {
@@ -60,7 +60,7 @@ class TokenAndQueueAdapter(
                     }
                     else -> {
                         layoutTokenBinding.tvQueueStatus.text =
-                            context.getString(R.string.position_in_queue_label) + " " + tokenAndQueue.afterHowLong()
+                            context.getString(R.string.position_in_queue_label) + " " + tokenAndQueue.afterHowLongForDisplay()
                         when (tokenAndQueue.businessType) {
                             BusinessTypeEnum.CD, BusinessTypeEnum.CDQ -> {
                                 layoutTokenBinding.tvTimeSlot.text = String.format(
@@ -95,7 +95,7 @@ class TokenAndQueueAdapter(
                     }
                     else -> {
                         layoutTokenBinding.tvQueueStatus.text =
-                            context.getString(R.string.serving_now) + " " + tokenAndQueue.afterHowLong()
+                            context.getString(R.string.serving_now) + " " + tokenAndQueue.afterHowLongForDisplay()
                     }
                 }
             }

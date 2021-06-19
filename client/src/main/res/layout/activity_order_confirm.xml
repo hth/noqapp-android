@@ -142,8 +142,6 @@
                 android:textSize="@dimen/text_size_fourteen"
                 android:textStyle="bold" />
 
-
-
             <com.xw.repo.BubbleSeekBar
                 android:id="@+id/bsb_order_status"
                 android:layout_width="match_parent"
