@@ -33,7 +33,6 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.ReviewData
 import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.AppInitialize
-import com.noqapp.android.client.views.activities.BlinkerActivity
 import com.noqapp.android.client.views.receivers.AlarmReceiver
 import com.noqapp.android.client.views.version_2.HomeActivity
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
@@ -66,7 +65,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
     // Clears notification tray messages
     fun clearNotifications(context: Context) {
-        val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
@@ -103,7 +103,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val title = mappedData["title"]
             val body = mappedData["body"]
             val imageUrl = mappedData["imageURL"]
-            val messageOrigin = MessageOriginEnum.valueOf(remoteMessage.data[Constants.MESSAGE_ORIGIN]!!)
+            val messageOrigin =
+                MessageOriginEnum.valueOf(remoteMessage.data[Constants.MESSAGE_ORIGIN]!!)
 
             val objectMapper = ObjectMapper()
             val jsonPayloadStr = ObjectMapper().writeValueAsString(mappedData)
@@ -114,36 +115,47 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     Log.d("FCM", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QA)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.QA)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.Q -> try {
                     var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
                     val containsTextToSpeeches = mappedData.containsKey("textToSpeeches")
                     if (containsTextToSpeeches) {
-                        jsonTextToSpeeches = objectMapper.readValue(mappedData["textToSpeeches"], object : TypeReference<List<JsonTextToSpeech?>?>() {})
+                        jsonTextToSpeeches = objectMapper.readValue(
+                            mappedData["textToSpeeches"],
+                            object : TypeReference<List<JsonTextToSpeech?>?>() {})
                         //TODO(hth) Temp code. Removed as parsing issue.
                         mappedData.remove("textToSpeeches")
                     }
-                    jsonData = objectMapper.readValue(jsonPayloadStr, JsonTopicQueueData::class.java)
+                    jsonData =
+                        objectMapper.readValue(jsonPayloadStr, JsonTopicQueueData::class.java)
                     if (null != jsonTextToSpeeches) {
                         jsonData.setJsonTextToSpeeches(jsonTextToSpeeches)
                     }
                     Log.d("FCM", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.Q)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.Q)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.CQO -> try {
-                    val tokenAndQueues = objectMapper.readValue(mappedData["tqs"], object : TypeReference<List<JsonTokenAndQueue?>?>() {})
-                    val jsonClientTokenAndQueueData = objectMapper.readValue(jsonPayloadStr, JsonClientTokenAndQueueData::class.java)
+                    val tokenAndQueues = objectMapper.readValue(
+                        mappedData["tqs"],
+                        object : TypeReference<List<JsonTokenAndQueue?>?>() {})
+                    val jsonClientTokenAndQueueData = objectMapper.readValue(
+                        jsonPayloadStr,
+                        JsonClientTokenAndQueueData::class.java
+                    )
                     jsonClientTokenAndQueueData.tokenAndQueues = tokenAndQueues
                     jsonData = jsonClientTokenAndQueueData
                     Log.d("FCM", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.CQO)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.CQO)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.QR -> try {
@@ -151,25 +163,31 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     Log.d("FCM Queue Review", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QR)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.QR)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.OR -> try {
-                    jsonData = objectMapper.readValue(jsonPayloadStr, JsonClientOrderData::class.java)
+                    jsonData =
+                        objectMapper.readValue(jsonPayloadStr, JsonClientOrderData::class.java)
                     Log.d("FCM Order Review", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.OR)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.OR)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.O -> try {
                     var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
                     val containsTextToSpeeches = mappedData.containsKey("textToSpeeches")
                     if (containsTextToSpeeches) {
-                        jsonTextToSpeeches = objectMapper.readValue(mappedData["textToSpeeches"], object : TypeReference<List<JsonTextToSpeech?>?>() {})
+                        jsonTextToSpeeches = objectMapper.readValue(
+                            mappedData["textToSpeeches"],
+                            object : TypeReference<List<JsonTextToSpeech?>?>() {})
                         mappedData.remove("textToSpeeches")
                     }
-                    jsonData = objectMapper.readValue(jsonPayloadStr, JsonTopicOrderData::class.java)
+                    jsonData =
+                        objectMapper.readValue(jsonPayloadStr, JsonTopicOrderData::class.java)
                     if (null != jsonTextToSpeeches) {
                         jsonData.setJsonTextToSpeeches(jsonTextToSpeeches)
                     }
@@ -177,7 +195,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     Log.d("FCM order ", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.O)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.O)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.A, MessageOriginEnum.D -> try {
@@ -185,15 +204,18 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     Log.d("FCM Review store", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.D)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.D)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.MF -> try {
-                    jsonData = objectMapper.readValue(jsonPayloadStr, JsonMedicalFollowUp::class.java)
+                    jsonData =
+                        objectMapper.readValue(jsonPayloadStr, JsonMedicalFollowUp::class.java)
                     Log.d("FCM Medical Followup", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.MF)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.MF)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.QCT -> try {
@@ -201,17 +223,24 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     var jsonQueueChangeServiceTimes: List<JsonQueueChangeServiceTime?>? = null
 
                     if (containsServiceTimes) {
-                        jsonQueueChangeServiceTimes = objectMapper.readValue(mappedData["qcsts"], object : TypeReference<List<JsonQueueChangeServiceTime?>?>() {})
+                        jsonQueueChangeServiceTimes = objectMapper.readValue(
+                            mappedData["qcsts"],
+                            object : TypeReference<List<JsonQueueChangeServiceTime?>?>() {})
                         mappedData.remove("textToSpeeches")
                     }
 
-                    val jsonChangeServiceTimeData = objectMapper.readValue(jsonPayloadStr, JsonChangeServiceTimeData::class.java)
-                    jsonChangeServiceTimeData.jsonQueueChangeServiceTimes = jsonQueueChangeServiceTimes
+                    val jsonChangeServiceTimeData = objectMapper.readValue(
+                        jsonPayloadStr,
+                        JsonChangeServiceTimeData::class.java
+                    )
+                    jsonChangeServiceTimeData.jsonQueueChangeServiceTimes =
+                        jsonQueueChangeServiceTimes
                     jsonData = jsonChangeServiceTimeData
                     Log.d("Update time slot", jsonChangeServiceTimeData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QCT)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Failed to read message " + MessageOriginEnum.QCT)
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
                 MessageOriginEnum.M -> {
@@ -231,14 +260,30 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     // app is in foreground, broadcast the push message
                     val pushNotification = Intent(Constants.PUSH_NOTIFICATION)
                     pushNotification.putExtra("jsonData", jsonData)
-                    pushNotification.putExtra(Constants.FIREBASE_TYPE, mappedData[Constants.FIREBASE_TYPE])
+                    pushNotification.putExtra(
+                        Constants.FIREBASE_TYPE,
+                        mappedData[Constants.FIREBASE_TYPE]
+                    )
                     pushNotification.putExtra(Constants.CODE_QR, mappedData[Constants.CODE_QR])
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification)
                     if (MessageOriginEnum.Q == messageOrigin) {
                         // Update Currently serving in app preferences
-                        val prefs = applicationContext.getSharedPreferences(Constants.APP_PACKAGE, MODE_PRIVATE)
-                        prefs.edit().putString(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, mappedData[Constants.CODE_QR]), mappedData[Constants.CURRENTLY_SERVING]?.toString()).apply()
-                        prefs.edit().putString(String.format(Constants.DISPLAY_SERVING_NUMBER_PREF_KEY, mappedData[Constants.CODE_QR]), mappedData[Constants.DISPLAY_SERVING_NUMBER]?.toString()).apply()
+                        val prefs = applicationContext.getSharedPreferences(
+                            Constants.APP_PACKAGE,
+                            MODE_PRIVATE
+                        )
+                        prefs.edit().putString(
+                            String.format(
+                                Constants.CURRENTLY_SERVING_PREF_KEY,
+                                mappedData[Constants.CODE_QR]
+                            ), mappedData[Constants.CURRENTLY_SERVING]?.toString()
+                        ).apply()
+                        prefs.edit().putString(
+                            String.format(
+                                Constants.DISPLAY_SERVING_NUMBER_PREF_KEY,
+                                mappedData[Constants.CODE_QR]
+                            ), mappedData[Constants.DISPLAY_SERVING_NUMBER]?.toString()
+                        ).apply()
                     }
                     val payload = mappedData[Constants.FIREBASE_TYPE]
                     val codeQR = mappedData[Constants.CODE_QR]
@@ -265,13 +310,19 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                  * When u==S then it is re-view
                  * u==N then it is skip(Rejoin) Pending task
                  */
-                if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.P.getName(), ignoreCase = true)) {
+                if (StringUtils.isNotBlank(payload) && payload.equals(
+                        FirebaseMessageTypeEnum.P.getName(),
+                        ignoreCase = true
+                    )
+                ) {
                     if (StringUtils.isNotBlank(codeQR)) {
                         val currentServing = mappedData[Constants.CURRENTLY_SERVING]
                         if (currentServing != null) {
 
                             GlobalScope.launch(Dispatchers.IO) {
-                                val jsonTokenAndQueueList = NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().getCurrentQueueObjectList(codeQR)
+                                val jsonTokenAndQueueList =
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                        .tokenAndQueueDao().getCurrentQueueObjectList(codeQR)
 
                                 jsonTokenAndQueueList?.forEach { jsonTokenAndQueue ->
                                     jsonTokenAndQueue.servingNumber = currentServing.toInt()
@@ -283,7 +334,14 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     mappedData[Constants.DISPLAY_SERVING_NUMBER]?.let { displayServingNumber ->
                                         GlobalScope.launch {
                                             withContext(Dispatchers.IO) {
-                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, currentServing, displayServingNumber, jsonTokenAndQueue.token)
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                                    .tokenAndQueueDao()
+                                                    .updateCurrentListQueueObject(
+                                                        codeQR,
+                                                        currentServing,
+                                                        displayServingNumber,
+                                                        jsonTokenAndQueue.token
+                                                    )
                                             }
                                         }
                                     }
@@ -297,27 +355,40 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
                             displayNotification.codeQR = jsonData.codeQR
                             //from my point of view it is wrong....lets discuss more bot it
-                            displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                            displayNotification.body = jsonData.getLocalLanguageMessageBody(
+                                AppUtils.getSelectedLanguage(applicationContext)
+                            )
                             displayNotification.title = jsonData.title
                             displayNotification.businessType = jsonData.businessType
                             displayNotification.imageUrl = jsonData.imageURL
                             displayNotification.key = getKey(jsonData.id)
                             displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                            displayNotification.createdDate =
+                                CommonHelper.changeUTCDateToString(Date())
                             displayNotification.popUpShown = false
 
                             GlobalScope.launch {
                                 withContext(Dispatchers.IO) {
-                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                        .notificationDao().insertNotification(displayNotification)
                                 }
                             }
                             if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
-                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                                sendNotification(
+                                    title,
+                                    jsonData.getLocalLanguageMessageBody(
+                                        AppUtils.getSelectedLanguage(applicationContext)
+                                    ),
+                                    false,
+                                    imageUrl
+                                )
                         } else if (jsonData is JsonClientData) {
                             Log.e("IN JsonClientData", jsonData.toString())
                             val token = jsonData.token.toString()
                             val qid = jsonData.queueUserId
-                            if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.S.getName(), ignoreCase = true)) {
+                            if (jsonData.queueUserState.getName()
+                                    .equals(QueueUserStateEnum.S.getName(), ignoreCase = true)
+                            ) {
                                 /*
                                  * Save codeQR of review & show the review screen on app
                                  * resume if there is any record in Review DB for queue review key
@@ -334,13 +405,25 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                                 GlobalScope.launch {
                                     withContext(Dispatchers.IO) {
-                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                            .reviewDao().insertReviewData(reviewData)
                                     }
                                 }
 
                                 if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
-                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, true, token, imageUrl) //pass codeQR to open review screen
-                            } else if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.N.getName(), ignoreCase = true)) {
+                                    sendNotification(
+                                        title,
+                                        jsonData.getLocalLanguageMessageBody(
+                                            AppUtils.getSelectedLanguage(applicationContext)
+                                        ),
+                                        codeQR,
+                                        true,
+                                        token,
+                                        imageUrl
+                                    ) //pass codeQR to open review screen
+                            } else if (jsonData.queueUserState.getName()
+                                    .equals(QueueUserStateEnum.N.getName(), ignoreCase = true)
+                            ) {
 
                                 val reviewData = ReviewData()
                                 reviewData.isReviewShown = "-1"
@@ -354,17 +437,29 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                                 GlobalScope.launch {
                                     withContext(Dispatchers.IO) {
-                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                            .reviewDao().insertReviewData(reviewData)
                                     }
                                 }
 
                                 if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
-                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, false, token, imageUrl) //pass codeQR to open skip screen
+                                    sendNotification(
+                                        title,
+                                        jsonData.getLocalLanguageMessageBody(
+                                            AppUtils.getSelectedLanguage(applicationContext)
+                                        ),
+                                        codeQR,
+                                        false,
+                                        token,
+                                        imageUrl
+                                    ) //pass codeQR to open skip screen
                             }
                         } else if (jsonData is JsonClientOrderData) {
                             val token = jsonData.orderNumber.toString()
                             val qid = jsonData.queueUserId
-                            if (jsonData.purchaseOrderState.getName().equals(PurchaseOrderStateEnum.OD.getName(), ignoreCase = true)) {
+                            if (jsonData.purchaseOrderState.getName()
+                                    .equals(PurchaseOrderStateEnum.OD.getName(), ignoreCase = true)
+                            ) {
                                 /*
                                 * Save codeQR of review & show the review screen on app
                                 * resume if there is any record in Review DB for queue review key
@@ -381,12 +476,22 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                                 GlobalScope.launch {
                                     withContext(Dispatchers.IO) {
-                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).reviewDao().insertReviewData(reviewData)
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                            .reviewDao().insertReviewData(reviewData)
                                     }
                                 }
 
                                 if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
-                                    sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), codeQR, true, token, imageUrl) //pass codeQR to open review screen
+                                    sendNotification(
+                                        title,
+                                        jsonData.getLocalLanguageMessageBody(
+                                            AppUtils.getSelectedLanguage(applicationContext)
+                                        ),
+                                        codeQR,
+                                        true,
+                                        token,
+                                        imageUrl
+                                    ) //pass codeQR to open review screen
 
 
                                 /*
@@ -394,21 +499,26 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 * Update the order screen/ Join Screen if open
                                 */
                                 if (AppInitialize.activityCommunicator != null) {
-                                    AppInitialize.activityCommunicator.requestProcessed(codeQR, token)
+                                    AppInitialize.activityCommunicator.requestProcessed(
+                                        codeQR,
+                                        token
+                                    )
                                 }
                             }
                         } else if (jsonData is JsonTopicOrderData) {
-                            updateNotification(jsonData, codeQR)
+                            updateNotification(jsonData, codeQR, title, imageUrl)
                             return
                         } else if (jsonData is JsonTopicQueueData) {
-                            updateNotification(jsonData, codeQR)
+                            updateNotification(jsonData, codeQR, title, imageUrl)
                             return
                         } else if (jsonData is JsonClientTokenAndQueueData) {
                             val jsonTokenAndQueueList = jsonData.tokenAndQueues
                             if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size > 0) {
                                 GlobalScope.launch {
                                     withContext(Dispatchers.IO) {
-                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().saveCurrentQueue(jsonTokenAndQueueList)
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                            .tokenAndQueueDao()
+                                            .saveCurrentQueue(jsonTokenAndQueueList)
                                     }
                                 }
                             }
@@ -416,17 +526,21 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             val displayNotification = DisplayNotification()
                             displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
                             displayNotification.codeQR = jsonData.codeQR
-                            displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                            displayNotification.body = jsonData.getLocalLanguageMessageBody(
+                                AppUtils.getSelectedLanguage(applicationContext)
+                            )
                             displayNotification.title = jsonData.title
                             displayNotification.businessType = BusinessTypeEnum.ZZ
                             displayNotification.imageUrl = jsonData.imageURL
                             displayNotification.key = getKey(jsonData.id)
                             displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                            displayNotification.createdDate =
+                                CommonHelper.changeUTCDateToString(Date())
 
                             GlobalScope.launch {
                                 withContext(Dispatchers.IO) {
-                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                        .notificationDao().insertNotification(displayNotification)
                                 }
                             }
 
@@ -434,19 +548,47 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 subscribeTopics(jsonTokenAndQueueList[i].topic + "_A")
                             }
                             if (AppUtils.isAppIsInBackground(applicationContext))
-                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                                sendNotification(
+                                    title,
+                                    jsonData.getLocalLanguageMessageBody(
+                                        AppUtils.getSelectedLanguage(applicationContext)
+                                    ),
+                                    false,
+                                    imageUrl
+                                )
                         } else if (jsonData is JsonMedicalFollowUp) {
                             Log.e("Alert set:", "data is :$title ---- $body")
                             if (AppUtils.isAppIsInBackground(applicationContext))
-                                sendNotification(title, jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), true, imageUrl)
+                                sendNotification(
+                                    title,
+                                    jsonData.getLocalLanguageMessageBody(
+                                        AppUtils.getSelectedLanguage(applicationContext)
+                                    ),
+                                    true,
+                                    imageUrl
+                                )
                             setAlarm(jsonData as JsonMedicalFollowUp)
                         } else {
                             if (AppUtils.isAppIsInBackground(applicationContext))
-                                sendNotification(title, jsonData?.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                                sendNotification(
+                                    title,
+                                    jsonData?.getLocalLanguageMessageBody(
+                                        AppUtils.getSelectedLanguage(applicationContext)
+                                    ),
+                                    false,
+                                    imageUrl
+                                )
                         }
                     } else {
                         if (AppUtils.isAppIsInBackground(applicationContext))
-                            sendNotification(title, jsonData?.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                            sendNotification(
+                                title,
+                                jsonData?.getLocalLanguageMessageBody(
+                                    AppUtils.getSelectedLanguage(applicationContext)
+                                ),
+                                false,
+                                imageUrl
+                            )
                         if (jsonData is JsonAlertData) {
                             /* When app is on background. Adding to notification table. */
                             Log.e("IN JsonAlertData", jsonData.toString())
@@ -455,51 +597,71 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             displayNotification.codeQR = jsonData.codeQR
                             displayNotification.key = getKey(jsonData.id)
                             //from my point of view it is wrong....lets discuss more bot it
-                            displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                            displayNotification.body = jsonData.getLocalLanguageMessageBody(
+                                AppUtils.getSelectedLanguage(applicationContext)
+                            )
                             displayNotification.title = jsonData.title
                             displayNotification.businessType = jsonData.businessType
                             displayNotification.imageUrl = jsonData.imageURL
                             displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                            displayNotification.createdDate =
+                                CommonHelper.changeUTCDateToString(Date())
                             displayNotification.popUpShown = false
 
                             GlobalScope.launch {
                                 withContext(Dispatchers.IO) {
-                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                        .notificationDao().insertNotification(displayNotification)
                                 }
                             }
                         }
                     }
-                } else if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
+                } else if (StringUtils.isNotBlank(payload) && payload.equals(
+                        FirebaseMessageTypeEnum.C.getName(),
+                        ignoreCase = true
+                    )
+                ) {
                     if (jsonData is JsonChangeServiceTimeData) {
 
 
-                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().findByQRCode(jsonData.codeQR).observeForever { jsonTokenAndQueue ->
-                            val jsonQueueChangeServiceTimes = jsonData.jsonQueueChangeServiceTimes
-                            for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
-                                if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
-                                    val msg = """${jsonData.getBody()} Token: ${jsonQueueChangeServiceTime.displayToken} Previously: ${jsonQueueChangeServiceTime.oldTimeSlotMessage} Updated: ${jsonQueueChangeServiceTime.updatedTimeSlotMessage}"""
-                                    ShowAlertInformation.showInfoDisplayDialog(this@NoQueueMessagingService, jsonData.getTitle(), body)
-                                    val displayNotification = DisplayNotification()
-                                    displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
-                                    displayNotification.codeQR = jsonData.codeQR
-                                    displayNotification.body = msg
-                                    displayNotification.key = getKey(jsonData.id)
-                                    displayNotification.title = jsonData.title
-                                    displayNotification.businessType = jsonData.businessType
-                                    displayNotification.imageUrl = jsonData.imageURL
-                                    displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                                    displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
-                                    displayNotification.popUpShown = false
+                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao()
+                            .findByQRCode(jsonData.codeQR).observeForever { jsonTokenAndQueue ->
+                                val jsonQueueChangeServiceTimes =
+                                    jsonData.jsonQueueChangeServiceTimes
+                                for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
+                                    if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
+                                        val msg =
+                                            """${jsonData.getBody()} Token: ${jsonQueueChangeServiceTime.displayToken} Previously: ${jsonQueueChangeServiceTime.oldTimeSlotMessage} Updated: ${jsonQueueChangeServiceTime.updatedTimeSlotMessage}"""
+                                        ShowAlertInformation.showInfoDisplayDialog(
+                                            this@NoQueueMessagingService,
+                                            jsonData.getTitle(),
+                                            body
+                                        )
+                                        val displayNotification = DisplayNotification()
+                                        displayNotification.type =
+                                            DatabaseTable.Notification.KEY_NOTIFY
+                                        displayNotification.codeQR = jsonData.codeQR
+                                        displayNotification.body = msg
+                                        displayNotification.key = getKey(jsonData.id)
+                                        displayNotification.title = jsonData.title
+                                        displayNotification.businessType = jsonData.businessType
+                                        displayNotification.imageUrl = jsonData.imageURL
+                                        displayNotification.status =
+                                            DatabaseTable.Notification.KEY_UNREAD
+                                        displayNotification.createdDate =
+                                            CommonHelper.changeUTCDateToString(Date())
+                                        displayNotification.popUpShown = false
 
-                                    GlobalScope.launch {
-                                        withContext(Dispatchers.IO) {
-                                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                        GlobalScope.launch {
+                                            withContext(Dispatchers.IO) {
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                                    .notificationDao()
+                                                    .insertNotification(displayNotification)
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
                     } else if (jsonData is JsonAlertData) {
                         /* When app is on background. Adding to notification table. */
@@ -509,7 +671,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         displayNotification.codeQR = jsonData.codeQR
                         displayNotification.key = getKey(jsonData.id)
                         //from my point of view it is wrong....lets discuss more bot it
-                        displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                        displayNotification.body = jsonData.getLocalLanguageMessageBody(
+                            AppUtils.getSelectedLanguage(applicationContext)
+                        )
                         displayNotification.title = jsonData.title
                         displayNotification.businessType = jsonData.businessType
                         displayNotification.imageUrl = jsonData.imageURL
@@ -519,13 +683,14 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                         GlobalScope.launch {
                             withContext(Dispatchers.IO) {
-                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                    .notificationDao().insertNotification(displayNotification)
                             }
                         }
-                    } else if(jsonData is JsonTopicQueueData) {
-                        updateNotification(jsonData, codeQR)
+                    } else if (jsonData is JsonTopicQueueData) {
+                        updateNotification(jsonData, codeQR, title, imageUrl)
                     } else if (jsonData is JsonTopicOrderData) {
-                        updateNotification(jsonData, codeQR)
+                        updateNotification(jsonData, codeQR, title, imageUrl)
                     }
                 }
 
@@ -545,7 +710,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                     GlobalScope.launch {
                         withContext(Dispatchers.IO) {
-                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao()
+                                .insertNotification(displayNotification)
                         }
                     }
                 } else if (jsonData is JsonTopicAppointmentData) {
@@ -555,7 +721,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     displayNotification.codeQR = ""
                     displayNotification.key = getKey(jsonData.id)
                     //from my point of view it is wrong....lets discuss more bot it
-                    displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                    displayNotification.body = jsonData.getLocalLanguageMessageBody(
+                        AppUtils.getSelectedLanguage(applicationContext)
+                    )
                     displayNotification.title = jsonData.title
                     displayNotification.businessType = BusinessTypeEnum.ZZ
                     displayNotification.imageUrl = jsonData.imageURL
@@ -564,22 +732,36 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                     GlobalScope.launch {
                         withContext(Dispatchers.IO) {
-                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao().insertNotification(displayNotification)
+                            NoQueueAppDB.dbInstance(this@NoQueueMessagingService).notificationDao()
+                                .insertNotification(displayNotification)
                         }
                     }
                 }
 
             } catch (e: java.lang.Exception) {
                 Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                FirebaseCrashlytics.getInstance().log("Failed to parse message " + e.localizedMessage)
+                FirebaseCrashlytics.getInstance()
+                    .log("Failed to parse message " + e.localizedMessage)
                 FirebaseCrashlytics.getInstance().recordException(e)
-                sendNotification(title, jsonData?.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)), false, imageUrl)
+                sendNotification(
+                    title,
+                    jsonData?.getLocalLanguageMessageBody(
+                        AppUtils.getSelectedLanguage(applicationContext)
+                    ),
+                    false,
+                    imageUrl
+                )
             }
 
         }
     }
 
-    private fun updateNotification(jsonData: JsonData, codeQR: String?) {
+    private fun updateNotification(
+        jsonData: JsonData,
+        codeQR: String?,
+        title: String?,
+        imageUrl: String?
+    ) {
         try {
             var go_to = ""
             var messageOrigin = ""
@@ -608,7 +790,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             }
 
             GlobalScope.launch(Dispatchers.IO) {
-                val jsonTokenAndQueueArrayList = NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().getCurrentQueueObjectList(codeQR)
+                val jsonTokenAndQueueArrayList =
+                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao()
+                        .getCurrentQueueObjectList(codeQR)
                 jsonTokenAndQueueArrayList?.let {
                     for (i in jsonTokenAndQueueArrayList.indices) {
                         val jtk = jsonTokenAndQueueArrayList[i]
@@ -621,7 +805,14 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                                 GlobalScope.launch {
                                     withContext(Dispatchers.IO) {
-                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListQueueObjectWithState(codeQR, currentServing, displayServingNumber, jtk.token.toInt())
+                                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                            .tokenAndQueueDao()
+                                            .updateCurrentListQueueObjectWithState(
+                                                codeQR,
+                                                currentServing,
+                                                displayServingNumber,
+                                                jtk.token.toInt()
+                                            )
                                     }
                                 }
 
@@ -633,7 +824,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                             if (jtk.isTokenExpired && jsonTokenAndQueueArrayList.size == 1) {
                                 /* Un-subscribe the topic */
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.topic + "_A")
+                                FirebaseMessaging.getInstance()
+                                    .unsubscribeFromTopic(jtk.topic + "_A")
                             }
 
                             val foregroundNotificationModel = ForegroundNotificationModel()
@@ -643,7 +835,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             foregroundNotificationModel.goTo = go_to
                             foregroundNotificationModel.messageOrigin = messageOrigin
                             foregroundNotificationModel.msgId = msgId
-                            foregroundNotificationModel.purchaseOrderStateEnum = purchaseOrderStateEnum
+                            foregroundNotificationModel.purchaseOrderStateEnum =
+                                purchaseOrderStateEnum
                             codeQR?.let {
                                 foregroundNotificationModel.qrCode = codeQR
                             }
@@ -651,32 +844,120 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                             GlobalScope.launch {
                                 withContext(Dispatchers.IO) {
-                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService).foregroundNotificationDao().insertForeGroundNotification(foregroundNotificationModel)
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                        .foregroundNotificationDao()
+                                        .insertForeGroundNotification(foregroundNotificationModel)
                                 }
                             }
 
-                            if(AppUtils.isAppIsInBackground(applicationContext)) {
+                            val prefs = applicationContext.getSharedPreferences(
+                                Constants.APP_PACKAGE,
+                                MODE_PRIVATE
+                            )
+                            val lastServingNumber = prefs.getString(
+                                String.format(
+                                    Constants.CURRENTLY_SERVING_PREF_KEY,
+                                    codeQR
+                                ), "0"
+                            )
+
+                            if (AppUtils.isAppIsInBackground(applicationContext)) {
                                 // Check if User's turn then start Buzzer.
 
                                 // Check if User's turn then start Buzzer.
                                 if (currentServing == jtk.token.toString()) {
-                                    val buzzerIntent = Intent(this@NoQueueMessagingService, HomeActivity::class.java)
+                                    val buzzerIntent = Intent(
+                                        this@NoQueueMessagingService,
+                                        HomeActivity::class.java
+                                    )
                                     buzzerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(buzzerIntent)
 //                                    if (AppInitialize.isMsgAnnouncementEnable() && null != LaunchActivity.getLaunchActivity()) {
 //                                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData.jsonTextToSpeeches, mappedData.get("mi"))
 //                                    }
+                                } else if (jtk.getToken() > currentServing.toInt() && lastServingNumber != currentServing) {
+                                    prefs.edit().putString(
+                                        String.format(
+                                            Constants.CURRENTLY_SERVING_PREF_KEY,
+                                            codeQR
+                                        ), currentServing
+                                    ).apply();
+                                    var notificationMessage = java.lang.String.format(
+                                        applicationContext.getString(R.string.position_in_queue),
+                                        jtk.afterHowLong()
+                                    )
+                                    try {
+                                        when (jtk.businessType) {
+                                            BusinessTypeEnum.CD, BusinessTypeEnum.CDQ -> {
+                                                val slot = jtk.timeSlotMessage
+                                                notificationMessage =
+                                                    notificationMessage.toString() + String.format(
+                                                        applicationContext.getString(R.string.time_slot_formatted_newline),
+                                                        slot
+                                                    )
+                                            }
+                                            else -> {
+                                                val avgServiceTime =
+                                                    if (jtk.averageServiceTime == 0L) prefs.getLong(
+                                                        java.lang.String.format(
+                                                            Constants.ESTIMATED_WAIT_TIME_PREF_KEY,
+                                                            codeQR
+                                                        ),
+                                                        0
+                                                    ) else
+                                                        jtk.averageServiceTime
+                                                val waitTime =
+                                                    TokenStatusUtils.calculateEstimatedWaitTime(
+                                                        avgServiceTime,
+                                                        jtk.afterHowLong(),
+                                                        QueueStatusEnum.N,
+                                                        jtk.startHour,
+                                                        applicationContext
+                                                    )
+                                                if (!TextUtils.isEmpty(waitTime)) {
+                                                    notificationMessage =
+                                                        notificationMessage.toString() + String.format(
+                                                            applicationContext.getString(R.string.wait_time_formatted_newline),
+                                                            waitTime
+                                                        )
+                                                }
+                                            }
+                                        }
+                                    } catch (e: java.lang.Exception) {
+                                        Log.e(
+                                            "",
+                                            "Error setting wait time reason: " + e.localizedMessage,
+                                            e
+                                        )
+                                    }
+                                    sendNotification(
+                                        title,
+                                        notificationMessage,
+                                        true,
+                                        imageUrl,
+                                        jtk.token - currentServing.toInt()
+                                    )
                                 }
                             }
 
                             try {
                                 //* In case of order update the order status *//*
                                 if (jsonData is JsonTopicOrderData) {
-                                    if (messageOrigin.equals(MessageOriginEnum.O.name, ignoreCase = true) && currentServing.toInt() == jtk.token) {
+                                    if (messageOrigin.equals(
+                                            MessageOriginEnum.O.name,
+                                            ignoreCase = true
+                                        ) && currentServing.toInt() == jtk.token
+                                    ) {
                                         jtk.purchaseOrderState = jsonData.purchaseOrderState
                                         GlobalScope.launch {
                                             withContext(Dispatchers.IO) {
-                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao().updateCurrentListOrderObjectWithState(codeQR, jtk.purchaseOrderState, jtk.token)
+                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                                    .tokenAndQueueDao()
+                                                    .updateCurrentListOrderObjectWithState(
+                                                        codeQR,
+                                                        jtk.purchaseOrderState,
+                                                        jtk.token
+                                                    )
                                             }
                                         }
                                     }
@@ -693,20 +974,58 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             FirebaseCrashlytics.getInstance().log("Failed on update notification")
             FirebaseCrashlytics.getInstance().recordException(e)
             Log.e(TAG, "Failed on update notification " + e.localizedMessage)
+            if (AppUtils.isAppIsInBackground(applicationContext))
+                sendNotification(
+                    title,
+                    jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(this)),
+                    false,
+                    imageUrl
+                );
         }
     }
 
 
-    private fun sendNotification(title: String?, messageBody: String?, codeQR: String?, isReview: Boolean, token: String, imageUrl: String?) {
-        CreateBigImageNotificationWithReview(title, messageBody, codeQR, isReview, token, imageUrl).execute()
+    private fun sendNotification(
+        title: String?,
+        messageBody: String?,
+        codeQR: String?,
+        isReview: Boolean,
+        token: String,
+        imageUrl: String?
+    ) {
+        CreateBigImageNotificationWithReview(
+            title,
+            messageBody,
+            codeQR,
+            isReview,
+            token,
+            imageUrl
+        ).execute()
     }
 
-    private fun sendNotification(title: String?, messageBody: String?, isVibrate: Boolean, imageUrl: String?) {
+    private fun sendNotification(
+        title: String?,
+        messageBody: String?,
+        isVibrate: Boolean,
+        imageUrl: String?
+    ) {
         CreateBigImageNotification(title, messageBody, imageUrl, isVibrate).execute()
     }
 
-    private fun sendNotification(title: String?, messageBody: String?, isVibrate: Boolean, imageUrl: String?, notificationPriority: Int) {
-        CreateBigImageQueueNotification(title, messageBody, imageUrl, isVibrate, notificationPriority).execute()
+    private fun sendNotification(
+        title: String?,
+        messageBody: String?,
+        isVibrate: Boolean,
+        imageUrl: String?,
+        notificationPriority: Int
+    ) {
+        CreateBigImageQueueNotification(
+            title,
+            messageBody,
+            imageUrl,
+            isVibrate,
+            notificationPriority
+        ).execute()
     }
 
     private fun getNotificationIcon(): Int {
@@ -734,9 +1053,15 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val intent = Intent(this, AlarmReceiver::class.java)
             intent.putExtra("title", jsonMedicalFollowUp.title)
             intent.putExtra("body", jsonMedicalFollowUp.body)
-            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent =
+                PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+            am.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )
             Log.e("Alarm set", "Done Alarm")
         } catch (e: java.lang.Exception) {
             FirebaseCrashlytics.getInstance().log("Failed to set alarm " + e.localizedMessage)
@@ -761,7 +1086,13 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
     }
 
-    inner class CreateBigImageQueueNotification(val title: String?, val messageBody: String?, val imageUrl: String?, val isVibrate: Boolean, val notificationPriority: Int) : AsyncTask<String?, Void?, Bitmap?>() {
+    inner class CreateBigImageQueueNotification(
+        val title: String?,
+        val messageBody: String?,
+        val imageUrl: String?,
+        val isVibrate: Boolean,
+        val notificationPriority: Int
+    ) : AsyncTask<String?, Void?, Bitmap?>() {
 
         override fun doInBackground(vararg p0: String?): Bitmap? {
             if (TextUtils.isEmpty(imageUrl)) {
@@ -788,28 +1119,39 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val channelNoSound = "channel_q_no_sound"
             val channelWithSound = "channel_q_with_sound"
             val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            val highImportance = abs(notificationPriority) <= 10 || abs(notificationPriority) % 5 == 0
+            val highImportance =
+                abs(notificationPriority) <= 10 || abs(notificationPriority) % 5 == 0
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channelName = "Channel Name"
                 val mChannel: NotificationChannel
                 if (highImportance) {
-                    mChannel = NotificationChannel(channelWithSound, channelName, NotificationManager.IMPORTANCE_HIGH)
+                    mChannel = NotificationChannel(
+                        channelWithSound,
+                        channelName,
+                        NotificationManager.IMPORTANCE_HIGH
+                    )
                     mChannel.setSound(defaultSoundUri, null)
                 } else {
-                    mChannel = NotificationChannel(channelNoSound, channelName, NotificationManager.IMPORTANCE_LOW)
+                    mChannel = NotificationChannel(
+                        channelNoSound,
+                        channelName,
+                        NotificationManager.IMPORTANCE_LOW
+                    )
                     mChannel.setSound(null, null)
                 }
                 notificationManager.createNotificationChannel(mChannel)
             }
-            val mBuilder = NotificationCompat.Builder(applicationContext,
-                    if (highImportance) channelWithSound else channelNoSound)
-                    .setColor(ContextCompat.getColor(applicationContext, R.color.colorMobile))
-                    .setSmallIcon(getNotificationIcon())
-                    .setLargeIcon(getNotificationBitmap())
-                    .setContentTitle(title)
-                    .setContentText(messageBody) //.setAutoCancel(true)
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
-                    .setLights(Color.parseColor("#ffb400"), 50, 10)
+            val mBuilder = NotificationCompat.Builder(
+                applicationContext,
+                if (highImportance) channelWithSound else channelNoSound
+            )
+                .setColor(ContextCompat.getColor(applicationContext, R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(getNotificationBitmap())
+                .setContentTitle(title)
+                .setContentText(messageBody) //.setAutoCancel(true)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
+                .setLights(Color.parseColor("#ffb400"), 50, 10)
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 if (highImportance) {
                     mBuilder.priority = android.app.Notification.PRIORITY_HIGH
@@ -819,9 +1161,11 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 mBuilder.setSound(defaultSoundUri)
             }
             if (bitmap != null) {
-                mBuilder.setStyle(NotificationCompat.BigPictureStyle() //Set the Image in Big picture Style with text.
+                mBuilder.setStyle(
+                    NotificationCompat.BigPictureStyle() //Set the Image in Big picture Style with text.
                         .bigPicture(bitmap) //.setSummaryText(message)
-                        .bigLargeIcon(null))
+                        .bigLargeIcon(null)
+                )
             }
             if (isVibrate) {
                 mBuilder.setVibrate(longArrayOf(500, 500))
@@ -832,8 +1176,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val stackBuilder = TaskStackBuilder.create(applicationContext)
             stackBuilder.addNextIntent(notificationIntent)
             val resultPendingIntent = stackBuilder.getPendingIntent(
-                    Constants.requestCodeNotification,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                Constants.requestCodeNotification,
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
             mBuilder.setContentIntent(resultPendingIntent)
             notificationManager.notify(notificationId, mBuilder.build())
@@ -841,7 +1185,12 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
     }
 
-    inner class CreateBigImageNotification(val title: String?, val messageBody: String?, val imageUrl: String?, val isVibrate: Boolean) : AsyncTask<String?, Void?, Bitmap?>() {
+    inner class CreateBigImageNotification(
+        val title: String?,
+        val messageBody: String?,
+        val imageUrl: String?,
+        val isVibrate: Boolean
+    ) : AsyncTask<String?, Void?, Bitmap?>() {
 
         override fun doInBackground(vararg p0: String?): Bitmap? {
             if (TextUtils.isEmpty(imageUrl)) {
@@ -868,29 +1217,32 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val channelId = "channel-01"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channelName = "Channel Name"
-                val importance = if (AppInitialize.isNotificationSoundEnable()) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
+                val importance =
+                    if (AppInitialize.isNotificationSoundEnable()) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
                 val mChannel = NotificationChannel(channelId, channelName, importance)
                 notificationManager.createNotificationChannel(mChannel)
             }
             val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val mBuilder = NotificationCompat.Builder(applicationContext, channelId)
-                    .setColor(ContextCompat.getColor(applicationContext, R.color.colorMobile))
-                    .setSmallIcon(getNotificationIcon())
-                    .setLargeIcon(getNotificationBitmap())
-                    .setContentTitle(title)
-                    .setContentText(messageBody)
-                    .setAutoCancel(true)
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
-                    .setLights(Color.parseColor("#ffb400"), 50, 10)
+                .setColor(ContextCompat.getColor(applicationContext, R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(getNotificationBitmap())
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
+                .setLights(Color.parseColor("#ffb400"), 50, 10)
             if (AppInitialize.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri)
             } else {
                 mBuilder.priority = NotificationCompat.PRIORITY_LOW
             }
             if (bitmap != null) {
-                mBuilder.setStyle(NotificationCompat.BigPictureStyle() //Set the Image in Big picture Style with text.
+                mBuilder.setStyle(
+                    NotificationCompat.BigPictureStyle() //Set the Image in Big picture Style with text.
                         .bigPicture(bitmap) //.setSummaryText(message)
-                        .bigLargeIcon(null))
+                        .bigLargeIcon(null)
+                )
             }
             if (isVibrate) {
                 mBuilder.setVibrate(longArrayOf(500, 500))
@@ -901,8 +1253,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val stackBuilder = TaskStackBuilder.create(applicationContext)
             stackBuilder.addNextIntent(notificationIntent)
             val resultPendingIntent = stackBuilder.getPendingIntent(
-                    Constants.requestCodeNotification,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                Constants.requestCodeNotification,
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
             mBuilder.setContentIntent(resultPendingIntent)
             notificationManager.notify(notificationId, mBuilder.build())
@@ -910,7 +1262,14 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
     }
 
-    inner class CreateBigImageNotificationWithReview(private val title: String?, private val messageBody: String?, private val codeQR: String?, private val isReview: Boolean, private val token: String, private val imageUrl: String?) : AsyncTask<String?, Void?, Bitmap?>() {
+    inner class CreateBigImageNotificationWithReview(
+        private val title: String?,
+        private val messageBody: String?,
+        private val codeQR: String?,
+        private val isReview: Boolean,
+        private val token: String,
+        private val imageUrl: String?
+    ) : AsyncTask<String?, Void?, Bitmap?>() {
 
         override fun doInBackground(vararg p0: String?): Bitmap? {
             if (TextUtils.isEmpty(imageUrl)) {
@@ -944,35 +1303,38 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val channelId = "channel-01"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channelName = "Channel Name"
-                val importance = if (AppInitialize.isNotificationSoundEnable()) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
+                val importance =
+                    if (AppInitialize.isNotificationSoundEnable()) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
                 val mChannel = NotificationChannel(channelId, channelName, importance)
                 notificationManager.createNotificationChannel(mChannel)
             }
             val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val mBuilder = NotificationCompat.Builder(applicationContext, channelId)
-                    .setColor(ContextCompat.getColor(applicationContext, R.color.colorMobile))
-                    .setSmallIcon(getNotificationIcon())
-                    .setLargeIcon(getNotificationBitmap())
-                    .setContentTitle(title)
-                    .setContentText(messageBody)
-                    .setAutoCancel(true)
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
-                    .setLights(Color.parseColor("#ffb400"), 50, 10)
+                .setColor(ContextCompat.getColor(applicationContext, R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(getNotificationBitmap())
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
+                .setLights(Color.parseColor("#ffb400"), 50, 10)
             if (AppInitialize.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri)
             } else {
                 mBuilder.priority = NotificationCompat.PRIORITY_LOW
             }
             if (bitmap != null) {
-                mBuilder.setStyle(NotificationCompat.BigPictureStyle() //Set the Image in Big picture Style with text.
+                mBuilder.setStyle(
+                    NotificationCompat.BigPictureStyle() //Set the Image in Big picture Style with text.
                         .bigPicture(bitmap) //.setSummaryText(message)
-                        .bigLargeIcon(null))
+                        .bigLargeIcon(null)
+                )
             }
             val stackBuilder = TaskStackBuilder.create(getApplicationContext())
             stackBuilder.addNextIntent(notificationIntent)
             val resultPendingIntent = stackBuilder.getPendingIntent(
-                    Constants.requestCodeNotification,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                Constants.requestCodeNotification,
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
             mBuilder.setContentIntent(resultPendingIntent)
             notificationManager.notify(notificationId, mBuilder.build())
@@ -985,14 +1347,16 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
         val notificationApiCall = NotificationApiCall(this)
         if (UserUtils.isLogin()) {
             notificationApiCall.notificationViewed(
-                    UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth(),
-                    notification)
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
+                notification
+            )
         } else {
             notificationApiCall.notificationViewed(
-                    UserUtils.getDeviceId(),
-                    notification)
+                UserUtils.getDeviceId(),
+                notification
+            )
         }
     }
 
