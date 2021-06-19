@@ -107,12 +107,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private TextView tv_final_amount;
     private LinearLayout ll_address;
     private RadioGroup rg_delivery;
+    private JsonQueue jsonQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         tv_due_amt = findViewById(R.id.tv_due_amt);
@@ -131,7 +133,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 ll_address.setVisibility(View.GONE);
             }
         });
-        JsonQueue jsonQueue = (JsonQueue) getIntent().getExtras().getSerializable(IBConstant.KEY_JSON_QUEUE);
+
+        jsonQueue = (JsonQueue) getIntent().getExtras().getSerializable(IBConstant.KEY_JSON_QUEUE);
         Map<String, String> enabledPaymentOption = SupportedPaymentEnum.asMapWithNameAsKey(jsonQueue.getAcceptedPayments());
         acrb_cash.setEnabled(!TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.COD.getName())));
         acrb_online.setEnabled(!TextUtils.isEmpty(enabledPaymentOption.get(SupportedPaymentEnum.ONP.getName())));
@@ -455,6 +458,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putBoolean(IBConstant.KEY_FROM_LIST, true);
             bundle.putString("displayCurrentServing", jsonPurchaseOrder.getDisplayServingNumber());
+            bundle.putSerializable(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             bundle.putInt("token", jsonPurchaseOrder.getToken());
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
             bundle.putString("GeoHash", getIntent().getExtras().getString("GeoHash"));
@@ -614,6 +618,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             bundle.putBoolean(IBConstant.KEY_FROM_LIST, true);
             bundle.putString("displayCurrentServing", jsonPurchaseOrder.getDisplayServingNumber());
             bundle.putInt("token", jsonPurchaseOrder.getToken());
+            bundle.putSerializable(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             bundle.putString("GeoHash", getIntent().getExtras().getString("GeoHash"));
             bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
             bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));

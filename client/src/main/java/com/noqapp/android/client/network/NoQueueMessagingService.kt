@@ -524,6 +524,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         }
                     } else if(jsonData is JsonTopicQueueData) {
                         updateNotification(jsonData, codeQR)
+                    } else if (jsonData is JsonTopicOrderData) {
+                        updateNotification(jsonData, codeQR)
                     }
                 }
 

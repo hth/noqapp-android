@@ -45,6 +45,7 @@ import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -56,7 +57,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel;
-import com.noqapp.android.client.views.version_2.viewmodels.AfterJoinViewModel;
+import com.noqapp.android.client.views.version_2.viewmodels.AfterJoinOrderViewModel;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -140,7 +141,7 @@ public class AfterJoinActivity
     private CFPaymentService cfPaymentService;
     private ImageView iv_codeqr;
     private TextView tv_token_day, tv_token_time;
-    private AfterJoinViewModel afterJoinViewModel;
+    private AfterJoinOrderViewModel afterJoinOrderViewModel;
     private TextToSpeechHelper textToSpeechHelper;
     private final Cache<String, ArrayList<String>> cacheMsgIds = newBuilder().maximumSize(1).build();
     private final String MSG_IDS = "messageIds";
@@ -151,7 +152,7 @@ public class AfterJoinActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
 
-        afterJoinViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(AfterJoinViewModel.class);
+        afterJoinOrderViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(AfterJoinOrderViewModel.class);
         textToSpeechHelper = new TextToSpeechHelper(this);
 
         observeValues();
@@ -301,7 +302,7 @@ public class AfterJoinActivity
                 profileList = AppInitialize.getAllProfileList();
             }
 
-            afterJoinViewModel.insertTokenAndQueue(jsonTokenAndQueue);
+            afterJoinOrderViewModel.insertTokenAndQueue(jsonTokenAndQueue);
 
             if (!TextUtils.isEmpty(queueUserId)) {
                 jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
@@ -338,7 +339,7 @@ public class AfterJoinActivity
                     iv_left_bg.setVisibility(View.GONE);
                     iv_right_bg.setVisibility(View.GONE);
             }
-            if (null != jsonTokenAndQueue.getDelayedInMinutes()) {
+            if (jsonTokenAndQueue.getDelayedInMinutes() != null) {
                 int hours = jsonTokenAndQueue.getDelayedInMinutes() / 60;
                 int minutes = jsonTokenAndQueue.getDelayedInMinutes() % 60;
                 String red = "<b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b>";
@@ -352,7 +353,7 @@ public class AfterJoinActivity
             tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString()));
             tv_address.setOnClickListener((View v) -> AppUtils.openNavigationInMap(AfterJoinActivity.this, tv_address.getText().toString()));
 
-            afterJoinViewModel.getReviewData(codeQR, tokenValue).observe(this, reviewData -> {
+            afterJoinOrderViewModel.getReviewData(codeQR, tokenValue).observe(this, reviewData -> {
                 if (reviewData != null) {
                     gotoPerson = reviewData.getGotoCounter();
                 } else {
@@ -396,12 +397,20 @@ public class AfterJoinActivity
 
     private void observeValues() {
 
-        afterJoinViewModel.getForegroundNotificationLiveData().observe(this, new Observer<ForegroundNotificationModel>() {
+        afterJoinOrderViewModel.getForegroundNotificationLiveData().observe(this, new Observer<ForegroundNotificationModel>() {
             @Override
             public void onChanged(ForegroundNotificationModel foregroundNotificationModel) {
                 if (foregroundNotificationModel != null) {
                     handleBuzzer(foregroundNotificationModel);
                 }
+            }
+        });
+
+        afterJoinOrderViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND).observe(this, new Observer<ReviewData>() {
+            @Override
+            public void onChanged(ReviewData reviewData) {
+                if (reviewData != null && reviewData.getIsReviewShown().equals("-1"))
+                    startActivity(new Intent(AfterJoinActivity.this, HomeActivity.class));
             }
         });
 
@@ -432,7 +441,7 @@ public class AfterJoinActivity
             new CustomToast().showToast(this, getString(R.string.fail_to_cancel));
         }
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
-        afterJoinViewModel.deleteTokenAndQueue(codeQR, tokenValue);
+        afterJoinOrderViewModel.deleteTokenAndQueue(codeQR, tokenValue);
         // Clear entry from App preferences
         SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
         prefs.edit().remove(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR)).apply();
@@ -499,13 +508,13 @@ public class AfterJoinActivity
         super.onResume();
         /* Added to update the screen if app is in background & notification received */
         if (!isResumeFirst) {
-            afterJoinViewModel.getCurrentQueueObject(codeQR, tokenValue);
-            afterJoinViewModel.getCurrentQueueObjectLiveData().observe(this, new Observer<JsonTokenAndQueue>() {
+            afterJoinOrderViewModel.getCurrentQueueObject(codeQR, tokenValue);
+            afterJoinOrderViewModel.getCurrentQueueObjectLiveData().observe(this, new Observer<JsonTokenAndQueue>() {
                 @Override
                 public void onChanged(JsonTokenAndQueue jsonTokenAndQueue) {
                     if (jsonTokenAndQueue != null) {
                         if (TextUtils.isEmpty(gotoPerson)) {
-                            afterJoinViewModel.getReviewData(codeQR, tokenValue).observe(AfterJoinActivity.this, reviewData -> {
+                            afterJoinOrderViewModel.getReviewData(codeQR, tokenValue).observe(AfterJoinActivity.this, reviewData -> {
                                 if (reviewData != null) {
                                     gotoPerson = reviewData.getGotoCounter();
                                 } else {
@@ -892,7 +901,7 @@ public class AfterJoinActivity
         jsonTokenAndQueue.setDisplayToken(jsonToken.getDisplayToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
         //save data to DB
-        afterJoinViewModel.insertTokenAndQueue(jsonTokenAndQueue);
+        afterJoinOrderViewModel.insertTokenAndQueue(jsonTokenAndQueue);
         generateQRCode();
         dismissProgress();
     }
@@ -924,28 +933,28 @@ public class AfterJoinActivity
     }
 
     private void handleBuzzer(ForegroundNotificationModel foregroundNotification) {
-        afterJoinViewModel.getCurrentQueueObjectList(foregroundNotification.getQrCode());
+        afterJoinOrderViewModel.getCurrentQueueObjectList(foregroundNotification.getQrCode());
 
-        afterJoinViewModel.getCurrentQueueObjectListLiveData().observe(this, jsonTokenAndQueues -> {
+        afterJoinOrderViewModel.getCurrentQueueObjectListLiveData().observe(this, jsonTokenAndQueues -> {
             if (jsonTokenAndQueues != null) {
                 for (JsonTokenAndQueue jtk : jsonTokenAndQueues) {
                     if (Integer.parseInt(foregroundNotification.getCurrentServing()) == jtk.getToken()) {
                         if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.Q) {
-                            Intent blinkerIntent =new Intent(AfterJoinActivity.this, BlinkerActivity.class);
+                            Intent blinkerIntent = new Intent(AfterJoinActivity.this, BlinkerActivity.class);
                             blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(blinkerIntent);
                             if (AppInitialize.isMsgAnnouncementEnable()) {
-                                if(foregroundNotification.getJsonTextToSpeeches() != null) {
+                                if (foregroundNotification.getJsonTextToSpeeches() != null) {
                                     makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
                                 }
                             }
                         } else if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.O) {
-                            if (foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RD) {
-                                Intent blinkerIntent =new Intent(AfterJoinActivity.this, BlinkerActivity.class);
+                            if (foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RD || foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RP) {
+                                Intent blinkerIntent = new Intent(AfterJoinActivity.this, BlinkerActivity.class);
                                 blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(blinkerIntent);
                                 if (AppInitialize.isMsgAnnouncementEnable()) {
-                                    if(foregroundNotification.getJsonTextToSpeeches() != null) {
+                                    if (foregroundNotification.getJsonTextToSpeeches() != null) {
                                         makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
                                     }
                                 }
@@ -956,7 +965,7 @@ public class AfterJoinActivity
             }
         });
 
-        afterJoinViewModel.deleteForegroundNotification();
+        afterJoinOrderViewModel.deleteForegroundNotification();
     }
 
     private void makeAnnouncement(List<JsonTextToSpeech> jsonTextToSpeeches, String msgId) {
