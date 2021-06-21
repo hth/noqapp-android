@@ -366,7 +366,7 @@ public class AfterJoinActivity
             tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
             // Store the currently serving and avg wait time in the app preference
             SharedPreferences prefs = this.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE);
-            prefs.edit().putInt(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), jsonTokenAndQueue.getServingNumber()).apply();
+            prefs.edit().putString(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), jsonTokenAndQueue.getServingNumber().toString()).apply();
             if (jsonTokenAndQueue.getAverageServiceTime() != 0) {
                 prefs.edit().putLong(String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), jsonTokenAndQueue.getAverageServiceTime()).apply();
             }
@@ -507,30 +507,30 @@ public class AfterJoinActivity
     public void onResume() {
         super.onResume();
         /* Added to update the screen if app is in background & notification received */
-        if (!isResumeFirst) {
-            afterJoinOrderViewModel.getCurrentQueueObject(codeQR, tokenValue);
-            afterJoinOrderViewModel.getCurrentQueueObjectLiveData().observe(this, new Observer<JsonTokenAndQueue>() {
-                @Override
-                public void onChanged(JsonTokenAndQueue jsonTokenAndQueue) {
-                    if (jsonTokenAndQueue != null) {
-                        if (TextUtils.isEmpty(gotoPerson)) {
-                            afterJoinOrderViewModel.getReviewData(codeQR, tokenValue).observe(AfterJoinActivity.this, reviewData -> {
-                                if (reviewData != null) {
-                                    gotoPerson = reviewData.getGotoCounter();
-                                } else {
-                                    gotoPerson = "";
-                                }
-                            });
-                        }
-                        setObject(jsonTokenAndQueue, gotoPerson);
+        //     if (!isResumeFirst) {
+        afterJoinOrderViewModel.getCurrentQueueObject(codeQR, tokenValue);
+        afterJoinOrderViewModel.getCurrentQueueObjectLiveData().observe(this, new Observer<JsonTokenAndQueue>() {
+            @Override
+            public void onChanged(JsonTokenAndQueue jsonTokenAndQueue) {
+                if (jsonTokenAndQueue != null) {
+                    if (TextUtils.isEmpty(gotoPerson)) {
+                        afterJoinOrderViewModel.getReviewData(codeQR, tokenValue).observe(AfterJoinActivity.this, reviewData -> {
+                            if (reviewData != null) {
+                                gotoPerson = reviewData.getGotoCounter();
+                            } else {
+                                gotoPerson = "";
+                            }
+                        });
                     }
+                    setObject(jsonTokenAndQueue.getServingNumber(), jsonTokenAndQueue.getToken(), gotoPerson);
                 }
-            });
-        }
-        if (isResumeFirst) {
-            isResumeFirst = false;
-        }
+            }
+        });
     }
+//        if (isResumeFirst) {
+//            isResumeFirst = false;
+//        }
+//    }
 
     public String getCodeQR() {
         return codeQR;
@@ -562,16 +562,17 @@ public class AfterJoinActivity
         }
     }
 
-    public void setObject(JsonTokenAndQueue jq, String go_to) {
-        gotoPerson = go_to;
+    public void setObject(Integer servingNumber, Integer token, String goTo) {
+        gotoPerson = goTo;
         // jsonTokenAndQueue = jq; removed to avoided the override of the data
-        jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
-        jsonTokenAndQueue.setToken(jq.getToken());
+        jsonTokenAndQueue.setServingNumber(servingNumber);
+        jsonTokenAndQueue.setToken(token);
         //tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
         tv_token.setText(jsonTokenAndQueue.getDisplayToken());
         tv_position_in_queue.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
         updateEstimatedTime();
-        setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
+        Integer afterHowLong = token - servingNumber;
+        setBackGround(afterHowLong > 0 ? afterHowLong : 0);
     }
 
     private void updateEstimatedTime() {
@@ -615,7 +616,7 @@ public class AfterJoinActivity
     public boolean updateUI(String qrCode, JsonTokenAndQueue jq, String go_to) {
         if (codeQR.equals(qrCode) && (Integer.parseInt(tokenValue) >= jq.getServingNumber())) {
             //updating the serving status
-            setObject(jq, go_to);
+            setObject(jq.getServingNumber(), jq.getToken(), go_to);
             if (jq.afterHowLong() > 0) {
                 return false;
             } else {
@@ -935,36 +936,30 @@ public class AfterJoinActivity
     private void handleBuzzer(ForegroundNotificationModel foregroundNotification) {
         afterJoinOrderViewModel.getCurrentQueueObjectList(foregroundNotification.getQrCode());
 
-        afterJoinOrderViewModel.getCurrentQueueObjectListLiveData().observe(this, jsonTokenAndQueues -> {
-            if (jsonTokenAndQueues != null) {
-                for (JsonTokenAndQueue jtk : jsonTokenAndQueues) {
-                    if (Integer.parseInt(foregroundNotification.getCurrentServing()) == jtk.getToken()) {
-                        if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.Q) {
-                            Intent blinkerIntent = new Intent(AfterJoinActivity.this, BlinkerActivity.class);
-                            blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(blinkerIntent);
-                            if (AppInitialize.isMsgAnnouncementEnable()) {
-                                if (foregroundNotification.getJsonTextToSpeeches() != null) {
-                                    makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
-                                }
-                            }
-                        } else if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.O) {
-                            if (foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RD || foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RP) {
-                                Intent blinkerIntent = new Intent(AfterJoinActivity.this, BlinkerActivity.class);
-                                blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(blinkerIntent);
-                                if (AppInitialize.isMsgAnnouncementEnable()) {
-                                    if (foregroundNotification.getJsonTextToSpeeches() != null) {
-                                        makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
-                                    }
-                                }
-                            }
+        if (foregroundNotification.getCurrentServing().equals(foregroundNotification.getUserCurrentToken())) {
+            if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.Q) {
+                Intent blinkerIntent = new Intent(AfterJoinActivity.this, BlinkerActivity.class);
+                blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(blinkerIntent);
+                if (AppInitialize.isMsgAnnouncementEnable()) {
+                    if (foregroundNotification.getJsonTextToSpeeches() != null) {
+                        makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
+                    }
+                }
+            } else if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.O) {
+                if (foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RD || foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RP) {
+                    Intent blinkerIntent = new Intent(AfterJoinActivity.this, BlinkerActivity.class);
+                    blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(blinkerIntent);
+                    if (AppInitialize.isMsgAnnouncementEnable()) {
+                        if (foregroundNotification.getJsonTextToSpeeches() != null) {
+                            makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
                         }
                     }
                 }
             }
-        });
-
+        }
+        setObject(Integer.parseInt(foregroundNotification.getCurrentServing()), Integer.parseInt(foregroundNotification.getUserCurrentToken()), foregroundNotification.getGoTo());
         afterJoinOrderViewModel.deleteForegroundNotification();
     }
 

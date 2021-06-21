@@ -807,7 +807,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     withContext(Dispatchers.IO) {
                                         NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
                                             .tokenAndQueueDao()
-                                            .updateCurrentListQueueObjectWithState(
+                                            .updateCurrentListQueueObject(
                                                 codeQR,
                                                 currentServing,
                                                 displayServingNumber,
@@ -835,8 +835,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             foregroundNotificationModel.goTo = go_to
                             foregroundNotificationModel.messageOrigin = messageOrigin
                             foregroundNotificationModel.msgId = msgId
-                            foregroundNotificationModel.purchaseOrderStateEnum =
-                                purchaseOrderStateEnum
+                            foregroundNotificationModel.purchaseOrderStateEnum = purchaseOrderStateEnum
+                            foregroundNotificationModel.userCurrentToken = jtk.token.toString()
                             codeQR?.let {
                                 foregroundNotificationModel.qrCode = codeQR
                             }
@@ -866,12 +866,15 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                                 // Check if User's turn then start Buzzer.
                                 if (currentServing == jtk.token.toString()) {
-                                    val buzzerIntent = Intent(
+                                    val homeIntent = Intent(
                                         this@NoQueueMessagingService,
                                         HomeActivity::class.java
                                     )
-                                    buzzerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                    startActivity(buzzerIntent)
+//                                    val buzzerIntent = Intent(
+//                                        this@NoQueueMessagingService,
+//                                        HomeActivity::class.java
+//                                    )
+                                    startActivity(homeIntent)
 //                                    if (AppInitialize.isMsgAnnouncementEnable() && null != LaunchActivity.getLaunchActivity()) {
 //                                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData.jsonTextToSpeeches, mappedData.get("mi"))
 //                                    }

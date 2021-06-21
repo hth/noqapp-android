@@ -28,4 +28,6 @@ class ForegroundNotificationModel {
     var qrCode = ""
     @ColumnInfo(name = "for_update_flag")
     var forUpdateFlag = false
+    @ColumnInfo(name = "user_current_token")
+    var userCurrentToken = ""
 }

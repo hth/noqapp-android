@@ -76,7 +76,7 @@
     <string name="serving_now">Now Serving</string>
     <string name="your_token">Token</string>
     <string name="your_order">Order</string>
-    <string name="position_in_queue_label">Position in queue</string>
+    <string name="position_in_queue_label">Your position in queue</string>
     <string name="position_in_queue">Position in queue: %1$d</string>
     <string name="your_are_next_label">You are next!</string>
     <string name="daily_token_limit">Daily token limit: %1$s</string>

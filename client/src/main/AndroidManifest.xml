@@ -317,7 +317,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".views.activities.BlinkerActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
