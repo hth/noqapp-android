@@ -173,60 +173,35 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
 
     private fun handleBuzzer(foregroundNotification: ForegroundNotificationModel) {
 
-        homeViewModel.viewModelScope.launch {
-            withContext(Dispatchers.Main) {
-                val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(foregroundNotification.qrCode)
-                jsonTokenAndQueueArrayList?.let {
-                    for (i in jsonTokenAndQueueArrayList.indices) {
-                        val jtk = jsonTokenAndQueueArrayList[i]
-
-                        if (AppInitialize.activityCommunicator != null) {
-                            val isUpdated = AppInitialize.activityCommunicator.updateUI(foregroundNotification.qrCode, jtk, foregroundNotification.goTo)
-                        }
-
-                        if (foregroundNotification.currentServing.toInt() == jtk.token) {
-
-                            if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.Q){
-                                val blinkerIntent = Intent(this@HomeActivity, BlinkerActivity::class.java)
-                                blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(blinkerIntent)
-                                if (AppInitialize.isMsgAnnouncementEnable()) {
-                                    foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
-                                        makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
-                                    }
-                                }
-                            }else if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.O) {
-                                if (foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RD || foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RP) {
-                                    val blinkerIntent = Intent(this@HomeActivity, BlinkerActivity::class.java)
-                                    blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                    startActivity(blinkerIntent)
-                                    if (AppInitialize.isMsgAnnouncementEnable()) {
-                                        foregroundNotification.jsonTextToSpeeches?.let { textToSpeeches ->
-                                            makeAnnouncement(textToSpeeches, foregroundNotification.msgId)
-                                        }
-                                    }
-                                }
-                            }
-
-
-//                    val reviewData = ReviewData()
-//                    reviewData.isReviewShown = "-1"
-//                    reviewData.codeQR = foregroundNotification.qrCode
-//                    reviewData.token = foregroundNotification.currentServing
-//                    reviewData.queueUserId = jtk.queueUserId
-//                    reviewData.isBuzzerShow = "1"
-//                    reviewData.isSkipped = "-1"
-//                    reviewData.gotoCounter = foregroundNotification.goTo
-//                    reviewData.type = Constants.NotificationTypeConstant.BACKGROUND
-
-                            //                   homeViewModel.insertReviewData(reviewData)
-
-                            homeViewModel.deleteForegroundNotification()
+        if (foregroundNotification.currentServing == foregroundNotification.userCurrentToken) {
+            if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.Q) {
+                val blinkerIntent = Intent(this, BlinkerActivity::class.java)
+                blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(blinkerIntent)
+                if (AppInitialize.isMsgAnnouncementEnable()) {
+                    if (foregroundNotification.jsonTextToSpeeches != null) {
+                        makeAnnouncement(
+                            foregroundNotification.jsonTextToSpeeches!!,
+                            foregroundNotification.msgId
+                        )
+                    }
+                }
+            } else if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.O) {
+                if (foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RD || foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RP) {
+                    val blinkerIntent = Intent(this, BlinkerActivity::class.java)
+                    blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(blinkerIntent)
+                    if (AppInitialize.isMsgAnnouncementEnable()) {
+                        if (foregroundNotification.jsonTextToSpeeches != null) {
+                            makeAnnouncement(
+                                foregroundNotification.jsonTextToSpeeches!!,
+                                foregroundNotification.msgId
+                            )
                         }
                     }
-
                 }
             }
+            homeViewModel.deleteForegroundNotification()
         }
     }
 

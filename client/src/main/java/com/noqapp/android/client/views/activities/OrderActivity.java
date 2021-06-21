@@ -468,7 +468,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
             startActivity(in);
-            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic"));
+            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic"+"_A"));
             callAddressPreference();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
@@ -626,7 +626,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
             startActivity(in);
-            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic"));
+            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic")+"_A");
             callAddressPreference();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());

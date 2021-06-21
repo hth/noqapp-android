@@ -60,7 +60,7 @@ class TokenAndQueueAdapter(
                     }
                     else -> {
                         layoutTokenBinding.tvQueueStatus.text =
-                            context.getString(R.string.position_in_queue_label) + " " + tokenAndQueue.afterHowLongForDisplay()
+                            context.getString(R.string.position_in_queue_label) + " " + tokenAndQueue.afterHowLong()
                         when (tokenAndQueue.businessType) {
                             BusinessTypeEnum.CD, BusinessTypeEnum.CDQ -> {
                                 layoutTokenBinding.tvTimeSlot.text = String.format(
