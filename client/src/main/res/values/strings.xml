@@ -525,5 +525,6 @@
     <string name="txt_please_login">Please login</string>
     <string name="txt_guest_user">Guest User</string>
     <string name="txt_order_being_prepared">Order being prepared</string>
+    <string name="review_hint">Please provide review for %1$s. For each comment earn 10 points. Points can be used towards NoQueue services.</string>
 
 </resources>

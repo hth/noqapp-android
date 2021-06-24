@@ -500,4 +500,5 @@
     <string name="txt_please_enter_house_number">Veuillez saisir le numéro de la maison/le nom du bâtiment</string>
     <string name="txt_please_enter_address">Veuillez saisir une adresse</string>
     <string name="txt_delivery_at">LIVRAISON AU</string>
+    <string name="review_hint">Please provide review for %1$s. For each comment earn 10 points. Points can be used towards NoQueue services.</string>
 </resources>
