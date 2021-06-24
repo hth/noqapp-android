@@ -500,4 +500,5 @@
     <string name="txt_please_enter_house_number">ದಯವಿಟ್ಟು ಮನೆಯ ಸಂಖ್ಯೆ/ಕಟ್ಟಡದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
     <string name="txt_please_enter_address">ದಯವಿಟ್ಟು ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="txt_delivery_at">ವಿತರಣೆ</string>
+    <string name="review_hint">Please provide review for %1$s. For each comment earn 10 points. Points can be used towards NoQueue services.</string>
 </resources>
