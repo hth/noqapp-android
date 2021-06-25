@@ -159,7 +159,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
                 }
             }
         })
-
     }
 
     private fun callSkipScreen(codeQR: String?) {
@@ -172,7 +171,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter, SharedPref
     }
 
     private fun handleBuzzer(foregroundNotification: ForegroundNotificationModel) {
-
         if (foregroundNotification.currentServing == foregroundNotification.userCurrentToken) {
             if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.Q) {
                 val blinkerIntent = Intent(this, BlinkerActivity::class.java)
