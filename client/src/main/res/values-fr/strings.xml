@@ -500,5 +500,24 @@
     <string name="txt_please_enter_house_number">Veuillez saisir le numéro de la maison/le nom du bâtiment</string>
     <string name="txt_please_enter_address">Veuillez saisir une adresse</string>
     <string name="txt_delivery_at">LIVRAISON AU</string>
+    <string name="txt_post">Post</string>
+    <string name="txt_time_slot">Time slot: %1$s - %2$s</string>
+    <string name="txt_services">Services</string>
+    <string name="txt_housing">Housing</string>
+    <string name="txt_market_place">Marketplace</string>
+    <string name="txt_jobs">Jobs</string>
+    <string name="txt_businesses">Businesses</string>
+    <string name="txt_usr_csd">URC/CSD</string>
+    <string name="txt_hospital">Hospital</string>
+    <string name="txt_grocery">Grocery</string>
+    <string name="txt_restaurant">Restaurant</string>
+    <string name="txt_school">School</string>
+    <string name="txt_cafeteria">Cafeteria</string>
+    <string name="txt_generic_store">Generic store</string>
+    <string name="tab_recent_visits">Recent Visits</string>
+    <string name="tab_near_me">Near Me</string>
+    <string name="txt_please_login">Please login</string>
+    <string name="txt_guest_user">Guest User</string>
+    <string name="txt_order_being_prepared">Order being prepared</string>
     <string name="review_hint">Please provide review for %1$s. For each comment earn 10 points. Points can be used towards NoQueue services.</string>
 </resources>

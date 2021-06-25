@@ -507,7 +507,7 @@
     <string name="txt_please_enter_address">Please enter address</string>
     <string name="txt_delivery_at">DELIVERY AT</string>
     <string name="txt_post">Post</string>
-    <string name="txt_time_slot">Time slot: %s - %s</string>
+    <string name="txt_time_slot">Time slot: %1$s - %2$s</string>
     <string name="txt_services">Services</string>
     <string name="txt_housing">Housing</string>
     <string name="txt_market_place">Marketplace</string>
