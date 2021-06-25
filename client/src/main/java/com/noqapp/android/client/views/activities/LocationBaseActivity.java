@@ -15,17 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.noqapp.android.client.BuildConfig;
@@ -82,8 +77,8 @@ public abstract class LocationBaseActivity extends BaseActivity {
 
     public void showSnackbar(int mainTextStringId) {
         Snackbar.make(findViewById(android.R.id.content), getString(mainTextStringId),
-                Snackbar.LENGTH_SHORT)
-                .show();
+            Snackbar.LENGTH_SHORT)
+            .show();
     }
 
     private boolean checkLocationPermission() {
@@ -163,7 +158,7 @@ public abstract class LocationBaseActivity extends BaseActivity {
         });
     }
 
-    protected void getMapLocation(Double latitude, Double longitude){
+    protected void getMapLocation(Double latitude, Double longitude) {
         LocationManager.INSTANCE.getLocationAddress(this, latitude, longitude, (address, countryShortName, area, town, district, state, stateShortName, lat, lng) -> {
             displayAddressOutput(address, countryShortName, area, town, district, state, stateShortName, lat, lng);
             return null;
