@@ -870,10 +870,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                         this@NoQueueMessagingService,
                                         HomeActivity::class.java
                                     )
-//                                    val buzzerIntent = Intent(
-//                                        this@NoQueueMessagingService,
-//                                        HomeActivity::class.java
-//                                    )
+                                    homeIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(homeIntent)
 //                                    if (AppInitialize.isMsgAnnouncementEnable() && null != LaunchActivity.getLaunchActivity()) {
 //                                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonData.jsonTextToSpeeches, mappedData.get("mi"))
