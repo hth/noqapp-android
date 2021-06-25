@@ -68,11 +68,8 @@ android {
             Properties versionBuildProps = new Properties()
             versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
 
-            if (versionBuildProps['VERSION_MAJOR'].toInteger() != versionMajor ||
-                    versionBuildProps['VERSION_MINOR'].toInteger() != versionMinor) {
-
-                println "versionPatch: " + 0.toString() +
-                        " versionBuild: " + versionBuildProps['VERSION_BUILD']
+            if (versionBuildProps['VERSION_MAJOR'].toInteger() != versionMajor || versionBuildProps['VERSION_MINOR'].toInteger() != versionMinor) {
+                println "versionPatch: " + 0.toString() + " versionBuild: " + versionBuildProps['VERSION_BUILD']
                 versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
 
                 versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
@@ -81,8 +78,7 @@ android {
                 versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
                 versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
             } else {
-                println "versionPatch: " + versionBuildProps['VERSION_PATCH'] +
-                        " versionBuild: " + versionBuildProps['VERSION_BUILD']
+                println "versionPatch: " + versionBuildProps['VERSION_PATCH'] + " versionBuild: " + versionBuildProps['VERSION_BUILD']
                 versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
                 versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
 
@@ -213,6 +209,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
+            buildConfigField STRING, "MARKETPLACE_BUCKET", marketplaceImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
@@ -261,6 +258,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
+            buildConfigField STRING, "MARKETPLACE_BUCKET", marketplaceImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
@@ -307,6 +305,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
+            buildConfigField STRING, "MARKETPLACE_BUCKET", marketplaceImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeProd
