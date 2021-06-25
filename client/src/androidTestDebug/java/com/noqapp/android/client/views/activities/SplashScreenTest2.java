@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
@@ -24,6 +23,7 @@ import org.junit.runner.RunWith;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -38,9 +38,7 @@ public class SplashScreenTest2 {
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
 
     @Rule
-    public GrantPermissionRule mGrantPermissionRule =
-            GrantPermissionRule.grant(
-                    "android.permission.ACCESS_FINE_LOCATION");
+    public GrantPermissionRule mGrantPermissionRule = GrantPermissionRule.grant("android.permission.ACCESS_FINE_LOCATION");
 
     @Test
     public void splashScreenTest2() {
@@ -63,13 +61,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatImageView = onView(
-                allOf(withId(R.id.iv_event),
+            allOf(withId(R.id.iv_event),
+                childAtPosition(
+                    allOf(withId(R.id.cv_event),
                         childAtPosition(
-                                allOf(withId(R.id.cv_event),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                5)),
-                                0)));
+                            withClassName(is("android.widget.LinearLayout")),
+                            5)),
+                    0)));
         appCompatImageView.perform(scrollTo(), click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -82,13 +80,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatImageView2 = onView(
-                allOf(withId(R.id.actionbarBack),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
+            allOf(withId(R.id.actionbarBack),
+                childAtPosition(
+                    childAtPosition(
+                        withId(android.R.id.content),
+                        0),
+                    1),
+                isDisplayed()));
         appCompatImageView2.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -101,13 +99,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.tv_merchant_view_all), withText("View All"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.rl_business_around_you),
-                                        0),
-                                2),
-                        isDisplayed()));
+            allOf(withId(R.id.tv_merchant_view_all), withText("View All"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.rl_business_around_you),
+                        0),
+                    2),
+                isDisplayed()));
         appCompatTextView.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -120,13 +118,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatImageView3 = onView(
-                allOf(withId(R.id.actionbarBack),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.toolbar),
-                                        0),
-                                0),
-                        isDisplayed()));
+            allOf(withId(R.id.actionbarBack),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.toolbar),
+                        0),
+                    0),
+                isDisplayed()));
         appCompatImageView3.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -139,13 +137,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction cardView = onView(
-                allOf(withId(R.id.card_view),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.rv_merchant_around_you),
-                                        2),
-                                0),
-                        isDisplayed()));
+            allOf(withId(R.id.card_view),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.rv_merchant_around_you),
+                        2),
+                    0),
+                isDisplayed()));
         cardView.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -158,13 +156,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.tv_rating_review), withText("100 Reviews"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                1),
-                        isDisplayed()));
+            allOf(withId(R.id.tv_rating_review), withText("100 Reviews"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(is("android.widget.LinearLayout")),
+                        2),
+                    1),
+                isDisplayed()));
         appCompatTextView2.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -177,13 +175,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatImageView4 = onView(
-                allOf(withId(R.id.actionbarBack),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.toolbar),
-                                        0),
-                                0),
-                        isDisplayed()));
+            allOf(withId(R.id.actionbarBack),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.toolbar),
+                        0),
+                    0),
+                isDisplayed()));
         appCompatImageView4.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -196,13 +194,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.btn_join_queues), withText("Find Doctor"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.cardview),
-                                        0),
-                                4),
-                        isDisplayed()));
+            allOf(withId(R.id.btn_join_queues), withText("Find Doctor"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.cardview),
+                        0),
+                    4),
+                isDisplayed()));
         appCompatButton.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -215,13 +213,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatTextView3 = onView(
-                allOf(withId(R.id.tv_join), withText(R.string.get_token),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.RelativeLayout")),
-                                        1),
-                                2),
-                        isDisplayed()));
+            allOf(withId(R.id.tv_join), withText(R.string.get_token),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(is("android.widget.RelativeLayout")),
+                        1),
+                    2),
+                isDisplayed()));
         appCompatTextView3.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -234,13 +232,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatImageView5 = onView(
-                allOf(withId(R.id.iv_home),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.toolbar),
-                                        0),
-                                3),
-                        isDisplayed()));
+            allOf(withId(R.id.iv_home),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.toolbar),
+                        0),
+                    3),
+                isDisplayed()));
         appCompatImageView5.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -253,13 +251,13 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatTextView4 = onView(
-                allOf(withId(R.id.tv_feed_view_all), withText("View All"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.rl_feed),
-                                        0),
-                                2),
-                        isDisplayed()));
+            allOf(withId(R.id.tv_feed_view_all), withText("View All"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.rl_feed),
+                        0),
+                    2),
+                isDisplayed()));
         appCompatTextView4.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -272,14 +270,14 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction cardView2 = onView(
-                allOf(withId(R.id.card_view),
+            allOf(withId(R.id.card_view),
+                childAtPosition(
+                    allOf(withId(R.id.rv_merchant_around_you),
                         childAtPosition(
-                                allOf(withId(R.id.rv_merchant_around_you),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1),
-                        isDisplayed()));
+                            withClassName(is("android.widget.LinearLayout")),
+                            1)),
+                    1),
+                isDisplayed()));
         cardView2.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -292,14 +290,14 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+            allOf(withContentDescription("Navigate up"),
+                childAtPosition(
+                    allOf(withId(R.id.toolbar),
                         childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                allOf(withId(R.id.toolbar_layout), withContentDescription(" ")),
-                                                1)),
-                                1),
-                        isDisplayed()));
+                            allOf(withId(R.id.toolbar_layout), withContentDescription(" ")),
+                            1)),
+                    1),
+                isDisplayed()));
         appCompatImageButton.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -312,18 +310,18 @@ public class SplashScreenTest2 {
         }
 
         ViewInteraction appCompatImageView6 = onView(
-                allOf(withId(R.id.actionbarBack),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.toolbar),
-                                        0),
-                                0),
-                        isDisplayed()));
+            allOf(withId(R.id.actionbarBack),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.toolbar),
+                        0),
+                    0),
+                isDisplayed()));
         appCompatImageView6.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
+        final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
             @Override
@@ -335,8 +333,7 @@ public class SplashScreenTest2 {
             @Override
             public boolean matchesSafely(View view) {
                 ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
+                return parent instanceof ViewGroup && parentMatcher.matches(parent) && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
     }
