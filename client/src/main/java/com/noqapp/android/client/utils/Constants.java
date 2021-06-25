@@ -40,15 +40,17 @@ public class Constants extends BaseConstants{
     public static final String MESSAGE_ID = "mi";
     public static final String JSON_USER_ADDRESS = "jsonUserAddress";
 
+    /** Distance in KMs. */
     public static final int VALID_DOCTOR_STORE_DISTANCE_FOR_TOKEN = 150;
+    public static final int VALID_CDQ_AND_CD_STORE_DISTANCE_FOR_TOKEN = 100;
     public static final int VALID_STORE_DISTANCE_FOR_TOKEN = 5;
 
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
 
-    //error codes
+    /** Error codes. */
     public static final int INVALID_BAR_CODE = 404;
 
-    //Google place search api
+    /** Google place search api. */
     static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     static final String OUT_JSON = "/json";
@@ -57,9 +59,10 @@ public class Constants extends BaseConstants{
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
     private static String VERSION_RELEASE;
 
-    // Shared Preferences keys
+    /** Shared Preferences keys. */
     public static final String APP_PACKAGE = "com.noqapp.android.client";
-    // Pref key for Token status
+
+    /** Pref key for Token status. */
     public static final String CURRENTLY_SERVING_PREF_KEY = "%s_currently_serving";
     public static final String DISPLAY_SERVING_NUMBER_PREF_KEY = "%s_display_serving_number";
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";

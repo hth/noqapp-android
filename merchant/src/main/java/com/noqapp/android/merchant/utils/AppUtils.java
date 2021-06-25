@@ -126,6 +126,12 @@ public class AppUtils extends CommonHelper {
             case BuildConfig.ADVERTISEMENT_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + url;
                 break;
+            case BuildConfig.PRODUCT_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + url;
+                break;
+            case BuildConfig.MARKETPLACE_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.MARKETPLACE_BUCKET + url;
+                break;
             default:
                 Log.e(AppUtils.class.getSimpleName(), "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
@@ -151,19 +157,11 @@ public class AppUtils extends CommonHelper {
     }
 
     public boolean checkStoreClosedWithTime(JsonHour jsonHour) {
-        if ((jsonHour.getStartHour() == 0 && jsonHour.getEndHour() == 0)) {
-            return true;
-        } else {
-            return false;
-        }
+        return 0 == jsonHour.getStartHour() && 0 == jsonHour.getEndHour();
     }
 
     public boolean checkStoreClosedWithAppointmentTime(JsonHour jsonHour) {
-        if ((jsonHour.getAppointmentStartHour() == 0 && jsonHour.getAppointmentEndHour() == 0)) {
-            return true;
-        } else {
-            return false;
-        }
+        return 0 == jsonHour.getAppointmentStartHour() && 0 == jsonHour.getAppointmentEndHour();
     }
 
 

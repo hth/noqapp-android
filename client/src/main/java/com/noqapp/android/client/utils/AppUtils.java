@@ -91,7 +91,7 @@ public class AppUtils extends CommonHelper {
                 context.startActivity(callIntent);
             } catch (ActivityNotFoundException ex) {
                 Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
-                new CustomToast().showToast(context, "Please install a calling application");
+                new CustomToast().showToast(context, "Please install calling application");
             }
         }
     }
@@ -103,7 +103,7 @@ public class AppUtils extends CommonHelper {
             context.startActivity(intent);
         } catch (ActivityNotFoundException ex) {
             Log.e(TAG, "Failed opening address reason=" + ex.getLocalizedMessage());
-            new CustomToast().showToast(context, "Please install a maps application");
+            new CustomToast().showToast(context, "Please install map application");
         }
     }
 
@@ -115,7 +115,7 @@ public class AppUtils extends CommonHelper {
             context.startActivity(mapIntent);
         } catch (ActivityNotFoundException ex) {
             Log.e(TAG, "Failed opening address reason=" + ex.getLocalizedMessage());
-            new CustomToast().showToast(context, "Please install a maps application");
+            new CustomToast().showToast(context, "Please install map application");
         }
     }
 
@@ -159,19 +159,13 @@ public class AppUtils extends CommonHelper {
         Collections.sort(jsonQueues, openNow);
         jsonQueues.addAll(afterNowClosedQueues);
         jsonQueues.addAll(closedTodayQueues);
-
-        for (JsonQueue jsonQueue : jsonQueues) {
-            System.out.println(jsonQueue.getDisplayName());
-        }
     }
 
     public static double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 6371000; //meters
         double dLat = Math.toRadians(lat2 - lat1);
         double dLng = Math.toRadians(lng2 - lng1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         float dist = (float) (earthRadius * c);
         if (LaunchActivity.DISTANCE_UNIT.equals("km")) {
@@ -232,19 +226,19 @@ public class AppUtils extends CommonHelper {
         } else if (getTimeIn24HourFormat() >= storeHourElastic.getStartHour() && getTimeIn24HourFormat() < storeHourElastic.getEndHour()) {
             //Based on location let them know in how much time they will reach or suggest the next queue.
             additionalText = bizStoreElastic.getDisplayName()
-                    + " is open & can service you now. Click to join the queue.";
+                + " is open & can service you now. Click to join the queue.";
         } else {
             if (getTimeIn24HourFormat() >= storeHourElastic.getTokenAvailableFrom()) {
                 additionalText = bizStoreElastic.getDisplayName()
-                        + " opens at "
-                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                        + ". Join queue now to save time.";
+                    + " opens at "
+                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                    + ". Join queue now to save time.";
             } else {
                 additionalText = bizStoreElastic.getDisplayName()
-                        + " can service you at "
-                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                        + ". You can join this queue at "
-                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom());
+                    + " can service you at "
+                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                    + ". You can join this queue at "
+                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom());
             }
         }
         return additionalText;
@@ -321,28 +315,28 @@ public class AppUtils extends CommonHelper {
         String url;
         try {
             url = Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON +
-                    "?key=" + Constants.GOOGLE_PLACE_API_KEY +
-                    "&components=country:" + LaunchActivity.COUNTRY_CODE +
-                    "&types=(regions)" +
-                    "&input=" + URLEncoder.encode(input, "utf8");
+                "?key=" + Constants.GOOGLE_PLACE_API_KEY +
+                "&components=country:" + LaunchActivity.COUNTRY_CODE +
+                "&types=(regions)" +
+                "&input=" + URLEncoder.encode(input, "utf8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
         }
 
         Request request = new Request.Builder()
-                .url(url)
-                .build();
+            .url(url)
+            .build();
 
         try {
             Response response = client.newCall(request).execute();
 
-            // Create a JSON object hierarchy from the results
+            /* Create a JSON object hierarchy from the results. */
             String data = response.body().string();
             JSONObject jsonObj = new JSONObject(data);
             JSONArray predictions = jsonObj.getJSONArray("predictions");
-            // Extract the Place descriptions from the results
-            resultList = new ArrayList<String>(predictions.length());
+            /* Extract the Place descriptions from the results. */
+            resultList = new ArrayList<>(predictions.length());
             for (int i = 0; i < predictions.length(); i++) {
                 resultList.add(predictions.getJSONObject(i).getString("description"));
             }
@@ -406,6 +400,9 @@ public class AppUtils extends CommonHelper {
                 break;
             case BuildConfig.PRODUCT_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + url;
+                break;
+            case BuildConfig.MARKETPLACE_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.MARKETPLACE_BUCKET + url;
                 break;
             default:
                 Log.e(TAG, "Un-supported bucketType=" + bucket_type);
@@ -529,10 +526,10 @@ public class AppUtils extends CommonHelper {
 
     public static void shareTheApp(Context context) {
         String shareMessage = "Hi, I am using a new and wonderful app, called NoQueue. " +
-                "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, it is real time. " +
-                "Get the status update on your phone quickly and immediately. I am sending you an invite so you too " +
-                "enjoy the experience and avoid standing in queues.\n\n" +
-                "Download it here: https://play.google.com/store/apps/details?id=" + context.getPackageName();
+            "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, it is real time. " +
+            "Get the status update on your phone quickly and immediately. I am sending you an invite so you too " +
+            "enjoy the experience and avoid standing in queues.\n\n" +
+            "Download it here: https://play.google.com/store/apps/details?id=" + context.getPackageName();
 
         // @TODO revert the below changes when storage permission enabled in manifest (fails on Samsung)
         Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
@@ -540,7 +537,7 @@ public class AppUtils extends CommonHelper {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             Uri bitmapUri = null;
             try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "NoQueue.png");
                 if (file.getParentFile().mkdirs() || file.getParentFile().exists()) {
                     FileOutputStream out = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
@@ -565,7 +562,7 @@ public class AppUtils extends CommonHelper {
             }
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NoQueue");
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-            context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
+            context.startActivity(Intent.createChooser(shareIntent, "Choose one to share the app"));
         }
     }
 
@@ -578,10 +575,10 @@ public class AppUtils extends CommonHelper {
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
-                        .placeholder(ImageUtils.getProfilePlaceholder(context))
-                        .error(ImageUtils.getProfileErrorPlaceholder(context))
-                        .into(iv_profile);
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
+                    .placeholder(ImageUtils.getProfilePlaceholder(context))
+                    .error(ImageUtils.getProfileErrorPlaceholder(context))
+                    .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -590,9 +587,9 @@ public class AppUtils extends CommonHelper {
 
     public static int generateRandomColor() {
         String[] colors = new String[]{
-                "#90C978", "#AFD5AA", "#83C6DD", "#5DB1D1", "#8DA290", "#BEC7B4", "#769ECB", "#9DBAD5",
-                "#C8D6B9", "#8FC1A9", "#7CAA98", "#58949C", "#DF9881", "#D4B59D", "#CE9C6F", "#D3EEFF",
-                "#836853", "#988270", "#4F9EC4", "#3A506B", "#606E79", "#804040", "#AF6E4D", "#567192"};
+            "#90C978", "#AFD5AA", "#83C6DD", "#5DB1D1", "#8DA290", "#BEC7B4", "#769ECB", "#9DBAD5",
+            "#C8D6B9", "#8FC1A9", "#7CAA98", "#58949C", "#DF9881", "#D4B59D", "#CE9C6F", "#D3EEFF",
+            "#836853", "#988270", "#4F9EC4", "#3A506B", "#606E79", "#804040", "#AF6E4D", "#567192"};
 
         int rnd = new Random().nextInt(colors.length);
         return Color.parseColor(colors[rnd]);
@@ -657,6 +654,13 @@ public class AppUtils extends CommonHelper {
                         return false;
                     }
                     break;
+                case BK:
+                case CD:
+                case CDQ:
+                    if (distance > Constants.VALID_CDQ_AND_CD_STORE_DISTANCE_FOR_TOKEN) {
+                        return false;
+                    }
+                    break;
                 default:
                     if (distance > Constants.VALID_STORE_DISTANCE_FOR_TOKEN) {
                         return false;
@@ -695,3 +699,4 @@ public class AppUtils extends CommonHelper {
         return StringUtils.isNotBlank(town) ? town : "";
     }
 }
+
