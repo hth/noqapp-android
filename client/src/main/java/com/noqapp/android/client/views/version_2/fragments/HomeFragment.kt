@@ -80,7 +80,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     private fun setClickListeners() {
-
         fragmentHomeNewBinding.tabNearMeRecentVisits.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
