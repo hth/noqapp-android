@@ -6,10 +6,8 @@ import androidx.room.PrimaryKey
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 
-@Entity(tableName = "foreground_notification")
+@Entity(tableName = "foreground_notification", primaryKeys = ["qr_code", "user_current_token"])
 class ForegroundNotificationModel {
-    @PrimaryKey(autoGenerate = true)
-    var key: Long? = null
     @ColumnInfo(name = "go_to")
     var goTo = ""
     @ColumnInfo(name = "message_origin")
