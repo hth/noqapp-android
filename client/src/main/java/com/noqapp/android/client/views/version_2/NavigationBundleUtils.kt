@@ -53,12 +53,8 @@ class NavigationBundleUtils {
                     intent.putExtras(bundle)
                     activity.startActivity(intent)
                 } else {
-                    Log.d(
-                        NavigationBundleUtils::class.java.simpleName,
-                        "Reached un-supported condition"
-                    )
-                    FirebaseCrashlytics.getInstance()
-                        .log("Reached un-supported condition " + bizStoreElastic.businessType)
+                    Log.d(NavigationBundleUtils::class.java.simpleName, "Reached un-supported condition")
+                    FirebaseCrashlytics.getInstance().log("Reached un-supported condition " + bizStoreElastic.businessType)
                 }
             else -> {
                 // open order screen
