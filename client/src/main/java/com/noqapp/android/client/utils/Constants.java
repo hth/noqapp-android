@@ -67,7 +67,7 @@ public class Constants extends BaseConstants{
     public static final String DISPLAY_SERVING_NUMBER_PREF_KEY = "%s_display_serving_number";
     public static final String ESTIMATED_WAIT_TIME_PREF_KEY = "%s_estimated_wait";
     public static final String PRE_REGISTER = "pre_approve";
-    public static final String ADDRESS_LIST = "addresslist";
+    public static final String ADDRESS_LIST = "addressList";
 
     public interface LocationConstants {
         int SUCCESS_RESULT = 10_001;
