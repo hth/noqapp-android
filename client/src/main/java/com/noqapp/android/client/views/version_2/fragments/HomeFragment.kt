@@ -178,10 +178,10 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
+        /** Recent to be listed in order of last joined activity. Displays based on recently visited. */
         homeViewModel.favoritesListResponseLiveData.observe(viewLifecycleOwner, {
             it?.favoriteSuggested?.let {
                 searchStoreQuery?.let { searchStoreQueryVal ->
-                    Collections.sort(it, SortPlaces(GeoIP(searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())))
                     val storeInfoAdapter = StoreInfoAdapter(it, activity, this, searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())
                     fragmentHomeNewBinding.rvRecentVisitsNearMe.adapter = storeInfoAdapter
                     fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.GONE

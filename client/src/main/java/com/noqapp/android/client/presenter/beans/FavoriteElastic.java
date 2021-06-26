@@ -9,9 +9,8 @@ import com.noqapp.android.common.model.types.ActionTypeEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -30,16 +29,16 @@ import java.util.Set;
 public class FavoriteElastic implements Serializable {
 
     @JsonProperty("fs")
-    private List<BizStoreElastic> favoriteSuggested = new ArrayList<>();
+    private List<BizStoreElastic> favoriteSuggested = new LinkedList<>();
 
     @JsonProperty("ft")
-    private List<BizStoreElastic> favoriteTagged = new ArrayList<>();
+    private List<BizStoreElastic> favoriteTagged = new LinkedList<>();
 
     @JsonProperty("fsb")
-    private Set<String> favoriteSuggestedBizNameIds = new HashSet<>();
+    private List<String> favoriteSuggestedBizNameIds = new LinkedList<>();
 
     @JsonProperty("ftb")
-    private Set<String> favoriteTaggedBizNameIds = new HashSet<>();
+    private List<String> favoriteTaggedBizNameIds = new LinkedList<>();
 
     @JsonProperty("at")
     private ActionTypeEnum actionType;
@@ -54,8 +53,8 @@ public class FavoriteElastic implements Serializable {
         return favoriteSuggested;
     }
 
-    public FavoriteElastic addFavoriteSuggested(BizStoreElastic favoriteSuggested) {
-        this.favoriteSuggested.add(favoriteSuggested);
+    public FavoriteElastic setFavoriteSuggested(List<BizStoreElastic> favoriteSuggested) {
+        this.favoriteSuggested = favoriteSuggested;
         return this;
     }
 
@@ -63,25 +62,25 @@ public class FavoriteElastic implements Serializable {
         return favoriteTagged;
     }
 
-    public FavoriteElastic addFavoriteTagged(BizStoreElastic favoriteTagged) {
-        this.favoriteTagged.add(favoriteTagged);
+    public FavoriteElastic setFavoriteTagged(List<BizStoreElastic> favoriteTagged) {
+        this.favoriteTagged = favoriteTagged;
         return this;
     }
 
-    public Set<String> getFavoriteSuggestedBizNameIds() {
+    public List<String> getFavoriteSuggestedBizNameIds() {
         return favoriteSuggestedBizNameIds;
     }
 
-    public FavoriteElastic setFavoriteSuggestedBizNameIds(Set<String> favoriteSuggestedBizNameIds) {
+    public FavoriteElastic setFavoriteSuggestedBizNameIds(List<String> favoriteSuggestedBizNameIds) {
         this.favoriteSuggestedBizNameIds = favoriteSuggestedBizNameIds;
         return this;
     }
 
-    public Set<String> getFavoriteTaggedBizNameIds() {
+    public List<String> getFavoriteTaggedBizNameIds() {
         return favoriteTaggedBizNameIds;
     }
 
-    public FavoriteElastic setFavoriteTaggedBizNameIds(Set<String> favoriteTaggedBizNameIds) {
+    public FavoriteElastic setFavoriteTaggedBizNameIds(List<String> favoriteTaggedBizNameIds) {
         this.favoriteTaggedBizNameIds = favoriteTaggedBizNameIds;
         return this;
     }
