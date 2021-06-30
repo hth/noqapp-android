@@ -402,6 +402,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         }
 
         jsonTokenAndQueue.setToken(jsonPurchaseOrder.getToken());
+        jsonTokenAndQueue.setDisplayToken(jsonTokenAndQueue.getDisplayServingNumber().substring(0,1) + (100+jsonPurchaseOrder.getToken()));
         afterJoinOrderViewModel.insertTokenAndQueue(jsonTokenAndQueue);
     }
 

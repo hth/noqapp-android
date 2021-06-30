@@ -717,7 +717,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 val jsonTopicOrderData = jsonData
                 currentServing = jsonTopicOrderData.currentlyServing.toString()
                 displayServingNumber = jsonTopicOrderData.displayServingNumber
-                go_to = jsonTopicOrderData.goTo
+                jsonTopicOrderData.goTo?.let {
+                    go_to = jsonTopicOrderData.goTo
+                }
                 messageOrigin = jsonTopicOrderData.messageOrigin.name
                 purchaseOrderStateEnum = jsonTopicOrderData.purchaseOrderState
                 jsonTextToSpeeches = jsonData.getJsonTextToSpeeches()
