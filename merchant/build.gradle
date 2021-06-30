@@ -198,6 +198,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "MARKETPLACE_BUCKET", marketplaceImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
@@ -242,6 +243,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "MARKETPLACE_BUCKET", marketplaceImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
@@ -283,6 +285,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "PRODUCT_BUCKET", productImageLocation
             buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "MARKETPLACE_BUCKET", marketplaceImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
