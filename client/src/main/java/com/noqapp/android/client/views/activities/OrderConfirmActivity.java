@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
@@ -29,7 +28,6 @@ import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
@@ -673,24 +671,16 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     }
 
     private void observeValues() {
-
-        afterJoinOrderViewModel.getForegroundNotificationLiveData().observe(this, new Observer<ForegroundNotificationModel>() {
-            @Override
-            public void onChanged(ForegroundNotificationModel foregroundNotificationModel) {
-                if (foregroundNotificationModel != null) {
-                    handleBuzzer(foregroundNotificationModel);
-                }
+        afterJoinOrderViewModel.getForegroundNotificationLiveData().observe(this, foregroundNotificationModel -> {
+            if (foregroundNotificationModel != null) {
+                handleBuzzer(foregroundNotificationModel);
             }
         });
 
-        afterJoinOrderViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND).observe(this, new Observer<ReviewData>() {
-            @Override
-            public void onChanged(ReviewData reviewData) {
-                if (reviewData != null && reviewData.getIsReviewShown().equals("-1"))
-                    startActivity(new Intent(OrderConfirmActivity.this, HomeActivity.class));
-            }
+        afterJoinOrderViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND).observe(this, reviewData -> {
+            if (reviewData != null && reviewData.getIsReviewShown().equals("-1"))
+                startActivity(new Intent(OrderConfirmActivity.this, HomeActivity.class));
         });
-
     }
 
     private void handleBuzzer(ForegroundNotificationModel foregroundNotification) {
@@ -706,24 +696,30 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(blinkerIntent);
                             if (AppInitialize.isMsgAnnouncementEnable()) {
-                                if (foregroundNotification.getJsonTextToSpeeches() != null) {
+                                if (null != foregroundNotification.getJsonTextToSpeeches()) {
                                     makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
                                 }
                             }
                         } else if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.O) {
-                            if (foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RD || foregroundNotification.getPurchaseOrderStateEnum() == PurchaseOrderStateEnum.RP) {
-                                Intent blinkerIntent = new Intent(OrderConfirmActivity.this, BlinkerActivity.class);
-                                blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(blinkerIntent);
-                                if (AppInitialize.isMsgAnnouncementEnable()) {
-                                    if (foregroundNotification.getJsonTextToSpeeches() != null) {
-                                        makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
+                            switch (foregroundNotification.getPurchaseOrderStateEnum()) {
+                                case RD:
+                                case RP:
+                                    Intent blinkerIntent = new Intent(OrderConfirmActivity.this, BlinkerActivity.class);
+                                    blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(blinkerIntent);
+                                    if (AppInitialize.isMsgAnnouncementEnable()) {
+                                        if (null != foregroundNotification.getJsonTextToSpeeches()) {
+                                            makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
+                                        }
                                     }
-                                }
+                                    break;
+                                default:
+                                    //Do nothing
                             }
                         }
                     }
 
+                    //TODO(vivek) this will not work as which token is being compared
                     if (jtk.getToken() - jtk.getServingNumber() <= 0) {
                         if (jtk.getPurchaseOrderState() == PurchaseOrderStateEnum.OP) {
                             tv_status.setText(getString(R.string.txt_order_being_prepared));
@@ -734,8 +730,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                         tv_status.setText(getString(R.string.queue_not_started));
                     } else {
                         tv_status.setText(getString(R.string.serving_now) + " " + jtk.afterHowLongForDisplay());
+                        //tv_status.setText("Its your turn!!!"); to be added when its there turn instead
                     }
-
                 }
             }
         });
@@ -758,5 +754,4 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             textToSpeechHelper.makeAnnouncement(jsonTextToSpeeches);
         }
     }
-
 }
