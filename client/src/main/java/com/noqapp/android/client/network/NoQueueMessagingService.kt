@@ -333,7 +333,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             val displayNotification = DisplayNotification()
                             displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
                             displayNotification.codeQR = jsonData.codeQR
-                            //from my point of view it is wrong....lets discuss more bot it
+                            //TODO(vivek) from my point of view it is wrong....lets discuss more bot it by vivek
                             displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
                             displayNotification.title = jsonData.title
                             displayNotification.businessType = jsonData.businessType
