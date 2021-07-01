@@ -69,10 +69,12 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
     }
 
     fun subscribeTopics(topic: String) {
+        Log.d(TAG, "Subscribed to: $topic" + "_A")
         FirebaseMessaging.getInstance().subscribeToTopic(topic + "_A")
     }
 
     fun unSubscribeTopics(topic: String) {
+        Log.d(TAG, "Unsubscribed from: $topic" + "_A")
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A")
     }
 
@@ -85,10 +87,10 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
         super.onMessageReceived(remoteMessage)
 
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom())
+        Log.d(TAG, "From: " + remoteMessage.from)
 
         // Check if message contains a data payload.
-        if (remoteMessage.getData().isNotEmpty()) {
+        if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
         }
 
@@ -106,6 +108,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val objectMapper = ObjectMapper()
             val jsonPayloadStr = ObjectMapper().writeValueAsString(mappedData)
             var jsonData: JsonData? = null
+
             when (messageOrigin) {
 
                 MessageOriginEnum.QA -> try {
@@ -121,9 +124,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
                     val containsTextToSpeeches = mappedData.containsKey("textToSpeeches")
                     if (containsTextToSpeeches) {
-                        jsonTextToSpeeches = objectMapper.readValue(
-                            mappedData["textToSpeeches"],
-                            object : TypeReference<List<JsonTextToSpeech?>?>() {})
+                        jsonTextToSpeeches = objectMapper.readValue(mappedData["textToSpeeches"], object : TypeReference<List<JsonTextToSpeech?>?>() {})
                         //TODO(hth) Temp code. Removed as parsing issue.
                         mappedData.remove("textToSpeeches")
                     }
@@ -139,13 +140,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 }
 
                 MessageOriginEnum.CQO -> try {
-                    val tokenAndQueues = objectMapper.readValue(
-                        mappedData["tqs"],
-                        object : TypeReference<List<JsonTokenAndQueue?>?>() {})
-                    val jsonClientTokenAndQueueData = objectMapper.readValue(
-                        jsonPayloadStr,
-                        JsonClientTokenAndQueueData::class.java
-                    )
+                    val tokenAndQueues = objectMapper.readValue(mappedData["tqs"], object : TypeReference<List<JsonTokenAndQueue?>?>() {})
+                    val jsonClientTokenAndQueueData = objectMapper.readValue(jsonPayloadStr, JsonClientTokenAndQueueData::class.java)
                     jsonClientTokenAndQueueData.tokenAndQueues = tokenAndQueues
                     jsonData = jsonClientTokenAndQueueData
                     Log.d("FCM", jsonData.toString())
@@ -177,15 +173,14 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
                     val containsTextToSpeeches = mappedData.containsKey("textToSpeeches")
                     if (containsTextToSpeeches) {
-                        jsonTextToSpeeches = objectMapper.readValue(
-                            mappedData["textToSpeeches"],
-                            object : TypeReference<List<JsonTextToSpeech?>?>() {})
+                        jsonTextToSpeeches = objectMapper.readValue(mappedData["textToSpeeches"], object : TypeReference<List<JsonTextToSpeech?>?>() {})
                         mappedData.remove("textToSpeeches")
                     }
                     jsonData = objectMapper.readValue(jsonPayloadStr, JsonTopicOrderData::class.java)
                     if (null != jsonTextToSpeeches) {
                         jsonData.setJsonTextToSpeeches(jsonTextToSpeeches)
                     }
+
                     Log.d("FCM", jsonData.toString())
                     Log.d("FCM order ", jsonData.toString())
                 } catch (e: Exception) {
@@ -217,9 +212,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     var jsonQueueChangeServiceTimes: List<JsonQueueChangeServiceTime?>? = null
 
                     if (containsServiceTimes) {
-                        jsonQueueChangeServiceTimes = objectMapper.readValue(
-                            mappedData["qcsts"],
-                            object : TypeReference<List<JsonQueueChangeServiceTime?>?>() {})
+                        jsonQueueChangeServiceTimes = objectMapper.readValue(mappedData["qcsts"], object : TypeReference<List<JsonQueueChangeServiceTime?>?>() {})
                         mappedData.remove("textToSpeeches")
                     }
 
@@ -240,6 +233,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 MessageOriginEnum.IE -> {
                 }
                 else -> {
+                    Log.d(TAG, "Reached un-reachable : $messageOrigin")
                 }
             }
 
@@ -312,7 +306,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 jsonTokenAndQueueList?.forEach { jsonTokenAndQueue ->
                                     jsonTokenAndQueue.servingNumber = currentServing.toInt()
                                     if (jsonTokenAndQueue.isTokenExpired && jsonTokenAndQueueList.size == 1) {
-                                        //TODO @chandra write logic for unsubscribe
+                                        /* On this condition un-subscribe from queue and order. All are suppose to be unsubscribed upon review. */
                                         unSubscribeTopics(jsonTokenAndQueue.topic)
                                     }
 
@@ -364,7 +358,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     imageUrl
                                 )
                         } else if (jsonData is JsonClientData) {
-                            Log.e("IN JsonClientData", jsonData.toString())
+                            Log.e("In JsonClientData", jsonData.toString())
                             val token = jsonData.token.toString()
                             val qid = jsonData.queueUserId
                             if (jsonData.queueUserState.getName().equals(QueueUserStateEnum.S.getName(), ignoreCase = true)) {
