@@ -557,7 +557,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         updateUI();
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             new CustomToast().showToast(this, "Order placed successfully.");
-            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic"));
+            FirebaseMessaging.getInstance().subscribeToTopic(getIntent().getExtras().getString("topic") + "_A");
             closeKioskScreen();
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
