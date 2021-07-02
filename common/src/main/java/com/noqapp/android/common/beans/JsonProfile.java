@@ -64,6 +64,9 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("ep")
     private int earnedPoint;
 
+    @JsonProperty("epp")
+    private int earnedPointPreviously;
+
     @JsonProperty("bd")
     private String birthday;
 
@@ -182,6 +185,15 @@ public final class JsonProfile implements Serializable {
 
     public JsonProfile setEarnedPoint(int earnedPoint) {
         this.earnedPoint = earnedPoint;
+        return this;
+    }
+
+    public int getEarnedPointPreviously() {
+        return earnedPointPreviously;
+    }
+
+    public JsonProfile setEarnedPointPreviously(int earnedPointPreviously) {
+        this.earnedPointPreviously = earnedPointPreviously;
         return this;
     }
 
