@@ -72,11 +72,14 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         setUpViewPager()
         setUpRecyclerView()
 
-        homeViewModel.fetchActiveTokenQueueList()
-
         setClickListeners()
 
         observeValues()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        homeViewModel.fetchActiveTokenQueueList()
     }
 
     private fun setClickListeners() {
