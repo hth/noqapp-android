@@ -689,36 +689,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         afterJoinOrderViewModel.getCurrentQueueObjectListLiveData().observe(this, jsonTokenAndQueues -> {
             if (jsonTokenAndQueues != null) {
                 for (JsonTokenAndQueue jtk : jsonTokenAndQueues) {
-
-                    if (Integer.parseInt(foregroundNotification.getCurrentServing()) == jtk.getToken()) {
-                        if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.Q) {
-                            Intent blinkerIntent = new Intent(OrderConfirmActivity.this, BlinkerActivity.class);
-                            blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(blinkerIntent);
-                            if (AppInitialize.isMsgAnnouncementEnable()) {
-                                if (null != foregroundNotification.getJsonTextToSpeeches()) {
-                                    makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
-                                }
-                            }
-                        } else if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.O) {
-                            switch (foregroundNotification.getPurchaseOrderStateEnum()) {
-                                case RD:
-                                case RP:
-                                    Intent blinkerIntent = new Intent(OrderConfirmActivity.this, BlinkerActivity.class);
-                                    blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(blinkerIntent);
-                                    if (AppInitialize.isMsgAnnouncementEnable()) {
-                                        if (null != foregroundNotification.getJsonTextToSpeeches()) {
-                                            makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    //Do nothing
-                            }
-                        }
-                    }
-
                     //TODO(vivek) this will not work as which token is being compared
                     if (jtk.getToken() - jtk.getServingNumber() <= 0) {
                         if (jtk.getPurchaseOrderState() == PurchaseOrderStateEnum.OP) {
@@ -735,6 +705,35 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 }
             }
         });
+
+        if (foregroundNotification.getCurrentServing().equals(foregroundNotification.getUserCurrentToken())) {
+            if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.Q) {
+                Intent blinkerIntent = new Intent(OrderConfirmActivity.this, BlinkerActivity.class);
+                blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(blinkerIntent);
+                if (AppInitialize.isMsgAnnouncementEnable()) {
+                    if (null != foregroundNotification.getJsonTextToSpeeches()) {
+                        makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
+                    }
+                }
+            } else if (MessageOriginEnum.valueOf(foregroundNotification.getMessageOrigin()) == MessageOriginEnum.O) {
+                switch (foregroundNotification.getPurchaseOrderStateEnum()) {
+                    case RD:
+                    case RP:
+                        Intent blinkerIntent = new Intent(OrderConfirmActivity.this, BlinkerActivity.class);
+                        blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(blinkerIntent);
+                        if (AppInitialize.isMsgAnnouncementEnable()) {
+                            if (null != foregroundNotification.getJsonTextToSpeeches()) {
+                                makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
+                            }
+                        }
+                        break;
+                    default:
+                        //Do nothing
+                }
+            }
+        }
 
         afterJoinOrderViewModel.deleteForegroundNotification();
     }

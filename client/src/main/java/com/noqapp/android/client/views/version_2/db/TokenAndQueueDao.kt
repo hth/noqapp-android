@@ -41,12 +41,6 @@ interface TokenAndQueueDao {
     @Query("UPDATE token_queue SET purchase_order_state=:orderState WHERE qr_code=:qrCode AND token=:token")
     suspend fun updateCurrentListOrderObject(qrCode: String?, orderState: PurchaseOrderStateEnum, token: Int)
 
-    @Query("UPDATE token_queue SET serving_number=:servingNumber, display_serving_number=:displayServingNumber, has_updated=1 WHERE qr_code=:qrCode AND token=:token")
-    suspend fun updateCurrentListQueueObjectWithState(qrCode: String?, servingNumber: String, displayServingNumber: String, token: Int)
-
-    @Query("UPDATE token_queue SET purchase_order_state=:orderState, has_updated=1 WHERE qr_code=:qrCode AND token=:token")
-    suspend fun updateCurrentListOrderObjectWithState(qrCode: String?, orderState: PurchaseOrderStateEnum, token: Int)
-
     @Query("DELETE FROM token_queue WHERE history_queue!=1")
     suspend fun deleteCurrentQueue()
 
