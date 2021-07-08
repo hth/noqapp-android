@@ -293,7 +293,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             showProgress();
                             setProgressMessage("Order placing in progress...");
                             jsonPurchaseOrder
-                                    .setUserAddressId(jsonUserAddress.getId())
+                                    .setUserAddressId(acrb_home_delivery.isChecked() ? jsonUserAddress.getId() : null)
                                     .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                     .setPaymentMode(null) //not required here
                                     .setCustomerPhone(AppInitialize.getPhoneNo())
