@@ -40,7 +40,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
-import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonData;
@@ -397,7 +396,6 @@ public abstract class BaseLaunchActivity
         tv_name.setText(WordUtils.initials(AppInitialize.getUserName()));
     }
 
-
     @SuppressLint("LongLogTag")
     public void updateListByNotification(Intent intent) {
         Bundle extras = intent.getExtras();
@@ -433,11 +431,9 @@ public abstract class BaseLaunchActivity
                 }
             } else if (jsonData instanceof JsonClientOrderData) {
                 Log.e("JsonClientOrderData", jsonData.toString());
-            } else if (jsonData instanceof JsonChangeServiceTimeData) {
-                Log.e("JsonChangeServiceTimeData", jsonData.toString());
-                if (null != fragmentCommunicator) {
-                    fragmentCommunicator.updatePeopleQueue(qrcode);
-                }
+            } else {
+                FirebaseCrashlytics.getInstance().log("Skipping unknown messages on business");
+                FirebaseCrashlytics.getInstance().recordException(new Exception("Skipping unknown messages on business"));
             }
         }
     }

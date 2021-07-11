@@ -193,7 +193,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_store_name.setText(getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
         tv_address.setText(getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
 
-        jsonTokenAndQueue = (JsonTokenAndQueue)getIntent().getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
+        jsonTokenAndQueue = (JsonTokenAndQueue) getIntent().getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
         codeQR = getIntent().getExtras().getString(IBConstant.KEY_CODE_QR);
         currentServing = getIntent().getExtras().getInt("currentServing");
         displayCurrentServing = getIntent().getExtras().getString("displayCurrentServing");
@@ -399,9 +399,14 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             closeKioskScreen();
         }
 
-        jsonTokenAndQueue.setToken(jsonPurchaseOrder.getToken());
-        jsonTokenAndQueue.setDisplayToken(jsonTokenAndQueue.getDisplayServingNumber().substring(0,1) + (100+jsonPurchaseOrder.getToken()));
-        afterJoinOrderViewModel.insertTokenAndQueue(jsonTokenAndQueue);
+        afterJoinOrderViewModel.getCurrentQueueObject(jsonPurchaseOrder.getCodeQR(), String.valueOf(jsonPurchaseOrder.getToken()));
+        afterJoinOrderViewModel.getCurrentQueueObjectLiveData().observe(this, jtk -> {
+            if (jtk == null) {
+                jsonTokenAndQueue.setToken(jsonPurchaseOrder.getToken());
+                jsonTokenAndQueue.setDisplayToken(jsonTokenAndQueue.getDisplayServingNumber().substring(0, 1) + (100 + jsonPurchaseOrder.getToken()));
+                afterJoinOrderViewModel.insertTokenAndQueue(jsonTokenAndQueue);
+            }
+        });
     }
 
     @Override

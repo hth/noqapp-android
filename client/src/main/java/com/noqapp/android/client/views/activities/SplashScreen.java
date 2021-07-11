@@ -59,6 +59,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
             tokenFCM = token;
             Log.d(TAG, "New FCM Token=" + tokenFCM);
+            AppInitialize.setTokenFCM(token);
             sendRegistrationToServer(tokenFCM, AppInitialize.location);
         });
     }

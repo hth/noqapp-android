@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,8 +16,6 @@ import com.noqapp.android.client.databinding.LayoutProgressBarBinding
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.IBConstant
-import com.noqapp.android.client.utils.ShowAlertInformation
-import com.noqapp.android.client.utils.ShowCustomDialog
 import com.noqapp.android.client.views.activities.BeforeJoinActivity
 import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity
 import com.noqapp.android.client.views.activities.StoreDetailActivity
@@ -26,7 +23,6 @@ import com.noqapp.android.client.views.activities.StoreWithMenuActivity
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
-import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.model.types.BusinessSupportEnum
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
@@ -37,11 +33,22 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
     private lateinit var progressLoaderBinding: LayoutProgressBarBinding
 
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
+        ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        )[HomeViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentFavouritesBinding = FragmentFavouritesBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        fragmentFavouritesBinding = FragmentFavouritesBinding.inflate(
+            LayoutInflater.from(requireContext()),
+            container,
+            false
+        )
         progressLoaderBinding = LayoutProgressBarBinding.inflate(inflater)
         fragmentFavouritesBinding.root.addView(progressLoaderBinding.clProgressBar)
         return fragmentFavouritesBinding.root
@@ -51,12 +58,15 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
 
+        observeValues()
+    }
+
+    override fun onStart() {
+        super.onStart()
         progressLoaderBinding.clProgressBar.visibility = View.VISIBLE
         fragmentFavouritesBinding.rlEmpty.visibility = View.GONE
         progressLoaderBinding.tvProgressMessage.text = "Fetching the favourite list..."
         homeViewModel.fetchFavouritesRecentVisitList()
-
-        observeValues()
     }
 
     private fun observeValues() {
@@ -76,7 +86,14 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
                 }
 
                 homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, {
-                    val storeInfoViewAllAdapter = StoreInfoViewAllAdapter(list, requireContext(), this, it.latitude.toDouble(), it.longitude.toDouble(), true)
+                    val storeInfoViewAllAdapter = StoreInfoViewAllAdapter(
+                        list,
+                        requireContext(),
+                        this,
+                        it.latitude.toDouble(),
+                        it.longitude.toDouble(),
+                        true
+                    )
                     fragmentFavouritesBinding.rvFavourite.adapter = storeInfoViewAllAdapter
                 })
 
@@ -84,14 +101,23 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
             }
         })
 
-        homeViewModel.authenticationFailureLiveData.observe(viewLifecycleOwner, Observer {
-            progressLoaderBinding.clProgressBar.visibility = View.GONE
-
+        homeViewModel.authenticationFailureLiveData.observe(viewLifecycleOwner, {
             if (it) {
-                ShowAlertInformation.showAuthenticErrorDialog(requireActivity())
+                progressLoaderBinding.clProgressBar.visibility = View.GONE
+                fragmentFavouritesBinding.rlEmpty.visibility = View.VISIBLE
+                fragmentFavouritesBinding.rvFavourite.visibility = View.GONE
+                homeViewModel.authenticationFailureLiveData.value = false
+                super.authenticationFailure()
             }
         })
 
+        homeViewModel.errorLiveData.observe(this, {
+            progressLoaderBinding.clProgressBar.visibility = View.GONE
+            fragmentFavouritesBinding.rlEmpty.visibility = View.VISIBLE
+            fragmentFavouritesBinding.rvFavourite.visibility = View.GONE
+            homeViewModel.errorLiveData.value = null
+            super.responseErrorPresenter(it)
+        })
     }
 
     private fun setUpRecyclerView() {
@@ -112,7 +138,10 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
                 intent.putExtra(IBConstant.KEY_CODE_QR, item.codeQR)
                 intent.putExtra(IBConstant.KEY_FROM_LIST, false)
                 intent.putExtra(IBConstant.KEY_IS_CATEGORY, false)
-                intent.putExtra(IBConstant.KEY_IMAGE_URL, AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.displayImage))
+                intent.putExtra(
+                    IBConstant.KEY_IMAGE_URL,
+                    AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, item.displayImage)
+                )
                 startActivity(intent)
             }
             BusinessTypeEnum.PH -> {
@@ -134,7 +163,8 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
                     startActivity(intent)
                 } else {
                     Log.d(TAG, "Reached un-supported condition")
-                    FirebaseCrashlytics.getInstance().log("Reached un-supported condition " + item.businessType)
+                    FirebaseCrashlytics.getInstance()
+                        .log("Reached un-supported condition " + item.businessType)
                 }
             else -> {
                 // open order screen
@@ -144,13 +174,6 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
                 startActivity(intent)
             }
         }
-    }
-
-    override fun responseErrorPresenter(eej: ErrorEncounteredJson?) {
-        super.responseErrorPresenter(eej)
-        progressLoaderBinding.clProgressBar.visibility = View.GONE
-        fragmentFavouritesBinding.rlEmpty.visibility = View.VISIBLE
-        fragmentFavouritesBinding.rvFavourite.visibility = View.GONE
     }
 
 }

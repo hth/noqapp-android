@@ -112,6 +112,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import kotlin.jvm.functions.Function0;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -818,7 +819,12 @@ public class HomeFragment extends NoQueueBaseFragment implements View.OnClickLis
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        AppUtils.authenticationProcessing(getActivity());
+        AppUtils.authenticationProcessing(getActivity(), new Function0() {
+            @Override
+            public Object invoke() {
+                return null;
+            }
+        });
         pb_current.setVisibility(View.GONE);
         pb_health_care.setVisibility(View.GONE);
         pb_merchant.setVisibility(View.GONE);

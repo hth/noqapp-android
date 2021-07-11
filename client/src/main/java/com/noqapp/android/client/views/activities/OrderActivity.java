@@ -159,23 +159,25 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         }
 
         JsonUserPreference jsonUserPreference = AppInitialize.getUserProfile().getJsonUserPreference();
-        if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
-            acrb_home_delivery.setChecked(true);
-            acrb_take_away.setChecked(false);
-            ll_address.setVisibility(View.VISIBLE);
-        } else {
-            acrb_home_delivery.setChecked(false);
-            acrb_take_away.setChecked(true);
-            ll_address.setVisibility(View.GONE);
-        }
+        if (jsonUserPreference != null)
+            if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
+                acrb_home_delivery.setChecked(true);
+                acrb_take_away.setChecked(false);
+                ll_address.setVisibility(View.VISIBLE);
+            } else {
+                acrb_home_delivery.setChecked(false);
+                acrb_take_away.setChecked(true);
+                ll_address.setVisibility(View.GONE);
+            }
 
-        if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
-            acrb_cash.setChecked(true);
-            acrb_online.setChecked(false);
-        } else {
-            acrb_cash.setChecked(false);
-            acrb_online.setChecked(true);
-        }
+        if (jsonUserPreference != null)
+            if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
+                acrb_cash.setChecked(true);
+                acrb_online.setChecked(false);
+            } else {
+                acrb_cash.setChecked(false);
+                acrb_online.setChecked(true);
+            }
 
         if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().getJsonUserAddresses()) {
             List<JsonUserAddress> jsonUserAddressList = AppInitialize.getUserProfile().getJsonUserAddresses();
@@ -290,14 +292,20 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         new CustomToast().showToast(OrderActivity.this, "Cannot process as merchant has not set product price");
                     } else {
                         if (isOnline()) {
+                            if (acrb_home_delivery.isChecked()) {
+                                if (null == jsonUserAddress) {
+                                    ShowAlertInformation.showInfoDisplayDialog(this, "Address Required", "Please select delivery address.");
+                                }
+                            }
+
                             showProgress();
                             setProgressMessage("Order placing in progress...");
                             jsonPurchaseOrder
-                                    .setUserAddressId(acrb_home_delivery.isChecked() ? jsonUserAddress.getId() : null)
-                                    .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
-                                    .setPaymentMode(null) //not required here
-                                    .setCustomerPhone(AppInitialize.getPhoneNo())
-                                    .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
+                                .setUserAddressId(acrb_home_delivery.isChecked() ? jsonUserAddress.getId() : null)
+                                .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
+                                .setPaymentMode(null) //not required here
+                                .setCustomerPhone(AppInitialize.getPhoneNo())
+                                .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
                             purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
                         } else {
@@ -548,7 +556,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         } else {
             new CustomToast().showToast(this, getString(R.string.fail_to_cancel_order));
         }
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(getIntent().getExtras().getString("topic"));
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(getIntent().getExtras().getString("topic") + "_A");
         if (null != jsonPurchaseOrderServer) {
             TokenAndQueueDB.deleteTokenQueue(jsonPurchaseOrderServer.getCodeQR(), String.valueOf(jsonPurchaseOrderServer.getToken()));
         }

@@ -17,4 +17,7 @@ interface ForegroundNotificationDao {
 
     @Query("DELETE FROM foreground_notification")
     suspend fun deleteForegroundNotification()
+
+    @Query("DELETE FROM foreground_notification")
+    suspend fun clearForegroundNotifications()
 }

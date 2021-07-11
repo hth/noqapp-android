@@ -71,10 +71,8 @@ import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
-import com.noqapp.android.common.beans.JsonQueueChangeServiceTime;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
-import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonData;
@@ -104,6 +102,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import kotlin.jvm.functions.Function0;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
@@ -150,7 +150,7 @@ public class LaunchActivity
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             COUNTRY_CODE = "IN";
         } else {
-            COUNTRY_CODE = "IN";
+            COUNTRY_CODE = getCountryCode();
         }
         Log.d(TAG, "Country Code: " + COUNTRY_CODE);
         textToSpeechHelper = new TextToSpeechHelper(getApplicationContext());
@@ -650,7 +650,12 @@ public class LaunchActivity
 
     @Override
     public void authenticationFailure() {
-        AppUtils.authenticationProcessing(this);
+        AppUtils.authenticationProcessing(this, new Function0() {
+            @Override
+            public Object invoke() {
+                return null;
+            }
+        });
     }
 
     private void updateNotification(JsonData jsonData, String codeQR) {
@@ -1052,8 +1057,6 @@ public class LaunchActivity
                     Log.e("JsonClientTokenAndQData", jsonData.toString());
                 } else if (jsonData instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", jsonData.toString());
-                } else if (jsonData instanceof JsonChangeServiceTimeData) {
-                    Log.e("JsonChangeServiceTimeData", jsonData.toString());
                 } else if (jsonData instanceof JsonTopicAppointmentData) {
                     Log.e("JsonTopicAppointData", jsonData.toString());
                     NotificationDB.insertNotification(
@@ -1218,31 +1221,6 @@ public class LaunchActivity
                         /* Show some meaningful msg to the end user */
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), jsonData.getLocalLanguageMessageBody(language));
                         updateNotificationBadgeCount();
-                    } else if (jsonData instanceof JsonChangeServiceTimeData) {
-                        JsonTokenAndQueue jsonTokenAndQueue = TokenAndQueueDB.findByQRCode(((JsonChangeServiceTimeData) jsonData).getCodeQR());
-                        if (null != jsonTokenAndQueue) {
-                            List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = ((JsonChangeServiceTimeData) jsonData).getJsonQueueChangeServiceTimes();
-                            for (JsonQueueChangeServiceTime jsonQueueChangeServiceTime : jsonQueueChangeServiceTimes) {
-                                if (jsonQueueChangeServiceTime.getToken() == jsonTokenAndQueue.getToken()) {
-                                    String body = jsonData.getBody() + "\n " + "Token: " + jsonQueueChangeServiceTime.getDisplayToken()
-                                            + "\n " + "Previous: " + jsonQueueChangeServiceTime.getOldTimeSlotMessage()
-                                            + "\n " + "Updated: " + jsonQueueChangeServiceTime.getUpdatedTimeSlotMessage();
-                                    ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, jsonData.getTitle(), body);
-
-                                    NotificationDB.insertNotification(
-                                            NotificationDB.KEY_NOTIFY,
-                                            ((JsonChangeServiceTimeData) jsonData).getCodeQR(),
-                                            body,
-                                            jsonData.getTitle(),
-                                            ((JsonChangeServiceTimeData) jsonData).getBusinessType().getName(),
-                                            jsonData.getImageURL());
-                                    updateNotificationBadgeCount();
-                                    if (null != homeFragment) {
-                                        homeFragment.updateCurrentQueueList();
-                                    }
-                                }
-                            }
-                        }
                     } else {
                         updateNotification(jsonData, codeQR);
                     }

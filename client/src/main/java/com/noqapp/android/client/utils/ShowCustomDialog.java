@@ -1,7 +1,5 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -14,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.noqapp.android.client.R;
 
 public class ShowCustomDialog {
     private Context context;
@@ -95,6 +95,7 @@ public class ShowCustomDialog {
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        dialog.show();
+        if (!dialog.isShowing())
+            dialog.show();
     }
 }

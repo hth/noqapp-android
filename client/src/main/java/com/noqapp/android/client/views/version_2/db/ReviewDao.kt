@@ -29,6 +29,6 @@ interface ReviewDao {
     suspend fun update(reviewData: ReviewData)
 
     @Query("DELETE FROM review_data")
-    fun clearReviewData()
+    suspend fun clearReviewData()
 
 }

@@ -85,19 +85,7 @@
                         app:tabIndicatorColor="@color/colorAccent"
                         app:tabMode="fixed"
                         app:tabSelectedTextColor="@color/color_black"
-                        app:tabTextColor="@color/text_header_color">
-
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
-                            android:layout_height="?attr/actionBarSize"
-                            android:text="@string/tab_near_me" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
-                            android:layout_height="?attr/actionBarSize"
-                            android:text="@string/tab_recent_visits" />
-
-                    </com.google.android.material.tabs.TabLayout>
+                        app:tabTextColor="@color/text_header_color"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvRecentVisitsNearMe"

@@ -24,10 +24,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonQueueChangeServiceTime;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
-import com.noqapp.android.common.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonData;
@@ -186,20 +184,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                     }
                     break;
                 case QCT:
-                    try {
-                        JsonChangeServiceTimeData jsonChangeServiceTimeData = mapper.readValue(new JSONObject(mappedData).toString(), JsonChangeServiceTimeData.class);
-                        List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = new LinkedList<>();
-                        if (null != mappedData.get("qcsts")) {
-                            jsonQueueChangeServiceTimes = mapper.readValue(mappedData.get("qcsts"), new TypeReference<List<JsonQueueChangeServiceTime>>() {});
-                        }
-                        jsonChangeServiceTimeData.setJsonQueueChangeServiceTimes(jsonQueueChangeServiceTimes);
-                        jsonData = jsonChangeServiceTimeData;
-                        Log.d("Update time slot", jsonChangeServiceTimeData.toString());
-                    } catch (Exception e) {
-                        FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.QCT);
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                        e.printStackTrace();
-                    }
+                    FirebaseCrashlytics.getInstance().log("Still reading QCT message on business");
+                    FirebaseCrashlytics.getInstance().recordException(new Exception("Still reading QCT message on business"));
+                    break;
+                case M:
+                    //TODO implement
+                    break;
+                case IE:
+                    //TODO implement
                     break;
                 case M:
                     //TODO implement

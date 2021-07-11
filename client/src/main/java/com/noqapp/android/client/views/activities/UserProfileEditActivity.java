@@ -300,7 +300,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
 
     public void updateProfile() {
-
         if (validate()) {
             btn_update.setBackgroundResource(R.drawable.btn_bg_enable);
             btn_update.setTextColor(Color.WHITE);
@@ -385,7 +384,10 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             if (null != dependentProfile) {
                 edt_Name.setText(dependentProfile.getName());
                 tv_name.setText(dependentProfile.getName());
-                tvAddress.setText(Objects.requireNonNull(dependentProfile.findPrimaryOrAnyExistingAddress()).getAddress());
+
+                JsonUserAddress jsonUserAddress = dependentProfile.findPrimaryOrAnyExistingAddress();
+                tvAddress.setText(null == jsonUserAddress ? "" : jsonUserAddress.getAddress());
+
                 imageUrl = dependentProfile.getProfileImage();
                 qUserId = dependentProfile.getQueueUserId();
                 if (dependentProfile.getGender().name().equals("M")) {
@@ -398,7 +400,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 try {
                     tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(dependentProfile.getBirthday())));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("Failed getting depends DOB", e.getLocalizedMessage(), e);
+                    FirebaseCrashlytics.getInstance().log("Failed getting depends DOB " + e.getLocalizedMessage());
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
             } else {
                 btn_update.setText("Add Family Members");
