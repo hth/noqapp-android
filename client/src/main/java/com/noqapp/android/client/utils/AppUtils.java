@@ -73,6 +73,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import kotlin.jvm.functions.Function0;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -476,9 +477,9 @@ public class AppUtils extends CommonHelper {
         return dayName;
     }
 
-    public static void authenticationProcessing(Activity activity) {
+    public static void authenticationProcessing(Activity activity, Function0 loginAgainAuthentication) {
         AppInitialize.clearPreferences();
-        ShowAlertInformation.showAuthenticErrorDialog(activity);
+        ShowAlertInformation.showAuthenticErrorDialog(activity, loginAgainAuthentication);
     }
 
     public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {

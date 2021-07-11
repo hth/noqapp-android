@@ -18,6 +18,9 @@ interface TokenAndQueueDao {
     suspend fun getCurrentQueueObject(qrCode: String?, token: Int?): JsonTokenAndQueue?
 
     @Query("SELECT * FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode")
+    suspend fun getCurrentQueueObject(qrCode: String?): JsonTokenAndQueue?
+
+    @Query("SELECT * FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode")
     fun findByQRCode(qrCode: String): LiveData<JsonTokenAndQueue>
 
     @Query("SELECT * FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode")

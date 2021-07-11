@@ -26,6 +26,8 @@ import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.BaseActivity;
+import com.noqapp.android.client.views.activities.LoginActivity;
 import com.noqapp.android.client.views.activities.StoreWithMenuActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -38,6 +40,8 @@ import com.noqapp.android.common.utils.NetworkUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import kotlin.jvm.functions.Function0;
 
 public class OrderHistoryAdapter extends RecyclerView.Adapter implements PurchaseOrderPresenter {
     private final Context context;
@@ -160,7 +164,16 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     @Override
     public void authenticationFailure() {
         progressDialog.dismiss();
-        AppUtils.authenticationProcessing((Activity) context);
+        AppUtils.authenticationProcessing((Activity) context, new Function0() {
+            @Override
+            public Object invoke() {
+                Intent loginIntent = new Intent(context, LoginActivity.class);
+                loginIntent.putExtra("fromHome", true);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(loginIntent);
+                return null;
+            }
+        });
     }
 
     @Override

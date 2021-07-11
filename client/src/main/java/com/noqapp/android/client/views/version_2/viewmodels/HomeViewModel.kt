@@ -22,40 +22,49 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext), SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
+class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext),
+    SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
     val TAG = HomeViewModel::class.java.simpleName
 
-    val authenticationFailureLiveData = MutableLiveData<Boolean>()
     val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
     val nearMeResponse = MutableLiveData<BizStoreElasticList?>()
+    val authenticationFailureLiveData = MutableLiveData<Boolean>()
     val favoritesListResponseLiveData = MutableLiveData<FavoriteElastic?>()
+    val errorLiveData = MutableLiveData<ErrorEncounteredJson>()
+
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
     private var queueApiAuthenticCall: QueueApiAuthenticCall
 
     val currentTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
-        val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
+        val tokenAndQueueList =
+            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
         emitSource(tokenAndQueueList)
     }
 
     suspend fun getCurrentQueueObjectList(codeQR: String?): List<JsonTokenAndQueue>? {
-        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueObjectList(codeQR)
+        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
+            .getCurrentQueueObjectList(codeQR)
     }
 
     val historyTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
-        val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
+        val tokenAndQueueList =
+            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
         emitSource(tokenAndQueueList)
     }
 
     val notificationListLiveData: LiveData<List<DisplayNotification>> = liveData {
-        val notificationList = NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
+        val notificationList =
+            NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
         emitSource(notificationList)
     }
 
     val foregroundNotificationLiveData: LiveData<ForegroundNotificationModel> = liveData {
-        val foregroundNotification = NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao().getForegroundNotification()
+        val foregroundNotification =
+            NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao()
+                .getForegroundNotification()
         emitSource(foregroundNotification)
     }
 
@@ -69,21 +78,26 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     fun fetchNearMe(deviceId: String, searchStoreQuery: SearchStoreQuery) {
-        authenticationFailureLiveData.value = false
         searchBusinessStoreApiCalls.business(deviceId, searchStoreQuery)
     }
 
     fun fetchActiveTokenQueueList() {
-        authenticationFailureLiveData.value = false
-        queueApiAuthenticCall.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
+        queueApiAuthenticCall.getAllJoinedQueues(
+            UserUtils.getDeviceId(),
+            UserUtils.getEmail(),
+            UserUtils.getAuth()
+        )
     }
 
     fun fetchFavouritesRecentVisitList() {
-        authenticationFailureLiveData.value = false
         if (NetworkUtils.isConnectingToInternet(applicationContext)) {
             val favouriteApiCall = FavouriteApiCall()
             favouriteApiCall.setFavouriteListPresenter(this)
-            favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
+            favouriteApiCall.favorite(
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth()
+            )
         } else {
             ShowAlertInformation.showNetworkDialog(applicationContext)
         }
@@ -98,11 +112,13 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     suspend fun getCurrentQueueObject(codeQR: String?, token: String?): JsonTokenAndQueue? {
-        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueObject(codeQR, token?.toInt())
+        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
+            .getCurrentQueueObject(codeQR, token?.toInt())
     }
 
     suspend fun getHistoryQueueObject(codeQR: String?, token: String?): JsonTokenAndQueue? {
-        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueObject(codeQR, token?.toInt())
+        return NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
+            .getHistoryQueueObject(codeQR, token?.toInt())
     }
 
     fun updateReviewData(reviewData: ReviewData) {
@@ -137,6 +153,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     override fun responseErrorPresenter(eej: ErrorEncounteredJson?) {
+        errorLiveData.value = eej
     }
 
     override fun responseErrorPresenter(errorCode: Int) {
@@ -146,7 +163,10 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         favoritesListResponseLiveData.value = favoriteElastic
     }
 
-    override fun historyQueueResponse(tokenAndQueues: MutableList<JsonTokenAndQueue>?, sinceBeginning: Boolean) {
+    override fun historyQueueResponse(
+        tokenAndQueues: MutableList<JsonTokenAndQueue>?,
+        sinceBeginning: Boolean
+    ) {
         viewModelScope.launch {
             tokenAndQueues?.let {
                 NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteHistoryQueue()
@@ -171,18 +191,19 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     override fun authenticationFailure() {
         authenticationFailureLiveData.value = true
-        currentQueueErrorLiveData.value = true
     }
 
     override fun currentQueueResponse(tokenAndQueues: JsonTokenAndQueueList?) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 tokenAndQueues?.let {
-                    NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteCurrentQueue()
+                    NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
+                        .deleteCurrentQueue()
                     it.tokenAndQueues.forEach { tokenAndQueue ->
                         tokenAndQueue.historyQueue = 0
                     }
-                    NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().saveCurrentQueue(it.tokenAndQueues)
+                    NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
+                        .saveCurrentQueue(it.tokenAndQueues)
                 }
             }
         }
@@ -201,10 +222,21 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     override fun nearMeTempleError() {
     }
 
-    fun updateCurrentListQueueObject(codeQR: String?, servingNumber: String, displayServingNumber: String, token: Int) {
+    fun updateCurrentListQueueObject(
+        codeQR: String?,
+        servingNumber: String,
+        displayServingNumber: String,
+        token: Int
+    ) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().updateCurrentListQueueObject(codeQR, servingNumber, displayServingNumber, token)
+                NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
+                    .updateCurrentListQueueObject(
+                        codeQR,
+                        servingNumber,
+                        displayServingNumber,
+                        token
+                    )
             }
         }
     }
@@ -212,7 +244,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     fun deleteReview(codeQr: String?, token: String?) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                NoQueueAppDB.dbInstance(applicationContext).reviewDao().deleteReviewData(codeQr, token)
+                NoQueueAppDB.dbInstance(applicationContext).reviewDao()
+                    .deleteReviewData(codeQr, token)
             }
         }
     }
@@ -220,7 +253,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     fun deleteToken(codeQr: String?, token: Int?) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().deleteTokenQueue(codeQr, token)
+                NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
+                    .deleteTokenQueue(codeQr, token)
             }
         }
     }
@@ -228,7 +262,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     fun updateDisplayNotification(displayNotification: DisplayNotification) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                NoQueueAppDB.dbInstance(applicationContext).notificationDao().updateNotification(displayNotification)
+                NoQueueAppDB.dbInstance(applicationContext).notificationDao()
+                    .updateNotification(displayNotification)
             }
         }
     }
@@ -236,8 +271,27 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     fun deleteForegroundNotification() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao().deleteForegroundNotification()
+                NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao()
+                    .deleteForegroundNotification()
             }
+        }
+    }
+
+    fun clearForegroundNotifications() {
+        viewModelScope.launch(Dispatchers.IO) {
+            NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao().clearForegroundNotifications()
+        }
+    }
+
+    fun clearReviewData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            NoQueueAppDB.dbInstance(applicationContext).reviewDao().clearReviewData()
+        }
+    }
+
+    fun clearNotifications() {
+        viewModelScope.launch(Dispatchers.IO) {
+            NoQueueAppDB.dbInstance(applicationContext).notificationDao().deleteNotifications()
         }
     }
 

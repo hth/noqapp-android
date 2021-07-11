@@ -159,23 +159,25 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         }
 
         JsonUserPreference jsonUserPreference = AppInitialize.getUserProfile().getJsonUserPreference();
-        if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
-            acrb_home_delivery.setChecked(true);
-            acrb_take_away.setChecked(false);
-            ll_address.setVisibility(View.VISIBLE);
-        } else {
-            acrb_home_delivery.setChecked(false);
-            acrb_take_away.setChecked(true);
-            ll_address.setVisibility(View.GONE);
-        }
+        if (jsonUserPreference != null)
+            if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
+                acrb_home_delivery.setChecked(true);
+                acrb_take_away.setChecked(false);
+                ll_address.setVisibility(View.VISIBLE);
+            } else {
+                acrb_home_delivery.setChecked(false);
+                acrb_take_away.setChecked(true);
+                ll_address.setVisibility(View.GONE);
+            }
 
-        if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
-            acrb_cash.setChecked(true);
-            acrb_online.setChecked(false);
-        } else {
-            acrb_cash.setChecked(false);
-            acrb_online.setChecked(true);
-        }
+        if (jsonUserPreference != null)
+            if (jsonUserPreference.getPaymentMethod() == PaymentMethodEnum.CA) {
+                acrb_cash.setChecked(true);
+                acrb_online.setChecked(false);
+            } else {
+                acrb_cash.setChecked(false);
+                acrb_online.setChecked(true);
+            }
 
         if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().getJsonUserAddresses()) {
             List<JsonUserAddress> jsonUserAddressList = AppInitialize.getUserProfile().getJsonUserAddresses();
@@ -292,14 +294,18 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         if (isOnline()) {
                             showProgress();
                             setProgressMessage("Order placing in progress...");
-                            jsonPurchaseOrder
-                                    .setUserAddressId(jsonUserAddress.getId())
-                                    .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
-                                    .setPaymentMode(null) //not required here
-                                    .setCustomerPhone(AppInitialize.getPhoneNo())
-                                    .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
-                            purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                            enableDisableOrderButton(false);
+                            if (jsonUserAddress != null) {
+                                jsonPurchaseOrder
+                                        .setUserAddressId(jsonUserAddress.getId())
+                                        .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
+                                        .setPaymentMode(null) //not required here
+                                        .setCustomerPhone(AppInitialize.getPhoneNo())
+                                        .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
+                                purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                                enableDisableOrderButton(false);
+                            } else {
+                                ShowAlertInformation.showInfoDisplayDialog(this, "Address Required", "Please select delivery address.");
+                            }
                         } else {
                             ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                             dismissProgress();

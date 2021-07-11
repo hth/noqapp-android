@@ -15,14 +15,16 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.snackbar.Snackbar;
 import com.noqapp.android.client.R;
 
+import kotlin.jvm.functions.Function0;
+
 public class ShowAlertInformation {
 
     public static void showNetworkDialog(Context context) {
         showThemeDialog(context, context.getString(R.string.networkerror), context.getString(R.string.offline));
     }
 
-    public static void showAuthenticErrorDialog(Activity context) {
-        ShowAlertInformation.showThemeDialog(context, context.getString(R.string.authentication_fail_title), context.getString(R.string.authentication_fail_msg));
+    public static void showAuthenticErrorDialog(Activity context, Function0 loginAgain) {
+        ShowAlertInformation.showThemeDialogWithListener(context, context.getString(R.string.authentication_fail_title), context.getString(R.string.authentication_fail_msg), false,loginAgain);
     }
 
     public static void showErrorDialog(Context context, String error) {
@@ -40,6 +42,23 @@ public class ShowAlertInformation {
             @Override
             public void btnPositiveClick() {
                 //Do nothing
+            }
+
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
+            }
+        });
+        showDialog.displayDialog(title, message);
+    }
+
+    public static void showThemeDialogWithListener(Context context, String title, String message, boolean isGravityLeft, Function0 positiveButtonCallback) {
+        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+        showDialog.setGravityLeft(isGravityLeft);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+            @Override
+            public void btnPositiveClick() {
+                positiveButtonCallback.invoke();
             }
 
             @Override

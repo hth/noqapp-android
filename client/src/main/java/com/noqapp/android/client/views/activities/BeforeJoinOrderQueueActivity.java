@@ -44,6 +44,8 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
+import kotlin.jvm.functions.Function0;
+
 public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueuePresenter, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = BeforeJoinOrderQueueActivity.class.getSimpleName();
     private static final int MAX_AVAILABLE_TOKEN_DISPLAY = 99;

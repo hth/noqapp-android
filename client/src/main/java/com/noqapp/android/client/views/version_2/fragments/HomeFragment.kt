@@ -1,4 +1,4 @@
- package com.noqapp.android.client.views.version_2.fragments
+package com.noqapp.android.client.views.version_2.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -23,18 +22,17 @@ import com.noqapp.android.client.databinding.FragmentHomeNewBinding
 import com.noqapp.android.client.databinding.ViewIndicatorBinding
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
-import com.noqapp.android.client.presenter.beans.ReviewData
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
-import com.noqapp.android.client.utils.*
+import com.noqapp.android.client.utils.AppUtils
+import com.noqapp.android.client.utils.IBConstant
+import com.noqapp.android.client.utils.SortPlaces
+import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.client.views.activities.AfterJoinActivity
-import com.noqapp.android.client.views.activities.AppInitialize
-import com.noqapp.android.client.views.activities.BlinkerActivity
 import com.noqapp.android.client.views.activities.OrderConfirmActivity
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter
 import com.noqapp.android.client.views.adapters.TokenAndQueueAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.NavigationBundleUtils
-import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.model.types.BusinessTypeEnum
@@ -48,9 +46,14 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private lateinit var tokenAndQueueAndQueueAdapter: TokenAndQueueAdapter
     private lateinit var homeFragmentInteractionListener: HomeFragmentInteractionListener
     private var searchStoreQuery: SearchStoreQuery? = null
+    private var showRecentVisitsFirst = true
+    private var showRecentVisitsTab = true
 
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
+        ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        )[HomeViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -62,7 +65,11 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         fragmentHomeNewBinding = FragmentHomeNewBinding.inflate(inflater, container, false)
         return fragmentHomeNewBinding.root
     }
@@ -73,6 +80,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         setUpRecyclerView()
 
         setClickListeners()
+        setUpTabs(true)
 
         observeValues()
     }
@@ -83,15 +91,22 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     }
 
     private fun setClickListeners() {
-        fragmentHomeNewBinding.tabNearMeRecentVisits.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        fragmentHomeNewBinding.tabNearMeRecentVisits.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    if (it.position == 0) {
+                    if (showRecentVisitsTab) {
+                        if (it.position == 0) {
+                            homeViewModel.fetchFavouritesRecentVisitList()
+                        } else {
+                            searchStoreQuery?.let { searchStoreQuery ->
+                                homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
+                            }
+                        }
+                    } else {
                         searchStoreQuery?.let { searchStoreQuery ->
                             homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
                         }
-                    } else {
-                        homeViewModel.fetchFavouritesRecentVisitList()
                     }
                 }
             }
@@ -101,63 +116,82 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    if (it.position == 0) {
+                    if (showRecentVisitsTab) {
+                        if (it.position == 0) {
+                            homeViewModel.fetchFavouritesRecentVisitList()
+                        } else {
+                            searchStoreQuery?.let { searchStoreQuery ->
+                                homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
+                            }
+                        }
+                    } else {
                         searchStoreQuery?.let { searchStoreQuery ->
                             homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
                         }
-                    } else {
-                        homeViewModel.fetchFavouritesRecentVisitList()
                     }
                 }
             }
         })
 
         fragmentHomeNewBinding.clJobs.setOnClickListener {
-            val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+            val homeFragmentDirections =
+                HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
             findNavController().navigate(homeFragmentDirections)
         }
 
         fragmentHomeNewBinding.clHousing.setOnClickListener {
-            val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+            val homeFragmentDirections =
+                HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
             findNavController().navigate(homeFragmentDirections)
         }
 
         fragmentHomeNewBinding.clMarketplace.setOnClickListener {
-            val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+            val homeFragmentDirections =
+                HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
             findNavController().navigate(homeFragmentDirections)
         }
 
         fragmentHomeNewBinding.clRestaurant.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
             findNavController().navigate(navigationDirections)
         }
 
         fragmentHomeNewBinding.clHospital.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
             findNavController().navigate(navigationDirections)
         }
 
         fragmentHomeNewBinding.clUsrCsd.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.CD))
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(
+                    BusinessTypeEnum.CD
+                )
+            )
         }
 
         fragmentHomeNewBinding.clGrocery.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
             findNavController().navigate(navigationDirections)
         }
 
         fragmentHomeNewBinding.clSchool.setOnClickListener {
-            val homeFragmentDirections = HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
+            val homeFragmentDirections =
+                HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
             findNavController().navigate(homeFragmentDirections)
         }
 
         fragmentHomeNewBinding.clCafe.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.CF)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.CF)
             findNavController().navigate(navigationDirections)
         }
 
         fragmentHomeNewBinding.clGenericStore.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.ST)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.ST)
             findNavController().navigate(navigationDirections)
         }
     }
@@ -167,124 +201,123 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             it.searchedOnBusinessType = BusinessTypeEnum.ZZ
             searchStoreQuery = it
             fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.VISIBLE
-            homeViewModel.fetchNearMe(UserUtils.getDeviceId(), it)
+            if (showRecentVisitsFirst) {
+                showRecentVisitsFirst = false
+                homeViewModel.fetchFavouritesRecentVisitList()
+            } else {
+                homeViewModel.fetchNearMe(UserUtils.getDeviceId(), it)
+            }
         })
 
         homeViewModel.nearMeResponse.observe(viewLifecycleOwner, { bizStoreElasticList ->
             bizStoreElasticList?.bizStoreElastics?.let {
                 searchStoreQuery?.let { searchStoreQueryVal ->
-                    Collections.sort(it, SortPlaces(GeoIP(searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())))
-                    val storeInfoAdapter = StoreInfoAdapter(it, activity, this, searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())
+                    Collections.sort(
+                        it,
+                        SortPlaces(
+                            GeoIP(
+                                searchStoreQueryVal.latitude.toDouble(),
+                                searchStoreQueryVal.longitude.toDouble()
+                            )
+                        )
+                    )
+                    val storeInfoAdapter = StoreInfoAdapter(
+                        it,
+                        activity,
+                        this,
+                        searchStoreQueryVal.latitude.toDouble(),
+                        searchStoreQueryVal.longitude.toDouble()
+                    )
                     fragmentHomeNewBinding.rvRecentVisitsNearMe.adapter = storeInfoAdapter
                     fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.GONE
+                    fragmentHomeNewBinding.tabNearMeRecentVisits.selectTab(
+                        fragmentHomeNewBinding.tabNearMeRecentVisits.getTabAt(
+                            1
+                        )
+                    )
                 }
             }
         })
 
         /** Recent to be listed in order of last joined activity. Displays based on recently visited. */
-        homeViewModel.favoritesListResponseLiveData.observe(viewLifecycleOwner, {
-            it?.favoriteSuggested?.let {
+        homeViewModel.favoritesListResponseLiveData.observe(viewLifecycleOwner, { favoriteElastic ->
+            favoriteElastic?.favoriteSuggested?.let {
                 searchStoreQuery?.let { searchStoreQueryVal ->
-                    val storeInfoAdapter = StoreInfoAdapter(it, activity, this, searchStoreQueryVal.latitude.toDouble(), searchStoreQueryVal.longitude.toDouble())
+                    val storeInfoAdapter = StoreInfoAdapter(
+                        it,
+                        activity,
+                        this,
+                        searchStoreQueryVal.latitude.toDouble(),
+                        searchStoreQueryVal.longitude.toDouble()
+                    )
                     fragmentHomeNewBinding.rvRecentVisitsNearMe.adapter = storeInfoAdapter
                     fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.GONE
+                    if (it.isNullOrEmpty()) {
+                        searchStoreQuery?.let { searchStoreQuery ->
+                            homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
+                        }
+                    }
                 }
             }
         })
 
         homeViewModel.nearMeErrorLiveData.observe(viewLifecycleOwner, {
             if (it) {
+                homeViewModel.nearMeErrorLiveData.value = false
                 fragmentHomeNewBinding.cvRecentVisits.visibility = View.GONE
             }
         })
 
-        homeViewModel.currentTokenAndQueueListLiveData.observe(viewLifecycleOwner, { tokenAndQueuesList ->
-            tokenAndQueuesList?.let {
-                if (tokenAndQueuesList.isNullOrEmpty()) {
-                    fragmentHomeNewBinding.cvTokens.visibility = View.GONE
-                } else {
-                    fragmentHomeNewBinding.cvTokens.visibility = View.VISIBLE
-                }
-                tokenAndQueueAndQueueAdapter.addItems(tokenAndQueuesList)
+        homeViewModel.currentTokenAndQueueListLiveData.observe(
+            viewLifecycleOwner,
+            { tokenAndQueuesList ->
+                tokenAndQueuesList?.let {
+                    if (tokenAndQueuesList.isNullOrEmpty()) {
+                        fragmentHomeNewBinding.cvTokens.visibility = View.GONE
+                    } else {
+                        fragmentHomeNewBinding.cvTokens.visibility = View.VISIBLE
+                    }
+                    tokenAndQueueAndQueueAdapter.addItems(tokenAndQueuesList)
 
-                addIndicator(tokenAndQueuesList, 0)
+                    addIndicator(tokenAndQueuesList, 0)
+                }
+            })
+
+        homeViewModel.currentQueueErrorLiveData.observe(viewLifecycleOwner, {
+            if (it) {
+                fragmentHomeNewBinding.cvTokens.visibility = View.GONE
+                showRecentVisitsFirst = false
+                homeViewModel.currentQueueErrorLiveData.value = false
             }
         })
 
-        homeViewModel.currentQueueErrorLiveData.observe(viewLifecycleOwner, Observer {
+        homeViewModel.authenticationFailureLiveData.observe(viewLifecycleOwner, {
             if (it) {
                 fragmentHomeNewBinding.cvTokens.visibility = View.GONE
+                showRecentVisitsFirst = false
+                homeViewModel.authenticationFailureLiveData.value = false
             }
         })
 
     }
 
-//    fun updateListFromNotification(jq: JsonTokenAndQueue, jsonTextToSpeeches: List<JsonTextToSpeech?>?, msgId: String?) {
-//        jq.displayServingNumber?.let { displayServingNumber ->
-//
-//            val isUserTurn = jq.afterHowLong() == 0
-//            if (isUserTurn) {
-//
-//                homeViewModel.getReviewData(jq.codeQR, jq.token.toString()).observe(viewLifecycleOwner, Observer {
-//                    val showBuzzer: Boolean = if (null != it) {
-//                        it.isBuzzerShow != "1"
-//                        // update
-//                    } else {
-//                        //insert
-//                        val reviewData = ReviewData()
-//                        reviewData.isReviewShown = "-1"
-//                        reviewData.codeQR = jq.codeQR
-//                        reviewData.token = jq.token.toString()
-//                        reviewData.queueUserId = jq.queueUserId
-//                        reviewData.isBuzzerShow = "-1"
-//                        reviewData.isSkipped = "-1"
-//                        reviewData.gotoCounter = ""
-//                        reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
-//
-//                        homeViewModel.insertReviewData(reviewData)
-//                        true
-//                    }
-//                    if (showBuzzer) {
-//                        if (QueueOrderTypeEnum.Q == jq.businessType.queueOrderType) {
-//
-//                            val cv = ContentValues()
-//                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1")
-//                            ReviewDB.updateReviewRecord(jq.codeQR, jq.token.toString(), cv)
-//                            val blinker = Intent(activity, BlinkerActivity::class.java)
-//                            blinker.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                            activity!!.applicationContext.startActivity(blinker)
-//                            if (AppInitialize.isMsgAnnouncementEnable()) {
-//                                LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId)
-//                            }
-//                        } else {
-//                            when (jq.purchaseOrderState) {
-//                                PurchaseOrderStateEnum.RP, PurchaseOrderStateEnum.RD -> {
-//                                    val cv = ContentValues()
-//                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1")
-//                                    ReviewDB.updateReviewRecord(jq.codeQR, jq.token.toString(), cv)
-//                                    val blinker = Intent(activity, BlinkerActivity::class.java)
-//                                    blinker.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                                    activity!!.applicationContext.startActivity(blinker)
-//                                    if (AppInitialize.isMsgAnnouncementEnable()) {
-//                                        LaunchActivity.getLaunchActivity().makeAnnouncement(jsonTextToSpeeches, msgId)
-//                                    }
-//                                }
-//                                PurchaseOrderStateEnum.CO -> {
-//                                }
-//                                else -> {
-//                                }
-//                            }
-//                        }
-//                    }
-//                })
-//            }
-//        }
-//    }
+    private fun setUpTabs(shouldAddRecentVisitsTab: Boolean) {
+        showRecentVisitsTab = shouldAddRecentVisitsTab
+        fragmentHomeNewBinding.tabNearMeRecentVisits.removeAllTabs()
 
+        val tabRecentVisits = fragmentHomeNewBinding.tabNearMeRecentVisits.newTab()
+        tabRecentVisits.text = getString(R.string.tab_recent_visits)
+        fragmentHomeNewBinding.tabNearMeRecentVisits.addTab(tabRecentVisits)
+
+        val tabNearMe = fragmentHomeNewBinding.tabNearMeRecentVisits.newTab()
+        tabNearMe.text = getString(R.string.tab_near_me)
+        fragmentHomeNewBinding.tabNearMeRecentVisits.addTab(tabNearMe)
+    }
 
     private fun setUpRecyclerView() {
         fragmentHomeNewBinding.rvRecentVisitsNearMe.setHasFixedSize(true)
-        fragmentHomeNewBinding.rvRecentVisitsNearMe.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        fragmentHomeNewBinding.rvRecentVisitsNearMe.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         fragmentHomeNewBinding.rvRecentVisitsNearMe.itemAnimator = DefaultItemAnimator()
     }
 
@@ -299,7 +332,8 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         fragmentHomeNewBinding.viewpager.clipToPadding = false
         fragmentHomeNewBinding.viewpager.clipChildren = false
         fragmentHomeNewBinding.viewpager.offscreenPageLimit = 3
-        fragmentHomeNewBinding.viewpager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        fragmentHomeNewBinding.viewpager.getChildAt(0).overScrollMode =
+            RecyclerView.OVER_SCROLL_NEVER
 
         val compositePageTransformer = CompositePageTransformer()
         compositePageTransformer.addTransformer(MarginPageTransformer(32))
@@ -309,7 +343,8 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.viewpager.setPageTransformer(compositePageTransformer)
-        fragmentHomeNewBinding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        fragmentHomeNewBinding.viewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 homeViewModel.currentTokenAndQueueListLiveData.observe(viewLifecycleOwner, {
@@ -339,7 +374,10 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                 bundle.putString("GeoHash", jsonTokenAndQueue.geoHash)
                 bundle.putString(IBConstant.KEY_STORE_NAME, jsonTokenAndQueue.displayName)
                 bundle.putString(IBConstant.KEY_STORE_ADDRESS, jsonTokenAndQueue.storeAddress)
-                bundle.putString(AppUtils.CURRENCY_SYMBOL, AppUtils.getCurrencySymbol(jsonTokenAndQueue.countryShortName))
+                bundle.putString(
+                    AppUtils.CURRENCY_SYMBOL,
+                    AppUtils.getCurrencySymbol(jsonTokenAndQueue.countryShortName)
+                )
                 putExtras(bundle)
             }
             startActivity(intent)
@@ -349,9 +387,11 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private fun addIndicator(tokenANdQueueList: List<JsonTokenAndQueue>, selectedPosition: Int) {
         fragmentHomeNewBinding.llIndicator.removeAllViews()
         tokenANdQueueList.forEachIndexed { index, _ ->
-            val viewIndicatorBinding = ViewIndicatorBinding.inflate(LayoutInflater.from(requireContext()))
+            val viewIndicatorBinding =
+                ViewIndicatorBinding.inflate(LayoutInflater.from(requireContext()))
             if (index == selectedPosition) {
-                viewIndicatorBinding.viewIndicator.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                viewIndicatorBinding.viewIndicator.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
             }
             fragmentHomeNewBinding.llIndicator.addView(viewIndicatorBinding.root)
         }

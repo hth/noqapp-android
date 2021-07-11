@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.views.activities.LoginActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 import com.noqapp.android.common.utils.CustomProgressBar;
@@ -47,7 +49,13 @@ public abstract class BaseFragment extends Fragment implements ResponseErrorPres
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        AppUtils.authenticationProcessing(getActivity());
+        AppUtils.authenticationProcessing(getActivity(), () -> {
+            Intent loginIntent = new Intent(requireActivity(), LoginActivity.class);
+            loginIntent.putExtra("fromHome", true);
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(loginIntent);
+            return null;
+        });
     }
 
     @Override

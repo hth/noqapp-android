@@ -31,6 +31,8 @@ import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 
+import kotlin.jvm.functions.Function0;
+
 public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter, FavouritePresenter {
     private CustomProgressBar customProgressBar;
     protected ImageView iv_home;
@@ -96,7 +98,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        AppUtils.authenticationProcessing(this);
+        AppUtils.authenticationProcessing(this, new Function0() {
+            @Override
+            public Object invoke() {
+                Intent loginIntent = new Intent(BaseActivity.this, LoginActivity.class);
+                loginIntent.putExtra("fromHome", true);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(loginIntent);
+                return null;
+            }
+        });
     }
 
     @Override

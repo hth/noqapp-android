@@ -103,6 +103,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import kotlin.jvm.functions.Function0;
+
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 public class LaunchActivity
@@ -648,7 +650,12 @@ public class LaunchActivity
 
     @Override
     public void authenticationFailure() {
-        AppUtils.authenticationProcessing(this);
+        AppUtils.authenticationProcessing(this, new Function0() {
+            @Override
+            public Object invoke() {
+                return null;
+            }
+        });
     }
 
     private void updateNotification(JsonData jsonData, String codeQR) {

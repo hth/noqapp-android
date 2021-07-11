@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
+
 /**
  * Created by chandra on 5/20/17.
  */
@@ -246,7 +248,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     }
 
     public static String getMail() {
-        return preferences.getString(APIConstant.Key.XR_MAIL, "");
+        return preferences.getString(XR_MAIL, "");
     }
 
     public static String getActualMail() {
@@ -320,14 +322,14 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
         editor.putString(PREKEY_ADD, profile.findPrimaryOrAnyExistingAddress() == null ? "" : profile.findPrimaryOrAnyExistingAddress().getAddress());
         editor.putString(PREKEY_PROFILE_IMAGE, profile.getProfileImage());
-        editor.putString(APIConstant.Key.XR_MAIL, email);
+        editor.putString(XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
 
     public static void saveMailAuth(String email, String auth) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        editor.putString(APIConstant.Key.XR_MAIL, email);
+        editor.putString(XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
@@ -337,6 +339,8 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         String did = preferences.getString(APIConstant.Key.XR_DID, "");
         String tokenFCM = getTokenFCM();
         String previousUserQID = getPreviousUserQID();
+        String email = getActualMail();
+        String userName = getUserName();
         boolean showHelper = getShowHelper();
         KioskModeInfo kioskModeInfo = getKioskModeInfo();
         getSharedPreferencesEditor().clear().commit();
@@ -344,12 +348,12 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         editor.putString(APIConstant.Key.XR_DID, did);
         editor.putString(TOKEN_FCM, tokenFCM);
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
+        editor.putString(PREKEY_MAIL, email);
+        editor.putString(PREKEY_NAME, userName);
+        editor.putString(XR_MAIL, email);
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
         editor.commit();
         setKioskModeInfo(kioskModeInfo);
-        if (null != LaunchActivity.getLaunchActivity()) {
-            LaunchActivity.getLaunchActivity().updateDrawerUI();
-        }
     }
 
     public static JsonProfile getUserProfile() {
