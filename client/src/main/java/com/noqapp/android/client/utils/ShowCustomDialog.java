@@ -52,10 +52,14 @@ public class ShowCustomDialog {
     }
 
     public void displayDialog(String title, String msg) {
-        displayDialog(title, msg, "", "");
+        displayDialog(title, msg, "", "", false, showNegativeBtn);
     }
 
-    public void displayDialog(String title, String msg, String btnPositiveText, String btnNegativeText) {
+    public void displayDialog(String title, String msg, boolean cancelable, boolean showNegativeBtn) {
+        displayDialog(title, msg, "", "", cancelable, showNegativeBtn);
+    }
+
+    public void displayDialog(String title, String msg, String btnPositiveText, String btnNegativeText, boolean cancelable, boolean showNegativeBtn) {
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_custom);
@@ -92,7 +96,8 @@ public class ShowCustomDialog {
                 dialogClickListener.btnNegativeClick();
             }
         });
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(cancelable);
+        dialog.setCanceledOnTouchOutside(cancelable);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (!dialog.isShowing())

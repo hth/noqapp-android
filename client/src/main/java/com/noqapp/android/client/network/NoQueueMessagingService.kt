@@ -277,8 +277,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             ), mappedData[Constants.DISPLAY_SERVING_NUMBER]?.toString()
                         ).apply()
                     }
-                    val payload = mappedData[Constants.FIREBASE_TYPE]
-                    val codeQR = mappedData[Constants.CODE_QR]
+//                    val payload = mappedData[Constants.FIREBASE_TYPE]
+//                    val codeQR = mappedData[Constants.CODE_QR]
 //                    if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
 //                        if (!(jsonData is JsonChangeServiceTimeData)) {
 //                            jsonData?.let {

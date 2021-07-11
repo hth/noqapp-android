@@ -66,7 +66,7 @@ public class ShowAlertInformation {
                 //Do nothing
             }
         });
-        showDialog.displayDialog(title, message);
+        showDialog.displayDialog(title, message, true, true);
     }
 
     public static void showThemeDialog(Context context, String title, String message) {
