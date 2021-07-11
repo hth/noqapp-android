@@ -35,14 +35,6 @@ public class ShowAlertInformation {
         }
     }
 
-    public static void showErrorDialog(Context context, String error) {
-        if (error != null) {
-            ShowAlertInformation.showThemeDialog(context, error, context.getString(R.string.authentication_fail_msg));
-        } else {
-            ShowAlertInformation.showThemeDialog(context, "Oops! Something went wrong...", context.getString(R.string.authentication_fail_msg));
-        }
-    }
-
     public static void showThemeDialog(Context context, String title, String message, boolean isGravityLeft) {
         ShowCustomDialog showDialog = new ShowCustomDialog(context);
         showDialog.setGravityLeft(isGravityLeft);

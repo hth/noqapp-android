@@ -38,7 +38,6 @@ import com.noqapp.android.client.views.version_2.HomeActivity
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.common.beans.ErrorEncounteredJson
-import com.noqapp.android.common.beans.JsonQueueChangeServiceTime
 import com.noqapp.android.common.beans.JsonResponse
 import com.noqapp.android.common.beans.body.Notification
 import com.noqapp.android.common.fcm.data.*
@@ -230,31 +229,11 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     FirebaseCrashlytics.getInstance().recordException(e)
                 }
 
-                MessageOriginEnum.QCT -> try {
-                    val containsServiceTimes = mappedData.containsKey("qcsts")
-                    var jsonQueueChangeServiceTimes: List<JsonQueueChangeServiceTime?>? = null
-
-                    if (containsServiceTimes) {
-                        jsonQueueChangeServiceTimes = objectMapper.readValue(
-                            mappedData["qcsts"],
-                            object : TypeReference<List<JsonQueueChangeServiceTime?>?>() {})
-                        mappedData.remove("textToSpeeches")
-                    }
-
-                    val jsonChangeServiceTimeData = objectMapper.readValue(
-                        jsonPayloadStr,
-                        JsonChangeServiceTimeData::class.java
-                    )
-                    jsonChangeServiceTimeData.jsonQueueChangeServiceTimes =
-                        jsonQueueChangeServiceTimes
-                    jsonData = jsonChangeServiceTimeData
-                    Log.d("Update time slot", jsonChangeServiceTimeData.toString())
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error reading message " + e.localizedMessage, e)
-                    FirebaseCrashlytics.getInstance()
-                        .log("Failed to read message " + MessageOriginEnum.QCT)
-                    FirebaseCrashlytics.getInstance().recordException(e)
+                MessageOriginEnum.QCT -> {
+                    FirebaseCrashlytics.getInstance().log("Still reading QCT message on client");
+                    FirebaseCrashlytics.getInstance().recordException(Exception("Still reading QCT message on client"))
                 }
+
                 MessageOriginEnum.M -> {
                 }
                 MessageOriginEnum.IE -> {
@@ -653,79 +632,39 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             }
                         }
                     }
-                } else if (StringUtils.isNotBlank(payload) && payload.equals(
-                        FirebaseMessageTypeEnum.C.getName(),
-                        ignoreCase = true
-                    )
-                ) {
-                    if (jsonData is JsonChangeServiceTimeData) {
-                        NoQueueAppDB.dbInstance(this@NoQueueMessagingService).tokenAndQueueDao()
-                            .findByQRCode(jsonData.codeQR).observeForever { jsonTokenAndQueue ->
-                                val jsonQueueChangeServiceTimes =
-                                    jsonData.jsonQueueChangeServiceTimes
-                                for (jsonQueueChangeServiceTime in jsonQueueChangeServiceTimes) {
-                                    if (jsonQueueChangeServiceTime.token == jsonTokenAndQueue.token) {
-                                        val msg =
-                                            """${jsonData.getBody()} Token: ${jsonQueueChangeServiceTime.displayToken} Previously: ${jsonQueueChangeServiceTime.oldTimeSlotMessage} Updated: ${jsonQueueChangeServiceTime.updatedTimeSlotMessage}"""
-                                        ShowAlertInformation.showInfoDisplayDialog(
-                                            this@NoQueueMessagingService,
-                                            jsonData.getTitle(),
-                                            body
-                                        )
-                                        val displayNotification = DisplayNotification()
-                                        displayNotification.type =
-                                            DatabaseTable.Notification.KEY_NOTIFY
-                                        displayNotification.codeQR = jsonData.codeQR
-                                        displayNotification.body = msg
-                                        displayNotification.key = getKey(jsonData.id)
-                                        displayNotification.title = jsonData.title
-                                        displayNotification.businessType = jsonData.businessType
-                                        displayNotification.imageUrl = jsonData.imageURL
-                                        displayNotification.status =
-                                            DatabaseTable.Notification.KEY_UNREAD
-                                        displayNotification.createdDate =
-                                            CommonHelper.changeUTCDateToString(Date())
-                                        displayNotification.popUpShown = false
+                } else if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
+                    when (jsonData) {
+                        is JsonAlertData -> {
+                            /* When app is on background. Adding to notification table. */
+                            Log.e("In JsonAlertData", jsonData.toString())
+                            val displayNotification = DisplayNotification()
+                            displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
+                            displayNotification.codeQR = jsonData.codeQR
+                            displayNotification.key = getKey(jsonData.id)
+                            //from my point of view it is wrong....lets discuss more bot it
+                            displayNotification.body = jsonData.getLocalLanguageMessageBody(
+                                AppUtils.getSelectedLanguage(applicationContext)
+                            )
+                            displayNotification.title = jsonData.title
+                            displayNotification.businessType = jsonData.businessType
+                            displayNotification.imageUrl = jsonData.imageURL
+                            displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
+                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                            displayNotification.popUpShown = false
 
-                                        GlobalScope.launch {
-                                            withContext(Dispatchers.IO) {
-                                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
-                                                    .notificationDao()
-                                                    .insertNotification(displayNotification)
-                                            }
-                                        }
-                                    }
+                            GlobalScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                        .notificationDao().insertNotification(displayNotification)
                                 }
                             }
-
-                    } else if (jsonData is JsonAlertData) {
-                        /* When app is on background. Adding to notification table. */
-                        Log.e("IN JsonAlertData", jsonData.toString())
-                        val displayNotification = DisplayNotification()
-                        displayNotification.type = DatabaseTable.Notification.KEY_NOTIFY
-                        displayNotification.codeQR = jsonData.codeQR
-                        displayNotification.key = getKey(jsonData.id)
-                        //from my point of view it is wrong....lets discuss more bot it
-                        displayNotification.body = jsonData.getLocalLanguageMessageBody(
-                            AppUtils.getSelectedLanguage(applicationContext)
-                        )
-                        displayNotification.title = jsonData.title
-                        displayNotification.businessType = jsonData.businessType
-                        displayNotification.imageUrl = jsonData.imageURL
-                        displayNotification.status = DatabaseTable.Notification.KEY_UNREAD
-                        displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
-                        displayNotification.popUpShown = false
-
-                        GlobalScope.launch {
-                            withContext(Dispatchers.IO) {
-                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
-                                    .notificationDao().insertNotification(displayNotification)
-                            }
                         }
-                    } else if (jsonData is JsonTopicQueueData) {
-                        updateNotification(jsonData, codeQR, title, imageUrl)
-                    } else if (jsonData is JsonTopicOrderData) {
-                        updateNotification(jsonData, codeQR, title, imageUrl)
+                        is JsonTopicQueueData -> {
+                            updateNotification(jsonData, codeQR, title, imageUrl)
+                        }
+                        is JsonTopicOrderData -> {
+                            updateNotification(jsonData, codeQR, title, imageUrl)
+                        }
                     }
                 }
 
