@@ -107,6 +107,11 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         return NoQueueAppDB.dbInstance(applicationContext).reviewDao().getReviewData(qrCode, token)
     }
 
+    suspend fun getReviewDataSimple(qrCode: String?, token: String?): ReviewData? {
+        return NoQueueAppDB.dbInstance(applicationContext).reviewDao()
+            .getReviewDataSimple(qrCode, token)
+    }
+
     fun getReviewData(reviewType: String): LiveData<ReviewData> {
         return NoQueueAppDB.dbInstance(applicationContext).reviewDao().getReviewData(reviewType)
     }
@@ -279,7 +284,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     fun clearForegroundNotifications() {
         viewModelScope.launch(Dispatchers.IO) {
-            NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao().clearForegroundNotifications()
+            NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao()
+                .clearForegroundNotifications()
         }
     }
 

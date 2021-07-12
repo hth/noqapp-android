@@ -33,7 +33,6 @@ import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.databinding.NavHeaderMainBinding
 import com.noqapp.android.client.model.database.utils.NotificationDB
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
@@ -55,6 +54,7 @@ import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
@@ -137,6 +137,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         showLoginScreen()
 
         observeValues()
+
     }
 
     private fun showLoginScreen() {
@@ -232,6 +233,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 val blinkerIntent = Intent(this, BlinkerActivity::class.java)
                 blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(blinkerIntent)
+
                 if (AppInitialize.isMsgAnnouncementEnable()) {
                     if (foregroundNotification.jsonTextToSpeeches != null) {
                         makeAnnouncement(
@@ -240,11 +242,13 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                         )
                     }
                 }
+
             } else if (MessageOriginEnum.valueOf(foregroundNotification.messageOrigin) == MessageOriginEnum.O) {
                 if (foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RD || foregroundNotification.purchaseOrderStateEnum == PurchaseOrderStateEnum.RP) {
                     val blinkerIntent = Intent(this, BlinkerActivity::class.java)
                     blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(blinkerIntent)
+
                     if (AppInitialize.isMsgAnnouncementEnable()) {
                         if (foregroundNotification.jsonTextToSpeeches != null) {
                             makeAnnouncement(
@@ -784,15 +788,18 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     ) {
         if (jsonTokenAndQueue != null) {
             val reviewIntent = Intent(this, ReviewActivity::class.java)
+            reviewIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
             val bundle = Bundle()
             bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jsonTokenAndQueue)
             reviewIntent.putExtras(bundle)
             startActivityForResult(reviewIntent, Constants.requestCodeJoinQActivity)
             Log.v("Review screen call: ", jsonTokenAndQueue.toString())
-            val jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR)
-            if (jsonTokenAndQueueArrayList.size == 1) {
-                /* Un-subscribe the topic. */
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+            homeViewModel.viewModelScope.launch(Dispatchers.IO) {
+                val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(codeQR)
+                if (jsonTokenAndQueueArrayList?.size == 1) {
+                    FirebaseMessaging.getInstance()
+                        .unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+                }
             }
         } else {
             homeViewModel.deleteReview(codeQr, token)

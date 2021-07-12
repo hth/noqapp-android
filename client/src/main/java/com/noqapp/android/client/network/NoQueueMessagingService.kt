@@ -394,7 +394,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 reviewData.codeQR = codeQR
                                 reviewData.token = token
                                 reviewData.queueUserId = qid
-                                reviewData.isBuzzerShow = "1"
+                                reviewData.isBuzzerShow = "-1"
                                 reviewData.isSkipped = "-1"
                                 reviewData.gotoCounter = ""
                                 reviewData.type = Constants.NotificationTypeConstant.FOREGROUND
@@ -469,7 +469,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 reviewData.codeQR = codeQR
                                 reviewData.token = token
                                 reviewData.queueUserId = qid
-                                reviewData.isBuzzerShow = "1"
+                                reviewData.isBuzzerShow = "-1"
                                 reviewData.isSkipped = "-1"
                                 reviewData.gotoCounter = ""
                                 reviewData.type = Constants.NotificationTypeConstant.FOREGROUND

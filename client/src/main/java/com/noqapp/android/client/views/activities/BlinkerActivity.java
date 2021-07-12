@@ -40,6 +40,7 @@ public class BlinkerActivity extends Activity {
             if (null != thread) {
                 thread.interrupt();
             }
+            setResult(Activity.RESULT_OK);
             finish();
         });
         Animation animation = new AlphaAnimation(1, 0.7f); // Change alpha
@@ -90,7 +91,7 @@ public class BlinkerActivity extends Activity {
         if (null != thread) {
             thread.interrupt();
         }
-
+        setResult(Activity.RESULT_OK);
         super.onBackPressed();
     }
 }

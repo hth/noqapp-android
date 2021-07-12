@@ -16,6 +16,7 @@ import com.noqapp.android.client.databinding.LayoutProgressBarBinding
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.IBConstant
+import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.client.views.activities.BeforeJoinActivity
 import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity
 import com.noqapp.android.client.views.activities.StoreDetailActivity
@@ -23,6 +24,7 @@ import com.noqapp.android.client.views.activities.StoreWithMenuActivity
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
+import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.model.types.BusinessSupportEnum
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
@@ -63,10 +65,15 @@ class FavouritesFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemClickLi
 
     override fun onStart() {
         super.onStart()
-        progressLoaderBinding.clProgressBar.visibility = View.VISIBLE
-        fragmentFavouritesBinding.rlEmpty.visibility = View.GONE
-        progressLoaderBinding.tvProgressMessage.text = "Fetching the favourite list..."
-        homeViewModel.fetchFavouritesRecentVisitList()
+        if (UserUtils.isLogin()) {
+            progressLoaderBinding.clProgressBar.visibility = View.VISIBLE
+            fragmentFavouritesBinding.rlEmpty.visibility = View.GONE
+            progressLoaderBinding.tvProgressMessage.text = "Fetching the favourite list..."
+            homeViewModel.fetchFavouritesRecentVisitList()
+        } else {
+            CustomToast().showToast(requireContext(), "Please login.")
+        }
+
     }
 
     private fun observeValues() {
