@@ -20,4 +20,7 @@ interface ForegroundNotificationDao {
 
     @Query("DELETE FROM foreground_notification")
     suspend fun clearForegroundNotifications()
+
+    @Query("DELETE FROM foreground_notification WHERE qr_code=:codeQr AND user_current_token=:token")
+    suspend fun deleteForegroundNotifications(codeQr: String?, token: String?)
 }
