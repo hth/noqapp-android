@@ -120,24 +120,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
         })
 
-        fragmentHomeNewBinding.clJobs.setOnClickListener {
-            val homeFragmentDirections =
-                HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
-            findNavController().navigate(homeFragmentDirections)
-        }
-
-        fragmentHomeNewBinding.clHousing.setOnClickListener {
-            val homeFragmentDirections =
-                HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
-            findNavController().navigate(homeFragmentDirections)
-        }
-
-        fragmentHomeNewBinding.clMarketplace.setOnClickListener {
-            val homeFragmentDirections =
-                HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
-            findNavController().navigate(homeFragmentDirections)
-        }
-
         fragmentHomeNewBinding.clRestaurant.setOnClickListener {
             val navigationDirections =
                 HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
@@ -161,18 +143,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         fragmentHomeNewBinding.clGrocery.setOnClickListener {
             val navigationDirections =
                 HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
-            findNavController().navigate(navigationDirections)
-        }
-
-        fragmentHomeNewBinding.clSchool.setOnClickListener {
-            val homeFragmentDirections =
-                HomeFragmentDirections.actionHomeToUnderDevelopmentFragmentDestination("Anything")
-            findNavController().navigate(homeFragmentDirections)
-        }
-
-        fragmentHomeNewBinding.clCafe.setOnClickListener {
-            val navigationDirections =
-                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.CF)
             findNavController().navigate(navigationDirections)
         }
 
@@ -389,8 +359,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
     override fun onStoreItemClick(item: BizStoreElastic?) {
         item?.let {
-            val navigationBundleUtils = NavigationBundleUtils()
-            navigationBundleUtils.navigateToStore(requireActivity(), item)
+            NavigationBundleUtils.navigateToStore(requireActivity(), item)
         } ?: run {
             Log.d(HomeFragment::class.java.simpleName, "BizStoreElastic is null")
         }

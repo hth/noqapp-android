@@ -37,16 +37,16 @@
                         android:text="@string/active_token"
                         android:textColor="@color/color_black"
                         android:textSize="16sp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewpager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
                         android:paddingTop="8dp"
+                        android:paddingEnd="24dp"
                         android:paddingBottom="8dp"
                         app:layout_constraintTop_toBottomOf="@id/tvActiveTokenLabel" />
 
@@ -57,9 +57,9 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        app:layout_constraintTop_toBottomOf="@id/viewpager"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@id/viewpager" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -85,7 +85,7 @@
                         app:tabIndicatorColor="@color/colorAccent"
                         app:tabMode="fixed"
                         app:tabSelectedTextColor="@color/color_black"
-                        app:tabTextColor="@color/text_header_color"/>
+                        app:tabTextColor="@color/text_header_color" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvRecentVisitsNearMe"
@@ -102,9 +102,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tab_near_me_recent_visits" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -116,6 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/white"
                 app:cardUseCompatPadding="false"
                 app:contentPadding="16dp">
@@ -402,7 +403,8 @@
                             android:id="@+id/cl_school"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/ivSchool"
@@ -432,7 +434,8 @@
                             android:id="@+id/cl_cafe"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/ivCafeteria"
@@ -479,11 +482,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="@string/txt_generic_store"
                                 android:gravity="center_horizontal"
+                                android:maxLines="1"
+                                android:text="@string/txt_generic_store"
                                 android:textColor="@color/text_header_color"
                                 android:textSize="@dimen/text_size_fourteen"
-                                android:maxLines="1"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/ivGenericStore" />
@@ -493,7 +496,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            android:layout_weight="3" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

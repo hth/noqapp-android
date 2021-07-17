@@ -1,20 +1,28 @@
 package com.noqapp.android.client.views.version_2
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
+import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.IBConstant
-import com.noqapp.android.client.views.activities.BeforeJoinOrderQueueActivity
-import com.noqapp.android.client.views.activities.CategoryInfoActivity
-import com.noqapp.android.client.views.activities.StoreDetailActivity
-import com.noqapp.android.client.views.activities.StoreWithMenuActivity
+import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.common.model.types.BusinessSupportEnum
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class NavigationBundleUtils {
+object NavigationBundleUtils {
+
+    fun navigateToSearch(context: Context, searchStoreQuery: SearchStoreQuery) {
+        val searchIntent = Intent(context, SearchActivity::class.java)
+        searchIntent.putExtra("scrollId", "")
+        searchIntent.putExtra("lat", "" + searchStoreQuery.latitude)
+        searchIntent.putExtra("lng", "" + searchStoreQuery.longitude)
+        searchIntent.putExtra("city", searchStoreQuery.cityName)
+        context.startActivity(searchIntent)
+    }
 
     fun navigateToStore(activity: Activity, bizStoreElastic: BizStoreElastic) {
         val intent: Intent

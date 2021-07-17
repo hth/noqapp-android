@@ -88,8 +88,7 @@ class ViewBusinessListFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemC
 
     override fun onStoreItemClick(item: BizStoreElastic?) {
         item?.let {
-            val navigationBundleUtils = NavigationBundleUtils()
-            navigationBundleUtils.navigateToStore(requireActivity(), item)
+            NavigationBundleUtils.navigateToStore(requireActivity(), item)
         } ?: run {
             Log.d(ViewBusinessListFragment::class.java.simpleName, "BizStoreElastic is null")
         }
