@@ -74,14 +74,6 @@
             android:theme="@style/BaseTheme"/>
 
         <activity
-            android:name=".views.activities.LaunchActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
             android:name=".views.activities.ReviewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"

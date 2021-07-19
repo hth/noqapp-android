@@ -1,10 +1,18 @@
 package com.noqapp.android.client.views.version_2.adapter
 
 import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
 import android.text.TextUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ListItemNotificationBinding
@@ -14,6 +22,9 @@ import com.noqapp.android.common.pojos.DisplayNotification
 import com.noqapp.android.common.utils.CommonHelper
 import com.squareup.picasso.Picasso
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 
 class NotificationAdapter(private val notificationList: List<DisplayNotification>, val onClickListener: (DisplayNotification) -> Unit) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
@@ -28,7 +39,9 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
         fun bind(displayNotification: DisplayNotification){
             this.displayNotification = displayNotification
             listItemNotificationBinding.tvTitle.text = displayNotification.title
-            listItemNotificationBinding.tvMsg.text = displayNotification.body
+
+            setLinks(listItemNotificationBinding.tvMsg, displayNotification.body)
+
             try {
                 val dateString = displayNotification.notificationCreate
                 val startDate = Date().time - CommonHelper.stringToDate(dateString).time
@@ -57,6 +70,32 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
                 onClickListener(it)
             }
         }
+    }
+
+    fun setLinks(tv: TextView, text: String) {
+        val linkPatterns = arrayOf(
+                "([Hh][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])",
+                "#[\\w]+", "@[\\w]+")
+        val f = SpannableString(text)
+        for (str in linkPatterns) {
+            val pattern: Pattern = Pattern.compile(str)
+            val matcher: Matcher = pattern.matcher(text)
+            while (matcher.find()) {
+                val x: Int = matcher.start()
+                val y: Int = matcher.end()
+
+                val spanText = text.substring(x, y)
+                val span = URLSpan(spanText)
+                f.setSpan(span, x, y,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                tv.text = f
+            }
+        }
+
+        tv.setLinkTextColor(Color.BLUE)
+        tv.linksClickable = true
+        tv.movementMethod = LinkMovementMethod.getInstance()
+        tv.isFocusable = false
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {

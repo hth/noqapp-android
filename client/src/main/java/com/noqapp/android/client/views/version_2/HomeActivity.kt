@@ -145,26 +145,26 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private fun showLoginScreen() {
         if (AppInitialize.getShowHelper()) {
 
-            activityHomeBinding.btnChangeLanguage.setOnClickListener(View.OnClickListener { v: View? ->
+            activityHomeBinding.btnChangeLanguage.setOnClickListener {
                 val claIntent = Intent(
                         this,
                         ChangeLanguageActivity::class.java
                 )
                 startActivity(claIntent)
                 AppInitialize.setShowHelper(true)
-            })
+            }
             activityHomeBinding.rlHelper.visibility = View.VISIBLE
             activityHomeBinding.btnSkip.setOnClickListener { v: View? ->
                 activityHomeBinding.rlHelper.visibility = View.GONE
             }
-            activityHomeBinding.btnLogin.setOnClickListener(View.OnClickListener { v: View? ->
-                activityHomeBinding.rlHelper.setVisibility(View.GONE)
+            activityHomeBinding.btnLogin.setOnClickListener {
+                activityHomeBinding.rlHelper.visibility = View.GONE
                 val loginIntent = Intent(
                         this,
                         LoginActivity::class.java
                 )
                 startActivity(loginIntent)
-            })
+            }
             AppInitialize.setShowHelper(false)
         } else {
             if (isRateUsFirstTime) {

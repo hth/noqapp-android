@@ -4,7 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ShowCustomDialog {
     private Context context;
@@ -68,7 +75,9 @@ public class ShowCustomDialog {
         TextView tv_title = dialog.findViewById(R.id.tv_title);
         TextView tv_msg = dialog.findViewById(R.id.tv_msg);
         tv_title.setText(title);
-        tv_msg.setText(msg);
+
+        setLinks(tv_msg, msg);
+
         if (isGravityLeft) {
             tv_msg.setGravity(Gravity.LEFT);
         }
@@ -102,5 +111,30 @@ public class ShowCustomDialog {
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (!dialog.isShowing())
             dialog.show();
+    }
+
+    private void setLinks(TextView tv, String text) {
+        String[] linkPatterns = {"([Hh][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])",
+                "#[\\w]+", "@[\\w]+"};
+        SpannableString f = new SpannableString(text);
+        for (String str : linkPatterns) {
+            Pattern pattern = Pattern.compile(str);
+            Matcher matcher = pattern.matcher(text);
+            while (matcher.find()) {
+                int x = matcher.start();
+                int y = matcher.end();
+
+                String spanText = text.substring(x, y);
+                URLSpan span = new URLSpan(spanText);
+                f.setSpan(span, x, y,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tv.setText(f);
+            }
+        }
+
+        tv.setLinkTextColor(Color.BLUE);
+        tv.setLinksClickable(true);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+        tv.setFocusable(false);
     }
 }

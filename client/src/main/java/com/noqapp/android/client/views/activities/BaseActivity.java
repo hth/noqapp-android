@@ -20,6 +20,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -85,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         }
         actionbarBack.setOnClickListener((View v) -> finish());
         iv_home.setOnClickListener((View v) -> {
-            Intent goToA = new Intent(BaseActivity.this, LaunchActivity.class);
+            Intent goToA = new Intent(BaseActivity.this, HomeActivity.class);
             goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(goToA);
         });
