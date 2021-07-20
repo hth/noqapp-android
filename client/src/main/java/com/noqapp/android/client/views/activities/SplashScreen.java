@@ -98,7 +98,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
     @Override
     public void deviceRegisterError() {
-
+        callLaunchScreen();
     }
 
     @Override

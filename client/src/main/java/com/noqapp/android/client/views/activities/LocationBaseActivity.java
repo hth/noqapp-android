@@ -52,12 +52,12 @@ public abstract class LocationBaseActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCurrentLocation();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        getCurrentLocation();
     }
 
     private void getCurrentLocation() {
@@ -137,7 +137,6 @@ public abstract class LocationBaseActivity extends BaseActivity {
         task.addOnSuccessListener(response -> {
             LocationSettingsStates locationSettingsStates = response.getLocationSettingsStates();
             if (locationSettingsStates.isLocationPresent()) {
-                LocationManager.INSTANCE.startLocationUpdate(this);
                 LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, countryShortName, area, town, district, state, stateShortName, latitude, longitude) -> {
                     displayAddressOutput(address, countryShortName, area, town, district, state, stateShortName, latitude, longitude);
                     return null;

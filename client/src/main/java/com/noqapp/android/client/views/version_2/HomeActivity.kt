@@ -140,6 +140,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
         observeValues()
 
+        FirebaseMessaging.getInstance().token.addOnSuccessListener(this) { token: String? ->
+            AppInitialize.setTokenFCM(token)
+            reCreateDeviceID(this, this)
+        }
+
     }
 
     private fun showLoginScreen() {
@@ -311,6 +316,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             navHeaderMainBinding.tvEmail.text = getString(R.string.txt_please_login)
             navHeaderMainBinding.tvName.text = getString(R.string.txt_guest_user)
         }
+        activityHomeBinding.tvLocation.text = AppInitialize.cityName
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(navHeaderMainBinding.ivProfile)
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {

@@ -24,7 +24,6 @@ import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.Objects;

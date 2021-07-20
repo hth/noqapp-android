@@ -20,9 +20,9 @@ public class Constants extends BaseConstants{
     public static final int REQUEST_CODE_SELECT_ADDRESS = 78;
     public static final int REQUEST_CODE_ADD_ADDRESS = 79;
 
-    public static final int LOCATION_PERMISSION_REQUEST_CODE = 10_001;
-    public static final int RESULT_CURRENT_LOCATION = 10_002;
-    public static final int REQUEST_CHECK_SETTINGS = 10_003;
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 10001;
+    public static final int RESULT_CURRENT_LOCATION = 10002;
+    public static final int REQUEST_CHECK_SETTINGS = 10003;
 
     public static final int SCREEN_TIME_OUT = 5_000;
     public static final int DISCONNECT_TIMEOUT = 60_000; //// 1 min = 1 * 60 * 1000 ms
