@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.common.pojos.MenuDrawer;
 
 import java.util.List;
@@ -115,7 +114,7 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     }
     
     private void updateNotificationBadgeCount(TextView tv_badge) {
-        int notify_count = NotificationDB.getNotificationCount();
+        int notify_count = 0;
         tv_badge.setText(String.valueOf(notify_count));
         if (notify_count > 0) {
             tv_badge.setVisibility(View.VISIBLE);

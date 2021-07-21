@@ -18,6 +18,9 @@ interface NotificationDao {
     @Query("DELETE FROM notification")
     suspend fun deleteNotifications()
 
+    @Query("DELETE FROM notification WHERE `key`=:key")
+    suspend fun deleteNotification(key: String?)
+
     @Insert
     suspend fun insertNotification(displayNotification: DisplayNotification)
 

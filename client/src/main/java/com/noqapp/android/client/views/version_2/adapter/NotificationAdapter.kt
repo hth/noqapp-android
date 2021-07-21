@@ -3,20 +3,17 @@ package com.noqapp.android.client.views.version_2.adapter
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
-import android.text.TextPaint
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ListItemNotificationBinding
-import com.noqapp.android.client.model.database.utils.NotificationDB
+import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.GetTimeAgoUtils
 import com.noqapp.android.common.pojos.DisplayNotification
 import com.noqapp.android.common.utils.CommonHelper
@@ -51,7 +48,7 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
                 listItemNotificationBinding.tvCreate.text = ""
             }
 
-            if (displayNotification.status == NotificationDB.KEY_UNREAD) {
+            if (displayNotification.status == Constants.KEY_UNREAD) {
                 listItemNotificationBinding.cardview.setCardBackgroundColor(Color.WHITE)
             } else {
                 listItemNotificationBinding.cardview.setCardBackgroundColor(Color.parseColor("#f6f6f6"))

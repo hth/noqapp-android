@@ -1,12 +1,9 @@
 package com.noqapp.android.client.utils;
 
 //Intent and bundle constant
-
-import com.noqapp.android.client.model.database.DatabaseTable;
-
 public class IBConstant {
 
-    public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
+    public static final String KEY_CODE_QR = "codeQR";
     public static final String KEY_FROM_LIST = "fromList";
     public static final String KEY_IS_TEMPLE = "isTemple";
     public static final String KEY_IS_REJOIN = "isRejoin";

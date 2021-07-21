@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -26,7 +27,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientPreferenceApiCalls;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
@@ -42,6 +42,7 @@ import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.StoreProductFinalOrderAdapter;
 import com.noqapp.android.client.views.customviews.FixedHeightListView;
+import com.noqapp.android.client.views.version_2.viewmodels.AfterJoinOrderViewModel;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -108,13 +109,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private LinearLayout ll_address;
     private RadioGroup rg_delivery;
     private JsonQueue jsonQueue;
+    private AfterJoinOrderViewModel afterJoinOrderViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-
+        afterJoinOrderViewModel = new ViewModelProvider(this).get(AfterJoinOrderViewModel.class);
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         tv_due_amt = findViewById(R.id.tv_due_amt);
@@ -301,11 +303,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             showProgress();
                             setProgressMessage("Order placing in progress...");
                             jsonPurchaseOrder
-                                .setUserAddressId(acrb_home_delivery.isChecked() ? jsonUserAddress.getId() : null)
-                                .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
-                                .setPaymentMode(null) //not required here
-                                .setCustomerPhone(AppInitialize.getPhoneNo())
-                                .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
+                                    .setUserAddressId(acrb_home_delivery.isChecked() ? jsonUserAddress.getId() : null)
+                                    .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
+                                    .setPaymentMode(null) //not required here
+                                    .setCustomerPhone(AppInitialize.getPhoneNo())
+                                    .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
                             purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
                         } else {
@@ -558,7 +560,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         }
         FirebaseMessaging.getInstance().unsubscribeFromTopic(getIntent().getExtras().getString("topic") + "_A");
         if (null != jsonPurchaseOrderServer) {
-            TokenAndQueueDB.deleteTokenQueue(jsonPurchaseOrderServer.getCodeQR(), String.valueOf(jsonPurchaseOrderServer.getToken()));
+            afterJoinOrderViewModel.deleteTokenAndQueue(jsonPurchaseOrderServer.getCodeQR(), String.valueOf(jsonPurchaseOrderServer.getToken()));
         }
         onBackPressed();
         dismissProgress();

@@ -1,7 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -11,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.adapters.LanguageAdapter;
 import com.noqapp.android.client.views.pojos.LanguageInfo;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ChangeLanguageActivity extends BaseActivity implements LanguageAdapter.OnItemClickListener {
     @Override
@@ -48,15 +48,15 @@ public class ChangeLanguageActivity extends BaseActivity implements LanguageAdap
 
     private ArrayList<LanguageInfo> getEnabledIndianLanguage() {
         ArrayList<LanguageInfo> indianLanguages = new ArrayList<>();
-        indianLanguages.add(new LanguageInfo(getString(R.string.hindi), "hi", R.drawable.flag_india, LaunchActivity.language.equals("hi")));
-        indianLanguages.add(new LanguageInfo(getString(R.string.kannada), "kn", R.drawable.flag_india, LaunchActivity.language.equals("kn")));
+        indianLanguages.add(new LanguageInfo(getString(R.string.hindi), "hi", R.drawable.flag_india, Objects.equals(HomeActivity.Companion.getLanguage(), "hi")));
+        indianLanguages.add(new LanguageInfo(getString(R.string.kannada), "kn", R.drawable.flag_india, Objects.equals(HomeActivity.Companion.getLanguage(), "kn")));
         return indianLanguages;
     }
 
     private ArrayList<LanguageInfo> getEnabledForeignLanguage() {
         ArrayList<LanguageInfo> foreignLanguages = new ArrayList<>();
-        foreignLanguages.add(new LanguageInfo(getString(R.string.french), "fr", R.drawable.flag_france, LaunchActivity.language.equals("fr")));
-        foreignLanguages.add(new LanguageInfo(getString(R.string.english), "en", R.drawable.flag_united_kingdom, LaunchActivity.language.equals("en_US")));
+        foreignLanguages.add(new LanguageInfo(getString(R.string.french), "fr", R.drawable.flag_france, Objects.equals(HomeActivity.Companion.getLanguage(), "fr")));
+        foreignLanguages.add(new LanguageInfo(getString(R.string.english), "en", R.drawable.flag_united_kingdom, HomeActivity.Companion.getLanguage().equals("en_US")));
         return foreignLanguages;
     }
 }

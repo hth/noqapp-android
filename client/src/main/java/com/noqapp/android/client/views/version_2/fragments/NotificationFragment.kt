@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.databinding.FragmentNotificationBinding
-import com.noqapp.android.client.model.database.utils.NotificationDB
 import com.noqapp.android.client.utils.AnalyticsEvents
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.ShowCustomDialog
@@ -62,7 +60,7 @@ class NotificationFragment: BaseFragment() {
         val showDialog = ShowCustomDialog(requireContext(), true)
         showDialog.setDialogClickListener(object : ShowCustomDialog.DialogClickListener {
             override fun btnPositiveClick() {
-                NotificationDB.deleteNotification(displayNotification.sequence, displayNotification.key)
+                homeViewModel.deleteNotification(displayNotification.key)
                 loadListData()
             }
 

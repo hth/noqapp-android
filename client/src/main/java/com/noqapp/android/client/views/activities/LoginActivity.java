@@ -71,17 +71,9 @@ public class LoginActivity extends OTPActivity {
         Log.d(TAG, "profile :" + profile.toString());
         AppInitialize.commitProfile(profile, email, auth);
         AppInitialize.setPreviousUserQID(profile.getQueueUserId());
-
-        if (getIntent().getBooleanExtra("fromLogin", false)) {
-            // To refresh the launch activity
-            Intent intent = new Intent(this, LaunchActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }else if (getIntent().getBooleanExtra("fromHome", false)) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("fromLogin", true);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("fromLogin", true);
+        startActivity(intent);
         finish();//close the current activity
         dismissProgress();
     }

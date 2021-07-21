@@ -116,31 +116,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:menu="@menu/bottom_nav_menu" />
-
-            <LinearLayout
-                android:id="@+id/llOldVersion"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:animateLayoutChanges="true"
-                android:background="@drawable/bg_rounded_rectangle"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivOldVersion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_home" />
-
-                <TextView
-                    android:id="@+id/tvOldVersion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Old version" />
-
-            </LinearLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout

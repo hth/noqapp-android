@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -78,7 +78,7 @@ public class NotificationListAdapter extends BaseAdapter {
             recordHolder.tv_create.setText("");
         }
 
-        if (displayNotification.getStatus().equals(NotificationDB.KEY_UNREAD)) {
+        if (displayNotification.getStatus().equals(Constants.KEY_UNREAD)) {
             recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
         } else {
             recordHolder.cardview.setCardBackgroundColor(Color.parseColor("#f6f6f6"));

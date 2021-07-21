@@ -18,14 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
@@ -96,11 +95,11 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     break;
                 default:
                     holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
-                        (float) lat,
-                        (float) log,
-                        (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
-                        (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
-                    holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
+                            (float) lat,
+                            (float) log,
+                            (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+                            (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
+                    holder.tv_distance_unit.setText(Constants.DISTANCE_UNIT);
             }
             AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), holder.tv_store_review);
 
@@ -117,10 +116,10 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getThumbPlaceholder(context))
-                    .error(ImageUtils.getThumbErrorPlaceholder(context))
-                    .into(holder.iv_main);
+                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                        .placeholder(ImageUtils.getThumbPlaceholder(context))
+                        .error(ImageUtils.getThumbErrorPlaceholder(context))
+                        .into(holder.iv_main);
             else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
@@ -142,7 +141,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.GONE);
                     holder.tv_category_name.setText("");
-                    holder.tv_name.setText(isFavourite? bizStoreElastic.getDisplayName(): bizStoreElastic.getBusinessName());
+                    holder.tv_name.setText(isFavourite ? bizStoreElastic.getDisplayName() : bizStoreElastic.getBusinessName());
                     holder.tv_status.setText("");
                     break;
                 default:

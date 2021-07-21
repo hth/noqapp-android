@@ -39,6 +39,10 @@ public class Constants extends BaseConstants{
     public static final String QID = "qid";
     public static final String MESSAGE_ID = "mi";
     public static final String JSON_USER_ADDRESS = "jsonUserAddress";
+    public static final String KEY_READ = "1";
+    public static final String KEY_UNREAD = "0";
+    public static final String KEY_NOTIFY = "KY_NOTI";
+    public static final String COUNTRY_CODE = "IN";
 
     /** Distance in KMs. */
     public static final int VALID_DOCTOR_STORE_DISTANCE_FOR_TOKEN = 150;
@@ -57,6 +61,7 @@ public class Constants extends BaseConstants{
     static final String GOOGLE_PLACE_API_KEY = "AIzaSyA9eHl3SHvjXmHFq9q5yPjRy0uqBd5awSc";
     private static final String TAG = Constants.class.getName();
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
+    public static String DISTANCE_UNIT = "km";
     private static String VERSION_RELEASE;
 
     /** Shared Preferences keys. */

@@ -17,9 +17,9 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -88,7 +88,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
                         (float) log,
                         (float) GeoHashUtils.decodeLatitude(item.getGeoHash()),
                         (float) GeoHashUtils.decodeLongitude(item.getGeoHash()))));
-                holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
+                holder.tv_distance_unit.setText(Constants.DISTANCE_UNIT);
         }
 
         holder.tv_store_rating.setText(String.valueOf(AppUtils.round(item.getRating())));

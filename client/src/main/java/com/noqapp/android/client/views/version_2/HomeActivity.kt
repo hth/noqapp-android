@@ -24,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.common.cache.CacheBuilder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -32,7 +33,6 @@ import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.databinding.NavHeaderMainBinding
-import com.noqapp.android.client.model.database.utils.NotificationDB
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
@@ -56,6 +56,9 @@ import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.apache.commons.lang3.StringUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         SharedPreferences.OnSharedPreferenceChangeListener, HomeFragmentInteractionListener,
@@ -92,6 +95,12 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         this.searchStoreQuery = searchStoreQuery
     }
 
+    companion object {
+        lateinit var languagePref: SharedPreferences
+        var language: String? = null
+        var locale: Locale? = null
+    }
+
     private val menuDrawerItems = mutableListOf<MenuDrawer>()
     private lateinit var activityHomeBinding: ActivityHomeBinding
     private lateinit var navHeaderMainBinding: NavHeaderMainBinding
@@ -126,11 +135,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         updateNotificationBadgeCount()
         setUpNavigation()
 
-        if (BuildConfig.DEBUG) {
-            activityHomeBinding.llOldVersion.visibility = View.VISIBLE
-        } else {
-            activityHomeBinding.llOldVersion.visibility = View.GONE
-        }
+        setUpLanguage()
 
         addHeaderView()
         setListeners()
@@ -145,6 +150,41 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             reCreateDeviceID(this, this)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        languagePref.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun setUpLanguage() {
+        //Language setup
+        languagePref = PreferenceManager.getDefaultSharedPreferences(this)
+        language = languagePref.getString("pref_language", "")
+
+        if (StringUtils.isNotBlank(language)) {
+            when (language) {
+                "hi" -> {
+                    language = "hi"
+                    locale = Locale("hi")
+                }
+                "kn" -> {
+                    language = "kn"
+                    locale = Locale("kn")
+                }
+                "fr" -> {
+                    language = "fr"
+                    locale = Locale("fr")
+                }
+                else -> {
+                    locale = Locale.ENGLISH
+                    language = "en_US"
+                }
+            }
+        } else {
+            locale = Locale.ENGLISH
+            language = "en_US"
+        }
     }
 
     private fun showLoginScreen() {
@@ -271,15 +311,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setListeners() {
-        activityHomeBinding.llOldVersion.setOnClickListener {
-            val intent = Intent(this, LaunchActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                putExtra(AppInitialize.TOKEN_FCM, intent.getStringExtra(AppInitialize.TOKEN_FCM))
-                putExtra("deviceId", intent.getStringExtra("deviceId"))
-            }
-            startActivity(intent)
-            finish()
-        }
 
         activityHomeBinding.tvLocation.setOnClickListener {
             navController.navigate(R.id.changeLocationFragment)
@@ -346,7 +377,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun updateNotificationBadgeCount() {
-        val notifyCount = NotificationDB.getNotificationCount()
+        val notifyCount = 0
         expandableListAdapter?.notifyDataSetChanged()
         supportActionBar?.setHomeAsUpIndicator(
                 setBadgeCount(
@@ -567,8 +598,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 startActivity(`in`)
             }
             R.drawable.ic_notification -> {
-                val `in` = Intent(this, NotificationActivity::class.java)
-                startActivity(`in`)
+                navController.navigate(R.id.notificationFragment)
             }
             R.drawable.ic_logout -> {
                 val showDialog = ShowCustomDialog(this, true)
@@ -642,10 +672,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun isCountryIndia(): Boolean {
-        return LaunchActivity.COUNTRY_CODE.equals(
-                "India",
-                ignoreCase = true
-        ) || LaunchActivity.COUNTRY_CODE.equals("IN", ignoreCase = true)
+        return true
     }
 
     fun reCreateDeviceID(context: Activity, deviceRegisterPresenter: DeviceRegisterPresenter?) {
@@ -695,8 +722,14 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
     }
 
-    override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
+    override fun onSharedPreferenceChanged(p0: SharedPreferences?, key: String?) {
 
+        //TODO Note: key should not be null. There is another issue that needs to be fixed. Better to remove null from shared preferences
+        //TODO Note: move this code piece to viewmodel in next release
+        if (StringUtils.isNotBlank(key) && key == "pref_language") {
+            (application as AppInitialize).setLocale(this)
+            recreate()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

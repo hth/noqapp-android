@@ -17,8 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
-import com.noqapp.android.client.model.database.DatabaseHelper;
-import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
@@ -42,7 +40,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
 
@@ -80,7 +77,6 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static String cityName = "";
     public static String area = "";
     public static String town = "";
-    public static DatabaseHelper dbHandler;
     public static boolean isLockMode = false;
     private static AppInitialize appInitialize;
 
@@ -110,7 +106,6 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this); //needs android.permission.WAKE_LOCK
         location = new Location("");
-        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         JodaTimeAndroid.init(this);
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
@@ -449,9 +444,9 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         DeviceApiCall deviceModel = new DeviceApiCall();
         deviceModel.setDeviceRegisterPresenter(deviceRegisterPresenter);
         DeviceToken deviceToken = new DeviceToken(
-            AppInitialize.getTokenFCM(),
-            Constants.appVersion(),
-            CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
+                AppInitialize.getTokenFCM(),
+                Constants.appVersion(),
+                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
         if (UserUtils.isLogin()) {
             deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
@@ -467,10 +462,10 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
 
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setArea(jsonUserAddress.getArea())
-                .setTown(jsonUserAddress.getTown())
-                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                    .setArea(jsonUserAddress.getArea())
+                    .setTown(jsonUserAddress.getTown())
+                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             AppInitialize.setLocationPreference(locationPref);
             AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
             AppInitialize.location.setLatitude(locationPref.getLatitude());
@@ -496,7 +491,8 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static ArrayList<String> getFavouriteList() {
         Gson gson = new Gson();
         String json = preferences.getString(KEY_FAVOURITE_CODE_QRS, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
         ArrayList<String> favouriteList = gson.fromJson(json, type);
         return null == favouriteList ? new ArrayList<>() : favouriteList;
     }
