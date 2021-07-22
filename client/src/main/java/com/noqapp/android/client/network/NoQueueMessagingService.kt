@@ -210,6 +210,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                 MessageOriginEnum.M -> {
                 }
+
+                MessageOriginEnum.IE -> {
+                }
                 else -> {
                     Log.d(TAG, "Reached un-reachable : $messageOrigin")
                 }
@@ -495,6 +498,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)),
                                     true,
                                     imageUrl)
+
                             setAlarm(jsonData)
                         } else {
                             if (AppUtils.isAppIsInBackground(applicationContext)) {
@@ -511,8 +515,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 title,
                                 jsonData?.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)),
                                 false,
-                                imageUrl
-                            )
+                                imageUrl)
                         }
 
                         if (jsonData is JsonAlertData) {
@@ -534,8 +537,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             GlobalScope.launch {
                                 withContext(Dispatchers.IO) {
                                     NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
-                                            .notificationDao()
-                                            .insertNotification(displayNotification)
+                                        .notificationDao()
+                                        .insertNotification(displayNotification)
                                 }
                             }
                         }
