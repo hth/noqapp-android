@@ -220,18 +220,18 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         })
 
         homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND)
-                .observe(this, Observer {
-                    it?.let {
-                        if (it.isSkipped == "1") {
-                            CustomToast().showToast(this, getString(R.string.txt_you_were_skipped))
-                            callSkipScreen(it.codeQR)
-                        } else if (it.isReviewShown != "1" && it.isSkipped != "1") {
-                            callReviewActivity(it.codeQR, it.token)
-                        }
+            .observe(this, Observer {
+                it?.let {
+                    if (it.isSkipped == "1") {
+                        CustomToast().showToast(this, getString(R.string.txt_you_were_skipped))
+                        callSkipScreen(it.codeQR)
+                    } else if (it.isReviewShown != "1" && it.isSkipped != "1") {
+                        callReviewActivity(it.codeQR, it.token)
                     }
-                })
+                }
+            })
 
-        homeViewModel.notificationListLiveData.observe(this, Observer {
+        homeViewModel.notificationListLiveData.observe(this, {
             it?.let { displayNotificationList ->
                 if (displayNotificationList.isNotEmpty()) {
                     val displayNotification = displayNotificationList.last()
@@ -325,10 +325,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(navHeaderMainBinding.ivProfile)
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                    .placeholder(ImageUtils.getProfilePlaceholder(this))
+                    .error(ImageUtils.getProfileErrorPlaceholder(this))
+                    .into(navHeaderMainBinding.ivProfile)
             }
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
