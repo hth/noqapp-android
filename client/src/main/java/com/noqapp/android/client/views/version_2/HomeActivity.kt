@@ -66,15 +66,15 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(
-            addressOutput: String?,
-            countryShortName: String?,
-            area: String?,
-            town: String?,
-            district: String?,
-            state: String?,
-            stateShortName: String?,
-            latitude: Double?,
-            longitude: Double?
+        addressOutput: String?,
+        countryShortName: String?,
+        area: String?,
+        town: String?,
+        district: String?,
+        state: String?,
+        stateShortName: String?,
+        latitude: Double?,
+        longitude: Double?
     ) {
         activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
 
@@ -111,17 +111,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var isRateUsFirstTime = true
     private var searchStoreQuery: SearchStoreQuery? = null
 
-    private val cacheMsgIds =
-            CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
-
+    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
-
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(
-                this,
-                ViewModelProvider.AndroidViewModelFactory(application)
-        )[HomeViewModel::class.java]
+        ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))[HomeViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,7 +143,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             AppInitialize.setTokenFCM(token)
             reCreateDeviceID(this, this)
         }
-
     }
 
     override fun onResume() {
@@ -189,25 +182,16 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
     private fun showLoginScreen() {
         if (AppInitialize.getShowHelper()) {
-
             activityHomeBinding.btnChangeLanguage.setOnClickListener {
-                val claIntent = Intent(
-                        this,
-                        ChangeLanguageActivity::class.java
-                )
+                val claIntent = Intent(this, ChangeLanguageActivity::class.java)
                 startActivity(claIntent)
                 AppInitialize.setShowHelper(true)
             }
             activityHomeBinding.rlHelper.visibility = View.VISIBLE
-            activityHomeBinding.btnSkip.setOnClickListener { v: View? ->
-                activityHomeBinding.rlHelper.visibility = View.GONE
-            }
+            activityHomeBinding.btnSkip.setOnClickListener { v: View? -> activityHomeBinding.rlHelper.visibility = View.GONE }
             activityHomeBinding.btnLogin.setOnClickListener {
                 activityHomeBinding.rlHelper.visibility = View.GONE
-                val loginIntent = Intent(
-                        this,
-                        LoginActivity::class.java
-                )
+                val loginIntent = Intent(this, LoginActivity::class.java)
                 startActivity(loginIntent)
             }
             AppInitialize.setShowHelper(false)
@@ -236,27 +220,23 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         })
 
         homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND)
-                .observe(this, Observer {
-                    it?.let {
-                        if (it.isSkipped == "1") {
-                            CustomToast().showToast(this, "You were skipped")
-                            callSkipScreen(it.codeQR)
-                        } else if (it.isReviewShown != "1" && it.isSkipped != "1") {
-                            callReviewActivity(it.codeQR, it.token)
-                        }
+            .observe(this, Observer {
+                it?.let {
+                    if (it.isSkipped == "1") {
+                        CustomToast().showToast(this, "You were skipped")
+                        callSkipScreen(it.codeQR)
+                    } else if (it.isReviewShown != "1" && it.isSkipped != "1") {
+                        callReviewActivity(it.codeQR, it.token)
                     }
-                })
+                }
+            })
 
         homeViewModel.notificationListLiveData.observe(this, Observer {
             it?.let { displayNotificationList ->
                 if (displayNotificationList.isNotEmpty()) {
                     val displayNotification = displayNotificationList.last()
                     if (!displayNotification.popUpShown) {
-                        ShowAlertInformation.showInfoDisplayDialog(
-                                this,
-                                displayNotification.title,
-                                displayNotification.body
-                        )
+                        ShowAlertInformation.showInfoDisplayDialog(this, displayNotification.title, displayNotification.body)
                         displayNotification.popUpShown = true
                         homeViewModel.updateDisplayNotification(displayNotification)
                     }
@@ -283,10 +263,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
                 if (AppInitialize.isMsgAnnouncementEnable()) {
                     if (foregroundNotification.jsonTextToSpeeches != null) {
-                        makeAnnouncement(
-                                foregroundNotification.jsonTextToSpeeches!!,
-                                foregroundNotification.msgId
-                        )
+                        makeAnnouncement(foregroundNotification.jsonTextToSpeeches!!, foregroundNotification.msgId)
                     }
                 }
 
@@ -298,10 +275,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
                     if (AppInitialize.isMsgAnnouncementEnable()) {
                         if (foregroundNotification.jsonTextToSpeeches != null) {
-                            makeAnnouncement(
-                                    foregroundNotification.jsonTextToSpeeches!!,
-                                    foregroundNotification.msgId
-                            )
+                            makeAnnouncement(foregroundNotification.jsonTextToSpeeches!!, foregroundNotification.msgId)
                         }
                     }
                 }
@@ -311,7 +285,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setListeners() {
-
         activityHomeBinding.tvLocation.setOnClickListener {
             navController.navigate(R.id.changeLocationFragment)
         }
@@ -352,15 +325,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                        .load(
-                                AppUtils.getImageUrls(
-                                        BuildConfig.PROFILE_BUCKET,
-                                        AppInitialize.getUserProfileUri()
-                                )
-                        )
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(navHeaderMainBinding.ivProfile)
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                    .placeholder(ImageUtils.getProfilePlaceholder(this))
+                    .error(ImageUtils.getProfileErrorPlaceholder(this))
+                    .into(navHeaderMainBinding.ivProfile)
             }
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
@@ -369,8 +337,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setUpNavigation() {
-        navHostFragment =
-                supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
         activityHomeBinding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
@@ -379,13 +346,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private fun updateNotificationBadgeCount() {
         val notifyCount = 0
         expandableListAdapter?.notifyDataSetChanged()
-        supportActionBar?.setHomeAsUpIndicator(
-                setBadgeCount(
-                        this,
-                        R.drawable.ic_burger,
-                        notifyCount
-                )
-        )
+        supportActionBar?.setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_burger, notifyCount))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
@@ -397,144 +358,144 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         if (isCountryIndia()) {
             val healthList: MutableList<MenuDrawer> = ArrayList()
             healthList.add(
-                    MenuDrawer(
-                            getString(R.string.medical_profiles),
-                            false,
-                            false,
-                            R.drawable.medical_profile
-                    )
+                MenuDrawer(
+                    getString(R.string.medical_profiles),
+                    false,
+                    false,
+                    R.drawable.medical_profile
+                )
             )
             healthList.add(
-                    MenuDrawer(
-                            getString(R.string.medical_history),
-                            false,
-                            false,
-                            R.drawable.medical_history
-                    )
+                MenuDrawer(
+                    getString(R.string.medical_history),
+                    false,
+                    false,
+                    R.drawable.medical_history
+                )
             )
             menuDrawerItems.add(
-                    MenuDrawer(
-                            getString(R.string.health_care),
-                            true,
-                            true,
-                            R.drawable.health_care,
-                            healthList
-                    )
+                MenuDrawer(
+                    getString(R.string.health_care),
+                    true,
+                    true,
+                    R.drawable.health_care,
+                    healthList
+                )
             )
             menuDrawerItems.add(
-                    MenuDrawer(
-                            getString(R.string.appointments),
-                            true,
-                            false,
-                            R.drawable.appointment
-                    )
+                MenuDrawer(
+                    getString(R.string.appointments),
+                    true,
+                    false,
+                    R.drawable.appointment
+                )
             )
         }
         menuDrawerItems.add(
-                MenuDrawer(
-                        getString(R.string.order_history),
-                        true,
-                        false,
-                        R.drawable.purchase_order
-                )
+            MenuDrawer(
+                getString(R.string.order_history),
+                true,
+                false,
+                R.drawable.purchase_order
+            )
         )
         if (isLogin) {
             menuDrawerItems.add(
-                    MenuDrawer(
-                            getString(R.string.merchant_account),
-                            true,
-                            false,
-                            R.drawable.merchant_account
-                    )
+                MenuDrawer(
+                    getString(R.string.merchant_account),
+                    true,
+                    false,
+                    R.drawable.merchant_account
+                )
             )
             menuDrawerItems.add(
-                    MenuDrawer(
-                            getString(R.string.favourite),
-                            true,
-                            false,
-                            R.drawable.ic_favorite
-                    )
+                MenuDrawer(
+                    getString(R.string.favourite),
+                    true,
+                    false,
+                    R.drawable.ic_favorite
+                )
             )
         }
         menuDrawerItems.add(MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers))
         menuDrawerItems.add(
-                MenuDrawer(
-                        getString(R.string.notification_setting),
-                        true,
-                        false,
-                        R.drawable.ic_notification
-                )
+            MenuDrawer(
+                getString(R.string.notification_setting),
+                true,
+                false,
+                R.drawable.ic_notification
+            )
         )
         val settingList: MutableList<MenuDrawer> = ArrayList()
         settingList.add(
-                MenuDrawer(
-                        getString(R.string.share),
-                        false,
-                        false,
-                        R.drawable.ic_menu_share
-                )
+            MenuDrawer(
+                getString(R.string.share),
+                false,
+                false,
+                R.drawable.ic_menu_share
+            )
         )
         settingList.add(MenuDrawer(getString(R.string.invite), false, false, R.drawable.invite))
         settingList.add(MenuDrawer(getString(R.string.legal), false, false, R.drawable.legal))
         settingList.add(
-                MenuDrawer(
-                        getString(R.string.ratetheapp),
-                        false,
-                        false,
-                        R.drawable.ic_star
-                )
+            MenuDrawer(
+                getString(R.string.ratetheapp),
+                false,
+                false,
+                R.drawable.ic_star
+            )
         )
         settingList.add(
-                MenuDrawer(
-                        getString(R.string.language_setting),
-                        false,
-                        false,
-                        R.drawable.language
-                )
+            MenuDrawer(
+                getString(R.string.language_setting),
+                false,
+                false,
+                R.drawable.language
+            )
         )
         if (isLogin) {
             settingList.add(
-                    MenuDrawer(
-                            getString(R.string.preference_settings),
-                            false,
-                            false,
-                            R.drawable.settings
-                    )
+                MenuDrawer(
+                    getString(R.string.preference_settings),
+                    false,
+                    false,
+                    R.drawable.settings
+                )
             )
             settingList.add(
-                    MenuDrawer(
-                            getString(R.string.logout),
-                            false,
-                            false,
-                            R.drawable.ic_logout
-                    )
+                MenuDrawer(
+                    getString(R.string.logout),
+                    false,
+                    false,
+                    R.drawable.ic_logout
+                )
             )
         }
         menuDrawerItems.add(
-                MenuDrawer(
-                        getString(R.string.action_settings),
-                        true,
-                        true,
-                        R.drawable.settings_square,
-                        settingList
-                )
+            MenuDrawer(
+                getString(R.string.action_settings),
+                true,
+                true,
+                R.drawable.settings_square,
+                settingList
+            )
         )
         menuDrawerItems.add(
-                MenuDrawer(
-                        getString(R.string.title_activity_contact_us),
-                        true,
-                        false,
-                        R.drawable.contact_us
-                )
+            MenuDrawer(
+                getString(R.string.title_activity_contact_us),
+                true,
+                false,
+                R.drawable.contact_us
+            )
         )
         if (!AppUtils.isRelease()) {
             menuDrawerItems.add(
-                    MenuDrawer(
-                            getString(R.string.noqueue_apps),
-                            true,
-                            false,
-                            R.drawable.apps
-                    )
+                MenuDrawer(
+                    getString(R.string.noqueue_apps),
+                    true,
+                    false,
+                    R.drawable.apps
+                )
             )
         }
         expandableListAdapter = DrawerExpandableListAdapter(this, menuDrawerItems)
@@ -565,10 +526,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         when (drawable) {
             R.drawable.merchant_account -> if (isOnline) {
                 val `in` = Intent(this, WebViewActivity::class.java)
-                `in`.putExtra(
-                        IBConstant.KEY_URL,
-                        if (UserUtils.isLogin()) Constants.URL_MERCHANT_LOGIN else Constants.URL_MERCHANT_REGISTER
-                )
+                `in`.putExtra(IBConstant.KEY_URL, if (UserUtils.isLogin()) Constants.URL_MERCHANT_LOGIN else Constants.URL_MERCHANT_REGISTER)
                 startActivity(`in`)
             } else {
                 ShowAlertInformation.showNetworkDialog(this)
@@ -701,8 +659,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setBadgeCount(context: Context, res: Int, badgeCount: Int): Drawable? {
-        val icon =
-                ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
+        val icon = ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
         val mainIcon = ContextCompat.getDrawable(context, res)
         val badge = BadgeDrawable(context)
         badge.setCount(badgeCount.toString())
@@ -723,7 +680,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, key: String?) {
-
         //TODO Note: key should not be null. There is another issue that needs to be fixed. Better to remove null from shared preferences
         //TODO Note: move this code piece to viewmodel in next release
         if (StringUtils.isNotBlank(key) && key == "pref_language") {
@@ -832,13 +788,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             homeViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(codeQR)
                 if (jsonTokenAndQueueArrayList?.size == 1) {
-                    FirebaseMessaging.getInstance()
-                            .unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
                 }
             }
         } else {
             homeViewModel.deleteReview(codeQr, token)
         }
     }
-
 }
