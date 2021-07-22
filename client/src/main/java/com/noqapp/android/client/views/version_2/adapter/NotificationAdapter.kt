@@ -22,10 +22,11 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+class NotificationAdapter(private val notificationList: List<DisplayNotification>, val onClickListener: (DisplayNotification) -> Unit) :
+    RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
-class NotificationAdapter(private val notificationList: List<DisplayNotification>, val onClickListener: (DisplayNotification) -> Unit) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
-
-    inner class NotificationViewHolder(private val listItemNotificationBinding: ListItemNotificationBinding) : RecyclerView.ViewHolder(listItemNotificationBinding.root), View.OnClickListener {
+    inner class NotificationViewHolder(private val listItemNotificationBinding: ListItemNotificationBinding) :
+        RecyclerView.ViewHolder(listItemNotificationBinding.root), View.OnClickListener {
 
         var displayNotification: DisplayNotification? = null
 
@@ -33,7 +34,7 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
             listItemNotificationBinding.ivDelete.setOnClickListener(this)
         }
 
-        fun bind(displayNotification: DisplayNotification){
+        fun bind(displayNotification: DisplayNotification) {
             this.displayNotification = displayNotification
             listItemNotificationBinding.tvTitle.text = displayNotification.title
 
@@ -71,8 +72,10 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
 
     fun setLinks(tv: TextView, text: String) {
         val linkPatterns = arrayOf(
-                "([Hh][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])",
-                "#[\\w]+", "@[\\w]+")
+            "([Hh][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])",
+            "#[\\w]+",
+            "@[\\w]+"
+        )
         val f = SpannableString(text)
         for (str in linkPatterns) {
             val pattern: Pattern = Pattern.compile(str)
@@ -83,8 +86,7 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
 
                 val spanText = text.substring(x, y)
                 val span = URLSpan(spanText)
-                f.setSpan(span, x, y,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                f.setSpan(span, x, y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 tv.text = f
             }
         }
