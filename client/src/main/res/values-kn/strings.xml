@@ -145,7 +145,7 @@
     <string name="hint_verification_code">ಪರಿಶೀಲನಾ ಕೋಡ್</string>
     <string name="status_code_sent">ಕೋಡ್ ಕಳುಹಿಸಲಾಗಿದೆ</string>
     <string name="status_verification_failed">ಪರಿಶೀಲನೆ ವಿಫಲವಾಗಿದೆ</string>
-    <string name="status_too_many_request">Exceeded OTP request limit</string>
+    <string name="status_too_many_request">ಒಟಿಪಿ ವಿನಂತಿಯ ಮಿತಿಯನ್ನು ಮೀರಿದೆ</string>
     <string name="status_verification_succeeded">ಪರಿಶೀಲನೆ ಯಶಸ್ವಿಯಾಗಿದೆ</string>
     <string name="status_sign_in_failed">ಸೈನ್ ಇನ್ ವಿಫಲವಾಗಿದೆ</string>
     <string name="instant_validation">ಒಟಿಪಿ ನಮೂದಿಸಿ</string>
@@ -169,12 +169,12 @@
     <string name="barcode_error_msg">ಈ NoQueue ಕೋಡ್‌ನೊಂದಿಗೆ ಯಾವುದೇ ವ್ಯಾಪಾರಿ ಸಂಬಂಧ ಹೊಂದಿಲ್ಲ</string>
     <string name="copy_right">ವೆಬ್‌ಸೈಟ್: https://noqapp.com\n\n NoQueue &#174; ಇದು NoQueue Inc.\n 2021 \u00a9 NoQueue Inc ನ ವ್ಯಾಪಾರೀ ಲಾಂಛನವಾಗಿದೆ</string>
     <string name="alert">ಎಚ್ಚರಿಕೆ</string>
-    <string name="wait_time">Wait time</string>
-    <string name="wait_time_formatted">Wait time: %1$s</string>
+    <string name="wait_time">ಸಮಯ ಕಾಯಿರಿ</string>
+    <string name="wait_time_formatted">ಸಮಯ ಕಾಯಿರಿ: %1$s</string>
     <string name="wait_time_formatted_newline">\nप्रतीक्षा समय: %1$s</string>
     <string name="time_slot">ಭೇಟಿ: %1$s</string>
-    <string name="time_slot_formatted">Time slot: %1$s</string>
-    <string name="time_slot_formatted_newline">\nटाइम स्लॉट: %1$s</string>
+    <string name="time_slot_formatted">ಕೊಟ್ಟ ಸಮಯ: %1$s</string>
+    <string name="time_slot_formatted_newline">\nಕೊಟ್ಟ ಸಮಯ: %1$s</string>
     <string name="error_remote_join_not_available">ರಿಮೋಟ್ ಸೇರ್ಪಡೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ಟೋರ್‌ಗೆ ಭೇಟಿ ನೀಡಿ.</string>
     <string name="error_join">ರಿಮೋಟ್ ಸರದಿಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿಲ್ಲ</string>
     <string name="login_hint">ದೂರವಾಣಿ ಸಂಖ್ಯೆ. ದೇಶದ ಕೋಡ್ ಇಲ್ಲದೆ</string>
@@ -203,6 +203,7 @@
     <string name="medical_history">ಹಿಂದಿನ ವೈದ್ಯರ ಭೇಟಿಗಳು</string>
     <string name="appointments">ನೇಮಕಾತಿಗಳು</string>
     <string name="medical_history_details">ಕೇಸ್ ಇತಿಹಾಸ</string>
+    <string name="weekly_hours">ಸಾಪ್ತಾಹಿಕ ಗಂಟೆಗಳು</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">ಇಮೇಲ್</string>
@@ -244,9 +245,9 @@
     <string name="experience">ಅನುಭವ</string>
     <string name="available_other_place">ಇತರ ಸ್ಥಳಗಳಲ್ಲಿ ಲಭ್ಯವಿದೆ</string>
     <string name="whole_day">24 ಗಂಟೆಗಳು</string>
-    <string name="lunch_time">Lunch time</string>
+    <string name="lunch_time">ಊಟದ ಸಮಯ</string>
     <string name="error_patient_name_missing">ದಯವಿಟ್ಟು ರೋಗಿಯ ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
-    <string name="error_person_name_missing">Please select a person name</string>
+    <string name="error_person_name_missing">ದಯವಿಟ್ಟು ವ್ಯಕ್ತಿಯ ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="dependent_list">ಕುಟುಂಬದ ಸದಸ್ಯರು</string>
     <string name="personal_info">ವೈಯಕ್ತಿಕ ಮಾಹಿತಿ</string>
     <string name="location_change">ಸ್ಥಳದ ನವೀಕರಣ</string>
@@ -355,6 +356,8 @@
     <string name="pay_and_join">ಪಾವತಿಸಿ ಹಾಗೂ ಸರದಿಯನ್ನು ಧೃಢೀಕರಿಸಿ</string>
 
     <!-- Empty Screens labels -->
+    <string name="empty_favourite_title">ಯಾವುದೇ ಅಂಗಡಿಯನ್ನು ನೆಚ್ಚಿನದು ಎಂದು ಗುರುತಿಸಲಾಗಿಲ್ಲ</string>
+    <string name="empty_favourite_subtitle">ತ್ವರಿತ ಪ್ರವೇಶಕ್ಕಾಗಿ ನಿಮ್ಮ ನೆಚ್ಚಿನ ಅಂಗಡಿಯನ್ನು ಟ್ಯಾಗ್ ಮಾಡಿ</string>
     <string name="empty_order_title">ನಿಮ್ಮ ಚೀಲ ಖಾಲಿಯಾಗಿದೆ</string>
     <string name="empty_order_subtitle">ಏನನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ</string>
     <string name="empty_noti_title">ಖಾಲಿ ಸೂಚನೆ</string>
@@ -500,24 +503,47 @@
     <string name="txt_please_enter_house_number">ದಯವಿಟ್ಟು ಮನೆಯ ಸಂಖ್ಯೆ/ಕಟ್ಟಡದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
     <string name="txt_please_enter_address">ದಯವಿಟ್ಟು ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="txt_delivery_at">ವಿತರಣೆ</string>
-    <string name="txt_post">Post</string>
-    <string name="txt_time_slot">Time slot: %1$s - %2$s</string>
-    <string name="txt_services">Services</string>
-    <string name="txt_housing">Housing</string>
-    <string name="txt_market_place">Marketplace</string>
-    <string name="txt_jobs">Jobs</string>
-    <string name="txt_businesses">Businesses</string>
-    <string name="txt_usr_csd">URC/CSD</string>
-    <string name="txt_hospital">Hospital</string>
-    <string name="txt_grocery">Grocery</string>
-    <string name="txt_restaurant">Restaurant</string>
-    <string name="txt_school">School</string>
-    <string name="txt_cafeteria">Cafeteria</string>
-    <string name="txt_generic_store">Generic store</string>
-    <string name="tab_recent_visits">Recent Visits</string>
-    <string name="tab_near_me">Near Me</string>
-    <string name="txt_please_login">Please login</string>
-    <string name="txt_guest_user">Guest User</string>
-    <string name="txt_order_being_prepared">Order being prepared</string>
-    <string name="review_hint">Please provide review for %1$s. For each comment earn 10 points. Points can be used towards NoQueue services.</string>
+    <string name="txt_post">ಪೋಸ್ಟ್ ಮಾಡಿ</string>
+    <string name="txt_time_slot">ಕೊಟ್ಟ ಸಮಯ: %1$s - %2$s</string>
+    <string name="txt_services">ಸೇವೆಗಳು</string>
+    <string name="txt_housing">ವಸತಿ</string>
+    <string name="txt_market_place">ಮಾರುಕಟ್ಟೆ</string>
+    <string name="txt_jobs">ಉದ್ಯೋಗಗಳು</string>
+    <string name="txt_businesses">ವ್ಯವಹಾರಗಳು</string>
+    <string name="txt_usr_csd">ಯುಆರ್‌ಸಿ / ಸಿಎಸ್‌ಡಿ</string>
+    <string name="txt_hospital">ಆಸ್ಪತ್ರೆ</string>
+    <string name="txt_grocery">ದಿನಸಿ</string>
+    <string name="txt_restaurant">ಉಪಹಾರ ಗೃಹ</string>
+    <string name="txt_school">ಶಾಲೆ</string>
+    <string name="txt_cafeteria">ಕೆಫೆಟೇರಿಯಾ</string>
+    <string name="txt_generic_store">ಸಾಮಾನ್ಯ ಅಂಗಡಿ</string>
+    <string name="tab_recent_visits">ಇತ್ತೀಚಿನ ಭೇಟಿಗಳು</string>
+    <string name="tab_near_me">ನನ್ನ ಹತ್ತಿರ</string>
+    <string name="txt_please_login">ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಆಗಿ</string>
+    <string name="txt_guest_user">ಅತಿಥಿ ಬಳಕೆದಾರ</string>
+    <string name="txt_order_being_prepared">ಆದೇಶವನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ</string>
+    <string name="review_hint">ಇದಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ವಿಮರ್ಶೆಯನ್ನು ಒದಗಿಸಿ %1$s. ಪ್ರತಿ ಕಾಮೆಂಟ್‌ಗೆ 10 ಅಂಕಗಳನ್ನು ಗಳಿಸಿ. ಪಾಯಿಂಟ್‌ಗಳನ್ನು NoQueue ಸೇವೆಗಳ ಕಡೆಗೆ ಬಳಸಬಹುದು.</string>
+    <string name="txt_store_today_timing">ಇಂದಿನ ಸಮಯ</string>
+    <string name="txt_weekly_hours_token">ಟೋಕನ್</string>
+    <string name="txt_weekly_store">ಅಂಗಡಿ</string>
+    <string name="txt_weekly_lunch">ಊಟ</string>
+    <string name="txt_weekly_hours_appointment">ನೇಮಕಾತಿ</string>
+    <string name="txt_book_appointment">ನೇಮಕಾತಿ</string>
+    <string name="txt_monday">ಸೋಮ</string>
+    <string name="txt_tuesday">ಮಂಗಳ</string>
+    <string name="txt_wednesday">ಬುಧ</string>
+    <string name="txt_thursday">ಥು</string>
+    <string name="txt_friday">ಶುಕ್ರ</string>
+    <string name="txt_saturday">ಶನಿ</string>
+    <string name="txt_sunday">ಭಾನುವಾರ</string>
+
+    <!-- Appointment screen -->
+    <string name="txt_title_book_appointment">ಪುಸ್ತಕ ನೇಮಕಾತಿ</string>
+    <string name="txt_available_times">ಲಭ್ಯವಿರುವ ಸಮಯಗಳು</string>
+    <string name="txt_available_slots">ಲಭ್ಯವಿರುವ ಸ್ಲಾಟ್‌ಗಳು</string>
+    <string name="txt_book_walkin_appointment">ಪುಸ್ತಕ ವಾಕ್-ಇನ್ ನೇಮಕಾತಿ</string>
+    <string name="txt_booking_person">ಬುಕಿಂಗ್ ವ್ಯಕ್ತಿ</string>
+    <string name="txt_please_select_appointment_datetime">ದಯವಿಟ್ಟು ನೇಮಕಾತಿ ದಿನಾಂಕ ಮತ್ತು ಸಮಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="txt_no_walkin_appointment_available">ವಾಕ್-ಇನ್ ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಲಭ್ಯವಿಲ್ಲ</string>
+
 </resources>

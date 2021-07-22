@@ -526,5 +526,27 @@
     <string name="txt_guest_user">Guest User</string>
     <string name="txt_order_being_prepared">Order being prepared</string>
     <string name="review_hint">Please provide review for %1$s. For each comment earn 10 points. Points can be used towards NoQueue services.</string>
+    <string name="txt_store_today_timing">Today\'s timing</string>
+    <string name="txt_weekly_hours_token">Token</string>
+    <string name="txt_weekly_store">Store</string>
+    <string name="txt_weekly_lunch">Lunch</string>
+    <string name="txt_weekly_hours_appointment">Appointment</string>
+    <string name="txt_book_appointment">Book</string>
+    <string name="txt_monday">Mon</string>
+    <string name="txt_tuesday">Tue</string>
+    <string name="txt_wednesday">Wed</string>
+    <string name="txt_thursday">Thu</string>
+    <string name="txt_friday">Fri</string>
+    <string name="txt_saturday">Sat</string>
+    <string name="txt_sunday">Sun</string>
+
+    <!-- Appointment screen -->
+    <string name="txt_title_book_appointment">Book Appointment</string>
+    <string name="txt_available_times">Available times</string>
+    <string name="txt_available_slots">Available slots</string>
+    <string name="txt_book_walkin_appointment">Book Walk-in Appointment</string>
+    <string name="txt_booking_person">Booking Person</string>
+    <string name="txt_please_select_appointment_datetime">Please select appointment date &amp; time</string>
+    <string name="txt_no_walkin_appointment_available">No walk-in appointment available</string>
 
 </resources>

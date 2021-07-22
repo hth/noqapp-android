@@ -203,6 +203,7 @@
     <string name="medical_history">पिछले डॉक्टर का दौरा</string>
     <string name="appointments">अपॉइंटमेंट</string>
     <string name="medical_history_details">पूर्ववृत्त (केस हिस्ट्री)</string>
+    <string name="weekly_hours">साप्ताहिक घंटे</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">ई-मेल</string>
@@ -264,10 +265,10 @@
     <string name="will_be_served">अाप को सेवा %1$s</string>
     <string name="ack">स्वीकार, धन्यवाद</string>
     <string name="your_turn">आपकी बारी है!!!</string>
-    <string name="pre_approve"> प्रि-अप्रुव </string>
+    <string name="pre_approve">प्रि-अप्रुव</string>
     <string name="biz_announcement">ध्यान: कोविड-१९ अपडेट</string>
     <string name="photo">तस्वीरें</string>
-    <string name="display_case_product">Featured Products</string>
+    <string name="display_case_product">प्रदर्शित प्रोडक्टस</string>
     <string name="amenities">सुविधाएँ</string>
     <string name="facility">फसिलिटीज़</string>
     <string name="skip_msg">आपकी सेवा नहीं हुई।\nफिर से कतार में शामिल होने के लिए हाँ दबाएं।</string>
@@ -323,7 +324,7 @@
     <string name="error_mobile_no_length">फोन नंबर १० अंकों का होना चाहिए</string>
     <string name="profile"> <u>प्रोफ़ाइल</u></string>
     <string name="merchant_account">व्यापारी बने</string>
-    <string name="favourite">Favourite</string>
+    <string name="favourite">पसंदीदा</string>
     <string name="address">पता</string>
     <string name="privacy_in_short">गोपनीयता त्वरित अवलोकन</string>
     <string name="order_history">आदेश और कतार इतिहास</string>
@@ -355,6 +356,8 @@
     <string name="pay_and_join">पे एंड कन्फर्म क्यू</string>
 
     <!-- Empty Screens labels -->
+    <string name="empty_favourite_title">कोई पसंदीदा स्टोर नहीं चुना गया है</string>
+    <string name="empty_favourite_subtitle">त्वरित पहुँच के लिए अपने पसंदीदा स्टोर को टैग करें</string>
     <string name="empty_order_title">आपका बैग खाली है।</string>
     <string name="empty_order_subtitle">कुछ भी चयनित नहीं है।</string>
     <string name="empty_noti_title">खाली अधिसूचना।</string>
@@ -500,24 +503,47 @@
     <string name="txt_please_enter_house_number">कृपया मकान नंबर / भवन का नाम दर्ज करें</string>
     <string name="txt_please_enter_address">कृपया पता दर्ज करें</string>
     <string name="txt_delivery_at">प्रसव पूर्व</string>
-    <string name="txt_post">Post</string>
-    <string name="txt_time_slot">Time slot: %1$s - %2$s</string>
-    <string name="txt_services">Services</string>
-    <string name="txt_housing">Housing</string>
-    <string name="txt_market_place">Marketplace</string>
-    <string name="txt_jobs">Jobs</string>
-    <string name="txt_businesses">Businesses</string>
-    <string name="txt_usr_csd">URC/CSD</string>
-    <string name="txt_hospital">Hospital</string>
-    <string name="txt_grocery">Grocery</string>
-    <string name="txt_restaurant">Restaurant</string>
-    <string name="txt_school">School</string>
-    <string name="txt_cafeteria">Cafeteria</string>
-    <string name="txt_generic_store">Generic store</string>
-    <string name="tab_recent_visits">Recent Visits</string>
-    <string name="tab_near_me">Near Me</string>
-    <string name="txt_please_login">Please login</string>
-    <string name="txt_guest_user">Guest User</string>
-    <string name="txt_order_being_prepared">Order being prepared</string>
-    <string name="review_hint">Please provide review for %1$s. For each comment earn 10 points. Points can be used towards NoQueue services.</string>
+    <string name="txt_post">ऑनलाइन पोस्ट</string>
+    <string name="txt_time_slot">टाइम स्लॉट: %1$s - %2$s</string>
+    <string name="txt_services">सेवाएं</string>
+    <string name="txt_housing">आवास</string>
+    <string name="txt_market_place">बाजार</string>
+    <string name="txt_jobs">नौकरियां</string>
+    <string name="txt_businesses">व्यवसायों</string>
+    <string name="txt_usr_csd">यूआरसी/सीएसडी</string>
+    <string name="txt_hospital">अस्पताल</string>
+    <string name="txt_grocery">किराना</string>
+    <string name="txt_restaurant">खाने की दुकान</string>
+    <string name="txt_school">स्कूल</string>
+    <string name="txt_cafeteria">काफ़ीहाउस</string>
+    <string name="txt_generic_store">आम दुकान</string>
+    <string name="tab_recent_visits">हाल ही देखा गया</string>
+    <string name="tab_near_me">मेरे पास</string>
+    <string name="txt_please_login">कृपया लॉगिन करें</string>
+    <string name="txt_guest_user">अतिथि उपयेागकर्ता</string>
+    <string name="txt_order_being_prepared">आदेश तैयार किया जा रहा है</string>
+    <string name="review_hint">कृपया इसके लिए समीक्षा प्रदान करें %1$s| प्रत्येक टिप्पणी के लिए १० अंक अर्जित करे| NoQueue सेवाओं की ओर पॉइंट्स का उपयोग किया जा सकता है|</string>
+    <string name="txt_store_today_timing">आज का समय</string>
+    <string name="txt_weekly_hours_token">टोकन</string>
+    <string name="txt_weekly_store">दुकान</string>
+    <string name="txt_weekly_lunch">दोपहर लंच टाइम</string>
+    <string name="txt_weekly_hours_appointment">नियुक्ति</string>
+    <string name="txt_book_appointment">नियुक्ति</string>
+    <string name="txt_monday">सोम</string>
+    <string name="txt_tuesday">मंगल</string>
+    <string name="txt_wednesday">बुध</string>
+    <string name="txt_thursday">गुरु</string>
+    <string name="txt_friday">शुक्र</string>
+    <string name="txt_saturday">शनि</string>
+    <string name="txt_sunday">रवि</string>
+
+    <!-- Appointment screen -->
+    <string name="txt_title_book_appointment">निर्धारित तारीख बुक करना</string>
+    <string name="txt_available_times">उपलब्ध समय</string>
+    <string name="txt_available_slots">उपलब्ध स्लॉट</string>
+    <string name="txt_book_walkin_appointment">बुक वॉक-इन अपॉइंटमेंट</string>
+    <string name="txt_booking_person">बुकिंग व्यक्ति</string>
+    <string name="txt_please_select_appointment_datetime">कृपया नियुक्ति तिथि और समय चुनें</string>
+    <string name="txt_no_walkin_appointment_available">कोई वॉक-इन अपॉइंटमेंट उपलब्ध नहीं है</string>
+
 </resources>

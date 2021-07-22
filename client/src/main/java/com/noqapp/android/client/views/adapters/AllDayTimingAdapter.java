@@ -63,7 +63,7 @@ public class AllDayTimingAdapter extends BaseAdapter {
         }
 
         JsonHour jsonHour = jsonHours.get(position);
-        recordHolder.tv_day.setText(AppUtils.getDayName(jsonHour.getDayOfWeek()));
+        recordHolder.tv_day.setText(AppUtils.getDayName(view.getContext(), jsonHour.getDayOfWeek()));
 
         String tokenTime = new AppUtils().storeLunchTiming(jsonHour.getTokenAvailableFrom(), jsonHour.getTokenNotAvailableFrom());
         recordHolder.tv_token_time_value.setText(TextUtils.isEmpty(tokenTime) ? NA : tokenTime);

@@ -236,7 +236,7 @@
                 android:background="@drawable/btn_bg_enable"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
-                android:text="Book Appointment"
+                android:text="@string/txt_title_book_appointment"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_sixteen"

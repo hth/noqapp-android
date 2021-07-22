@@ -421,20 +421,20 @@ public class AppUtils extends CommonHelper {
                 JsonHour jsonHour = jsonHoursList.get(i);
                 String key;
                 if (jsonHour.isDayClosed()) {
-                    key = "Closed";
+                    key = context.getString(R.string.closed);
                 } else {
                     key = Formatter.duration(jsonHour.getStartHour(), jsonHour.getEndHour());
                     if (1 == jsonHour.getStartHour() && 2359 == jsonHour.getEndHour()) {
                         key = context.getString(R.string.whole_day);
                     }
                     if (jsonHour.getStartHour() == 0 && jsonHour.getEndHour() == 0) {
-                        key = "Closed";
+                        key = context.getString(R.string.closed);
                     }
                 }
                 if (null == temp.get(key)) {
-                    temp.put(key, getDayName(jsonHour.getDayOfWeek()));
+                    temp.put(key, getDayName(context, jsonHour.getDayOfWeek()));
                 } else {
-                    String value = temp.get(key) + "-" + getDayName(jsonHour.getDayOfWeek());
+                    String value = temp.get(key) + "-" + getDayName(context, jsonHour.getDayOfWeek());
                     temp.put(key, value);
                 }
             }
@@ -449,29 +449,29 @@ public class AppUtils extends CommonHelper {
         return output;
     }
 
-    public static String getDayName(int dayOfWeek) {
+    public static String getDayName(Context context, int dayOfWeek) {
         String dayName = null;
         switch (dayOfWeek) {
             case 1:
-                dayName = "Mon";
+                dayName = context.getString(R.string.txt_monday);
                 break;
             case 2:
-                dayName = "Tue";
+                dayName = context.getString(R.string.txt_tuesday);
                 break;
             case 3:
-                dayName = "Wed";
+                dayName = context.getString(R.string.txt_wednesday);
                 break;
             case 4:
-                dayName = "Thu";
+                dayName = context.getString(R.string.txt_thursday);
                 break;
             case 5:
-                dayName = "Fri";
+                dayName = context.getString(R.string.txt_friday);
                 break;
             case 6:
-                dayName = "Sat";
+                dayName = context.getString(R.string.txt_saturday);
                 break;
             case 7:
-                dayName = "Sun";
+                dayName = context.getString(R.string.txt_sunday);
                 break;
         }
         return dayName;
@@ -495,7 +495,7 @@ public class AppUtils extends CommonHelper {
             key = context.getString(R.string.whole_day);
             return key;
         } else if (startHour == 0 && endHour == 0) {
-            return "Closed";
+            return context.getString(R.string.closed);
         } else {
             return key;
         }
