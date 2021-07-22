@@ -234,16 +234,12 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         // Update Currently serving in app preferences
                         val prefs = applicationContext.getSharedPreferences(Constants.APP_PACKAGE, MODE_PRIVATE)
                         prefs.edit().putString(
-                                String.format(
-                                        Constants.CURRENTLY_SERVING_PREF_KEY,
-                                        mappedData[Constants.CODE_QR]
-                                ), mappedData[Constants.CURRENTLY_SERVING]?.toString()
+                            String.format(Constants.CURRENTLY_SERVING_PREF_KEY, mappedData[Constants.CODE_QR]),
+                            mappedData[Constants.CURRENTLY_SERVING]?.toString()
                         ).apply()
                         prefs.edit().putString(
-                                String.format(
-                                        Constants.DISPLAY_SERVING_NUMBER_PREF_KEY,
-                                        mappedData[Constants.CODE_QR]
-                                ), mappedData[Constants.DISPLAY_SERVING_NUMBER]?.toString()
+                            String.format(Constants.DISPLAY_SERVING_NUMBER_PREF_KEY, mappedData[Constants.CODE_QR]),
+                            mappedData[Constants.DISPLAY_SERVING_NUMBER]?.toString()
                         ).apply()
                     }
 //                    val payload = mappedData[Constants.FIREBASE_TYPE]
