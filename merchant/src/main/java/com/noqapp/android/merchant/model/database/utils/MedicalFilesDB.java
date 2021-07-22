@@ -38,8 +38,7 @@ public class MedicalFilesDB {
         cv.put(DatabaseTable.MedicalFiles.FILE_CREATED_DATE, dateString);
         try {
             long successCount = dbHandler.getWritableDb().insertWithOnConflict(DatabaseTable.MedicalFiles.TABLE_NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
-            Log.d(TAG, "Data insert medicalFiles " + String.valueOf(successCount));
-            Log.d(TAG, fileLocation);
+            Log.d(TAG, "Data insert medicalFiles " + successCount + " file location " + fileLocation);
         } catch (SQLException e) {
             Log.e(TAG, "Error insert medicalFiles reason=" + e.getLocalizedMessage(), e);
         }
@@ -72,10 +71,11 @@ public class MedicalFilesDB {
 
     public static void deleteMedicalFile(String recordReferenceId) {
         try {
-            int out = dbHandler.getWritableDb().delete(DatabaseTable.MedicalFiles.TABLE_NAME,
-                    DatabaseTable.MedicalFiles.RECORD_REFERENCE_ID + "=?",
-                    new String[]{recordReferenceId});
-            Log.v("medical record deleted:", "" + out);
+            int out = dbHandler.getWritableDb().delete(
+                DatabaseTable.MedicalFiles.TABLE_NAME,
+                DatabaseTable.MedicalFiles.RECORD_REFERENCE_ID + "=?",
+                new String[]{recordReferenceId});
+            Log.v(TAG, "medical record deleted: " + out);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,14 +84,16 @@ public class MedicalFilesDB {
     public static void updateMedicalFile(MedicalFile medicalFile) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseTable.MedicalFiles.UPLOAD_STATUS, "S");
-        cv.put(DatabaseTable.MedicalFiles.UPLOAD_ATTEMPT_COUNT, String.valueOf(Integer.valueOf(medicalFile.getUploadAttemptCount()) + 1));
+        cv.put(DatabaseTable.MedicalFiles.UPLOAD_ATTEMPT_COUNT, String.valueOf(Integer.parseInt(medicalFile.getUploadAttemptCount()) + 1));
         try {
-            long successCount = dbHandler.getWritableDb().
-                    update(DatabaseTable.MedicalFiles.TABLE_NAME, cv, DatabaseTable.MedicalFiles.RECORD_REFERENCE_ID + "=" + medicalFile.getRecordReferenceId(), null);
-            Log.d(TAG, "Data updated notification " + String.valueOf(successCount));
+            long successCount = dbHandler.getWritableDb().update(
+                DatabaseTable.MedicalFiles.TABLE_NAME,
+                cv,
+                DatabaseTable.MedicalFiles.RECORD_REFERENCE_ID + "=" + medicalFile.getRecordReferenceId(),
+                null);
+            Log.d(TAG, "Data updated notification " + successCount);
         } catch (SQLException e) {
             Log.e(TAG, "Error update notification reason=" + e.getLocalizedMessage(), e);
         }
     }
-
 }

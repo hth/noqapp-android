@@ -10,8 +10,8 @@ import android.util.Log;
  * Date: 5/9/17 6:28 PM
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "noqueuemerchant.db";
-    private static final int DB_VERSION = 3;
+    private static final String DB_NAME = "noqueue_business.db";
+    private static final int DB_VERSION = 4;
     private static DatabaseHelper dbInstance;
     private final String TAG = DatabaseHelper.class.getSimpleName();
     private SQLiteDatabase db = null;
@@ -62,11 +62,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             public void apply(SQLiteDatabase db) {
                 CreateTable.createTablePreferredStore(db);
             }
-        }, new Patch(2, 3, "1.2.3") {
+        }, new Patch(2, 3, "1.2.30") {
+            public void apply(SQLiteDatabase db) {
+            CreateTable.createTableMedicalFiles(db);
+        }
+        }, new Patch(3, 4, "1.3.120") {
             public void apply(SQLiteDatabase db) {
             CreateTable.createTableMedicalFiles(db);
         }
         }
     };
-
 }

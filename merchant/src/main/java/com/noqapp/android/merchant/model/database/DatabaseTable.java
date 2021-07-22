@@ -21,7 +21,7 @@ public class DatabaseTable {
     }
 
     public static class PreferredStore {
-        public static final String TABLE_NAME = "PREFERREDSTORE";
+        public static final String TABLE_NAME = "PREFERRED_STORE";
         public static final String PRODUCT_ID = "productID";
         public static final String BIZ_STORE_ID = "bizStoreID";
         public static final String DISPLAY_PRICE = "displayPrice";
@@ -30,21 +30,20 @@ public class DatabaseTable {
         public static final String STORE_CAT_ID = "storeCatID";
         public static final String PRODUCT_TYPE = "productType";
         public static final String PRODUCT_UNIT_VALUE = "productUnitValue";
-        public static final String PRODUCT_UNIT_MESAURE = "productUnitMeasure";
+        public static final String PRODUCT_UNIT_MEASURE = "productUnitMeasure";
 
         private PreferredStore() {
         }
     }
 
     public static class MedicalFiles {
-        public static final String TABLE_NAME = "MEDICALFILES";
+        public static final String TABLE_NAME = "MEDICAL_FILES";
         public static final String RECORD_REFERENCE_ID = "recordReferenceId";
         public static final String FILE_LOCATION = "fileLocation";
         public static final String FILE_CREATED_DATE = "fileCreatedDate";
         public static final String UPLOAD_STATUS = "uploadStatus";
         public static final String UPLOAD_ATTEMPT_COUNT = "uploadAttemptCount";
         public static final String FORM_SUBMISSION_STATUS = "formSubmissionStatus";
-
 
         private MedicalFiles() {
         }
