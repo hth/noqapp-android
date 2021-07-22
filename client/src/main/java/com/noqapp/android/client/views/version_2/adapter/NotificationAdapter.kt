@@ -41,7 +41,7 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
             setLinks(listItemNotificationBinding.tvMsg, displayNotification.body)
 
             try {
-                val dateString = displayNotification.notificationCreate
+                val dateString = displayNotification.createdDate
                 val startDate = Date().time - CommonHelper.stringToDate(dateString).time
                 listItemNotificationBinding.tvCreate.text = GetTimeAgoUtils.getTimeInAgo(startDate)
             } catch (e: Exception) {

@@ -16,15 +16,13 @@ public class DisplayNotification {
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "key")
-    private String key="";
+    private String key = "";
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "msg")
     private String msg;
     @ColumnInfo(name = "status")
     private String status;
-    @ColumnInfo(name = "notification_create")
-    private String notificationCreate;
     @ColumnInfo(name = "business_type")
     private BusinessTypeEnum businessType;
     @ColumnInfo(name = "image_url")
@@ -43,7 +41,6 @@ public class DisplayNotification {
     private Boolean isPopUpShown = false;
 
     public DisplayNotification() {
-
     }
 
     public String getTitle() {
@@ -68,14 +65,6 @@ public class DisplayNotification {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getNotificationCreate() {
-        return notificationCreate;
-    }
-
-    public void setNotificationCreate(String notificationCreate) {
-        this.notificationCreate = notificationCreate;
     }
 
     public BusinessTypeEnum getBusinessType() {
@@ -156,7 +145,6 @@ public class DisplayNotification {
         sb.append("title='").append(title).append('\'');
         sb.append(", msg='").append(msg).append('\'');
         sb.append(", status='").append(status).append('\'');
-        sb.append(", notificationCreate='").append(notificationCreate).append('\'');
         sb.append(", businessType=").append(businessType);
         sb.append(", imageUrl='").append(imageUrl).append('\'');
         sb.append(", sequence=").append(sequence);

@@ -22,6 +22,10 @@ import com.squareup.picasso.Picasso;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Please delete this class. Clean up.
+ */
+@Deprecated
 public class NotificationListAdapter extends BaseAdapter {
     private Context context;
     private List<DisplayNotification> notificationsList;
@@ -70,7 +74,7 @@ public class NotificationListAdapter extends BaseAdapter {
         recordHolder.tv_title.setText(displayNotification.getTitle());
         recordHolder.tv_msg.setText(displayNotification.getMsg());
         try {
-            String dateString = displayNotification.getNotificationCreate();
+            String dateString = displayNotification.getCreatedDate();
             long startDate = new Date().getTime() - CommonHelper.stringToDate(dateString).getTime();
             recordHolder.tv_create.setText(GetTimeAgoUtils.getTimeInAgo(startDate));
         } catch (Exception e) {

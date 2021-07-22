@@ -9,7 +9,7 @@ import com.noqapp.android.common.pojos.DisplayNotification
 
 @Dao
 interface NotificationDao {
-    @Query("SELECT * FROM notification")
+    @Query("SELECT * FROM notification ORDER BY created_date DESC")
     fun getNotificationsList(): LiveData<List<DisplayNotification>>
 
     @Query("SELECT COUNT(*) FROM notification WHERE status = :status")
