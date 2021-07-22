@@ -66,15 +66,15 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(
-        addressOutput: String?,
-        countryShortName: String?,
-        area: String?,
-        town: String?,
-        district: String?,
-        state: String?,
-        stateShortName: String?,
-        latitude: Double?,
-        longitude: Double?
+            addressOutput: String?,
+            countryShortName: String?,
+            area: String?,
+            town: String?,
+            district: String?,
+            state: String?,
+            stateShortName: String?,
+            latitude: Double?,
+            longitude: Double?
     ) {
         activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
 
@@ -220,16 +220,16 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         })
 
         homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND)
-            .observe(this, Observer {
-                it?.let {
-                    if (it.isSkipped == "1") {
-                        CustomToast().showToast(this, getString(R.string.txt_you_were_skipped))
-                        callSkipScreen(it.codeQR)
-                    } else if (it.isReviewShown != "1" && it.isSkipped != "1") {
-                        callReviewActivity(it.codeQR, it.token)
+                .observe(this, Observer {
+                    it?.let {
+                        if (it.isSkipped == "1") {
+                            CustomToast().showToast(this, getString(R.string.txt_you_were_skipped))
+                            callSkipScreen(it.codeQR)
+                        } else if (it.isReviewShown != "1" && it.isSkipped != "1") {
+                            callReviewActivity(it.codeQR, it.token)
+                        }
                     }
-                }
-            })
+                })
 
         homeViewModel.notificationListLiveData.observe(this, Observer {
             it?.let { displayNotificationList ->
@@ -325,10 +325,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
-                    .placeholder(ImageUtils.getProfilePlaceholder(this))
-                    .error(ImageUtils.getProfileErrorPlaceholder(this))
-                    .into(navHeaderMainBinding.ivProfile)
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(navHeaderMainBinding.ivProfile)
             }
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
@@ -341,6 +341,18 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
         activityHomeBinding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
+
+        navHostFragment.childFragmentManager.addOnBackStackChangedListener {
+            navController.currentDestination?.id?.let {
+                when (it) {
+                    R.id.favouritesFragment, R.id.action_notification_to_favourites -> activityHomeBinding.bottomNavigationView.menu.findItem(R.id.menuFavourite).isChecked = true
+                    R.id.notificationFragment, R.id.action_favourites_to_notification -> activityHomeBinding.bottomNavigationView.menu.findItem(R.id.menuNotification).isChecked = true
+                    R.id.homeFragment, R.id.action_favorites_to_home, R.id.action_notification_to_home -> activityHomeBinding.bottomNavigationView.menu.findItem(R.id.menuHome).isChecked = true
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 
     private fun updateNotificationBadgeCount() {
@@ -358,144 +370,144 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         if (isCountryIndia()) {
             val healthList: MutableList<MenuDrawer> = ArrayList()
             healthList.add(
-                MenuDrawer(
-                    getString(R.string.medical_profiles),
-                    false,
-                    false,
-                    R.drawable.medical_profile
-                )
+                    MenuDrawer(
+                            getString(R.string.medical_profiles),
+                            false,
+                            false,
+                            R.drawable.medical_profile
+                    )
             )
             healthList.add(
-                MenuDrawer(
-                    getString(R.string.medical_history),
-                    false,
-                    false,
-                    R.drawable.medical_history
-                )
+                    MenuDrawer(
+                            getString(R.string.medical_history),
+                            false,
+                            false,
+                            R.drawable.medical_history
+                    )
             )
             menuDrawerItems.add(
-                MenuDrawer(
-                    getString(R.string.health_care),
-                    true,
-                    true,
-                    R.drawable.health_care,
-                    healthList
-                )
+                    MenuDrawer(
+                            getString(R.string.health_care),
+                            true,
+                            true,
+                            R.drawable.health_care,
+                            healthList
+                    )
             )
             menuDrawerItems.add(
-                MenuDrawer(
-                    getString(R.string.appointments),
-                    true,
-                    false,
-                    R.drawable.appointment
-                )
+                    MenuDrawer(
+                            getString(R.string.appointments),
+                            true,
+                            false,
+                            R.drawable.appointment
+                    )
             )
         }
         menuDrawerItems.add(
-            MenuDrawer(
-                getString(R.string.order_history),
-                true,
-                false,
-                R.drawable.purchase_order
-            )
+                MenuDrawer(
+                        getString(R.string.order_history),
+                        true,
+                        false,
+                        R.drawable.purchase_order
+                )
         )
         if (isLogin) {
             menuDrawerItems.add(
-                MenuDrawer(
-                    getString(R.string.merchant_account),
-                    true,
-                    false,
-                    R.drawable.merchant_account
-                )
+                    MenuDrawer(
+                            getString(R.string.merchant_account),
+                            true,
+                            false,
+                            R.drawable.merchant_account
+                    )
             )
             menuDrawerItems.add(
-                MenuDrawer(
-                    getString(R.string.favourite),
-                    true,
-                    false,
-                    R.drawable.ic_favorite
-                )
+                    MenuDrawer(
+                            getString(R.string.favourite),
+                            true,
+                            false,
+                            R.drawable.ic_favorite
+                    )
             )
         }
         menuDrawerItems.add(MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers))
         menuDrawerItems.add(
-            MenuDrawer(
-                getString(R.string.notification_setting),
-                true,
-                false,
-                R.drawable.ic_notification
-            )
+                MenuDrawer(
+                        getString(R.string.notification_setting),
+                        true,
+                        false,
+                        R.drawable.ic_notification
+                )
         )
         val settingList: MutableList<MenuDrawer> = ArrayList()
         settingList.add(
-            MenuDrawer(
-                getString(R.string.share),
-                false,
-                false,
-                R.drawable.ic_menu_share
-            )
+                MenuDrawer(
+                        getString(R.string.share),
+                        false,
+                        false,
+                        R.drawable.ic_menu_share
+                )
         )
         settingList.add(MenuDrawer(getString(R.string.invite), false, false, R.drawable.invite))
         settingList.add(MenuDrawer(getString(R.string.legal), false, false, R.drawable.legal))
         settingList.add(
-            MenuDrawer(
-                getString(R.string.ratetheapp),
-                false,
-                false,
-                R.drawable.ic_star
-            )
+                MenuDrawer(
+                        getString(R.string.ratetheapp),
+                        false,
+                        false,
+                        R.drawable.ic_star
+                )
         )
         settingList.add(
-            MenuDrawer(
-                getString(R.string.language_setting),
-                false,
-                false,
-                R.drawable.language
-            )
+                MenuDrawer(
+                        getString(R.string.language_setting),
+                        false,
+                        false,
+                        R.drawable.language
+                )
         )
         if (isLogin) {
             settingList.add(
-                MenuDrawer(
-                    getString(R.string.preference_settings),
-                    false,
-                    false,
-                    R.drawable.settings
-                )
+                    MenuDrawer(
+                            getString(R.string.preference_settings),
+                            false,
+                            false,
+                            R.drawable.settings
+                    )
             )
             settingList.add(
-                MenuDrawer(
-                    getString(R.string.logout),
-                    false,
-                    false,
-                    R.drawable.ic_logout
-                )
+                    MenuDrawer(
+                            getString(R.string.logout),
+                            false,
+                            false,
+                            R.drawable.ic_logout
+                    )
             )
         }
         menuDrawerItems.add(
-            MenuDrawer(
-                getString(R.string.action_settings),
-                true,
-                true,
-                R.drawable.settings_square,
-                settingList
-            )
+                MenuDrawer(
+                        getString(R.string.action_settings),
+                        true,
+                        true,
+                        R.drawable.settings_square,
+                        settingList
+                )
         )
         menuDrawerItems.add(
-            MenuDrawer(
-                getString(R.string.title_activity_contact_us),
-                true,
-                false,
-                R.drawable.contact_us
-            )
+                MenuDrawer(
+                        getString(R.string.title_activity_contact_us),
+                        true,
+                        false,
+                        R.drawable.contact_us
+                )
         )
         if (!AppUtils.isRelease()) {
             menuDrawerItems.add(
-                MenuDrawer(
-                    getString(R.string.noqueue_apps),
-                    true,
-                    false,
-                    R.drawable.apps
-                )
+                    MenuDrawer(
+                            getString(R.string.noqueue_apps),
+                            true,
+                            false,
+                            R.drawable.apps
+                    )
             )
         }
         expandableListAdapter = DrawerExpandableListAdapter(this, menuDrawerItems)
@@ -712,11 +724,28 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuHome -> {
-                navController.navigate(R.id.homeFragment)
+                navController.currentDestination?.id?.let {
+                    when (it) {
+                        R.id.favouritesFragment, R.id.action_notification_to_favourites -> {
+                            navController.navigate(R.id.action_favorites_to_home)
+                        }
+                        R.id.notificationFragment, R.id.action_favourites_to_notification -> {
+                            navController.navigate(R.id.action_notification_to_home)
+                        }
+                        else -> navController.navigate(R.id.homeFragment)
+                    }
+                }
                 return true
             }
             R.id.menuNotification -> {
-                navController.navigate(R.id.notificationFragment)
+                navController.currentDestination?.id?.let {
+                    when (it) {
+                        R.id.favouritesFragment, R.id.action_notification_to_favourites -> {
+                            navController.navigate(R.id.action_favourites_to_notification)
+                        }
+                        else -> navController.navigate(R.id.notificationFragment)
+                    }
+                }
                 return true
             }
             R.id.menuSearch -> {
@@ -726,7 +755,14 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 return false
             }
             R.id.menuFavourite -> {
-                navController.navigate(R.id.favouritesFragment)
+                navController.currentDestination?.id?.let {
+                    when (it) {
+                        R.id.notificationFragment, R.id.action_favourites_to_notification -> {
+                            navController.navigate(R.id.action_notification_to_favourites)
+                        }
+                        else -> navController.navigate(R.id.favouritesFragment)
+                    }
+                }
                 return true
             }
         }

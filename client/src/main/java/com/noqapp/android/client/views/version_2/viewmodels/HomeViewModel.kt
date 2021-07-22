@@ -17,6 +17,7 @@ import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.common.beans.ErrorEncounteredJson
+import com.noqapp.android.common.beans.JsonSchedule
 import com.noqapp.android.common.pojos.DisplayNotification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,6 +34,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     val authenticationFailureLiveData = MutableLiveData<Boolean>()
     val favoritesListResponseLiveData = MutableLiveData<FavoriteElastic?>()
     val errorLiveData = MutableLiveData<ErrorEncounteredJson>()
+
+    val jsonScheduledAppointmentLiveData = MutableLiveData<List<JsonSchedule>>()
 
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
@@ -209,6 +212,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
                     }
                     NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
                             .saveCurrentQueue(it.tokenAndQueues)
+                    jsonScheduledAppointmentLiveData.postValue(it.jsonScheduleList.jsonSchedules)
                 }
             }
         }
