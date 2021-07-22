@@ -23,11 +23,11 @@ import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
+@Deprecated
 public class CurrentActivityAdapter extends RecyclerView.Adapter {
     private static final String TAG = CurrentActivityAdapter.class.getSimpleName();
     private final Context context;
@@ -137,9 +137,25 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     holder.tv_degree.setText(jsonSchedule.getJsonQueueDisplay().getBusinessName());
             }
             holder.tv_store_address.setText(AppUtils.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
-            holder.tv_schedule_time.setText(jsonSchedule.getAppointmentTimeByAppointmentState());
+
+            String time;
+            switch (jsonSchedule.getAppointmentState()) {
+                case S:
+                    time = Vholder.itemView.getContext().getString(R.string.txt_token_will_be_issued);
+                    break;
+                case F:
+                    time = Vholder.itemView.getContext().getString(R.string.txt_token_will_be_issued) + " " + jsonSchedule.getAppointmentTimeByAppointmentState();
+                    break;
+                case A:
+                case O:
+                default:
+                    time = jsonSchedule.getAppointmentTimeByAppointmentState();
+            }
+            holder.tv_schedule_time.setText(time);
+
             try {
-                String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
+                Date scheduleDate = CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate());
+                String date = CommonHelper.SDF_DOB_FROM_UI.format(scheduleDate);
                 holder.tv_schedule_date.setText(date);
             } catch (Exception e) {
                 e.printStackTrace();

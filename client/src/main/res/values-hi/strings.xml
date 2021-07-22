@@ -545,6 +545,13 @@
     <string name="txt_booking_person">बुकिंग व्यक्ति</string>
     <string name="txt_please_select_appointment_datetime">कृपया नियुक्ति तिथि और समय चुनें</string>
     <string name="txt_no_walkin_appointment_available">कोई वॉक-इन अपॉइंटमेंट उपलब्ध नहीं है</string>
+    <string name="txt_arrive_before">अपॉइंटमेंट शेड्यूल से 30 मिनट पहले पहुंचें</string>
+    <string name="txt_cancel_before">निर्धारित समय से कम से कम 24 घंटे पहले रद्द करें</string>
+    <string name="txt_date">तारीख</string>
+    <string name="txt_time">समय</string>
+    <string name="txt_title_appointment_detail">नियुक्ति विवरण</string>
+    <string name="txt_appointment_status">नियुक्ति की स्थिति:</string>
+    <string name="txt_token_will_be_issued">टोकन जारी किया जाएगा</string>
 
     <string name="txt_you_were_skipped">आपकी सेवा नहीं की गई थी</string>
     <string name="txt_please_login_to_view_profile">प्रोफ़ाइल देखने के लिए कृपया लॉगिन करें</string>

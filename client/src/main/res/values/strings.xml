@@ -548,6 +548,13 @@
     <string name="txt_booking_person">Booking Person</string>
     <string name="txt_please_select_appointment_datetime">Please select appointment date &amp; time</string>
     <string name="txt_no_walkin_appointment_available">No walk-in appointment available</string>
+    <string name="txt_arrive_before">Arrive 30 minutes before schedule appointment</string>
+    <string name="txt_cancel_before">Cancel at least 24 hrs before scheduled time</string>
+    <string name="txt_date">Date</string>
+    <string name="txt_time">Time</string>
+    <string name="txt_title_appointment_detail">Appointment Details</string>
+    <string name="txt_appointment_status">Appointment Status:</string>
+    <string name="txt_token_will_be_issued">Token will be issued</string>
 
     <string name="txt_you_were_skipped">You were skipped</string>
     <string name="txt_please_login_to_view_profile">Please login to view profile</string>
