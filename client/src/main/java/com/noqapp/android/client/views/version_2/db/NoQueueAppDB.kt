@@ -27,7 +27,7 @@ abstract class NoQueueAppDB : RoomDatabase() {
         fun dbInstance(context: Context): NoQueueAppDB {
             if (instance == null) {
                 synchronized(NoQueueAppDB::class) {
-                    instance = Room.databaseBuilder(context, NoQueueAppDB::class.java, "noq_app_database").build()
+                    instance = Room.databaseBuilder(context, NoQueueAppDB::class.java, "noqueue_database").build()
                 }
             }
             return instance!!
