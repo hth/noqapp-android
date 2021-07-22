@@ -59,8 +59,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
     // Clears notification tray messages
     fun clearNotifications(context: Context) {
-        val notificationManager =
-                context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
