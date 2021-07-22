@@ -546,4 +546,8 @@
     <string name="txt_please_select_appointment_datetime">Veuillez sélectionner la date et l\'heure du rendez-vous</string>
     <string name="txt_no_walkin_appointment_available">Aucun rendez-vous disponible</string>
 
+    <string name="txt_you_were_skipped">Vous avez été ignoré</string>
+    <string name="txt_please_login_to_view_profile">Veuillez vous connecter pour voir le profil</string>
+    <string name="txt_please_login_to_see_the_details">Veuillez vous connecter pour voir les détails</string>
+
 </resources>

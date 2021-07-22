@@ -546,4 +546,8 @@
     <string name="txt_please_select_appointment_datetime">कृपया नियुक्ति तिथि और समय चुनें</string>
     <string name="txt_no_walkin_appointment_available">कोई वॉक-इन अपॉइंटमेंट उपलब्ध नहीं है</string>
 
+    <string name="txt_you_were_skipped">आपकी सेवा नहीं की गई थी</string>
+    <string name="txt_please_login_to_view_profile">प्रोफ़ाइल देखने के लिए कृपया लॉगिन करें</string>
+    <string name="txt_please_login_to_see_the_details">विवरण देखने के लिए कृपया लॉगिन करें</string>
+
 </resources>

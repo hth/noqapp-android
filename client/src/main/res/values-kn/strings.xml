@@ -546,4 +546,8 @@
     <string name="txt_please_select_appointment_datetime">ದಯವಿಟ್ಟು ನೇಮಕಾತಿ ದಿನಾಂಕ ಮತ್ತು ಸಮಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="txt_no_walkin_appointment_available">ವಾಕ್-ಇನ್ ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಲಭ್ಯವಿಲ್ಲ</string>
 
+    <string name="txt_you_were_skipped">ನಿಮ್ಮನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ</string>
+    <string name="txt_please_login_to_view_profile">ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಿಸಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
+    <string name="txt_please_login_to_see_the_details">ವಿವರಗಳನ್ನು ನೋಡಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
+
 </resources>

@@ -209,7 +209,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun observeValues() {
-        homeViewModel.searchStoreQueryLiveData.observe(this, Observer {
+        homeViewModel.searchStoreQueryLiveData.observe(this, {
             activityHomeBinding.tvLocation.text = it.cityName
         })
 
@@ -223,7 +223,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             .observe(this, Observer {
                 it?.let {
                     if (it.isSkipped == "1") {
-                        CustomToast().showToast(this, "You were skipped")
+                        CustomToast().showToast(this, getString(R.string.txt_you_were_skipped))
                         callSkipScreen(it.codeQR)
                     } else if (it.isReviewShown != "1" && it.isSkipped != "1") {
                         callReviewActivity(it.codeQR, it.token)
@@ -294,7 +294,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 val intent = Intent(this, UserProfileActivity::class.java)
                 startActivity(intent)
             } else {
-                CustomToast().showToast(this, "Please login to view profile")
+                CustomToast().showToast(this, getString(R.string.txt_please_login_to_view_profile))
                 val loginIntent = Intent(this, LoginActivity::class.java)
                 loginIntent.putExtra("fromHome", true)
                 startActivity(loginIntent)
@@ -548,7 +548,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                     val `in` = Intent(this, CouponsActivity::class.java)
                     startActivity(`in`)
                 } else {
-                    CustomToast().showToast(this, "Please login to see the details")
+                    CustomToast().showToast(this, getString(R.string.txt_please_login_to_see_the_details))
                 }
             }
             R.drawable.settings -> {
@@ -580,7 +580,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                     val `in` = Intent(this, MedicalHistoryActivity::class.java)
                     startActivity(`in`)
                 } else {
-                    CustomToast().showToast(this, "Please login to see the details")
+                    CustomToast().showToast(this, getString(R.string.txt_please_login_to_see_the_details))
                 }
             }
             R.drawable.medical_profile -> {
@@ -588,7 +588,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                     val `in` = Intent(this, AllUsersProfileActivity::class.java)
                     startActivity(`in`)
                 } else {
-                    CustomToast().showToast(this, "Please login to see the details")
+                    CustomToast().showToast(this, getString(R.string.txt_please_login_to_see_the_details))
                 }
             }
             R.drawable.appointment -> {
@@ -596,7 +596,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                     val `in` = Intent(this, AppointmentActivity::class.java)
                     startActivity(`in`)
                 } else {
-                    CustomToast().showToast(this, "Please login to see the details")
+                    CustomToast().showToast(this, getString(R.string.txt_please_login_to_see_the_details))
                 }
             }
             R.drawable.language -> {
