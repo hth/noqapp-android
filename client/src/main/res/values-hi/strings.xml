@@ -172,7 +172,7 @@
     <string name="wait_time">प्रतीक्षा समय</string>
     <string name="wait_time_formatted">प्रतीक्षा समय: %1$s</string>
     <string name="wait_time_formatted_newline">\nप्रतीक्षा समय: %1$s</string>
-    <string name="time_slot">टाइम स्लॉट</string>
+    <string name="time_slot">समय दिया गया</string>
     <string name="time_slot_formatted">टाइम स्लॉट: %1$s</string>
     <string name="time_slot_formatted_newline">\nटाइम स्लॉट: %1$s</string>
     <string name="error_remote_join_not_available">रिमोट जॉइन की अनुमति नहीं है। कृपया स्टोर पर जाएँ।</string>

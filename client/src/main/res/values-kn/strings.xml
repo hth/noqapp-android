@@ -172,7 +172,7 @@
     <string name="wait_time">ಸಮಯ ಕಾಯಿರಿ</string>
     <string name="wait_time_formatted">ಸಮಯ ಕಾಯಿರಿ: %1$s</string>
     <string name="wait_time_formatted_newline">\nप्रतीक्षा समय: %1$s</string>
-    <string name="time_slot">ಭೇಟಿ: %1$s</string>
+    <string name="time_slot">ಭೇಟಿ</string>
     <string name="time_slot_formatted">ಕೊಟ್ಟ ಸಮಯ: %1$s</string>
     <string name="time_slot_formatted_newline">\nಕೊಟ್ಟ ಸಮಯ: %1$s</string>
     <string name="error_remote_join_not_available">ರಿಮೋಟ್ ಸೇರ್ಪಡೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ಟೋರ್‌ಗೆ ಭೇಟಿ ನೀಡಿ.</string>

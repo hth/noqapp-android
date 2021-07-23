@@ -172,7 +172,7 @@
     <string name="wait_time">Wait time</string>
     <string name="wait_time_formatted">Wait time: %1$s</string>
     <string name="wait_time_formatted_newline">\nWait time: %1$s</string>
-    <string name="time_slot">Time slot</string>
+    <string name="time_slot">Visit</string>
     <string name="time_slot_formatted">Time slot: %1$s</string>
     <string name="time_slot_formatted_newline">\nTime slot: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
