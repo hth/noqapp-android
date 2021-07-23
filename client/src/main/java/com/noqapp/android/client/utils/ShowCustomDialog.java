@@ -40,7 +40,6 @@ public class ShowCustomDialog {
 
     public interface DialogClickListener {
         void btnPositiveClick();
-
         void btnNegativeClick();
     }
 
@@ -109,26 +108,35 @@ public class ShowCustomDialog {
         dialog.setCanceledOnTouchOutside(cancelable);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        if (!dialog.isShowing())
+
+        if (!dialog.isShowing()) {
             dialog.show();
+        }
     }
 
     private void setLinks(TextView tv, String text) {
-        String[] linkPatterns = {"([Hh][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])",
-                "#[\\w]+", "@[\\w]+"};
+        String[] linkPatterns = {
+            "([Hh][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])",
+            "#[\\w]+",
+            "@[\\w]+"
+        };
+
         SpannableString f = new SpannableString(text);
         for (String str : linkPatterns) {
             Pattern pattern = Pattern.compile(str);
             Matcher matcher = pattern.matcher(text);
-            while (matcher.find()) {
-                int x = matcher.start();
-                int y = matcher.end();
+            if (matcher.matches()) {
+                while (matcher.find()) {
+                    int x = matcher.start();
+                    int y = matcher.end();
 
-                String spanText = text.substring(x, y);
-                URLSpan span = new URLSpan(spanText);
-                f.setSpan(span, x, y,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                tv.setText(f);
+                    String spanText = text.substring(x, y);
+                    URLSpan span = new URLSpan(spanText);
+                    f.setSpan(span, x, y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    tv.setText(f);
+                }
+            } else {
+                tv.setText(text);
             }
         }
 
