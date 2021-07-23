@@ -103,7 +103,7 @@ android {
 
     defaultConfig {
         applicationId "com.noqapp.android.client"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 30
         multiDexEnabled true
         testHandleProfiling true
