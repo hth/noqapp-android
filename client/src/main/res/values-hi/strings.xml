@@ -332,8 +332,8 @@
     <string name="privacy_in_short">गोपनीयता त्वरित अवलोकन</string>
     <string name="order_history">आदेश और कतार इतिहास</string>
     <string name="title_activity_contact_us">हमें संपर्क करें</string>
-    <string name="subject">विषय</string>
-    <string name="message">प्रतिक्रिया / सुझाव / मुद्दे</string>
+    <string name="txt_feedback_subject">विषय</string>
+    <string name="txt_feedback_message">प्रतिक्रिया / सुझाव / मुद्दे \n\n स्टोर की जानकारी प्रदान करें और कृपया हमारी प्रतिक्रिया के लिए अपना मेल देखें</string>
     <string name="error_subject_blank">कृपया विषय दर्ज करें</string>
     <string name="error_feedback_blank">कृपया संदेश दर्ज करें</string>
     <string name="screen_order_detail">आदेश सारांश</string>
