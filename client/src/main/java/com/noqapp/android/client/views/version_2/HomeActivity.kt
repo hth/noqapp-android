@@ -191,7 +191,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 }
             })
 
-        homeViewModel.notificationListLiveData.observe(this, Observer {
+        homeViewModel.notificationListLiveData.observe(this, {
             it?.let { displayNotificationList ->
                 if (displayNotificationList.isNotEmpty()) {
                     val displayNotification = displayNotificationList.last()
@@ -295,12 +295,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                    .load(
-                        AppUtils.getImageUrls(
-                            BuildConfig.PROFILE_BUCKET,
-                            AppInitialize.getUserProfileUri()
-                        )
-                    )
+                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
                     .placeholder(ImageUtils.getProfilePlaceholder(this))
                     .error(ImageUtils.getProfileErrorPlaceholder(this))
                     .into(navHeaderMainBinding.ivProfile)

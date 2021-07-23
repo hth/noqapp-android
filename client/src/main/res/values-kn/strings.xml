@@ -75,15 +75,15 @@
     <!--- Join Screen -->
     <string name="serving_now">ಈಗ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ </string>
     <string name="your_token">ನಿಮ್ಮ ಟೋಕನ್ ಸಂ</string>
-    <string name="your_order">Order</string>
+    <string name="your_order">ಖರೀದಿ ಸಂಖ್ಯೆ</string>
     <string name="position_in_queue_label">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ</string>
     <string name="position_in_queue">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ: %1$d</string>
     <string name="your_are_next_label">ಮುಂದಿನದು ನಿಮ್ಮ ಸರದಿ!</string>
     <string name="daily_token_limit">ದೈನಂದಿನ ಟೋಕನ್ ಮಿತಿ: %1$s</string>
-    <string name="estimated_wait">Estimated Wait: %1$s</string>
-    <string name="expected_service_around">Expected Service: %1$s</string>
-    <string name="serving_now_in_queue">Serving now: %1$s</string>
-    <string name="serving_not_started">Serving: %1$s</string>
+    <string name="estimated_wait">ಅಂದಾಜು ನಿರೀಕ್ಷಿಸಿ: %1$s</string>
+    <string name="expected_service_around">ನಿರೀಕ್ಷಿತ ಸೇವೆ: %1$s</string>
+    <string name="serving_now_in_queue">ಈಗ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ: %1$s</string>
+    <string name="serving_not_started">ಸೇವೆ: %1$s</string>
     <string name="revisit_restriction">ಸೇವಾ ನಿರ್ಬಂಧವನ್ನು ಪುನರಾವರ್ತಿಸಿ: %1$s</string>
     <string name="referral_code_required">ಟೋಕನ್ ಪಡೆಯಲು ಒಂದು ಬಾರಿಯ ಗುರುತಿನ ಕೋಡ್ ಬೇಕಿರುತ್ತದೆ</string>
 
@@ -172,7 +172,7 @@
     <string name="wait_time">ಸಮಯ ಕಾಯಿರಿ</string>
     <string name="wait_time_formatted">ಸಮಯ ಕಾಯಿರಿ: %1$s</string>
     <string name="wait_time_formatted_newline">\nप्रतीक्षा समय: %1$s</string>
-    <string name="time_slot">ಭೇಟಿ: %1$s</string>
+    <string name="time_slot">ಭೇಟಿ</string>
     <string name="time_slot_formatted">ಕೊಟ್ಟ ಸಮಯ: %1$s</string>
     <string name="time_slot_formatted_newline">\nಕೊಟ್ಟ ಸಮಯ: %1$s</string>
     <string name="error_remote_join_not_available">ರಿಮೋಟ್ ಸೇರ್ಪಡೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ಟೋರ್‌ಗೆ ಭೇಟಿ ನೀಡಿ.</string>
@@ -545,6 +545,18 @@
     <string name="txt_booking_person">ಬುಕಿಂಗ್ ವ್ಯಕ್ತಿ</string>
     <string name="txt_please_select_appointment_datetime">ದಯವಿಟ್ಟು ನೇಮಕಾತಿ ದಿನಾಂಕ ಮತ್ತು ಸಮಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="txt_no_walkin_appointment_available">ವಾಕ್-ಇನ್ ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="txt_arrive_before">ವೇಳಾಪಟ್ಟಿ ನೇಮಕಾತಿಗೆ 30 ನಿಮಿಷಗಳ ಮೊದಲು ಆಗಮಿಸಿ</string>
+    <string name="txt_cancel_before">ನಿಗದಿತ ಸಮಯಕ್ಕೆ ಕನಿಷ್ಠ 24 ಗಂಟೆಗಳ ಮೊದಲು ರದ್ದುಗೊಳಿಸಿ</string>
+    <string name="txt_date">ದಿನಾಂಕ</string>
+    <string name="txt_time">ಸಮಯ</string>
+    <string name="txt_title_appointment_detail">ನೇಮಕಾತಿ ವಿವರಗಳು</string>
+    <string name="txt_appointment_status">ನೇಮಕಾತಿ ಸ್ಥಿತಿ:</string>
+    <string name="txt_token_will_be_issued">ಟೋಕನ್ ನೀಡಲಾಗುವುದು</string>
+    <string name="txt_cancelling_appointment">ನೇಮಕಾತಿಯನ್ನು ರದ್ದುಪಡಿಸಲಾಗುತ್ತಿದೆ...</string>
+    <string name="txt_cancel_appointment">ನೇಮಕಾತಿಯನ್ನು ರದ್ದುಗೊಳಿಸಿ</string>
+    <string name="txt_cancel_appointment_confirmation">ನೇಮಕಾತಿಯನ್ನು ರದ್ದುಗೊಳಿಸಲು ನೀವು ಬಯಸುವಿರಾ?</string>
+    <string name="txt_cancel_appointment_success">ನೇಮಕಾತಿ ಯಶಸ್ವಿಯಾಗಿ ರದ್ದುಗೊಂಡಿದೆ!</string>
+    <string name="txt_cancel_appointment_failed">ನೇಮಕಾತಿಯನ್ನು ರದ್ದುಗೊಳಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
 
     <string name="txt_you_were_skipped">ನಿಮ್ಮನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ</string>
     <string name="txt_please_login_to_view_profile">ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಿಸಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>

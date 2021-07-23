@@ -75,13 +75,13 @@
     <!--- Join Screen -->
     <string name="serving_now">सेवा में</string>
     <string name="your_token">टोकन</string>
-    <string name="your_order">Order</string>
+    <string name="your_order">खरीद संख्या</string>
     <string name="position_in_queue_label">कतार में स्थिति</string>
     <string name="your_are_next_label">आप अगले हैं!</string>
     <string name="position_in_queue">कतार में स्थिति: %1$d</string>
     <string name="daily_token_limit">स्टोर प्रतिदिन टोकन सीमा: %1$s</string>
-    <string name="estimated_wait">Estimated Wait: %1$s</string>
-    <string name="expected_service_around">Expected Service: %1$s</string>
+    <string name="estimated_wait">अनुमानित प्रतीक्षा: %1$s</string>
+    <string name="expected_service_around">अपेक्षित सेवा: %1$s</string>
     <string name="serving_now_in_queue">सेवा में: %1$s</string>
     <string name="serving_not_started">सेवा में: %1$s</string>
     <string name="revisit_restriction">अगली सेवा प्रतिबंध: %1$s</string>
@@ -172,7 +172,7 @@
     <string name="wait_time">प्रतीक्षा समय</string>
     <string name="wait_time_formatted">प्रतीक्षा समय: %1$s</string>
     <string name="wait_time_formatted_newline">\nप्रतीक्षा समय: %1$s</string>
-    <string name="time_slot">टाइम स्लॉट</string>
+    <string name="time_slot">समय दिया गया</string>
     <string name="time_slot_formatted">टाइम स्लॉट: %1$s</string>
     <string name="time_slot_formatted_newline">\nटाइम स्लॉट: %1$s</string>
     <string name="error_remote_join_not_available">रिमोट जॉइन की अनुमति नहीं है। कृपया स्टोर पर जाएँ।</string>
@@ -545,6 +545,18 @@
     <string name="txt_booking_person">बुकिंग व्यक्ति</string>
     <string name="txt_please_select_appointment_datetime">कृपया नियुक्ति तिथि और समय चुनें</string>
     <string name="txt_no_walkin_appointment_available">कोई वॉक-इन अपॉइंटमेंट उपलब्ध नहीं है</string>
+    <string name="txt_arrive_before">अपॉइंटमेंट शेड्यूल से 30 मिनट पहले पहुंचें</string>
+    <string name="txt_cancel_before">निर्धारित समय से कम से कम 24 घंटे पहले रद्द करें</string>
+    <string name="txt_date">तारीख</string>
+    <string name="txt_time">समय</string>
+    <string name="txt_title_appointment_detail">नियुक्ति विवरण</string>
+    <string name="txt_appointment_status">नियुक्ति की स्थिति:</string>
+    <string name="txt_token_will_be_issued">टोकन जारी किया जाएगा</string>
+    <string name="txt_cancelling_appointment">अपॉइंटमेंट रद्द करना...</string>
+    <string name="txt_cancel_appointment">अपॉइंटमेंट रद्द करें</string>
+    <string name="txt_cancel_appointment_confirmation">क्या आप अपॉइंटमेंट रद्द करना चाहते हैं?</string>
+    <string name="txt_cancel_appointment_success">अपॉइंटमेंट सफलतापूर्वक रद्द किया गया!</string>
+    <string name="txt_cancel_appointment_failed">अपॉइंटमेंट रद्द करने में विफल</string>
 
     <string name="txt_you_were_skipped">आपकी सेवा नहीं की गई थी</string>
     <string name="txt_please_login_to_view_profile">प्रोफ़ाइल देखने के लिए कृपया लॉगिन करें</string>

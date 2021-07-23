@@ -18,13 +18,13 @@ import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 import java.util.List;
 
+/** Current and Past appointment accessed from menu. */
 public class AppointmentAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<JsonSchedule> dataSet;
@@ -68,7 +68,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter {
             }
         } catch (IllegalArgumentException exp) {
             holder.tv_category.setText("");
-            Log.e("MyAppointmentAdapter", exp.toString());
+            Log.e("AppointmentAdapter", exp.toString());
         }
 
         try {
@@ -77,12 +77,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.tv_appointment_time.setText(jsonSchedule.getAppointmentTimeByAppointmentState());
+
+        holder.tv_appointment_time.setText(jsonSchedule.getAppointmentState().getDescription());
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
         //  AppUtilities.loadProfilePic(holder.iv_main,jsonSchedule.getJsonProfile().getProfileImage(),context);
         holder.card_view.setOnClickListener((View v) -> {
-            if (null != listener)
+            if (null != listener) {
                 listener.appointmentDetails(dataSet.get(position));
+            }
         });
     }
 

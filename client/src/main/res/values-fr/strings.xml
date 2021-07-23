@@ -74,16 +74,16 @@
 
     <!--- Join Screen -->
     <string name="serving_now">maintenant au service</string>
-    <string name="your_token">votre numéro de jeton</string>
-    <string name="your_order">Order</string>
+    <string name="your_token">Votre Numéro de Jeton</string>
+    <string name="your_order">Ordre</string>
     <string name="position_in_queue_label">la position dans la file d\'attente</string>
     <string name="position_in_queue">la position dans la file d\'attente: %1$d</string>
     <string name="your_are_next_label">C\'est vous le porchain</string>
-    <string name="daily_token_limit">limite du jeton: %1$s</string>
-    <string name="estimated_wait">Estimated Wait: %1$s</string>
-    <string name="expected_service_around">Expected Service: %1$s</string>
-    <string name="serving_now_in_queue">Serving now: %1$</string>
-    <string name="serving_not_started">Serving: %1$s</string>
+    <string name="daily_token_limit">Limite du jeton: %1$s</string>
+    <string name="estimated_wait">Attente estimée: %1$s</string>
+    <string name="expected_service_around">Service attendu: %1$s</string>
+    <string name="serving_now_in_queue">Servir maintenant: %1$</string>
+    <string name="serving_not_started">Portion: %1$s</string>
     <string name="revisit_restriction">Répéter la restriction de service</string>
     <string name="referral_code_required">Code d\'identification unique requis pour obtenir un jeton</string>
 
@@ -154,8 +154,8 @@
     <string name="store_closed">Ajourdhui fermé</string>
 
     <!--Error  messages-->
-    <string name="error_prevent_joining">n’accepte plus de nouveau jeton pour la journée</string>
-    <string name="error_day_closed">fermées pour la journée.</string>
+    <string name="error_prevent_joining">N’accepte plus de nouveau jeton pour la journée</string>
+    <string name="error_day_closed">Fermées pour la journée.</string>
     <string name="error_token_available_from">%1$s %2$s commencera à émettre un nouveau jeton après %3$s. Veuillez réessayer après %3$s.</string>
     <string name="error_token_not_available_from">%1$s %2$s ferme pour la journée bientôt. Par conséquent, aucun nouveau jeton ne serait disponible.</string>
     <string name="error_business_closed_permanent">%1$s %2$s est fermé définitivement</string>
@@ -172,7 +172,7 @@
     <string name="wait_time">Temps d\'attente</string>
     <string name="wait_time_formatted">Temps d\'attente: %1$s</string>
     <string name="wait_time_formatted_newline">\nTemps d\'attente: %1$s</string>
-    <string name="time_slot">visite</string>
+    <string name="time_slot">Visite</string>
     <string name="time_slot_formatted">Créneau horaire: %1$s</string>
     <string name="time_slot_formatted_newline">\nTime slot: %1$s</string>
     <string name="error_remote_join_not_available">Inscription à distance non autorisée. Veuillez visiter le magasin</string>
@@ -197,9 +197,9 @@
     <string name="msg_default_status">Placez Noqueue QR Code à l’intérieur du rectangle du viseur pour le scanner.</string>
     <string name="notification_alert">Vous n’avez pas encore reçu de notification</string>
     <string name="navigation_drawer_open">Ouvrez  tiroir de navigation.</string>
-    <string name="navigation_drawer_close">terminez tiroir de navigation</string>
-    <string name="home">page de l\'écran</string>
-    <string name="share">partager</string>
+    <string name="navigation_drawer_close">Terminez tiroir de navigation</string>
+    <string name="home">Page de l\'écran</string>
+    <string name="share">Partager</string>
     <string name="medical_history">Des visites précédentes chez le médecin</string>
     <string name="appointments">Rendez-vous</string>
     <string name="medical_history_details">L\'anamnèse</string>
@@ -221,10 +221,10 @@
     <string name="current_location">L\'adresse actuelle</string>
     <string name="scan_qr">Scanner QR</string>
     <string name="active_token">Jeton activé</string>
-    <string name="health_care">Des hôpitaux </string>
+    <string name="health_care">Des hôpitaux</string>
     <string name="business_near">Affaires/Institution</string>
     <string name="restaurants_near">Restaurants</string>
-    <string name="view_all">voir tout</string>
+    <string name="view_all">Voir tout</string>
     <string name="scan_info">Scannez le code QR Noqueue pour rejoindre la file d\’attente ou passer une commande</string>
     <string name="prompt_address_status">Adresse (principale)</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
@@ -252,7 +252,7 @@
     <string name="personal_info">Des informations privées</string>
     <string name="location_change">Modifiez la location</string>
     <string name="location_msg">Il semble que votre emplacement ait changé. Voulez-vous le mettre à jour?</string>
-    <string name="token">jeton</string>
+    <string name="token">Jeton</string>
     <string name="login_via_otp">Connexion/Inscription via OTP</string>
     <string name="resend_otp">Renvoyez le code (OTP)</string>
     <string name="awards">Le prix</string>
@@ -389,8 +389,8 @@
     <string name="offers">Des coupons</string>
     <string name="screen_qconfirm">Joindre le queue</string>
     <string name="notification_setting">Notications</string>
-    <string name="gps_error_msg_final">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
-    <string name="gps_error_msg">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
+    <string name="gps_error_msg_final">Cette action nécessite l\'activation du paramètre d\'emplacement. Accédez aux paramètres et vérifiez l\'autorisation de localisation dans la vue des autorisations</string>
+    <string name="gps_error_msg">Cette action nécessite l\'activation du paramètre d\'emplacement. Accédez aux paramètres et vérifiez l\'autorisation de localisation dans la vue des autorisations</string>
 
     <string name="discount_error">La réduction est déjà appliqué</string>
     <string name="kiosk_dialog_title">Mode kiosque</string>
@@ -399,7 +399,7 @@
     <string name="booking_offer">Obtenez Flat Rs. 50 de réduction sur la première réservation via Noqueue</string>
 
     <!-- ID dialog -->
-    <string name="authorization_dialog_title">une autorisation préalable</string>
+    <string name="authorization_dialog_title">Une autorisation préalable</string>
     <string name="authorization_dialog_message">* One time entry\n* One card one account\n* Final approval @CSD\n* For approval choose token from correct category (Officer/Serving/Retired)</string>
     <string name="grocery_card_number">Une carte d\'épicerie</string>
     <string name="liquor_card_number">Une carte d\'alcoole</string>
@@ -545,6 +545,18 @@
     <string name="txt_booking_person">Personne de réservation</string>
     <string name="txt_please_select_appointment_datetime">Veuillez sélectionner la date et l\'heure du rendez-vous</string>
     <string name="txt_no_walkin_appointment_available">Aucun rendez-vous disponible</string>
+    <string name="txt_arrive_before">Arrivez 30 minutes avant le rendez-vous prévu</string>
+    <string name="txt_cancel_before">Annulez au moins 24 heures avant l\'heure prévue</string>
+    <string name="txt_date">Date</string>
+    <string name="txt_time">Temps</string>
+    <string name="txt_title_appointment_detail">Détails du rendez-vouss</string>
+    <string name="txt_appointment_status">Statut du rendez-vous:</string>
+    <string name="txt_token_will_be_issued">Le jeton sera émis</string>
+    <string name="txt_cancelling_appointment">Annulation de rendez-vous...</string>
+    <string name="txt_cancel_appointment">Annuler rendez-vous</string>
+    <string name="txt_cancel_appointment_confirmation">Vous souhaitez annuler le rendez-vous?</string>
+    <string name="txt_cancel_appointment_success">Rendez-vous annulé avec succès!</string>
+    <string name="txt_cancel_appointment_failed">Échec de l\'annulation du rendez-vous</string>
 
     <string name="txt_you_were_skipped">Vous avez été ignoré</string>
     <string name="txt_please_login_to_view_profile">Veuillez vous connecter pour voir le profil</string>

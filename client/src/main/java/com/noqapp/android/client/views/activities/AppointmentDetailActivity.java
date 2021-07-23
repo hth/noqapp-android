@@ -26,9 +26,11 @@ import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
-import java.util.Objects;
+import java.util.Date;
 
+/** From Home screen to see details of appointment. */
 public class AppointmentDetailActivity extends BaseActivity implements AppointmentPresenter {
+    private static final String TAG = AppointmentDetailActivity.class.getSimpleName();
     private boolean isNavigateHome = false;
 
     @Override
@@ -37,11 +39,11 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
         initActionsViews(true);
-        tv_toolbar_title.setText("Appointment Detail");
+        tv_toolbar_title.setText(getString(R.string.txt_title_appointment_detail));
         actionbarBack.setOnClickListener((View v) -> onBackPressed());
         try {
             JsonSchedule jsonSchedule = (JsonSchedule) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
-            Log.e("data", jsonSchedule.toString());
+            Log.e(TAG, "Data " + jsonSchedule.toString());
             JsonQueueDisplay jsonQueueDisplay = jsonSchedule.getJsonQueueDisplay();
             ImageView iv_main = findViewById(R.id.iv_main);
             TextView tv_title = findViewById(R.id.tv_title);
@@ -73,18 +75,31 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             tv_patient_name.setText(jsonSchedule.getJsonProfile().getName());
             tv_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(this, jsonQueueDisplay.getStoreAddress()));
 
+            String time;
+            switch (jsonSchedule.getAppointmentState()) {
+                case S:
+                    time = getString(R.string.txt_token_will_be_issued);
+                    break;
+                case F:
+                    time = getString(R.string.txt_token_will_be_issued) + " " + jsonSchedule.getAppointmentTimeByAppointmentState();
+                    break;
+                case A:
+                case O:
+                default:
+                    time = jsonSchedule.getAppointmentTimeByAppointmentState();
+            }
+            tv_schedule_time.setText(getString(R.string.txt_time) + ": " + time);
+
             try {
-                String date = CommonHelper.SDF_DOB_FROM_UI.format(Objects.requireNonNull(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())));
-                tv_schedule_date.setText("Date: " + date);
-                tv_schedule_time.setText("Time: " + jsonSchedule.getAppointmentTimeByAppointmentState());
+                Date scheduleDate = CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate());
+                String date = CommonHelper.SDF_DOB_FROM_UI.format(scheduleDate);
+                tv_schedule_date.setText(getString(R.string.txt_date) + ": " + date);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
-            String note = getString(R.string.asterisk)
-                + " Arrive 30 mins before schedule appointment\n"
-                + getString(R.string.asterisk) + getString(R.string.asterisk)
-                + " Cancel at least 24 hrs before scheduled time\n";
+            String note = getString(R.string.asterisk) + " " + getString(R.string.txt_arrive_before) + "\n"
+                + getString(R.string.asterisk) + getString(R.string.asterisk) + " " + getString(R.string.txt_cancel_before) + "\n";
             tv_msg.setText(note);
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
@@ -95,7 +110,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                     @Override
                     public void btnPositiveClick() {
                         if (isOnline()) {
-                            setProgressMessage("Canceling appointment...");
+                            setProgressMessage(getString(R.string.txt_cancelling_appointment));
                             showProgress();
                             appointmentApiCalls.cancelAppointment(
                                 UserUtils.getDeviceId(),
@@ -112,7 +127,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                         //Do nothing
                     }
                 });
-                showDialog.displayDialog("Cancel Appointment", "Do you want to cancel the appointment?");
+                showDialog.displayDialog(getString(R.string.txt_cancel_appointment), getString(R.string.txt_cancel_appointment_confirmation));
             });
             if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 isNavigateHome = false;
@@ -166,12 +181,12 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
 
     @Override
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
-        Log.v("appointmentCancelResp", "" + jsonResponse.getResponse());
+        Log.v(TAG, "AppointmentCancelResp " + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            new CustomToast().showToast(this, "Appointment cancelled successfully!");
+            new CustomToast().showToast(this, getString(R.string.txt_cancel_appointment_success));
             finish();
         } else {
-            new CustomToast().showToast(this, "Failed to cancel appointment");
+            new CustomToast().showToast(this, getString(R.string.txt_cancel_appointment_failed));
         }
         dismissProgress();
     }
