@@ -75,5 +75,4 @@ class AfterJoinOrderViewModel(application: Application) : AndroidViewModel(appli
     fun getReviewData(reviewType: String): LiveData<ReviewData> {
         return NoQueueAppDB.dbInstance(getApplication()).reviewDao().getReviewData(reviewType)
     }
-
 }

@@ -55,5 +55,4 @@ interface TokenAndQueueDao {
 
     @Query("DELETE FROM token_queue")
     suspend fun clearTokenAndQueue()
-
 }

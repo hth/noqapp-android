@@ -316,5 +316,4 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
             NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().clearTokenAndQueue()
         }
     }
-
 }

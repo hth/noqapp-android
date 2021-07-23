@@ -33,5 +33,4 @@ interface ReviewDao {
 
     @Query("DELETE FROM review_data")
     suspend fun clearReviewData()
-
 }
