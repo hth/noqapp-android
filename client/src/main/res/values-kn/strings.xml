@@ -552,6 +552,11 @@
     <string name="txt_title_appointment_detail">ನೇಮಕಾತಿ ವಿವರಗಳು</string>
     <string name="txt_appointment_status">ನೇಮಕಾತಿ ಸ್ಥಿತಿ:</string>
     <string name="txt_token_will_be_issued">ಟೋಕನ್ ನೀಡಲಾಗುವುದು</string>
+    <string name="txt_cancelling_appointment">ನೇಮಕಾತಿಯನ್ನು ರದ್ದುಪಡಿಸಲಾಗುತ್ತಿದೆ...</string>
+    <string name="txt_cancel_appointment">ನೇಮಕಾತಿಯನ್ನು ರದ್ದುಗೊಳಿಸಿ</string>
+    <string name="txt_cancel_appointment_confirmation">ನೇಮಕಾತಿಯನ್ನು ರದ್ದುಗೊಳಿಸಲು ನೀವು ಬಯಸುವಿರಾ?</string>
+    <string name="txt_cancel_appointment_success">ನೇಮಕಾತಿ ಯಶಸ್ವಿಯಾಗಿ ರದ್ದುಗೊಂಡಿದೆ!</string>
+    <string name="txt_cancel_appointment_failed">ನೇಮಕಾತಿಯನ್ನು ರದ್ದುಗೊಳಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
 
     <string name="txt_you_were_skipped">ನಿಮ್ಮನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ</string>
     <string name="txt_please_login_to_view_profile">ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಿಸಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>

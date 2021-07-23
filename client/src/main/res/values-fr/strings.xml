@@ -552,6 +552,11 @@
     <string name="txt_title_appointment_detail">Détails du rendez-vouss</string>
     <string name="txt_appointment_status">Statut du rendez-vous:</string>
     <string name="txt_token_will_be_issued">Le jeton sera émis</string>
+    <string name="txt_cancelling_appointment">Annulation de rendez-vous...</string>
+    <string name="txt_cancel_appointment">Annuler rendez-vous</string>
+    <string name="txt_cancel_appointment_confirmation">Vous souhaitez annuler le rendez-vous?</string>
+    <string name="txt_cancel_appointment_success">Rendez-vous annulé avec succès!</string>
+    <string name="txt_cancel_appointment_failed">Échec de l\'annulation du rendez-vous</string>
 
     <string name="txt_you_were_skipped">Vous avez été ignoré</string>
     <string name="txt_please_login_to_view_profile">Veuillez vous connecter pour voir le profil</string>

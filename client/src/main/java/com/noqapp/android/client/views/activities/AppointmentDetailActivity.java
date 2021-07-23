@@ -110,7 +110,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                     @Override
                     public void btnPositiveClick() {
                         if (isOnline()) {
-                            setProgressMessage("Canceling appointment...");
+                            setProgressMessage(getString(R.string.txt_cancelling_appointment));
                             showProgress();
                             appointmentApiCalls.cancelAppointment(
                                 UserUtils.getDeviceId(),
@@ -127,7 +127,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                         //Do nothing
                     }
                 });
-                showDialog.displayDialog("Cancel Appointment", "Do you want to cancel the appointment?");
+                showDialog.displayDialog(getString(R.string.txt_cancel_appointment), getString(R.string.txt_cancel_appointment_confirmation));
             });
             if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 isNavigateHome = false;
@@ -183,10 +183,10 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         Log.v(TAG, "AppointmentCancelResp " + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            new CustomToast().showToast(this, "Appointment cancelled successfully!");
+            new CustomToast().showToast(this, getString(R.string.txt_cancel_appointment_success));
             finish();
         } else {
-            new CustomToast().showToast(this, "Failed to cancel appointment");
+            new CustomToast().showToast(this, getString(R.string.txt_cancel_appointment_failed));
         }
         dismissProgress();
     }

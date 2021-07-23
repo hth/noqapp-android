@@ -552,6 +552,11 @@
     <string name="txt_title_appointment_detail">नियुक्ति विवरण</string>
     <string name="txt_appointment_status">नियुक्ति की स्थिति:</string>
     <string name="txt_token_will_be_issued">टोकन जारी किया जाएगा</string>
+    <string name="txt_cancelling_appointment">अपॉइंटमेंट रद्द करना...</string>
+    <string name="txt_cancel_appointment">अपॉइंटमेंट रद्द करें</string>
+    <string name="txt_cancel_appointment_confirmation">क्या आप अपॉइंटमेंट रद्द करना चाहते हैं?</string>
+    <string name="txt_cancel_appointment_success">अपॉइंटमेंट सफलतापूर्वक रद्द किया गया!</string>
+    <string name="txt_cancel_appointment_failed">अपॉइंटमेंट रद्द करने में विफल</string>
 
     <string name="txt_you_were_skipped">आपकी सेवा नहीं की गई थी</string>
     <string name="txt_please_login_to_view_profile">प्रोफ़ाइल देखने के लिए कृपया लॉगिन करें</string>

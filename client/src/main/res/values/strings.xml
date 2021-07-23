@@ -555,6 +555,11 @@
     <string name="txt_title_appointment_detail">Appointment Details</string>
     <string name="txt_appointment_status">Appointment Status:</string>
     <string name="txt_token_will_be_issued">Token will be issued</string>
+    <string name="txt_cancelling_appointment">Canceling appointment...</string>
+    <string name="txt_cancel_appointment">Cancel Appointment</string>
+    <string name="txt_cancel_appointment_confirmation">Do you want to cancel the appointment?</string>
+    <string name="txt_cancel_appointment_success">Appointment cancelled successfully!</string>
+    <string name="txt_cancel_appointment_failed">Failed to cancel appointment</string>
 
     <string name="txt_you_were_skipped">You were skipped</string>
     <string name="txt_please_login_to_view_profile">Please login to view profile</string>
