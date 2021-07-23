@@ -418,9 +418,9 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         DeviceApiCall deviceModel = new DeviceApiCall();
         deviceModel.setDeviceRegisterPresenter(deviceRegisterPresenter);
         DeviceToken deviceToken = new DeviceToken(
-                AppInitialize.getTokenFCM(),
-                Constants.appVersion(),
-                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
+            AppInitialize.getTokenFCM(),
+            Constants.appVersion(),
+            CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
         if (UserUtils.isLogin()) {
             deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
@@ -436,10 +436,10 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
 
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                    .setArea(jsonUserAddress.getArea())
-                    .setTown(jsonUserAddress.getTown())
-                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                .setArea(jsonUserAddress.getArea())
+                .setTown(jsonUserAddress.getTown())
+                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             AppInitialize.setLocationPreference(locationPref);
             AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
             AppInitialize.location.setLatitude(locationPref.getLatitude());
