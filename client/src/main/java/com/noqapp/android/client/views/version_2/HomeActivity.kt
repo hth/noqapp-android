@@ -102,8 +102,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var isRateUsFirstTime = true
     private var searchStoreQuery: SearchStoreQuery? = null
 
-    private val cacheMsgIds =
-        CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
