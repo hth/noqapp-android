@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.location.Location;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,7 +18,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.LocaleHelper;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
@@ -101,7 +104,6 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         FontsOverride.overrideFont(this, "MONOSPACE", "fonts/roboto_regular.ttf");
         FontsOverride.overrideFont(this, "SERIF", "fonts/roboto_regular.ttf");
         FontsOverride.overrideFont(this, "SANS_SERIF", "fonts/roboto_regular.ttf");
-        setLocale(this);
 
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this); //needs android.permission.WAKE_LOCK
@@ -111,34 +113,6 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         MapsInitializer.initialize(this);
         isLockMode = getKioskModeInfo().isKioskModeEnable();
         appInitialize = this;
-    }
-
-    private Locale getLocaleFromPref() {
-        Locale locale = Locale.getDefault();
-        String language = getPreferences().getString("pref_language", "");
-        if (StringUtils.isNotBlank(language)) {
-            locale = new Locale(language);
-            Locale.setDefault(locale);
-        }
-        return locale;
-    }
-
-    public void setLocale(Context ctx) {
-        Locale newLocale = getLocaleFromPref();
-        Resources activityRes = ctx.getResources();
-        Configuration activityConf = activityRes.getConfiguration();
-
-        activityConf.setLocale(newLocale);
-        activityRes.updateConfiguration(activityConf, activityRes.getDisplayMetrics());
-
-        Resources applicationRes = getBaseContext().getResources();
-        Configuration applicationConf = applicationRes.getConfiguration();
-        applicationConf.setLocale(newLocale);
-        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-    }
-
-    private SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     public static boolean isNotificationSoundEnable() {

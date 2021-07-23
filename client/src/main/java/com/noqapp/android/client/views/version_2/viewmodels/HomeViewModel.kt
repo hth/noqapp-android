@@ -311,4 +311,10 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         }
     }
 
+    fun clearTokenAndQueue() {
+        viewModelScope.launch(Dispatchers.IO) {
+            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().clearTokenAndQueue()
+        }
+    }
+
 }

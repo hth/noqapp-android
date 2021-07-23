@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -175,37 +176,6 @@ public class AppUtils extends CommonHelper {
             double kilometers = dist / 1000;
             double value = kilometers / 1.6;
             return Math.round(value * 100D) / 100D;// distance in miles
-        }
-    }
-
-    public static void changeLanguage(String language) {
-        if (!language.equals("")) {
-            switch (language) {
-                case "en":
-                    HomeActivity.Companion.setLanguage("en_US");
-                    HomeActivity.Companion.setLocale(Locale.ENGLISH);
-                    HomeActivity.Companion.getLanguagePref().edit().putString("pref_language", "en").apply();
-                    break;
-                case "kn":
-                    HomeActivity.Companion.setLanguage("kn");
-                    HomeActivity.Companion.setLocale(new Locale("kn"));
-                    HomeActivity.Companion.getLanguagePref().edit().putString("pref_language", "kn").apply();
-                    break;
-                case "fr":
-                    HomeActivity.Companion.setLanguage("fr");
-                    HomeActivity.Companion.setLocale(new Locale("fr"));
-                    HomeActivity.Companion.getLanguagePref().edit().putString("pref_language", "fr").apply();
-                    break;
-                default:
-                    HomeActivity.Companion.setLanguage("hi");
-                    HomeActivity.Companion.setLocale(new Locale("hi"));
-                    HomeActivity.Companion.getLanguagePref().edit().putString("pref_language", "hi").apply();
-                    break;
-            }
-        } else {
-            HomeActivity.Companion.setLanguage("en_US");
-            HomeActivity.Companion.setLocale(Locale.ENGLISH);
-            HomeActivity.Companion.getLanguagePref().edit().putString("pref_language", "en").apply();
         }
     }
 

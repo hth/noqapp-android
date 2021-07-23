@@ -53,4 +53,7 @@ interface TokenAndQueueDao {
     @Query("DELETE FROM token_queue WHERE history_queue!=1 AND qr_code=:qrCode AND token=:token")
     suspend fun deleteTokenQueue(qrCode: String?, token: Int?)
 
+    @Query("DELETE FROM token_queue")
+    suspend fun clearTokenAndQueue()
+
 }
