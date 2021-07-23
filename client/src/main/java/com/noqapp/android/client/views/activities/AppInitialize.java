@@ -2,11 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.location.Location;
-import android.os.Build;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,9 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
-import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.LocaleHelper;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
@@ -37,12 +31,9 @@ import com.noqapp.android.common.utils.FontsOverride;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
 
