@@ -277,6 +277,9 @@
     <string name="payment_due">Le paiement exigible.</string>
     <string name="total_tax">Taxe totale</string>
     <string name="total_amount">Le montant totale</string>
+    <string name="discount">Remise:</string>
+    <string name="discount_with_coupon">Remise (%1$s):</string>
+    <string name="grand_total">Total:</string>
     <string name="order_details">Détails de la commande</string>
     <string name="deliver_address">Adresse de livraison</string>
     <string name="add_address">Ajoutez l\'</string>
@@ -557,6 +560,18 @@
     <string name="txt_cancel_appointment_confirmation">Vous souhaitez annuler le rendez-vous?</string>
     <string name="txt_cancel_appointment_success">Rendez-vous annulé avec succès!</string>
     <string name="txt_cancel_appointment_failed">Échec de l\'annulation du rendez-vous</string>
+    <string name="txt_appointment_booked">Réservé</string>
+    <string name="txt_appointment_available">Disponible</string>
+    <string name="txt_appointment_not_available">Plus de rendez-vous disponible</string>
+    <string name="txt_appointment_booking">Prise de rendez-vous...</string>
+    <string name="txt_appointment_fetching">Récupérer des rendez-vous...</string>
+    <string name="txt_appointment_slots_available">%1$d des %2$d rendez-vous sans rendez-vous disponibles</string>
+    <string name="txt_appointment_closed_on_this_day">Fermé ce jour\n N\'accepte pas de rendez-vous</string>
+    <string name="txt_appointment_title_confirm">Confirmer les détails de la réservation</string>
+    <string name="txt_appointment_name">Nom:  </string>
+    <string name="txt_appointment_date">Date de réservation:  </string>
+    <string name="txt_appointment_booking_slot">Emplacement de réservation:  </string>
+    <string name="txt_appointment_booking_available_from_tomorrow">La réservation n\'est disponible qu\'à partir de demain</string>
 
     <string name="txt_you_were_skipped">Vous avez été ignoré</string>
     <string name="txt_please_login_to_view_profile">Veuillez vous connecter pour voir le profil</string>

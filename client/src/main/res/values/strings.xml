@@ -560,6 +560,18 @@
     <string name="txt_cancel_appointment_confirmation">Do you want to cancel the appointment?</string>
     <string name="txt_cancel_appointment_success">Appointment cancelled successfully!</string>
     <string name="txt_cancel_appointment_failed">Failed to cancel appointment</string>
+    <string name="txt_appointment_booked">Booked</string>
+    <string name="txt_appointment_available">Available</string>
+    <string name="txt_appointment_not_available">No more walk-in appointment available</string>
+    <string name="txt_appointment_booking">Booking appointments...</string>
+    <string name="txt_appointment_fetching">Fetching appointments...</string>
+    <string name="txt_appointment_slots_available">%1$d out of %2$d walk-in appointments available</string>
+    <string name="txt_appointment_closed_on_this_day">Closed on this day\n Not accepting appointment</string>
+    <string name="txt_appointment_title_confirm">Confirm Booking Details</string>
+    <string name="txt_appointment_name">Name:  </string>
+    <string name="txt_appointment_date">Booking Date:  </string>
+    <string name="txt_appointment_booking_slot">Booking Slot:  </string>
+    <string name="txt_appointment_booking_available_from_tomorrow">Booking is only available form tomorrow onwards</string>
 
     <string name="txt_you_were_skipped">You were skipped</string>
     <string name="txt_please_login_to_view_profile">Please login to view profile</string>

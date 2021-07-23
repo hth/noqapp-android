@@ -149,7 +149,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:padding="5dp"
-                            android:text="Booked"
+                            android:text="@string/txt_appointment_booked"
                             android:textColor="#333333" />
 
                         <View
@@ -163,7 +163,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:padding="5dp"
-                            android:text="Available"
+                            android:text="@string/txt_appointment_available"
                             android:textColor="#333333" />
                     </LinearLayout>
                 </LinearLayout>
@@ -178,7 +178,7 @@
                     android:paddingTop="35dp"
                     android:paddingRight="15dp"
                     android:paddingBottom="35dp"
-                    android:text="No more walk-in appointment available"
+                    android:text="@string/txt_appointment_not_available"
                     android:textColor="#d41717"
                     android:textSize="@dimen/text_size_eighteen"
                     android:textStyle="bold"
@@ -192,7 +192,7 @@
                 android:background="#fff"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text=" Closed on this day\n Not accepting appointment"
+                android:text="@string/txt_appointment_closed_on_this_day"
                 android:textColor="#d41717"
                 android:textSize="@dimen/text_size_eighteen"
                 android:textStyle="bold"

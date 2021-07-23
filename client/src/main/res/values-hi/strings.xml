@@ -277,6 +277,9 @@
     <string name="payment_due">भुगतान राशि-</string>
     <string name="total_tax">समस्त टैक्स-</string>
     <string name="total_amount">कुल रकम-</string>
+    <string name="discount">छूट:</string>
+    <string name="discount_with_coupon">छूट (%1$s):</string>
+    <string name="grand_total">कुल योग:</string>
     <string name="order_details">ऑर्डर का विवरण</string>
     <string name="deliver_address">डिलिवरी का पता</string>
     <string name="add_address">पता जोड़ें</string>
@@ -557,6 +560,18 @@
     <string name="txt_cancel_appointment_confirmation">क्या आप अपॉइंटमेंट रद्द करना चाहते हैं?</string>
     <string name="txt_cancel_appointment_success">अपॉइंटमेंट सफलतापूर्वक रद्द किया गया!</string>
     <string name="txt_cancel_appointment_failed">अपॉइंटमेंट रद्द करने में विफल</string>
+    <string name="txt_appointment_booked">बुक्ड</string>
+    <string name="txt_appointment_available">उपलब्ध</string>
+    <string name="txt_appointment_not_available">कोई और वॉक-इन अपॉइंटमेंट उपलब्ध नहीं है</string>
+    <string name="txt_appointment_booking">बुकिंग अपॉइंटमेंट...</string>
+    <string name="txt_appointment_fetching">नियुक्तियां प्राप्त करना...</string>
+    <string name="txt_appointment_slots_available">%2$d में से %1$d वॉक-इन अपॉइंटमेंट उपलब्ध</string>
+    <string name="txt_appointment_closed_on_this_day">इस दिन बंद है\n अपॉइंटमेंट स्वीकार नहीं कर रहा</string>
+    <string name="txt_appointment_title_confirm">बुकिंग विवरण की पुष्टि करें</string>
+    <string name="txt_appointment_name">नाम:  </string>
+    <string name="txt_appointment_date">बुक करने की तिथि:  </string>
+    <string name="txt_appointment_booking_slot">बुकिंग स्लॉट:  </string>
+    <string name="txt_appointment_booking_available_from_tomorrow">बुकिंग केवल कल से ही उपलब्ध है</string>
 
     <string name="txt_you_were_skipped">आपकी सेवा नहीं की गई थी</string>
     <string name="txt_please_login_to_view_profile">प्रोफ़ाइल देखने के लिए कृपया लॉगिन करें</string>
