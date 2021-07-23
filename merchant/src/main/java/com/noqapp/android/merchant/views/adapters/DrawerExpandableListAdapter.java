@@ -13,7 +13,6 @@ import com.noqapp.android.merchant.R;
 
 import java.util.List;
 
-
 public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<MenuDrawer> listDataHeader;
@@ -25,8 +24,7 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public MenuDrawer getChild(int groupPosition, int childPosititon) {
-        return this.listDataHeader.get(groupPosition).getChildList()
-                .get(childPosititon);
+        return this.listDataHeader.get(groupPosition).getChildList().get(childPosititon);
     }
 
     @Override
@@ -35,16 +33,13 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final MenuDrawer child = getChild(groupPosition, childPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group_child, null);
         }
-        TextView tv_child_title = convertView
-                .findViewById(R.id.tv_child_title);
+        TextView tv_child_title = convertView.findViewById(R.id.tv_child_title);
         tv_child_title.setText(child.getTitle());
         ImageView iv_icon = convertView.findViewById(R.id.iv_icon);
         iv_icon.setImageResource(child.getIcon());
@@ -53,11 +48,11 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this.listDataHeader.get(groupPosition) == null)
+        if (this.listDataHeader.get(groupPosition) == null) {
             return 0;
-        else
-            return this.listDataHeader.get(groupPosition).getChildList()
-                    .size();
+        } else {
+            return this.listDataHeader.get(groupPosition).getChildList().size();
+        }
     }
 
     @Override
@@ -76,18 +71,15 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         MenuDrawer headerItem = getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group_header, null);
         }
         TextView tv_header_title = convertView.findViewById(R.id.tv_header_title);
         if (headerItem.hasChildren()) {
-            tv_header_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, isExpanded ?
-                    R.drawable.arrow_up_black : R.drawable.arrow_down_black, 0);
+            tv_header_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, isExpanded ? R.drawable.arrow_up_black : R.drawable.arrow_down_black, 0);
         } else {
             tv_header_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
