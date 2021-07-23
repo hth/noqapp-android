@@ -379,7 +379,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             )
             menuDrawerItems.add(
                 MenuDrawer(
-                    getString(R.string.appointments),
+                    getString(R.string.txt_appointments),
                     true,
                     false,
                     R.drawable.appointment

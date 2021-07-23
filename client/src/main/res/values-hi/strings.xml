@@ -201,7 +201,7 @@
     <string name="home">होम</string>
     <string name="share">शेयर/साझा करें</string>
     <string name="medical_history">पिछले डॉक्टर का दौरा</string>
-    <string name="appointments">अपॉइंटमेंट</string>
+    <string name="txt_appointments">अपॉइंटमेंट</string>
     <string name="medical_history_details">पूर्ववृत्त (केस हिस्ट्री)</string>
     <string name="weekly_hours">साप्ताहिक घंटे</string>
 

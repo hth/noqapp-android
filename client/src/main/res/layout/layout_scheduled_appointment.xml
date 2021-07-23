@@ -17,8 +17,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/appointment"
-            android:textColor="#a3b7ce"
             android:textSize="12sp" />
 
         <RelativeLayout

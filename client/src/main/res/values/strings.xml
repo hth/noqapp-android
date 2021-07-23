@@ -201,7 +201,7 @@
     <string name="home">Home</string>
     <string name="share">Share</string>
     <string name="medical_history">Past Doctor Visits</string>
-    <string name="appointments">Appointments</string>
+    <string name="txt_appointments">Appointments</string>
     <string name="medical_history_details">Case History</string>
     <string name="weekly_hours">Weekly Hours</string>
 

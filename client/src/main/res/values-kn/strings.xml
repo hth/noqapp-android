@@ -201,7 +201,7 @@
     <string name="home">ಹೋಂ</string>
     <string name="share">ಹಂಚಿಕೊಳ್ಳಿ</string>
     <string name="medical_history">ಹಿಂದಿನ ವೈದ್ಯರ ಭೇಟಿಗಳು</string>
-    <string name="appointments">ನೇಮಕಾತಿಗಳು</string>
+    <string name="txt_appointments">ನೇಮಕಾತಿಗಳು</string>
     <string name="medical_history_details">ಕೇಸ್ ಇತಿಹಾಸ</string>
     <string name="weekly_hours">ಸಾಪ್ತಾಹಿಕ ಗಂಟೆಗಳು</string>
 

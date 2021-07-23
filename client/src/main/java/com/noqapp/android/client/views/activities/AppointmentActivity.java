@@ -14,7 +14,7 @@ public class AppointmentActivity extends TabbedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
-        tv_toolbar_title.setText(getString(R.string.appointments));
+        tv_toolbar_title.setText(getString(R.string.txt_appointments));
     }
 
     @Override

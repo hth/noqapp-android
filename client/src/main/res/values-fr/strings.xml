@@ -201,7 +201,7 @@
     <string name="home">Page de l\'écran</string>
     <string name="share">Partager</string>
     <string name="medical_history">Des visites précédentes chez le médecin</string>
-    <string name="appointments">Rendez-vous</string>
+    <string name="txt_appointments">Rendez-vous</string>
     <string name="medical_history_details">L\'anamnèse</string>
     <string name="weekly_hours">Heures Hebdomadaires</string>
 
