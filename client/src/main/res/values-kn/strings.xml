@@ -75,15 +75,15 @@
     <!--- Join Screen -->
     <string name="serving_now">ಈಗ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ </string>
     <string name="your_token">ನಿಮ್ಮ ಟೋಕನ್ ಸಂ</string>
-    <string name="your_order">Order</string>
+    <string name="your_order">ಖರೀದಿ ಸಂಖ್ಯೆ</string>
     <string name="position_in_queue_label">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ</string>
     <string name="position_in_queue">ಸರದಿಯಲ್ಲಿ ಸ್ಥಾನ: %1$d</string>
     <string name="your_are_next_label">ಮುಂದಿನದು ನಿಮ್ಮ ಸರದಿ!</string>
     <string name="daily_token_limit">ದೈನಂದಿನ ಟೋಕನ್ ಮಿತಿ: %1$s</string>
-    <string name="estimated_wait">Estimated Wait: %1$s</string>
-    <string name="expected_service_around">Expected Service: %1$s</string>
-    <string name="serving_now_in_queue">Serving now: %1$s</string>
-    <string name="serving_not_started">Serving: %1$s</string>
+    <string name="estimated_wait">ಅಂದಾಜು ನಿರೀಕ್ಷಿಸಿ: %1$s</string>
+    <string name="expected_service_around">ನಿರೀಕ್ಷಿತ ಸೇವೆ: %1$s</string>
+    <string name="serving_now_in_queue">ಈಗ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ: %1$s</string>
+    <string name="serving_not_started">ಸೇವೆ: %1$s</string>
     <string name="revisit_restriction">ಸೇವಾ ನಿರ್ಬಂಧವನ್ನು ಪುನರಾವರ್ತಿಸಿ: %1$s</string>
     <string name="referral_code_required">ಟೋಕನ್ ಪಡೆಯಲು ಒಂದು ಬಾರಿಯ ಗುರುತಿನ ಕೋಡ್ ಬೇಕಿರುತ್ತದೆ</string>
 
