@@ -14,5 +14,4 @@ class QueueStatusTypeConverter {
     fun toQueueStatusTypeString(value: QueueStatusEnum): String {
         return value.name
     }
-
 }

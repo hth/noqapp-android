@@ -14,5 +14,4 @@ class PurchaseOrderStateTypeConverter {
     fun toPurchaseOrderStatusTypeString(value: PurchaseOrderStateEnum): String {
         return value.name
     }
-
 }

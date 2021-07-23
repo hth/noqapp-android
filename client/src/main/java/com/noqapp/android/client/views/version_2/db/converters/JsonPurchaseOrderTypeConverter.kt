@@ -18,5 +18,4 @@ class JsonPurchaseOrderTypeConverter {
         val json = Gson().toJson(value)
         return json
     }
-
 }

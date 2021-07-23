@@ -14,5 +14,4 @@ class MessageOriginTypeConverter {
     fun toPurchaseOrderStatusTypeString(value: MessageOriginEnum): String {
         return value.name
     }
-
 }

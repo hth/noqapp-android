@@ -10,22 +10,31 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 class ForegroundNotificationModel {
     @ColumnInfo(name = "go_to")
     var goTo = ""
+
     @ColumnInfo(name = "message_origin")
     var messageOrigin = ""
+
     @ColumnInfo(name = "current_serving")
     var currentServing = ""
+
     @ColumnInfo(name = "display_serving_number")
     var displayServingNumber = ""
+
     @ColumnInfo(name = "text_to_speeches")
     var jsonTextToSpeeches: List<JsonTextToSpeech?>? = mutableListOf()
+
     @ColumnInfo(name = "message_id")
     var msgId = ""
+
     @ColumnInfo(name = "purchase_order_state")
     var purchaseOrderStateEnum = PurchaseOrderStateEnum.IN
+
     @ColumnInfo(name = "qr_code")
     var qrCode = ""
+
     @ColumnInfo(name = "for_update_flag")
     var forUpdateFlag = false
+
     @ColumnInfo(name = "user_current_token")
     var userCurrentToken = ""
 }
