@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.network;
 
 import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +28,12 @@ public class RetrofitClient {
             builder.addInterceptor(chain -> {
                 Request request = chain.request().newBuilder()
                     .addHeader("x-r-ver", BuildConfig.VERSION_NAME)
-                    .addHeader("x-r-fla", BuildConfig.APP_FLAVOR).build();
+                    .addHeader("x-r-fla", BuildConfig.APP_FLAVOR)
+                    .addHeader("x-r-lat", String.valueOf(0.0))
+                    .addHeader("x-r-lng", String.valueOf(0.0))
+                    .addHeader("x-r-did", AppInitialize.getDeviceId() == null ? "" : AppInitialize.getDeviceId())
+                    .addHeader("x-r-mail", AppInitialize.getMail())
+                    .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
                 return chain.proceed(request);
             });
 
