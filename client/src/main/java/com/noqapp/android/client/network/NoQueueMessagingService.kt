@@ -186,7 +186,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
 
                 MessageOriginEnum.A, MessageOriginEnum.D -> try {
                     jsonData = objectMapper.readValue(jsonPayloadStr, JsonAlertData::class.java)
-                    Log.d("FCM Review store", jsonData.toString())
+                    Log.d("FCM JsonAlert", jsonData.toString())
                 } catch (e: Exception) {
                     Log.e(TAG, "Error reading message " + e.localizedMessage, e)
                     FirebaseCrashlytics.getInstance().log("Failed to read message " + MessageOriginEnum.D)
@@ -317,12 +317,14 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                         .insertNotification(displayNotification)
                                 }
                             }
-                            if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService))
+                            if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService)) {
                                 sendNotification(
                                     title,
                                     jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)),
                                     false,
-                                    imageUrl)
+                                    imageUrl
+                                )
+                            }
                         } else if (jsonData is JsonClientData) {
                             Log.e("In JsonClientData", jsonData.toString())
                             val token = jsonData.token.toString()
