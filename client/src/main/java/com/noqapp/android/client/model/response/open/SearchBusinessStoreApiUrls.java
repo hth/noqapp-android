@@ -5,14 +5,27 @@ import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
  * Created by chandra on 3/22/18.
  */
-
 public interface SearchBusinessStoreApiUrls {
+
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
+    @GET("open/search")
+    Call<SearchStoreQuery> search(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt
+    );
 
     /**
      * Errors

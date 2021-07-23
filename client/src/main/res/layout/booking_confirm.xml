@@ -24,7 +24,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Confirm Booking Details"
+                android:text="@string/txt_appointment_title_confirm"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
-                    android:text="Patient Name: "
+                    android:text="@string/txt_appointment_name"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
-                    android:text="Booking Date: "
+                    android:text="@string/txt_appointment_date"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
-                    android:text="Booking Slot: "
+                    android:text="@string/txt_appointment_booking_slot"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:text="Booking is only available form tomorrow onwards "
+                android:text="@string/txt_appointment_booking_available_from_tomorrow"
                 android:textColor="@color/btn_color"
                 android:textSize="18sp"
                 android:textStyle="bold" />

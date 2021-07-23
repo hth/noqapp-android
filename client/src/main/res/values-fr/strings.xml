@@ -26,7 +26,7 @@
     <string name="cancel">Annulez</string>
     <string name="quit_queue">Annulez votre jeton</string>
     <string name="go_back">Retournez</string>
-    <string name="ratetheapp">évaluation d\'app</string>
+    <string name="ratetheapp">Évaluation d\'app</string>
     <string name="legal">Légal</string>
     <string name="invite">Invitez</string>
     <string name="firstname">Prénom</string>
@@ -74,16 +74,16 @@
 
     <!--- Join Screen -->
     <string name="serving_now">maintenant au service</string>
-    <string name="your_token">votre numéro de jeton</string>
-    <string name="your_order">Order</string>
+    <string name="your_token">Votre Numéro de Jeton</string>
+    <string name="your_order">Ordre</string>
     <string name="position_in_queue_label">la position dans la file d\'attente</string>
     <string name="position_in_queue">la position dans la file d\'attente: %1$d</string>
     <string name="your_are_next_label">C\'est vous le porchain</string>
-    <string name="daily_token_limit">limite du jeton: %1$s</string>
-    <string name="estimated_wait">Estimated Wait: %1$s</string>
-    <string name="expected_service_around">Expected Service: %1$s</string>
-    <string name="serving_now_in_queue">Serving now: %1$</string>
-    <string name="serving_not_started">Serving: %1$s</string>
+    <string name="daily_token_limit">Limite du jeton: %1$s</string>
+    <string name="estimated_wait">Attente estimée: %1$s</string>
+    <string name="expected_service_around">Service attendu: %1$s</string>
+    <string name="serving_now_in_queue">Servir maintenant: %1$</string>
+    <string name="serving_not_started">Portion: %1$s</string>
     <string name="revisit_restriction">Répéter la restriction de service</string>
     <string name="referral_code_required">Code d\'identification unique requis pour obtenir un jeton</string>
 
@@ -145,7 +145,7 @@
     <string name="hint_verification_code">le code vérifications</string>
     <string name="status_code_sent">un code envoyé</string>
     <string name="status_verification_failed">Échec de la vérification</string>
-    <string name="status_too_many_request">Exceeded OTP request limit</string>
+    <string name="status_too_many_request">Limite de demandes OTP dépassée</string>
     <string name="status_verification_succeeded">Si la vérification d\'identité a réusi</string>
     <string name="status_sign_in_failed">échecs de connexion</string>
     <string name="instant_validation">Saisissez OTP (le code)</string>
@@ -154,12 +154,12 @@
     <string name="store_closed">Ajourdhui fermé</string>
 
     <!--Error  messages-->
-    <string name="error_prevent_joining">n’accepte plus de nouveau jeton pour la journée</string>
-    <string name="error_day_closed">fermées pour la journée.</string>
-    <string name="error_token_available_from">%1$s %2$s will start issuing new token after %3$s. Please try again after %3$s.</string>
-    <string name="error_token_not_available_from">%1$s %2$s is closing for the day soon. Hence no new tokens would be available.</string>
-    <string name="error_business_closed_permanent">%1$s %2$s is closed permanently</string>
-    <string name="error_business_has_closed_for_the_day">%1$s %2$s has closed for the day</string>
+    <string name="error_prevent_joining">N’accepte plus de nouveau jeton pour la journée</string>
+    <string name="error_day_closed">Fermées pour la journée.</string>
+    <string name="error_token_available_from">%1$s %2$s commencera à émettre un nouveau jeton après %3$s. Veuillez réessayer après %3$s.</string>
+    <string name="error_token_not_available_from">%1$s %2$s ferme pour la journée bientôt. Par conséquent, aucun nouveau jeton ne serait disponible.</string>
+    <string name="error_business_closed_permanent">%1$s %2$s est fermé définitivement</string>
+    <string name="error_business_has_closed_for_the_day">%1$s %2$s a fermé pour la journée</string>
     <string name="error_user_needs_to_be_logged_in">Veuillez connexioner pour joindre</string>
     <string name="error_reached_daily_limit">Tous les jetons de cette file d’attente ont été acquis pour la journée.</string>
     <string name="text_time_saved">Combien de temps avez-vous économisé ?</string>
@@ -169,11 +169,11 @@
     <string name="barcode_error_msg">Aucun commerçant n’est associé à ce code Noqueue</string>
     <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2021 \u00a9 NoQueue Inc</string>
     <string name="alert">L\'alerte</string>
-    <string name="wait_time">Wait time</string>
-    <string name="wait_time_formatted">Wait time: %1$s</string>
-    <string name="wait_time_formatted_newline">\nWait time: %1$s</string>
-    <string name="time_slot">visite</string>
-    <string name="time_slot_formatted">Time slot: %1$s</string>
+    <string name="wait_time">Temps d\'attente</string>
+    <string name="wait_time_formatted">Temps d\'attente: %1$s</string>
+    <string name="wait_time_formatted_newline">\nTemps d\'attente: %1$s</string>
+    <string name="time_slot">Visite</string>
+    <string name="time_slot_formatted">Créneau horaire: %1$s</string>
     <string name="time_slot_formatted_newline">\nTime slot: %1$s</string>
     <string name="error_remote_join_not_available">Inscription à distance non autorisée. Veuillez visiter le magasin</string>
     <string name="error_join">File d’attente à distance non activée</string>
@@ -197,12 +197,13 @@
     <string name="msg_default_status">Placez Noqueue QR Code à l’intérieur du rectangle du viseur pour le scanner.</string>
     <string name="notification_alert">Vous n’avez pas encore reçu de notification</string>
     <string name="navigation_drawer_open">Ouvrez  tiroir de navigation.</string>
-    <string name="navigation_drawer_close">terminez tiroir de navigation</string>
-    <string name="home">page de l\'écran</string>
-    <string name="share">partager</string>
+    <string name="navigation_drawer_close">Terminez tiroir de navigation</string>
+    <string name="home">Page de l\'écran</string>
+    <string name="share">Partager</string>
     <string name="medical_history">Des visites précédentes chez le médecin</string>
-    <string name="appointments">Rendez-vous</string>
+    <string name="txt_appointments">Rendez-vous</string>
     <string name="medical_history_details">L\'anamnèse</string>
+    <string name="weekly_hours">Heures Hebdomadaires</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">L\'email</string>
@@ -218,13 +219,13 @@
     <string name="kannada">ಕನ್ನಡ</string>
     <string name="english">L\'anglais</string>
     <string name="current_location">L\'adresse actuelle</string>
-    <string name="scan_qr">scanner QR</string>
-    <string name="active_token">jeton activé</string>
-    <string name="health_care">des hôpitaux </string>
-    <string name="business_near">affaires/ institution</string>
+    <string name="scan_qr">Scanner QR</string>
+    <string name="active_token">Jeton activé</string>
+    <string name="health_care">Des hôpitaux</string>
+    <string name="business_near">Affaires/Institution</string>
     <string name="restaurants_near">Restaurants</string>
-    <string name="view_all">voir tout</string>
-    <string name="scan_info">Scan Noqueue QR Code pour rejoindre la file d’attente ou passer une commande</string>
+    <string name="view_all">Voir tout</string>
+    <string name="scan_info">Scannez le code QR Noqueue pour rejoindre la file d\’attente ou passer une commande</string>
     <string name="prompt_address_status">Adresse (principale)</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">Vous n’avez pas d’antécédents médicaux.</string>
@@ -232,7 +233,7 @@
     <string name="screen_order_confirm">Confirmation de Commande</string>
     <string name="transaction_history">Les transactions</string>
     <string name="error_mobile_no_same">Veuillez saisir le nouveau numéro de téléphone portable</string>
-    <string name="password">Password <font color='red'>\u002A</font></string>
+    <string name="password">Mot de passe <font color='red'>\u002A</font></string>
     <string name="error_pwd_blank">Veuillez entrer le mot de passe</string>
     <string name="error_pwd_not_match">Les deux mots de passe doivent correspondre</string>
     <string name="error_pwd_length">Les mots de passes doivent au moins avoir 6 caractères.</string>
@@ -251,7 +252,7 @@
     <string name="personal_info">Des informations privées</string>
     <string name="location_change">Modifiez la location</string>
     <string name="location_msg">Il semble que votre emplacement ait changé. Voulez-vous le mettre à jour?</string>
-    <string name="token">jeton</string>
+    <string name="token">Jeton</string>
     <string name="login_via_otp">Connexion/Inscription via OTP</string>
     <string name="resend_otp">Renvoyez le code (OTP)</string>
     <string name="awards">Le prix</string>
@@ -276,6 +277,9 @@
     <string name="payment_due">Le paiement exigible.</string>
     <string name="total_tax">Taxe totale</string>
     <string name="total_amount">Le montant totale</string>
+    <string name="discount">Remise:</string>
+    <string name="discount_with_coupon">Remise (%1$s):</string>
+    <string name="grand_total">Total:</string>
     <string name="order_details">Détails de la commande</string>
     <string name="deliver_address">Adresse de livraison</string>
     <string name="add_address">Ajoutez l\'</string>
@@ -308,7 +312,7 @@
     <string name="mds_follow_up">Un rendez-vous prochain</string>
     <string name="mds_instruction">La ordonnance</string>
     <string name="about_me">Au propos de médecin</string>
-    <string name="license">License</string>
+    <string name="license">Licence</string>
     <string name="mds_pathology_invs_advice">Conseil pour un examen >> la pathologie.</string>
     <string name="mds_radiology_invs_advice">Conseil pour un examen >>La radiologie</string>
     <string name="maps_direction">La carte et des directions</string>
@@ -322,14 +326,14 @@
     <string name="msg_vibrator_off">Votre téléphone est en mode silencieux. App pourrait ne pas vous reconnaître lorsque son votre tour.</string>
     <string name="error_mobile_no_length">Le numéro de téléphone doit comporter 10 chiffres.</string>
     <string name="profile">Profil</string>
-    <string name="merchant_account">Register Your Business</string>
-    <string name="favourite">Favourite</string>
+    <string name="merchant_account">Enregistrez votre entreprise</string>
+    <string name="favourite">Préférée</string>
     <string name="address">L\'adresse</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
-    <string name="order_history">Order &amp; Queue History</string>
-    <string name="title_activity_contact_us">Contact Us</string>
-    <string name="subject">sujet</string>
-    <string name="message">Feedback/Suggestions/Issues</string>
+    <string name="order_history">Historique des commandes et des files d\'attente</string>
+    <string name="title_activity_contact_us">Nous contacter</string>
+    <string name="txt_feedback_subject">Sujet</string>
+    <string name="txt_feedback_message">Commentaires / Suggestions / Problèmes\n\nFournissez des informations sur le magasin et veuillez vérifier votre courrier pour notre réponse</string>
     <string name="error_subject_blank">Saissez sujet</string>
     <string name="error_feedback_blank">Saissez la massage </string>
     <string name="screen_order_detail">Récapitulatif de Commande.</string>
@@ -355,6 +359,8 @@
     <string name="pay_and_join">Payer et confimer le queue</string>
 
     <!-- Empty Screens labels -->
+    <string name="empty_favourite_title">Aucun magasin marqué comme favori</string>
+    <string name="empty_favourite_subtitle">Identifiez votre magasin préféré pour un accès rapide</string>
     <string name="empty_order_title">Votre panier Amazon est vide</string>
     <string name="empty_order_subtitle">Rien n\'a été sélectionné</string>
     <string name="empty_noti_title">Notification de vide</string>
@@ -386,17 +392,17 @@
     <string name="offers">Des coupons</string>
     <string name="screen_qconfirm">Joindre le queue</string>
     <string name="notification_setting">Notications</string>
-    <string name="gps_error_msg_final">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
-    <string name="gps_error_msg">This Action Requires the Location Setting to be enabled. Go to Settings and check the Location Permission inside the Permissions View</string>
+    <string name="gps_error_msg_final">Cette action nécessite l\'activation du paramètre d\'emplacement. Accédez aux paramètres et vérifiez l\'autorisation de localisation dans la vue des autorisations</string>
+    <string name="gps_error_msg">Cette action nécessite l\'activation du paramètre d\'emplacement. Accédez aux paramètres et vérifiez l\'autorisation de localisation dans la vue des autorisations</string>
 
     <string name="discount_error">La réduction est déjà appliqué</string>
     <string name="kiosk_dialog_title">Mode kiosque</string>
     <string name="kiosk_dialog_msg">Continuer de lancer le mode kiosque?</string>
-    <string name="preference_settings">des réglages de préférence</string>
+    <string name="preference_settings">Préférence</string>
     <string name="booking_offer">Obtenez Flat Rs. 50 de réduction sur la première réservation via Noqueue</string>
 
     <!-- ID dialog -->
-    <string name="authorization_dialog_title">une autorisation préalable</string>
+    <string name="authorization_dialog_title">Une autorisation préalable</string>
     <string name="authorization_dialog_message">* One time entry\n* One card one account\n* Final approval @CSD\n* For approval choose token from correct category (Officer/Serving/Retired)</string>
     <string name="grocery_card_number">Une carte d\'épicerie</string>
     <string name="liquor_card_number">Une carte d\'alcoole</string>
@@ -414,7 +420,7 @@
     <string name="announcement_message_covid">* Mask is mandatory during visit\n* Maintain Social distancing at all times\n* Wash hands frequently</string>
 
     <!-- Strings from Code 06062020 -->
-    <string name="loading_queue_details">Loading queue details…</string>
+    <string name="loading_queue_details">Chargement des détails de la file d\'attente…</string>
     <string name="please_login_to_join">Veuillez vous connecter pour rejoindre</string>
     <string name="enable_gps">Activer le GPS</string>
     <string name="message_enable_gps">Le GPS est désactivé. Afin d\'utiliser correctement l\'application</string>
@@ -500,4 +506,75 @@
     <string name="txt_please_enter_house_number">Veuillez saisir le numéro de la maison/le nom du bâtiment</string>
     <string name="txt_please_enter_address">Veuillez saisir une adresse</string>
     <string name="txt_delivery_at">LIVRAISON AU</string>
+    <string name="txt_post">Publier en ligne</string>
+    <string name="txt_time_slot">Créneau horaire: %1$s - %2$s</string>
+    <string name="txt_services">Prestations de service</string>
+    <string name="txt_housing">Logement</string>
+    <string name="txt_market_place">Marché</string>
+    <string name="txt_jobs">Emplois</string>
+    <string name="txt_businesses">Entreprises</string>
+    <string name="txt_usr_csd">URC/CSD</string>
+    <string name="txt_hospital">Hôpital</string>
+    <string name="txt_grocery">Épicerie</string>
+    <string name="txt_restaurant">Le restaurant</string>
+    <string name="txt_school">École</string>
+    <string name="txt_cafeteria">Cafétéria</string>
+    <string name="txt_generic_store">Boutique générique</string>
+    <string name="tab_recent_visits">Visites récentes</string>
+    <string name="tab_near_me">Proche de moi</string>
+    <string name="txt_please_login">Veuillez vous connecter</string>
+    <string name="txt_guest_user">Utilisateur invité</string>
+    <string name="txt_order_being_prepared">Commande en préparation</string>
+    <string name="review_hint">Veuillez fournir un avis pour %1$s. Pour chaque commentaire gagnez 10 points. Les points peuvent être utilisés pour les services NoQueue.</string>
+    <string name="txt_store_today_timing">Calendrier d\'aujourd\'hui</string>
+    <string name="txt_weekly_hours_token">Jeton</string>
+    <string name="txt_weekly_store">Magasin</string>
+    <string name="txt_weekly_lunch">Déjeuner</string>
+    <string name="txt_weekly_hours_appointment">Rendez-vous</string>
+    <string name="txt_book_appointment">Rendez-vous</string>
+    <string name="txt_monday">Lun</string>
+    <string name="txt_tuesday">Mar</string>
+    <string name="txt_wednesday">Mer</string>
+    <string name="txt_thursday">Jeu</string>
+    <string name="txt_friday">Ven</string>
+    <string name="txt_saturday">Sam</string>
+    <string name="txt_sunday">Dimanche</string>
+
+    <!-- Appointment screen -->
+    <string name="txt_title_book_appointment">Prendre rendez-vous</string>
+    <string name="txt_available_times">Horaires disponibles</string>
+    <string name="txt_available_slots">Emplacements disponibles</string>
+    <string name="txt_book_walkin_appointment">Prendre un rendez-vous sans rendez-vous</string>
+    <string name="txt_booking_person">Personne de réservation</string>
+    <string name="txt_please_select_appointment_datetime">Veuillez sélectionner la date et l\'heure du rendez-vous</string>
+    <string name="txt_no_walkin_appointment_available">Aucun rendez-vous disponible</string>
+    <string name="txt_arrive_before">Arrivez 30 minutes avant le rendez-vous prévu</string>
+    <string name="txt_cancel_before">Annulez au moins 24 heures avant l\'heure prévue</string>
+    <string name="txt_date">Date</string>
+    <string name="txt_time">Temps</string>
+    <string name="txt_title_appointment_detail">Détails du rendez-vouss</string>
+    <string name="txt_appointment_status">Statut du rendez-vous:</string>
+    <string name="txt_token_will_be_issued">Le jeton sera émis</string>
+    <string name="txt_cancelling_appointment">Annulation de rendez-vous...</string>
+    <string name="txt_cancel_appointment">Annuler rendez-vous</string>
+    <string name="txt_cancel_appointment_confirmation">Vous souhaitez annuler le rendez-vous?</string>
+    <string name="txt_cancel_appointment_success">Rendez-vous annulé avec succès!</string>
+    <string name="txt_cancel_appointment_failed">Échec de l\'annulation du rendez-vous</string>
+    <string name="txt_appointment_booked">Réservé</string>
+    <string name="txt_appointment_available">Disponible</string>
+    <string name="txt_appointment_not_available">Plus de rendez-vous disponible</string>
+    <string name="txt_appointment_booking">Prise de rendez-vous...</string>
+    <string name="txt_appointment_fetching">Récupérer des rendez-vous...</string>
+    <string name="txt_appointment_slots_available">%1$d des %2$d rendez-vous sans rendez-vous disponibles</string>
+    <string name="txt_appointment_closed_on_this_day">Fermé ce jour\n N\'accepte pas de rendez-vous</string>
+    <string name="txt_appointment_title_confirm">Confirmer les détails de la réservation</string>
+    <string name="txt_appointment_name">Nom:  </string>
+    <string name="txt_appointment_date">Date de réservation:  </string>
+    <string name="txt_appointment_booking_slot">Emplacement de réservation:  </string>
+    <string name="txt_appointment_booking_available_from_tomorrow">La réservation n\'est disponible qu\'à partir de demain</string>
+
+    <string name="txt_you_were_skipped">Vous avez été ignoré</string>
+    <string name="txt_please_login_to_view_profile">Veuillez vous connecter pour voir le profil</string>
+    <string name="txt_please_login_to_see_the_details">Veuillez vous connecter pour voir les détails</string>
+
 </resources>

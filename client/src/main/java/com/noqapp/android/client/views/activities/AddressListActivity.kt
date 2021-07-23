@@ -92,7 +92,6 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         if (isOnline) {
             showProgress()
             setProgressMessage("Updating address...")
-
             clientProfileApiCall.setPrimaryAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
         } else {
             ShowAlertInformation.showNetworkDialog(this)
@@ -122,7 +121,6 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         addressList?.let {
             addressAdapter.addItems(it)
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

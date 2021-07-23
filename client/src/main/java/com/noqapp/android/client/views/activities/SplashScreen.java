@@ -15,10 +15,12 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.pojos.LocationPref;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonUserAddress;
@@ -57,6 +59,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
             tokenFCM = token;
             Log.d(TAG, "New FCM Token=" + tokenFCM);
+            AppInitialize.setTokenFCM(token);
             sendRegistrationToServer(tokenFCM, AppInitialize.location);
         });
     }
@@ -95,7 +98,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
     @Override
     public void deviceRegisterError() {
-
+        callLaunchScreen();
     }
 
     @Override
@@ -108,6 +111,8 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Launch", "launching from deviceRegisterResponse");
             deviceId = deviceRegistered.getDeviceId();
+            AppInitialize.setDeviceID(deviceId);
+
             Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: " + deviceRegistered);
             JsonUserAddress jsonUserAddress = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), this);
             Log.d(TAG, "Splash City Name =" + jsonUserAddress.getLocationAsString());
@@ -120,7 +125,6 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
                     .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                     .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
                 AppInitialize.setLocationPreference(locationPref);
-                AppInitialize.setDeviceID(deviceId);
                 Location location = new Location("");
                 location.setLatitude(locationPref.getLatitude());
                 location.setLongitude(locationPref.getLongitude());
@@ -135,7 +139,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
     private void sendRegistrationToServer(String refreshToken, Location location) {
         if (new NetworkUtil(this).isOnline()) {
-            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(), location);
+            DeviceToken deviceToken = new DeviceToken(refreshToken, Constants.appVersion(), AppUtils.getSelectedLanguage(this), location);
             deviceId = AppInitialize.getDeviceId();
             if (TextUtils.isEmpty(deviceId)) {
                 /* Call this api only once in life time. */
@@ -185,7 +189,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
     private void callLaunchScreen() {
         if (!StringUtils.isBlank(deviceId)) {
-            Intent i = new Intent(splashScreen, LaunchActivity.class);
+            Intent i = new Intent(splashScreen, HomeActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);

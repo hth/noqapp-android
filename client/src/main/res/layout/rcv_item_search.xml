@@ -187,7 +187,7 @@
                     android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Book"
+                    android:text="@string/txt_book_appointment"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_twelve"
                     android:textStyle="bold" />

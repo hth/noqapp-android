@@ -26,7 +26,8 @@ internal object LocationManager {
     }
 
     private val locationRequest = LocationRequest.create().apply {
-        fastestInterval = 60000
+        fastestInterval = 5000
+        interval = 60000
         smallestDisplacement = 10f
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
@@ -44,7 +45,7 @@ internal object LocationManager {
         LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(locationCallback)
     }
 
-    fun fetchLocationAddress(latitude: Double, longitude: Double, context: Context, complete: (String?, String?, String?, String?, String?, String?, String?,Double, Double) -> Unit) {
+    fun fetchLocationAddress(latitude: Double, longitude: Double, context: Context, complete: (String?, String?, String?, String?, String?, String?, String?, Double, Double) -> Unit) {
         val addressResultReceiver = AddressResultReceiver { address, countryShortName, area, town, district, state, stateShortName, latitude, longitude ->
             address?.let {
                 complete(address, countryShortName, area, town, district, state, stateShortName, latitude, longitude)
@@ -61,17 +62,22 @@ internal object LocationManager {
             }
         }
 
-        LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener {
-            it?.let { location ->
-                lastLocation = location
-                startFetchLocationService(context, location.latitude, location.longitude, addressResultReceiver)
+        LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                lastLocation = locationResult.lastLocation
+                lastLocation?.let {
+                    startFetchLocationService(context, it.latitude, it.longitude, addressResultReceiver)
+                    stopLocationUpdate(context)
+                }
             }
+        }, null).addOnFailureListener { e: Exception? ->
+            Log.e(LocationManager::class.java.simpleName, "getLastLocation:onFailure")
         }
     }
 
     @SuppressLint("MissingPermission")
     @Synchronized
-    fun getLastKnownLocation(context: Context, complete: (Location) -> Unit){
+    fun getLastKnownLocation(context: Context, complete: (Location) -> Unit) {
         LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener {
             it?.let { location ->
                 lastLocation = location
@@ -90,7 +96,7 @@ internal object LocationManager {
         startFetchLocationService(context, latitude, longitude, addressResultReceiver)
     }
 
-    private fun startFetchLocationService(context: Context, latitude: Double, longitude: Double, resultReceiver: ResultReceiver){
+    private fun startFetchLocationService(context: Context, latitude: Double, longitude: Double, resultReceiver: ResultReceiver) {
         val intent = Intent()
         intent.putExtra(Constants.LocationConstants.RECEIVER, resultReceiver)
         intent.putExtra(Constants.LocationConstants.LOCATION_LAT_DATA_EXTRA, latitude)

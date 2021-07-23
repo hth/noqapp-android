@@ -1,12 +1,14 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +16,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.noqapp.android.client.R;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ShowCustomDialog {
     private Context context;
@@ -33,7 +40,6 @@ public class ShowCustomDialog {
 
     public interface DialogClickListener {
         void btnPositiveClick();
-
         void btnNegativeClick();
     }
 
@@ -52,10 +58,14 @@ public class ShowCustomDialog {
     }
 
     public void displayDialog(String title, String msg) {
-        displayDialog(title, msg, "", "");
+        displayDialog(title, msg, "", "", false, showNegativeBtn);
     }
 
-    public void displayDialog(String title, String msg, String btnPositiveText, String btnNegativeText) {
+    public void displayDialog(String title, String msg, boolean cancelable, boolean showNegativeBtn) {
+        displayDialog(title, msg, "", "", cancelable, showNegativeBtn);
+    }
+
+    public void displayDialog(String title, String msg, String btnPositiveText, String btnNegativeText, boolean cancelable, boolean showNegativeBtn) {
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_custom);
@@ -64,7 +74,9 @@ public class ShowCustomDialog {
         TextView tv_title = dialog.findViewById(R.id.tv_title);
         TextView tv_msg = dialog.findViewById(R.id.tv_msg);
         tv_title.setText(title);
-        tv_msg.setText(msg);
+
+        setLinks(tv_msg, msg);
+
         if (isGravityLeft) {
             tv_msg.setGravity(Gravity.LEFT);
         }
@@ -92,9 +104,48 @@ public class ShowCustomDialog {
                 dialogClickListener.btnNegativeClick();
             }
         });
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(cancelable);
+        dialog.setCanceledOnTouchOutside(cancelable);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        dialog.show();
+
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    private void setLinks(TextView tv, String text) {
+        String[] linkPatterns = {
+            "([Hh][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])",
+            "#[\\w]+",
+            "@[\\w]+"
+        };
+
+        boolean foundLink = false;
+        SpannableString f = new SpannableString(text);
+        for (String str : linkPatterns) {
+            Pattern pattern = Pattern.compile(str);
+            Matcher matcher = pattern.matcher(text);
+            while (matcher.find()) {
+                foundLink = true;
+
+                int x = matcher.start();
+                int y = matcher.end();
+
+                String spanText = text.substring(x, y);
+                URLSpan span = new URLSpan(spanText);
+                f.setSpan(span, x, y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tv.setText(f);
+            }
+        }
+
+        if (!foundLink) {
+            tv.setText(text);
+        }
+
+        tv.setLinkTextColor(Color.BLUE);
+        tv.setLinksClickable(true);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+        tv.setFocusable(false);
     }
 }

@@ -56,15 +56,14 @@ public class LanguageAdapter extends RecyclerView.Adapter {
             resetSelection();
             languageInfos.get(position).setLanguageSelected(true);
             holder.rb_language.setChecked(true);
-            AppUtils.changeLanguage(languageInfo.getLanguageCode());
-            if (AppUtils.isRelease()) {
-                Bundle params = new Bundle();
-                params.putString("Language", languageInfo.getLanguageTitle());
-                AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
-            }
             notifyDataSetChanged();
             if (null != listener) {
                 listener.onLanguageSelected(languageInfo);
+                if (AppUtils.isRelease()) {
+                    Bundle params = new Bundle();
+                    params.putString("Language", languageInfo.getLanguageTitle());
+                    AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
+                }
             }
         });
     }

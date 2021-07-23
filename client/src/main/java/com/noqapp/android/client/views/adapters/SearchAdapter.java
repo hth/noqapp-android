@@ -21,13 +21,13 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
@@ -43,11 +43,11 @@ public class SearchAdapter extends RecyclerView.Adapter {
     private double lat, log;
 
     public SearchAdapter(
-        ArrayList<BizStoreElastic> data,
-        Context context,
-        OnItemClickListener listener,
-        double lat,
-        double log
+            ArrayList<BizStoreElastic> data,
+            Context context,
+            OnItemClickListener listener,
+            double lat,
+            double log
     ) {
         this.dataSet = data;
         this.context = context;
@@ -93,11 +93,11 @@ public class SearchAdapter extends RecyclerView.Adapter {
                     break;
                 default:
                     holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
-                        (float) lat,
-                        (float) log,
-                        (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
-                        (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
-                    holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
+                            (float) lat,
+                            (float) log,
+                            (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+                            (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
+                    holder.tv_distance_unit.setText(Constants.DISTANCE_UNIT);
             }
             holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
@@ -118,10 +118,10 @@ public class SearchAdapter extends RecyclerView.Adapter {
             });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getThumbPlaceholder(context))
-                    .error(ImageUtils.getThumbErrorPlaceholder(context))
-                    .into(holder.iv_main);
+                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                        .placeholder(ImageUtils.getThumbPlaceholder(context))
+                        .error(ImageUtils.getThumbErrorPlaceholder(context))
+                        .into(holder.iv_main);
             } else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }

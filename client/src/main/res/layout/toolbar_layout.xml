@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   android:id="@+id/toolbar"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="@dimen/action_bar_height"
-                                   android:background="#fefefe"
-                                   app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/action_bar_height"
+    android:background="#fefefe"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
-                android:id="@+id/actionbarBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/back"
-                android:backgroundTint="@color/theme_color_red"
-                android:padding="12dp"/>
+            android:id="@+id/actionbarBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/back"
+            android:backgroundTint="@color/theme_color_red"
+            android:padding="12dp" />
 
         <TextView
-                android:id="@+id/tv_toolbar_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/iv_favourite"
-                android:layout_toEndOf="@+id/actionbarBack"
-                android:padding="5dp"
-                android:layout_marginStart="10dp"
-                android:gravity="left"
-                android:textColor="#000000"
-                android:textSize="@dimen/toolbar_text_size"
-                android:textAllCaps="true" />
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toStartOf="@+id/iv_favourite"
+            android:layout_toEndOf="@+id/actionbarBack"
+            android:gravity="left"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:textSize="@dimen/toolbar_text_size" />
 
 
         <ImageView
-                android:id="@+id/iv_favourite"
-                android:layout_width="@dimen/action_bar_icon_size"
-                android:layout_height="@dimen/action_bar_icon_size"
-                android:layout_toLeftOf="@+id/iv_home"
-                android:layout_centerVertical="true"
-                android:layout_gravity="right"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/heart_orange"
-                android:clipToPadding="false"
-                android:focusable="true"
-                android:backgroundTint="@color/theme_color_red"
-                android:visibility="invisible"/>
+            android:id="@+id/iv_favourite"
+            android:layout_width="@dimen/action_bar_icon_size"
+            android:layout_height="@dimen/action_bar_icon_size"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:layout_marginEnd="10dp"
+            android:layout_toLeftOf="@+id/iv_home"
+            android:background="@drawable/heart_orange"
+            android:backgroundTint="@color/theme_color_red"
+            android:clipToPadding="false"
+            android:focusable="true"
+            android:visibility="invisible" />
 
         <ImageView
-                android:id="@+id/iv_home"
-                android:layout_width="@dimen/action_bar_icon_size"
-                android:layout_height="@dimen/action_bar_icon_size"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="right"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_home"
-                android:clipToPadding="false"
-                android:focusable="true"
-                android:backgroundTint="@color/theme_color_red"
-                android:visibility="invisible"/>
+            android:id="@+id/iv_home"
+            android:layout_width="@dimen/action_bar_icon_size"
+            android:layout_height="@dimen/action_bar_icon_size"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_home"
+            android:backgroundTint="@color/theme_color_red"
+            android:clipToPadding="false"
+            android:focusable="true"
+            android:visibility="invisible" />
 
 
     </RelativeLayout>

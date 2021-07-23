@@ -83,6 +83,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
             DeviceToken deviceToken = new DeviceToken(
                 refreshToken,
                 Constants.appVersion(),
+
                 CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
 
             deviceId = AppInitialize.getDeviceId();

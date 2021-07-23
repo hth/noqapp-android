@@ -46,6 +46,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import kotlin.jvm.functions.Function0;
+
 public class BeforeJoinActivity extends BaseActivity implements QueuePresenter, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = BeforeJoinActivity.class.getSimpleName();
     private static final int MAX_AVAILABLE_TOKEN_DISPLAY = 99;

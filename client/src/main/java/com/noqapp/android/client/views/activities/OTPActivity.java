@@ -245,7 +245,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
                 // Set the verification text based on the credential
                 if (cred != null) {
-                    if (!TextUtils.isEmpty(cred.getSmsCode()) && Objects.requireNonNull(cred.getSmsCode()).length() == 6) {
+                    if (!TextUtils.isEmpty(cred.getSmsCode()) && cred.getSmsCode().length() == 6) {
                         edt_phone_code.setText(cred.getSmsCode());
                     } else {
                         edt_phone_code.setText("");

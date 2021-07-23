@@ -75,8 +75,7 @@ public class QueueHistoryFragment extends BaseFragment implements
         listData = new ArrayList<>(jsonQueueHistoricalList.getQueueHistoricals());
         Collections.sort(listData, (o1, o2) -> {
             try {
-                return Objects.requireNonNull(CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated())).
-                    compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
+                return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated()).compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
             } catch (Exception e) {
                 e.printStackTrace();
                 return 0;

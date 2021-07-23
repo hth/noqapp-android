@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -36,13 +39,12 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.AllDayTimingActivity;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.AppInitialize;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.GeoIP;
@@ -72,6 +74,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import kotlin.jvm.functions.Function0;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -90,7 +93,7 @@ public class AppUtils extends CommonHelper {
                 context.startActivity(callIntent);
             } catch (ActivityNotFoundException ex) {
                 Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
-                new CustomToast().showToast(context, "Please install a calling application");
+                new CustomToast().showToast(context, "Please install calling application");
             }
         }
     }
@@ -102,7 +105,7 @@ public class AppUtils extends CommonHelper {
             context.startActivity(intent);
         } catch (ActivityNotFoundException ex) {
             Log.e(TAG, "Failed opening address reason=" + ex.getLocalizedMessage());
-            new CustomToast().showToast(context, "Please install a maps application");
+            new CustomToast().showToast(context, "Please install map application");
         }
     }
 
@@ -114,7 +117,7 @@ public class AppUtils extends CommonHelper {
             context.startActivity(mapIntent);
         } catch (ActivityNotFoundException ex) {
             Log.e(TAG, "Failed opening address reason=" + ex.getLocalizedMessage());
-            new CustomToast().showToast(context, "Please install a maps application");
+            new CustomToast().showToast(context, "Please install map application");
         }
     }
 
@@ -158,22 +161,16 @@ public class AppUtils extends CommonHelper {
         Collections.sort(jsonQueues, openNow);
         jsonQueues.addAll(afterNowClosedQueues);
         jsonQueues.addAll(closedTodayQueues);
-
-        for (JsonQueue jsonQueue : jsonQueues) {
-            System.out.println(jsonQueue.getDisplayName());
-        }
     }
 
     public static double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 6371000; //meters
         double dLat = Math.toRadians(lat2 - lat1);
         double dLng = Math.toRadians(lng2 - lng1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         float dist = (float) (earthRadius * c);
-        if (LaunchActivity.DISTANCE_UNIT.equals("km")) {
+        if (Constants.DISTANCE_UNIT.equals("km")) {
             return round(dist / 1000);// distance in km
         } else {
             double kilometers = dist / 1000;
@@ -182,35 +179,13 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public static void changeLanguage(String language) {
-        if (!language.equals("")) {
-            switch (language) {
-                case "en":
-                    LaunchActivity.language = "en_US";
-                    LaunchActivity.locale = Locale.ENGLISH;
-                    LaunchActivity.languagePref.edit().putString("pref_language", "en").apply();
-                    break;
-                case "kn":
-                    LaunchActivity.language = "kn";
-                    LaunchActivity.locale = new Locale("kn");
-                    LaunchActivity.languagePref.edit().putString("pref_language", "kn").apply();
-                    break;
-                case "fr":
-                    LaunchActivity.language = "fr";
-                    LaunchActivity.locale = new Locale("fr");
-                    LaunchActivity.languagePref.edit().putString("pref_language", "fr").apply();
-                    break;
-                default:
-                    LaunchActivity.language = "hi";
-                    LaunchActivity.locale = new Locale("hi");
-                    LaunchActivity.languagePref.edit().putString("pref_language", "hi").apply();
-                    break;
-            }
-        } else {
-            LaunchActivity.language = "en_US";
-            LaunchActivity.locale = Locale.ENGLISH;
-            LaunchActivity.languagePref.edit().putString("pref_language", "en").apply();
+    public static String getSelectedLanguage(Context context) {
+        SharedPreferences languagePref = PreferenceManager.getDefaultSharedPreferences(context);
+        String language = languagePref.getString("pref_language", "");
+        if (language.equals("")) {
+            language = "en_US";
         }
+        return language;
     }
 
     public static String getAdditionalCardText(BizStoreElastic bizStoreElastic) {
@@ -222,19 +197,19 @@ public class AppUtils extends CommonHelper {
         } else if (getTimeIn24HourFormat() >= storeHourElastic.getStartHour() && getTimeIn24HourFormat() < storeHourElastic.getEndHour()) {
             //Based on location let them know in how much time they will reach or suggest the next queue.
             additionalText = bizStoreElastic.getDisplayName()
-                + " is open & can service you now. Click to join the queue.";
+                    + " is open & can service you now. Click to join the queue.";
         } else {
             if (getTimeIn24HourFormat() >= storeHourElastic.getTokenAvailableFrom()) {
                 additionalText = bizStoreElastic.getDisplayName()
-                    + " opens at "
-                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                    + ". Join queue now to save time.";
+                        + " opens at "
+                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                        + ". Join queue now to save time.";
             } else {
                 additionalText = bizStoreElastic.getDisplayName()
-                    + " can service you at "
-                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                    + ". You can join this queue at "
-                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom());
+                        + " can service you at "
+                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                        + ". You can join this queue at "
+                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom());
             }
         }
         return additionalText;
@@ -311,28 +286,28 @@ public class AppUtils extends CommonHelper {
         String url;
         try {
             url = Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON +
-                "?key=" + Constants.GOOGLE_PLACE_API_KEY +
-                "&components=country:" + LaunchActivity.COUNTRY_CODE +
-                "&types=(regions)" +
-                "&input=" + URLEncoder.encode(input, "utf8");
+                    "?key=" + Constants.GOOGLE_PLACE_API_KEY +
+                    "&components=country:" + Constants.DEFAULT_COUNTRY_CODE +
+                    "&types=(regions)" +
+                    "&input=" + URLEncoder.encode(input, "utf8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
         }
 
         Request request = new Request.Builder()
-            .url(url)
-            .build();
+                .url(url)
+                .build();
 
         try {
             Response response = client.newCall(request).execute();
 
-            // Create a JSON object hierarchy from the results
+            /* Create a JSON object hierarchy from the results. */
             String data = response.body().string();
             JSONObject jsonObj = new JSONObject(data);
             JSONArray predictions = jsonObj.getJSONArray("predictions");
-            // Extract the Place descriptions from the results
-            resultList = new ArrayList<String>(predictions.length());
+            /* Extract the Place descriptions from the results. */
+            resultList = new ArrayList<>(predictions.length());
             for (int i = 0; i < predictions.length(); i++) {
                 resultList.add(predictions.getJSONObject(i).getString("description"));
             }
@@ -397,6 +372,9 @@ public class AppUtils extends CommonHelper {
             case BuildConfig.PRODUCT_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + url;
                 break;
+            case BuildConfig.MARKETPLACE_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.MARKETPLACE_BUCKET + url;
+                break;
             default:
                 Log.e(TAG, "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
@@ -413,20 +391,20 @@ public class AppUtils extends CommonHelper {
                 JsonHour jsonHour = jsonHoursList.get(i);
                 String key;
                 if (jsonHour.isDayClosed()) {
-                    key = "Closed";
+                    key = context.getString(R.string.closed);
                 } else {
                     key = Formatter.duration(jsonHour.getStartHour(), jsonHour.getEndHour());
                     if (1 == jsonHour.getStartHour() && 2359 == jsonHour.getEndHour()) {
                         key = context.getString(R.string.whole_day);
                     }
                     if (jsonHour.getStartHour() == 0 && jsonHour.getEndHour() == 0) {
-                        key = "Closed";
+                        key = context.getString(R.string.closed);
                     }
                 }
                 if (null == temp.get(key)) {
-                    temp.put(key, getDayName(jsonHour.getDayOfWeek()));
+                    temp.put(key, getDayName(context, jsonHour.getDayOfWeek()));
                 } else {
-                    String value = temp.get(key) + "-" + getDayName(jsonHour.getDayOfWeek());
+                    String value = temp.get(key) + "-" + getDayName(context, jsonHour.getDayOfWeek());
                     temp.put(key, value);
                 }
             }
@@ -441,37 +419,37 @@ public class AppUtils extends CommonHelper {
         return output;
     }
 
-    public static String getDayName(int dayOfWeek) {
+    public static String getDayName(Context context, int dayOfWeek) {
         String dayName = null;
         switch (dayOfWeek) {
             case 1:
-                dayName = "Mon";
+                dayName = context.getString(R.string.txt_monday);
                 break;
             case 2:
-                dayName = "Tue";
+                dayName = context.getString(R.string.txt_tuesday);
                 break;
             case 3:
-                dayName = "Wed";
+                dayName = context.getString(R.string.txt_wednesday);
                 break;
             case 4:
-                dayName = "Thu";
+                dayName = context.getString(R.string.txt_thursday);
                 break;
             case 5:
-                dayName = "Fri";
+                dayName = context.getString(R.string.txt_friday);
                 break;
             case 6:
-                dayName = "Sat";
+                dayName = context.getString(R.string.txt_saturday);
                 break;
             case 7:
-                dayName = "Sun";
+                dayName = context.getString(R.string.txt_sunday);
                 break;
         }
         return dayName;
     }
 
-    public static void authenticationProcessing(Activity activity) {
+    public static void authenticationProcessing(Activity activity, Function0 loginAgainAuthentication) {
         AppInitialize.clearPreferences();
-        ShowAlertInformation.showAuthenticErrorDialog(activity);
+        ShowAlertInformation.showAuthenticErrorDialog(activity, loginAgainAuthentication);
     }
 
     public String formatTodayStoreTiming(Context context, boolean isDayClosed, int startHour, int endHour) {
@@ -487,7 +465,7 @@ public class AppUtils extends CommonHelper {
             key = context.getString(R.string.whole_day);
             return key;
         } else if (startHour == 0 && endHour == 0) {
-            return "Closed";
+            return context.getString(R.string.closed);
         } else {
             return key;
         }
@@ -519,10 +497,10 @@ public class AppUtils extends CommonHelper {
 
     public static void shareTheApp(Context context) {
         String shareMessage = "Hi, I am using a new and wonderful app, called NoQueue. " +
-            "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, it is real time. " +
-            "Get the status update on your phone quickly and immediately. I am sending you an invite so you too " +
-            "enjoy the experience and avoid standing in queues.\n\n" +
-            "Download it here: https://play.google.com/store/apps/details?id=" + context.getPackageName();
+                "It helps keep the social distancing, avoid crowd and saves my time. Most importantly, it is real time. " +
+                "Get the status update on your phone quickly and immediately. I am sending you an invite so you too " +
+                "enjoy the experience and avoid standing in queues.\n\n" +
+                "Download it here: https://play.google.com/store/apps/details?id=" + context.getPackageName();
 
         // @TODO revert the below changes when storage permission enabled in manifest (fails on Samsung)
         Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
@@ -530,7 +508,7 @@ public class AppUtils extends CommonHelper {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             Uri bitmapUri = null;
             try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "NoQueue.png");
                 if (file.getParentFile().mkdirs() || file.getParentFile().exists()) {
                     FileOutputStream out = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
@@ -555,7 +533,7 @@ public class AppUtils extends CommonHelper {
             }
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NoQueue");
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-            context.startActivity(Intent.createChooser(shareIntent, "choose one to share the app"));
+            context.startActivity(Intent.createChooser(shareIntent, "Choose one to share the app"));
         }
     }
 
@@ -568,10 +546,10 @@ public class AppUtils extends CommonHelper {
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
-                    .placeholder(ImageUtils.getProfilePlaceholder(context))
-                    .error(ImageUtils.getProfileErrorPlaceholder(context))
-                    .into(iv_profile);
+                        .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
+                        .placeholder(ImageUtils.getProfilePlaceholder(context))
+                        .error(ImageUtils.getProfileErrorPlaceholder(context))
+                        .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -580,9 +558,9 @@ public class AppUtils extends CommonHelper {
 
     public static int generateRandomColor() {
         String[] colors = new String[]{
-            "#90C978", "#AFD5AA", "#83C6DD", "#5DB1D1", "#8DA290", "#BEC7B4", "#769ECB", "#9DBAD5",
-            "#C8D6B9", "#8FC1A9", "#7CAA98", "#58949C", "#DF9881", "#D4B59D", "#CE9C6F", "#D3EEFF",
-            "#836853", "#988270", "#4F9EC4", "#3A506B", "#606E79", "#804040", "#AF6E4D", "#567192"};
+                "#90C978", "#AFD5AA", "#83C6DD", "#5DB1D1", "#8DA290", "#BEC7B4", "#769ECB", "#9DBAD5",
+                "#C8D6B9", "#8FC1A9", "#7CAA98", "#58949C", "#DF9881", "#D4B59D", "#CE9C6F", "#D3EEFF",
+                "#836853", "#988270", "#4F9EC4", "#3A506B", "#606E79", "#804040", "#AF6E4D", "#567192"};
 
         int rnd = new Random().nextInt(colors.length);
         return Color.parseColor(colors[rnd]);
@@ -647,6 +625,13 @@ public class AppUtils extends CommonHelper {
                         return false;
                     }
                     break;
+                case BK:
+                case CD:
+                case CDQ:
+                    if (distance > Constants.VALID_CDQ_AND_CD_STORE_DISTANCE_FOR_TOKEN) {
+                        return false;
+                    }
+                    break;
                 default:
                     if (distance > Constants.VALID_STORE_DISTANCE_FOR_TOKEN) {
                         return false;
@@ -675,4 +660,14 @@ public class AppUtils extends CommonHelper {
         }
         AppInitialize.saveFavouriteList(codeQRs);
     }
+
+    public static String getLocationAsString(String area, String town) {
+        if (StringUtils.isNotBlank(area) && StringUtils.isNotBlank(town)) {
+            return area + ", " + town;
+        } else if (StringUtils.isNotBlank(area)) {
+            return area;
+        }
+        return StringUtils.isNotBlank(town) ? town : "";
+    }
 }
+

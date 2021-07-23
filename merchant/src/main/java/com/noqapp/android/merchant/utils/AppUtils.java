@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -72,16 +70,16 @@ public class AppUtils extends CommonHelper {
             if (language.equals("en")) {
                 LaunchActivity.language = "en_US";
                 LaunchActivity.locale = Locale.ENGLISH;
-                LaunchActivity.languagepref.edit().putString("pref_language", "en").apply();
+                LaunchActivity.preferences.edit().putString("pref_language", "en").apply();
             } else {
                 LaunchActivity.language = "hi";
                 LaunchActivity.locale = new Locale("hi");
-                LaunchActivity.languagepref.edit().putString("pref_language", "hi").apply();
+                LaunchActivity.preferences.edit().putString("pref_language", "hi").apply();
             }
         } else {
             LaunchActivity.language = "en_US";
             LaunchActivity.locale = Locale.ENGLISH;
-            LaunchActivity.languagepref.edit().putString("pref_language", "en").apply();
+            LaunchActivity.preferences.edit().putString("pref_language", "en").apply();
         }
 
     }
@@ -128,6 +126,12 @@ public class AppUtils extends CommonHelper {
             case BuildConfig.ADVERTISEMENT_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + url;
                 break;
+            case BuildConfig.PRODUCT_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.PRODUCT_BUCKET + url;
+                break;
+            case BuildConfig.MARKETPLACE_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.MARKETPLACE_BUCKET + url;
+                break;
             default:
                 Log.e(AppUtils.class.getSimpleName(), "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
@@ -153,19 +157,11 @@ public class AppUtils extends CommonHelper {
     }
 
     public boolean checkStoreClosedWithTime(JsonHour jsonHour) {
-        if ((jsonHour.getStartHour() == 0 && jsonHour.getEndHour() == 0)) {
-            return true;
-        } else {
-            return false;
-        }
+        return 0 == jsonHour.getStartHour() && 0 == jsonHour.getEndHour();
     }
 
     public boolean checkStoreClosedWithAppointmentTime(JsonHour jsonHour) {
-        if ((jsonHour.getAppointmentStartHour() == 0 && jsonHour.getAppointmentEndHour() == 0)) {
-            return true;
-        } else {
-            return false;
-        }
+        return 0 == jsonHour.getAppointmentStartHour() && 0 == jsonHour.getAppointmentEndHour();
     }
 
 

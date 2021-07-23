@@ -171,7 +171,7 @@
                         android:id="@+id/tv_time_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Today's timing"
+                        android:text="@string/txt_store_today_timing"
                         android:textSize="@dimen/text_size_twelve" />
 
                     <TextView
@@ -203,7 +203,7 @@
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:padding="10dp"
                         android:gravity="center"
-                        android:text="Book"
+                        android:text="@string/txt_book_appointment"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />

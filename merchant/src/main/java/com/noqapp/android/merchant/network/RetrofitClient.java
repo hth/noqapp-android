@@ -1,10 +1,12 @@
 package com.noqapp.android.merchant.network;
 
 import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.views.activities.AppInitialize;
 
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -19,15 +21,27 @@ public class RetrofitClient {
 
     public static Retrofit getClient() {
         if (null == retrofit) {
-            final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-                    .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-                    .build();
+            OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .connectTimeout(TIME_OUT, TimeUnit.SECONDS);
+
+            builder.addInterceptor(chain -> {
+                Request request = chain.request().newBuilder()
+                    .addHeader("x-r-ver", BuildConfig.VERSION_NAME)
+                    .addHeader("x-r-fla", BuildConfig.APP_FLAVOR)
+                    .addHeader("x-r-lat", String.valueOf(0.0))
+                    .addHeader("x-r-lng", String.valueOf(0.0))
+                    .addHeader("x-r-did", AppInitialize.getDeviceId() == null ? "" : AppInitialize.getDeviceId())
+                    .addHeader("x-r-mail", AppInitialize.getMail())
+                    .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
+                return chain.proceed(request);
+            });
+
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.NOQAPP_MOBILE)
-                    .addConverterFactory(JacksonConverterFactory.create())
-                    .client(okHttpClient)
-                    .build();
+                .baseUrl(BuildConfig.NOQAPP_MOBILE)
+                .addConverterFactory(JacksonConverterFactory.create())
+                .client(builder.build())
+                .build();
         }
         return retrofit;
     }

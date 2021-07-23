@@ -17,20 +17,20 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class StoreInfoAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
-    private ArrayList<BizStoreElastic> dataSet;
+    private List<BizStoreElastic> dataSet;
     private double lat, log;
 
-    public StoreInfoAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
+    public StoreInfoAdapter(List<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -66,10 +66,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
         }
         if (!TextUtils.isEmpty(item.getDisplayImage())) {
             Picasso.get()
-                .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, item.getDisplayImage()))
-                .placeholder(ImageUtils.getThumbPlaceholder(context))
-                .error(ImageUtils.getThumbErrorPlaceholder(context))
-                .into(holder.iv_main);
+                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, item.getDisplayImage()))
+                    .placeholder(ImageUtils.getThumbPlaceholder(context))
+                    .error(ImageUtils.getThumbErrorPlaceholder(context))
+                    .into(holder.iv_main);
         } else {
             Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
@@ -84,11 +84,11 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
                 break;
             default:
                 holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
-                    (float) lat,
-                    (float) log,
-                    (float) GeoHashUtils.decodeLatitude(item.getGeoHash()),
-                    (float) GeoHashUtils.decodeLongitude(item.getGeoHash()))));
-                holder.tv_distance_unit.setText(LaunchActivity.DISTANCE_UNIT);
+                        (float) lat,
+                        (float) log,
+                        (float) GeoHashUtils.decodeLatitude(item.getGeoHash()),
+                        (float) GeoHashUtils.decodeLongitude(item.getGeoHash()))));
+                holder.tv_distance_unit.setText(Constants.DISTANCE_UNIT);
         }
 
         holder.tv_store_rating.setText(String.valueOf(AppUtils.round(item.getRating())));

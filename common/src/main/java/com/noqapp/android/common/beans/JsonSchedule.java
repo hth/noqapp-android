@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.QueueJoinDeniedEnum;
 import com.noqapp.android.common.utils.Formatter;
 
 import java.io.Serializable;
@@ -58,6 +59,9 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     @JsonProperty("as")
     private AppointmentStatusEnum appointmentStatus;
+
+    @JsonProperty("qjd")
+    private QueueJoinDeniedEnum queueJoinDenied;
 
     @JsonProperty("cc")
     private String chiefComplain;

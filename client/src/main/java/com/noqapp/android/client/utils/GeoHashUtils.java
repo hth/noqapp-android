@@ -91,14 +91,14 @@ public class GeoHashUtils {
     /**
      * returns the latitude value from the string based geohash
      */
-    public static final double decodeLatitude(final String geohash) {
+    public static double decodeLatitude(final String geohash) {
         return decodeLatitude(mortonEncode(geohash));
     }
 
     /**
      * returns the latitude value from the string based geohash
      */
-    public static final double decodeLongitude(final String geohash) {
+    public static double decodeLongitude(final String geohash) {
         return decodeLongitude(mortonEncode(geohash));
     }
 }

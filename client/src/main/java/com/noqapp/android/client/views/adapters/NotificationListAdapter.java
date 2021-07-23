@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -22,6 +22,10 @@ import com.squareup.picasso.Picasso;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Please delete this class. Clean up.
+ */
+@Deprecated
 public class NotificationListAdapter extends BaseAdapter {
     private Context context;
     private List<DisplayNotification> notificationsList;
@@ -54,13 +58,13 @@ public class NotificationListAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (view == null) {
             recordHolder = new RecordHolder();
-            view = layoutInflater.inflate(R.layout.listitem_notification, viewGroup, false);
-            recordHolder.tv_msg = view.findViewById(R.id.tv_msg);
-            recordHolder.tv_title = view.findViewById(R.id.tv_title);
-            recordHolder.tv_create = view.findViewById(R.id.tv_create);
-            recordHolder.iv_business = view.findViewById(R.id.iv_business);
-            recordHolder.iv_big_image = view.findViewById(R.id.iv_big_image);
-            recordHolder.iv_delete = view.findViewById(R.id.iv_delete);
+            view = layoutInflater.inflate(R.layout.list_item_notification, viewGroup, false);
+            recordHolder.tv_msg = view.findViewById(R.id.tvMsg);
+            recordHolder.tv_title = view.findViewById(R.id.tvTitle);
+            recordHolder.tv_create = view.findViewById(R.id.tvCreate);
+            recordHolder.iv_business = view.findViewById(R.id.ivBusiness);
+            recordHolder.iv_big_image = view.findViewById(R.id.ivBigImage);
+            recordHolder.iv_delete = view.findViewById(R.id.ivDelete);
             recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
@@ -70,7 +74,7 @@ public class NotificationListAdapter extends BaseAdapter {
         recordHolder.tv_title.setText(displayNotification.getTitle());
         recordHolder.tv_msg.setText(displayNotification.getMsg());
         try {
-            String dateString = displayNotification.getNotificationCreate();
+            String dateString = displayNotification.getCreatedDate();
             long startDate = new Date().getTime() - CommonHelper.stringToDate(dateString).getTime();
             recordHolder.tv_create.setText(GetTimeAgoUtils.getTimeInAgo(startDate));
         } catch (Exception e) {
@@ -78,7 +82,7 @@ public class NotificationListAdapter extends BaseAdapter {
             recordHolder.tv_create.setText("");
         }
 
-        if (displayNotification.getStatus().equals(NotificationDB.KEY_UNREAD)) {
+        if (displayNotification.getStatus().equals(Constants.KEY_UNREAD)) {
             recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
         } else {
             recordHolder.cardview.setCardBackgroundColor(Color.parseColor("#f6f6f6"));

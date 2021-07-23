@@ -59,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Token"
+                        android:text="@string/txt_weekly_hours_token"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />
@@ -69,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Store"
+                        android:text="@string/txt_weekly_store"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Lunch"
+                        android:text="@string/txt_weekly_lunch"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />
@@ -89,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Appointment"
+                        android:text="@string/txt_weekly_hours_appointment"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold" />

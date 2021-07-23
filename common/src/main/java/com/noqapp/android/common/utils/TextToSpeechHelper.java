@@ -25,6 +25,10 @@ public class TextToSpeechHelper {
 
     public void makeAnnouncement(List<JsonTextToSpeech> jsonTextToSpeeches) {
         try {
+            if (null == jsonTextToSpeeches) {
+                return;
+            }
+
             for (JsonTextToSpeech jsonTextToSpeech : jsonTextToSpeeches) {
                 Voice v = new Voice(jsonTextToSpeech.getJsonVoiceInput().getName(),
                     new Locale(jsonTextToSpeech.getJsonVoiceInput().getLanguageCode()),

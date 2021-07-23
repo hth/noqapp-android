@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.location.Location;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,8 +18,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceApiCall;
-import com.noqapp.android.client.model.database.DatabaseHelper;
+import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.LocaleHelper;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
@@ -41,7 +43,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
+
+import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
 
 /**
  * Created by chandra on 5/20/17.
@@ -71,13 +74,12 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     private static final String KEY_USER_PROFILE = "userProfile";
     private static final String KEY_FAVOURITE_CODE_QRS = "favouriteCodeQR";
     /* Secured Shared Preference. */
-    static final String TOKEN_FCM = "tokenFCM";
+    public static final String TOKEN_FCM = "tokenFCM";
     public static ActivityCommunicator activityCommunicator;
     public static Location location;
     public static String cityName = "";
     public static String area = "";
     public static String town = "";
-    public static DatabaseHelper dbHandler;
     public static boolean isLockMode = false;
     private static AppInitialize appInitialize;
 
@@ -102,45 +104,15 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         FontsOverride.overrideFont(this, "MONOSPACE", "fonts/roboto_regular.ttf");
         FontsOverride.overrideFont(this, "SERIF", "fonts/roboto_regular.ttf");
         FontsOverride.overrideFont(this, "SANS_SERIF", "fonts/roboto_regular.ttf");
-        setLocale(this);
 
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         fireBaseAnalytics = FirebaseAnalytics.getInstance(this); //needs android.permission.WAKE_LOCK
         location = new Location("");
-        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         JodaTimeAndroid.init(this);
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
         isLockMode = getKioskModeInfo().isKioskModeEnable();
         appInitialize = this;
-    }
-
-    private Locale getLocaleFromPref() {
-        Locale locale = Locale.getDefault();
-        String language = getPreferences().getString("pref_language", "");
-        if (StringUtils.isNotBlank(language)) {
-            locale = new Locale(language);
-            Locale.setDefault(locale);
-        }
-        return locale;
-    }
-
-    public void setLocale(Context ctx) {
-        Locale newLocale = getLocaleFromPref();
-        Resources activityRes = ctx.getResources();
-        Configuration activityConf = activityRes.getConfiguration();
-
-        activityConf.setLocale(newLocale);
-        activityRes.updateConfiguration(activityConf, activityRes.getDisplayMetrics());
-
-        Resources applicationRes = getBaseContext().getResources();
-        Configuration applicationConf = applicationRes.getConfiguration();
-        applicationConf.setLocale(newLocale);
-        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-    }
-
-    private SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     public static boolean isNotificationSoundEnable() {
@@ -245,7 +217,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     }
 
     public static String getMail() {
-        return preferences.getString(APIConstant.Key.XR_MAIL, "");
+        return preferences.getString(XR_MAIL, "");
     }
 
     public static String getActualMail() {
@@ -319,14 +291,14 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
         editor.putString(PREKEY_ADD, profile.findPrimaryOrAnyExistingAddress() == null ? "" : profile.findPrimaryOrAnyExistingAddress().getAddress());
         editor.putString(PREKEY_PROFILE_IMAGE, profile.getProfileImage());
-        editor.putString(APIConstant.Key.XR_MAIL, email);
+        editor.putString(XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
 
     public static void saveMailAuth(String email, String auth) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        editor.putString(APIConstant.Key.XR_MAIL, email);
+        editor.putString(XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
@@ -336,6 +308,8 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         String did = preferences.getString(APIConstant.Key.XR_DID, "");
         String tokenFCM = getTokenFCM();
         String previousUserQID = getPreviousUserQID();
+        String email = getActualMail();
+        String userName = getUserName();
         boolean showHelper = getShowHelper();
         KioskModeInfo kioskModeInfo = getKioskModeInfo();
         getSharedPreferencesEditor().clear().commit();
@@ -343,12 +317,12 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         editor.putString(APIConstant.Key.XR_DID, did);
         editor.putString(TOKEN_FCM, tokenFCM);
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
+        editor.putString(PREKEY_MAIL, email);
+        editor.putString(PREKEY_NAME, userName);
+        editor.putString(XR_MAIL, email);
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
         editor.commit();
         setKioskModeInfo(kioskModeInfo);
-        if (null != LaunchActivity.getLaunchActivity()) {
-            LaunchActivity.getLaunchActivity().updateDrawerUI();
-        }
     }
 
     public static JsonProfile getUserProfile() {
@@ -470,9 +444,6 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
             AppInitialize.location.setLatitude(locationPref.getLatitude());
             AppInitialize.location.setLongitude(locationPref.getLongitude());
-            if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().tv_location) {
-                LaunchActivity.getLaunchActivity().tv_location.setText(AppInitialize.cityName);
-            }
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
             try {
@@ -494,7 +465,8 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static ArrayList<String> getFavouriteList() {
         Gson gson = new Gson();
         String json = preferences.getString(KEY_FAVOURITE_CODE_QRS, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
         ArrayList<String> favouriteList = gson.fromJson(json, type);
         return null == favouriteList ? new ArrayList<>() : favouriteList;
     }

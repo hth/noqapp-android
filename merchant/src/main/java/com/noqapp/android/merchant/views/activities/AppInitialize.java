@@ -134,6 +134,10 @@ public class AppInitialize extends Application {
         return null;
     }
 
+    public static String getMail() {
+        return preferences.getString(APIConstant.Key.XR_MAIL, "");
+    }
+
     private static SharedPreferences.Editor getSharedPreferencesEditor() {
         return preferences.edit();
     }

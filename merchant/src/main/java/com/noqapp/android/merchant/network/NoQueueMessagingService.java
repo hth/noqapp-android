@@ -187,6 +187,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                     FirebaseCrashlytics.getInstance().log("Still reading QCT message on business");
                     FirebaseCrashlytics.getInstance().recordException(new Exception("Still reading QCT message on business"));
                     break;
+                case M:
+                    //TODO implement
+                    break;
+                case IE:
+                    //TODO implement
+                    break;
                 default:
                     // object = null;
             }
@@ -198,14 +204,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService implements
                 if (null == AppInitialize.dbHandler) {
                     AppInitialize.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
                 }
-                if (Objects.requireNonNull(mappedData.get(Constants.FIREBASE_TYPE)).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 sendNotification(title, body, remoteMessage);
             } else {
                 // app is in foreground, broadcast the push message
                 // add notification to DB
-                if (Objects.requireNonNull(mappedData.get(Constants.FIREBASE_TYPE)).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                if (mappedData.get(Constants.FIREBASE_TYPE).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, mappedData.get(Constants.CODE_QR), body, title);
                 }
                 if ("com.noqapp.android.merchant.tv".equalsIgnoreCase(getPackageName())) {

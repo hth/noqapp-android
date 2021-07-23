@@ -9,8 +9,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -34,6 +36,9 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
 
     @JsonProperty("scs")
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
+
+    @JsonProperty("jsf")
+    private Set<JsonScheduleFlex> jsonScheduleFlexes = new LinkedHashSet<>();
 
     @JsonProperty("hours")
     private List<JsonHour> jsonHours = new LinkedList<>();
@@ -61,6 +66,15 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
 
     public JsonScheduleList addJsonSchedule(JsonSchedule jsonSchedule) {
         this.jsonSchedules.add(jsonSchedule);
+        return this;
+    }
+
+    public Set<JsonScheduleFlex> getJsonScheduleFlexes() {
+        return jsonScheduleFlexes;
+    }
+
+    public JsonScheduleList setJsonScheduleFlexes(Set<JsonScheduleFlex> jsonScheduleFlexes) {
+        this.jsonScheduleFlexes = jsonScheduleFlexes;
         return this;
     }
 

@@ -76,7 +76,7 @@
     <string name="serving_now">Now Serving</string>
     <string name="your_token">Token</string>
     <string name="your_order">Order</string>
-    <string name="position_in_queue_label">Position in queue</string>
+    <string name="position_in_queue_label">Your position in queue</string>
     <string name="position_in_queue">Position in queue: %1$d</string>
     <string name="your_are_next_label">You are next!</string>
     <string name="daily_token_limit">Daily token limit: %1$s</string>
@@ -172,7 +172,7 @@
     <string name="wait_time">Wait time</string>
     <string name="wait_time_formatted">Wait time: %1$s</string>
     <string name="wait_time_formatted_newline">\nWait time: %1$s</string>
-    <string name="time_slot">Time slot</string>
+    <string name="time_slot">Visit</string>
     <string name="time_slot_formatted">Time slot: %1$s</string>
     <string name="time_slot_formatted_newline">\nTime slot: %1$s</string>
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
@@ -201,7 +201,7 @@
     <string name="home">Home</string>
     <string name="share">Share</string>
     <string name="medical_history">Past Doctor Visits</string>
-    <string name="appointments">Appointments</string>
+    <string name="txt_appointments">Appointments</string>
     <string name="medical_history_details">Case History</string>
     <string name="weekly_hours">Weekly Hours</string>
 
@@ -264,7 +264,7 @@
     <string name="queue_details">Queue Details</string>
     <string name="will_be_served">you will be served in %1$s</string>
     <string name="ack">Acknowledge</string>
-    <string name="your_turn">It\'s your turn !!!</string>
+    <string name="your_turn">It\'s your turn!!!</string>
     <string name="pre_approve">Pre-Approve</string>
     <string name="biz_announcement">Attention: COVID-19 Update</string>
     <string name="photo">Photos</string>
@@ -332,8 +332,8 @@
     <string name="privacy_in_short">Privacy Quick Overview</string>
     <string name="order_history">Order &amp; Queue History</string>
     <string name="title_activity_contact_us">Contact Us</string>
-    <string name="subject">Subject</string>
-    <string name="message">Feedback/Suggestions/Issues</string>
+    <string name="txt_feedback_subject">Subject</string>
+    <string name="txt_feedback_message">Feedback / Suggestions / Issues\n\nProvide store information and please check your mail for our response</string>
     <string name="error_subject_blank">Please enter subject</string>
     <string name="error_feedback_blank">Please enter message</string>
     <string name="screen_order_detail">Order Summary</string>
@@ -506,4 +506,75 @@
     <string name="txt_please_enter_house_number">Please enter house number/building name</string>
     <string name="txt_please_enter_address">Please enter address</string>
     <string name="txt_delivery_at">DELIVERY AT</string>
+    <string name="txt_post">Post</string>
+    <string name="txt_time_slot">Time slot: %1$s - %2$s</string>
+    <string name="txt_services">Services</string>
+    <string name="txt_housing">Housing</string>
+    <string name="txt_market_place">Marketplace</string>
+    <string name="txt_jobs">Jobs</string>
+    <string name="txt_businesses">Businesses</string>
+    <string name="txt_usr_csd">URC/CSD</string>
+    <string name="txt_hospital">Hospital</string>
+    <string name="txt_grocery">Grocery</string>
+    <string name="txt_restaurant">Restaurant</string>
+    <string name="txt_school">School</string>
+    <string name="txt_cafeteria">Cafeteria</string>
+    <string name="txt_generic_store">Generic store</string>
+    <string name="tab_recent_visits">Recent Visits</string>
+    <string name="tab_near_me">Near Me</string>
+    <string name="txt_please_login">Please login</string>
+    <string name="txt_guest_user">Guest User</string>
+    <string name="txt_order_being_prepared">Order being prepared</string>
+    <string name="review_hint">Please provide review for %1$s. For each comment earn 10 points. Points can be used towards NoQueue services.</string>
+    <string name="txt_store_today_timing">Today\'s timing</string>
+    <string name="txt_weekly_hours_token">Token</string>
+    <string name="txt_weekly_store">Store</string>
+    <string name="txt_weekly_lunch">Lunch</string>
+    <string name="txt_weekly_hours_appointment">Appointment</string>
+    <string name="txt_book_appointment">Book</string>
+    <string name="txt_monday">Mon</string>
+    <string name="txt_tuesday">Tue</string>
+    <string name="txt_wednesday">Wed</string>
+    <string name="txt_thursday">Thu</string>
+    <string name="txt_friday">Fri</string>
+    <string name="txt_saturday">Sat</string>
+    <string name="txt_sunday">Sun</string>
+
+    <!-- Appointment screen -->
+    <string name="txt_title_book_appointment">Book Appointment</string>
+    <string name="txt_available_times">Available times</string>
+    <string name="txt_available_slots">Available slots</string>
+    <string name="txt_book_walkin_appointment">Book Walk-in Appointment</string>
+    <string name="txt_booking_person">Booking Person</string>
+    <string name="txt_please_select_appointment_datetime">Please select appointment date &amp; time</string>
+    <string name="txt_no_walkin_appointment_available">No walk-in appointment available</string>
+    <string name="txt_arrive_before">Arrive 30 minutes before schedule appointment</string>
+    <string name="txt_cancel_before">Cancel at least 24 hrs before scheduled time</string>
+    <string name="txt_date">Date</string>
+    <string name="txt_time">Time</string>
+    <string name="txt_title_appointment_detail">Appointment Details</string>
+    <string name="txt_appointment_status">Appointment Status:</string>
+    <string name="txt_token_will_be_issued">Token will be issued</string>
+    <string name="txt_cancelling_appointment">Canceling appointment...</string>
+    <string name="txt_cancel_appointment">Cancel Appointment</string>
+    <string name="txt_cancel_appointment_confirmation">Do you want to cancel the appointment?</string>
+    <string name="txt_cancel_appointment_success">Appointment cancelled successfully!</string>
+    <string name="txt_cancel_appointment_failed">Failed to cancel appointment</string>
+    <string name="txt_appointment_booked">Booked</string>
+    <string name="txt_appointment_available">Available</string>
+    <string name="txt_appointment_not_available">No more walk-in appointment available</string>
+    <string name="txt_appointment_booking">Booking appointments...</string>
+    <string name="txt_appointment_fetching">Fetching appointments...</string>
+    <string name="txt_appointment_slots_available">%1$d out of %2$d walk-in appointments available</string>
+    <string name="txt_appointment_closed_on_this_day">Closed on this day\n Not accepting appointment</string>
+    <string name="txt_appointment_title_confirm">Confirm Booking Details</string>
+    <string name="txt_appointment_name">Name:  </string>
+    <string name="txt_appointment_date">Booking Date:  </string>
+    <string name="txt_appointment_booking_slot">Booking Slot:  </string>
+    <string name="txt_appointment_booking_available_from_tomorrow">Booking is only available form tomorrow onwards</string>
+
+    <string name="txt_you_were_skipped">You were skipped</string>
+    <string name="txt_please_login_to_view_profile">Please login to view profile</string>
+    <string name="txt_please_login_to_see_the_details">Please login to see the details</string>
+
 </resources>

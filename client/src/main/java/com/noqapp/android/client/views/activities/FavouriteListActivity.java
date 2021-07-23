@@ -39,10 +39,10 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
     protected void onCreate(Bundle savedInstanceState) {
         hideSoftKeys(AppInitialize.isLockMode);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favourite);
+        setContentView(R.layout.fragment_favourites);
         initActionsViews(true);
-        rcv_favourite = findViewById(R.id.rcv_favourite);
-        rl_empty = findViewById(R.id.rl_empty);
+        rcv_favourite = findViewById(R.id.rvFavourite);
+        rl_empty = findViewById(R.id.rlEmpty);
         tv_toolbar_title.setText(getString(R.string.favourite));
         rcv_favourite.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);

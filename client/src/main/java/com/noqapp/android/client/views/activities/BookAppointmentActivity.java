@@ -81,7 +81,7 @@ public class BookAppointmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(true);
-        tv_toolbar_title.setText("Book Appointment");
+        tv_toolbar_title.setText(R.string.txt_title_book_appointment);
         appointmentApiCalls = new AppointmentApiCalls();
         appointmentApiCalls.setAppointmentPresenter(this);
 
@@ -150,14 +150,14 @@ public class BookAppointmentActivity
         tv_name = findViewById(R.id.tv_name);
         sp_name_list = findViewById(R.id.sp_name_list);
         if (isAppointmentBooking) {
-            tv_title.setText("Available times");
+            tv_title.setText(R.string.txt_available_times);
             ll_slots.setVisibility(View.GONE);
             rv_available_date.setVisibility(View.VISIBLE);
         } else {
-            tv_title.setText("Available slots");
+            tv_title.setText(R.string.txt_available_slots);
             ll_slots.setVisibility(View.VISIBLE);
             rv_available_date.setVisibility(View.GONE);
-            btn_book_appointment.setText("Book Walk-in Appointment");
+            btn_book_appointment.setText(R.string.txt_book_walkin_appointment);
         }
 
         horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
@@ -189,7 +189,7 @@ public class BookAppointmentActivity
             profileList.add(AppInitialize.getUserProfile());
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);
-            tv_name.setText("Booking Person");
+            tv_name.setText(getText(R.string.txt_booking_person));
             if (profileList.size() >= 2) {
                 sp_name_list.setSelection(1);
                 sp_name_list.setEnabled(false);
@@ -209,7 +209,7 @@ public class BookAppointmentActivity
             } else {
                 if (isAppointmentBooking) {
                     if (selectedPos == -1) {
-                        new CustomToast().showToast(BookAppointmentActivity.this, "Please select appointment date & time");
+                        new CustomToast().showToast(BookAppointmentActivity.this, getString(R.string.txt_please_select_appointment_datetime));
                     } else {
                         // Process
                         if (isOnline()) {
@@ -235,7 +235,7 @@ public class BookAppointmentActivity
                     }
                 } else {
                     if (null == firstAvailableAppointment || totalAvailableCount == 0) {
-                        new CustomToast().showToast(BookAppointmentActivity.this, "No walk-in appointment available");
+                        new CustomToast().showToast(BookAppointmentActivity.this, getString(R.string.txt_no_walkin_appointment_available));
                     } else {
                         if (isOnline()) {
                             //  setProgressMessage("Booking appointment...");
@@ -328,9 +328,8 @@ public class BookAppointmentActivity
                 if (isAppointmentBooking) {
                     // do nothing
                 } else {
-
                     if (0 == totalAvailableCount) {
-                        tv_slot_count.setText("No more walk-in appointment available");
+                        tv_slot_count.setText(R.string.txt_appointment_not_available);
                         tv_slot_count_empty.setVisibility(View.VISIBLE);
                         tv_slot_count.setVisibility(View.GONE);
                         ll_sector.setVisibility(View.GONE);
@@ -340,7 +339,7 @@ public class BookAppointmentActivity
                     } else {
                         ll_sector.setVisibility(View.VISIBLE);
                         tv_slot_count.setVisibility(View.VISIBLE);
-                        tv_slot_count.setText(totalAvailableCount + " out of " + appointmentSlotAdapter.getDataSet().size() + " walk-in appointments available");
+                        tv_slot_count.setText(String.format(getString(R.string.txt_appointment_slots_available), totalAvailableCount, appointmentSlotAdapter.getDataSet().size()));
                         float f = totalAvailableCount * 100 / appointmentSlotAdapter.getDataSet().size();
                         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(0, 80, f / 100);
                         view_available.setLayoutParams(param);
@@ -366,7 +365,6 @@ public class BookAppointmentActivity
             btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
             btn_book_appointment.setTextColor(ContextCompat.getColor(this, R.color.btn_color));
         }
-
     }
 
     @Override
@@ -430,7 +428,7 @@ public class BookAppointmentActivity
         appointmentSlotAdapter = new AppointmentSlotAdapter(new ArrayList<>(), this, this);
         rv_available_date.setAdapter(appointmentSlotAdapter);
         if (isOnline()) {
-            setProgressMessage("Fetching appointments...");
+            setProgressMessage(getString(R.string.txt_appointment_fetching));
             showProgress();
             appointmentApiCalls.scheduleForDay(
                 UserUtils.getDeviceId(),
@@ -473,7 +471,7 @@ public class BookAppointmentActivity
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         btn_no.setOnClickListener(v -> mAlertDialog.dismiss());
         btn_yes.setOnClickListener(v -> {
-            setProgressMessage("Booking appointment...");
+            setProgressMessage(getString(R.string.txt_appointment_booking));
             showProgress();
             appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
             mAlertDialog.dismiss();

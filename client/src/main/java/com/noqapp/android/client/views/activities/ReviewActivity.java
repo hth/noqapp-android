@@ -24,8 +24,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderReview;
@@ -36,6 +34,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.version_2.db.NoQueueAppDB;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -48,10 +47,18 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlin.jvm.functions.Function2;
+import kotlinx.coroutines.BuildersKt;
+import kotlinx.coroutines.CoroutineScope;
+import kotlinx.coroutines.CoroutineStart;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.GlobalScope;
+
 import static com.noqapp.android.common.model.types.QueueOrderTypeEnum.Q;
 
 public class ReviewActivity extends BaseActivity implements ReviewPresenter {
-
     private TextView tv_rating_value;
     private RatingBar ratingBar;
     private TextView tv_hr_saved;
@@ -137,7 +144,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 tv_address.setText(jtk.getStoreAddress());
                 String datetime = DateFormat.getDateTimeInstance().format(new Date());
                 tv_mobile.setText(datetime);
-                edt_review.setHint("Please provide review for " + jtk.getDisplayName());
+                edt_review.setHint(String.format(getString(R.string.review_hint), jtk.getDisplayName()));
                 String queueOrderType = jtk.getBusinessType().getQueueOrderType() == Q ? "queue" : "order";
                 tv_title.setText(StringUtils.capitalize(queueOrderType + " Detail"));
 
@@ -155,7 +162,11 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                             break;
                         case RS:
                         case FT:
-                            tv_review_msg.setText(getString(R.string.review_msg_order_done));
+                        case BA:
+                        case ST:
+                        case GS:
+                        case CF:
+                            tv_review_msg.setText(getString(R.string. review_msg_order_done));
                             break;
                         default:
                             tv_review_msg.setText(getString(R.string.review_msg_queue_done));
@@ -200,11 +211,11 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                         showProgress();
                         if (UserUtils.isLogin()) {
                             if (jtk.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-                                OrderReview orderReview = new OrderReview();
-                                orderReview.setCodeQR(jtk.getCodeQR());
-                                orderReview.setToken(jtk.getToken());
-                                orderReview.setRatingCount(Math.round(ratingBar.getRating()));
-                                orderReview.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+                                OrderReview orderReview = new OrderReview()
+                                    .setCodeQR(jtk.getCodeQR())
+                                    .setToken(jtk.getToken())
+                                    .setRatingCount(Math.round(ratingBar.getRating()))
+                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
                                 new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
                             } else {
                                 QueueReview rr = new QueueReview()
@@ -241,7 +252,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         //super.onBackPressed();
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
-            backPressToast = new CustomToast().getToast(this, "Please review the service, It is valuable to us.");
+            backPressToast = new CustomToast().getToast(this, "Please review the service. It is valuable to us and you earn points on all comments.");
             backPressToast.show();
             lastPress = currentTime;
         } else {
@@ -262,9 +273,6 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             Toast.makeText(this, getString(R.string.review_thanks), Toast.LENGTH_LONG).show();
             returnResultBack();
         }
-        //Delete the value in ReviewDB
-        ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
-        TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         finish();
         dismissProgress();
     }
@@ -274,11 +282,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
         intent.putExtra(Constants.TOKEN, String.valueOf(jtk.getToken()));
-        // if (getParent() == null) {
         setResult(Activity.RESULT_OK, intent);
-//        } else {
-//            getParent().setResult(Activity.RESULT_OK, intent);
-//        }
     }
 
     private String getSeekbarLabel(int pos) {
@@ -299,8 +303,4 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }

@@ -32,9 +32,9 @@ public class NotificationListAdapter extends BaseAdapter {
     private DeleteRecord deleteRecord;
 
     public NotificationListAdapter(
-            Context context,
-            List<DisplayNotification> notificationsList,
-            DeleteRecord deleteRecord) {
+        Context context,
+        List<DisplayNotification> notificationsList,
+        DeleteRecord deleteRecord) {
         this.context = context;
         this.notificationsList = notificationsList;
         this.deleteRecord = deleteRecord;
@@ -72,9 +72,8 @@ public class NotificationListAdapter extends BaseAdapter {
         recordHolder.tv_title.setText(displayNotification.getTitle());
         recordHolder.tv_msg.setText(displayNotification.getMsg());
 
-
         try {
-            String dateString = displayNotification.getNotificationCreate();
+            String dateString = displayNotification.getCreatedDate();
             SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
             Date date = sdf.parse(dateString);
             long startDate = new Date().getTime() - date.getTime();
@@ -95,9 +94,7 @@ public class NotificationListAdapter extends BaseAdapter {
             }
         });
 
-        recordHolder.iv_copy.setOnClickListener(v -> {
-            copyText(displayNotification.getMsg());
-        });
+        recordHolder.iv_copy.setOnClickListener(v -> copyText(displayNotification.getMsg()));
         return view;
     }
 
@@ -117,16 +114,15 @@ public class NotificationListAdapter extends BaseAdapter {
         void deleteNotification(DisplayNotification displayNotification);
     }
 
-
     private void copyText(String selectedText) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", selectedText);
         clipboard.setPrimaryClip(clip);
         if (selectedText.equals("")) {
             new CustomToast().showToast(context, "Nothing to copy");
-        }else {
+        } else {
             new CustomToast().showToast(context, "Copied");
-            Log.d("Notification text copy",selectedText);
+            Log.d("Notification text copy", selectedText);
         }
     }
 }

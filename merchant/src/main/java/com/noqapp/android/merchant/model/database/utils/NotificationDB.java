@@ -25,7 +25,6 @@ import static com.noqapp.android.merchant.views.activities.AppInitialize.dbHandl
  * Created by chandra on 8/7/17.
  */
 public class NotificationDB {
-
     public static final String KEY_READ = "1";
     public static final String KEY_UNREAD = "0";
     public static final String KEY_NOTIFY = "KY_NOTI";
@@ -45,20 +44,18 @@ public class NotificationDB {
         cv.put(DatabaseTable.Notification.CREATE_DATE, dateString);
         try {
             long successCount = dbHandler.getWritableDb().insertWithOnConflict(
-                    DatabaseTable.Notification.TABLE_NAME,
-                    null,
-                    cv,
-                    SQLiteDatabase.CONFLICT_REPLACE);
-
-            Log.d(TAG, "Data insert notification " + String.valueOf(successCount));
+                DatabaseTable.Notification.TABLE_NAME,
+                null,
+                cv,
+                SQLiteDatabase.CONFLICT_REPLACE);
+            Log.d(TAG, "Data insert notification " + successCount);
         } catch (SQLException e) {
             Log.e(TAG, "Error insert notification reason=" + e.getLocalizedMessage(), e);
         }
     }
 
-
     public static List<DisplayNotification> getNotificationsList() {
-        String query = "SELECT *  FROM " + DatabaseTable.Notification.TABLE_NAME + " ORDER BY "+DatabaseTable.Notification.SEQUENCE+ " DESC ";
+        String query = "SELECT *  FROM " + DatabaseTable.Notification.TABLE_NAME + " ORDER BY " + DatabaseTable.Notification.SEQUENCE + " DESC ";
         List<DisplayNotification> displayNotificationList = new ArrayList<>();
         Cursor cursor = dbHandler.getWritableDb().rawQuery(query, null);
         if (cursor != null) {
@@ -72,7 +69,7 @@ public class NotificationDB {
                         notificationBeans.setTitle(cursor.getString(3));
                         notificationBeans.setStatus(cursor.getString(4));
                         notificationBeans.setSequence(cursor.getInt(5));
-                        notificationBeans.setNotificationCreate(cursor.getString(6));
+                        notificationBeans.setCreatedDate(cursor.getString(6));
                         displayNotificationList.add(notificationBeans);
                     }
                 } finally {
@@ -83,14 +80,12 @@ public class NotificationDB {
         return displayNotificationList;
     }
 
-
     public static void updateNotification() {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseTable.Notification.STATUS, KEY_READ);
         try {
-            long successCount = dbHandler.getWritableDb().
-            update(DatabaseTable.Notification.TABLE_NAME, cv, DatabaseTable.Notification.STATUS + "=" + KEY_UNREAD, null);
-            Log.d(TAG, "Data updated notification " + String.valueOf(successCount));
+            long successCount = dbHandler.getWritableDb().update(DatabaseTable.Notification.TABLE_NAME, cv, DatabaseTable.Notification.STATUS + "=" + KEY_UNREAD, null);
+            Log.d(TAG, "Data updated notification " + successCount);
         } catch (SQLException e) {
             Log.e(TAG, "Error update notification reason=" + e.getLocalizedMessage(), e);
         }
@@ -119,11 +114,11 @@ public class NotificationDB {
 
     public static void deleteNotification(Integer sequence, String key) {
         try {
-            int out = dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME,
-                    DatabaseTable.Notification.SEQUENCE + "=? AND " +
-                            DatabaseTable.Notification.KEY + "=?",
-                    new String[]{Integer.toString(sequence), key});
-            Log.v("notification deleted:", "" + out);
+            int out = dbHandler.getWritableDb().delete(
+                DatabaseTable.Notification.TABLE_NAME,
+                DatabaseTable.Notification.SEQUENCE + "=? AND " + DatabaseTable.Notification.KEY + "=?",
+                new String[]{Integer.toString(sequence), key});
+            Log.v(TAG, "Notification deleted: " + out);
         } catch (Exception e) {
             e.printStackTrace();
         }

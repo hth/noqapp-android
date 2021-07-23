@@ -1,5 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,12 +17,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FavouriteApiCall;
+import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.beans.FavoriteElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ContextUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.LocaleHelper;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -30,6 +37,9 @@ import com.noqapp.android.common.utils.CustomProgressBar;
 import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
+import java.util.Locale;
+
+import kotlin.jvm.functions.Function0;
 
 public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter, FavouritePresenter {
     private CustomProgressBar customProgressBar;
@@ -46,6 +56,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         super.onCreate(savedInstanceState);
         customProgressBar = new CustomProgressBar(this);
         networkUtil = new NetworkUtil(this);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
 
     protected void dismissProgress() {
@@ -83,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         }
         actionbarBack.setOnClickListener((View v) -> finish());
         iv_home.setOnClickListener((View v) -> {
-            Intent goToA = new Intent(BaseActivity.this, LaunchActivity.class);
+            Intent goToA = new Intent(BaseActivity.this, HomeActivity.class);
             goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(goToA);
         });
@@ -94,9 +106,26 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        String localLanguage = LocaleHelper.INSTANCE.getLocaleLanguage(newBase);
+        Locale localeToSwitchTo = new Locale(localLanguage);
+        ContextWrapper localeUpdatedContext = ContextUtils.Companion.updateLocale(newBase, localeToSwitchTo);
+        super.attachBaseContext(localeUpdatedContext);
+    }
+
+    @Override
     public void authenticationFailure() {
         dismissProgress();
-        AppUtils.authenticationProcessing(this);
+        AppUtils.authenticationProcessing(this, new Function0() {
+            @Override
+            public Object invoke() {
+                Intent loginIntent = new Intent(BaseActivity.this, LoginActivity.class);
+                loginIntent.putExtra("fromHome", true);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(loginIntent);
+                return null;
+            }
+        });
     }
 
     @Override

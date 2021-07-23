@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/current_q_width"
     android:layout_height="@dimen/current_q_height"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:tag="cards main container">
 
@@ -56,6 +57,7 @@
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:paddingLeft="5dp"
+                            tools:text="test"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold" />
@@ -78,7 +80,7 @@
                             android:paddingBottom="5dp"
                             android:background="@drawable/blue_gradient"
                             android:gravity="center"
-                            android:text=""
+                            tools:text="test"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_fourteen" />
 
@@ -108,6 +110,7 @@
                         android:layout_alignBaseline="@+id/tv_position_in_queue_label"
                         android:layout_toRightOf="@+id/tv_position_in_queue_label"
                         android:gravity="center"
+                        tools:text="1"
                         android:textColor="@color/theme_color_red"
                         android:textSize="@dimen/text_size_sixteen"
                         android:textStyle="bold" />
@@ -131,6 +134,7 @@
                     android:gravity="center_horizontal"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    tools:text="sfsfgsf"
                     android:textSize="@dimen/text_size_ten" />
             </LinearLayout>
 

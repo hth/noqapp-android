@@ -1,105 +1,142 @@
 package com.noqapp.android.common.pojos;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 /**
  * Created by chandra on 3/16/18.
  */
+@Entity(tableName = "notification")
 public class DisplayNotification {
 
+    @NonNull
+    @PrimaryKey
+    @ColumnInfo(name = "key")
+    private String key = "";
+    @ColumnInfo(name = "title")
     private String title;
+    @ColumnInfo(name = "msg")
     private String msg;
+    @ColumnInfo(name = "status")
     private String status;
-    private String notificationCreate;
+    @ColumnInfo(name = "business_type")
     private BusinessTypeEnum businessType;
+    @ColumnInfo(name = "image_url")
     private String imageUrl;
+    @ColumnInfo(name = "sequence")
     private Integer sequence;
-    private String key;
+    @ColumnInfo(name = "code_qr")
     private String codeQR;
+    @ColumnInfo(name = "type")
+    private String type;
+    @ColumnInfo(name = "body")
+    private String body;
+    @ColumnInfo(name = "created_date")
+    private String createdDate;
+    @ColumnInfo(name = "is_pop_up_shown")
+    private Boolean isPopUpShown = false;
 
     public DisplayNotification() {
-
     }
 
     public String getTitle() {
         return title;
     }
 
-    public DisplayNotification setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    public DisplayNotification setMsg(String msg) {
+    public void setMsg(String msg) {
         this.msg = msg;
-        return this;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public DisplayNotification setStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
-        return this;
-    }
-
-    public String getNotificationCreate() {
-        return notificationCreate;
-    }
-
-    public DisplayNotification setNotificationCreate(String notificationCreate) {
-        this.notificationCreate = notificationCreate;
-        return this;
     }
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
 
-    public DisplayNotification setBusinessType(BusinessTypeEnum businessType) {
+    public void setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
-        return this;
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public DisplayNotification setImageUrl(String imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        return this;
     }
 
     public Integer getSequence() {
         return sequence;
     }
 
-    public DisplayNotification setSequence(Integer sequence) {
+    public void setSequence(Integer sequence) {
         this.sequence = sequence;
-        return this;
     }
 
     public String getKey() {
         return key;
     }
 
-    public DisplayNotification setKey(String key) {
+    public void setKey(String key) {
         this.key = key;
-        return this;
     }
 
     public String getCodeQR() {
         return codeQR;
     }
 
-    public DisplayNotification setCodeQR(String codeQR) {
+    public void setCodeQR(String codeQR) {
         this.codeQR = codeQR;
-        return this;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Boolean getPopUpShown() {
+        return isPopUpShown;
+    }
+
+    public void setPopUpShown(Boolean popUpShown) {
+        isPopUpShown = popUpShown;
     }
 
     @Override
@@ -108,12 +145,15 @@ public class DisplayNotification {
         sb.append("title='").append(title).append('\'');
         sb.append(", msg='").append(msg).append('\'');
         sb.append(", status='").append(status).append('\'');
-        sb.append(", notificationCreate='").append(notificationCreate).append('\'');
         sb.append(", businessType=").append(businessType);
         sb.append(", imageUrl='").append(imageUrl).append('\'');
         sb.append(", sequence=").append(sequence);
         sb.append(", key='").append(key).append('\'');
         sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", body='").append(body).append('\'');
+        sb.append(", createdDate='").append(createdDate).append('\'');
+        sb.append(", isPopUpShown='").append(isPopUpShown).append('\'');
         sb.append('}');
         return sb.toString();
     }

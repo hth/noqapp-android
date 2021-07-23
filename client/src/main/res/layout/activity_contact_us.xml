@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:padding="10dp"
-                android:hint="@string/subject"
+                android:hint="@string/txt_feedback_subject"
                 android:textSize="@dimen/text_size_fourteen"
                 android:maxLines="1"
                 android:minLines="1"
@@ -40,7 +40,7 @@
                 android:layout_marginBottom="50dp"
                 android:padding="10dp"
                 android:maxLength="500"
-                android:hint="@string/message"
+                android:hint="@string/txt_feedback_message"
                 android:textSize="@dimen/text_size_fourteen"
                 android:background="@drawable/square_white_bg_drawable"/>
 
