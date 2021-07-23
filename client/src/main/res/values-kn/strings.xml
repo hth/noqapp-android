@@ -333,7 +333,7 @@
     <string name="order_history">ಆರ್ಡರ್ ಹಾಗೂ ಸರದಿಯ ಇತಿಹಾಸ</string>
     <string name="title_activity_contact_us">ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ</string>
     <string name="txt_feedback_subject">ವಿಷಯ</string>
-    <string name="txt_feedback_message">ಪ್ರತಿಕ್ರಿಯೆ / ಸಲಹೆಗಳು / ಸಮಸ್ಯೆಗಳು \n\n ಅಂಗಡಿ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸಿ ಮತ್ತು ದಯವಿಟ್ಟು ನಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆಗಾಗಿ ನಿಮ್ಮ ಮೇಲ್ ಪರಿಶೀಲಿಸಿ</string>
+    <string name="txt_feedback_message">ಪ್ರತಿಕ್ರಿಯೆ / ಸಲಹೆಗಳು / ಸಮಸ್ಯೆಗಳು\n\nಅಂಗಡಿ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸಿ ಮತ್ತು ದಯವಿಟ್ಟು ನಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆಗಾಗಿ ನಿಮ್ಮ ಮೇಲ್ ಪರಿಶೀಲಿಸಿ</string>
     <string name="error_subject_blank">ದಯವಿಟ್ಟು ವಿಷಯವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="error_feedback_blank">ದಯವಿಟ್ಟು ಸಂದೇಶವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="screen_order_detail">ಆರ್ಡರ್ ಸಾರಾಂಶ</string>

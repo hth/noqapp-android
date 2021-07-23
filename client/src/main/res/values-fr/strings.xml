@@ -333,7 +333,7 @@
     <string name="order_history">Historique des commandes et des files d\'attente</string>
     <string name="title_activity_contact_us">Nous contacter</string>
     <string name="txt_feedback_subject">Sujet</string>
-    <string name="txt_feedback_message">Commentaires / Suggestions / Problèmes \n\n Fournissez des informations sur le magasin et veuillez vérifier votre courrier pour notre réponse</string>
+    <string name="txt_feedback_message">Commentaires / Suggestions / Problèmes\n\nFournissez des informations sur le magasin et veuillez vérifier votre courrier pour notre réponse</string>
     <string name="error_subject_blank">Saissez sujet</string>
     <string name="error_feedback_blank">Saissez la massage </string>
     <string name="screen_order_detail">Récapitulatif de Commande.</string>

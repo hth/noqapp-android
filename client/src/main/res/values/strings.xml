@@ -333,7 +333,7 @@
     <string name="order_history">Order &amp; Queue History</string>
     <string name="title_activity_contact_us">Contact Us</string>
     <string name="txt_feedback_subject">Subject</string>
-    <string name="txt_feedback_message">Feedback / Suggestions / Issues \n\n Provide store information and please check your mail for our response</string>
+    <string name="txt_feedback_message">Feedback / Suggestions / Issues\n\nProvide store information and please check your mail for our response</string>
     <string name="error_subject_blank">Please enter subject</string>
     <string name="error_feedback_blank">Please enter message</string>
     <string name="screen_order_detail">Order Summary</string>
