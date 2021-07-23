@@ -76,11 +76,15 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
             "#[\\w]+",
             "@[\\w]+"
         )
+
+        var foundLink = false
         val f = SpannableString(text)
         for (str in linkPatterns) {
             val pattern: Pattern = Pattern.compile(str)
             val matcher: Matcher = pattern.matcher(text)
             while (matcher.find()) {
+                foundLink = true
+
                 val x: Int = matcher.start()
                 val y: Int = matcher.end()
 
@@ -89,6 +93,10 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
                 f.setSpan(span, x, y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 tv.text = f
             }
+        }
+
+        if (!foundLink) {
+            tv.text = text
         }
 
         tv.setLinkTextColor(Color.BLUE)

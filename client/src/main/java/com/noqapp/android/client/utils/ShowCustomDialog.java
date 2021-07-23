@@ -121,23 +121,26 @@ public class ShowCustomDialog {
             "@[\\w]+"
         };
 
+        boolean foundLink = false;
         SpannableString f = new SpannableString(text);
         for (String str : linkPatterns) {
             Pattern pattern = Pattern.compile(str);
             Matcher matcher = pattern.matcher(text);
-            if (matcher.matches()) {
-                while (matcher.find()) {
-                    int x = matcher.start();
-                    int y = matcher.end();
+            while (matcher.find()) {
+                foundLink = true;
 
-                    String spanText = text.substring(x, y);
-                    URLSpan span = new URLSpan(spanText);
-                    f.setSpan(span, x, y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    tv.setText(f);
-                }
-            } else {
-                tv.setText(text);
+                int x = matcher.start();
+                int y = matcher.end();
+
+                String spanText = text.substring(x, y);
+                URLSpan span = new URLSpan(spanText);
+                f.setSpan(span, x, y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tv.setText(f);
             }
+        }
+
+        if (!foundLink) {
+            tv.setText(text);
         }
 
         tv.setLinkTextColor(Color.BLUE);
