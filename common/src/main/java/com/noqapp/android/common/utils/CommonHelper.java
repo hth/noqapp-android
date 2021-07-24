@@ -106,8 +106,10 @@ public class CommonHelper {
     public static void setAutoCompleteText(AutoCompleteTextView autoCompleteTextView, String text) {
         autoCompleteTextView.setFocusable(false);
         autoCompleteTextView.setFocusableInTouchMode(false);
-        autoCompleteTextView.setText(text);
-        autoCompleteTextView.setSelection(text.length()); // to make the cursor at end of the text
+        if (StringUtils.isNotBlank(text)) {
+            autoCompleteTextView.setText(text);
+            autoCompleteTextView.setSelection(text.length()); // to make the cursor at end of the text
+        }
         autoCompleteTextView.setFocusable(true);
         autoCompleteTextView.setFocusableInTouchMode(true);
         autoCompleteTextView.dismissDropDown();
