@@ -18,14 +18,12 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.utils.NetworkUtil;
-import com.noqapp.android.common.views.activities.DatePickerActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import java.text.ParseException;
@@ -34,8 +32,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 
 public class UserProfileFragment extends BaseFragment implements View.OnClickListener, ProfilePresenter {
@@ -71,24 +67,21 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         gender_list.add("Transgender");
         sc_gender = view.findViewById(R.id.sc_gender);
         sc_gender.addSegments(gender_list);
-        sc_gender.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    int selection = segmentViewHolder.getAbsolutePosition();
-                    switch (selection) {
-                        case 0:
-                            gender = "M";
-                            break;
-                        case 1:
-                            gender = "F";
-                            break;
-                        case 2:
-                            gender = "T";
-                            break;
-                        default:
-                            gender = "M";
-                    }
+        sc_gender.addOnSegmentSelectListener((segmentViewHolder, isSelected, isReselected) -> {
+            if (isSelected) {
+                int selection = segmentViewHolder.getAbsolutePosition();
+                switch (selection) {
+                    case 0:
+                        gender = "M";
+                        break;
+                    case 1:
+                        gender = "F";
+                        break;
+                    case 2:
+                        gender = "T";
+                        break;
+                    default:
+                        gender = "M";
                 }
             }
         });
@@ -105,12 +98,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         switch (id) {
             case R.id.edt_birthday:
                 CustomCalendar customCalendar = new CustomCalendar(getActivity());
-                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
-                    @Override
-                    public void calendarDate(String date) {
-                        edt_birthday.setText(date);
-                    }
-                });
+                customCalendar.setDateSelectListener(date -> edt_birthday.setText(date));
                 customCalendar.showDobCalendar();
 //                Intent in = new Intent(getActivity(), DatePickerActivity.class);
 //                startActivityForResult(in, Constants.RC_DATE_PICKER);
@@ -188,7 +176,11 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         edt_email.setText(jsonProfile.getMail());
         edt_phoneNo.setEnabled(false);
         edt_email.setEnabled(false);
-        edt_address.setText(jsonProfile.findPrimaryOrAnyExistingAddress().getAddress());
+        if (null != jsonProfile.findPrimaryOrAnyExistingAddress()) {
+            edt_address.setText(jsonProfile.findPrimaryOrAnyExistingAddress().getAddress());
+        } else {
+            edt_address.setText("");
+        }
         gender = jsonProfile.getGender().name();
         if (jsonProfile.getGender().name().equals("M")) {
             sc_gender.setSelectedSegment(0);
@@ -198,8 +190,10 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
             sc_gender.setSelectedSegment(2);
         }
         try {
-            edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfile.getBirthday())));
+            Date date = CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfile.getBirthday());
+            edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(date));
         } catch (Exception e) {
+            Log.e(UserProfileFragment.class.getSimpleName(), "Error parsing DOB={}" + e.getLocalizedMessage(), e);
             e.printStackTrace();
         }
         qUserId = jsonProfile.getQueueUserId();
@@ -238,6 +232,5 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         }
         return isValid;
     }
-
 }
 
