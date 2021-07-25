@@ -190,8 +190,10 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
             sc_gender.setSelectedSegment(2);
         }
         try {
-            edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfile.getBirthday())));
+            Date date = CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfile.getBirthday());
+            edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(date));
         } catch (Exception e) {
+            Log.e(UserProfileFragment.class.getSimpleName(), "Error parsing DOB={}" + e.getLocalizedMessage(), e);
             e.printStackTrace();
         }
         qUserId = jsonProfile.getQueueUserId();
