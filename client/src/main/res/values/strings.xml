@@ -576,5 +576,8 @@
     <string name="txt_you_were_skipped">You were skipped</string>
     <string name="txt_please_login_to_view_profile">Please login to view profile</string>
     <string name="txt_please_login_to_see_the_details">Please login to see the details</string>
+    <string name="txt_allow_location_access_label">Please allow location permission to access nearest distance from the store.</string>
+    <string name="txt_allow_location_access">Enable location permission</string>
+    <string name="txt_location_permission_required">Location permission required</string>
 
 </resources>

@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
@@ -34,10 +36,10 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SplashScreen extends LocationBaseActivity implements DeviceRegisterPresenter {
 
-    static SplashScreen splashScreen;
     private String TAG = SplashScreen.class.getSimpleName();
     private static String tokenFCM = "";
     private static String deviceId = "";
+    private ConstraintLayout clAllowLocationPermission;
 
     @Override
     public void displayAddressOutput(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
@@ -68,11 +70,12 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-        splashScreen = this;
+
         LottieAnimationView animationView = findViewById(R.id.animation_view);
         animationView.setAnimation("data.json");
         animationView.playAnimation();
         animationView.setRepeatCount(10);
+        clAllowLocationPermission = findViewById(R.id.cl_location_access_required);
 
         if (StringUtils.isBlank(tokenFCM) && new NetworkUtil(this).isNotOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -189,12 +192,12 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
     private void callLaunchScreen() {
         if (!StringUtils.isBlank(deviceId)) {
-            Intent i = new Intent(splashScreen, HomeActivity.class);
+            Intent i = new Intent(this, HomeActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
-            splashScreen.startActivity(i);
-            splashScreen.finish();
+            startActivity(i);
+            finish();
         }
     }
 }
