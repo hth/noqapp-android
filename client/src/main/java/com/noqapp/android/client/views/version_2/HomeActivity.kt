@@ -350,18 +350,25 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun updateNotificationBadgeCount() {
-        val notifyCount = 0
-        expandableListAdapter?.notifyDataSetChanged()
-        supportActionBar?.setHomeAsUpIndicator(
-            setBadgeCount(
-                this,
-                R.drawable.ic_burger,
-                notifyCount
-            )
-        )
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayShowCustomEnabled(true)
+
+        homeViewModel.notificationCountLiveData.observe(this, { notificationCount ->
+            notificationCount?.let {
+                val notifyCount = it
+                expandableListAdapter?.notifyDataSetChanged()
+                supportActionBar?.setHomeAsUpIndicator(
+                    setBadgeCount(
+                        this,
+                        R.drawable.ic_burger,
+                        notifyCount
+                    )
+                )
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                supportActionBar?.setDisplayShowTitleEnabled(false)
+                supportActionBar?.setDisplayShowCustomEnabled(true)
+            }
+        })
+
+
     }
 
     private fun setUpExpandableList(isLogin: Boolean) {

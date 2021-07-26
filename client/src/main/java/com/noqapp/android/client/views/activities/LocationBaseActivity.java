@@ -49,8 +49,10 @@ public abstract class LocationBaseActivity extends BaseActivity {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private boolean shouldRedirectToSettings = false;
+    private boolean shownEnableLocationDialog = false;
 
     public abstract void locationPermissionRequired();
+
     protected abstract void locationPermissionGranted();
 
     @Override
@@ -153,8 +155,11 @@ public abstract class LocationBaseActivity extends BaseActivity {
         task.addOnFailureListener(this, e -> {
             try {
                 // Cast to a resolvable exception.
-                ResolvableApiException resolvable = (ResolvableApiException) e;
-                resolvable.startResolutionForResult(LocationBaseActivity.this, REQUEST_CHECK_SETTINGS);
+                if (!shownEnableLocationDialog) {
+                    ResolvableApiException resolvable = (ResolvableApiException) e;
+                    resolvable.startResolutionForResult(LocationBaseActivity.this, REQUEST_CHECK_SETTINGS);
+                    shownEnableLocationDialog = true;
+                }
             } catch (IntentSender.SendIntentException ie) {
                 // Ignore the error.
             } catch (ClassCastException ce) {
@@ -173,8 +178,13 @@ public abstract class LocationBaseActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (Activity.RESULT_OK == resultCode && REQUEST_CHECK_SETTINGS == requestCode) {
-            getCurrentLocation();
+        if (REQUEST_CHECK_SETTINGS == requestCode) {
+            shownEnableLocationDialog = false;
+            if (Activity.RESULT_OK == resultCode) {
+                getCurrentLocation();
+            } else {
+                locationPermissionRequired();
+            }
         }
     }
 
