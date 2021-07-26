@@ -24,6 +24,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.SplashScreen;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import java.text.ParseException;
@@ -33,8 +34,8 @@ import java.util.TimeZone;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
-
 public class UserProfileFragment extends BaseFragment implements View.OnClickListener, ProfilePresenter {
+    private String TAG = UserProfileFragment.class.getSimpleName();
 
     private EditText edt_birthday;
     private EditText edt_address;
@@ -193,8 +194,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
             Date date = CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfile.getBirthday());
             edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(date));
         } catch (Exception e) {
-            Log.e(UserProfileFragment.class.getSimpleName(), "Error parsing DOB={}" + e.getLocalizedMessage(), e);
-            e.printStackTrace();
+            Log.e(TAG, "Error parsing DOB={}" + e.getLocalizedMessage(), e);
         }
         qUserId = jsonProfile.getQueueUserId();
     }

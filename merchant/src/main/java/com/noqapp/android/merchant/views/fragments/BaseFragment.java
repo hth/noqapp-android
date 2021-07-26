@@ -27,23 +27,27 @@ public class BaseFragment extends Fragment implements ResponseErrorPresenter {
     }
 
     protected void dismissProgress() {
-        if (null != customProgressBar)
+        if (null != customProgressBar) {
             customProgressBar.dismissProgress();
+        }
     }
 
     protected void showProgress() {
-        if (null != customProgressBar)
+        if (null != customProgressBar) {
             customProgressBar.showProgress();
+        }
     }
 
     protected void setProgressCancel(boolean isCancelled) {
-        if (null != customProgressBar)
+        if (null != customProgressBar) {
             customProgressBar.setProgressCancel(isCancelled);
+        }
     }
 
     protected void setProgressMessage(String msg) {
-        if (null != customProgressBar)
+        if (null != customProgressBar) {
             customProgressBar.setProgressMessage(msg);
+        }
     }
 
     @Override
@@ -78,8 +82,7 @@ public class BaseFragment extends Fragment implements ResponseErrorPresenter {
 
     protected FragmentTransaction getFragmentTransaction(){
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        return ft;
+        return fm.beginTransaction();
     }
 }
 

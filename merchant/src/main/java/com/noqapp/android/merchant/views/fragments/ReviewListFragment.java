@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -12,7 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.ReviewListActivity;
 import com.noqapp.android.merchant.views.adapters.MerchantReviewListAdapter;
@@ -27,6 +25,7 @@ public class ReviewListFragment extends Fragment {
     private Runnable run;
     private ArrayList<JsonTopic> topics = new ArrayList<>();
     private ListView listview;
+
     public ReviewListFragment() {
 
     }
@@ -37,13 +36,12 @@ public class ReviewListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_merchant_chart_list, container, false);
         listview = view.findViewById(R.id.listview);
         Bundle bundle = getArguments();
-        run = new Runnable() {
-            public void run() {
-                adapter.notifyDataSetChanged();
-                listview.invalidateViews();
-                listview.refreshDrawableState();
-            }
+        run = () -> {
+            adapter.notifyDataSetChanged();
+            listview.invalidateViews();
+            listview.refreshDrawableState();
         };
+
         if (null != bundle) {
             ArrayList<JsonTopic> jsonTopics = (ArrayList<JsonTopic>) bundle.getSerializable("jsonTopic");
             updateListData(jsonTopics);
@@ -66,29 +64,25 @@ public class ReviewListFragment extends Fragment {
         super.onPause();
     }
 
-
     private void initListView() {
         listview.setVisibility(View.VISIBLE);
         adapter = new MerchantReviewListAdapter(getActivity(), topics);
         listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selected_pos = position;
-                if (LaunchActivity.isTablet) {
-                    reviewFragment.updateReviews(topics.get(selected_pos));
-                    //set page for view pager
-                } else {
-                    reviewFragment = new ReviewFragment();
-                    Bundle b = new Bundle();
-                    b.putSerializable("jsonTopic", topics.get(selected_pos));
-                    reviewFragment.setArguments(b);
-                    ReviewListActivity.getReviewListActivity().replaceFragmentWithBackStack(R.id.frame_layout, reviewFragment, ReviewListFragment.class.getSimpleName());
-                }
-
-                // to set the selected cell color
-                getActivity().runOnUiThread(run);
+        listview.setOnItemClickListener((parent, view, position, id) -> {
+            selected_pos = position;
+            if (LaunchActivity.isTablet) {
+                reviewFragment.updateReviews(topics.get(selected_pos));
+                //set page for view pager
+            } else {
+                reviewFragment = new ReviewFragment();
+                Bundle b = new Bundle();
+                b.putSerializable("jsonTopic", topics.get(selected_pos));
+                reviewFragment.setArguments(b);
+                ReviewListActivity.getReviewListActivity().replaceFragmentWithBackStack(R.id.frame_layout, reviewFragment, ReviewListFragment.class.getSimpleName());
             }
+
+            // to set the selected cell color
+            getActivity().runOnUiThread(run);
         });
 
         if (LaunchActivity.isTablet) {
