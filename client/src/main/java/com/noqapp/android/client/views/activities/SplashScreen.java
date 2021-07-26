@@ -33,9 +33,9 @@ import com.noqapp.android.common.utils.NetworkUtil;
 import org.apache.commons.lang3.StringUtils;
 
 public class SplashScreen extends LocationBaseActivity implements DeviceRegisterPresenter {
-
-    static SplashScreen splashScreen;
     private String TAG = SplashScreen.class.getSimpleName();
+    
+    static SplashScreen splashScreen;
     private static String tokenFCM = "";
     private static String deviceId = "";
 
@@ -48,6 +48,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         if (StringUtils.isNotBlank(area)) {
             city = area + ", " + town;
         }
+
         AppInitialize.cityName = city;
         LocationPref locationPref = AppInitialize.getLocationPreference()
             .setArea(area)
@@ -151,8 +152,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
                     deviceModel.register(deviceToken);
                 }
             } else {
-                Log.e("Launch", "launching from sendRegistrationToServer");
-                Log.d(TAG, "Exist deviceId=" + deviceId);
+                Log.d(TAG, "Existing did " + deviceId);
                 callLaunchScreen();
             }
         } else {

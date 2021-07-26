@@ -84,7 +84,7 @@ public class DeviceApiCalls {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    Log.d("response body issupport", response.body().toString());
+                    Log.d(TAG, "Supported device " + response.body().toString());
                     if (null != response.body() && null == response.body().getError()) {
                         appBlacklistPresenter.appBlacklistResponse(response.body());
                     } else {

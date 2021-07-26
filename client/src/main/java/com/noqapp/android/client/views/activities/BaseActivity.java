@@ -17,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FavouriteApiCall;
-import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.beans.FavoriteElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -38,8 +37,6 @@ import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.Locale;
-
-import kotlin.jvm.functions.Function0;
 
 public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter, FavouritePresenter {
     private CustomProgressBar customProgressBar;
@@ -99,10 +96,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
             goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(goToA);
         });
-        if (iv_favourite != null)
-            iv_favourite.setOnClickListener((View v) -> {
-                markFavourite();
-            });
+
+        if (iv_favourite != null) {
+            iv_favourite.setOnClickListener((View v) -> markFavourite());
+        }
     }
 
     @Override
@@ -116,15 +113,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        AppUtils.authenticationProcessing(this, new Function0() {
-            @Override
-            public Object invoke() {
-                Intent loginIntent = new Intent(BaseActivity.this, LoginActivity.class);
-                loginIntent.putExtra("fromHome", true);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(loginIntent);
-                return null;
-            }
+        AppUtils.authenticationProcessing(this, () -> {
+            Intent loginIntent = new Intent(BaseActivity.this, LoginActivity.class);
+            loginIntent.putExtra("fromHome", true);
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(loginIntent);
+            return null;
         });
     }
 
@@ -161,11 +155,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     protected void hideSoftKeys(boolean isKioskMode) {
         if (isKioskMode) {
             final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE;
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE;
 
             getWindow().getDecorView().setSystemUiVisibility(flags);
             final View decorView = getWindow().getDecorView();
@@ -186,8 +180,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         isFavourite = AppInitialize.getFavouriteList().contains(codeQR);
         iv_favourite.setVisibility(View.VISIBLE);
         iv_favourite.setBackground(isFavourite
-                ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
-                : ContextCompat.getDrawable(this, R.drawable.heart_orange));
+            ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
+            : ContextCompat.getDrawable(this, R.drawable.heart_orange));
     }
 
     private void markFavourite() {
