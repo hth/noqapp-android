@@ -34,7 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SplashScreen extends LocationBaseActivity implements DeviceRegisterPresenter {
     private String TAG = SplashScreen.class.getSimpleName();
-    
+
     static SplashScreen splashScreen;
     private static String tokenFCM = "";
     private static String deviceId = "";
