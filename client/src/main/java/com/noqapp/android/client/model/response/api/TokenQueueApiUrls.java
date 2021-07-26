@@ -155,7 +155,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/c/token/payBeforeQueue")
-    Call<JsonToken> payBeforeJoinQueue(
+    Call<JsonToken> payBeforeQueue(
             @Header("X-R-DID")
             String did,
 

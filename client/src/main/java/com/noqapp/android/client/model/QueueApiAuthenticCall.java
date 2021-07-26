@@ -238,8 +238,8 @@ public class QueueApiAuthenticCall {
         });
     }
 
-    public void payBeforeJoinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
-        tokenQueueApiUrls.payBeforeJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
+    public void payBeforeQueue(String did, String mail, String auth, JoinQueue joinQueue) {
+        tokenQueueApiUrls.payBeforeQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
