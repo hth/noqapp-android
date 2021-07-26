@@ -88,28 +88,6 @@ public interface TokenQueueApiUrls {
 
     /**
      * Errors
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
-     */
-    @POST("open/token/historical")
-    Call<JsonTokenAndQueueList> getAllHistoricalJoinedQueue(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header ("X-R-AF")
-            String appFlavor,
-
-            @Body
-            DeviceToken deviceToken
-    );
-
-    /**
-     * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */

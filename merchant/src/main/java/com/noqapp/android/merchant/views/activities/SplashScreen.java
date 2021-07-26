@@ -26,13 +26,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 public class SplashScreen extends BaseActivity implements DeviceRegisterPresenter {
+    private String TAG = SplashScreen.class.getSimpleName();
 
     private SplashScreen splashScreen;
     private String tokenFCM = "";
     private String deviceId;
-    private String TAG = SplashScreen.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
             tokenFCM = instanceIdResult.getToken();
-            Log.d(BaseLaunchActivity.class.getSimpleName(), "New FCM Token=" + tokenFCM);
+            Log.d(TAG, "New FCM Token=" + tokenFCM);
             sendRegistrationToServer(tokenFCM);
         });
 
@@ -83,7 +82,6 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
             DeviceToken deviceToken = new DeviceToken(
                 refreshToken,
                 Constants.appVersion(),
-
                 CommonHelper.getLocation(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE));
 
             deviceId = AppInitialize.getDeviceId();
@@ -93,8 +91,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
                 deviceApiCalls.setDeviceRegisterPresenter(this);
                 deviceApiCalls.register(deviceToken);
             } else {
-                Log.e("Launch", "launching from sendRegistrationToServer");
-                Log.d(TAG, "Exist deviceId=" + deviceId);
+                Log.d(TAG, "Existing did " + deviceId);
                 Intent i = new Intent(splashScreen, LaunchActivity.class);
                 i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
                 i.putExtra("deviceId", deviceId);
@@ -134,7 +131,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
     @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
-            Log.e("Launch", "launching from deviceRegisterResponse");
+            Log.e(TAG, "Launching device register");
             deviceId = deviceRegistered.getDeviceId();
             Log.d(TAG, "Server Created deviceId=" + deviceId + "\n DeviceRegistered: " + deviceRegistered);
             Intent i = new Intent(splashScreen, LaunchActivity.class);
@@ -145,7 +142,7 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
             splashScreen.startActivity(i);
             splashScreen.finish();
         } else {
-            Log.e("Device register error: ", deviceRegistered.toString());
+            Log.e(TAG,"Device register error: " + deviceRegistered.toString());
             new CustomToast().showToast(this, "Device register error: ");
         }
     }

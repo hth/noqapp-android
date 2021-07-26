@@ -149,35 +149,6 @@ public class QueueApiAuthenticCall {
         });
     }
 
-    public void allHistoricalJoinedQueue(String did, String mail, String auth, DeviceToken deviceToken) {
-        tokenQueueApiUrls.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
-                        tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues(), response.body().isSinceBeginning());
-                    } else if (null != response.body() && null != response.body().getError()) {
-                        Log.e(TAG, "Got error allHistoricalJoinedQueue");
-                        tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        tokenAndQueuePresenter.authenticationFailure();
-                    } else {
-                        tokenAndQueuePresenter.responseErrorPresenter(response.code());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
-                tokenAndQueuePresenter.historyQueueError();
-            }
-        });
-    }
-
     public void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
         tokenQueueApiUrls.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
@@ -238,8 +209,8 @@ public class QueueApiAuthenticCall {
         });
     }
 
-    public void payBeforeJoinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
-        tokenQueueApiUrls.payBeforeJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
+    public void payBeforeQueue(String did, String mail, String auth, JoinQueue joinQueue) {
+        tokenQueueApiUrls.payBeforeQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

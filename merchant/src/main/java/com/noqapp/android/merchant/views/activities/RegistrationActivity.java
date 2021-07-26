@@ -82,15 +82,14 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         tv_transgender.setOnClickListener(this);
         edt_phoneNo.setEnabled(false);
         onClick(tv_male);
-        String phno = getIntent().getStringExtra("mobile_no");
-        if (!TextUtils.isEmpty(phno)) {
+        String phoneNumber = getIntent().getStringExtra("mobile_no");
+        if (!TextUtils.isEmpty(phoneNumber)) {
             edt_phoneNo.setEnabled(false);
-            edt_phoneNo.setText(phno);
+            edt_phoneNo.setText(phoneNumber);
         }
         edt_pwd.setText(generatePassword());
         edt_confirm_pwd.setText(edt_pwd.getText().toString());
     }
-
 
     public void action_Registration() {
         if (validate()) {
@@ -134,7 +133,6 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         dismissProgress();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -144,7 +142,6 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
                 tv_birthday.setText(date);
         }
     }
-
 
     @Override
     public void onClick(View v) {
@@ -265,7 +262,6 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
         RegisterApiCalls registerApiCalls = new RegisterApiCalls(this);
         registerApiCalls.register(UserUtils.getDeviceId(), registration);
-
     }
 
     private String generatePassword() {
