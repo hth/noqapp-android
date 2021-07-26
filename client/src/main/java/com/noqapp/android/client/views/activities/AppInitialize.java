@@ -421,7 +421,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
 
     public static void processRegisterDeviceIdResponse(DeviceRegistered deviceRegistered, Context context) {
         if (1 == deviceRegistered.getRegistered()) {
-            Log.e("Device register", "deviceRegister Success");
+            Log.d(TAG, "Device register success");
             JsonUserAddress jsonUserAddress = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), context);
             AppInitialize.cityName = jsonUserAddress.getLocationAsString();
             Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
@@ -436,11 +436,11 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             AppInitialize.location.setLatitude(locationPref.getLatitude());
             AppInitialize.location.setLongitude(locationPref.getLongitude());
         } else {
-            Log.e("Device register error: ", deviceRegistered.toString());
+            Log.e(TAG, "Device register error: " + deviceRegistered.toString());
             try {
-                new CustomToast().showToast(context, "Device register error: ");
+                new CustomToast().showToast(context, "Device registration error");
             } catch (Exception e) {
-                Log.e("BadTokenException :", "Exception caught while showing the window" + e.getLocalizedMessage());
+                Log.e(TAG, "BadTokenException exception caught while showing the window " + e.getLocalizedMessage());
             }
         }
     }
@@ -456,8 +456,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static ArrayList<String> getFavouriteList() {
         Gson gson = new Gson();
         String json = preferences.getString(KEY_FAVOURITE_CODE_QRS, null);
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
         ArrayList<String> favouriteList = gson.fromJson(json, type);
         return null == favouriteList ? new ArrayList<>() : favouriteList;
     }

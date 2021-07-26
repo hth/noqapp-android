@@ -179,7 +179,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         })
 
         homeViewModel.getReviewData(Constants.NotificationTypeConstant.FOREGROUND)
-            .observe(this, Observer {
+            .observe(this, {
                 it?.let {
                     if (it.isSkipped == "1") {
                         CustomToast().showToast(this, getString(R.string.txt_you_were_skipped))
@@ -306,8 +306,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setUpNavigation() {
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
         activityHomeBinding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
@@ -668,8 +667,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setBadgeCount(context: Context, res: Int, badgeCount: Int): Drawable? {
-        val icon =
-            ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
+        val icon = ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
         val mainIcon = ContextCompat.getDrawable(context, res)
         val badge = BadgeDrawable(context)
         badge.setCount(badgeCount.toString())
@@ -813,8 +811,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             homeViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(codeQR)
                 if (jsonTokenAndQueueArrayList?.size == 1) {
-                    FirebaseMessaging.getInstance()
-                        .unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
                 }
             }
         } else {

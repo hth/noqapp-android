@@ -552,7 +552,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     new CustomToast().showToast(
                             this,
                             "Please complete your transaction within " + BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
-                    queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                    queueApiAuthenticCall.payBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 } else {
                     queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 }

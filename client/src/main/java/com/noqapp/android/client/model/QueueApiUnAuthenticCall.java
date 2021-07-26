@@ -202,40 +202,6 @@ public class QueueApiUnAuthenticCall {
     }
 
     /**
-     * Get all historical queues client had joined.
-     *
-     * @param did
-     */
-    public void getAllHistoricalJoinedQueue(String did, DeviceToken deviceToken) {
-        tokenQueueApiUrls.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (response.body() != null && response.body().getError() == null) {
-                        Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
-                        tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues(), response.body().isSinceBeginning());
-                    } else if (response.body() != null && response.body().getError() != null) {
-                        Log.e(TAG, "Got error");
-                        tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        tokenAndQueuePresenter.authenticationFailure();
-                    } else {
-                        tokenAndQueuePresenter.responseErrorPresenter(response.code());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
-                tokenAndQueuePresenter.historyQueueError();
-            }
-        });
-    }
-
-    /**
      * Client request to join a queue.
      *
      * @param did
