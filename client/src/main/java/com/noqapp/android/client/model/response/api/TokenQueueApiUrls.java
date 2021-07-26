@@ -101,7 +101,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_JOIN_FAILED_PAYMENT_CALL_REQUEST}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/token/joinQueue")
+    @POST("api/c/token/v1/joinQueue")
     Call<JsonToken> joinQueue(
             @Header("X-R-DID")
             String did,
