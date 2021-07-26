@@ -36,18 +36,22 @@ import static com.noqapp.android.client.utils.Constants.REQUEST_CHECK_SETTINGS;
  */
 public abstract class LocationBaseActivity extends BaseActivity {
     public abstract void displayAddressOutput(
-        String addressOutput,
-        String countryShortName,
-        String area,
-        String town,
-        String district,
-        String state,
-        String stateShortName,
-        Double latitude,
-        Double longitude
+            String addressOutput,
+            String countryShortName,
+            String area,
+            String town,
+            String district,
+            String state,
+            String stateShortName,
+            Double latitude,
+            Double longitude
     );
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    private boolean shouldRedirectToSettings = false;
+
+    public abstract void locationPermissionRequired();
+    protected abstract void locationPermissionGranted();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,25 +64,27 @@ public abstract class LocationBaseActivity extends BaseActivity {
         getCurrentLocation();
     }
 
-    private void getCurrentLocation() {
+    public void getCurrentLocation() {
         if (!checkLocationPermission()) {
-            requestPermissions();
+            locationPermissionRequired();
         } else {
+            locationPermissionGranted();
             checkLocationSettings();
         }
     }
 
+
     public void showSnackbar(int mainTextStringId, int actionStringId, View.OnClickListener listener) {
         Snackbar.make(findViewById(android.R.id.content), getString(mainTextStringId),
-            Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(actionStringId), listener)
-            .show();
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(actionStringId), listener)
+                .show();
     }
 
     public void showSnackbar(int mainTextStringId) {
         Snackbar.make(findViewById(android.R.id.content), getString(mainTextStringId),
-            Snackbar.LENGTH_SHORT)
-            .show();
+                Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     private boolean checkLocationPermission() {
@@ -86,22 +92,29 @@ public abstract class LocationBaseActivity extends BaseActivity {
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void requestPermissions() {
+    public void requestPermissions() {
         boolean shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION);
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (shouldProvideRationale) {
-            showSnackbar(R.string.permission_rationale, android.R.string.ok,
-                v -> ActivityCompat.requestPermissions(
-                    LocationBaseActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_PERMISSIONS_REQUEST_CODE));
-        } else {
             ActivityCompat.requestPermissions(
-                this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_PERMISSIONS_REQUEST_CODE);
+                    this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_PERMISSIONS_REQUEST_CODE);
+        } else {
+            if (shouldRedirectToSettings) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.fromParts("package", BuildConfig.APPLICATION_ID, null));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_PERMISSIONS_REQUEST_CODE);
+            }
         }
     }
 
@@ -114,15 +127,8 @@ public abstract class LocationBaseActivity extends BaseActivity {
         } else if (PackageManager.PERMISSION_GRANTED == grantResults[0]) {
             getCurrentLocation();
         } else {
-            showSnackbar(R.string.permission_denied_explanation, R.string.action_settings,
-                v -> {
-                    // Build intent that displays the App settings screen.
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.setData(Uri.fromParts("package", BuildConfig.APPLICATION_ID, null));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                });
+            shouldRedirectToSettings = true;
+            locationPermissionRequired();
         }
     }
 

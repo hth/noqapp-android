@@ -102,7 +102,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var isRateUsFirstTime = true
     private var searchStoreQuery: SearchStoreQuery? = null
 
-    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds =
+        CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -110,6 +111,14 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             this,
             ViewModelProvider.AndroidViewModelFactory(application)
         )[HomeViewModel::class.java]
+    }
+
+    override fun locationPermissionRequired() {
+        activityHomeBinding.clLocationAccessRequired.visibility = View.VISIBLE
+    }
+
+    override fun locationPermissionGranted() {
+        activityHomeBinding.clLocationAccessRequired.visibility = View.GONE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,7 +202,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         homeViewModel.notificationListLiveData.observe(this, {
             it?.let { displayNotificationList ->
                 if (displayNotificationList.isNotEmpty()) {
-                    val displayNotification = displayNotificationList.last()
+                    val displayNotification = displayNotificationList.first()
                     if (!displayNotification.popUpShown) {
                         ShowAlertInformation.showInfoDisplayDialog(
                             this,
@@ -258,6 +267,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             navController.navigate(R.id.changeLocationFragment)
         }
 
+        activityHomeBinding.btnAllowLocationAccess.setOnClickListener {
+            requestPermissions()
+        }
+
         navHeaderMainBinding.root.setOnClickListener {
             if (UserUtils.isLogin()) {
                 val intent = Intent(this, UserProfileActivity::class.java)
@@ -294,7 +307,12 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                    .load(
+                        AppUtils.getImageUrls(
+                            BuildConfig.PROFILE_BUCKET,
+                            AppInitialize.getUserProfileUri()
+                        )
+                    )
                     .placeholder(ImageUtils.getProfilePlaceholder(this))
                     .error(ImageUtils.getProfileErrorPlaceholder(this))
                     .into(navHeaderMainBinding.ivProfile)
@@ -306,7 +324,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setUpNavigation() {
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
         activityHomeBinding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
@@ -667,7 +686,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setBadgeCount(context: Context, res: Int, badgeCount: Int): Drawable? {
-        val icon = ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
+        val icon =
+            ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
         val mainIcon = ContextCompat.getDrawable(context, res)
         val badge = BadgeDrawable(context)
         badge.setCount(badgeCount.toString())
@@ -811,7 +831,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             homeViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(codeQR)
                 if (jsonTokenAndQueueArrayList?.size == 1) {
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+                    FirebaseMessaging.getInstance()
+                        .unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
                 }
             }
         } else {

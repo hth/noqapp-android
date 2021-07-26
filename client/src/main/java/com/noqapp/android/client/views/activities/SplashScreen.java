@@ -40,6 +40,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     private static String tokenFCM = "";
     private static String deviceId = "";
     private ConstraintLayout clAllowLocationPermission;
+    private Button btnAllowLocationPermission;
 
     @Override
     public void displayAddressOutput(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
@@ -53,10 +54,10 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
         AppInitialize.cityName = city;
         LocationPref locationPref = AppInitialize.getLocationPreference()
-            .setArea(area)
-            .setTown(town)
-            .setLatitude(latitude)
-            .setLongitude(longitude);
+                .setArea(area)
+                .setTown(town)
+                .setLatitude(latitude)
+                .setLongitude(longitude);
         AppInitialize.setLocationPreference(locationPref);
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
@@ -65,6 +66,16 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             AppInitialize.setTokenFCM(token);
             sendRegistrationToServer(tokenFCM, AppInitialize.location);
         });
+    }
+
+    @Override
+    public void locationPermissionRequired() {
+        clAllowLocationPermission.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void locationPermissionGranted() {
+        clAllowLocationPermission.setVisibility(View.GONE);
     }
 
     @Override
@@ -77,6 +88,11 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         animationView.playAnimation();
         animationView.setRepeatCount(10);
         clAllowLocationPermission = findViewById(R.id.cl_location_access_required);
+        btnAllowLocationPermission = findViewById(R.id.btn_allow_location_access);
+
+        btnAllowLocationPermission.setOnClickListener(v -> {
+            requestPermissions();
+        });
 
         if (StringUtils.isBlank(tokenFCM) && new NetworkUtil(this).isNotOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -124,10 +140,10 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
             if (0.0 == locationPref.getLatitude() && 0.0 == locationPref.getLatitude()) {
                 locationPref
-                    .setArea(jsonUserAddress.getArea())
-                    .setTown(jsonUserAddress.getTown())
-                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                        .setArea(jsonUserAddress.getArea())
+                        .setTown(jsonUserAddress.getTown())
+                        .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                        .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
                 AppInitialize.setLocationPreference(locationPref);
                 Location location = new Location("");
                 location.setLatitude(locationPref.getLatitude());

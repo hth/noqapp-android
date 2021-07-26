@@ -28,6 +28,7 @@ import com.noqapp.android.common.beans.JsonUserAddressList
  * Created by Vivek Jha on 21/03/2021
  */
 class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAddressPresenter {
+
     private lateinit var addAddressBinding: ActivityAddAddressBinding
     private var googleMap: GoogleMap? = null
     private lateinit var clientProfileApiCall: ClientProfileApiCall
@@ -62,6 +63,10 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
                 addAddress()
         }
 
+        addAddressBinding.btnAllowLocationAccess.setOnClickListener {
+            requestPermissions()
+        }
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
     }
@@ -93,28 +98,39 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     }
 
     private fun addAddress() {
-        val address = addAddressBinding.etName.text.toString() + ", " + addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddress.text.toString()
+        val address =
+            addAddressBinding.etName.text.toString() + ", " + addAddressBinding.etHouseBuilding.text.toString() + ", " + addAddressBinding.etAddress.text.toString()
 
         val jsonUserAddress = JsonUserAddress()
-                .setCustomerName(addAddressBinding.etName.text.toString())
-                .setAddress(address)
-                .setCountryShortName(countryShortName)
-                .setArea(area)
-                .setTown(town)
-                .setDistrict(district)
-                .setState(state)
-                .setStateShortName(stateShortName)
-                .setLatitude(latitude.toString())
-                .setLongitude(longitude.toString())
+            .setCustomerName(addAddressBinding.etName.text.toString())
+            .setAddress(address)
+            .setCountryShortName(countryShortName)
+            .setArea(area)
+            .setTown(town)
+            .setDistrict(district)
+            .setState(state)
+            .setStateShortName(stateShortName)
+            .setLatitude(latitude.toString())
+            .setLongitude(longitude.toString())
 
         showProgress()
-        clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
+        clientProfileApiCall.addProfileAddress(
+            UserUtils.getEmail(),
+            UserUtils.getAuth(),
+            jsonUserAddress
+        )
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
         }
@@ -124,15 +140,15 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     }
 
     override fun displayAddressOutput(
-            addressOutput: String?,
-            countryShortName: String?,
-            area: String?,
-            town: String?,
-            district: String?,
-            state: String?,
-            stateShortName: String?,
-            latitude: Double?,
-            longitude: Double?
+        addressOutput: String?,
+        countryShortName: String?,
+        area: String?,
+        town: String?,
+        district: String?,
+        state: String?,
+        stateShortName: String?,
+        latitude: Double?,
+        longitude: Double?
     ) {
         latitude?.let { lat ->
             longitude?.let { lng ->
@@ -166,9 +182,24 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
                 addAddressBinding.etName.setText(AppInitialize.getUserProfile().name)
 
                 addAddressBinding.etAddress.setText(addressOutput)
-                animateCamera((CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLatLng, 16.0f))))
+                animateCamera(
+                    (CameraUpdateFactory.newCameraPosition(
+                        CameraPosition.fromLatLngZoom(
+                            currentLatLng,
+                            16.0f
+                        )
+                    ))
+                )
             }
         }
+    }
+
+    override fun locationPermissionRequired() {
+        addAddressBinding.cvLocationAccessRequired.visibility = View.VISIBLE
+    }
+
+    override fun locationPermissionGranted() {
+        addAddressBinding.cvLocationAccessRequired.visibility = View.GONE
     }
 
     override fun profileAddressResponse(jsonUserAddressList: JsonUserAddressList?) {
