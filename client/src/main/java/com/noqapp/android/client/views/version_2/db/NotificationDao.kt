@@ -9,6 +9,9 @@ interface NotificationDao {
     @Query("SELECT * FROM notification ORDER BY created_date DESC")
     fun getNotificationsList(): LiveData<List<DisplayNotification>>
 
+    @Query("SELECT * FROM notification ORDER BY created_date DESC")
+    suspend fun getNotifications(): List<DisplayNotification>
+
     @Query("SELECT COUNT(*) FROM notification WHERE status = :status")
     fun getNotificationCount(status: String): LiveData<Int>
 

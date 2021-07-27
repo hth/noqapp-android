@@ -37,6 +37,7 @@ import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
 import com.noqapp.android.client.views.customviews.BadgeDrawable
+import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
@@ -351,9 +352,22 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
     private fun updateNotificationBadgeCount() {
 
-        homeViewModel.notificationCountLiveData.observe(this, { notificationCount ->
-            notificationCount?.let {
-                activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number = it
+        homeViewModel.notificationCountLiveData.observe(this, { nc ->
+            nc?.let { notificationCount ->
+
+                if (notificationCount > 0)
+                    activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number =
+                        notificationCount
+                else
+                    activityHomeBinding.bottomNavigationView.removeBadge(R.id.menuNotification)
+
+                navController.currentDestination?.id?.let {
+                    when (it) {
+                        R.id.notificationFragment, R.id.action_favourites_to_notification -> {
+                            activityHomeBinding.bottomNavigationView.removeBadge(R.id.menuNotification)
+                        }
+                    }
+                }
             }
         })
 
@@ -759,6 +773,15 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                         else -> navController.navigate(R.id.notificationFragment)
                     }
                 }
+
+                homeViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    val notificationsList = homeViewModel.getNotifications()
+                    notificationsList.forEach {
+                        it.status = Constants.KEY_READ
+                        homeViewModel.updateDisplayNotification(it)
+                    }
+                }
+
                 return true
             }
             R.id.menuSearch -> {

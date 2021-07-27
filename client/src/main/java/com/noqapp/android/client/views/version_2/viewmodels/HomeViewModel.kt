@@ -275,6 +275,10 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         }
     }
 
+    suspend fun getNotifications(): List<DisplayNotification> {
+        return NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotifications()
+    }
+
     fun updateDisplayNotification(displayNotification: DisplayNotification) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -323,4 +327,5 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
             NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().clearTokenAndQueue()
         }
     }
+
 }
