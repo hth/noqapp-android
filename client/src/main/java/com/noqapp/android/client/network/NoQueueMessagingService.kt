@@ -686,7 +686,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         }
 
                         val prefs = applicationContext.getSharedPreferences(Constants.APP_PACKAGE, MODE_PRIVATE)
-                        val lastServingNumber = prefs.getString(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), "0")
+                        //val lastServingNumber = prefs.getString(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), "0")
                         if (AppUtils.isAppIsInBackground(applicationContext)) {
                             // Check if User's turn then start Buzzer.
 
