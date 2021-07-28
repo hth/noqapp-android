@@ -26,7 +26,7 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext),
     SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
-    val TAG = HomeViewModel::class.java.simpleName
+    val TAG: String = HomeViewModel::class.java.simpleName
 
     val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
@@ -247,12 +247,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
-                    .updateCurrentListQueueObject(
-                        codeQR,
-                        servingNumber,
-                        displayServingNumber,
-                        token
-                    )
+                    .updateCurrentListQueueObject(codeQR, servingNumber, displayServingNumber, token)
             }
         }
     }
@@ -327,5 +322,4 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
             NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().clearTokenAndQueue()
         }
     }
-
 }
