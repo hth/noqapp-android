@@ -90,6 +90,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
                     holder.tv_distance_unit.setVisibility(View.INVISIBLE);
                     holder.tv_distance_away.setVisibility(View.INVISIBLE);
                     holder.rl_distance.setVisibility(View.INVISIBLE);
+                    holder.tv_phoneno.setVisibility(View.INVISIBLE);
                     break;
                 default:
                     holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
