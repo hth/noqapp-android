@@ -150,6 +150,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
                 location.setLongitude(locationPref.getLongitude());
             }
 
+
             callLaunchScreen();
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
@@ -163,12 +164,12 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             deviceId = AppInitialize.getDeviceId();
             if (TextUtils.isEmpty(deviceId)) {
                 /* Call this api only once in life time. */
-                DeviceApiCall deviceModel = new DeviceApiCall();
-                deviceModel.setDeviceRegisterPresenter(this);
+                DeviceApiCall deviceApiCall = new DeviceApiCall();
+                deviceApiCall.setDeviceRegisterPresenter(this);
                 if (UserUtils.isLogin()) {
-                    deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+                    deviceApiCall.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
                 } else {
-                    deviceModel.register(deviceToken);
+                    deviceApiCall.register(deviceToken);
                 }
             } else {
                 Log.d(TAG, "Existing did " + deviceId);
@@ -197,11 +198,6 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     }
 
     @Override
-    public void authenticationFailure() {
-
-    }
-
-    @Override
     public void responseErrorPresenter(int errorCode) {
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
@@ -216,4 +212,5 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             finish();
         }
     }
+
 }

@@ -31,6 +31,7 @@ import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.databinding.NavHeaderMainBinding
+import com.noqapp.android.client.model.DeviceApiCall
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
@@ -102,6 +103,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var textToSpeechHelper: TextToSpeechHelper? = null
     private var isRateUsFirstTime = true
     private var searchStoreQuery: SearchStoreQuery? = null
+    private var checkIfAppIsSupported = true
 
     private val cacheMsgIds =
         CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
@@ -130,6 +132,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         textToSpeechHelper = TextToSpeechHelper(applicationContext)
 
         setUpExpandableList(UserUtils.isLogin())
+
+        if (checkIfAppIsSupported) {
+            checkIfAppIsSupportedAnyMore()
+        }
+
         updateNotificationBadgeCount()
         setUpNavigation()
 
@@ -145,6 +152,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             AppInitialize.setTokenFCM(token)
             reCreateDeviceID(this, this)
         }
+    }
+
+    private fun checkIfAppIsSupportedAnyMore() {
+        val deviceApiCall = DeviceApiCall()
+        deviceApiCall.isSupportedAppVersion()
     }
 
     private fun showLoginScreen() {
