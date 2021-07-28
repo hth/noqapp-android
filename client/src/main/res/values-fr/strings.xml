@@ -494,9 +494,6 @@
     <string name="no_geocoder_available">No geocoder available</string>
     <string name="no_location_data_provided">Aucun géocodeur disponible</string>
     <string name="service_not_available">Désolé, le service n\'est pas disponible</string>
-    <string name="permission_denied_explanation">L\'autorisation a été refusée, mais est nécessaire pour les fonctionnalités de base</string>
-    <string name="permission_rationale">L\'autorisation de localisation est nécessaire pour les fonctionnalités de base</string>
-    <string name="permission_contacts_rationale">L\'autorisation des contacts est nécessaire pour les fonctionnalités de base</string>
     <string name="txt_name_required">Nom complet (obligatoire)*</string>
     <string name="txt_house_no_building">N ° de maison/bâtiment (obligatoire)*</string>
     <string name="txt_address_line_1">Adresse (obligatoire)*</string>
@@ -576,5 +573,9 @@
     <string name="txt_you_were_skipped">Vous avez été ignoré</string>
     <string name="txt_please_login_to_view_profile">Veuillez vous connecter pour voir le profil</string>
     <string name="txt_please_login_to_see_the_details">Veuillez vous connecter pour voir les détails</string>
+
+    <string name="txt_location_permission_title">Autorisation de localisation</string>
+    <string name="txt_location_allow_access_label">Veuillez autoriser l\'emplacement à trouver les magasins les plus proches de chez vous</string>
+    <string name="txt_location_enable_button">Location disponible</string>
 
 </resources>

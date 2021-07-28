@@ -7,4 +7,5 @@
     <color name="download_circle_bg">@android:color/darker_gray</color>
     <color name="colorAccent">#aa22ee</color>
     <color name="color_green_toast">#227E5E</color>
+    <color name="colorMobile">#f4511e</color>
 </resources>

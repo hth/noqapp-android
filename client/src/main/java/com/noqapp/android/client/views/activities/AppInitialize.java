@@ -64,6 +64,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     private static final String KEY_PREVIOUS_USER_QID = "previousUserQID";
     private static final String KEY_USER_PROFILE = "userProfile";
     private static final String KEY_FAVOURITE_CODE_QRS = "favouriteCodeQR";
+    private static final String KEY_LOCATION_CHANGED_MANUALLY = "locationChangeManually";
     /* Secured Shared Preference. */
     public static final String TOKEN_FCM = "tokenFCM";
     public static ActivityCommunicator activityCommunicator;
@@ -153,6 +154,14 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
 
     public static String getUserName() {
         return preferences.getString(PREKEY_NAME, "Guest User");
+    }
+
+    public static boolean isLocationChangedManually() {
+        return preferences.getBoolean(KEY_LOCATION_CHANGED_MANUALLY, false);
+    }
+
+    public static void setLocationChangedManually(boolean flag) {
+        preferences.edit().putBoolean(KEY_LOCATION_CHANGED_MANUALLY, flag).apply();
     }
 
     public static String getUserDOB() {
@@ -409,9 +418,9 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         DeviceApiCall deviceModel = new DeviceApiCall();
         deviceModel.setDeviceRegisterPresenter(deviceRegisterPresenter);
         DeviceToken deviceToken = new DeviceToken(
-            AppInitialize.getTokenFCM(),
-            Constants.appVersion(),
-            CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
+                AppInitialize.getTokenFCM(),
+                Constants.appVersion(),
+                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
         if (UserUtils.isLogin()) {
             deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
@@ -427,10 +436,10 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
             Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
 
             LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setArea(jsonUserAddress.getArea())
-                .setTown(jsonUserAddress.getTown())
-                .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                    .setArea(jsonUserAddress.getArea())
+                    .setTown(jsonUserAddress.getTown())
+                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
             AppInitialize.setLocationPreference(locationPref);
             AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
             AppInitialize.location.setLatitude(locationPref.getLatitude());
@@ -456,7 +465,8 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static ArrayList<String> getFavouriteList() {
         Gson gson = new Gson();
         String json = preferences.getString(KEY_FAVOURITE_CODE_QRS, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
         ArrayList<String> favouriteList = gson.fromJson(json, type);
         return null == favouriteList ? new ArrayList<>() : favouriteList;
     }

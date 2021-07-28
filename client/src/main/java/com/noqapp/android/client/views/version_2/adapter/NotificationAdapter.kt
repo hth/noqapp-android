@@ -18,11 +18,14 @@ import com.noqapp.android.client.utils.GetTimeAgoUtils
 import com.noqapp.android.common.pojos.DisplayNotification
 import com.noqapp.android.common.utils.CommonHelper
 import com.squareup.picasso.Picasso
-import java.util.*
+import java.util.Date
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class NotificationAdapter(private val notificationList: List<DisplayNotification>, val onClickListener: (DisplayNotification) -> Unit) :
+class NotificationAdapter(
+    private val notificationList: MutableList<DisplayNotification>,
+    val onClickListener: (DisplayNotification) -> Unit
+) :
     RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     inner class NotificationViewHolder(private val listItemNotificationBinding: ListItemNotificationBinding) :
@@ -59,7 +62,8 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
                 listItemNotificationBinding.ivBigImage.visibility = View.GONE
             } else {
                 listItemNotificationBinding.ivBigImage.visibility = View.VISIBLE
-                Picasso.get().load(displayNotification.imageUrl).into(listItemNotificationBinding.ivBigImage)
+                Picasso.get().load(displayNotification.imageUrl)
+                    .into(listItemNotificationBinding.ivBigImage)
             }
         }
 
@@ -106,7 +110,8 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_notification, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.list_item_notification, parent, false)
         return NotificationViewHolder(ListItemNotificationBinding.bind(view))
     }
 
@@ -116,5 +121,11 @@ class NotificationAdapter(private val notificationList: List<DisplayNotification
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         holder.bind(notificationList[position])
+    }
+
+    fun addNotifications(notificationsList: List<DisplayNotification>) {
+        this.notificationList.clear()
+        this.notificationList.addAll(notificationsList)
+        notifyDataSetChanged()
     }
 }

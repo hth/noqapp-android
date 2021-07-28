@@ -53,7 +53,6 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
-
 class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresenter {
     private val TAG = NoQueueMessagingService::class.java.simpleName
 
@@ -293,39 +292,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                             }
                         }
 
-                        if (jsonData is JsonAlertData) {
-                            Log.e("IN JsonAlertData", jsonData.toString())
-                            val displayNotification = DisplayNotification()
-                            displayNotification.type = Constants.KEY_NOTIFY
-                            displayNotification.codeQR = jsonData.codeQR
-                            //TODO(vivek) from my point of view it is wrong....lets discuss more bot it by vivek
-                            displayNotification.body = jsonData.getLocalLanguageMessageBody(
-                                AppUtils.getSelectedLanguage(applicationContext)
-                            )
-                            displayNotification.title = jsonData.title
-                            displayNotification.businessType = jsonData.businessType
-                            displayNotification.imageUrl = jsonData.imageURL
-                            displayNotification.key = getKey(jsonData.id)
-                            displayNotification.status = Constants.KEY_UNREAD
-                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
-                            displayNotification.popUpShown = false
-
-                            GlobalScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
-                                        .notificationDao()
-                                        .insertNotification(displayNotification)
-                                }
-                            }
-                            if (AppUtils.isAppIsInBackground(this@NoQueueMessagingService)) {
-                                sendNotification(
-                                    title,
-                                    jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext)),
-                                    false,
-                                    imageUrl
-                                )
-                            }
-                        } else if (jsonData is JsonClientData) {
+                        if (jsonData is JsonClientData) {
                             Log.e("In JsonClientData", jsonData.toString())
                             val token = jsonData.token.toString()
                             val qid = jsonData.queueUserId
@@ -514,32 +481,32 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 false,
                                 imageUrl)
                         }
+                    }
 
-                        if (jsonData is JsonAlertData) {
-                            /* When app is on background. Adding to notification table. */
-                            Log.e("IN JsonAlertData", jsonData.toString())
-                            val displayNotification = DisplayNotification()
-                            displayNotification.type = Constants.KEY_NOTIFY
-                            displayNotification.codeQR = jsonData.codeQR
-                            displayNotification.key = getKey(jsonData.id)
-                            //from my point of view it is wrong....lets discuss more bot it
-                            displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
-                            displayNotification.title = jsonData.title
-                            displayNotification.businessType = jsonData.businessType
-                            displayNotification.imageUrl = jsonData.imageURL
-                            displayNotification.status = Constants.KEY_UNREAD
-                            displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
-                            displayNotification.popUpShown = false
+                    if (jsonData is JsonAlertData) {
+                        Log.e("IN JsonAlertData", jsonData.toString())
+                        val displayNotification = DisplayNotification()
+                        displayNotification.type = Constants.KEY_NOTIFY
+                        displayNotification.codeQR = jsonData.codeQR
+                        //TODO(vivek) from my point of view it is wrong....lets discuss more bot it by vivek
+                        displayNotification.body = jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(applicationContext))
+                        displayNotification.title = jsonData.title
+                        displayNotification.businessType = jsonData.businessType
+                        displayNotification.imageUrl = jsonData.imageURL
+                        displayNotification.key = getKey(jsonData.id)
+                        displayNotification.status = Constants.KEY_UNREAD
+                        displayNotification.createdDate = CommonHelper.changeUTCDateToString(Date())
+                        displayNotification.popUpShown = false
 
-                            GlobalScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
-                                        .notificationDao()
-                                        .insertNotification(displayNotification)
-                                }
+                        GlobalScope.launch {
+                            withContext(Dispatchers.IO) {
+                                NoQueueAppDB.dbInstance(this@NoQueueMessagingService)
+                                    .notificationDao()
+                                    .insertNotification(displayNotification)
                             }
                         }
                     }
+
                 } else if (StringUtils.isNotBlank(payload) && payload.equals(FirebaseMessageTypeEnum.C.getName(), ignoreCase = true)) {
                     when (jsonData) {
                         is JsonAlertData -> {
@@ -634,7 +601,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
         imageUrl: String?
     ) {
         try {
-            var go_to = ""
+            var goTo = ""
             var messageOrigin = ""
             var currentServing = ""
             var displayServingNumber = ""
@@ -645,7 +612,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 val jsonTopicQueueData = jsonData
                 currentServing = jsonTopicQueueData.currentlyServing.toString()
                 displayServingNumber = jsonTopicQueueData.displayServingNumber
-                go_to = jsonTopicQueueData.goTo
+                jsonTopicQueueData.goTo?.let {
+                    goTo = jsonTopicQueueData.goTo
+                }
                 messageOrigin = jsonTopicQueueData.messageOrigin.name
                 jsonTextToSpeeches = jsonData.getJsonTextToSpeeches()
                 msgId = jsonTopicQueueData.messageId
@@ -654,7 +623,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 currentServing = jsonTopicOrderData.currentlyServing.toString()
                 displayServingNumber = jsonTopicOrderData.displayServingNumber
                 jsonTopicOrderData.goTo?.let {
-                    go_to = jsonTopicOrderData.goTo
+                    goTo = jsonTopicOrderData.goTo
                 }
                 messageOrigin = jsonTopicOrderData.messageOrigin.name
                 purchaseOrderStateEnum = jsonTopicOrderData.purchaseOrderState
@@ -700,7 +669,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         foregroundNotificationModel.currentServing = currentServing
                         foregroundNotificationModel.displayServingNumber = displayServingNumber
                         foregroundNotificationModel.jsonTextToSpeeches = jsonTextToSpeeches
-                        foregroundNotificationModel.goTo = go_to
+                        foregroundNotificationModel.goTo = goTo
                         foregroundNotificationModel.messageOrigin = messageOrigin
                         foregroundNotificationModel.msgId = msgId
                         foregroundNotificationModel.purchaseOrderStateEnum = purchaseOrderStateEnum
@@ -717,7 +686,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         }
 
                         val prefs = applicationContext.getSharedPreferences(Constants.APP_PACKAGE, MODE_PRIVATE)
-                        val lastServingNumber = prefs.getString(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), "0")
+                        //val lastServingNumber = prefs.getString(String.format(Constants.CURRENTLY_SERVING_PREF_KEY, codeQR), "0")
                         if (AppUtils.isAppIsInBackground(applicationContext)) {
                             // Check if User's turn then start Buzzer.
 
@@ -731,8 +700,11 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     }
                                     else -> {
                                         val avgServiceTime =
-                                            if (jtk.averageServiceTime == 0L) prefs.getLong(java.lang.String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0)
-                                            else jtk.averageServiceTime
+                                            if (jtk.averageServiceTime == 0L) {
+                                                prefs.getLong(java.lang.String.format(Constants.ESTIMATED_WAIT_TIME_PREF_KEY, codeQR), 0)
+                                            } else {
+                                                jtk.averageServiceTime
+                                            }
                                         val waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
                                             avgServiceTime,
                                             jtk.afterHowLong(),
@@ -745,7 +717,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                     }
                                 }
                             } catch (e: java.lang.Exception) {
-                                Log.e("", "Error setting wait time reason: " + e.localizedMessage, e)
+                                Log.e(TAG, "Error setting wait time reason: " + e.localizedMessage, e)
                             }
 
                             // Check if User's turn then start Buzzer.
@@ -809,7 +781,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     title,
                     jsonData.getLocalLanguageMessageBody(AppUtils.getSelectedLanguage(this)),
                     false,
-                    imageUrl);
+                    imageUrl)
             }
         }
     }
@@ -1137,7 +1109,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         .bigLargeIcon(null)
                 )
             }
-            val stackBuilder = TaskStackBuilder.create(getApplicationContext())
+            val stackBuilder = TaskStackBuilder.create(applicationContext)
             stackBuilder.addNextIntent(notificationIntent)
             val resultPendingIntent = stackBuilder.getPendingIntent(Constants.requestCodeNotification, PendingIntent.FLAG_UPDATE_CURRENT)
             mBuilder.setContentIntent(resultPendingIntent)

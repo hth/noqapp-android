@@ -5,19 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.databinding.FragmentNotificationBinding
 import com.noqapp.android.client.utils.AnalyticsEvents
 import com.noqapp.android.client.utils.AppUtils
+import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.ShowCustomDialog
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.adapter.NotificationAdapter
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.pojos.DisplayNotification
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NotificationFragment: BaseFragment() {
 
     private lateinit var fragmentNotificationBinding: FragmentNotificationBinding
+    private lateinit var adapter: NotificationAdapter
 
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
@@ -30,22 +35,29 @@ class NotificationFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setUpRecyclerView()
         loadListData()
         if (AppUtils.isRelease()) {
             AnalyticsEvents.logContentEvent(AnalyticsEvents.EVENT_NOTIFICATION_SCREEN)
         }
     }
 
+    private fun setUpRecyclerView() {
+        adapter = NotificationAdapter(mutableListOf()) {
+            deleteNotification(it)
+        }
+
+        fragmentNotificationBinding.rvNotification.layoutManager = LinearLayoutManager(requireContext())
+        fragmentNotificationBinding.rvNotification.adapter = adapter
+    }
+
     private fun loadListData() {
 
         homeViewModel.notificationListLiveData.observe(viewLifecycleOwner, { notificationsList->
 
-            val adapter = NotificationAdapter(notificationsList) {
-                deleteNotification(it)
-            }
+            adapter.addNotifications(notificationsList)
 
-            fragmentNotificationBinding.rvNotification.layoutManager = LinearLayoutManager(requireContext())
-            fragmentNotificationBinding.rvNotification.adapter = adapter
             if (notificationsList.isEmpty()) {
                 fragmentNotificationBinding.rvNotification.visibility = View.GONE
                 fragmentNotificationBinding.rlEmpty.visibility = View.VISIBLE
@@ -53,6 +65,7 @@ class NotificationFragment: BaseFragment() {
                 fragmentNotificationBinding.rvNotification.visibility = View.VISIBLE
                 fragmentNotificationBinding.rlEmpty.visibility = View.GONE
             }
+
         })
     }
 

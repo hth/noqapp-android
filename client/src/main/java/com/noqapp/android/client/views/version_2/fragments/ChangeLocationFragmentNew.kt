@@ -18,18 +18,27 @@ import com.noqapp.android.client.location.LocationManager
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.AnalyticsEvents
 import com.noqapp.android.client.utils.AppUtils
+import com.noqapp.android.client.views.activities.AppInitialize
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 
-class ChangeLocationFragmentNew : Fragment(), (String?, String?, String?, String?, String?, String?, String?, Double, Double) -> Unit {
+class ChangeLocationFragmentNew : Fragment(),
+        (String?, String?, String?, String?, String?, String?, String?, Double, Double) -> Unit {
 
     private lateinit var changeLocationBinding: FragmentChangeLocationBinding
 
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
+        ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        )[HomeViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         changeLocationBinding = FragmentChangeLocationBinding.inflate(inflater, container, false)
         return changeLocationBinding.root
     }
@@ -50,7 +59,12 @@ class ChangeLocationFragmentNew : Fragment(), (String?, String?, String?, String
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setUpAutoCompleteTextView() {
-        changeLocationBinding.autoCompleteTextView.setAdapter(GooglePlacesAutocompleteAdapter(requireActivity(), R.layout.list_item))
+        changeLocationBinding.autoCompleteTextView.setAdapter(
+            GooglePlacesAutocompleteAdapter(
+                requireActivity(),
+                R.layout.list_item
+            )
+        )
         changeLocationBinding.autoCompleteTextView.setOnItemClickListener { parent: AdapterView<*>, _: View?, position: Int, _: Long ->
             try {
                 val cityName = parent.getItemAtPosition(position) as String
@@ -62,6 +76,7 @@ class ChangeLocationFragmentNew : Fragment(), (String?, String?, String?, String
                 searchStoreQuery.filters = ""
                 searchStoreQuery.scrollId = ""
                 homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
+                AppInitialize.setLocationChangedManually(true)
                 AppUtils.hideKeyBoard(activity)
                 findNavController().navigateUp()
             } catch (e: Exception) {
@@ -73,7 +88,9 @@ class ChangeLocationFragmentNew : Fragment(), (String?, String?, String?, String
             val DRAWABLE_RIGHT = 2
             val DRAWABLE_LEFT = 0
             if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= changeLocationBinding.autoCompleteTextView.getRight() - changeLocationBinding.autoCompleteTextView.getCompoundDrawables().get(DRAWABLE_RIGHT).getBounds().width()) {
+                if (event.rawX >= changeLocationBinding.autoCompleteTextView.getRight() - changeLocationBinding.autoCompleteTextView.getCompoundDrawables()
+                        .get(DRAWABLE_RIGHT).getBounds().width()
+                ) {
                     changeLocationBinding.autoCompleteTextView.setText("")
                 }
             }
@@ -83,11 +100,24 @@ class ChangeLocationFragmentNew : Fragment(), (String?, String?, String?, String
             AnalyticsEvents.logContentEvent(AnalyticsEvents.EVENT_CHANGE_LOCATION)
         }
         changeLocationBinding.autoCompleteTextView.requestFocus()
-        val im = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val im =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         im.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
     }
 
-    override fun invoke(address: String?, countryShortName: String?, area: String?, town: String?, district: String?, state: String?, stateShortName: String?, latitude: Double, longitude: Double) {
+    override fun invoke(
+        address: String?,
+        countryShortName: String?,
+        area: String?,
+        town: String?,
+        district: String?,
+        state: String?,
+        stateShortName: String?,
+        latitude: Double,
+        longitude: Double
+    ) {
+        AppUtils.setAutoCompleteText(changeLocationBinding.autoCompleteTextView, town)
+
         val searchStoreQuery = SearchStoreQuery()
         searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
         searchStoreQuery.latitude = latitude.toString()
@@ -95,8 +125,8 @@ class ChangeLocationFragmentNew : Fragment(), (String?, String?, String?, String
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
+        AppInitialize.setLocationChangedManually(false)
 
-        AppUtils.setAutoCompleteText(changeLocationBinding.autoCompleteTextView, town)
         AppUtils.hideKeyBoard(requireActivity())
         findNavController().navigateUp()
         return

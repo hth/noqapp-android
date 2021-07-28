@@ -1,16 +1,16 @@
 package com.noqapp.android.client.views.version_2.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.noqapp.android.common.pojos.DisplayNotification
 
 @Dao
 interface NotificationDao {
     @Query("SELECT * FROM notification ORDER BY created_date DESC")
     fun getNotificationsList(): LiveData<List<DisplayNotification>>
+
+    @Query("SELECT * FROM notification ORDER BY created_date DESC")
+    suspend fun getNotifications(): List<DisplayNotification>
 
     @Query("SELECT COUNT(*) FROM notification WHERE status = :status")
     fun getNotificationCount(status: String): LiveData<Int>

@@ -17,7 +17,6 @@ import android.widget.ExpandableListView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -31,6 +30,8 @@ import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.databinding.NavHeaderMainBinding
+import com.noqapp.android.client.model.DeviceApiCall
+import com.noqapp.android.client.presenter.AppBlacklistPresenter
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
@@ -41,15 +42,20 @@ import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNoti
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
+import com.noqapp.android.common.beans.ErrorEncounteredJson
+import com.noqapp.android.common.beans.JsonLatestAppVersion
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.model.types.MessageOriginEnum
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.MenuDrawer
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter
 import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
+import com.noqapp.android.common.utils.Version
+import com.noqapp.android.common.views.activities.AppUpdateActivity
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +65,7 @@ import kotlin.collections.ArrayList
 
 class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     HomeFragmentInteractionListener,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(
@@ -101,8 +107,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var textToSpeechHelper: TextToSpeechHelper? = null
     private var isRateUsFirstTime = true
     private var searchStoreQuery: SearchStoreQuery? = null
+    private var checkIfAppIsSupported = true
 
-    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds =
+        CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -110,6 +118,14 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             this,
             ViewModelProvider.AndroidViewModelFactory(application)
         )[HomeViewModel::class.java]
+    }
+
+    override fun locationPermissionRequired() {
+        activityHomeBinding.clLocationAccessRequired.visibility = View.VISIBLE
+    }
+
+    override fun locationPermissionGranted() {
+        activityHomeBinding.clLocationAccessRequired.visibility = View.GONE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,6 +136,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         textToSpeechHelper = TextToSpeechHelper(applicationContext)
 
         setUpExpandableList(UserUtils.isLogin())
+
+        if (checkIfAppIsSupported) {
+            checkIfAppIsSupportedAnyMore()
+        }
+
         updateNotificationBadgeCount()
         setUpNavigation()
 
@@ -135,6 +156,12 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             AppInitialize.setTokenFCM(token)
             reCreateDeviceID(this, this)
         }
+    }
+
+    private fun checkIfAppIsSupportedAnyMore() {
+        val deviceApiCall = DeviceApiCall()
+        deviceApiCall.setAppBlacklistPresenter(this)
+        deviceApiCall.isSupportedAppVersion()
     }
 
     private fun showLoginScreen() {
@@ -193,7 +220,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         homeViewModel.notificationListLiveData.observe(this, {
             it?.let { displayNotificationList ->
                 if (displayNotificationList.isNotEmpty()) {
-                    val displayNotification = displayNotificationList.last()
+                    val displayNotification = displayNotificationList.first()
                     if (!displayNotification.popUpShown) {
                         ShowAlertInformation.showInfoDisplayDialog(
                             this,
@@ -258,6 +285,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             navController.navigate(R.id.changeLocationFragment)
         }
 
+        activityHomeBinding.btnAllowLocationAccess.setOnClickListener {
+            requestPermissions()
+        }
+
         navHeaderMainBinding.root.setOnClickListener {
             if (UserUtils.isLogin()) {
                 val intent = Intent(this, UserProfileActivity::class.java)
@@ -294,7 +325,12 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         try {
             if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
                 Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, AppInitialize.getUserProfileUri()))
+                    .load(
+                        AppUtils.getImageUrls(
+                            BuildConfig.PROFILE_BUCKET,
+                            AppInitialize.getUserProfileUri()
+                        )
+                    )
                     .placeholder(ImageUtils.getProfilePlaceholder(this))
                     .error(ImageUtils.getProfileErrorPlaceholder(this))
                     .into(navHeaderMainBinding.ivProfile)
@@ -306,7 +342,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setUpNavigation() {
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
         activityHomeBinding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
@@ -331,13 +368,32 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun updateNotificationBadgeCount() {
-        val notifyCount = 0
+
+        homeViewModel.notificationCountLiveData.observe(this, { nc ->
+            nc?.let { notificationCount ->
+
+                if (notificationCount > 0)
+                    activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number =
+                        notificationCount
+                else
+                    activityHomeBinding.bottomNavigationView.removeBadge(R.id.menuNotification)
+
+                navController.currentDestination?.id?.let {
+                    when (it) {
+                        R.id.notificationFragment, R.id.action_favourites_to_notification -> {
+                            activityHomeBinding.bottomNavigationView.removeBadge(R.id.menuNotification)
+                        }
+                    }
+                }
+            }
+        })
+
         expandableListAdapter?.notifyDataSetChanged()
         supportActionBar?.setHomeAsUpIndicator(
             setBadgeCount(
                 this,
                 R.drawable.ic_burger,
-                notifyCount
+                0
             )
         )
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -667,7 +723,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setBadgeCount(context: Context, res: Int, badgeCount: Int): Drawable? {
-        val icon = ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
+        val icon =
+            ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
         val mainIcon = ContextCompat.getDrawable(context, res)
         val badge = BadgeDrawable(context)
         badge.setCount(badgeCount.toString())
@@ -733,6 +790,15 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                         else -> navController.navigate(R.id.notificationFragment)
                     }
                 }
+
+                homeViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    val notificationsList = homeViewModel.getNotifications()
+                    notificationsList.forEach {
+                        it.status = Constants.KEY_READ
+                        homeViewModel.updateDisplayNotification(it)
+                    }
+                }
+
                 return true
             }
             R.id.menuSearch -> {
@@ -811,11 +877,49 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             homeViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(codeQR)
                 if (jsonTokenAndQueueArrayList?.size == 1) {
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+                    FirebaseMessaging.getInstance()
+                        .unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
                 }
             }
         } else {
             homeViewModel.deleteReview(codeQr, token)
+        }
+    }
+
+    override fun appBlacklistError(eej: ErrorEncounteredJson?) {
+        eej?.let {
+            if (MobileSystemErrorCodeEnum.valueOf(eej.systemError) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
+                val intent = Intent(this, AppUpdateActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                ErrorResponseHandler().processError(this, eej)
+            }
+        }
+    }
+
+    override fun appBlacklistResponse(jsonLatestAppVersion: JsonLatestAppVersion?) {
+        if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.latestAppVersion)) {
+            checkIfAppIsSupported = false
+            try {
+                val appVersion = Version(Constants.appVersion())
+                val serverSupportedVersion = Version(jsonLatestAppVersion.latestAppVersion)
+                if (appVersion.compareTo(serverSupportedVersion) < 0) {
+                    ShowAlertInformation.showThemePlayStoreDialog(
+                        this,
+                        getString(R.string.playstore_update_title),
+                        getString(R.string.playstore_update_msg),
+                        true
+                    )
+                }
+            } catch (e: java.lang.Exception) {
+                FirebaseCrashlytics.getInstance().recordException(e)
+                Log.e(
+                    HomeActivity::class.java.simpleName,
+                    "Compare version check reason=" + e.localizedMessage,
+                    e
+                )
+            }
         }
     }
 }

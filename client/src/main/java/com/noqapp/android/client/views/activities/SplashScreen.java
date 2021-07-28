@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
@@ -33,11 +35,12 @@ import com.noqapp.android.common.utils.NetworkUtil;
 import org.apache.commons.lang3.StringUtils;
 
 public class SplashScreen extends LocationBaseActivity implements DeviceRegisterPresenter {
-    private String TAG = SplashScreen.class.getSimpleName();
 
-    static SplashScreen splashScreen;
+    private String TAG = SplashScreen.class.getSimpleName();
     private static String tokenFCM = "";
     private static String deviceId = "";
+    private ConstraintLayout clAllowLocationPermission;
+    private Button btnAllowLocationPermission;
 
     @Override
     public void displayAddressOutput(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
@@ -51,10 +54,10 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
         AppInitialize.cityName = city;
         LocationPref locationPref = AppInitialize.getLocationPreference()
-            .setArea(area)
-            .setTown(town)
-            .setLatitude(latitude)
-            .setLongitude(longitude);
+                .setArea(area)
+                .setTown(town)
+                .setLatitude(latitude)
+                .setLongitude(longitude);
         AppInitialize.setLocationPreference(locationPref);
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
@@ -66,35 +69,32 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     }
 
     @Override
+    public void locationPermissionRequired() {
+        clAllowLocationPermission.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void locationPermissionGranted() {
+        clAllowLocationPermission.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-        splashScreen = this;
+        AppInitialize.setLocationChangedManually(false);
+
         LottieAnimationView animationView = findViewById(R.id.animation_view);
         animationView.setAnimation("data.json");
         animationView.playAnimation();
         animationView.setRepeatCount(10);
+        clAllowLocationPermission = findViewById(R.id.cl_location_access_required);
+        btnAllowLocationPermission = findViewById(R.id.btn_allow_location_access);
 
-        if (StringUtils.isBlank(tokenFCM) && new NetworkUtil(this).isNotOnline()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            builder.setTitle(null);
-            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
-            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-            tvTitle.setText(getString(R.string.networkerror));
-            tv_msg.setText(getString(R.string.offline));
-            builder.setView(customDialogView);
-            final AlertDialog mAlertDialog = builder.create();
-            mAlertDialog.setCanceledOnTouchOutside(false);
-            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-            btn_yes.setOnClickListener((View v) -> {
-                mAlertDialog.dismiss();
-                finish();
-            });
-            mAlertDialog.show();
-            Log.w(TAG, "No network found");
-        }
+        btnAllowLocationPermission.setOnClickListener(v -> {
+            requestPermissions();
+        });
+
     }
 
     @Override
@@ -121,15 +121,16 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
             if (0.0 == locationPref.getLatitude() && 0.0 == locationPref.getLatitude()) {
                 locationPref
-                    .setArea(jsonUserAddress.getArea())
-                    .setTown(jsonUserAddress.getTown())
-                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                        .setArea(jsonUserAddress.getArea())
+                        .setTown(jsonUserAddress.getTown())
+                        .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                        .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
                 AppInitialize.setLocationPreference(locationPref);
                 Location location = new Location("");
                 location.setLatitude(locationPref.getLatitude());
                 location.setLongitude(locationPref.getLongitude());
             }
+
 
             callLaunchScreen();
         } else {
@@ -144,12 +145,12 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             deviceId = AppInitialize.getDeviceId();
             if (TextUtils.isEmpty(deviceId)) {
                 /* Call this api only once in life time. */
-                DeviceApiCall deviceModel = new DeviceApiCall();
-                deviceModel.setDeviceRegisterPresenter(this);
+                DeviceApiCall deviceApiCall = new DeviceApiCall();
+                deviceApiCall.setDeviceRegisterPresenter(this);
                 if (UserUtils.isLogin()) {
-                    deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+                    deviceApiCall.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
                 } else {
-                    deviceModel.register(deviceToken);
+                    deviceApiCall.register(deviceToken);
                 }
             } else {
                 Log.d(TAG, "Existing did " + deviceId);
@@ -178,23 +179,19 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     }
 
     @Override
-    public void authenticationFailure() {
-
-    }
-
-    @Override
     public void responseErrorPresenter(int errorCode) {
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     private void callLaunchScreen() {
         if (!StringUtils.isBlank(deviceId)) {
-            Intent i = new Intent(splashScreen, HomeActivity.class);
+            Intent i = new Intent(this, HomeActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra(AppInitialize.TOKEN_FCM, tokenFCM);
             i.putExtra("deviceId", deviceId);
-            splashScreen.startActivity(i);
-            splashScreen.finish();
+            startActivity(i);
+            finish();
         }
     }
+
 }

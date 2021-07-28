@@ -494,9 +494,6 @@
     <string name="no_geocoder_available">ಯಾವುದೇ ಜಿಯೋಕೋಡರ್ ಲಭ್ಯವಿಲ್ಲ</string>
     <string name="no_location_data_provided">ಯಾವುದೇ ಸ್ಥಳವನ್ನು ಒದಗಿಸಿಲ್ಲ</string>
     <string name="service_not_available">ಕ್ಷಮಿಸಿ, ಸೇವೆ ಲಭ್ಯವಿಲ್ಲ</string>
-    <string name="permission_denied_explanation">ಅನುಮತಿಯನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಆದರೆ ಕೋರ್ ಕ್ರಿಯಾತ್ಮಕತೆಗೆ ಇದು ಅಗತ್ಯವಾಗಿರುತ್ತದೆ</string>
-    <string name="permission_rationale">ಕೋರ್ ಕಾರ್ಯಕ್ಕಾಗಿ ಸ್ಥಳ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ</string>
-    <string name="permission_contacts_rationale">ಕೋರ್ ಕ್ರಿಯಾತ್ಮಕತೆಗಾಗಿ ಸಂಪರ್ಕಗಳ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ</string>
     <string name="txt_name_required">ಪೂರ್ಣ ಹೆಸರು (ಅಗತ್ಯವಿದೆ)*</string>
     <string name="txt_house_no_building">ಮನೆ ಸಂಖ್ಯೆ / ಬಿಲ್ಡಿಂಗ್ (ಅಗತ್ಯವಿದೆ)*</string>
     <string name="txt_address_line_1">ವಿಳಾಸ (ಅಗತ್ಯವಿದೆ)*</string>
@@ -576,5 +573,9 @@
     <string name="txt_you_were_skipped">ನಿಮ್ಮನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ</string>
     <string name="txt_please_login_to_view_profile">ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಿಸಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
     <string name="txt_please_login_to_see_the_details">ವಿವರಗಳನ್ನು ನೋಡಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
+
+    <string name="txt_location_permission_title">ಸ್ಥಳ ಅನುಮತಿ</string>
+    <string name="txt_location_allow_access_label">ನಿಮಗೆ ಹತ್ತಿರವಿರುವ ಮಳಿಗೆಗಳನ್ನು ಹುಡುಕಲು ದಯವಿಟ್ಟು ಸ್ಥಳವನ್ನು ಅನುಮತಿಸಿ.</string>
+    <string name="txt_location_enable_button">ಸ್ಥಳವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
 
 </resources>

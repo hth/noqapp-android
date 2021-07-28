@@ -494,9 +494,6 @@
     <string name="no_geocoder_available">No geocoder available</string>
     <string name="no_location_data_provided">No location provided</string>
     <string name="service_not_available">Sorry, the service is not available</string>
-    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality</string>
-    <string name="permission_rationale">Location permission is needed for core functionality</string>
-    <string name="permission_contacts_rationale">Contacts permission is needed for core functionality</string>
     <string name="txt_name_required">Full Name (Required)*</string>
     <string name="txt_house_no_building">House No./Building (Required)*</string>
     <string name="txt_address_line_1">Address (Required)*</string>
@@ -577,4 +574,7 @@
     <string name="txt_please_login_to_view_profile">Please login to view profile</string>
     <string name="txt_please_login_to_see_the_details">Please login to see the details</string>
 
+    <string name="txt_location_permission_title">Location Permission</string>
+    <string name="txt_location_allow_access_label">Please allow location to find stores nearest to you.</string>
+    <string name="txt_location_enable_button">Enable Location</string>
 </resources>
