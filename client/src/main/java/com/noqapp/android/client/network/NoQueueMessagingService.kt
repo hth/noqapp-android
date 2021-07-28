@@ -722,7 +722,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
         imageUrl: String?
     ) {
         try {
-            var go_to = ""
+            var goTo = ""
             var messageOrigin = ""
             var currentServing = ""
             var displayServingNumber = ""
@@ -733,7 +733,9 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 val jsonTopicQueueData = jsonData
                 currentServing = jsonTopicQueueData.currentlyServing.toString()
                 displayServingNumber = jsonTopicQueueData.displayServingNumber
-                go_to = jsonTopicQueueData.goTo
+                jsonTopicQueueData.goTo?.let {
+                    goTo = jsonTopicQueueData.goTo
+                }
                 messageOrigin = jsonTopicQueueData.messageOrigin.name
                 jsonTextToSpeeches = jsonData.getJsonTextToSpeeches()
                 msgId = jsonTopicQueueData.messageId
@@ -742,7 +744,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 currentServing = jsonTopicOrderData.currentlyServing.toString()
                 displayServingNumber = jsonTopicOrderData.displayServingNumber
                 jsonTopicOrderData.goTo?.let {
-                    go_to = jsonTopicOrderData.goTo
+                    goTo = jsonTopicOrderData.goTo
                 }
                 messageOrigin = jsonTopicOrderData.messageOrigin.name
                 purchaseOrderStateEnum = jsonTopicOrderData.purchaseOrderState
@@ -791,7 +793,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                         foregroundNotificationModel.currentServing = currentServing
                         foregroundNotificationModel.displayServingNumber = displayServingNumber
                         foregroundNotificationModel.jsonTextToSpeeches = jsonTextToSpeeches
-                        foregroundNotificationModel.goTo = go_to
+                        foregroundNotificationModel.goTo = goTo
                         foregroundNotificationModel.messageOrigin = messageOrigin
                         foregroundNotificationModel.msgId = msgId
                         foregroundNotificationModel.purchaseOrderStateEnum = purchaseOrderStateEnum

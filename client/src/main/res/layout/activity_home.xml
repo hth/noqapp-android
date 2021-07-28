@@ -111,6 +111,7 @@
                 app:itemIconTint="@color/bottom_nav_color"
                 app:itemRippleColor='@color/black_transparent'
                 app:itemTextAppearanceActive="@color/colorAccent"
+                app:itemTextAppearanceInactive="@color/colorPrimaryDark"
                 app:itemTextColor="@color/bottom_nav_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -215,7 +216,7 @@
                 android:id="@+id/cv_location_access_required"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:cardCornerRadius="4dp"
                 app:cardUseCompatPadding="true"
                 app:contentPadding="@dimen/padding_eight"

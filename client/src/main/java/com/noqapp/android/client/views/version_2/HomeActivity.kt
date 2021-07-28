@@ -17,7 +17,6 @@ import android.widget.ExpandableListView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -32,17 +31,19 @@ import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.databinding.NavHeaderMainBinding
 import com.noqapp.android.client.model.DeviceApiCall
+import com.noqapp.android.client.presenter.AppBlacklistPresenter
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
 import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
 import com.noqapp.android.client.views.customviews.BadgeDrawable
-import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
+import com.noqapp.android.common.beans.ErrorEncounteredJson
+import com.noqapp.android.common.beans.JsonLatestAppVersion
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.model.types.MessageOriginEnum
@@ -52,6 +53,7 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter
 import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
+import com.noqapp.android.common.utils.Version
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +63,7 @@ import kotlin.collections.ArrayList
 
 class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     HomeFragmentInteractionListener,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
 
     override fun displayAddressOutput(
@@ -156,6 +158,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
     private fun checkIfAppIsSupportedAnyMore() {
         val deviceApiCall = DeviceApiCall()
+        deviceApiCall.setAppBlacklistPresenter(this)
         deviceApiCall.isSupportedAppVersion()
     }
 
@@ -878,6 +881,30 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             }
         } else {
             homeViewModel.deleteReview(codeQr, token)
+        }
+    }
+
+    override fun appBlacklistError(eej: ErrorEncounteredJson?) {
+    }
+
+    override fun appBlacklistResponse(jsonLatestAppVersion: JsonLatestAppVersion?) {
+        if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.latestAppVersion)) {
+            checkIfAppIsSupported = false
+            try {
+                val appVersion = Version(Constants.appVersion())
+                val serverSupportedVersion = Version(jsonLatestAppVersion.latestAppVersion)
+                if (appVersion.compareTo(serverSupportedVersion) < 0) {
+                    ShowAlertInformation.showThemePlayStoreDialog(
+                        this,
+                        getString(R.string.playstore_update_title),
+                        getString(R.string.playstore_update_msg),
+                        true
+                    )
+                }
+            } catch (e: java.lang.Exception) {
+                FirebaseCrashlytics.getInstance().recordException(e)
+                Log.e(HomeActivity::class.java.simpleName, "Compare version check reason=" + e.localizedMessage, e)
+            }
         }
     }
 }

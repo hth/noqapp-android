@@ -47,6 +47,8 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         AppInitialize.location.setLatitude(latitude);
         AppInitialize.location.setLongitude(longitude);
 
+        AppInitialize.setLocationChangedManually(false);
+
         String city = town;
         if (StringUtils.isNotBlank(area)) {
             city = area + ", " + town;
@@ -94,26 +96,6 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             requestPermissions();
         });
 
-        if (StringUtils.isBlank(tokenFCM) && new NetworkUtil(this).isNotOnline()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            builder.setTitle(null);
-            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
-            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-            tvTitle.setText(getString(R.string.networkerror));
-            tv_msg.setText(getString(R.string.offline));
-            builder.setView(customDialogView);
-            final AlertDialog mAlertDialog = builder.create();
-            mAlertDialog.setCanceledOnTouchOutside(false);
-            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-            btn_yes.setOnClickListener((View v) -> {
-                mAlertDialog.dismiss();
-                finish();
-            });
-            mAlertDialog.show();
-            Log.w(TAG, "No network found");
-        }
     }
 
     @Override

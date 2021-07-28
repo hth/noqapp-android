@@ -145,10 +145,12 @@ public abstract class LocationBaseActivity extends BaseActivity {
         task.addOnSuccessListener(response -> {
             LocationSettingsStates locationSettingsStates = response.getLocationSettingsStates();
             if (locationSettingsStates.isLocationPresent()) {
-                LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, countryShortName, area, town, district, state, stateShortName, latitude, longitude) -> {
-                    displayAddressOutput(address, countryShortName, area, town, district, state, stateShortName, latitude, longitude);
-                    return null;
-                });
+                if (!AppInitialize.isLocationChangedManually()) {
+                    LocationManager.INSTANCE.fetchCurrentLocationAddress(this, (address, countryShortName, area, town, district, state, stateShortName, latitude, longitude) -> {
+                        displayAddressOutput(address, countryShortName, area, town, district, state, stateShortName, latitude, longitude);
+                        return null;
+                    });
+                }
             }
         });
 
