@@ -577,4 +577,8 @@
     <string name="txt_please_login_to_view_profile">ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಿಸಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
     <string name="txt_please_login_to_see_the_details">ವಿವರಗಳನ್ನು ನೋಡಲು ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ</string>
 
+    <string name="txt_location_permission_title">ಸ್ಥಳ ಅನುಮತಿ</string>
+    <string name="txt_location_allow_access_label">ನಿಮಗೆ ಹತ್ತಿರವಿರುವ ಮಳಿಗೆಗಳನ್ನು ಹುಡುಕಲು ದಯವಿಟ್ಟು ಸ್ಥಳವನ್ನು ಅನುಮತಿಸಿ.</string>
+    <string name="txt_location_enable_button">ಸ್ಥಳವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
+
 </resources>

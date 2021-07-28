@@ -577,4 +577,8 @@
     <string name="txt_please_login_to_view_profile">प्रोफ़ाइल देखने के लिए कृपया लॉगिन करें</string>
     <string name="txt_please_login_to_see_the_details">विवरण देखने के लिए कृपया लॉगिन करें</string>
 
+    <string name="txt_location_permission_title">स्थान अनुमति</string>
+    <string name="txt_location_allow_access_label">कृपया स्थान को अपने निकटतम स्टोर खोजने की अनुमति दें।</string>
+    <string name="txt_location_enable_button">स्थान सक्षम करें</string>
+
 </resources>

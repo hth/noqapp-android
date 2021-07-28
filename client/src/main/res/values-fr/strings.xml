@@ -577,4 +577,8 @@
     <string name="txt_please_login_to_view_profile">Veuillez vous connecter pour voir le profil</string>
     <string name="txt_please_login_to_see_the_details">Veuillez vous connecter pour voir les détails</string>
 
+    <string name="txt_location_permission_title">Autorisation de localisation</string>
+    <string name="txt_location_allow_access_label">Veuillez autoriser l'emplacement à trouver les magasins les plus proches de chez vous</string>
+    <string name="txt_location_enable_button">Location disponible</string>
+
 </resources>
