@@ -494,9 +494,6 @@
     <string name="no_geocoder_available">कोई जियोकोड उपलब्ध नहीं है</string>
     <string name="no_location_data_provided">कोई स्थान प्रदान नहीं किया गया</string>
     <string name="service_not_available">क्षमा करें, सेवा उपलब्ध नहीं है</string>
-    <string name="permission_denied_explanation">अनुमति से इनकार कर दिया गया था, लेकिन कोर कार्यक्षमता के लिए आवश्यक है।</string>
-    <string name="permission_rationale">कोर कार्यक्षमता के लिए स्थान की अनुमति आवश्यक है</string>
-    <string name="permission_contacts_rationale">कोर कार्यक्षमता के लिए स्थान की अनुमति आवश्यक है</string>
     <string name="txt_name_required">पूरा नाम (आवश्यक)*</string>
     <string name="txt_house_no_building">घर का नंबर / भवन (आवश्यक)*</string>
     <string name="txt_address_line_1">पता (आवश्यक)*</string>
