@@ -210,13 +210,13 @@
             android:layout_height="match_parent"
             android:background="@color/black_transparent"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_location_access_required"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 app:cardCornerRadius="4dp"
                 app:cardUseCompatPadding="true"
                 app:contentPadding="@dimen/padding_eight"
@@ -261,8 +261,8 @@
                         android:id="@+id/btn_allow_location_access"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/theme_aqua"
                         android:text="@string/txt_allow_location_access"
+                        app:backgroundTint="@color/theme_aqua"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />

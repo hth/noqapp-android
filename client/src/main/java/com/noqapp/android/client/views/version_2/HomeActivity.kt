@@ -903,7 +903,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 }
             } catch (e: java.lang.Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)
-                Log.e(HomeActivity::class.java.simpleName, "Compare version check reason=" + e.localizedMessage, e)
+                Log.e(
+                    HomeActivity::class.java.simpleName,
+                    "Compare version check reason=" + e.localizedMessage,
+                    e
+                )
             }
         }
     }

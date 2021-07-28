@@ -67,8 +67,8 @@
                     android:id="@+id/btn_allow_location_access"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/theme_aqua"
                     android:text="@string/txt_allow_location_access"
+                    app:backgroundTint="@color/theme_aqua"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

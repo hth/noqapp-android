@@ -47,8 +47,6 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         AppInitialize.location.setLatitude(latitude);
         AppInitialize.location.setLongitude(longitude);
 
-        AppInitialize.setLocationChangedManually(false);
-
         String city = town;
         if (StringUtils.isNotBlank(area)) {
             city = area + ", " + town;
@@ -84,6 +82,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+        AppInitialize.setLocationChangedManually(false);
 
         LottieAnimationView animationView = findViewById(R.id.animation_view);
         animationView.setAnimation("data.json");
