@@ -47,6 +47,7 @@ import com.noqapp.android.common.beans.JsonLatestAppVersion
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
 import com.noqapp.android.common.model.types.MessageOriginEnum
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.MenuDrawer
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter
@@ -54,6 +55,7 @@ import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
 import com.noqapp.android.common.utils.Version
+import com.noqapp.android.common.views.activities.AppUpdateActivity
 import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -885,6 +887,15 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     override fun appBlacklistError(eej: ErrorEncounteredJson?) {
+        eej?.let {
+            if (MobileSystemErrorCodeEnum.valueOf(eej.systemError) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
+                val intent = Intent(this, AppUpdateActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                ErrorResponseHandler().processError(this, eej)
+            }
+        }
     }
 
     override fun appBlacklistResponse(jsonLatestAppVersion: JsonLatestAppVersion?) {
