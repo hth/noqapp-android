@@ -213,20 +213,20 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         }
         //
         List<AmenityEnum> amenities = jsonQueue.getAmenities();
-        ArrayList<String> amenitiesdata = new ArrayList<>();
+        ArrayList<String> amenityDescriptions = new ArrayList<>();
         for (int j = 0; j < amenities.size(); j++) {
-            amenitiesdata.add(amenities.get(j).getDescription());
+            amenityDescriptions.add(amenities.get(j).getDescription());
         }
         rcv_amenities.setLayoutManager(getFlexBoxLayoutManager());
-        rcv_amenities.setAdapter(new StaggeredGridAdapter(amenitiesdata));
+        rcv_amenities.setAdapter(new StaggeredGridAdapter(amenityDescriptions));
 
         List<DeliveryModeEnum> deliveryModes = jsonQueue.getDeliveryModes();
-        ArrayList<String> deliveryModesdata = new ArrayList<>();
+        ArrayList<String> deliveryDescription = new ArrayList<>();
         for (int j = 0; j < deliveryModes.size(); j++) {
-            deliveryModesdata.add(deliveryModes.get(j).getDescription());
+            deliveryDescription.add(deliveryModes.get(j).getDescription());
         }
         rcv_delivery_types.setLayoutManager(getFlexBoxLayoutManager());
-        rcv_delivery_types.setAdapter(new StaggeredGridAdapter(deliveryModesdata));
+        rcv_delivery_types.setAdapter(new StaggeredGridAdapter(deliveryDescription));
 
 
         //
