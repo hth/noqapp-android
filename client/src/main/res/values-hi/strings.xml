@@ -374,7 +374,8 @@
     <string name="empty_review_title">रेटिंग करे</string>
     <string name="empty_review_subtitle">हमे आपके बहुमूल्य समीक्षा की प्रतीक्षा हैं।</string>
     <string name="empty_my_appointment_title">खाली नियुक्तियाँ</string>
-    <string name="empty_my_appointment_subtitle">>बधाई!!! \nअाप स्वस्थ हो। \n\n अाप की कोई मेडिकल नियुक्ति नहीं हैं।</string>
+    <string name="empty_upcoming_appointment_subtitle">आपका कोई शेड्यूल्ड अपॉइंटमेंट नहीं है</string>
+    <string name="empty_past_appointment_subtitle">कोई पिछला शेड्यूल अपॉइंटमेंट नहीं है</string>
 
     <string name="empty_my_coupon_title">खाली कूपन</string>
     <string name="empty_my_coupon_subtitle">आपके पास कोई कूपन नहीं है।</string>

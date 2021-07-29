@@ -37,7 +37,7 @@
                 <ImageView
                     android:layout_width="@dimen/empty_icons"
                     android:layout_height="@dimen/empty_icons"
-                    android:background="@drawable/empty_medical_history" />
+                    android:background="@drawable/empty_appointment" />
 
                 <TextView
                     android:layout_width="wrap_content"

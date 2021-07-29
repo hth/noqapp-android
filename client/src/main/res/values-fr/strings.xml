@@ -374,7 +374,8 @@
     <string name="empty_review_title">évaluez nous</string>
     <string name="empty_review_subtitle">Nous attendons votre avis précieux</string>
     <string name="empty_my_appointment_title">Rendez-vous vide</string>
-    <string name="empty_my_appointment_subtitle">Félicitations! Vous êtes en santé. Vous n’avez pas de rendez-vous chez le médecin.</string>
+    <string name="empty_upcoming_appointment_subtitle">Vous n\'avez pas de rendez-vous programmé</string>
+    <string name="empty_past_appointment_subtitle">Il n\'y a pas de rendez-vous d\'horaire passé</string>
 
     <string name="empty_my_coupon_title">Votre panier est vide!</string>
     <string name="empty_my_coupon_subtitle">Rendez-vous vide</string>
