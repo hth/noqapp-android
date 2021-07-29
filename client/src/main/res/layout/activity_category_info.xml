@@ -71,8 +71,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
-                                android:visibility="gone"
-                                android:text="Kiosk Mode"/>
+                                android:text="Kiosk Mode"
+                                android:visibility="gone" />
 
                             <TextView
                                 android:id="@+id/tv_store_name"
@@ -141,7 +141,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentLeft="true"
                                         android:layout_toLeftOf="@+id/btn_join_queues"
-                                        android:visibility="gone"/>
+                                        android:visibility="gone" />
 
                                     <Button
                                         android:id="@+id/btn_pre_approve"
@@ -149,15 +149,16 @@
                                         android:layout_height="@dimen/btn_standard_height"
                                         android:layout_alignParentLeft="true"
                                         android:background="@drawable/orange_gradient"
+                                        android:backgroundTint="@null"
                                         android:clickable="true"
                                         android:foreground="?attr/selectableItemBackgroundBorderless"
                                         android:paddingLeft="20dp"
                                         android:paddingRight="20dp"
+                                        android:text="@string/pre_approve"
                                         android:textAllCaps="true"
                                         android:textColor="@android:color/white"
                                         android:textSize="@dimen/text_size_fourteen"
-                                        android:text="@string/pre_approve"
-                                        android:visibility="gone"/>
+                                        android:visibility="gone" />
 
                                     <Button
                                         android:id="@+id/btn_join_queues"
@@ -165,6 +166,7 @@
                                         android:layout_height="@dimen/btn_standard_height"
                                         android:layout_alignParentRight="true"
                                         android:background="@drawable/orange_gradient"
+                                        android:backgroundTint="@null"
                                         android:clickable="true"
                                         android:foreground="?attr/selectableItemBackgroundBorderless"
                                         android:paddingLeft="20dp"
@@ -206,14 +208,14 @@
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_upcoming_images"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tv_photos"
@@ -325,10 +327,10 @@
                                     android:layout_marginBottom="5dp"
                                     android:drawableLeft="@drawable/ic_alert"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/biz_announcement"
                                     android:textColor="@android:color/holo_red_dark"
                                     android:textSize="@dimen/text_size_fourteen"
-                                    android:textStyle="bold"
-                                    android:text="@string/biz_announcement"/>
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/tv_announcement_text"
