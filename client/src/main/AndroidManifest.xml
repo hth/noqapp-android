@@ -72,7 +72,7 @@
             android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/BaseTheme"/>
+            android:theme="@style/AppBaseTheme.Material"/>
 
         <activity
             android:name=".views.activities.ReviewActivity"

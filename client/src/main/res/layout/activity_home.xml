@@ -211,7 +211,7 @@
             android:background="@color/black_transparent"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_location_access_required"
@@ -261,6 +261,7 @@
                         android:id="@+id/btn_allow_location_access"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="@string/txt_location_enable_button"
                         app:backgroundTint="@color/theme_color_dark"
                         app:layout_constraintBottom_toBottomOf="parent"

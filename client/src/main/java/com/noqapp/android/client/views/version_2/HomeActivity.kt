@@ -130,6 +130,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppInitialize.setLocationChangedManually(false)
         activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
         setContentView(activityHomeBinding.root)
         setSupportActionBar(activityHomeBinding.toolbar)

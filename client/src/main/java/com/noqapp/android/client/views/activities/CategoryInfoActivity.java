@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -158,6 +159,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(this, tv_mobile.getText().toString()));
         btn_join_queues.setOnClickListener((View v) -> joinClick());
         btn_register.setOnClickListener((View v) -> register());
+
         if (null != bundle) {
             codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
