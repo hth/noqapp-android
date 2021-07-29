@@ -374,7 +374,8 @@
     <string name="empty_review_title">ನಮಗೆ ಕ್ರಮಾಂಕ ನೀಡಿ</string>
     <string name="empty_review_subtitle">ನಿಮ್ಮ ಅಮೂಲ್ಯವಾದ ವಿಮರ್ಶೆಗಾಗಿ ನಾವು ಕಾಯುತ್ತಿದ್ದೇವೆ</string>
     <string name="empty_my_appointment_title">ಖಾಲಿ ನೇಮಕಾತಿಗಳು</string>
-    <string name="empty_my_appointment_subtitle">ಅಭಿನಂದನೆಗಳು !!! \nನೀವು ಆರೋಗ್ಯವಾಗಿದ್ದೀರಿ. \n\nನೀವು ಯಾವುದೇ ವೈದ್ಯಕೀಯ ನೇಮಕಾತಿಯನ್ನು ಹೊಂದಿಲ್ಲ.</string>
+    <string name="empty_upcoming_appointment_subtitle">ನೀವು ಯಾವುದೇ ನಿಗದಿತ ನೇಮಕಾತಿಯನ್ನು ಹೊಂದಿಲ್ಲ</string>
+    <string name="empty_past_appointment_subtitle">ಹಿಂದಿನ ವೇಳಾಪಟ್ಟಿ ನೇಮಕಾತಿ ಇಲ್ಲ</string>
 
     <string name="empty_my_coupon_title">ಖಾಲಿ ಕೂಪನ್‌ಗಳು</string>
     <string name="empty_my_coupon_subtitle">ಕ್ಷಮಿಸಿ</string>

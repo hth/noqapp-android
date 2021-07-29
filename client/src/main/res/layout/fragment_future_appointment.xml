@@ -36,7 +36,7 @@
                 <ImageView
                     android:layout_width="@dimen/empty_icons"
                     android:layout_height="@dimen/empty_icons"
-                    android:background="@drawable/empty_medical_history" />
+                    android:background="@drawable/empty_appointment" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/empty_my_appointment_subtitle"
+                    android:text="@string/empty_upcoming_appointment_subtitle"
                     android:textSize="@dimen/empty_subtitle_size" />
             </LinearLayout>
         </RelativeLayout>
