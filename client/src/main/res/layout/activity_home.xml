@@ -211,7 +211,7 @@
             android:background="@color/black_transparent"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_location_access_required"
@@ -257,12 +257,15 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_allow_location_access"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        app:backgroundTintMode="src_atop"
+                        android:backgroundTintMode="src_in"
+                        android:background="@drawable/orange_gradient"
                         android:text="@string/txt_allow_location_access"
-                        app:backgroundTint="@color/theme_aqua"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
