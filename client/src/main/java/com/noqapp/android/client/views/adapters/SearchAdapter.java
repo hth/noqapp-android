@@ -43,11 +43,11 @@ public class SearchAdapter extends RecyclerView.Adapter {
     private double lat, log;
 
     public SearchAdapter(
-            ArrayList<BizStoreElastic> data,
-            Context context,
-            OnItemClickListener listener,
-            double lat,
-            double log
+        ArrayList<BizStoreElastic> data,
+        Context context,
+        OnItemClickListener listener,
+        double lat,
+        double log
     ) {
         this.dataSet = data;
         this.context = context;
@@ -90,21 +90,26 @@ public class SearchAdapter extends RecyclerView.Adapter {
                     holder.tv_distance_unit.setVisibility(View.INVISIBLE);
                     holder.tv_distance_away.setVisibility(View.INVISIBLE);
                     holder.rl_distance.setVisibility(View.INVISIBLE);
+                    holder.tv_phoneno.setVisibility(View.INVISIBLE);
                     break;
                 default:
                     holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
-                            (float) lat,
-                            (float) log,
-                            (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
-                            (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
+                        (float) lat,
+                        (float) log,
+                        (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+                        (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
                     holder.tv_distance_unit.setText(Constants.DISTANCE_UNIT);
             }
             holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
             AppUtils.setReviewCountText(bizStoreElastic.getReviewCount(), holder.tv_store_review);
             StoreHourElastic storeHourElastic = AppUtils.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
-            holder.tv_store_timing.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic.isDayClosed(),
-                    storeHourElastic.getStartHour(), storeHourElastic.getEndHour()));
+            holder.tv_store_timing.setText(
+                new AppUtils().formatTodayStoreTiming(
+                    context,
+                    storeHourElastic.isDayClosed(),
+                    storeHourElastic.getStartHour(),
+                    storeHourElastic.getEndHour()));
             holder.tv_store_review.setOnClickListener((View v) -> {
                 if (bizStoreElastic.getReviewCount() > 0) {
                     Intent in = new Intent(context, AllReviewsActivity.class);
@@ -118,10 +123,10 @@ public class SearchAdapter extends RecyclerView.Adapter {
             });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
                 Picasso.get()
-                        .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                        .placeholder(ImageUtils.getThumbPlaceholder(context))
-                        .error(ImageUtils.getThumbErrorPlaceholder(context))
-                        .into(holder.iv_main);
+                   .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                   .placeholder(ImageUtils.getThumbPlaceholder(context))
+                   .error(ImageUtils.getThumbErrorPlaceholder(context))
+                   .into(holder.iv_main);
             } else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }

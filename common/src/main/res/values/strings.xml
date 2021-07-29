@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NoQLibrary</string>
+    <string name="app_name">NoQueue Library</string>
     <string name="outdated_app">This version of is out of date. Tap Download below to get the latest version from the Google Play Store</string>
     <string name="error_invalid_date">Please select a valid date</string>
     <string name="reason_for_correct_dob">
