@@ -1,5 +1,7 @@
 package com.noqapp.android.merchant.network;
 
+import android.os.Build;
+
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.views.activities.AppInitialize;
 
@@ -29,6 +31,7 @@ public class RetrofitClient {
                 Request request = chain.request().newBuilder()
                     .addHeader("x-r-ver", BuildConfig.VERSION_NAME)
                     .addHeader("x-r-fla", BuildConfig.APP_FLAVOR)
+                    .addHeader("x-r-mod", Build.MODEL +", " + Build.BRAND + ", " + Build.MANUFACTURER)
                     .addHeader("x-r-lat", String.valueOf(0.0))
                     .addHeader("x-r-lng", String.valueOf(0.0))
                     .addHeader("x-r-did", AppInitialize.getDeviceId() == null ? "" : AppInitialize.getDeviceId())
