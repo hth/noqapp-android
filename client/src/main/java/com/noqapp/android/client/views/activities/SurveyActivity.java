@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.SurveyResponseApiCalls;
+import com.noqapp.android.client.model.open.SurveyResponseImpl;
 import com.noqapp.android.client.model.types.QuestionTypeEnum;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
@@ -141,7 +141,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                 setProgressMessage(KioskStringConstants.PROGRESS_TITLE);
                 if (NetworkUtils.isConnectingToInternet(this)) {
                     showProgress();
-                    SurveyResponseApiCalls surveyResponseApiCalls = new SurveyResponseApiCalls(SurveyActivity.this);
+                    SurveyResponseImpl surveyResponseImpl = new SurveyResponseImpl(SurveyActivity.this);
                     Survey survey = new Survey();
                     survey.setBizNameId(jsonQuestionnaire.getBizNameId());
                     survey.setQuestionnaireId(jsonQuestionnaire.getQuestionnaireId());
@@ -149,7 +149,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                     survey.setBizStoreId(AppInitialize.getUserProfile().getCodeQRAndBizStoreIds().get(AppInitialize.getKioskModeInfo().getKioskCodeQR()));
                     survey.setOverallRating(selectPos);
                     survey.setDetailedResponse(getFormData());
-                    surveyResponseApiCalls.surveyResponse(UserUtils.getDeviceId(), survey);
+                    surveyResponseImpl.surveyResponse(UserUtils.getDeviceId(), survey);
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);
                 }
