@@ -22,8 +22,8 @@ import androidx.core.content.ContextCompat;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
-import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
+import com.noqapp.android.client.model.api.ReviewApiImpl;
+import com.noqapp.android.client.model.open.ReviewImpl;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderReview;
@@ -34,7 +34,6 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.version_2.db.NoQueueAppDB;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -46,15 +45,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
-
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.jvm.functions.Function2;
-import kotlinx.coroutines.BuildersKt;
-import kotlinx.coroutines.CoroutineScope;
-import kotlinx.coroutines.CoroutineStart;
-import kotlinx.coroutines.Dispatchers;
-import kotlinx.coroutines.GlobalScope;
 
 import static com.noqapp.android.common.model.types.QueueOrderTypeEnum.Q;
 
@@ -216,7 +206,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                                     .setToken(jtk.getToken())
                                     .setRatingCount(Math.round(ratingBar.getRating()))
                                     .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
-                                new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
+                                new ReviewApiImpl(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
                             } else {
                                 QueueReview rr = new QueueReview()
                                     .setCodeQR(jtk.getCodeQR())
@@ -225,7 +215,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                                     .setRatingCount(Math.round(ratingBar.getRating()))
                                     .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
                                     .setQueueUserId(jtk.getQueueUserId());
-                                new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                                new ReviewApiImpl(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
                             }
                         } else {
                             QueueReview rr = new QueueReview()
@@ -235,9 +225,9 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                                 .setRatingCount(Math.round(ratingBar.getRating()))
                                 .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
 
-                            ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
-                            reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);
-                            reviewApiUnAuthenticCall.queue(UserUtils.getDeviceId(), rr);
+                            ReviewImpl reviewImpl = new ReviewImpl();
+                            reviewImpl.setReviewPresenter(ReviewActivity.this);
+                            reviewImpl.queue(UserUtils.getDeviceId(), rr);
                         }
                     } else {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);

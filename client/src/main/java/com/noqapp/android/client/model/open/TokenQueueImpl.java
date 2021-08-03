@@ -1,11 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.open;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.open.TokenQueueApiUrls;
+import com.noqapp.android.client.model.response.open.TokenQueue;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
@@ -17,7 +16,6 @@ import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.body.DeviceToken;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,9 +24,9 @@ import retrofit2.Response;
 /**
  * Unregistered client access.
  */
-public class QueueApiUnAuthenticCall {
-    private final String TAG = QueueApiUnAuthenticCall.class.getSimpleName();
-    private static final TokenQueueApiUrls tokenQueueApiUrls;
+public class TokenQueueImpl {
+    private final String TAG = TokenQueueImpl.class.getSimpleName();
+    private static final TokenQueue TOKEN_QUEUE;
     private QueuePresenter queuePresenter;
     private TokenPresenter tokenPresenter;
     private ResponsePresenter responsePresenter;
@@ -60,7 +58,7 @@ public class QueueApiUnAuthenticCall {
     }
 
     static {
-        tokenQueueApiUrls = RetrofitClient.getClient().create(TokenQueueApiUrls.class);
+        TOKEN_QUEUE = RetrofitClient.getClient().create(TokenQueue.class);
     }
 
     /**
@@ -70,7 +68,7 @@ public class QueueApiUnAuthenticCall {
      * @param qrCode
      */
     public void getQueueState(String did, String qrCode) {
-        tokenQueueApiUrls.getQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueue>() {
+        TOKEN_QUEUE.getQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -105,7 +103,7 @@ public class QueueApiUnAuthenticCall {
      * @param qrCode
      */
     public void getAllQueueState(String did, String qrCode) {
-        tokenQueueApiUrls.getAllQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
+        TOKEN_QUEUE.getAllQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -135,7 +133,7 @@ public class QueueApiUnAuthenticCall {
     }
 
     public void getAllQueueStateLevelUp(String did, String codeQR) {
-        tokenQueueApiUrls.getAllQueueStateLevelUp(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<BizStoreElasticList>() {
+        TOKEN_QUEUE.getAllQueueStateLevelUp(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -171,7 +169,7 @@ public class QueueApiUnAuthenticCall {
      * @param did
      */
     public void getAllJoinedQueue(String did) {
-        tokenQueueApiUrls.getAllJoinedQueue(did, Constants.DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
+        TOKEN_QUEUE.getAllJoinedQueue(did, Constants.DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -208,7 +206,7 @@ public class QueueApiUnAuthenticCall {
      * @param codeQR
      */
     public void joinQueue(String did, String codeQR) {
-        tokenQueueApiUrls.joinQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonToken>() {
+        TOKEN_QUEUE.joinQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -243,7 +241,7 @@ public class QueueApiUnAuthenticCall {
      * @param codeQR
      */
     public void abortQueue(String did, String codeQR) {
-        tokenQueueApiUrls.abortQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonResponse>() {
+        TOKEN_QUEUE.abortQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

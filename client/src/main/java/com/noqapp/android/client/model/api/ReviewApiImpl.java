@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.ReviewApiUrls;
+import com.noqapp.android.client.model.response.api.ReviewApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.body.OrderReview;
@@ -16,18 +16,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReviewApiAuthenticCalls {
-    private final String TAG = ReviewApiAuthenticCalls.class.getSimpleName();
-    private static final ReviewApiUrls reviewApiUrls;
+public class ReviewApiImpl {
+    private final String TAG = ReviewApiImpl.class.getSimpleName();
+    private static final ReviewApi REVIEW_API;
     private ReviewPresenter reviewPresenter;
 
-    public ReviewApiAuthenticCalls(ReviewPresenter reviewPresenter) {
+    public ReviewApiImpl(ReviewPresenter reviewPresenter) {
         this.reviewPresenter = reviewPresenter;
     }
 
 
     static {
-        reviewApiUrls = RetrofitClient.getClient().create(ReviewApiUrls.class);
+        REVIEW_API = RetrofitClient.getClient().create(ReviewApi.class);
     }
 
     /**
@@ -35,7 +35,7 @@ public class ReviewApiAuthenticCalls {
      * @param queueReview
      */
     public void queue(String did, String mail, String auth, QueueReview queueReview) {
-        reviewApiUrls.queue(did, Constants.DEVICE_TYPE, mail, auth, queueReview).enqueue(new Callback<JsonResponse>() {
+        REVIEW_API.queue(did, Constants.DEVICE_TYPE, mail, auth, queueReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -64,7 +64,7 @@ public class ReviewApiAuthenticCalls {
     }
 
     public void order(String did, String mail, String auth, OrderReview orderReview) {
-        reviewApiUrls.order(did, Constants.DEVICE_TYPE, mail, auth, orderReview).enqueue(new Callback<JsonResponse>() {
+        REVIEW_API.order(did, Constants.DEVICE_TYPE, mail, auth, orderReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

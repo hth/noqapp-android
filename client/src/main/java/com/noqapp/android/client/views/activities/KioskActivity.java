@@ -18,8 +18,8 @@ import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.api.KioskApiImpl;
-import com.noqapp.android.client.model.QueueApiAuthenticCall;
-import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.model.api.TokenQueueApiImpl;
+import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -129,13 +129,13 @@ public class KioskActivity extends BaseActivity implements QueuePresenter, Token
                 setProgressMessage(getString(R.string.loading_queue_details));
                 showProgress();
                 if (UserUtils.isLogin()) {
-                    QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
-                    queueApiAuthenticCall.setQueuePresenter(this);
-                    queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    TokenQueueApiImpl tokenQueueApiImpl = new TokenQueueApiImpl();
+                    tokenQueueApiImpl.setQueuePresenter(this);
+                    tokenQueueApiImpl.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                 } else {
-                    QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-                    queueApiUnAuthenticCall.setQueuePresenter(this);
-                    queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
+                    TokenQueueImpl tokenQueueImpl = new TokenQueueImpl();
+                    tokenQueueImpl.setQueuePresenter(this);
+                    tokenQueueImpl.getQueueState(UserUtils.getDeviceId(), codeQR);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

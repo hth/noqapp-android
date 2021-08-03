@@ -4,6 +4,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 
 import com.noqapp.android.client.ITest;
+import com.noqapp.android.client.model.api.TokenQueueApiImpl;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
@@ -22,7 +23,7 @@ import java.util.concurrent.Callable;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class JoinQueueTest extends ITest {
 
-    private QueueApiAuthenticCall queueApiAuthenticCall;
+    private TokenQueueApiImpl tokenQueueApiImpl;
     private JsonQueue jsonQueueTemp;
     private JsonToken jsonToken;
     @Mock private QueuePresenter queuePresenter;
@@ -31,34 +32,34 @@ public class JoinQueueTest extends ITest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        queueApiAuthenticCall = new QueueApiAuthenticCall();
-        queueApiAuthenticCall.setQueuePresenter(queuePresenter);
-        queueApiAuthenticCall.setTokenPresenter(tokenPresenter);
+        tokenQueueApiImpl = new TokenQueueApiImpl();
+        tokenQueueApiImpl.setQueuePresenter(queuePresenter);
+        tokenQueueApiImpl.setTokenPresenter(tokenPresenter);
     }
 
     @Test
     void joinQueue() {
-        queueApiAuthenticCall.setQueuePresenter(queuePresenter);
-        queueApiAuthenticCall.getQueueState(did, emailid, auth, codeQR);
+        tokenQueueApiImpl.setQueuePresenter(queuePresenter);
+        tokenQueueApiImpl.getQueueState(did, emailid, auth, codeQR);
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
-        Assert.assertTrue("Store not found", null != queueApiAuthenticCall.jsonQueue);
-        jsonQueueTemp = queueApiAuthenticCall.jsonQueue;
+        Assert.assertTrue("Store not found", null != tokenQueueApiImpl.jsonQueue);
+        jsonQueueTemp = tokenQueueApiImpl.jsonQueue;
     }
 
     @Test
     void afterJoinQueue() {
         if (null != jsonQueueTemp) {
-            queueApiAuthenticCall.setResponseReceived(false);
+            tokenQueueApiImpl.setResponseReceived(false);
             JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId);
-            queueApiAuthenticCall.joinQueue(did, emailid, auth, joinQueue);
+            tokenQueueApiImpl.joinQueue(did, emailid, auth, joinQueue);
             await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
-            jsonToken = queueApiAuthenticCall.jsonToken;
+            jsonToken = tokenQueueApiImpl.jsonToken;
             Assert.assertTrue("Token can not be negative or less than token available from", jsonQueueTemp.getLastNumber() <= jsonToken.getToken());
         }
 
     }
 
     private Callable<Boolean> awaitUntilResponseFromServer() {
-        return () -> this.queueApiAuthenticCall.isResponseReceived();
+        return () -> this.tokenQueueApiImpl.isResponseReceived();
     }
 }

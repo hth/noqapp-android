@@ -20,7 +20,7 @@ import retrofit2.http.Path;
  * User: omkar
  * Date: 3/26/17 11:50 PM
  */
-public interface TokenQueueApiUrls {
+public interface TokenQueue {
 
     /**
      * Errors

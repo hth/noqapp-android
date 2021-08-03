@@ -3,7 +3,7 @@ package com.noqapp.android.client.views.version_2.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.noqapp.android.client.model.FavouriteApiCall
-import com.noqapp.android.client.model.QueueApiAuthenticCall
+import com.noqapp.android.client.model.api.TokenQueueApiImpl
 import com.noqapp.android.client.model.SearchBusinessStoreApiAuthenticCalls
 import com.noqapp.android.client.model.SearchBusinessStoreApiCalls
 import com.noqapp.android.client.presenter.FavouriteListPresenter
@@ -40,7 +40,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
     private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
-    private var queueApiAuthenticCall: QueueApiAuthenticCall
+    private var tokenQueueApiImpl: TokenQueueApiImpl
 
     val currentTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
         val tokenAndQueueList =
@@ -83,8 +83,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         nearMeErrorLiveData.value = false
         searchBusinessStoreApiCalls = SearchBusinessStoreApiCalls(this)
         searchBusinessStoreApiAuthenticCalls = SearchBusinessStoreApiAuthenticCalls(this)
-        queueApiAuthenticCall = QueueApiAuthenticCall()
-        queueApiAuthenticCall.setTokenAndQueuePresenter(this)
+        tokenQueueApiImpl = TokenQueueApiImpl()
+        tokenQueueApiImpl.setTokenAndQueuePresenter(this)
     }
 
     fun fetchNearMe(deviceId: String, searchStoreQuery: SearchStoreQuery) {
@@ -92,7 +92,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     fun fetchActiveTokenQueueList() {
-        queueApiAuthenticCall.getAllJoinedQueues(
+        tokenQueueApiImpl.getAllJoinedQueues(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth()

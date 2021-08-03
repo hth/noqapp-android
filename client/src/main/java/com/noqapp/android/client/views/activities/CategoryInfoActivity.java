@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,8 +33,8 @@ import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DisplayCaseApiCall;
-import com.noqapp.android.client.model.QueueApiAuthenticCall;
-import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.model.api.TokenQueueApiImpl;
+import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.client.presenter.AuthorizeResponsePresenter;
@@ -119,7 +118,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerView rcv_accreditation;
     private LinearLayout ll_top_header;
     private ExpandableListView expandableListView;
-    private QueueApiAuthenticCall queueApiAuthenticCall;
+    private TokenQueueApiImpl tokenQueueApiImpl;
     private TextView tv_upcoming_photos;
 
     @Override
@@ -155,7 +154,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         view_loader = findViewById(R.id.view_loader);
         expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(true);
-        queueApiAuthenticCall = new QueueApiAuthenticCall();
+        tokenQueueApiImpl = new TokenQueueApiImpl();
         tv_mobile.setOnClickListener((View v) -> AppUtils.makeCall(this, tv_mobile.getText().toString()));
         btn_join_queues.setOnClickListener((View v) -> joinClick());
         btn_register.setOnClickListener((View v) -> register());
@@ -179,12 +178,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
             if (NetworkUtils.isConnectingToInternet(this)) {
                 showProgress();
-                QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-                queueApiUnAuthenticCall.setQueuePresenter(this);
+                TokenQueueImpl tokenQueueImpl = new TokenQueueImpl();
+                tokenQueueImpl.setQueuePresenter(this);
                 if (bundle.getBoolean(IBConstant.KEY_CALL_CATEGORY, false)) {
-                    queueApiUnAuthenticCall.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
+                    tokenQueueImpl.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
                 } else {
-                    queueApiUnAuthenticCall.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                    tokenQueueImpl.getAllQueueState(UserUtils.getDeviceId(), codeQR);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
@@ -626,8 +625,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                         .setCodeQR(codeQR)
                         .setFirstCustomerId(gCard)
                         .setAdditionalCustomerId(lCard);
-                    queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
-                    queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
+                    tokenQueueApiImpl.setAuthorizeResponsePresenter(this);
+                    tokenQueueApiImpl.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);
                     new CustomToast().showToast(this, "Successfully submitted pre-approval.");
                     dialog.dismiss();
