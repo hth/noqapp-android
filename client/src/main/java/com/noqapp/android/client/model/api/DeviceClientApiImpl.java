@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.api.DeviceClient;
+import com.noqapp.android.client.model.response.api.DeviceClientApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.DeviceRegistered;
@@ -16,9 +16,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DeviceClientImpl {
-    private final String TAG = DeviceClientImpl.class.getSimpleName();
-    private static final DeviceClient DEVICE_CLIENT;
+public class DeviceClientApiImpl {
+    private final String TAG = DeviceClientApiImpl.class.getSimpleName();
+    private static final DeviceClientApi DEVICE_CLIENT;
 
     private DeviceRegisterPresenter deviceRegisterPresenter;
 
@@ -27,7 +27,7 @@ public class DeviceClientImpl {
     }
 
     static {
-        DEVICE_CLIENT = RetrofitClient.getClient().create(DeviceClient.class);
+        DEVICE_CLIENT = RetrofitClient.getClient().create(DeviceClientApi.class);
     }
 
     /**

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.Kiosk;
+import com.noqapp.android.client.model.response.api.KioskApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonToken;
@@ -18,9 +18,9 @@ import retrofit2.Response;
 /**
  * Authorised call required authorised user
  */
-public class KioskImpl {
-    private final String TAG = KioskImpl.class.getSimpleName();
-    private final static Kiosk KIOSK;
+public class KioskApiImpl {
+    private final String TAG = KioskApiImpl.class.getSimpleName();
+    private final static KioskApi KIOSK_API;
     private TokenPresenter tokenPresenter;
 
     public void setTokenPresenter(TokenPresenter tokenPresenter) {
@@ -28,12 +28,11 @@ public class KioskImpl {
     }
 
     static {
-        KIOSK = RetrofitClient.getClient().create(Kiosk.class);
+        KIOSK_API = RetrofitClient.getClient().create(KioskApi.class);
     }
 
-
     public void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
-        KIOSK.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
+        KIOSK_API.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

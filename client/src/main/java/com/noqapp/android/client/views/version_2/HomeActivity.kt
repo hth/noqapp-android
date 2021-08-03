@@ -30,7 +30,7 @@ import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHomeBinding
 import com.noqapp.android.client.databinding.NavHeaderMainBinding
-import com.noqapp.android.client.model.open.DeviceRegistrationImpl
+import com.noqapp.android.client.model.open.DeviceClientImpl
 import com.noqapp.android.client.presenter.AppBlacklistPresenter
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
@@ -109,8 +109,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var searchStoreQuery: SearchStoreQuery? = null
     private var checkIfAppIsSupported = true
 
-    private val cacheMsgIds =
-        CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -161,9 +160,9 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
     /** Check if this current version of device is supported. */
     private fun checkIfAppIsSupportedAnyMore() {
-        val deviceRegisteredImpl = DeviceRegistrationImpl()
-        deviceRegisteredImpl.setAppBlacklistPresenter(this)
-        deviceRegisteredImpl.isSupportedAppVersion()
+        val deviceClientImpl = DeviceClientImpl()
+        deviceClientImpl.setAppBlacklistPresenter(this)
+        deviceClientImpl.isSupportedAppVersion()
     }
 
     private fun showLoginScreen() {

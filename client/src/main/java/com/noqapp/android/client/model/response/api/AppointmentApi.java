@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 /**
  * Created by hitender on 5/22/19.
  */
-public interface Appointment {
+public interface AppointmentApi {
 
     /**
      * Errors

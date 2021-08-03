@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.AppointmentImpl;
+import com.noqapp.android.client.model.api.AppointmentApiImpl;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -55,9 +55,9 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
         if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();
-            AppointmentImpl appointmentImpl = new AppointmentImpl();
-            appointmentImpl.setAppointmentPresenter(this);
-            appointmentImpl.allAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+            AppointmentApiImpl appointmentApiImpl = new AppointmentApiImpl();
+            appointmentApiImpl.setAppointmentPresenter(this);
+            appointmentApiImpl.allAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
