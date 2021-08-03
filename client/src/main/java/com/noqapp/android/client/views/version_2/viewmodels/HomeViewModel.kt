@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.noqapp.android.client.model.FavouriteApiCall
 import com.noqapp.android.client.model.api.TokenQueueApiImpl
-import com.noqapp.android.client.model.SearchBusinessStoreApiAuthenticCalls
-import com.noqapp.android.client.model.SearchBusinessStoreApiCalls
+import com.noqapp.android.client.model.api.SearchBusinessStoreApiImpl
+import com.noqapp.android.client.model.open.SearchBusinessStoreImpl
 import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
@@ -38,13 +38,12 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     val jsonScheduledAppointmentLiveData = MutableLiveData<List<JsonSchedule>>()
 
-    private var searchBusinessStoreApiCalls: SearchBusinessStoreApiCalls
-    private var searchBusinessStoreApiAuthenticCalls: SearchBusinessStoreApiAuthenticCalls
+    private var searchBusinessStoreImpl: SearchBusinessStoreImpl
+    private var searchBusinessStoreApiImpl: SearchBusinessStoreApiImpl
     private var tokenQueueApiImpl: TokenQueueApiImpl
 
     val currentTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
-        val tokenAndQueueList =
-            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
+        val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
         emitSource(tokenAndQueueList)
     }
 
@@ -54,14 +53,12 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     val historyTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
-        val tokenAndQueueList =
-            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
+        val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
         emitSource(tokenAndQueueList)
     }
 
     val notificationListLiveData: LiveData<List<DisplayNotification>> = liveData {
-        val notificationList =
-            NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
+        val notificationList = NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
         emitSource(notificationList)
     }
 
@@ -72,23 +69,22 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     val foregroundNotificationLiveData: LiveData<ForegroundNotificationModel> = liveData {
-        val foregroundNotification =
-            NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao()
-                .getForegroundNotification()
+        val foregroundNotification = NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao()
+            .getForegroundNotification()
         emitSource(foregroundNotification)
     }
 
     init {
         currentQueueErrorLiveData.value = false
         nearMeErrorLiveData.value = false
-        searchBusinessStoreApiCalls = SearchBusinessStoreApiCalls(this)
-        searchBusinessStoreApiAuthenticCalls = SearchBusinessStoreApiAuthenticCalls(this)
+        searchBusinessStoreImpl = SearchBusinessStoreImpl(this)
+        searchBusinessStoreApiImpl = SearchBusinessStoreApiImpl(this)
         tokenQueueApiImpl = TokenQueueApiImpl()
         tokenQueueApiImpl.setTokenAndQueuePresenter(this)
     }
 
     fun fetchNearMe(deviceId: String, searchStoreQuery: SearchStoreQuery) {
-        searchBusinessStoreApiCalls.business(deviceId, searchStoreQuery)
+        searchBusinessStoreImpl.business(deviceId, searchStoreQuery)
     }
 
     fun fetchActiveTokenQueueList() {

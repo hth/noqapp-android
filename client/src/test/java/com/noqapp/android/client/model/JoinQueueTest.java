@@ -12,6 +12,7 @@ import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.common.beans.body.JoinQueue;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -42,7 +43,7 @@ public class JoinQueueTest extends ITest {
         tokenQueueApiImpl.setQueuePresenter(queuePresenter);
         tokenQueueApiImpl.getQueueState(did, emailid, auth, codeQR);
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
-        Assert.assertTrue("Store not found", null != tokenQueueApiImpl.jsonQueue);
+        Assertions.assertTrue(null != tokenQueueApiImpl.jsonQueue, "Store not found");
         jsonQueueTemp = tokenQueueApiImpl.jsonQueue;
     }
 
@@ -54,7 +55,7 @@ public class JoinQueueTest extends ITest {
             tokenQueueApiImpl.joinQueue(did, emailid, auth, joinQueue);
             await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
             jsonToken = tokenQueueApiImpl.jsonToken;
-            Assert.assertTrue("Token can not be negative or less than token available from", jsonQueueTemp.getLastNumber() <= jsonToken.getToken());
+            Assertions.assertTrue(jsonQueueTemp.getLastNumber() <= jsonToken.getToken(), "Token can not be negative or less than token available from");
         }
 
     }
