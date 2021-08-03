@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.AuthenticateClientInQueueApiUrls;
+import com.noqapp.android.client.model.response.api.AuthenticateClientInQueueApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ClientInQueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonInQueuePerson;
@@ -14,22 +14,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AuthenticateClientInQueueApiCalls {
+public class AuthenticateClientInQueueApiImpl {
 
-    private static final String TAG = AuthenticateClientInQueueApiCalls.class.getSimpleName();
-    private static final AuthenticateClientInQueueApiUrls authenticateClientInQueueApiUrls;
+    private static final String TAG = AuthenticateClientInQueueApiImpl.class.getSimpleName();
+    private static final AuthenticateClientInQueueApi AUTHENTICATE_CLIENT_IN_QUEUE_API;
     private ClientInQueuePresenter clientInQueuePresenter;
 
     static {
-        authenticateClientInQueueApiUrls = RetrofitClient.getClient().create(AuthenticateClientInQueueApiUrls.class);
+        AUTHENTICATE_CLIENT_IN_QUEUE_API = RetrofitClient.getClient().create(AuthenticateClientInQueueApi.class);
     }
 
-    public AuthenticateClientInQueueApiCalls(ClientInQueuePresenter clientInQueuePresenter) {
+    public AuthenticateClientInQueueApiImpl(ClientInQueuePresenter clientInQueuePresenter) {
         this.clientInQueuePresenter = clientInQueuePresenter;
     }
 
     public void clientInQueue(String did, String mail, String auth, String codeQR, String token) {
-        authenticateClientInQueueApiUrls.clientInQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR, token).enqueue(new Callback<JsonInQueuePerson>() {
+        AUTHENTICATE_CLIENT_IN_QUEUE_API.clientInQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR, token).enqueue(new Callback<JsonInQueuePerson>() {
             @Override
             public void onResponse(@NonNull Call<JsonInQueuePerson> call, @NonNull Response<JsonInQueuePerson> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
