@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.open;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.open.SurveyResponseApiUrls;
+import com.noqapp.android.client.model.response.open.SurveyResponse;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.body.Survey;
@@ -15,23 +15,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SurveyResponseApiCalls {
+public class SurveyResponseImpl {
 
-    private final String TAG = SurveyResponseApiCalls.class.getSimpleName();
-    private static final SurveyResponseApiUrls surveyResponseApiUrls;
+    private final String TAG = SurveyResponseImpl.class.getSimpleName();
+    private static final SurveyResponse SURVEY_RESPONSE;
     private ResponsePresenter responsePresenter;
 
-    public SurveyResponseApiCalls(ResponsePresenter responsePresenter) {
+    public SurveyResponseImpl(ResponsePresenter responsePresenter) {
         this.responsePresenter = responsePresenter;
     }
 
     static {
-        surveyResponseApiUrls = RetrofitClient.getClient().create(SurveyResponseApiUrls.class);
+        SURVEY_RESPONSE = RetrofitClient.getClient().create(SurveyResponse.class);
     }
 
-
     public void surveyResponse(String did, Survey survey) {
-        surveyResponseApiUrls.surveyResponse(did, Constants.DEVICE_TYPE, survey).enqueue(new Callback<JsonResponse>() {
+        SURVEY_RESPONSE.surveyResponse(did, Constants.DEVICE_TYPE, survey).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
