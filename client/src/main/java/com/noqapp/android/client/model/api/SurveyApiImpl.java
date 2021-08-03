@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.SurveyApiUrls;
+import com.noqapp.android.client.model.response.api.Survey;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.SurveyPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
@@ -14,28 +14,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SurveyApiCalls {
+public class SurveyApiImpl {
 
-    private final String TAG = SurveyApiCalls.class.getSimpleName();
-    private static final SurveyApiUrls surveyApiUrls;
+    private final String TAG = SurveyApiImpl.class.getSimpleName();
+    private static final Survey SURVEY;
     private SurveyPresenter surveyPresenter;
 
-    public SurveyApiCalls(SurveyPresenter surveyPresenter) {
+    public SurveyApiImpl(SurveyPresenter surveyPresenter) {
         this.surveyPresenter = surveyPresenter;
     }
 
     static {
-        surveyApiUrls = RetrofitClient.getClient().create(SurveyApiUrls.class);
+        SURVEY = RetrofitClient.getClient().create(Survey.class);
     }
 
-
     public void survey(String mail, String auth) {
-        surveyApiUrls.survey(mail, auth).enqueue(new Callback<JsonQuestionnaire>() {
+        SURVEY.survey(mail, auth).enqueue(new Callback<JsonQuestionnaire>() {
             @Override
             public void onResponse(@NonNull Call<JsonQuestionnaire> call, @NonNull Response<JsonQuestionnaire> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Response survey", String.valueOf(response.body()));
+                        Log.d(TAG,"Response survey " + response.body());
                         surveyPresenter.surveyResponse(response.body());
                     } else {
                         Log.e(TAG, "Error survey " + response.body().getError());
@@ -52,7 +51,7 @@ public class SurveyApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonQuestionnaire> call, @NonNull Throwable t) {
-                Log.e("Failure survey ", t.getLocalizedMessage(), t);
+                Log.e(TAG, "Failure survey " + t.getLocalizedMessage(), t);
                 surveyPresenter.responseErrorPresenter(null);
             }
         });
