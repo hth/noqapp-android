@@ -1,6 +1,7 @@
 package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.ITest;
+import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.StorePresenter;
@@ -28,7 +29,7 @@ public class MerchantNearMeTest extends ITest {
     private BizStoreElasticList bizStoreElasticList;
     private JsonStore jsonStore;
     private SearchBusinessStoreApiCalls searchBusinessStoreApiCalls;
-    private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
+    private TokenQueueImpl tokenQueueImpl;
     private StoreDetailApiCalls storeDetailApiCalls;
     @Mock
     private SearchBusinessStorePresenter searchBusinessStorePresenter;
@@ -81,16 +82,16 @@ public class MerchantNearMeTest extends ITest {
 
     @DisplayName("Calling level up business")
     void callLevelUp(BizStoreElastic bizStoreElastic) {
-        queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-        queueApiUnAuthenticCall.setQueuePresenter(queuePresenter);
-        queueApiUnAuthenticCall.getAllQueueStateLevelUp(did, bizStoreElastic.getCodeQR());
+        tokenQueueImpl = new TokenQueueImpl();
+        tokenQueueImpl.setQueuePresenter(queuePresenter);
+        tokenQueueImpl.getAllQueueStateLevelUp(did, bizStoreElastic.getCodeQR());
         System.out.println("Level up api called");
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilQResponseFromServer());
-        Assert.assertNotNull("Store not found", queueApiUnAuthenticCall.bizStoreElasticList);
-        if (null != queueApiUnAuthenticCall.bizStoreElasticList) {
-            System.out.println("Levelup response: \n" + queueApiUnAuthenticCall.bizStoreElasticList.toString());
+        Assert.assertNotNull("Store not found", tokenQueueImpl.bizStoreElasticList);
+        if (null != tokenQueueImpl.bizStoreElasticList) {
+            System.out.println("Levelup response: \n" + tokenQueueImpl.bizStoreElasticList.toString());
         }
-        queueApiUnAuthenticCall.setResponseReceived(false);
+        tokenQueueImpl.setResponseReceived(false);
     }
 
     @DisplayName("Calling Store")
@@ -116,6 +117,6 @@ public class MerchantNearMeTest extends ITest {
     }
 
     private Callable<Boolean> awaitUntilQResponseFromServer() {
-        return () -> this.queueApiUnAuthenticCall.isResponseReceived();
+        return () -> this.tokenQueueImpl.isResponseReceived();
     }
 }

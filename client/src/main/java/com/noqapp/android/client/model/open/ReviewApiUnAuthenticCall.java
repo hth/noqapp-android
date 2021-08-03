@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.open;
 
 import android.util.Log;
 

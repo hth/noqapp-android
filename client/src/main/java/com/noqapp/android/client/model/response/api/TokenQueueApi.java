@@ -24,7 +24,7 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 3/27/17 8:05 PM
  */
-public interface TokenQueueApiUrls {
+public interface TokenQueueApi {
 
     /**
      * Errors

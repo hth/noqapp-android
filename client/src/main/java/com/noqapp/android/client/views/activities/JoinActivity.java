@@ -37,8 +37,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
-import com.noqapp.android.client.model.QueueApiAuthenticCall;
-import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.model.api.TokenQueueApiImpl;
+import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.AuthorizeResponsePresenter;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
@@ -107,8 +107,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private String topic;
     private boolean isResumeFirst = true;
     private String queueUserId = "";
-    private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
-    private QueueApiAuthenticCall queueApiAuthenticCall;
+    private TokenQueueImpl tokenQueueImpl;
+    private TokenQueueApiImpl tokenQueueApiImpl;
     private Button btn_pay;
     private CardView card_amount;
     private TextView tv_total_order_amt;
@@ -246,7 +246,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 setProgressMessage("Starting token process...");
                 showProgress();
                 setProgressCancel(false);
-                queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
+                tokenQueueApiImpl.setCashFreeNotifyQPresenter(JoinActivity.this);
                 JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
                 jsonCashfreeNotification.setTxMsg(null);
                 jsonCashfreeNotification.setTxTime(null);
@@ -256,15 +256,15 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
                 jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
                 jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
-                queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+                tokenQueueApiImpl.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
             }
         });
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_qconfirm));
-        queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-        queueApiAuthenticCall = new QueueApiAuthenticCall();
-        queueApiAuthenticCall.setQueueJsonPurchaseOrderPresenter(this);
-        queueApiAuthenticCall.setTokenPresenter(this);
+        tokenQueueImpl = new TokenQueueImpl();
+        tokenQueueApiImpl = new TokenQueueApiImpl();
+        tokenQueueApiImpl.setQueueJsonPurchaseOrderPresenter(this);
+        tokenQueueApiImpl.setTokenPresenter(this);
         Intent bundle = getIntent();
         if (null != bundle) {
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
@@ -527,8 +527,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (isOnline()) {
             setProgressMessage("Canceling process...");
             showProgress();
-            queueApiAuthenticCall.setResponsePresenter(this);
-            queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
+            tokenQueueApiImpl.setResponsePresenter(this);
+            tokenQueueApiImpl.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -552,13 +552,13 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     new CustomToast().showToast(
                             this,
                             "Please complete your transaction within " + BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
-                    queueApiAuthenticCall.payBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                    tokenQueueApiImpl.payBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 } else {
-                    queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                    tokenQueueApiImpl.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 }
             } else {
-                queueApiUnAuthenticCall.setTokenPresenter(this);
-                queueApiUnAuthenticCall.joinQueue(UserUtils.getDeviceId(), codeQR);
+                tokenQueueImpl.setTokenPresenter(this);
+                tokenQueueImpl.joinQueue(UserUtils.getDeviceId(), codeQR);
             }
         }
     }
@@ -646,7 +646,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         for (Map.Entry entry : map.entrySet()) {
             Log.e("Payment success", entry.getKey() + " " + entry.getValue());
         }
-        queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
+        tokenQueueApiImpl.setCashFreeNotifyQPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setTxTime(map.get("txTime"));
@@ -656,7 +656,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         jsonCashfreeNotification.setOrderAmount(map.get("orderAmount")); // amount
         jsonCashfreeNotification.setTxStatus(map.get("txStatus"));   //Success
         jsonCashfreeNotification.setOrderId(map.get("orderId"));   // transactionID
-        queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+        tokenQueueApiImpl.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
     @Override
@@ -676,8 +676,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             if (isOnline()) {
                 setProgressMessage("Canceling token...");
                 showProgress();
-                queueApiAuthenticCall.setResponsePresenter(this);
-                queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
+                tokenQueueApiImpl.setResponsePresenter(this);
+                tokenQueueApiImpl.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
@@ -815,7 +815,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     .setCodeQR(codeQR)
                     .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                     .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
-            queueApiAuthenticCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+            tokenQueueApiImpl.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
         }
     }
 
@@ -955,8 +955,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                             .setCodeQR(codeQR)
                             .setFirstCustomerId(gCard)
                             .setAdditionalCustomerId(lCard);
-                    queueApiAuthenticCall.setAuthorizeResponsePresenter(this);
-                    queueApiAuthenticCall.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
+                    tokenQueueApiImpl.setAuthorizeResponsePresenter(this);
+                    tokenQueueApiImpl.businessApprove(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueAuthorize);
                     AppUtils.hideKeyBoard(this);
                     new CustomToast().showToast(this, "Successfully submitted pre-approval. Please try to join the queue again.");
                     dialog.dismiss();

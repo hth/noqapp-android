@@ -38,8 +38,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
-import com.noqapp.android.client.model.QueueApiAuthenticCall;
-import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.model.api.TokenQueueApiImpl;
+import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
@@ -122,8 +122,8 @@ public class AfterJoinActivity
     private boolean isResumeFirst = true;
     private String gotoPerson = "";
     private String queueUserId = "";
-    private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
-    private QueueApiAuthenticCall queueApiAuthenticCall;
+    private TokenQueueImpl tokenQueueImpl;
+    private TokenQueueApiImpl tokenQueueApiImpl;
     private TextView tv_payment_status, tv_due_amt;
     private CardView card_amount;
     private TextView tv_total_order_amt;
@@ -279,9 +279,9 @@ public class AfterJoinActivity
         btn_go_back.setOnClickListener(v -> iv_home.performClick());
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
-        queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-        queueApiAuthenticCall = new QueueApiAuthenticCall();
-        queueApiAuthenticCall.setQueueJsonPurchaseOrderPresenter(this);
+        tokenQueueImpl = new TokenQueueImpl();
+        tokenQueueApiImpl = new TokenQueueApiImpl();
+        tokenQueueApiImpl.setQueueJsonPurchaseOrderPresenter(this);
         AppInitialize.activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
@@ -382,7 +382,7 @@ public class AfterJoinActivity
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
                     setProgressMessage("Fetching Queue data...");
                     showProgress();
-                    queueApiAuthenticCall.purchaseOrder(
+                    tokenQueueApiImpl.purchaseOrder(
                             UserUtils.getDeviceId(),
                             UserUtils.getEmail(),
                             UserUtils.getAuth(),
@@ -461,11 +461,11 @@ public class AfterJoinActivity
             setProgressMessage("Cancel Queue");
             showProgress();
             if (UserUtils.isLogin()) {
-                queueApiAuthenticCall.setResponsePresenter(this);
-                queueApiAuthenticCall.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                tokenQueueApiImpl.setResponsePresenter(this);
+                tokenQueueApiImpl.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             } else {
-                queueApiUnAuthenticCall.setResponsePresenter(this);
-                queueApiUnAuthenticCall.abortQueue(UserUtils.getDeviceId(), codeQR);
+                tokenQueueImpl.setResponsePresenter(this);
+                tokenQueueImpl.abortQueue(UserUtils.getDeviceId(), codeQR);
             }
             if (AppUtils.isRelease()) {
                 try {
@@ -837,7 +837,7 @@ public class AfterJoinActivity
                     .setCodeQR(codeQR)
                     .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                     .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
-            queueApiAuthenticCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+            tokenQueueApiImpl.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
         }
     }
 
@@ -847,7 +847,7 @@ public class AfterJoinActivity
         for (Map.Entry entry : map.entrySet()) {
             Log.e("Payment success", entry.getKey() + " " + entry.getValue());
         }
-        queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
+        tokenQueueApiImpl.setCashFreeNotifyQPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setTxTime(map.get("txTime"));
@@ -857,7 +857,7 @@ public class AfterJoinActivity
         jsonCashfreeNotification.setOrderAmount(map.get("orderAmount")); // amount
         jsonCashfreeNotification.setTxStatus(map.get("txStatus"));   //Success
         jsonCashfreeNotification.setOrderId(map.get("orderId"));   // transactionID
-        queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+        tokenQueueApiImpl.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
     @Override

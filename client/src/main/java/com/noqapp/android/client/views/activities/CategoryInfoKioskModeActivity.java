@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -99,9 +99,9 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         if (!TextUtils.isEmpty(codeQR)) {
             if (NetworkUtils.isConnectingToInternet(this)) {
                 showProgress();
-                QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-                queueApiUnAuthenticCall.setQueuePresenter(this);
-                queueApiUnAuthenticCall.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
+                TokenQueueImpl tokenQueueImpl = new TokenQueueImpl();
+                tokenQueueImpl.setQueuePresenter(this);
+                tokenQueueImpl.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }

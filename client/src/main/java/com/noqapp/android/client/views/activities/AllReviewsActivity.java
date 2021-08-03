@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
+import com.noqapp.android.client.model.open.ReviewApiUnAuthenticCall;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.NetworkUtils;

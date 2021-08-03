@@ -23,8 +23,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.QueueApiAuthenticCall;
-import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.model.api.TokenQueueApiImpl;
+import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -43,8 +43,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
-
-import kotlin.jvm.functions.Function0;
 
 public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueuePresenter, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = BeforeJoinOrderQueueActivity.class.getSimpleName();
@@ -152,13 +150,13 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                     setProgressMessage("Loading queue details...");
                     showProgress();
                     if (UserUtils.isLogin()) {
-                        QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
-                        queueApiAuthenticCall.setQueuePresenter(this);
-                        queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                        TokenQueueApiImpl tokenQueueApiImpl = new TokenQueueApiImpl();
+                        tokenQueueApiImpl.setQueuePresenter(this);
+                        tokenQueueApiImpl.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                     } else {
-                        QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-                        queueApiUnAuthenticCall.setQueuePresenter(this);
-                        queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
+                        TokenQueueImpl tokenQueueImpl = new TokenQueueImpl();
+                        tokenQueueImpl.setQueuePresenter(this);
+                        tokenQueueImpl.getQueueState(UserUtils.getDeviceId(), codeQR);
                     }
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);
@@ -486,14 +484,14 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                 swipeRefreshLayout.setRefreshing(true);
                 showProgress();
                 if (UserUtils.isLogin()) {
-                    QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
-                    queueApiAuthenticCall.setQueuePresenter(this);
-                    queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    TokenQueueApiImpl tokenQueueApiImpl = new TokenQueueApiImpl();
+                    tokenQueueApiImpl.setQueuePresenter(this);
+                    tokenQueueApiImpl.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
 
                 } else {
-                    QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
-                    queueApiUnAuthenticCall.setQueuePresenter(this);
-                    queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
+                    TokenQueueImpl tokenQueueImpl = new TokenQueueImpl();
+                    tokenQueueImpl.setQueuePresenter(this);
+                    tokenQueueImpl.getQueueState(UserUtils.getDeviceId(), codeQR);
                 }
             } else {
                 swipeRefreshLayout.setRefreshing(false);
