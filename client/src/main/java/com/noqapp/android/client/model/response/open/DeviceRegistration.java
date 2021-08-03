@@ -13,7 +13,7 @@ import retrofit2.http.POST;
  * User: omkar
  * Date: 4/2/17 6:37 PM
  */
-public interface DeviceApiUrls {
+public interface DeviceRegistration {
 
     /**
      * Errors

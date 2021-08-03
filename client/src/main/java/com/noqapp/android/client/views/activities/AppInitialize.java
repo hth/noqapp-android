@@ -13,7 +13,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.model.DeviceApiCall;
+import com.noqapp.android.client.model.api.DeviceClientImpl;
+import com.noqapp.android.client.model.open.DeviceRegistrationImpl;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
@@ -415,16 +416,18 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     }
 
     public static void fetchDeviceId(DeviceRegisterPresenter deviceRegisterPresenter) {
-        DeviceApiCall deviceModel = new DeviceApiCall();
-        deviceModel.setDeviceRegisterPresenter(deviceRegisterPresenter);
         DeviceToken deviceToken = new DeviceToken(
                 AppInitialize.getTokenFCM(),
                 Constants.appVersion(),
                 CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
         if (UserUtils.isLogin()) {
-            deviceModel.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+            DeviceClientImpl deviceClient = new DeviceClientImpl();
+            deviceClient.setDeviceRegisterPresenter(deviceRegisterPresenter);
+            deviceClient.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
-            deviceModel.register(deviceToken);
+            DeviceRegistrationImpl deviceRegistration = new DeviceRegistrationImpl();
+            deviceRegistration.setDeviceRegisterPresenter(deviceRegisterPresenter);
+            deviceRegistration.register(deviceToken);
         }
     }
 

@@ -16,7 +16,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DeviceApiCall;
+import com.noqapp.android.client.model.api.DeviceClientImpl;
+import com.noqapp.android.client.model.open.DeviceRegistrationImpl;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -145,12 +146,14 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             deviceId = AppInitialize.getDeviceId();
             if (TextUtils.isEmpty(deviceId)) {
                 /* Call this api only once in life time. */
-                DeviceApiCall deviceApiCall = new DeviceApiCall();
-                deviceApiCall.setDeviceRegisterPresenter(this);
                 if (UserUtils.isLogin()) {
-                    deviceApiCall.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+                    DeviceClientImpl deviceClient = new DeviceClientImpl();
+                    deviceClient.setDeviceRegisterPresenter(this);
+                    deviceClient.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
                 } else {
-                    deviceApiCall.register(deviceToken);
+                    DeviceRegistrationImpl deviceRegistrationImpl = new DeviceRegistrationImpl();
+                    deviceRegistrationImpl.setDeviceRegisterPresenter(this);
+                    deviceRegistrationImpl.register(deviceToken);
                 }
             } else {
                 Log.d(TAG, "Existing did " + deviceId);
