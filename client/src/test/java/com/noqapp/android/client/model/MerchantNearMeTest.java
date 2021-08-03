@@ -1,7 +1,7 @@
 package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.ITest;
-import com.noqapp.android.client.model.open.SearchBusinessStoreImpl;
+import com.noqapp.android.client.model.open.SearchImpl;
 import com.noqapp.android.client.model.open.StoreDetailImpl;
 import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -12,7 +12,6 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +30,7 @@ public class MerchantNearMeTest extends ITest {
 
     private BizStoreElasticList bizStoreElasticList;
     private JsonStore jsonStore;
-    private SearchBusinessStoreImpl searchBusinessStoreImpl;
+    private SearchImpl searchImpl;
     private TokenQueueImpl tokenQueueImpl;
     private StoreDetailImpl storeDetailImpl;
     @Mock
@@ -44,7 +43,7 @@ public class MerchantNearMeTest extends ITest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        searchBusinessStoreImpl = new SearchBusinessStoreImpl(searchBusinessStorePresenter);
+        searchImpl = new SearchImpl(searchBusinessStorePresenter);
         storeDetailImpl = new StoreDetailImpl(storePresenter);
     }
 
@@ -56,15 +55,15 @@ public class MerchantNearMeTest extends ITest {
         searchStoreQuery.setLongitude("72.8777");
         searchStoreQuery.setFilters("xyz");
         searchStoreQuery.setScrollId("");
-        searchBusinessStoreImpl.business(did, searchStoreQuery);
+        searchImpl.business(did, searchStoreQuery);
         System.out.println("Merchant list api called");
 
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
-        Assertions.assertTrue(searchBusinessStoreImpl.bizStoreElasticList.getBizStoreElastics().size() != 0, "no store found");
-        bizStoreElasticList = searchBusinessStoreImpl.bizStoreElasticList;
+        Assertions.assertTrue(searchImpl.bizStoreElasticList.getBizStoreElastics().size() != 0, "no store found");
+        bizStoreElasticList = searchImpl.bizStoreElasticList;
 
         if (null != bizStoreElasticList && bizStoreElasticList.getBizStoreElastics().size() > 0) {
-            searchBusinessStoreImpl.setResponseReceived(false);
+            searchImpl.setResponseReceived(false);
             System.out.println("No of stores found: " + bizStoreElasticList.getBizStoreElastics().size());
             BizStoreElastic bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             switch (bizStoreElastic.getBusinessType()) {
@@ -112,7 +111,7 @@ public class MerchantNearMeTest extends ITest {
     }
 
     private Callable<Boolean> awaitUntilResponseFromServer() {
-        return () -> this.searchBusinessStoreImpl.isResponseReceived();
+        return () -> this.searchImpl.isResponseReceived();
     }
 
     private Callable<Boolean> awaitUntilStoreResponseFromServer() {

@@ -20,8 +20,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.location.LocationManager;
-import com.noqapp.android.client.model.api.SearchBusinessStoreApiImpl;
-import com.noqapp.android.client.model.open.SearchBusinessStoreImpl;
+import com.noqapp.android.client.model.api.SearchApiImpl;
+import com.noqapp.android.client.model.open.SearchImpl;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -63,8 +63,8 @@ public class SearchActivity
     private String town = "";
     private String lat = "";
     private String lng = "";
-    private SearchBusinessStoreImpl searchBusinessStoreImpl;
-    private SearchBusinessStoreApiImpl searchBusinessStoreApiImpl;
+    private SearchImpl searchImpl;
+    private SearchApiImpl searchApiImpl;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
     private LinearLayout ll_search;
@@ -84,8 +84,8 @@ public class SearchActivity
         ll_search = findViewById(R.id.ll_search);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_search));
-        searchBusinessStoreImpl = new SearchBusinessStoreImpl(this);
-        searchBusinessStoreApiImpl = new SearchBusinessStoreApiImpl(this);
+        searchImpl = new SearchImpl(this);
+        searchApiImpl = new SearchApiImpl(this);
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         lng = getIntent().getStringExtra("lng");
@@ -190,9 +190,9 @@ public class SearchActivity
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
                 if (UserUtils.isLogin()) {
-                    searchBusinessStoreApiImpl.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery);
+                    searchApiImpl.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery);
                 } else {
-                    searchBusinessStoreImpl.search(UserUtils.getDeviceId(), searchStoreQuery);
+                    searchImpl.search(UserUtils.getDeviceId(), searchStoreQuery);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -213,7 +213,7 @@ public class SearchActivity
                         .setCodeQR(getIntent().getStringExtra("codeQR"))
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
-                searchBusinessStoreImpl.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
+                searchImpl.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
             }

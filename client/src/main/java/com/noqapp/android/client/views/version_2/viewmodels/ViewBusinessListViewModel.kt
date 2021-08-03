@@ -2,8 +2,8 @@ package com.noqapp.android.client.views.version_2.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.noqapp.android.client.model.api.SearchBusinessStoreApiImpl
-import com.noqapp.android.client.model.open.SearchBusinessStoreImpl
+import com.noqapp.android.client.model.api.SearchApiImpl
+import com.noqapp.android.client.model.open.SearchImpl
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
@@ -14,14 +14,16 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson
 class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
     val errorLiveData = MutableLiveData<String>()
     val businessListResponse = MutableLiveData<BizStoreElasticList?>()
-    private var searchBusinessStoreImpl: SearchBusinessStoreImpl = SearchBusinessStoreImpl(this)
-    private var searchBusinessStoreApiImpl: SearchBusinessStoreApiImpl = SearchBusinessStoreApiImpl(this)
+    private var searchImpl: SearchImpl =
+        SearchImpl(this)
+    private var searchApiImpl: SearchApiImpl =
+        SearchApiImpl(this)
 
     fun fetchBusinessList(searchStoreQuery: SearchStoreQuery?) {
         if (UserUtils.isLogin()) {
-            searchBusinessStoreApiImpl.business(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery)
+            searchApiImpl.business(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery)
         } else {
-            searchBusinessStoreImpl.business(AppInitialize.getDeviceId(), searchStoreQuery)
+            searchImpl.business(AppInitialize.getDeviceId(), searchStoreQuery)
         }
     }
 

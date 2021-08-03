@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.SearchBusinessStoreApi;
+import com.noqapp.android.client.model.response.api.SearchApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -18,17 +18,17 @@ import retrofit2.Response;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-public class SearchBusinessStoreApiImpl {
-    private static final SearchBusinessStoreApi SEARCH_BUSINESS_STORE_API;
+public class SearchApiImpl {
+    private static final SearchApi SEARCH_BUSINESS_STORE_API;
     private SearchBusinessStorePresenter searchBusinessStorePresenter;
     public BizStoreElasticList bizStoreElasticList;
 
-    public SearchBusinessStoreApiImpl(SearchBusinessStorePresenter searchBusinessStorePresenter) {
+    public SearchApiImpl(SearchBusinessStorePresenter searchBusinessStorePresenter) {
         this.searchBusinessStorePresenter = searchBusinessStorePresenter;
     }
 
     static {
-        SEARCH_BUSINESS_STORE_API = RetrofitClient.getClient().create(SearchBusinessStoreApi.class);
+        SEARCH_BUSINESS_STORE_API = RetrofitClient.getClient().create(SearchApi.class);
     }
 
     public void search(String did, String mail, String auth, SearchStoreQuery searchStoreQuery) {
