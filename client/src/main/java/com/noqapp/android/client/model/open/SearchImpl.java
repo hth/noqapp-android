@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.open.SearchBusinessStore;
+import com.noqapp.android.client.model.response.open.Search;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -21,8 +21,8 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
  * User: hitender
  * Date: 5/7/17 12:39 PM
  */
-public class SearchBusinessStoreImpl {
-    private static final SearchBusinessStore SEARCH_BUSINESS_STORE;
+public class SearchImpl {
+    private static final Search SEARCH_BUSINESS_STORE;
     private SearchBusinessStorePresenter searchBusinessStorePresenter;
     public BizStoreElasticList bizStoreElasticList;
     private boolean responseReceived = false;
@@ -35,12 +35,12 @@ public class SearchBusinessStoreImpl {
         this.responseReceived = responseReceived;
     }
 
-    public SearchBusinessStoreImpl(SearchBusinessStorePresenter searchBusinessStorePresenter) {
+    public SearchImpl(SearchBusinessStorePresenter searchBusinessStorePresenter) {
         this.searchBusinessStorePresenter = searchBusinessStorePresenter;
     }
 
     static {
-        SEARCH_BUSINESS_STORE = RetrofitClient.getClient().create(SearchBusinessStore.class);
+        SEARCH_BUSINESS_STORE = RetrofitClient.getClient().create(Search.class);
     }
 
     public void search(String did, SearchStoreQuery searchStoreQuery) {

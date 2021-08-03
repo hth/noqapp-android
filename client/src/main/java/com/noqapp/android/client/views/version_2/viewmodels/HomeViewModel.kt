@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.noqapp.android.client.model.FavouriteApiCall
 import com.noqapp.android.client.model.api.TokenQueueApiImpl
-import com.noqapp.android.client.model.api.SearchBusinessStoreApiImpl
-import com.noqapp.android.client.model.open.SearchBusinessStoreImpl
+import com.noqapp.android.client.model.api.SearchApiImpl
+import com.noqapp.android.client.model.open.SearchImpl
 import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
@@ -38,8 +38,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     val jsonScheduledAppointmentLiveData = MutableLiveData<List<JsonSchedule>>()
 
-    private var searchBusinessStoreImpl: SearchBusinessStoreImpl
-    private var searchBusinessStoreApiImpl: SearchBusinessStoreApiImpl
+    private var searchImpl: SearchImpl
+    private var searchApiImpl: SearchApiImpl
     private var tokenQueueApiImpl: TokenQueueApiImpl
 
     val currentTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
@@ -77,14 +77,14 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     init {
         currentQueueErrorLiveData.value = false
         nearMeErrorLiveData.value = false
-        searchBusinessStoreImpl = SearchBusinessStoreImpl(this)
-        searchBusinessStoreApiImpl = SearchBusinessStoreApiImpl(this)
+        searchImpl = SearchImpl(this)
+        searchApiImpl = SearchApiImpl(this)
         tokenQueueApiImpl = TokenQueueApiImpl()
         tokenQueueApiImpl.setTokenAndQueuePresenter(this)
     }
 
     fun fetchNearMe(deviceId: String, searchStoreQuery: SearchStoreQuery) {
-        searchBusinessStoreImpl.business(deviceId, searchStoreQuery)
+        searchImpl.business(deviceId, searchStoreQuery)
     }
 
     fun fetchActiveTokenQueueList() {
