@@ -17,7 +17,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.KioskImpl;
+import com.noqapp.android.client.model.api.KioskApiImpl;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -276,8 +276,8 @@ public class KioskActivity extends BaseActivity implements QueuePresenter, Token
         if (!AppInitialize.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else {
-            KioskImpl kioskImpl = new KioskImpl();
-            kioskImpl.setTokenPresenter(this);
+            KioskApiImpl kioskApiImpl = new KioskApiImpl();
+            kioskApiImpl.setTokenPresenter(this);
             JsonProfile jp = AppInitialize.getUserProfile();
             String queueUserId = ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId();
             tv_name.setText(((JsonProfile) sp_name_list.getSelectedItem()).getName());
@@ -295,7 +295,7 @@ public class KioskActivity extends BaseActivity implements QueuePresenter, Token
                 guardianId = jp.getQueueUserId();
             }
             JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
-            kioskImpl.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+            kioskApiImpl.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
 
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();

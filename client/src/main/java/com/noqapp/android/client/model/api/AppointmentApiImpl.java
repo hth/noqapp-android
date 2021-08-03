@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.Appointment;
+import com.noqapp.android.client.model.response.api.AppointmentApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -16,10 +16,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AppointmentImpl {
-    private static final String TAG = AppointmentImpl.class.getSimpleName();
+public class AppointmentApiImpl {
+    private static final String TAG = AppointmentApiImpl.class.getSimpleName();
 
-    private static final Appointment APPOINTMENT;
+    private static final AppointmentApi APPOINTMENT_API;
     private AppointmentPresenter appointmentPresenter;
 
     public void setAppointmentPresenter(AppointmentPresenter appointmentPresenter) {
@@ -27,11 +27,11 @@ public class AppointmentImpl {
     }
 
     static {
-        APPOINTMENT = RetrofitClient.getClient().create(Appointment.class);
+        APPOINTMENT_API = RetrofitClient.getClient().create(AppointmentApi.class);
     }
 
     public void scheduleForMonth(String did, String mail, String auth, String month, String codeQR) {
-        APPOINTMENT.scheduleForMonth(did, Constants.DEVICE_TYPE, mail, auth, month, codeQR).enqueue(new Callback<JsonScheduleList>() {
+        APPOINTMENT_API.scheduleForMonth(did, Constants.DEVICE_TYPE, mail, auth, month, codeQR).enqueue(new Callback<JsonScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -60,7 +60,7 @@ public class AppointmentImpl {
     }
 
     public void scheduleForDay(String did, String mail, String auth, String day, String codeQR) {
-        APPOINTMENT.scheduleForDay(did, Constants.DEVICE_TYPE, mail, auth, day, codeQR).enqueue(new Callback<JsonScheduleList>() {
+        APPOINTMENT_API.scheduleForDay(did, Constants.DEVICE_TYPE, mail, auth, day, codeQR).enqueue(new Callback<JsonScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -90,7 +90,7 @@ public class AppointmentImpl {
 
     public void bookAppointment(String did, String mail, String auth, JsonSchedule jsonSchedule) {
         try {
-            APPOINTMENT.bookAppointment(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonSchedule>() {
+            APPOINTMENT_API.bookAppointment(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonSchedule>() {
                 @Override
                 public void onResponse(@NonNull Call<JsonSchedule> call, @NonNull Response<JsonSchedule> response) {
                     if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -122,7 +122,7 @@ public class AppointmentImpl {
     }
 
     public void cancelAppointment(String did, String mail, String auth, JsonSchedule jsonSchedule) {
-        APPOINTMENT.cancelAppointment(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonResponse>() {
+        APPOINTMENT_API.cancelAppointment(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -152,7 +152,7 @@ public class AppointmentImpl {
 
 
     public void allAppointments(String did, String mail, String auth) {
-        APPOINTMENT.allAppointments(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonScheduleList>() {
+        APPOINTMENT_API.allAppointments(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -182,7 +182,7 @@ public class AppointmentImpl {
 
 
     public void allPastAppointments(String did, String mail, String auth) {
-        APPOINTMENT.allPastAppointments(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonScheduleList>() {
+        APPOINTMENT_API.allPastAppointments(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

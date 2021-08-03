@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.open.DeviceRegistration;
+import com.noqapp.android.client.model.response.open.DeviceClient;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.utils.Constants;
@@ -23,9 +23,9 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/2/17 6:40 PM
  */
-public class DeviceRegistrationImpl {
-    private final String TAG = DeviceRegistrationImpl.class.getSimpleName();
-    private static final DeviceRegistration DEVICE_REGISTRATION;
+public class DeviceClientImpl {
+    private final String TAG = DeviceClientImpl.class.getSimpleName();
+    private static final DeviceClient DEVICE_REGISTRATION;
     private AppBlacklistPresenter appBlacklistPresenter;
     private DeviceRegisterPresenter deviceRegisterPresenter;
 
@@ -43,7 +43,7 @@ public class DeviceRegistrationImpl {
     }
 
     static {
-        DEVICE_REGISTRATION = RetrofitClient.getClient().create(DeviceRegistration.class);
+        DEVICE_REGISTRATION = RetrofitClient.getClient().create(DeviceClient.class);
     }
 
     /**
