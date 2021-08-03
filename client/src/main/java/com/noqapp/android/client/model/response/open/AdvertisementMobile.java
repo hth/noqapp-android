@@ -12,7 +12,7 @@ import retrofit2.http.POST;
  * hitender
  * 2019-05-20 11:03
  */
-public interface AdvertisementMobileApiUrls {
+public interface AdvertisementMobile {
 
     /**
      * ERROR
