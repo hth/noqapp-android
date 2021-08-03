@@ -13,7 +13,7 @@ import retrofit2.http.POST;
  * User: hitender
  * Date: 7/14/18 12:19 AM
  */
-public interface ReviewApiUrls {
+public interface ReviewApi {
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.open.ReviewApiUnAuthenticCall;
+import com.noqapp.android.client.model.open.ReviewImpl;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -29,7 +29,6 @@ import com.noqapp.android.common.presenter.AllReviewPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class AllReviewsActivity extends BaseActivity implements AllReviewPresenter {
 
@@ -71,12 +70,12 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
                 jsonReviews = new ArrayList<>();
                 String codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
                 if (NetworkUtils.isConnectingToInternet(AllReviewsActivity.this)) {
-                    ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
-                    reviewApiUnAuthenticCall.setAllReviewPresenter(this);
+                    ReviewImpl reviewImpl = new ReviewImpl();
+                    reviewImpl.setAllReviewPresenter(this);
                     if (bundle.getBooleanExtra("isLevelUp", false)) {
-                        reviewApiUnAuthenticCall.reviewsLevelUp(UserUtils.getDeviceId(), codeQR);
+                        reviewImpl.reviewsLevelUp(UserUtils.getDeviceId(), codeQR);
                     } else {
-                        reviewApiUnAuthenticCall.review(UserUtils.getDeviceId(), codeQR);
+                        reviewImpl.review(UserUtils.getDeviceId(), codeQR);
                     }
                     setProgressMessage("Getting Reviews...");
                     showProgress();
@@ -92,8 +91,9 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
     @Override
     public void allReviewResponse(JsonReviewList jsonReviewList) {
         dismissProgress();
-        if (null != jsonReviewList && jsonReviewList.getJsonReviews().size() > 0)
+        if (null != jsonReviewList && jsonReviewList.getJsonReviews().size() > 0) {
             jsonReviews = jsonReviewList.getJsonReviews();
+        }
         updateUI();
     }
 
@@ -120,20 +120,17 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
         } else {
             toggleShowAll.setVisibility(View.VISIBLE);
             rv_all_review.setVisibility(View.VISIBLE);
-            toggleShowAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        AllReviewsAdapter showAllReviewsAdapter = new AllReviewsAdapter(jsonReviewsOnlyText, AllReviewsActivity.this);
-                        rv_all_review.setAdapter(showAllReviewsAdapter);
-                    } else {
-                        AllReviewsAdapter showAllReviewsAdapter = new AllReviewsAdapter(jsonReviews, AllReviewsActivity.this);
-                        rv_all_review.setAdapter(showAllReviewsAdapter);
-                    }
+            toggleShowAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    AllReviewsAdapter showAllReviewsAdapter = new AllReviewsAdapter(jsonReviewsOnlyText, AllReviewsActivity.this);
+                    rv_all_review.setAdapter(showAllReviewsAdapter);
+                } else {
+                    AllReviewsAdapter showAllReviewsAdapter = new AllReviewsAdapter(jsonReviews, AllReviewsActivity.this);
+                    rv_all_review.setAdapter(showAllReviewsAdapter);
                 }
             });
             rl_empty.setVisibility(View.GONE);
-            tv_review_label.setText("" + jsonReviews.size() + " Ratings");
+            tv_review_label.setText(jsonReviews.size() + " Ratings");
             try {
                 float f = ratingCount * 1.0f / listSize;
                 ratingBar.setRating(f);

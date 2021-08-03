@@ -15,7 +15,7 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 5/7/17 12:40 PM
  */
-public interface ReviewApiUrls {
+public interface Review {
 
     /**
      * Errors
