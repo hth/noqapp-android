@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.widget.ListView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.StoreDetailApiCalls;
+import com.noqapp.android.client.model.open.StoreDetailImpl;
 import com.noqapp.android.client.presenter.StoreHoursPresenter;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -33,7 +33,7 @@ public class AllDayTimingActivity extends BaseActivity implements StoreHoursPres
             if (!TextUtils.isEmpty(codeQR)) {
                 if (NetworkUtils.isConnectingToInternet(this)) {
                     showProgress();
-                    new StoreDetailApiCalls(this).storeHours(UserUtils.getDeviceId(), codeQR);
+                    new StoreDetailImpl(this).storeHours(UserUtils.getDeviceId(), codeQR);
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);
                 }

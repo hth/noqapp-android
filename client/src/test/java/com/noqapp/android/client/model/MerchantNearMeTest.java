@@ -1,6 +1,7 @@
 package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.ITest;
+import com.noqapp.android.client.model.open.StoreDetailImpl;
 import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -30,7 +31,7 @@ public class MerchantNearMeTest extends ITest {
     private JsonStore jsonStore;
     private SearchBusinessStoreApiCalls searchBusinessStoreApiCalls;
     private TokenQueueImpl tokenQueueImpl;
-    private StoreDetailApiCalls storeDetailApiCalls;
+    private StoreDetailImpl storeDetailImpl;
     @Mock
     private SearchBusinessStorePresenter searchBusinessStorePresenter;
     @Mock
@@ -42,7 +43,7 @@ public class MerchantNearMeTest extends ITest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         searchBusinessStoreApiCalls = new SearchBusinessStoreApiCalls(searchBusinessStorePresenter);
-        storeDetailApiCalls = new StoreDetailApiCalls(storePresenter);
+        storeDetailImpl = new StoreDetailImpl(storePresenter);
     }
 
     @Test
@@ -96,15 +97,15 @@ public class MerchantNearMeTest extends ITest {
 
     @DisplayName("Calling Store")
     void callStoreDetail(BizStoreElastic bizStoreElastic) {
-        storeDetailApiCalls.getStoreDetail(did, bizStoreElastic.getCodeQR());
+        storeDetailImpl.getStoreDetail(did, bizStoreElastic.getCodeQR());
         System.out.println("Store Api called: ");
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilStoreResponseFromServer());
-        Assert.assertNotNull("Store not found", storeDetailApiCalls.jsonStore);
+        Assert.assertNotNull("Store not found", storeDetailImpl.jsonStore);
 
-        storeDetailApiCalls.setResponseReceived(false);
-        jsonStore = storeDetailApiCalls.jsonStore;
+        storeDetailImpl.setResponseReceived(false);
+        jsonStore = storeDetailImpl.jsonStore;
         if (null != jsonStore) {
-            System.out.println("Store Found response: \n" + storeDetailApiCalls.jsonStore.toString());
+            System.out.println("Store Found response: \n" + storeDetailImpl.jsonStore.toString());
         }
     }
 
@@ -113,7 +114,7 @@ public class MerchantNearMeTest extends ITest {
     }
 
     private Callable<Boolean> awaitUntilStoreResponseFromServer() {
-        return () -> this.storeDetailApiCalls.isResponseReceived();
+        return () -> this.storeDetailImpl.isResponseReceived();
     }
 
     private Callable<Boolean> awaitUntilQResponseFromServer() {

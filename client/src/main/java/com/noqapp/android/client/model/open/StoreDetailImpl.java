@@ -1,19 +1,16 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.open;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.open.StoreDetailApiUrls;
+import com.noqapp.android.client.model.response.open.StoreDetail;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.StoreHoursPresenter;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonHourList;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,9 +22,9 @@ import retrofit2.Response;
  * User: omkar
  * Date: 3/26/17 11:49 PM
  */
-public class StoreDetailApiCalls {
-    private final String TAG = StoreDetailApiCalls.class.getSimpleName();
-    private static final StoreDetailApiUrls storeDetailApiUrls;
+public class StoreDetailImpl {
+    private final String TAG = StoreDetailImpl.class.getSimpleName();
+    private static final StoreDetail STORE_DETAIL;
     private StorePresenter storePresenter;
     private StoreHoursPresenter storeHoursPresenter;
     private boolean responseReceived = false;
@@ -41,16 +38,16 @@ public class StoreDetailApiCalls {
         this.responseReceived = responseReceived;
     }
 
-    public StoreDetailApiCalls(StorePresenter storePresenter) {
+    public StoreDetailImpl(StorePresenter storePresenter) {
         this.storePresenter = storePresenter;
     }
 
-    public StoreDetailApiCalls(StoreHoursPresenter storeHoursPresenter) {
+    public StoreDetailImpl(StoreHoursPresenter storeHoursPresenter) {
         this.storeHoursPresenter = storeHoursPresenter;
     }
 
     static {
-        storeDetailApiUrls = RetrofitClient.getClient().create(StoreDetailApiUrls.class);
+        STORE_DETAIL = RetrofitClient.getClient().create(StoreDetail.class);
     }
 
     /**
@@ -60,7 +57,7 @@ public class StoreDetailApiCalls {
      * @param codeQR
      */
     public void getStoreDetail(String did, String codeQR) {
-        storeDetailApiUrls.getStoreDetail(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonStore>() {
+        STORE_DETAIL.getStoreDetail(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonStore>() {
             @Override
             public void onResponse(@NonNull Call<JsonStore> call, @NonNull Response<JsonStore> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -97,7 +94,7 @@ public class StoreDetailApiCalls {
      * @param codeQR
      */
     public void storeHours(String did, String codeQR) {
-        storeDetailApiUrls.storeHours(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonHourList>() {
+        STORE_DETAIL.storeHours(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonHourList>() {
             @Override
             public void onResponse(@NonNull Call<JsonHourList> call, @NonNull Response<JsonHourList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

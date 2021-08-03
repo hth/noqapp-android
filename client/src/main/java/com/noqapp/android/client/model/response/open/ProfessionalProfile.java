@@ -11,7 +11,7 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 6/4/18 11:00 AM
  */
-public interface ProfessionalProfileApiUrls {
+public interface ProfessionalProfile {
 
     /**
      * ERROR
@@ -19,14 +19,14 @@ public interface ProfessionalProfileApiUrls {
      */
     @GET("open/professional/profile/{webProfileId}")
     Call<JsonProfessionalProfile> profile(
-            @Header("X-R-DID")
-            String did,
+        @Header("X-R-DID")
+        String did,
 
-            @Header("X-R-DT")
-            String dt,
+        @Header("X-R-DT")
+        String dt,
 
-            @Path("webProfileId")
-            String webProfileId
+        @Path("webProfileId")
+        String webProfileId
     );
 
 }
