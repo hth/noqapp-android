@@ -31,7 +31,6 @@ public class KioskImpl {
         KIOSK = RetrofitClient.getClient().create(Kiosk.class);
     }
 
-
     public void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
         KIOSK.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
