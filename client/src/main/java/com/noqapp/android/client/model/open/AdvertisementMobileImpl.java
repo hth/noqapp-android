@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.open;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.open.AdvertisementMobileApiUrls;
+import com.noqapp.android.client.model.response.open.AdvertisementMobile;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.client.utils.Constants;
@@ -15,10 +15,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AdvertisementApiCalls {
-    private static final String TAG = AdvertisementApiCalls.class.getSimpleName();
+public class AdvertisementMobileImpl {
+    private static final String TAG = AdvertisementMobileImpl.class.getSimpleName();
 
-    private static final AdvertisementMobileApiUrls advertisementMobileApiUrls;
+    private static final AdvertisementMobile ADVERTISEMENT_MOBILE;
     private AdvertisementPresenter advertisementPresenter;
 
     public void setAdvertisementPresenter(AdvertisementPresenter advertisementPresenter) {
@@ -26,11 +26,11 @@ public class AdvertisementApiCalls {
     }
 
     static {
-        advertisementMobileApiUrls = RetrofitClient.getClient().create(AdvertisementMobileApiUrls.class);
+        ADVERTISEMENT_MOBILE = RetrofitClient.getClient().create(AdvertisementMobile.class);
     }
 
     public void getAdvertisementsByLocation(String did, Location location) {
-        advertisementMobileApiUrls.getAdvertisementsByLocation(did, Constants.DEVICE_TYPE, location).enqueue(new Callback<JsonAdvertisementList>() {
+        ADVERTISEMENT_MOBILE.getAdvertisementsByLocation(did, Constants.DEVICE_TYPE, location).enqueue(new Callback<JsonAdvertisementList>() {
             @Override
             public void onResponse(@NonNull Call<JsonAdvertisementList> call, @NonNull Response<JsonAdvertisementList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
