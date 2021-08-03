@@ -17,7 +17,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.KioskApiCalls;
+import com.noqapp.android.client.model.api.KioskImpl;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -42,8 +42,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KioskJoinActivity extends BaseActivity implements QueuePresenter, TokenPresenter {
-    private final String TAG = KioskJoinActivity.class.getSimpleName();
+public class KioskActivity extends BaseActivity implements QueuePresenter, TokenPresenter {
+    private final String TAG = KioskActivity.class.getSimpleName();
     private TextView tv_consult_fees, tv_cancellation_fees;
     private TextView tv_serving_no;
     private TextView tv_people_in_q;
@@ -100,10 +100,10 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         tv_toolbar_title.setText(getString(R.string.screen_join));
         tv_add.setOnClickListener((View v) -> {
             if (UserUtils.isLogin()) {
-                Intent loginIntent = new Intent(KioskJoinActivity.this, UserProfileActivity.class);
+                Intent loginIntent = new Intent(KioskActivity.this, UserProfileActivity.class);
                 startActivity(loginIntent);
             } else {
-                new CustomToast().showToast(KioskJoinActivity.this, "Please login to add dependents");
+                new CustomToast().showToast(KioskActivity.this, "Please login to add dependents");
             }
         });
 
@@ -231,7 +231,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                 if (validateView) {
                     btn_joinQueue.setText(getString(R.string.login_to_join));
                 } else {
-                    Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
+                    Intent loginIntent = new Intent(KioskActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
                 }
             } else {
@@ -258,10 +258,10 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                         setColor(false);
                     } else {
                         // Navigate to login screen
-                        Intent loginIntent = new Intent(KioskJoinActivity.this, LoginActivity.class);
+                        Intent loginIntent = new Intent(KioskActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
                     }
-                    new CustomToast().showToast(KioskJoinActivity.this, "Please login to avail this feature");
+                    new CustomToast().showToast(KioskActivity.this, "Please login to avail this feature");
                 }
             } else {
                 // any user can join
@@ -276,8 +276,8 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         if (!AppInitialize.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else {
-            KioskApiCalls kioskApiCalls = new KioskApiCalls();
-            kioskApiCalls.setTokenPresenter(this);
+            KioskImpl kioskImpl = new KioskImpl();
+            kioskImpl.setTokenPresenter(this);
             JsonProfile jp = AppInitialize.getUserProfile();
             String queueUserId = ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId();
             tv_name.setText(((JsonProfile) sp_name_list.getSelectedItem()).getName());
@@ -295,7 +295,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
                 guardianId = jp.getQueueUserId();
             }
             JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
-            kioskApiCalls.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+            kioskImpl.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
 
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
@@ -328,7 +328,7 @@ public class KioskJoinActivity extends BaseActivity implements QueuePresenter, T
         // Added to re-initialised the value if user is logged in again and comeback to join screen
         if (null != jsonQueue) {
             /* Check weather join is possible or not today due to some reason */
-            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, KioskJoinActivity.this);
+            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, KioskActivity.this);
             if (joinQueueState.isJoinNotPossible()) {
                 isJoinNotPossible = joinQueueState.isJoinNotPossible();
                 joinErrorMsg = joinQueueState.getJoinErrorMsg();

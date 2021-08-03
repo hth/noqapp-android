@@ -235,7 +235,7 @@ public class SearchActivity
             case HS:
             case PW:
                 if (AppInitialize.isLockMode) {
-                    in = new Intent(this, KioskJoinActivity.class);
+                    in = new Intent(this, KioskActivity.class);
                 } else {
                     in = new Intent(this, BeforeJoinActivity.class);
                 }
