@@ -3,7 +3,6 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 10/4/18.
  */
-
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.AsyncTask;
@@ -18,7 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfessionalProfileApiCall;
+import com.noqapp.android.client.model.open.ProfessionalProfileImpl;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.utils.AppUtils;
@@ -77,7 +76,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         if (isOnline()) {
             setProgressMessage("Loading doctor's profile...");
             showProgress();
-            new ProfessionalProfileApiCall(this).profile(UserUtils.getDeviceId(), webProfileId);
+            new ProfessionalProfileImpl(this).profile(UserUtils.getDeviceId(), webProfileId);
         }
     }
 

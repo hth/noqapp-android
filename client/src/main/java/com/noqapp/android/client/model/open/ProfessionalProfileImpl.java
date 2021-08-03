@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.open;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.open.ProfessionalProfileApiUrls;
+import com.noqapp.android.client.model.response.open.ProfessionalProfile;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
@@ -16,18 +16,17 @@ import retrofit2.Response;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-public class ProfessionalProfileApiCall {
-
-    private final String TAG = ProfessionalProfileApiCall.class.getSimpleName();
-    private static final ProfessionalProfileApiUrls professionalProfileApiUrls;
+public class ProfessionalProfileImpl {
+    private final String TAG = ProfessionalProfileImpl.class.getSimpleName();
+    private static final ProfessionalProfile PROFESSIONAL_PROFILE;
     private QueueManagerPresenter queueManagerPresenter;
 
-    public ProfessionalProfileApiCall(QueueManagerPresenter queueManagerPresenter) {
+    public ProfessionalProfileImpl(QueueManagerPresenter queueManagerPresenter) {
         this.queueManagerPresenter = queueManagerPresenter;
     }
 
     static {
-        professionalProfileApiUrls = RetrofitClient.getClient().create(ProfessionalProfileApiUrls.class);
+        PROFESSIONAL_PROFILE = RetrofitClient.getClient().create(ProfessionalProfile.class);
     }
 
     /**
@@ -35,12 +34,12 @@ public class ProfessionalProfileApiCall {
      * @param webProfileId
      */
     public void profile(String did, String webProfileId) {
-        professionalProfileApiUrls.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
+        PROFESSIONAL_PROFILE.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("QueueManagerProfile", String.valueOf(response.body()));
+                        Log.d(TAG, "QueueManagerProfile " + response.body());
                         queueManagerPresenter.queueManagerResponse(response.body());
                     } else {
                         Log.e(TAG, "Empty QueueManagerProfile");
@@ -57,7 +56,7 @@ public class ProfessionalProfileApiCall {
 
             @Override
             public void onFailure(@NonNull Call<JsonProfessionalProfile> call, @NonNull Throwable t) {
-                Log.e("professionalProfilefail", t.getLocalizedMessage(), t);
+                Log.e(TAG, "Professional Profile fail " + t.getLocalizedMessage(), t);
                 queueManagerPresenter.responseErrorPresenter(null);
             }
         });

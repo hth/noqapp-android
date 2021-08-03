@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.StoreDetailApiCalls;
+import com.noqapp.android.client.model.open.StoreDetailImpl;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
@@ -87,7 +87,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         setProgressMessage("Loading ...");
         if (NetworkUtils.isConnectingToInternet(this)) {
             showProgress();
-            new StoreDetailApiCalls(this).getStoreDetail(UserUtils.getDeviceId(), codeQR);
+            new StoreDetailImpl(this).getStoreDetail(UserUtils.getDeviceId(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -204,8 +204,9 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
                 headerPosition.add(headerTracker);
                 headerTracker += expandableListDetail.get(headerList.get(i).getCategoryId()).size();
 
-            } else
+            } else {
                 removeEmptyData.add(i);
+            }
         }
         // Remove the categories which having zero items
         for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
@@ -219,7 +220,6 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
         rcv_header.setAdapter(menuHeaderAdapter);
 
         expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int position = new AppUtils().getFirstVisibleGroup(expandableListView);

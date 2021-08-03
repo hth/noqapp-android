@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.StoreDetailApiCalls;
+import com.noqapp.android.client.model.open.StoreDetailImpl;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
@@ -124,7 +124,7 @@ public class StoreWithMenuActivity
         setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
         if (NetworkUtils.isConnectingToInternet(this)) {
             showProgress();
-            new StoreDetailApiCalls(this).getStoreDetail(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+            new StoreDetailImpl(this).getStoreDetail(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }

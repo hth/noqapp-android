@@ -21,7 +21,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.StoreDetailApiCalls;
+import com.noqapp.android.client.model.open.StoreDetailImpl;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -111,10 +111,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 startActivity(in);
             }
         });
+
         setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
         if (NetworkUtils.isConnectingToInternet(this)) {
             showProgress();
-            new StoreDetailApiCalls(this).getStoreDetail(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+            new StoreDetailImpl(this).getStoreDetail(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -129,11 +130,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             case R.id.menu_favourite:
                 if (canAddItem) {
                     item.setIcon(R.drawable.heart_fill);
-                    new CustomToast().showToast(this, "added to favourite");
+                    new CustomToast().showToast(this, "Added to favourite");
                     canAddItem = false;
                 } else {
                     item.setIcon(R.drawable.ic_heart);
-                    new CustomToast().showToast(this, "remove from favourite");
+                    new CustomToast().showToast(this, "Remove from favourite");
                     canAddItem = true;
                 }
                 return true;
