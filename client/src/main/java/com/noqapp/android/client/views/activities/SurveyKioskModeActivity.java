@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.SurveyApiCalls;
+import com.noqapp.android.client.model.api.SurveyApiImpl;
 import com.noqapp.android.client.presenter.SurveyPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
 import com.noqapp.android.client.presenter.beans.SurveyQuestion;
@@ -54,8 +54,8 @@ public class SurveyKioskModeActivity
         if (!TextUtils.isEmpty(codeQR)) {
             if (NetworkUtils.isConnectingToInternet(this)) {
                 showProgress();
-                SurveyApiCalls surveyApiCalls = new SurveyApiCalls(this);
-                surveyApiCalls.survey(UserUtils.getEmail(), UserUtils.getAuth());
+                SurveyApiImpl surveyApiImpl = new SurveyApiImpl(this);
+                surveyApiImpl.survey(UserUtils.getEmail(), UserUtils.getAuth());
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
@@ -93,10 +93,9 @@ public class SurveyKioskModeActivity
     @Override
     public void onLanguageSelected(List<SurveyQuestion> item, Locale locale) {
         KioskStringConstants.init(locale.getLanguage());
-        ArrayList list = new ArrayList<>(item);
         Intent in = new Intent(this, SurveyActivity.class);
         in.putExtra("survey", jsonQuestionnaire);
-        in.putExtra("list", list);
+        in.putExtra("list", new ArrayList<>(item));
         startActivity(in);
     }
 }
