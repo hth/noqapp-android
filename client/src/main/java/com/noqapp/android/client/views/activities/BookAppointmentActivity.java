@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.AppointmentApiCalls;
+import com.noqapp.android.client.model.api.AppointmentImpl;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
@@ -66,7 +66,7 @@ public class BookAppointmentActivity
     private Calendar selectedDate;
     private AppointmentSlotAdapter appointmentSlotAdapter;
     private int selectedPos = -1;
-    private AppointmentApiCalls appointmentApiCalls;
+    private AppointmentImpl appointmentImpl;
     private AppointmentSlot firstAvailableAppointment = null;
     private int totalAvailableCount = 0;
     private boolean isAppointmentBooking = false;
@@ -82,8 +82,8 @@ public class BookAppointmentActivity
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(true);
         tv_toolbar_title.setText(R.string.txt_title_book_appointment);
-        appointmentApiCalls = new AppointmentApiCalls();
-        appointmentApiCalls.setAppointmentPresenter(this);
+        appointmentImpl = new AppointmentImpl();
+        appointmentImpl.setAppointmentPresenter(this);
 
         bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         if (null != bizStoreElastic) {
@@ -430,7 +430,7 @@ public class BookAppointmentActivity
         if (isOnline()) {
             setProgressMessage(getString(R.string.txt_appointment_fetching));
             showProgress();
-            appointmentApiCalls.scheduleForDay(
+            appointmentImpl.scheduleForDay(
                 UserUtils.getDeviceId(),
                 UserUtils.getEmail(),
                 UserUtils.getAuth(),
@@ -473,7 +473,7 @@ public class BookAppointmentActivity
         btn_yes.setOnClickListener(v -> {
             setProgressMessage(getString(R.string.txt_appointment_booking));
             showProgress();
-            appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+            appointmentImpl.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
             mAlertDialog.dismiss();
         });
         mAlertDialog.show();
