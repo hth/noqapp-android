@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.api.DeviceClientApiUrls;
+import com.noqapp.android.client.model.response.api.DeviceClient;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.DeviceRegistered;
@@ -18,7 +18,7 @@ import retrofit2.Response;
 
 public class DeviceClientImpl {
     private final String TAG = DeviceClientImpl.class.getSimpleName();
-    private static final DeviceClientApiUrls deviceClientApiUrls;
+    private static final DeviceClient DEVICE_CLIENT;
 
     private DeviceRegisterPresenter deviceRegisterPresenter;
 
@@ -27,7 +27,7 @@ public class DeviceClientImpl {
     }
 
     static {
-        deviceClientApiUrls = RetrofitClient.getClient().create(DeviceClientApiUrls.class);
+        DEVICE_CLIENT = RetrofitClient.getClient().create(DeviceClient.class);
     }
 
     /**
@@ -43,7 +43,7 @@ public class DeviceClientImpl {
      */
     public void register(String did, String mail, String auth, DeviceToken deviceToken) {
         Log.d(TAG, "Registered device api called");
-        deviceClientApiUrls.registration(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+        DEVICE_CLIENT.registration(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
