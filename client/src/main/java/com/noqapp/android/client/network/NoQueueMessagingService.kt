@@ -22,7 +22,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.noqapp.android.client.R
-import com.noqapp.android.client.model.NotificationApiCall
+import com.noqapp.android.client.model.api.NotificationAcknowledgeApiImpl
+import com.noqapp.android.client.model.open.NotificationAcknowledgeImpl
 import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.ReviewData
@@ -118,7 +119,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                     var jsonTextToSpeeches: List<JsonTextToSpeech?>? = null
                     val containsTextToSpeeches = mappedData.containsKey("textToSpeeches")
                     if (containsTextToSpeeches) {
-                        jsonTextToSpeeches = objectMapper.readValue(mappedData["textToSpeeches"], object : TypeReference<List<JsonTextToSpeech?>?>() {})
+                        jsonTextToSpeeches =
+                            objectMapper.readValue(mappedData["textToSpeeches"], object : TypeReference<List<JsonTextToSpeech?>?>() {})
                         //TODO(hth) Temp code. Removed as parsing issue.
                         mappedData.remove("textToSpeeches")
                     }
@@ -922,16 +924,10 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 val channelName = "Channel Name"
                 val mChannel: NotificationChannel
                 if (highImportance) {
-                    mChannel = NotificationChannel(
-                        channelWithSound,
-                        channelName,
-                        NotificationManager.IMPORTANCE_HIGH)
+                    mChannel = NotificationChannel(channelWithSound, channelName, NotificationManager.IMPORTANCE_HIGH)
                     mChannel.setSound(defaultSoundUri, null)
                 } else {
-                    mChannel = NotificationChannel(
-                        channelNoSound,
-                        channelName,
-                        NotificationManager.IMPORTANCE_LOW)
+                    mChannel = NotificationChannel(channelNoSound, channelName, NotificationManager.IMPORTANCE_LOW)
                     mChannel.setSound(null, null)
                 }
                 notificationManager.createNotificationChannel(mChannel)
@@ -1120,16 +1116,18 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
     private fun callNotificationViewApi(notificationId: String) {
         val notification = Notification()
         notification.id = notificationId
-        val notificationApiCall = NotificationApiCall(this)
+
         if (UserUtils.isLogin()) {
-            notificationApiCall.notificationViewed(
+            val notificationAcknowledgeApiImpl = NotificationAcknowledgeApiImpl(this)
+            notificationAcknowledgeApiImpl.notificationViewed(
                 UserUtils.getDeviceId(),
                 UserUtils.getEmail(),
                 UserUtils.getAuth(),
                 notification
             )
         } else {
-            notificationApiCall.notificationViewed(UserUtils.getDeviceId(), notification)
+            val notificationAcknowledgeImpl = NotificationAcknowledgeImpl(this)
+            notificationAcknowledgeImpl.notificationViewed(UserUtils.getDeviceId(), notification)
         }
     }
 

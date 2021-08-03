@@ -17,7 +17,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.RegisterApiCall;
+import com.noqapp.android.client.model.open.AccountClientImpl;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtils;
@@ -262,7 +262,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         // Invite code is dropped for the registration form here in favor of identification
         // registration while acquiring token.
         registration.setInviteCode("");
-        new RegisterApiCall(this).register(UserUtils.getDeviceId(), registration);
+        new AccountClientImpl(this).register(UserUtils.getDeviceId(), registration);
     }
 
     private String generatePassword() {
@@ -270,5 +270,4 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         int n = 100000 + rnd.nextInt(900000);
         return String.valueOf(n);
     }
-
 }

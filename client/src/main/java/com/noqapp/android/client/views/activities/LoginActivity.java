@@ -3,7 +3,6 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 5/7/17.
  */
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -11,7 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.RegisterApiCall;
+import com.noqapp.android.client.model.open.AccountClientImpl;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -45,7 +44,7 @@ public class LoginActivity extends OTPActivity {
         Login login = new Login();
         login.setPhone(phoneNumber);
         login.setCountryShortName("");
-        new RegisterApiCall(this).login(UserUtils.getDeviceId(), login);
+        new AccountClientImpl(this).login(UserUtils.getDeviceId(), login);
     }
 
     @Override
