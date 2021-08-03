@@ -51,8 +51,8 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
         tv_review_label = findViewById(R.id.tv_review_label);
         toggleShowAll = findViewById(R.id.toggleShowAll);
         toggleShowAll.setVisibility(View.INVISIBLE);
-        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        rv_all_review.setLayoutManager(horizontalLayoutManagaer);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        rv_all_review.setLayoutManager(horizontalLayoutManager);
         rv_all_review.setItemAnimator(new DefaultItemAnimator());
         Intent bundle = getIntent();
         if (null != bundle) {
