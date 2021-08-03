@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.AppointmentApiCalls;
+import com.noqapp.android.client.model.api.AppointmentImpl;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
@@ -101,8 +101,8 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             String note = getString(R.string.asterisk) + " " + getString(R.string.txt_arrive_before) + "\n"
                 + getString(R.string.asterisk) + getString(R.string.asterisk) + " " + getString(R.string.txt_cancel_before) + "\n";
             tv_msg.setText(note);
-            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
-            appointmentApiCalls.setAppointmentPresenter(this);
+            AppointmentImpl appointmentImpl = new AppointmentImpl();
+            appointmentImpl.setAppointmentPresenter(this);
             Button btn_cancel = findViewById(R.id.btn_cancel);
             btn_cancel.setOnClickListener((View v) -> {
                 ShowCustomDialog showDialog = new ShowCustomDialog(AppointmentDetailActivity.this, true);
@@ -112,7 +112,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                         if (isOnline()) {
                             setProgressMessage(getString(R.string.txt_cancelling_appointment));
                             showProgress();
-                            appointmentApiCalls.cancelAppointment(
+                            appointmentImpl.cancelAppointment(
                                 UserUtils.getDeviceId(),
                                 UserUtils.getEmail(),
                                 UserUtils.getAuth(),

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.AppointmentApiCalls;
+import com.noqapp.android.client.model.api.AppointmentImpl;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -28,7 +28,6 @@ import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class PastAppointmentFragment extends BaseFragment implements AppointmentPresenter,
@@ -56,9 +55,9 @@ public class PastAppointmentFragment extends BaseFragment implements Appointment
         if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("Fetching past appointments...");
             showProgress();
-            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
-            appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allPastAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+            AppointmentImpl appointmentImpl = new AppointmentImpl();
+            appointmentImpl.setAppointmentPresenter(this);
+            appointmentImpl.allPastAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

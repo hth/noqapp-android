@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.api.DeviceClientApiUrls;
 import com.noqapp.android.client.model.response.open.DeviceRegistration;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
