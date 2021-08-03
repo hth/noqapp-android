@@ -1,10 +1,11 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.open;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.open.RegisterApiUrls;
+import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.response.open.AccountClient;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Login;
@@ -21,24 +22,24 @@ import retrofit2.Response;
  * Date: 4/8/17 8:38 PM
  */
 
-public class RegisterApiCall {
-    private final String TAG = RegisterApiCall.class.getSimpleName();
-    private static final RegisterApiUrls registerApiUrls;
+public class AccountClientImpl {
+    private final String TAG = AccountClientImpl.class.getSimpleName();
+    private static final com.noqapp.android.client.model.response.open.AccountClient ACCOUNT_CLIENT;
     private ProfilePresenter profilePresenter;
 
-    public RegisterApiCall(ProfilePresenter profilePresenter) {
+    public AccountClientImpl(ProfilePresenter profilePresenter) {
         this.profilePresenter = profilePresenter;
     }
 
     static {
-        registerApiUrls = RetrofitClient.getClient().create(RegisterApiUrls.class);
+        ACCOUNT_CLIENT = RetrofitClient.getClient().create(AccountClient.class);
     }
 
     /**
      * @param registration
      */
     public void register(String did, Registration registration) {
-        registerApiUrls.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
+        ACCOUNT_CLIENT.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -73,7 +74,7 @@ public class RegisterApiCall {
      * @param login
      */
     public void login(String did, Login login) {
-        registerApiUrls.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
+        ACCOUNT_CLIENT.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
