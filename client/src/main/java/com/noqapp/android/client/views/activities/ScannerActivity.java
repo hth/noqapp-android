@@ -18,11 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.AuthenticateClientInQueueApiCalls;
+import com.noqapp.android.client.model.api.AuthenticateClientInQueueApiImpl;
 import com.noqapp.android.client.presenter.ClientInQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonInQueuePerson;
@@ -182,10 +181,10 @@ public abstract class ScannerActivity extends LocationBaseActivity implements Cl
 
     private void qrCodeResult(String[] scanData) {
         if (scanData.length > 2) {
-            AuthenticateClientInQueueApiCalls authenticateClientInQueueApiCalls = new AuthenticateClientInQueueApiCalls(this);
+            AuthenticateClientInQueueApiImpl authenticateClientInQueueApiImpl = new AuthenticateClientInQueueApiImpl(this);
             customProgressBar.showProgress();
             customProgressBar.setProgressMessage("Validating token...");
-            authenticateClientInQueueApiCalls.clientInQueue(
+            authenticateClientInQueueApiImpl.clientInQueue(
                 UserUtils.getDeviceId(),
                 UserUtils.getEmail(),
                 UserUtils.getAuth(),
