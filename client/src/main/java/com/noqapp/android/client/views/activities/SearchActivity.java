@@ -20,8 +20,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.location.LocationManager;
-import com.noqapp.android.client.model.SearchBusinessStoreApiAuthenticCalls;
-import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
+import com.noqapp.android.client.model.api.SearchBusinessStoreApiImpl;
+import com.noqapp.android.client.model.open.SearchBusinessStoreImpl;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -63,8 +63,8 @@ public class SearchActivity
     private String town = "";
     private String lat = "";
     private String lng = "";
-    private SearchBusinessStoreApiCalls searchBusinessStoreModels;
-    private SearchBusinessStoreApiAuthenticCalls searchBusinessStoreApiAuthenticCalls;
+    private SearchBusinessStoreImpl searchBusinessStoreImpl;
+    private SearchBusinessStoreApiImpl searchBusinessStoreApiImpl;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
     private LinearLayout ll_search;
@@ -84,8 +84,8 @@ public class SearchActivity
         ll_search = findViewById(R.id.ll_search);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_search));
-        searchBusinessStoreModels = new SearchBusinessStoreApiCalls(this);
-        searchBusinessStoreApiAuthenticCalls = new SearchBusinessStoreApiAuthenticCalls(this);
+        searchBusinessStoreImpl = new SearchBusinessStoreImpl(this);
+        searchBusinessStoreApiImpl = new SearchBusinessStoreApiImpl(this);
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         lng = getIntent().getStringExtra("lng");
@@ -190,9 +190,9 @@ public class SearchActivity
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
                 if (UserUtils.isLogin()) {
-                    searchBusinessStoreApiAuthenticCalls.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery);
+                    searchBusinessStoreApiImpl.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery);
                 } else {
-                    searchBusinessStoreModels.search(UserUtils.getDeviceId(), searchStoreQuery);
+                    searchBusinessStoreImpl.search(UserUtils.getDeviceId(), searchStoreQuery);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -213,7 +213,7 @@ public class SearchActivity
                         .setCodeQR(getIntent().getStringExtra("codeQR"))
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
-                searchBusinessStoreModels.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreImpl.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
             }
@@ -382,5 +382,4 @@ public class SearchActivity
         AppUtils.hideKeyBoard(this);
         return null;
     }
-
 }

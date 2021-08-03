@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.response.api;
+package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
@@ -9,44 +9,35 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-public interface SearchBusinessStoreApiUrls {
+/**
+ * Created by chandra on 3/22/18.
+ */
+public interface SearchBusinessStore {
 
     /**
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @GET("api/c/search")
+    @GET("open/search")
     Call<SearchStoreQuery> search(
         @Header("X-R-DID")
         String did,
 
         @Header("X-R-DT")
-        String dt,
-
-        @Header("X-R-MAIL")
-        String mail,
-
-        @Header("X-R-AUTH")
-        String auth
+        String dt
     );
 
     /**
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("api/c/search")
+    @POST("open/search")
     Call<BizStoreElasticList> search(
             @Header("X-R-DID")
             String did,
 
             @Header("X-R-DT")
             String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
 
             @Body
             SearchStoreQuery searchStoreQuery
@@ -56,19 +47,29 @@ public interface SearchBusinessStoreApiUrls {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("api/c/search/business")
+    @POST("open/search/kiosk")
+    Call<BizStoreElasticList> kiosk(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Body
+            SearchStoreQuery searchStoreQuery
+    );
+
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
+    @POST("open/search/business")
     Call<BizStoreElasticList> business(
         @Header("X-R-DID")
         String did,
 
         @Header("X-R-DT")
         String dt,
-
-        @Header("X-R-MAIL")
-        String mail,
-
-        @Header("X-R-AUTH")
-        String auth,
 
         @Body
         SearchStoreQuery searchStoreQuery

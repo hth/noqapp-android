@@ -1,6 +1,7 @@
 package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.ITest;
+import com.noqapp.android.client.model.open.SearchBusinessStoreImpl;
 import com.noqapp.android.client.model.open.StoreDetailImpl;
 import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -12,6 +13,7 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +31,7 @@ public class MerchantNearMeTest extends ITest {
 
     private BizStoreElasticList bizStoreElasticList;
     private JsonStore jsonStore;
-    private SearchBusinessStoreApiCalls searchBusinessStoreApiCalls;
+    private SearchBusinessStoreImpl searchBusinessStoreImpl;
     private TokenQueueImpl tokenQueueImpl;
     private StoreDetailImpl storeDetailImpl;
     @Mock
@@ -42,7 +44,7 @@ public class MerchantNearMeTest extends ITest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        searchBusinessStoreApiCalls = new SearchBusinessStoreApiCalls(searchBusinessStorePresenter);
+        searchBusinessStoreImpl = new SearchBusinessStoreImpl(searchBusinessStorePresenter);
         storeDetailImpl = new StoreDetailImpl(storePresenter);
     }
 
@@ -54,15 +56,15 @@ public class MerchantNearMeTest extends ITest {
         searchStoreQuery.setLongitude("72.8777");
         searchStoreQuery.setFilters("xyz");
         searchStoreQuery.setScrollId("");
-        searchBusinessStoreApiCalls.business(did, searchStoreQuery);
+        searchBusinessStoreImpl.business(did, searchStoreQuery);
         System.out.println("Merchant list api called");
 
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
-        Assert.assertTrue("no store found", searchBusinessStoreApiCalls.bizStoreElasticList.getBizStoreElastics().size() != 0);
-        bizStoreElasticList = searchBusinessStoreApiCalls.bizStoreElasticList;
+        Assertions.assertTrue(searchBusinessStoreImpl.bizStoreElasticList.getBizStoreElastics().size() != 0, "no store found");
+        bizStoreElasticList = searchBusinessStoreImpl.bizStoreElasticList;
 
         if (null != bizStoreElasticList && bizStoreElasticList.getBizStoreElastics().size() > 0) {
-            searchBusinessStoreApiCalls.setResponseReceived(false);
+            searchBusinessStoreImpl.setResponseReceived(false);
             System.out.println("No of stores found: " + bizStoreElasticList.getBizStoreElastics().size());
             BizStoreElastic bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             switch (bizStoreElastic.getBusinessType()) {
@@ -77,7 +79,7 @@ public class MerchantNearMeTest extends ITest {
                     callStoreDetail(bizStoreElastic);
             }
         } else {
-            Assert.assertTrue("Stores not found", null != bizStoreElasticList);
+            Assertions.assertTrue(null != bizStoreElasticList, "Stores not found");
         }
     }
 
@@ -88,7 +90,7 @@ public class MerchantNearMeTest extends ITest {
         tokenQueueImpl.getAllQueueStateLevelUp(did, bizStoreElastic.getCodeQR());
         System.out.println("Level up api called");
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilQResponseFromServer());
-        Assert.assertNotNull("Store not found", tokenQueueImpl.bizStoreElasticList);
+        Assertions.assertNotNull(tokenQueueImpl.bizStoreElasticList, "Store not found");
         if (null != tokenQueueImpl.bizStoreElasticList) {
             System.out.println("Levelup response: \n" + tokenQueueImpl.bizStoreElasticList.toString());
         }
@@ -100,7 +102,7 @@ public class MerchantNearMeTest extends ITest {
         storeDetailImpl.getStoreDetail(did, bizStoreElastic.getCodeQR());
         System.out.println("Store Api called: ");
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilStoreResponseFromServer());
-        Assert.assertNotNull("Store not found", storeDetailImpl.jsonStore);
+        Assertions.assertNotNull(storeDetailImpl.jsonStore, "Store not found");
 
         storeDetailImpl.setResponseReceived(false);
         jsonStore = storeDetailImpl.jsonStore;
@@ -110,7 +112,7 @@ public class MerchantNearMeTest extends ITest {
     }
 
     private Callable<Boolean> awaitUntilResponseFromServer() {
-        return () -> this.searchBusinessStoreApiCalls.isResponseReceived();
+        return () -> this.searchBusinessStoreImpl.isResponseReceived();
     }
 
     private Callable<Boolean> awaitUntilStoreResponseFromServer() {
