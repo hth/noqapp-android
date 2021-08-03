@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.open.FeedApiUrls;
+import com.noqapp.android.client.model.response.open.Feed;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.FeedPresenter;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
@@ -16,23 +16,23 @@ import retrofit2.Response;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-public class FeedApiCall {
+public class FeedImpl {
 
-    private final String TAG = FeedApiCall.class.getSimpleName();
-    private static final FeedApiUrls feedApiUrls;
+    private final String TAG = FeedImpl.class.getSimpleName();
+    private static final Feed FEED;
     private FeedPresenter feedPresenter;
 
-    public FeedApiCall(FeedPresenter feedPresenter) {
+    public FeedImpl(FeedPresenter feedPresenter) {
         this.feedPresenter = feedPresenter;
     }
 
     static {
-        feedApiUrls = RetrofitClient.getClient().create(FeedApiUrls.class);
+        FEED = RetrofitClient.getClient().create(Feed.class);
     }
 
 
     public void activeFeed(String did) {
-        feedApiUrls.activeFeed(did, DEVICE_TYPE).enqueue(new Callback<JsonFeedList>() {
+        FEED.activeFeed(did, DEVICE_TYPE).enqueue(new Callback<JsonFeedList>() {
             @Override
             public void onResponse(@NonNull Call<JsonFeedList> call, @NonNull Response<JsonFeedList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
