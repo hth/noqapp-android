@@ -44,6 +44,12 @@ public class SearchStoreQuery {
     @JsonProperty("scrollId")
     private String scrollId;
 
+    @JsonProperty("from")
+    private int from;
+
+    @JsonProperty("size")
+    private int size;
+
     /* Apply specific filter on fields set on app, like city. */
     @JsonProperty("filters")
     private String filters;
@@ -111,6 +117,24 @@ public class SearchStoreQuery {
 
     public SearchStoreQuery setScrollId(String scrollId) {
         this.scrollId = scrollId;
+        return this;
+    }
+
+    public int getFrom() {
+        return from;
+    }
+
+    public SearchStoreQuery setFrom(int from) {
+        this.from = from;
+        return this;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public SearchStoreQuery setSize(int size) {
+        this.size = size;
         return this;
     }
 
