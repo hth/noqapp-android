@@ -78,9 +78,6 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("CS")
     private String countryShortName;
 
-    @JsonProperty("PU")
-    private Date publishUntil;
-
     /** Mostly used for display as most of the common data is listed as text here. */
     @JsonProperty("TS")
     private String[] fieldTags;
@@ -208,15 +205,6 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
-        return this;
-    }
-
-    public Date getPublishUntil() {
-        return publishUntil;
-    }
-
-    public MarketplaceElastic setPublishUntil(Date publishUntil) {
-        this.publishUntil = publishUntil;
         return this;
     }
 

@@ -34,6 +34,12 @@ public class BizStoreElasticList {
     @JsonProperty("si")
     private String scrollId;
 
+    @JsonProperty("from")
+    private int from;
+
+    @JsonProperty("size")
+    private int size;
+
     @JsonProperty("cityName")
     private String cityName;
 
@@ -55,6 +61,24 @@ public class BizStoreElasticList {
 
     public BizStoreElasticList setScrollId(String scrollId) {
         this.scrollId = scrollId;
+        return this;
+    }
+
+    public int getFrom() {
+        return from;
+    }
+
+    public BizStoreElasticList setFrom(int from) {
+        this.from = from;
+        return this;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public BizStoreElasticList setSize(int size) {
+        this.size = size;
         return this;
     }
 
