@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="4dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_market_place"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:src="@drawable/image_foreground"
+            android:background="@color/color_grey_bg" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rs. 44, 000/-"
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-black"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@id/tv_property_title"
+            app:layout_constraintTop_toBottomOf="@id/iv_market_place"/>
+
+        <TextView
+            android:id="@+id/tv_property_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:fontFamily="sans-serif"
+            android:text="14 Space Villa Apartments"
+            android:textColor="@color/theme_color_dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_price" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="26, Spaze Street, Gurgaon, Sector 22"
+            app:drawableStartCompat="@drawable/ic_location"
+            app:layout_constraintStart_toStartOf="@id/tv_property_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_property_title" />
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black_transparent"
+            app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
+        <LinearLayout
+            android:id="@+id/ll_details"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/view_divider">
+
+            <TextView
+                android:id="@+id/tv_beds"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="3 Bed"
+                app:layout_constraintStart_toStartOf="@id/tv_property_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/black_transparent" />
+
+            <TextView
+                android:id="@+id/tv_bath"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="2 Bath"
+                app:layout_constraintStart_toStartOf="@id/tv_property_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/black_transparent" />
+
+            <TextView
+                android:id="@+id/tv_house_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="1 gallery"
+                app:layout_constraintStart_toStartOf="@id/tv_property_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/black_transparent" />
+
+            <TextView
+                android:id="@+id/tv_house_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="3rd floor"
+                app:layout_constraintStart_toStartOf="@id/tv_property_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_location" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black_transparent"
+            app:layout_constraintTop_toBottomOf="@id/ll_details" />
+
+        <LinearLayout
+            android:id="@+id/ll_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/view_divider2"
+            android:layout_margin="16dp">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/btn_allow_location_access"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Call agent"
+                    android:textAllCaps="false"
+                    android:background="@drawable/orange_gradient"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="View Details"
+                    android:textAllCaps="false"
+                    android:background="@drawable/orange_gradient"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
