@@ -1,7 +1,7 @@
 package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
+import com.noqapp.android.client.presenter.beans.body.SearchQuery;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,7 +19,7 @@ public interface Search {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
     @GET("open/search")
-    Call<SearchStoreQuery> search(
+    Call<SearchQuery> search(
         @Header("X-R-DID")
         String did,
 
@@ -40,7 +40,7 @@ public interface Search {
             String dt,
 
             @Body
-            SearchStoreQuery searchStoreQuery
+            SearchQuery searchQuery
     );
 
     /**
@@ -56,7 +56,7 @@ public interface Search {
             String dt,
 
             @Body
-            SearchStoreQuery searchStoreQuery
+            SearchQuery searchQuery
     );
 
     /**
@@ -72,6 +72,6 @@ public interface Search {
         String dt,
 
         @Body
-        SearchStoreQuery searchStoreQuery
+        SearchQuery searchQuery
     );
 }

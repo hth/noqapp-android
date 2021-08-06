@@ -10,7 +10,7 @@ import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonStore;
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
+import com.noqapp.android.client.presenter.beans.body.SearchQuery;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,13 +49,15 @@ public class MerchantNearMeTest extends ITest {
 
     @Test
     void searchBusiness() {
-        SearchStoreQuery searchStoreQuery = new SearchStoreQuery();
-        searchStoreQuery.setCityName("Mumbai");
-        searchStoreQuery.setLatitude("19.076");
-        searchStoreQuery.setLongitude("72.8777");
-        searchStoreQuery.setFilters("xyz");
-        searchStoreQuery.setScrollId("");
-        searchImpl.business(did, searchStoreQuery);
+        SearchQuery searchQuery = new SearchQuery()
+            .setCityName("Mumbai")
+            .setLatitude("19.076")
+            .setLongitude("72.8777")
+            .setFilters("xyz")
+            .setScrollId("")
+            .setFrom(0)
+            .setSize(30);
+        searchImpl.business(did, searchQuery);
         System.out.println("Merchant list api called");
 
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());

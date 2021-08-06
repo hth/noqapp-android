@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.IBConstant
 import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.common.model.types.BusinessSupportEnum
@@ -15,12 +15,12 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum
 
 object NavigationBundleUtils {
 
-    fun navigateToSearch(context: Context, searchStoreQuery: SearchStoreQuery) {
+    fun navigateToSearch(context: Context, searchQuery: SearchQuery) {
         val searchIntent = Intent(context, SearchActivity::class.java)
         searchIntent.putExtra("scrollId", "")
-        searchIntent.putExtra("lat", "" + searchStoreQuery.latitude)
-        searchIntent.putExtra("lng", "" + searchStoreQuery.longitude)
-        searchIntent.putExtra("city", searchStoreQuery.cityName)
+        searchIntent.putExtra("lat", searchQuery.latitude)
+        searchIntent.putExtra("lng", searchQuery.longitude)
+        searchIntent.putExtra("city", searchQuery.cityName)
         context.startActivity(searchIntent)
     }
 

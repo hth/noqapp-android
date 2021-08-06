@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.model.types.BusinessSupportEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SearchStoreQuery {
+public class SearchQuery {
 
     @JsonProperty("q")
     private String query;
@@ -70,7 +69,7 @@ public class SearchStoreQuery {
         return query;
     }
 
-    public SearchStoreQuery setQuery(String query) {
+    public SearchQuery setQuery(String query) {
         this.query = query;
         return this;
     }
@@ -79,7 +78,7 @@ public class SearchStoreQuery {
         return cityName;
     }
 
-    public SearchStoreQuery setCityName(String cityName) {
+    public SearchQuery setCityName(String cityName) {
         this.cityName = cityName;
         return this;
     }
@@ -88,7 +87,7 @@ public class SearchStoreQuery {
         return latitude;
     }
 
-    public SearchStoreQuery setLatitude(String latitude) {
+    public SearchQuery setLatitude(String latitude) {
         this.latitude = latitude;
         return this;
     }
@@ -97,7 +96,7 @@ public class SearchStoreQuery {
         return longitude;
     }
 
-    public SearchStoreQuery setLongitude(String longitude) {
+    public SearchQuery setLongitude(String longitude) {
         this.longitude = longitude;
         return this;
     }
@@ -106,7 +105,7 @@ public class SearchStoreQuery {
         return filters;
     }
 
-    public SearchStoreQuery setFilters(String filters) {
+    public SearchQuery setFilters(String filters) {
         this.filters = filters;
         return this;
     }
@@ -115,7 +114,7 @@ public class SearchStoreQuery {
         return scrollId;
     }
 
-    public SearchStoreQuery setScrollId(String scrollId) {
+    public SearchQuery setScrollId(String scrollId) {
         this.scrollId = scrollId;
         return this;
     }
@@ -124,7 +123,7 @@ public class SearchStoreQuery {
         return from;
     }
 
-    public SearchStoreQuery setFrom(int from) {
+    public SearchQuery setFrom(int from) {
         this.from = from;
         return this;
     }
@@ -133,7 +132,7 @@ public class SearchStoreQuery {
         return size;
     }
 
-    public SearchStoreQuery setSize(int size) {
+    public SearchQuery setSize(int size) {
         this.size = size;
         return this;
     }
@@ -142,7 +141,7 @@ public class SearchStoreQuery {
         return codeQR;
     }
 
-    public SearchStoreQuery setCodeQR(String codeQR) {
+    public SearchQuery setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
     }
@@ -151,7 +150,7 @@ public class SearchStoreQuery {
         return searchedOnBusinessType;
     }
 
-    public SearchStoreQuery setSearchedOnBusinessType(BusinessTypeEnum searchedOnBusinessType) {
+    public SearchQuery setSearchedOnBusinessType(BusinessTypeEnum searchedOnBusinessType) {
         this.searchedOnBusinessType = searchedOnBusinessType;
         return this;
     }
@@ -160,7 +159,7 @@ public class SearchStoreQuery {
         return pastSearch;
     }
 
-    public SearchStoreQuery setPastSearch(List<String> pastSearch) {
+    public SearchQuery setPastSearch(List<String> pastSearch) {
         this.pastSearch = pastSearch;
         return this;
     }
@@ -169,7 +168,7 @@ public class SearchStoreQuery {
         return suggestedSearch;
     }
 
-    public SearchStoreQuery setSuggestedSearch(List<String> suggestedSearch) {
+    public SearchQuery setSuggestedSearch(List<String> suggestedSearch) {
         this.suggestedSearch = suggestedSearch;
         return this;
     }

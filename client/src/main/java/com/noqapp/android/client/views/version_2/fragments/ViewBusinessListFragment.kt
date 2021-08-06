@@ -5,16 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.databinding.FragmentViewBusinessListBinding
 import com.noqapp.android.client.databinding.LayoutProgressBarBinding
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.ShowAlertInformation
-import com.noqapp.android.client.views.activities.StoreWithMenuActivity
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.NavigationBundleUtils
@@ -77,12 +75,12 @@ class ViewBusinessListFragment : BaseFragment(), StoreInfoViewAllAdapter.OnItemC
         })
     }
 
-    private fun setUpRecyclerView(searchStoreQuery: SearchStoreQuery) {
+    private fun setUpRecyclerView(searchQuery: SearchQuery) {
         fragmentViewBusinessListBinding.rvBusiness.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireContext())
         fragmentViewBusinessListBinding.rvBusiness.layoutManager = layoutManager
         fragmentViewBusinessListBinding.rvBusiness.itemAnimator = DefaultItemAnimator()
-        storeInfoViewAllAdapter = StoreInfoViewAllAdapter(mutableListOf(), requireContext(), this, searchStoreQuery.latitude.toDouble(), searchStoreQuery.longitude.toDouble())
+        storeInfoViewAllAdapter = StoreInfoViewAllAdapter(mutableListOf(), requireContext(), this, searchQuery.latitude.toDouble(), searchQuery.longitude.toDouble())
         fragmentViewBusinessListBinding.rvBusiness.adapter = storeInfoViewAllAdapter
     }
 
