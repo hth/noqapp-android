@@ -8,7 +8,7 @@ import com.noqapp.android.client.model.response.open.Search;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
+import com.noqapp.android.client.presenter.beans.body.SearchQuery;
 import com.noqapp.android.client.utils.Constants;
 
 import retrofit2.Call;
@@ -43,8 +43,8 @@ public class SearchImpl {
         SEARCH_BUSINESS_STORE = RetrofitClient.getClient().create(Search.class);
     }
 
-    public void search(String did, SearchStoreQuery searchStoreQuery) {
-        SEARCH_BUSINESS_STORE.search(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+    public void search(String did, SearchQuery searchQuery) {
+        SEARCH_BUSINESS_STORE.search(did, DEVICE_TYPE, searchQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -73,8 +73,8 @@ public class SearchImpl {
         });
     }
 
-    public void kiosk(String did, SearchStoreQuery searchStoreQuery) {
-        SEARCH_BUSINESS_STORE.kiosk(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+    public void kiosk(String did, SearchQuery searchQuery) {
+        SEARCH_BUSINESS_STORE.kiosk(did, DEVICE_TYPE, searchQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -105,10 +105,10 @@ public class SearchImpl {
 
     /**
      * @param did
-     * @param searchStoreQuery
+     * @param searchQuery
      */
-    public void business(String did, SearchStoreQuery searchStoreQuery) {
-        SEARCH_BUSINESS_STORE.business(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+    public void business(String did, SearchQuery searchQuery) {
+        SEARCH_BUSINESS_STORE.business(did, DEVICE_TYPE, searchQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -150,7 +150,7 @@ public class SearchImpl {
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("Failed business near", t.getLocalizedMessage(), t);
-                switch (searchStoreQuery.getSearchedOnBusinessType()) {
+                switch (searchQuery.getSearchedOnBusinessType()) {
                     case CD:
                     case CDQ:
                         searchBusinessStorePresenter.nearMeCanteenError();

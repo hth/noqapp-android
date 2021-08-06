@@ -33,7 +33,7 @@ import com.noqapp.android.client.databinding.NavHeaderMainBinding
 import com.noqapp.android.client.model.open.DeviceClientImpl
 import com.noqapp.android.client.presenter.AppBlacklistPresenter
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.*
 import com.noqapp.android.client.views.activities.*
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
@@ -81,7 +81,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     ) {
         activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
 
-        val searchStoreQuery = SearchStoreQuery()
+        val searchStoreQuery = SearchQuery()
         area?.let {
             searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
         }
@@ -95,7 +95,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         searchStoreQuery.scrollId = ""
 
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
-        this.searchStoreQuery = searchStoreQuery
+        this.searchQuery = searchStoreQuery
     }
 
     private val menuDrawerItems = mutableListOf<MenuDrawer>()
@@ -106,7 +106,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private lateinit var navController: NavController
     private var textToSpeechHelper: TextToSpeechHelper? = null
     private var isRateUsFirstTime = true
-    private var searchStoreQuery: SearchStoreQuery? = null
+    private var searchQuery: SearchQuery? = null
     private var checkIfAppIsSupported = true
 
     private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
@@ -803,7 +803,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 return true
             }
             R.id.menuSearch -> {
-                searchStoreQuery?.let {
+                searchQuery?.let {
                     NavigationBundleUtils.navigateToSearch(this, it)
                 }
                 return false

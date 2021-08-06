@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentChangeLocationBinding
 import com.noqapp.android.client.location.LocationManager
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AnalyticsEvents
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.views.activities.AppInitialize
@@ -69,7 +69,7 @@ class ChangeLocationFragmentNew : Fragment(),
             try {
                 val cityName = parent.getItemAtPosition(position) as String
                 val geoIP = AppUtils.getLocationFromAddress(activity, cityName)
-                val searchStoreQuery = SearchStoreQuery()
+                val searchStoreQuery = SearchQuery()
                 searchStoreQuery.latitude = geoIP.latitude.toString()
                 searchStoreQuery.longitude = geoIP.longitude.toString()
                 searchStoreQuery.cityName = cityName
@@ -118,7 +118,7 @@ class ChangeLocationFragmentNew : Fragment(),
     ) {
         AppUtils.setAutoCompleteText(changeLocationBinding.autoCompleteTextView, town)
 
-        val searchStoreQuery = SearchStoreQuery()
+        val searchStoreQuery = SearchQuery()
         searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
         searchStoreQuery.latitude = latitude.toString()
         searchStoreQuery.longitude = longitude.toString()

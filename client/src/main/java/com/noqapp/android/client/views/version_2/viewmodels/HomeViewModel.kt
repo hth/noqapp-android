@@ -10,7 +10,7 @@ import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
 import com.noqapp.android.client.presenter.beans.*
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.NetworkUtils
 import com.noqapp.android.client.utils.ShowAlertInformation
@@ -28,7 +28,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
     val TAG: String = HomeViewModel::class.java.simpleName
 
-    val searchStoreQueryLiveData = MutableLiveData<SearchStoreQuery>()
+    val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()
     val nearMeErrorLiveData = MutableLiveData<Boolean>()
     val nearMeResponse = MutableLiveData<BizStoreElasticList?>()
@@ -83,8 +83,8 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         tokenQueueApiImpl.setTokenAndQueuePresenter(this)
     }
 
-    fun fetchNearMe(deviceId: String, searchStoreQuery: SearchStoreQuery) {
-        searchImpl.business(deviceId, searchStoreQuery)
+    fun fetchNearMe(deviceId: String, searchQuery: SearchQuery) {
+        searchImpl.business(deviceId, searchQuery)
     }
 
     fun fetchActiveTokenQueueList() {

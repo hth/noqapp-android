@@ -22,7 +22,7 @@ import com.noqapp.android.client.databinding.FragmentHomeNewBinding
 import com.noqapp.android.client.databinding.ViewIndicatorBinding
 import com.noqapp.android.client.presenter.beans.BizStoreElastic
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery
+import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.IBConstant
 import com.noqapp.android.client.utils.SortPlaces
@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private lateinit var tokenAndQueueAndQueueAdapter: TokenAndQueueAdapter
     private lateinit var scheduledAppointmentAdapter: ScheduledAppointmentAdapter
     private lateinit var homeFragmentInteractionListener: HomeFragmentInteractionListener
-    private var searchStoreQuery: SearchStoreQuery? = null
+    private var searchQuery: SearchQuery? = null
     private var showRecentVisitsFirst = true
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -101,7 +101,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                     if (it.position == 0) {
                         homeViewModel.fetchFavouritesRecentVisitList()
                     } else {
-                        searchStoreQuery?.let { searchStoreQuery ->
+                        searchQuery?.let { searchStoreQuery ->
                             homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
                         }
                     }
@@ -116,7 +116,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                     if (it.position == 0) {
                         homeViewModel.fetchFavouritesRecentVisitList()
                     } else {
-                        searchStoreQuery?.let { searchStoreQuery ->
+                        searchQuery?.let { searchStoreQuery ->
                             homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
                         }
                     }
@@ -160,7 +160,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private fun observeValues() {
         homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, {
             it.searchedOnBusinessType = BusinessTypeEnum.ZZ
-            searchStoreQuery = it
+            searchQuery = it
             fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.VISIBLE
             if (showRecentVisitsFirst) {
                 showRecentVisitsFirst = false
@@ -176,7 +176,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
         homeViewModel.nearMeResponse.observe(viewLifecycleOwner, { bizStoreElasticList ->
             bizStoreElasticList?.bizStoreElastics?.let {
-                searchStoreQuery?.let { searchStoreQueryVal ->
+                searchQuery?.let { searchStoreQueryVal ->
                     Collections.sort(
                             it,
                             SortPlaces(
@@ -202,7 +202,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         /** Recent to be listed in order of last joined activity. Displays based on recently visited. */
         homeViewModel.favoritesListResponseLiveData.observe(viewLifecycleOwner, { favoriteElastic ->
             favoriteElastic?.favoriteSuggested?.let {
-                searchStoreQuery?.let { searchStoreQueryVal ->
+                searchQuery?.let { searchStoreQueryVal ->
                     val storeInfoAdapter = StoreInfoAdapter(
                             it,
                             activity,

@@ -8,7 +8,7 @@ import com.noqapp.android.client.model.response.api.SearchApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
+import com.noqapp.android.client.presenter.beans.body.SearchQuery;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
@@ -31,8 +31,8 @@ public class SearchApiImpl {
         SEARCH_BUSINESS_STORE_API = RetrofitClient.getClient().create(SearchApi.class);
     }
 
-    public void search(String did, String mail, String auth, SearchStoreQuery searchStoreQuery) {
-        SEARCH_BUSINESS_STORE_API.search(did, DEVICE_TYPE, mail, auth,  searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+    public void search(String did, String mail, String auth, SearchQuery searchQuery) {
+        SEARCH_BUSINESS_STORE_API.search(did, DEVICE_TYPE, mail, auth, searchQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -59,8 +59,8 @@ public class SearchApiImpl {
         });
     }
 
-    public void business(String did, String mail, String auth, SearchStoreQuery searchStoreQuery) {
-        SEARCH_BUSINESS_STORE_API.business(did, DEVICE_TYPE, mail, auth,  searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+    public void business(String did, String mail, String auth, SearchQuery searchQuery) {
+        SEARCH_BUSINESS_STORE_API.business(did, DEVICE_TYPE, mail, auth, searchQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

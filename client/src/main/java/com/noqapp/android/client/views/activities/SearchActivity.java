@@ -25,7 +25,7 @@ import com.noqapp.android.client.model.open.SearchImpl;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
+import com.noqapp.android.client.presenter.beans.body.SearchQuery;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
@@ -182,7 +182,7 @@ public class SearchActivity
         if (StringUtils.isNotBlank(edt_search.getText().toString())) {
             if (isOnline()) {
                 showProgress();
-                SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
+                SearchQuery searchQuery = new SearchQuery()
                         .setCityName(city)
                         .setLatitude(lat)
                         .setLongitude(lng)
@@ -190,9 +190,9 @@ public class SearchActivity
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
                 if (UserUtils.isLogin()) {
-                    searchApiImpl.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchStoreQuery);
+                    searchApiImpl.search(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchQuery);
                 } else {
-                    searchImpl.search(UserUtils.getDeviceId(), searchStoreQuery);
+                    searchImpl.search(UserUtils.getDeviceId(), searchQuery);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -205,7 +205,7 @@ public class SearchActivity
         if (StringUtils.isNotBlank(edt_search.getText().toString())) {
             if (isOnline()) {
                 showProgress();
-                SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
+                SearchQuery searchQuery = new SearchQuery()
                         .setCityName(city)
                         .setLatitude(lat)
                         .setLongitude(lng)
@@ -213,7 +213,7 @@ public class SearchActivity
                         .setCodeQR(getIntent().getStringExtra("codeQR"))
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
-                searchImpl.kiosk(UserUtils.getDeviceId(), searchStoreQuery);
+                searchImpl.kiosk(UserUtils.getDeviceId(), searchQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
             }
