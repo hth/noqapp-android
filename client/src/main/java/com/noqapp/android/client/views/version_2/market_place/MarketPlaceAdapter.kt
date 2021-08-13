@@ -21,7 +21,7 @@ class MarketPlaceAdapter(private val marketplaceList: MutableList<MarketplaceEla
             listItemMarketPlaceBinding.tvPrice.text = marketplaceElastic.productPrice
 
             if (marketplaceElastic.postImages.size > 0) {
-                val displayImage = marketplaceElastic.postImages.iterator().next()
+                val displayImage = marketplaceElastic.postImages.iterator().next().removePrefix("[").removeSuffix("]").split(", ")[0]
                 val url = marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.entityId + "/" + displayImage;
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
@@ -29,7 +29,6 @@ class MarketPlaceAdapter(private val marketplaceList: MutableList<MarketplaceEla
                     .into(listItemMarketPlaceBinding.ivMarketPlace)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarketPlaceViewHolder {
