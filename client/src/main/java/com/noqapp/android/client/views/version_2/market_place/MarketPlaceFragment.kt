@@ -66,9 +66,7 @@ class MarketPlaceFragment : BaseFragment() {
 
     private fun setUpRecyclerView() {
         marketPlaceAdapter = MarketPlaceAdapter(mutableListOf())
-        activityMarketPlaceBinding.rvMarketPlace.layoutManager =
-            LinearLayoutManager(requireContext())
+        activityMarketPlaceBinding.rvMarketPlace.layoutManager = LinearLayoutManager(requireContext())
         activityMarketPlaceBinding.rvMarketPlace.adapter = marketPlaceAdapter
     }
-
 }

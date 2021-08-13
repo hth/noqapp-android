@@ -24,5 +24,4 @@ class MarketPlaceViewModel: ViewModel() {
             authenticationError.postValue(true)
         })
     }
-
 }

@@ -10,7 +10,7 @@ import com.noqapp.android.client.utils.ImageUtils
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.squareup.picasso.Picasso
 
-class MarketPlaceAdapter(val marketPlaceList: MutableList<MarketplaceElastic>) :
+class MarketPlaceAdapter(private val marketplaceList: MutableList<MarketplaceElastic>) :
     RecyclerView.Adapter<MarketPlaceAdapter.MarketPlaceViewHolder>() {
 
     inner class MarketPlaceViewHolder(private val listItemMarketPlaceBinding: ListItemMarketPlaceBinding) :
@@ -22,7 +22,8 @@ class MarketPlaceAdapter(val marketPlaceList: MutableList<MarketplaceElastic>) :
 
             if (marketplaceElastic.postImages.size > 0) {
                 val displayImage = marketplaceElastic.postImages.iterator().next()
-                Picasso.get().load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, displayImage))
+                val url = marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.entityId + "/" + displayImage;
+                Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .into(listItemMarketPlaceBinding.ivMarketPlace)
@@ -42,16 +43,16 @@ class MarketPlaceAdapter(val marketPlaceList: MutableList<MarketplaceElastic>) :
     }
 
     override fun onBindViewHolder(holder: MarketPlaceViewHolder, position: Int) {
-        holder.bind(marketPlaceList[position])
+        holder.bind(marketplaceList[position])
     }
 
     override fun getItemCount(): Int {
-        return marketPlaceList.size
+        return marketplaceList.size
     }
 
     fun addMarketPlaces(marketPlaceList: List<MarketplaceElastic>) {
-        this.marketPlaceList.clear()
-        this.marketPlaceList.addAll(marketPlaceList)
+        this.marketplaceList.clear()
+        this.marketplaceList.addAll(marketPlaceList)
         notifyDataSetChanged()
     }
 }
