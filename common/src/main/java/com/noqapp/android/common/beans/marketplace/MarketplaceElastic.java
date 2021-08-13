@@ -10,7 +10,6 @@ import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -35,11 +34,8 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MarketplaceElastic extends AbstractDomain {
 
-    @JsonIgnore
+    @JsonProperty("id")
     private String id;
-
-    @JsonProperty("EI")
-    private String entityId;
 
     @JsonProperty("BT")
     private BusinessTypeEnum businessType;
@@ -91,15 +87,6 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setId(String id) {
         this.id = id;
-        return this;
-    }
-
-    public String getEntityId() {
-        return entityId;
-    }
-
-    public MarketplaceElastic setEntityId(String entityId) {
-        this.entityId = entityId;
         return this;
     }
 
