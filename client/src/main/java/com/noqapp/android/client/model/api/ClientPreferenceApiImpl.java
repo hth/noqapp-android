@@ -14,8 +14,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClientPreferenceApiCalls {
-    private final String TAG = ClientPreferenceApiCalls.class.getSimpleName();
+public class ClientPreferenceApiImpl {
+    private final String TAG = ClientPreferenceApiImpl.class.getSimpleName();
     private static final ClientPreferenceApi CLIENT_PREFERENCE_API;
     private ClientPreferencePresenter clientPreferencePresenter;
 

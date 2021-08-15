@@ -24,7 +24,7 @@ import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.ClientPreferenceApiCalls;
+import com.noqapp.android.client.model.api.ClientPreferenceApiImpl;
 import com.noqapp.android.client.model.api.ClientProfileApiCall;
 import com.noqapp.android.client.model.api.PurchaseOrderApiCall;
 import com.noqapp.android.client.presenter.ClientPreferencePresenter;
@@ -662,7 +662,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     private void callAddressPreference() {
-        ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();
+        ClientPreferenceApiImpl clientProfileApiCall = new ClientPreferenceApiImpl();
         clientProfileApiCall.setClientPreferencePresenter(this);
         JsonUserPreference jsonUserPreference = AppInitialize.getUserProfile().getJsonUserPreference();
         jsonUserPreference.setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO);

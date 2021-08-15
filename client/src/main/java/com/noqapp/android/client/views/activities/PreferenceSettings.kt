@@ -9,7 +9,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.noqapp.android.client.R
-import com.noqapp.android.client.model.api.ClientPreferenceApiCalls
+import com.noqapp.android.client.model.api.ClientPreferenceApiImpl
 import com.noqapp.android.client.presenter.ClientPreferencePresenter
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.JsonProfile
@@ -27,8 +27,8 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         setContentView(R.layout.activity_notification_settings)
         initActionsViews(true)
         tv_toolbar_title.text = getString(R.string.preference_settings)
-        val clientPreferenceApiCalls = ClientPreferenceApiCalls()
-        clientPreferenceApiCalls.setClientPreferencePresenter(this@PreferenceSettings)
+        val clientPreferenceApiImpl = ClientPreferenceApiImpl()
+        clientPreferenceApiImpl.setClientPreferencePresenter(this@PreferenceSettings)
         setProgressMessage("Updating settings...")
         var isCash = false
         var isHomeDelivery = false
@@ -86,7 +86,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             } else {
                 jsonUserPreference.paymentMethod = PaymentMethodEnum.EL
             }
-            clientPreferenceApiCalls.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
+            clientPreferenceApiImpl.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
         }
         sc_msg_announce.isChecked = AppInitialize.isMsgAnnouncementEnable()
 
@@ -122,7 +122,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
                 CustomToast().showToast(this@PreferenceSettings, "Promotional SMS Disabled")
             }
             // showProgress()
-            clientPreferenceApiCalls.promotionalSMS(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
+            clientPreferenceApiImpl.promotionalSMS(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
 
         sc_sound.setOnCheckedChangeListener { _, isChecked ->
@@ -135,7 +135,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
                 CustomToast().showToast(this@PreferenceSettings, "Notification Sound Disabled")
             }
             //showProgress()
-            clientPreferenceApiCalls.notificationSound(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
+            clientPreferenceApiImpl.notificationSound(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
 
         sc_msg_announce.setOnCheckedChangeListener { _, isChecked ->

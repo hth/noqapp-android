@@ -18,8 +18,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClientCouponApiCalls {
-    private static final String TAG = ClientCouponApiCalls.class.getSimpleName();
+public class ClientCouponApiImpl {
+    private static final String TAG = ClientCouponApiImpl.class.getSimpleName();
 
     private static final ClientCouponApi CLIENT_COUPON_API;
     private CouponPresenter couponPresenter;

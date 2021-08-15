@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.ClientCouponApiCalls;
+import com.noqapp.android.client.model.api.ClientCouponApiImpl;
 import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -60,8 +60,8 @@ public class AllCouponsFragment
         if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("Fetching all coupons...");
             showProgress();
-            ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
-            clientCouponApiCalls.setCouponPresenter(this);
+            ClientCouponApiImpl clientCouponApiImpl = new ClientCouponApiImpl();
+            clientCouponApiImpl.setCouponPresenter(this);
             Location location = new Location();
             if (TextUtils.isEmpty(AppInitialize.cityName)) {
                 LocationPref locationPref = AppInitialize.getLocationPreference();
@@ -77,13 +77,13 @@ public class AllCouponsFragment
             }
             String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);
             if (TextUtils.isEmpty(codeQR)) {
-                clientCouponApiCalls.globalCoupon(
+                clientCouponApiImpl.globalCoupon(
                     UserUtils.getDeviceId(),
                     UserUtils.getEmail(),
                     UserUtils.getAuth(),
                     location);
             } else {
-                clientCouponApiCalls.filterCoupon(
+                clientCouponApiImpl.filterCoupon(
                     UserUtils.getDeviceId(),
                     UserUtils.getEmail(),
                     UserUtils.getAuth(),

@@ -37,7 +37,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.ClientCouponApiCalls;
+import com.noqapp.android.client.model.api.ClientCouponApiImpl;
 import com.noqapp.android.client.model.api.TokenQueueApiImpl;
 import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
@@ -216,15 +216,15 @@ public class AfterJoinActivity
                         setProgressMessage("Removing discount..");
                         // progressDialog.setCancelable(false);
                         // progressDialog.setCanceledOnTouchOutside(false);
-                        ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
-                        clientCouponApiCalls.setCouponApplyRemovePresenter(AfterJoinActivity.this);
+                        ClientCouponApiImpl clientCouponApiImpl = new ClientCouponApiImpl();
+                        clientCouponApiImpl.setCouponApplyRemovePresenter(AfterJoinActivity.this);
 
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
                                 .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                                 // .setCouponId(jsonCoupon.getCouponId())
                                 .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                        clientCouponApiCalls.remove(
+                        clientCouponApiImpl.remove(
                                 UserUtils.getDeviceId(),
                                 UserUtils.getEmail(),
                                 UserUtils.getAuth(),
@@ -802,14 +802,14 @@ public class AfterJoinActivity
                     setProgressMessage("Applying discount..");
                     // progressDialog.setCancelable(false);
                     // progressDialog.setCanceledOnTouchOutside(false);
-                    ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
-                    clientCouponApiCalls.setCouponApplyRemovePresenter(this);
+                    ClientCouponApiImpl clientCouponApiImpl = new ClientCouponApiImpl();
+                    clientCouponApiImpl.setCouponApplyRemovePresenter(this);
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                             .setCouponId(jsonCoupon.getCouponId())
                             .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                    clientCouponApiCalls.apply(UserUtils.getDeviceId(),
+                    clientCouponApiImpl.apply(UserUtils.getDeviceId(),
                             UserUtils.getEmail(),
                             UserUtils.getAuth(),
                             couponOnOrder);
