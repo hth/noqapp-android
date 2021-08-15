@@ -24,7 +24,7 @@ import com.google.common.cache.Cache;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.PurchaseOrderApiCall;
+import com.noqapp.android.client.model.api.PurchaseOrderApiImpl;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -75,7 +75,7 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
 public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter,
         ActivityCommunicator, CFClientInterface, CashFreeNotifyPresenter {
 
-    private PurchaseOrderApiCall purchaseOrderApiCall;
+    private PurchaseOrderApiImpl purchaseOrderApiImpl;
     private TextView tv_total_order_amt;
     private TextView tv_tax_amt;
     private TextView tv_due_amt;
@@ -171,7 +171,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             showProgress();
                             setProgressMessage("Starting payment process..");
                             setProgressCancel(false);
-                            purchaseOrderApiCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            purchaseOrderApiImpl.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             isPayClick = true;
                         }
                     } else {
@@ -188,7 +188,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             Intent goToA = new Intent(OrderConfirmActivity.this, HomeActivity.class);
             startActivity(goToA);
         });
-        purchaseOrderApiCall = new PurchaseOrderApiCall(this);
+        purchaseOrderApiImpl = new PurchaseOrderApiImpl(this);
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         tv_store_name.setText(getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
         tv_address.setText(getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
@@ -204,7 +204,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 showProgress();
                 setProgressMessage("Fetching order details in progress...");
                 int token = getIntent().getExtras().getInt("token");
-                purchaseOrderApiCall.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
+                purchaseOrderApiImpl.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
                 if (AppUtils.isRelease()) {
                     if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                         Bundle params = new Bundle();
@@ -261,7 +261,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         if (isOnline()) {
             showProgress();
             setProgressMessage("Order cancel in progress...");
-            purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+            purchaseOrderApiImpl.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
 
             if (AppUtils.isRelease()) {
                 if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
@@ -528,7 +528,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         for (Map.Entry entry : map.entrySet()) {
             Log.e("Payment success", entry.getKey() + " " + entry.getValue());
         }
-        purchaseOrderApiCall.setCashFreeNotifyPresenter(this);
+        purchaseOrderApiImpl.setCashFreeNotifyPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setTxTime(map.get("txTime"));
@@ -538,7 +538,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         jsonCashfreeNotification.setOrderAmount(map.get("orderAmount"));
         jsonCashfreeNotification.setTxStatus(map.get("txStatus"));
         jsonCashfreeNotification.setOrderId(map.get("orderId"));
-        purchaseOrderApiCall.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+        purchaseOrderApiImpl.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
     @Override

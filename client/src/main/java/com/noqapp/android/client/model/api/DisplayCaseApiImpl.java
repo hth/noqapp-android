@@ -14,13 +14,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DisplayCaseApiCall {
+public class DisplayCaseApiImpl {
 
-    private final String TAG = DisplayCaseApiCall.class.getSimpleName();
+    private final String TAG = DisplayCaseApiImpl.class.getSimpleName();
     private static final DisplayCaseApi DISPLAY_CASE_API;
     private DisplayCasePresenter displayCasePresenter;
 
-    public DisplayCaseApiCall(DisplayCasePresenter displayCasePresenter) {
+    public DisplayCaseApiImpl(DisplayCasePresenter displayCasePresenter) {
         this.displayCasePresenter = displayCasePresenter;
     }
 

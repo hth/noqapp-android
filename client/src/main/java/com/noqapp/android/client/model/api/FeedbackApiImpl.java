@@ -16,12 +16,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedbackApiCall {
-    private final String TAG = FeedbackApiCall.class.getSimpleName();
+public class FeedbackApiImpl {
+    private final String TAG = FeedbackApiImpl.class.getSimpleName();
     private static final FeedbackApi FEEDBACK_API;
     private FeedbackPresenter feedbackPresenter;
 
-    public FeedbackApiCall(FeedbackPresenter feedbackPresenter) {
+    public FeedbackApiImpl(FeedbackPresenter feedbackPresenter) {
         this.feedbackPresenter = feedbackPresenter;
     }
 

@@ -26,7 +26,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.api.ClientPreferenceApiImpl;
 import com.noqapp.android.client.model.api.ClientProfileApiImpl;
-import com.noqapp.android.client.model.api.PurchaseOrderApiCall;
+import com.noqapp.android.client.model.api.PurchaseOrderApiImpl;
 import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
@@ -87,7 +87,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ClientProfileApiImpl clientProfileApiImpl;
-    private PurchaseOrderApiCall purchaseOrderApiCall;
+    private PurchaseOrderApiImpl purchaseOrderApiImpl;
     private long mLastClickTime = 0;
     private String currencySymbol;
     private JsonPurchaseOrder jsonPurchaseOrderServer;
@@ -252,7 +252,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
         });
         initActionsViews(true);
-        purchaseOrderApiCall = new PurchaseOrderApiCall(this);
+        purchaseOrderApiImpl = new PurchaseOrderApiImpl(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
@@ -308,7 +308,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                     .setPaymentMode(null) //not required here
                                     .setCustomerPhone(AppInitialize.getPhoneNo())
                                     .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
-                            purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            purchaseOrderApiImpl.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
                         } else {
                             ShowAlertInformation.showNetworkDialog(OrderActivity.this);
@@ -514,7 +514,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         for (Map.Entry entry : map.entrySet()) {
             Log.e("Payment success", entry.getKey() + " " + entry.getValue());
         }
-        purchaseOrderApiCall.setCashFreeNotifyPresenter(this);
+        purchaseOrderApiImpl.setCashFreeNotifyPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setTxTime(map.get("txTime"));
@@ -524,7 +524,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         jsonCashfreeNotification.setOrderAmount(map.get("orderAmount"));
         jsonCashfreeNotification.setTxStatus(map.get("txStatus"));
         jsonCashfreeNotification.setOrderId(map.get("orderId"));
-        purchaseOrderApiCall.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+        purchaseOrderApiImpl.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
     @Override
@@ -540,8 +540,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         enableDisableOrderButton(false);
         if (isOnline()) {
             showProgress();
-            purchaseOrderApiCall.setResponsePresenter(this);
-            purchaseOrderApiCall.cancelPayBeforeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
+            purchaseOrderApiImpl.setResponsePresenter(this);
+            purchaseOrderApiImpl.cancelPayBeforeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -612,7 +612,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     private void triggerCashPayment() {
         jsonPurchaseOrderServer.setPaymentMode(PaymentModeEnum.CA);
-        purchaseOrderApiCall.payCash(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
+        purchaseOrderApiImpl.payCash(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
     }
 
     @Override

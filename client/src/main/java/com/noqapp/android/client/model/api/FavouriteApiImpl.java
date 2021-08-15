@@ -16,8 +16,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FavouriteApiCall {
-    private final String TAG = FavouriteApiCall.class.getSimpleName();
+public class FavouriteApiImpl {
+    private final String TAG = FavouriteApiImpl.class.getSimpleName();
     private static final FavouriteApi FAVOURITE_API;
     private FavouritePresenter favouritePresenter;
     private FavouriteListPresenter favouriteListPresenter;

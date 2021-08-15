@@ -20,13 +20,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PurchaseOrderApiCall {
+public class PurchaseOrderApiImpl {
     private final static PurchaseOrderApi PURCHASE_ORDER_API;
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private CashFreeNotifyPresenter cashFreeNotifyPresenter;
     private ResponsePresenter responsePresenter;
 
-    public PurchaseOrderApiCall(PurchaseOrderPresenter purchaseOrderPresenter) {
+    public PurchaseOrderApiImpl(PurchaseOrderPresenter purchaseOrderPresenter) {
         this.purchaseOrderPresenter = purchaseOrderPresenter;
     }
 
@@ -248,7 +248,7 @@ public class PurchaseOrderApiCall {
                         Log.d("Res: cancelPayBeforeO", String.valueOf(response.body()));
                         responsePresenter.responsePresenterResponse(response.body());
                     } else {
-                        Log.e(PurchaseOrderApiCall.class.getSimpleName(), "Fail cancelPayBeforeOrder");
+                        Log.e(PurchaseOrderApiImpl.class.getSimpleName(), "Fail cancelPayBeforeOrder");
                         responsePresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {

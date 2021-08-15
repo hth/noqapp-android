@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.version_2.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.noqapp.android.client.model.api.FavouriteApiCall
+import com.noqapp.android.client.model.api.FavouriteApiImpl
 import com.noqapp.android.client.model.api.TokenQueueApiImpl
 import com.noqapp.android.client.model.api.SearchApiImpl
 import com.noqapp.android.client.model.open.SearchImpl
@@ -97,9 +97,9 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     fun fetchFavouritesRecentVisitList() {
         if (NetworkUtils.isConnectingToInternet(applicationContext)) {
-            val favouriteApiCall = FavouriteApiCall()
-            favouriteApiCall.setFavouriteListPresenter(this)
-            favouriteApiCall.favorite(
+            val favouriteApiImpl = FavouriteApiImpl()
+            favouriteApiImpl.setFavouriteListPresenter(this)
+            favouriteApiImpl.favorite(
                 UserUtils.getDeviceId(),
                 UserUtils.getEmail(),
                 UserUtils.getAuth()
