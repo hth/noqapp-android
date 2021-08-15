@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.OrderQueueHistoryApiCall;
+import com.noqapp.android.client.model.api.OrderQueueHistoryApiImpl;
 import com.noqapp.android.client.presenter.OrderHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
@@ -27,8 +27,6 @@ import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-
 
 public class OrderHistoryFragment extends BaseFragment implements
     OrderHistoryAdapter.OnItemClickListener, OrderHistoryPresenter {
@@ -46,9 +44,9 @@ public class OrderHistoryFragment extends BaseFragment implements
             if (UserUtils.isLogin()) {
                 setProgressMessage("Fetching order history...");
                 showProgress();
-                OrderQueueHistoryApiCall orderQueueHistoryModel = new OrderQueueHistoryApiCall();
-                orderQueueHistoryModel.setOrderHistoryPresenter(this);
-                orderQueueHistoryModel.orders(UserUtils.getEmail(), UserUtils.getAuth());
+                OrderQueueHistoryApiImpl orderQueueHistoryApiImpl = new OrderQueueHistoryApiImpl();
+                orderQueueHistoryApiImpl.setOrderHistoryPresenter(this);
+                orderQueueHistoryApiImpl.orders(UserUtils.getEmail(), UserUtils.getAuth());
             } else {
                 new CustomToast().showToast(getActivity(), "Please login to see the details");
             }
@@ -75,15 +73,12 @@ public class OrderHistoryFragment extends BaseFragment implements
     @Override
     public void orderHistoryResponse(JsonPurchaseOrderHistoricalList jsonPurchaseOrderHistoricalList) {
         listData = new ArrayList<>(jsonPurchaseOrderHistoricalList.getJsonPurchaseOrderHistoricals());
-        Collections.sort(listData, new Comparator<JsonPurchaseOrderHistorical>() {
-            public int compare(JsonPurchaseOrderHistorical o1, JsonPurchaseOrderHistorical o2) {
-                try {
-                    return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated()).
-                        compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
+        Collections.sort(listData, (o1, o2) -> {
+            try {
+                return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated()).compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
             }
         });
         OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter(listData, getActivity(), this);

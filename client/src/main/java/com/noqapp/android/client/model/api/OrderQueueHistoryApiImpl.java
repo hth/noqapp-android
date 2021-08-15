@@ -16,8 +16,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderQueueHistoryApiCall {
-    private final String TAG = OrderQueueHistoryApiCall.class.getSimpleName();
+public class OrderQueueHistoryApiImpl {
+    private final String TAG = OrderQueueHistoryApiImpl.class.getSimpleName();
     private static final HistoricalApi HISTORICAL_API;
     private OrderHistoryPresenter orderHistoryPresenter;
     private QueueHistoryPresenter queueHistoryPresenter;
@@ -33,7 +33,6 @@ public class OrderQueueHistoryApiCall {
     static {
         HISTORICAL_API = RetrofitClient.getClient().create(HistoricalApi.class);
     }
-
 
     public void orders(String mail, String auth) {
         HISTORICAL_API.orders(mail, auth).enqueue(new Callback<JsonPurchaseOrderHistoricalList>() {

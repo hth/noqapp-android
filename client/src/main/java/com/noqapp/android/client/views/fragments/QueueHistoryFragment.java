@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.OrderQueueHistoryApiCall;
+import com.noqapp.android.client.model.api.OrderQueueHistoryApiImpl;
 import com.noqapp.android.client.presenter.QueueHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistoricalList;
@@ -44,9 +44,9 @@ public class QueueHistoryFragment extends BaseFragment implements
             if (UserUtils.isLogin()) {
                 setProgressMessage("Fetching Queue history...");
                 showProgress();
-                OrderQueueHistoryApiCall orderQueueHistoryModel = new OrderQueueHistoryApiCall();
-                orderQueueHistoryModel.setQueueHistoryPresenter(this);
-                orderQueueHistoryModel.queues(UserUtils.getEmail(), UserUtils.getAuth());
+                OrderQueueHistoryApiImpl orderQueueHistoryApiImpl = new OrderQueueHistoryApiImpl();
+                orderQueueHistoryApiImpl.setQueueHistoryPresenter(this);
+                orderQueueHistoryApiImpl.queues(UserUtils.getEmail(), UserUtils.getAuth());
             } else {
                 new CustomToast().showToast(getActivity(), "Please login to see the details");
             }
