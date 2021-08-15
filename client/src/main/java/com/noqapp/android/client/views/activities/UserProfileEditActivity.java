@@ -20,8 +20,8 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.ClientProfileApiCall;
-import com.noqapp.android.client.model.api.DependentApiCall;
+import com.noqapp.android.client.model.api.ClientProfileApiImpl;
+import com.noqapp.android.client.model.api.DependentApiImpl;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
@@ -76,7 +76,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private TextView tv_remove_image;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
-    private ClientProfileApiCall clientProfileApiCall;
+    private ClientProfileApiImpl clientProfileApiImpl;
     private List<String> nameList = new ArrayList<>();
     private String imageUrl = "";
     private String qUserId = "";
@@ -102,7 +102,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_edit_profile));
         iv_profile = findViewById(R.id.iv_profile);
-        clientProfileApiCall = new ClientProfileApiCall();
+        clientProfileApiImpl = new ClientProfileApiImpl();
         iv_profile.setOnClickListener(this);
         setProgressMessage("Updating profile....");
         isDependent = getIntent().getBooleanExtra(IBConstant.IS_DEPENDENT, false);
@@ -182,8 +182,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             case R.id.tv_remove_image: {
                 showProgress();
                 setProgressMessage("Removing profile image");
-                clientProfileApiCall.setImageUploadPresenter(this);
-                clientProfileApiCall.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(qUserId));
+                clientProfileApiImpl.setImageUploadPresenter(this);
+                clientProfileApiImpl.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(qUserId));
             }
             break;
             case R.id.iv_profile:
@@ -269,8 +269,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                                 File file = new File(convertedPath);
                                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                                 RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), qUserId);
-                                clientProfileApiCall.setImageUploadPresenter(UserProfileEditActivity.this);
-                                clientProfileApiCall.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                                clientProfileApiImpl.setImageUploadPresenter(UserProfileEditActivity.this);
+                                clientProfileApiImpl.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
 
                             }
 
@@ -302,7 +302,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             btn_update.setTextColor(Color.WHITE);
             if (isOnline()) {
                 showProgress();
-                clientProfileApiCall.setProfilePresenter(this);
+                clientProfileApiImpl.setProfilePresenter(this);
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_Name.getText().toString();
                 //   String mail = edt_Mail.getText().toString();
@@ -315,7 +315,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         updateProfile.setGender(gender);
                         updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                         updateProfile.setQueueUserId(dependentProfile.getQueueUserId());
-                        clientProfileApiCall.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                        clientProfileApiImpl.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                     } else {
                         Registration registration = new Registration();
                         registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(AppInitialize.getPhoneNo(), AppInitialize.getCountryShortName()));
@@ -327,8 +327,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         registration.setTimeZoneId(TimeZone.getDefault().getID());
                         registration.setCountryShortName(AppInitialize.getCountryShortName());
                         registration.setInviteCode("");
-                        DependentApiCall dependentModel = new DependentApiCall(this);
-                        dependentModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
+                        DependentApiImpl dependentApiImpl = new DependentApiImpl(this);
+                        dependentApiImpl.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
                         if (AppUtils.isRelease()) {
                             AnalyticsEvents.logContentEvent(AnalyticsEvents.EVENT_DEPENDENT_ADDED);
                         }
@@ -340,7 +340,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     updateProfile.setQueueUserId(AppInitialize.getUserProfile().getQueueUserId());
-                    clientProfileApiCall.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    clientProfileApiImpl.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

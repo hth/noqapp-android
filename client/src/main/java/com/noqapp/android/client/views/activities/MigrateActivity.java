@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.api.ClientProfileApiCall;
+import com.noqapp.android.client.model.api.ClientProfileApiImpl;
 import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.UserUtils;
@@ -38,9 +38,9 @@ public class MigrateActivity extends OTPActivity {
         migratePhone.setCountryShortName(countryShortName);
         migratePhone.setTimeZoneId(tz.getID());
         migratePhone.setPhone(phoneNumber);
-        ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
-        clientProfileApiCall.setProfilePresenter(this);
-        clientProfileApiCall.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migratePhone);
+        ClientProfileApiImpl clientProfileApiImpl = new ClientProfileApiImpl();
+        clientProfileApiImpl.setProfilePresenter(this);
+        clientProfileApiImpl.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migratePhone);
     }
 
     @Override

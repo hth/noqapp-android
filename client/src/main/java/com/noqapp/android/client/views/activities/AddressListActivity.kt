@@ -8,7 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityAddressbookBinding
-import com.noqapp.android.client.model.api.ClientProfileApiCall
+import com.noqapp.android.client.model.api.ClientProfileApiImpl
 import com.noqapp.android.client.presenter.ProfileAddressPresenter
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.ShowAlertInformation
@@ -24,7 +24,7 @@ import com.noqapp.android.common.beans.JsonUserAddressList
 class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
     private lateinit var activityAddressBookBinding: ActivityAddressbookBinding
     private lateinit var addressAdapter: AddressListAdapter
-    private lateinit var clientProfileApiCall: ClientProfileApiCall
+    private lateinit var clientProfileApiImpl: ClientProfileApiImpl
     private var primaryJsonUserAddress: JsonUserAddress? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,10 +41,10 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
             startActivityForResult(addAddressIntent, Constants.REQUEST_CODE_ADD_ADDRESS)
         }
 
-        clientProfileApiCall = ClientProfileApiCall()
-        clientProfileApiCall.setProfileAddressPresenter(this)
+        clientProfileApiImpl = ClientProfileApiImpl()
+        clientProfileApiImpl.setProfileAddressPresenter(this)
 
-        clientProfileApiCall.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth())
+        clientProfileApiImpl.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth())
 
         setUpRecyclerView()
     }
@@ -82,7 +82,7 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         if (isOnline) {
             showProgress()
             setProgressMessage("Deleting address...")
-            clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
+            clientProfileApiImpl.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
         } else {
             ShowAlertInformation.showNetworkDialog(this)
         }
@@ -92,7 +92,7 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
         if (isOnline) {
             showProgress()
             setProgressMessage("Updating address...")
-            clientProfileApiCall.setPrimaryAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
+            clientProfileApiImpl.setPrimaryAddress(UserUtils.getEmail(), UserUtils.getAuth(), jsonUserAddress)
         } else {
             ShowAlertInformation.showNetworkDialog(this)
         }

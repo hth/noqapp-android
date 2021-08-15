@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityAddAddressBinding
-import com.noqapp.android.client.model.api.ClientProfileApiCall
+import com.noqapp.android.client.model.api.ClientProfileApiImpl
 import com.noqapp.android.client.presenter.ProfileAddressPresenter
 import com.noqapp.android.client.utils.AnimationUtil
 import com.noqapp.android.client.utils.Constants
@@ -31,7 +31,7 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
 
     private lateinit var addAddressBinding: ActivityAddAddressBinding
     private var googleMap: GoogleMap? = null
-    private lateinit var clientProfileApiCall: ClientProfileApiCall
+    private lateinit var clientProfileApiImpl: ClientProfileApiImpl
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private var countryShortName: String = ""
@@ -55,8 +55,8 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
             onBackPressed()
         }
 
-        clientProfileApiCall = ClientProfileApiCall()
-        clientProfileApiCall.setProfileAddressPresenter(this)
+        clientProfileApiImpl = ClientProfileApiImpl()
+        clientProfileApiImpl.setProfileAddressPresenter(this)
 
         addAddressBinding.btnAddAddress.setOnClickListener {
             if (validData())
@@ -114,7 +114,7 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
             .setLongitude(longitude.toString())
 
         showProgress()
-        clientProfileApiCall.addProfileAddress(
+        clientProfileApiImpl.addProfileAddress(
             UserUtils.getEmail(),
             UserUtils.getAuth(),
             jsonUserAddress

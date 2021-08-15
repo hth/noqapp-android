@@ -15,13 +15,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class DependentApiCall {
-    private final String TAG = DependentApiCall.class.getSimpleName();
+public class DependentApiImpl {
+    private final String TAG = DependentApiImpl.class.getSimpleName();
     private static final DependentApi DEPENDENT_API;
     private DependencyPresenter dependencyPresenter;
 
-    public DependentApiCall(DependencyPresenter dependencyPresenter) {
+    public DependentApiImpl(DependencyPresenter dependencyPresenter) {
         this.dependencyPresenter = dependencyPresenter;
     }
 
