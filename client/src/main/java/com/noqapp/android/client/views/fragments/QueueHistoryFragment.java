@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.OrderQueueHistoryApiCall;
+import com.noqapp.android.client.model.api.OrderQueueHistoryApiCall;
 import com.noqapp.android.client.presenter.QueueHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistoricalList;
@@ -27,7 +27,6 @@ import com.noqapp.android.common.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 
 public class QueueHistoryFragment extends BaseFragment implements
     QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {

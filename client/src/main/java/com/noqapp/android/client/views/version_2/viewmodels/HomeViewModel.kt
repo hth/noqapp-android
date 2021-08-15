@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.version_2.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.noqapp.android.client.model.FavouriteApiCall
+import com.noqapp.android.client.model.api.FavouriteApiCall
 import com.noqapp.android.client.model.api.TokenQueueApiImpl
 import com.noqapp.android.client.model.api.SearchApiImpl
 import com.noqapp.android.client.model.open.SearchImpl

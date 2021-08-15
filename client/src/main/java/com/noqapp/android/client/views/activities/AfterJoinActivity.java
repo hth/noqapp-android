@@ -37,7 +37,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientCouponApiCalls;
+import com.noqapp.android.client.model.api.ClientCouponApiCalls;
 import com.noqapp.android.client.model.api.TokenQueueApiImpl;
 import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;

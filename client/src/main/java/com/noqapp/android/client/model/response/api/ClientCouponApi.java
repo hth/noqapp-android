@@ -16,7 +16,7 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 2019-06-10 13:33
  */
-public interface ClientCouponApiUrls {
+public interface ClientCouponApi {
 
     /**
      * Errors

@@ -1,11 +1,11 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.api.FeedbackApiUrls;
+import com.noqapp.android.client.model.response.api.FeedbackApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.Constants;
@@ -18,7 +18,7 @@ import retrofit2.Response;
 
 public class FeedbackApiCall {
     private final String TAG = FeedbackApiCall.class.getSimpleName();
-    private static final FeedbackApiUrls feedbackApiUrls;
+    private static final FeedbackApi FEEDBACK_API;
     private FeedbackPresenter feedbackPresenter;
 
     public FeedbackApiCall(FeedbackPresenter feedbackPresenter) {
@@ -26,11 +26,11 @@ public class FeedbackApiCall {
     }
 
     static {
-        feedbackApiUrls = RetrofitClient.getClient().create(FeedbackApiUrls.class);
+        FEEDBACK_API = RetrofitClient.getClient().create(FeedbackApi.class);
     }
 
     public void review(String did, String mail, String auth, Feedback feedback) {
-        feedbackApiUrls.review(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, feedback).enqueue(new Callback<JsonResponse>() {
+        FEEDBACK_API.review(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, feedback).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

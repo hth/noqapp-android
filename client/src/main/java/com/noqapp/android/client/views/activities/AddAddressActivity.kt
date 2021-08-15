@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityAddAddressBinding
-import com.noqapp.android.client.model.ClientProfileApiCall
+import com.noqapp.android.client.model.api.ClientProfileApiCall
 import com.noqapp.android.client.presenter.ProfileAddressPresenter
 import com.noqapp.android.client.utils.AnimationUtil
 import com.noqapp.android.client.utils.Constants

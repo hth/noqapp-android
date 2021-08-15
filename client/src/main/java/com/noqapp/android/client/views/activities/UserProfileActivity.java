@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.model.api.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;

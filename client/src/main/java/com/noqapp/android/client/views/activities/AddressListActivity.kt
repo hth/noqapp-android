@@ -8,7 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityAddressbookBinding
-import com.noqapp.android.client.model.ClientProfileApiCall
+import com.noqapp.android.client.model.api.ClientProfileApiCall
 import com.noqapp.android.client.presenter.ProfileAddressPresenter
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.ShowAlertInformation

@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.HistoricalApiUrls;
+import com.noqapp.android.client.model.response.api.HistoricalApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.OrderHistoryPresenter;
 import com.noqapp.android.client.presenter.QueueHistoryPresenter;
@@ -18,7 +18,7 @@ import retrofit2.Response;
 
 public class OrderQueueHistoryApiCall {
     private final String TAG = OrderQueueHistoryApiCall.class.getSimpleName();
-    private static final HistoricalApiUrls historicalApiUrls;
+    private static final HistoricalApi HISTORICAL_API;
     private OrderHistoryPresenter orderHistoryPresenter;
     private QueueHistoryPresenter queueHistoryPresenter;
 
@@ -31,12 +31,12 @@ public class OrderQueueHistoryApiCall {
     }
 
     static {
-        historicalApiUrls = RetrofitClient.getClient().create(HistoricalApiUrls.class);
+        HISTORICAL_API = RetrofitClient.getClient().create(HistoricalApi.class);
     }
 
 
     public void orders(String mail, String auth) {
-        historicalApiUrls.orders(mail, auth).enqueue(new Callback<JsonPurchaseOrderHistoricalList>() {
+        HISTORICAL_API.orders(mail, auth).enqueue(new Callback<JsonPurchaseOrderHistoricalList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderHistoricalList> call, @NonNull Response<JsonPurchaseOrderHistoricalList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -65,7 +65,7 @@ public class OrderQueueHistoryApiCall {
     }
 
     public void queues(String mail, String auth) {
-        historicalApiUrls.queues(mail, auth).enqueue(new Callback<JsonQueueHistoricalList>() {
+        HISTORICAL_API.queues(mail, auth).enqueue(new Callback<JsonQueueHistoricalList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueueHistoricalList> call, @NonNull Response<JsonQueueHistoricalList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

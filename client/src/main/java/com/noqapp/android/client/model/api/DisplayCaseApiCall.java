@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.DisplayCaseAPIUrls;
+import com.noqapp.android.client.model.response.api.DisplayCaseApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.DisplayCasePresenter;
 import com.noqapp.android.client.utils.Constants;
@@ -17,7 +17,7 @@ import retrofit2.Response;
 public class DisplayCaseApiCall {
 
     private final String TAG = DisplayCaseApiCall.class.getSimpleName();
-    private static final DisplayCaseAPIUrls displayCaseAPIUrls;
+    private static final DisplayCaseApi DISPLAY_CASE_API;
     private DisplayCasePresenter displayCasePresenter;
 
     public DisplayCaseApiCall(DisplayCasePresenter displayCasePresenter) {
@@ -25,7 +25,7 @@ public class DisplayCaseApiCall {
     }
 
     static {
-        displayCaseAPIUrls = RetrofitClient.getClient().create(DisplayCaseAPIUrls.class);
+        DISPLAY_CASE_API = RetrofitClient.getClient().create(DisplayCaseApi.class);
     }
 
     /**
@@ -33,7 +33,7 @@ public class DisplayCaseApiCall {
      * @param codeQR
      */
     public void storeDisplayCase(String did, String mail, String auth, String codeQR) {
-        displayCaseAPIUrls.storeDisplayCase(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonStoreProductList>() {
+        DISPLAY_CASE_API.storeDisplayCase(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonStoreProductList>() {
             @Override
             public void onResponse(@NonNull Call<JsonStoreProductList> call, @NonNull Response<JsonStoreProductList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

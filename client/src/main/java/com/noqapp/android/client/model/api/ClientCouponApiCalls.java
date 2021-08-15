@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.ClientCouponApiUrls;
+import com.noqapp.android.client.model.response.api.ClientCouponApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.client.utils.Constants;
@@ -21,7 +21,7 @@ import retrofit2.Response;
 public class ClientCouponApiCalls {
     private static final String TAG = ClientCouponApiCalls.class.getSimpleName();
 
-    private static final ClientCouponApiUrls clientCouponApiUrls;
+    private static final ClientCouponApi CLIENT_COUPON_API;
     private CouponPresenter couponPresenter;
     private CouponApplyRemovePresenter couponApplyRemovePresenter;
 
@@ -34,11 +34,11 @@ public class ClientCouponApiCalls {
     }
 
     static {
-        clientCouponApiUrls = RetrofitClient.getClient().create(ClientCouponApiUrls.class);
+        CLIENT_COUPON_API = RetrofitClient.getClient().create(ClientCouponApi.class);
     }
 
     public void globalCoupon(String did, String mail, String auth, Location location) {
-        clientCouponApiUrls.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth,location).enqueue(new Callback<JsonCouponList>() {
+        CLIENT_COUPON_API.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth,location).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -68,7 +68,7 @@ public class ClientCouponApiCalls {
     }
 
     public void availableCoupon(String did, String mail, String auth) {
-        clientCouponApiUrls.availableCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
+        CLIENT_COUPON_API.availableCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -98,7 +98,7 @@ public class ClientCouponApiCalls {
     }
 
     public void filterCoupon(String did, String mail, String auth, String codeQR) {
-        clientCouponApiUrls.filterCoupon(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonCouponList>() {
+        CLIENT_COUPON_API.filterCoupon(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -128,7 +128,7 @@ public class ClientCouponApiCalls {
     }
 
     public void apply(String did, String mail, String auth, CouponOnOrder couponOnOrder) {
-        clientCouponApiUrls.apply(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+        CLIENT_COUPON_API.apply(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -158,7 +158,7 @@ public class ClientCouponApiCalls {
     }
 
     public void remove(String did, String mail, String auth, CouponOnOrder couponOnOrder) {
-        clientCouponApiUrls.remove(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+        CLIENT_COUPON_API.remove(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

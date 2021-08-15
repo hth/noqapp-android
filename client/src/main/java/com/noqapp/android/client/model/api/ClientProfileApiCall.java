@@ -1,10 +1,11 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.ClientProfileApiUrls;
+import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.response.api.ClientProfileApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
@@ -17,7 +18,6 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.JsonUserAddressList;
-import com.noqapp.android.common.beans.JsonUserPreference;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 
@@ -30,7 +30,7 @@ import retrofit2.Response;
 public class ClientProfileApiCall {
 
     private final String TAG = ClientProfileApiCall.class.getSimpleName();
-    private static final ClientProfileApiUrls clientProfileApiUrls;
+    private static final ClientProfileApi CLIENT_PROFILE_API;
     private ProfilePresenter profilePresenter;
     private ImageUploadPresenter imageUploadPresenter;
     private ProfileAddressPresenter profileAddressPresenter;
@@ -53,11 +53,11 @@ public class ClientProfileApiCall {
     }
 
     static {
-        clientProfileApiUrls = RetrofitClient.getClient().create(ClientProfileApiUrls.class);
+        CLIENT_PROFILE_API = RetrofitClient.getClient().create(ClientProfileApi.class);
     }
 
     public void fetchProfile(final String mail, final String auth) {
-        clientProfileApiUrls.fetch(mail, auth).enqueue(new Callback<JsonProfile>() {
+        CLIENT_PROFILE_API.fetch(mail, auth).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -86,7 +86,7 @@ public class ClientProfileApiCall {
     }
 
     public void updateProfile(final String mail, final String auth, UpdateProfile updateProfile) {
-        clientProfileApiUrls.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
+        CLIENT_PROFILE_API.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -115,7 +115,7 @@ public class ClientProfileApiCall {
     }
 
     public void migrate(final String mail, final String auth, MigratePhone migratePhone) {
-        clientProfileApiUrls.migrate(mail, auth, migratePhone).enqueue(new Callback<JsonProfile>() {
+        CLIENT_PROFILE_API.migrate(mail, auth, migratePhone).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -147,7 +147,7 @@ public class ClientProfileApiCall {
     }
 
     public void getProfileAllAddress(final String mail, final String auth) {
-        clientProfileApiUrls.address(mail, auth).enqueue(new Callback<JsonUserAddressList>() {
+        CLIENT_PROFILE_API.address(mail, auth).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -177,7 +177,7 @@ public class ClientProfileApiCall {
     }
 
     public void addProfileAddress(final String mail, final String auth, JsonUserAddress jsonUserAddress) {
-        clientProfileApiUrls.addressAdd(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+        CLIENT_PROFILE_API.addressAdd(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -206,7 +206,7 @@ public class ClientProfileApiCall {
     }
 
     public void deleteProfileAddress(final String mail, final String auth, JsonUserAddress jsonUserAddress) {
-        clientProfileApiUrls.addressDelete(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+        CLIENT_PROFILE_API.addressDelete(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -235,7 +235,7 @@ public class ClientProfileApiCall {
     }
 
     public void uploadImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody profileImageOfQid) {
-        clientProfileApiUrls.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
+        CLIENT_PROFILE_API.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -264,7 +264,7 @@ public class ClientProfileApiCall {
     }
 
     public void removeImage(String did, String mail, String auth, UpdateProfile updateProfile) {
-        clientProfileApiUrls.remove(did, Constants.DEVICE_TYPE, mail, auth, updateProfile).enqueue(new Callback<JsonResponse>() {
+        CLIENT_PROFILE_API.remove(did, Constants.DEVICE_TYPE, mail, auth, updateProfile).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -293,7 +293,7 @@ public class ClientProfileApiCall {
     }
 
     public void changeMail(final String mail, final String auth, MigrateMail migrateMail) {
-        clientProfileApiUrls.changeMail(mail, auth, migrateMail).enqueue(new Callback<JsonResponse>() {
+        CLIENT_PROFILE_API.changeMail(mail, auth, migrateMail).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -322,7 +322,7 @@ public class ClientProfileApiCall {
     }
 
     public void migrateMail(final String mail, final String auth, ChangeMailOTP changeMailOTP) {
-        clientProfileApiUrls.migrateMail(mail, auth, changeMailOTP).enqueue(new Callback<JsonProfile>() {
+        CLIENT_PROFILE_API.migrateMail(mail, auth, changeMailOTP).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -354,7 +354,7 @@ public class ClientProfileApiCall {
     }
 
     public void setPrimaryAddress(String mail, String auth, JsonUserAddress jsonUserAddress) {
-        clientProfileApiUrls.addressPrimary(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+        CLIENT_PROFILE_API.addressPrimary(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

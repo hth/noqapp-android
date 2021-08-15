@@ -15,7 +15,7 @@ import retrofit2.http.POST;
  * User: hitender
  * Date: 12/26/20 10:35 PM
  */
-public interface FavouriteAPIUrls {
+public interface FavouriteApi {
 
     /**
      * Errors

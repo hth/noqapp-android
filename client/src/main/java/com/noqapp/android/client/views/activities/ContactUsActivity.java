@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.FeedbackApiCall;
+import com.noqapp.android.client.model.api.FeedbackApiCall;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;

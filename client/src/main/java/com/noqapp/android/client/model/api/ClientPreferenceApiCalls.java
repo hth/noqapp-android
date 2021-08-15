@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.ClientPreferenceApiUrls;
+import com.noqapp.android.client.model.response.api.ClientPreferenceApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.utils.Constants;
@@ -16,7 +16,7 @@ import retrofit2.Response;
 
 public class ClientPreferenceApiCalls {
     private final String TAG = ClientPreferenceApiCalls.class.getSimpleName();
-    private static final ClientPreferenceApiUrls clientPreferenceApiUrls;
+    private static final ClientPreferenceApi CLIENT_PREFERENCE_API;
     private ClientPreferencePresenter clientPreferencePresenter;
 
     public void setClientPreferencePresenter(ClientPreferencePresenter clientPreferencePresenter) {
@@ -24,11 +24,11 @@ public class ClientPreferenceApiCalls {
     }
 
     static {
-        clientPreferenceApiUrls = RetrofitClient.getClient().create(ClientPreferenceApiUrls.class);
+        CLIENT_PREFERENCE_API = RetrofitClient.getClient().create(ClientPreferenceApi.class);
     }
 
     public void notificationSound(String did, String mail, String auth) {
-        clientPreferenceApiUrls.notificationSound(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {
+        CLIENT_PREFERENCE_API.notificationSound(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -58,7 +58,7 @@ public class ClientPreferenceApiCalls {
     }
 
     public void promotionalSMS(String did, String mail, String auth) {
-        clientPreferenceApiUrls.promotionalSMS(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {
+        CLIENT_PREFERENCE_API.promotionalSMS(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -88,7 +88,7 @@ public class ClientPreferenceApiCalls {
     }
 
     public void order(String did, String mail, String auth, JsonUserPreference jsonUserPreference) {
-        clientPreferenceApiUrls.order(did, Constants.DEVICE_TYPE, mail, auth, jsonUserPreference).enqueue(new Callback<JsonUserPreference>() {
+        CLIENT_PREFERENCE_API.order(did, Constants.DEVICE_TYPE, mail, auth, jsonUserPreference).enqueue(new Callback<JsonUserPreference>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserPreference> call, @NonNull Response<JsonUserPreference> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

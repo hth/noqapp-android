@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientCouponApiCalls;
+import com.noqapp.android.client.model.api.ClientCouponApiCalls;
 import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;

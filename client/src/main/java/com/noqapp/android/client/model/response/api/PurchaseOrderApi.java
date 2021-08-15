@@ -11,7 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-public interface PurchaseOrderApiUrls {
+public interface PurchaseOrderApi {
 
     /**
      * Errors

@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.FavouriteApiCall;
+import com.noqapp.android.client.model.api.FavouriteApiCall;
 import com.noqapp.android.client.presenter.beans.FavoriteElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;

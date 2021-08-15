@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.DependentApiUrls;
+import com.noqapp.android.client.model.response.api.DependentApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
@@ -18,7 +18,7 @@ import retrofit2.Response;
 
 public class DependentApiCall {
     private final String TAG = DependentApiCall.class.getSimpleName();
-    private static final DependentApiUrls dependentApiUrls;
+    private static final DependentApi DEPENDENT_API;
     private DependencyPresenter dependencyPresenter;
 
     public DependentApiCall(DependencyPresenter dependencyPresenter) {
@@ -26,14 +26,14 @@ public class DependentApiCall {
     }
 
     static {
-        dependentApiUrls = RetrofitClient.getClient().create(DependentApiUrls.class);
+        DEPENDENT_API = RetrofitClient.getClient().create(DependentApi.class);
     }
 
     /**
      * @param registration
      */
     public void addDependency(String did, String mail, String auth,  Registration registration) {
-        dependentApiUrls.add(did, Constants.DEVICE_TYPE, mail, auth, registration).enqueue(new Callback<JsonProfile>() {
+        DEPENDENT_API.add(did, Constants.DEVICE_TYPE, mail, auth, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

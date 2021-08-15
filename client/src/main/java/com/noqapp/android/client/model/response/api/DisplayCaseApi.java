@@ -13,7 +13,7 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 10/03/20 10:35 PM
  */
-public interface DisplayCaseAPIUrls {
+public interface DisplayCaseApi {
 
     /**
      * Errors

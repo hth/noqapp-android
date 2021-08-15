@@ -9,7 +9,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.noqapp.android.client.R
-import com.noqapp.android.client.model.ClientPreferenceApiCalls
+import com.noqapp.android.client.model.api.ClientPreferenceApiCalls
 import com.noqapp.android.client.presenter.ClientPreferencePresenter
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.JsonProfile

@@ -1,10 +1,10 @@
-package com.noqapp.android.client.model;
+package com.noqapp.android.client.model.api;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.FavouriteAPIUrls;
+import com.noqapp.android.client.model.response.api.FavouriteApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.FavouriteListPresenter;
 import com.noqapp.android.client.presenter.beans.FavoriteElastic;
@@ -18,7 +18,7 @@ import retrofit2.Response;
 
 public class FavouriteApiCall {
     private final String TAG = FavouriteApiCall.class.getSimpleName();
-    private static final FavouriteAPIUrls favouriteAPIUrls;
+    private static final FavouriteApi FAVOURITE_API;
     private FavouritePresenter favouritePresenter;
     private FavouriteListPresenter favouriteListPresenter;
 
@@ -31,11 +31,11 @@ public class FavouriteApiCall {
     }
 
     static {
-        favouriteAPIUrls = RetrofitClient.getClient().create(FavouriteAPIUrls.class);
+        FAVOURITE_API = RetrofitClient.getClient().create(FavouriteApi.class);
     }
 
     public void actionOnFavorite(String did, String mail, String auth, FavoriteElastic favoriteElastic) {
-        favouriteAPIUrls.actionOnFavorite(did, Constants.DEVICE_TYPE, mail, auth, favoriteElastic).enqueue(new Callback<JsonResponse>() {
+        FAVOURITE_API.actionOnFavorite(did, Constants.DEVICE_TYPE, mail, auth, favoriteElastic).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -64,7 +64,7 @@ public class FavouriteApiCall {
     }
 
     public void favorite(String did, String mail, String auth) {
-        favouriteAPIUrls.favorite(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<FavoriteElastic>() {
+        FAVOURITE_API.favorite(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<FavoriteElastic>() {
             @Override
             public void onResponse(@NonNull Call<FavoriteElastic> call, @NonNull Response<FavoriteElastic> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
