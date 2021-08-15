@@ -270,7 +270,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             String couponName = jsonPurchaseOrder.getJsonCoupon().getDiscountName();
             tv_coupon_discount_label.setText(getString(R.string.discount_with_coupon, couponName));
         }
-        tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        tv_coupon_discount_amt.setText(Constants.DASH + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         StoreProductFinalOrderAdapter storeProductFinalOrderAdapter = new StoreProductFinalOrderAdapter(
                 this,
                 jsonPurchaseOrder.getPurchaseOrderProducts(),
@@ -363,7 +363,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_grand_total_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
         tv_final_amount.setText("Grand Total \n" + currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-        tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        tv_coupon_discount_amt.setText(Constants.DASH + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_due_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
     }
 

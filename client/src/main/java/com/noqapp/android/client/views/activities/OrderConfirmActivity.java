@@ -611,7 +611,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
         if (jsonPurchaseOrder.getStoreDiscount() > 0) {
             tv_coupon_discount_label.setText(getString(R.string.discount_with_coupon, jsonPurchaseOrder.getJsonCoupon().getDiscountName()));
-            tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+            tv_coupon_discount_amt.setText(Constants.DASH + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         } else {
             tv_coupon_discount_label.setText(getString(R.string.discount));
             tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));

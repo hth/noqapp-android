@@ -142,8 +142,8 @@ public class ReceiptGeneratorPDF extends PdfHelper {
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().size() + 1), normalFont));
                 table.addCell(pdfPCellWithoutBorder("Discount", normalFont));
                 table.addCell(pdfPCellWithoutBorder("1", normalFont));
-                table.addCell(pdfPCellWithoutBorder(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(receipt.getJsonPurchaseOrder().getStoreDiscount()), urFontName));
-                table.addCell(pdfPCellWithoutBorder(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(receipt.getJsonPurchaseOrder().getStoreDiscount()), urFontName));
+                table.addCell(pdfPCellWithoutBorder(Constants.DASH + currencySymbol + CommonHelper.displayPrice(receipt.getJsonPurchaseOrder().getStoreDiscount()), urFontName));
+                table.addCell(pdfPCellWithoutBorder(Constants.DASH + currencySymbol + CommonHelper.displayPrice(receipt.getJsonPurchaseOrder().getStoreDiscount()), urFontName));
             }
             table.setTotalWidth(PageSize.A4.getWidth() - 80);
             table.setLockedWidth(true);
