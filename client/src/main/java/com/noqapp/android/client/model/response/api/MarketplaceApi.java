@@ -59,6 +59,7 @@ public interface MarketplaceApi {
      * On clicking view detail on the post.
      *
      * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
     @POST("api/c/view")
@@ -83,6 +84,7 @@ public interface MarketplaceApi {
      * Person should be able to do it once. After that the button should be disabled.
      *
      * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
     @POST("api/c/initiateContact")
