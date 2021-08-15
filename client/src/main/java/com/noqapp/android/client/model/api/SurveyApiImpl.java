@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.Survey;
+import com.noqapp.android.client.model.response.api.SurveyApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.SurveyPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQuestionnaire;
@@ -17,7 +17,7 @@ import retrofit2.Response;
 public class SurveyApiImpl {
 
     private final String TAG = SurveyApiImpl.class.getSimpleName();
-    private static final Survey SURVEY;
+    private static final SurveyApi SURVEY_API;
     private SurveyPresenter surveyPresenter;
 
     public SurveyApiImpl(SurveyPresenter surveyPresenter) {
@@ -25,11 +25,11 @@ public class SurveyApiImpl {
     }
 
     static {
-        SURVEY = RetrofitClient.getClient().create(Survey.class);
+        SURVEY_API = RetrofitClient.getClient().create(SurveyApi.class);
     }
 
     public void survey(String mail, String auth) {
-        SURVEY.survey(mail, auth).enqueue(new Callback<JsonQuestionnaire>() {
+        SURVEY_API.survey(mail, auth).enqueue(new Callback<JsonQuestionnaire>() {
             @Override
             public void onResponse(@NonNull Call<JsonQuestionnaire> call, @NonNull Response<JsonQuestionnaire> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
