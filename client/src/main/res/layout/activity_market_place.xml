@@ -28,9 +28,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_market_place"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_layout"

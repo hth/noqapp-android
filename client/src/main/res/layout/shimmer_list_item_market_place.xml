@@ -62,14 +62,6 @@
             app:layout_constraintStart_toStartOf="@id/tv_property_title"
             app:layout_constraintTop_toBottomOf="@id/tv_property_title" />
 
-        <View
-            android:id="@+id/view_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/black_transparent"
-            app:layout_constraintTop_toBottomOf="@id/tv_location" />
-
         <LinearLayout
             android:id="@+id/ll_info"
             android:layout_width="match_parent"
