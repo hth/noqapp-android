@@ -68,12 +68,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/marketPlaceFragment"
-        android:name="com.noqapp.android.client.views.version_2.market_place.MarketPlaceFragment"
-        tools:layout="@layout/fragment_view_business_list">
-    </fragment>
-
-    <fragment
         android:id="@+id/changeLocationFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.ChangeLocationFragmentNew"
         tools:layout="@layout/fragment_change_location" />

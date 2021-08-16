@@ -578,4 +578,7 @@
     <string name="txt_location_permission_title">Location Permission</string>
     <string name="txt_location_allow_access_label">Please allow location to find stores nearest to you.</string>
     <string name="txt_location_enable_button">Enable Location</string>
+    <string name="rupee_symbol">\u20B9 %s</string>
+    <string name="txt_call_agent">Call Agent</string>
+    <string name="txt_listing">Listing</string>
 </resources>

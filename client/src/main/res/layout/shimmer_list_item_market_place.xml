@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/white"
@@ -13,41 +12,39 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
             android:id="@+id/iv_market_place"
-            style="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
             android:layout_width="120dp"
             android:layout_height="150dp"
             android:layout_marginStart="10dp"
-            android:background="@color/color_grey_bg"
-            android:src="@drawable/image_foreground" />
+            android:background="@color/color_grey_bg" />
 
         <TextView
             android:id="@+id/tv_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif-black"
-            android:text="Rs. 44, 000/-"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:background="@color/color_grey_bg"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_market_place"
             app:layout_constraintTop_toTopOf="@id/iv_market_place" />
 
         <TextView
             android:id="@+id/tv_property_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/ic_baseline_home_24"
-            android:drawableTint="@color/color_black"
+            android:background="@color/color_grey_bg"
             android:fontFamily="sans-serif"
             android:paddingEnd="8dp"
-            android:text="14 Space Villa Apartments"
             android:textColor="@color/text_header_color"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_price"
             app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
@@ -55,17 +52,23 @@
             android:id="@+id/tv_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableTint="@color/color_black"
+            android:background="@color/color_grey_bg"
             android:fontFamily="sans-serif"
             android:paddingEnd="8dp"
             android:textColor="@color/text_header_color"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:maxLines="3"
-            app:drawableStartCompat="@drawable/ic_location"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_property_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_property_title"
-            tools:text="26, Spaze Street, Gurgaon, Sector 22" />
+            app:layout_constraintTop_toBottomOf="@id/tv_property_title" />
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black_transparent"
+            app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
         <LinearLayout
             android:id="@+id/ll_info"
@@ -78,13 +81,13 @@
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@color/color_grey_bg"
                 android:layout_weight="1">
 
                 <Button
                     android:id="@+id/btn_allow_location_access"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/orange_gradient"
                     android:text="@string/txt_call_agent"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -97,14 +100,13 @@
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@color/color_grey_bg"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1">
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rounded_corner_theme"
-                    android:text="View Details"
                     android:textAllCaps="false"
                     android:textColor="@color/theme_color_dark"
                     app:layout_constraintBottom_toBottomOf="parent"

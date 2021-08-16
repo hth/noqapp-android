@@ -12,6 +12,7 @@ class MarketPlaceViewModel: ViewModel() {
     val marketPlaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
     val errorEncounteredJsonLiveData = MutableLiveData<ErrorEncounteredJson>()
     val authenticationError = MutableLiveData(false)
+    val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
 
     private var marketRepository: MarketRepository = MarketRepository()
 
