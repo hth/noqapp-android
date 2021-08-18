@@ -3,39 +3,35 @@ package com.noqapp.android.client.views.version_2.market_place
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.animation.Animation
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.noqapp.android.client.databinding.ActivityMarketPlaceBinding
+import com.noqapp.android.client.databinding.ActivityMarketPlaceListingBinding
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AppUtils
-import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class MarketPlaceActivity : LocationBaseActivity() {
+class MarketPlaceListActivity : LocationBaseActivity() {
 
-    private lateinit var activityMarketPlaceBinding: ActivityMarketPlaceBinding
+    private lateinit var activityMarketPlaceListingBinding: ActivityMarketPlaceListingBinding
     private lateinit var marketPlaceAdapter: MarketPlaceAdapter
 
     private val marketPlaceViewModel: MarketPlaceViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityMarketPlaceBinding = ActivityMarketPlaceBinding.inflate(LayoutInflater.from(this))
-        setContentView(activityMarketPlaceBinding.root)
+        activityMarketPlaceListingBinding =
+            ActivityMarketPlaceListingBinding.inflate(LayoutInflater.from(this))
+        setContentView(activityMarketPlaceListingBinding.root)
         setUpRecyclerView()
         observeData()
     }
 
     private fun observeData() {
         marketPlaceViewModel.marketPlaceElasticListLiveData.observe(this, {
-            activityMarketPlaceBinding.shimmerLayout.stopShimmer()
-            activityMarketPlaceBinding.shimmerLayout.visibility = View.GONE
-            activityMarketPlaceBinding.rvMarketPlace.visibility = View.VISIBLE
+            activityMarketPlaceListingBinding.shimmerLayout.stopShimmer()
+            activityMarketPlaceListingBinding.shimmerLayout.visibility = View.GONE
+            activityMarketPlaceListingBinding.rvMarketPlace.visibility = View.VISIBLE
             it?.let { marketPlaceElasticList ->
                 marketPlaceAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
             }
@@ -53,7 +49,7 @@ class MarketPlaceActivity : LocationBaseActivity() {
         })
 
         marketPlaceViewModel.searchStoreQueryLiveData.observe(this, {
-            activityMarketPlaceBinding.shimmerLayout.startShimmer()
+            activityMarketPlaceListingBinding.shimmerLayout.startShimmer()
             it.searchedOnBusinessType = BusinessTypeEnum.PR
             marketPlaceViewModel.getMarketPlace(it)
         })
@@ -61,8 +57,8 @@ class MarketPlaceActivity : LocationBaseActivity() {
 
     private fun setUpRecyclerView() {
         marketPlaceAdapter = MarketPlaceAdapter(mutableListOf())
-        activityMarketPlaceBinding.rvMarketPlace.layoutManager = LinearLayoutManager(this)
-        activityMarketPlaceBinding.rvMarketPlace.adapter = marketPlaceAdapter
+        activityMarketPlaceListingBinding.rvMarketPlace.layoutManager = LinearLayoutManager(this)
+        activityMarketPlaceListingBinding.rvMarketPlace.adapter = marketPlaceAdapter
     }
 
     override fun displayAddressOutput(
@@ -93,10 +89,10 @@ class MarketPlaceActivity : LocationBaseActivity() {
     }
 
     override fun locationPermissionRequired() {
-        activityMarketPlaceBinding.clLocationAccessRequired.visibility = View.VISIBLE
+        activityMarketPlaceListingBinding.clLocationAccessRequired.visibility = View.VISIBLE
     }
 
     override fun locationPermissionGranted() {
-        activityMarketPlaceBinding.clLocationAccessRequired.visibility = View.GONE
+        activityMarketPlaceListingBinding.clLocationAccessRequired.visibility = View.GONE
     }
 }

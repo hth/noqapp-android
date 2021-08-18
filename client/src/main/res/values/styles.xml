@@ -165,4 +165,11 @@
         <item name="cornerSize">10%</item>
     </style>
 
+    <style name="CheckBoxStyle">
+        <item name="android:checked">false</item>
+        <item name="android:textColor">@color/segment_text_color</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
 </resources>

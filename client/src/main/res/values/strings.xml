@@ -581,4 +581,14 @@
     <string name="rupee_symbol">\u20B9 %s</string>
     <string name="txt_call_agent">Call Agent</string>
     <string name="txt_listing">Listing</string>
+    <string name="txt_search_locality">Search for places, locality, area ...</string>
+    <string name="txt_property_type">Property type</string>
+    <string name="txt_1_rk">1 RK</string>
+    <string name="txt_1_bhk">1 BHK</string>
+    <string name="cb_2_bhk">2 BHK</string>
+    <string name="txt_3_bhk">3 BHK</string>
+    <string name="txt_4_bhk">4 BHK</string>
+    <string name="cb_4_plus_bhk">4+ BHK</string>
+    <string name="txt_price_range">Price range</string>
+    <string name="slider_desc">"Price range "</string>
 </resources>

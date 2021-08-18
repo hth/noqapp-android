@@ -72,10 +72,15 @@
             android:launchMode="singleTask"
             android:theme="@style/AppBaseTheme.Material"/>
 
-        <activity android:name=".views.version_2.market_place.MarketPlaceActivity"
+        <activity android:name=".views.version_2.market_place.MarketPlaceListActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".views.version_2.market_place.search_market_place.MarketPlaceActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:theme="@style/AppBaseTheme.Material"/>
 
         <activity
             android:name=".views.activities.ReviewActivity"
