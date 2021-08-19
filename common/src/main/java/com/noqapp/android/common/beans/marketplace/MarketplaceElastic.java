@@ -1,7 +1,6 @@
 package com.noqapp.android.common.beans.marketplace;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -56,8 +55,8 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("TG")
     private String tag;
 
-    @JsonProperty("LC")
-    private int likeCount;
+    @JsonProperty("VC")
+    private int viewCount;
 
     @JsonProperty("EC")
     private int expressedInterestCount;
@@ -144,12 +143,12 @@ public class MarketplaceElastic extends AbstractDomain {
         return this;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public int getViewCount() {
+        return viewCount;
     }
 
-    public MarketplaceElastic setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public MarketplaceElastic setViewCount(int viewCount) {
+        this.viewCount = viewCount;
         return this;
     }
 
