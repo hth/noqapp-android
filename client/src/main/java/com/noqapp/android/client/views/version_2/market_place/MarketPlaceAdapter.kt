@@ -19,8 +19,7 @@ class MarketPlaceAdapter(private val marketplaceList: MutableList<MarketplaceEla
 
         fun bind(marketplaceElastic: MarketplaceElastic) {
             listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
-            listItemMarketPlaceBinding.tvPrice.text = listItemMarketPlaceBinding.tvPrice.context?.getString(
-                R.string.rupee_symbol, marketplaceElastic.productPrice)
+            listItemMarketPlaceBinding.tvPrice.text = listItemMarketPlaceBinding.tvPrice.context?.getString(R.string.rupee_symbol, marketplaceElastic.productPrice)
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.town
 
             if (marketplaceElastic.postImages.size > 0) {

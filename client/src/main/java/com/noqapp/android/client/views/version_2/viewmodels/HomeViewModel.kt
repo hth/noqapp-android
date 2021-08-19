@@ -26,7 +26,7 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext),
     SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
-    val TAG: String = HomeViewModel::class.java.simpleName
+    val tag: String = HomeViewModel::class.java.simpleName
 
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
     val currentQueueErrorLiveData = MutableLiveData<Boolean>()

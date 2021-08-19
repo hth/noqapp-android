@@ -32,8 +32,7 @@ class MarketPlaceActivity : LocationBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val activityMarketPlaceBinding =
-            ActivityMarketPlaceBinding.inflate(LayoutInflater.from(this))
+        val activityMarketPlaceBinding = ActivityMarketPlaceBinding.inflate(LayoutInflater.from(this))
         setContentView(activityMarketPlaceBinding.root)
 
         activityMarketPlaceBinding.btnSearch.setOnClickListener {

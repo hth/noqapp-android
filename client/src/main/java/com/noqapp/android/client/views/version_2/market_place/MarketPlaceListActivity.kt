@@ -20,8 +20,7 @@ class MarketPlaceListActivity : LocationBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityMarketPlaceListingBinding =
-            ActivityMarketPlaceListingBinding.inflate(LayoutInflater.from(this))
+        activityMarketPlaceListingBinding = ActivityMarketPlaceListingBinding.inflate(LayoutInflater.from(this))
         setContentView(activityMarketPlaceListingBinding.root)
         setUpRecyclerView()
         observeData()
