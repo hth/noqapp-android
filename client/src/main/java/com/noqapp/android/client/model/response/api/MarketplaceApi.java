@@ -2,6 +2,7 @@ package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.marketplace.JsonMarketplace;
+import com.noqapp.android.common.beans.marketplace.MarketplaceElastic;
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList;
 
 import retrofit2.Call;
@@ -38,7 +39,7 @@ public interface MarketplaceApi {
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
     @POST("api/c/marketplace")
-    Call<JsonResponse> postOnMarketplace(
+    Call<MarketplaceElastic> postOnMarketplace(
         @Header("X-R-DID")
         String did,
 
