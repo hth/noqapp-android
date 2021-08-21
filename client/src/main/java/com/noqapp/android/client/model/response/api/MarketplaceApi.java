@@ -5,11 +5,15 @@ import com.noqapp.android.common.beans.marketplace.JsonMarketplace;
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic;
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface MarketplaceApi {
 
@@ -40,6 +44,61 @@ public interface MarketplaceApi {
      */
     @POST("api/c/marketplace")
     Call<MarketplaceElastic> postOnMarketplace(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt,
+
+        @Header("X-R-MAIL")
+        String mail,
+
+        @Header("X-R-AUTH")
+        String auth,
+
+        @Body
+        JsonMarketplace jsonMarketplace
+    );
+
+    /**
+     * Needs PostId, Business Type and image to upload image.
+     *
+     * Errors
+     * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
+     */
+    @Multipart
+    @POST("api/c/marketplace/uploadImage")
+    Call<JsonResponse> uploadImage(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt,
+
+        @Header("X-R-MAIL")
+        String mail,
+
+        @Header("X-R-AUTH")
+        String auth,
+
+        @Part
+        MultipartBody.Part multipartFile,
+
+        @Part("postId")
+        RequestBody postId,
+
+        @Part("businessTypeAsString")
+        RequestBody businessTypeAsString
+    );
+
+    /**
+     * Needs PostId, ImageId(s) and Business Type to remove image.
+     *
+     * Errors
+     * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
+     */
+    @POST("api/c/marketplace/removeImage")
+    Call<MarketplaceElastic> removeImage(
         @Header("X-R-DID")
         String did,
 
