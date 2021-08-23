@@ -76,6 +76,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
+import static com.noqapp.android.common.utils.BaseConstants.DASH;
 
 /**
  * Created by chandra on 5/7/17.
@@ -239,7 +240,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
             tv_complete_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(this, tv_complete_address.getText().toString()));
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+            if (!bizStoreElastic.getPhone().equalsIgnoreCase(DASH)) {
+                tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+            }
             tv_rating.setText(AppUtils.round(rating) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
