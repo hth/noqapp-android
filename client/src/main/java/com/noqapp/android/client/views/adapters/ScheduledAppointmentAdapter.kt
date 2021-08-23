@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import java.util.Date
 
 /** Appointment display on home screen. */
 class ScheduledAppointmentAdapter(
+        private val context: Context,
         private val jsonScheduleList: MutableList<JsonSchedule>,
         val onItemClick: (JsonSchedule) -> Unit
 ) : RecyclerView.Adapter<ScheduledAppointmentAdapter.ScheduledAppointmentViewHolder>() {

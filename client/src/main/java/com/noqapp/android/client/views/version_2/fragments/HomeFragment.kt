@@ -126,14 +126,12 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         })
 
         fragmentHomeNewBinding.clRestaurant.setOnClickListener {
-            val navigationDirections =
-                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
             findNavController().navigate(navigationDirections)
         }
 
         fragmentHomeNewBinding.clHospital.setOnClickListener {
-            val navigationDirections =
-                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
             findNavController().navigate(navigationDirections)
         }
 
@@ -300,8 +298,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 
     private fun setUpRecyclerView() {
         fragmentHomeNewBinding.rvRecentVisitsNearMe.setHasFixedSize(true)
-        fragmentHomeNewBinding.rvRecentVisitsNearMe.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        fragmentHomeNewBinding.rvRecentVisitsNearMe.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         fragmentHomeNewBinding.rvRecentVisitsNearMe.itemAnimator = DefaultItemAnimator()
     }
 
@@ -310,10 +307,9 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             onTokenClicked(it)
         }
 
-        scheduledAppointmentAdapter =
-            ScheduledAppointmentAdapter(requireContext(), mutableListOf()) {
-                onAppointmentClicked(it)
-            }
+        scheduledAppointmentAdapter = ScheduledAppointmentAdapter(requireContext(), mutableListOf()) {
+            onAppointmentClicked(it)
+        }
 
         fragmentHomeNewBinding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         fragmentHomeNewBinding.viewpager.adapter = tokenAndQueueAndQueueAdapter
@@ -321,8 +317,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         fragmentHomeNewBinding.viewpager.clipToPadding = false
         fragmentHomeNewBinding.viewpager.clipChildren = false
         fragmentHomeNewBinding.viewpager.offscreenPageLimit = 3
-        fragmentHomeNewBinding.viewpager.getChildAt(0).overScrollMode =
-            RecyclerView.OVER_SCROLL_NEVER
+        fragmentHomeNewBinding.viewpager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
         fragmentHomeNewBinding.viewpagerAppointment.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         fragmentHomeNewBinding.viewpagerAppointment.adapter = scheduledAppointmentAdapter
@@ -330,8 +325,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         fragmentHomeNewBinding.viewpagerAppointment.clipToPadding = false
         fragmentHomeNewBinding.viewpagerAppointment.clipChildren = false
         fragmentHomeNewBinding.viewpagerAppointment.offscreenPageLimit = 3
-        fragmentHomeNewBinding.viewpagerAppointment.getChildAt(0).overScrollMode =
-            RecyclerView.OVER_SCROLL_NEVER
+        fragmentHomeNewBinding.viewpagerAppointment.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
         val compositePageTransformer = CompositePageTransformer()
         compositePageTransformer.addTransformer(MarginPageTransformer(32))
@@ -411,11 +405,9 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private fun addIndicator(tokenANdQueueList: List<JsonTokenAndQueue>, selectedPosition: Int) {
         fragmentHomeNewBinding.llIndicator.removeAllViews()
         tokenANdQueueList.forEachIndexed { index, _ ->
-            val viewIndicatorBinding =
-                ViewIndicatorBinding.inflate(LayoutInflater.from(requireContext()))
+            val viewIndicatorBinding = ViewIndicatorBinding.inflate(LayoutInflater.from(requireContext()))
             if (index == selectedPosition) {
-                viewIndicatorBinding.viewIndicator.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                viewIndicatorBinding.viewIndicator.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
             }
             fragmentHomeNewBinding.llIndicator.addView(viewIndicatorBinding.root)
         }
@@ -427,11 +419,9 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     ) {
         fragmentHomeNewBinding.llAppointmentsIndicator.removeAllViews()
         jsonScheduleList.forEachIndexed { index, _ ->
-            val viewIndicatorBinding =
-                ViewIndicatorBinding.inflate(LayoutInflater.from(requireContext()))
+            val viewIndicatorBinding = ViewIndicatorBinding.inflate(LayoutInflater.from(requireContext()))
             if (index == selectedPosition) {
-                viewIndicatorBinding.viewIndicator.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                viewIndicatorBinding.viewIndicator.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
             }
             fragmentHomeNewBinding.llAppointmentsIndicator.addView(viewIndicatorBinding.root)
         }
