@@ -54,12 +54,11 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
     private var carpetArea = 0
     private var latitude = 0.0
     private var longitude = 0.0
-    private var rentalType = RentalTypeEnum.TOWN_HOUSE
+    private var rentalType = RentalTypeEnum.T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityPostMarketPlaceBinding =
-            ActivityPostMarketPlaceBinding.inflate(LayoutInflater.from(this))
+        activityPostMarketPlaceBinding = ActivityPostMarketPlaceBinding.inflate(LayoutInflater.from(this))
         setContentView(activityPostMarketPlaceBinding.root)
         setListeners()
         observeData()

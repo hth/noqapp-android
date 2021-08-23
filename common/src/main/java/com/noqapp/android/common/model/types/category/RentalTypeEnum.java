@@ -12,10 +12,10 @@ package com.noqapp.android.common.model.types.category;
 })
 public enum RentalTypeEnum {
 
-    APARTMENT("A", "Apartment"),
-    BUNGLOW_HOUSE("H", "Bungalow/House"),
-    SUBLET_ROOM("R", "Sublet Room"),
-    TOWN_HOUSE("T", "Townhouse");
+    A("A", "Apartment"),
+    H("H", "Bungalow/House"),
+    R("R", "Sublet Room"),
+    T("T", "Townhouse");
 
     private final String name;
     private final String description;
