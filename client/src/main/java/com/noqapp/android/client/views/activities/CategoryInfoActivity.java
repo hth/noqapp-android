@@ -303,7 +303,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             List<String> storeServiceImages = new ArrayList<>();
             // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
-                storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
+                storeServiceImages = bizStoreElastic.getBizServiceImages();
                 // load first image default
                 Picasso.get()
                     .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
