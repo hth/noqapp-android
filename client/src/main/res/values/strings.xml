@@ -591,4 +591,6 @@
     <string name="cb_4_plus_bhk">4+ BHK</string>
     <string name="txt_price_range">Price range</string>
     <string name="slider_desc">"Price range "</string>
+    <string name="txt_rental_type">Rental type</string>
+    <string name="txt_carpet_area"><![CDATA[Carpet area (In X<sup>2</sup>)]]></string>
 </resources>

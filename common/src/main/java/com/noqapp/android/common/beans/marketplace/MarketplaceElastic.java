@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
@@ -79,6 +80,9 @@ public class MarketplaceElastic extends AbstractDomain {
     /** Mostly used for display as most of the common data is listed as text here. */
     @JsonProperty("TS")
     private String[] fieldTags;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getId() {
         return id;
@@ -212,6 +216,15 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setFieldTags(String[] fieldTags) {
         this.fieldTags = fieldTags;
+        return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public MarketplaceElastic setError(ErrorEncounteredJson error) {
+        this.error = error;
         return this;
     }
 }

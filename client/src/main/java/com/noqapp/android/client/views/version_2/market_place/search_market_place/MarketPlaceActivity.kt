@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import com.noqapp.android.client.databinding.ActivityMarketPlaceBinding
 import com.noqapp.android.client.views.activities.LocationBaseActivity
 import com.noqapp.android.client.views.version_2.market_place.MarketPlaceListActivity
+import com.noqapp.android.client.views.version_2.market_place.post_market_place.PostMarketPlaceActivity
 
 class MarketPlaceActivity : LocationBaseActivity() {
     override fun displayAddressOutput(
@@ -37,6 +38,10 @@ class MarketPlaceActivity : LocationBaseActivity() {
 
         activityMarketPlaceBinding.btnSearch.setOnClickListener {
             startActivity(Intent(this, MarketPlaceListActivity::class.java))
+        }
+
+        activityMarketPlaceBinding.cvPostAProperty.setOnClickListener {
+            startActivity(Intent(this, PostMarketPlaceActivity::class.java))
         }
 
         activityMarketPlaceBinding.ivClose.setOnClickListener {

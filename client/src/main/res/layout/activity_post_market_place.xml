@@ -1,70 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/close"
+        android:tint="@color/theme_color_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Post property"
+        android:textColor="@color/text_header_color"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_close"
+        app:layout_constraintTop_toTopOf="@id/iv_close" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp">
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_market_place_filter"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/iv_close"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/close"
-                android:tint="@color/theme_color_dark"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="18dp">
 
             <TextView
-                android:id="@+id/tv_title"
+                android:id="@+id/tv_titpe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/roboto_bold"
-                android:text="Market Place"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/address"
                 android:textColor="@color/text_header_color"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/iv_close"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_close"
-                app:layout_constraintTop_toTopOf="@id/iv_close" />
+                android:textSize="17sp"
+                app:layout_constraintTop_toBottomOf="@id/fl_locality" />
 
             <EditText
-                android:id="@+id/et_locality"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_rounded_corner_theme"
-                android:drawableStart="@drawable/ic_search"
-                android:drawableTint="@color/color_light_grey"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="@string/txt_search_locality"
-                android:maxLines="1"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:textColor="@color/segment_text_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_close" />
-
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/fl_locality"
+                android:id="@+id/et_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@id/et_locality" />
+                android:hint="Enter building name"
+                android:inputType="textPostalAddress"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/address"
+                android:textColor="@color/text_header_color"
+                android:textSize="17sp"
+                app:layout_constraintTop_toBottomOf="@id/fl_locality" />
+
+            <EditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter address"
+                android:inputType="textPostalAddress"
+                android:maxLines="1" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Town"
+                android:textColor="@color/text_header_color"
+                android:textSize="17sp"
+                app:layout_constraintTop_toBottomOf="@id/fl_locality" />
+
+            <EditText
+                android:id="@+id/et_town"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter town"
+                android:inputType="textPostalAddress"
+                android:maxLines="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="City"
+                android:textColor="@color/text_header_color"
+                android:textSize="17sp"
+                app:layout_constraintTop_toBottomOf="@id/fl_locality" />
+
+            <EditText
+                android:id="@+id/et_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter city"
+                android:inputType="textPostalAddress"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/tv_carpet_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/txt_carpet_area"
+                android:textColor="@color/text_header_color"
+                android:textSize="17sp"
+                app:layout_constraintTop_toBottomOf="@id/fl_locality" />
+
+            <EditText
+                android:id="@+id/et_carpet_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Carpet area"
+                android:inputType="numberDecimal"
+                android:maxLines="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/txt_rental_type"
+                android:textColor="@color/text_header_color"
+                android:textSize="17sp"
+                app:layout_constraintTop_toBottomOf="@id/fl_locality" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:entries="@array/rental_type_values" />
 
             <TextView
                 android:id="@+id/tv_property_type_type"
@@ -200,13 +289,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:contentDescription="@string/slider_desc"
-                android:valueFrom="0.0"
-                android:valueTo="100.0"
+                android:valueFrom="5000.0"
+                android:valueTo="5000000.0"
                 app:layout_constraintTop_toBottomOf="@id/tv_price_range"
-                app:values="@array/initial_slider_values" />
+                app:values="@array/initial_slider_values_two" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_search"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Extra amenities"
+                android:textColor="@color/text_header_color"
+                android:textSize="17sp"
+                app:layout_constraintTop_toBottomOf="@id/ll_property_type" />
+
+            <EditText
+                android:id="@+id/et_bath_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter total bathrooms"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <Button
+                android:id="@+id/btn_post"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="24dp"
@@ -218,59 +325,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/rs_price_range" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_post_a_property"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
-                app:contentPadding="16dp"
-                app:layout_constraintTop_toBottomOf="@id/btn_search">
+        </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_post_property"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Post a property"
-                        android:textColor="@color/text_header_color"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_advertisement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
-                app:contentPadding="16dp"
-                app:layout_constraintTop_toBottomOf="@id/cv_post_a_property"
-                app:layout_goneMarginTop="48dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add place holder"
-                        android:textColor="@color/text_header_color"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

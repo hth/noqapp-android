@@ -39,11 +39,15 @@ class MarketPlaceListActivity : LocationBaseActivity() {
         marketPlaceViewModel.authenticationError.observe(this, {
             if (it) {
                 super.authenticationFailure()
+                activityMarketPlaceListingBinding.shimmerLayout.stopShimmer()
+                activityMarketPlaceListingBinding.shimmerLayout.visibility = View.GONE
                 marketPlaceViewModel.authenticationError.value = false
             }
         })
 
         marketPlaceViewModel.errorEncounteredJsonLiveData.observe(this, {
+            activityMarketPlaceListingBinding.shimmerLayout.stopShimmer()
+            activityMarketPlaceListingBinding.shimmerLayout.visibility = View.GONE
             super.responseErrorPresenter(it)
         })
 
