@@ -35,7 +35,7 @@ import com.noqapp.android.client.views.adapters.StoreInfoAdapter
 import com.noqapp.android.client.views.adapters.TokenAndQueueAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.NavigationBundleUtils
-import com.noqapp.android.client.views.version_2.market_place.search_market_place.MarketPlaceActivity
+import com.noqapp.android.client.views.version_2.market_place.search_market_place.MarketplacePropertyRentalActivity
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.JsonSchedule
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
@@ -156,7 +156,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.clMarketplace.setOnClickListener {
-            startActivity(Intent(requireContext(), MarketPlaceActivity::class.java))
+            startActivity(Intent(requireContext(), MarketplacePropertyRentalActivity::class.java))
         }
     }
 

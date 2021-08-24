@@ -1,7 +1,7 @@
 package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.marketplace.JsonMarketplace;
+import com.noqapp.android.common.beans.marketplace.JsonPropertyRental;
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic;
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList;
 
@@ -15,13 +15,13 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
-public interface MarketplaceApi {
+public interface MarketplacePropertyRentalApi {
 
     /**
      * Errors
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @GET("api/c/marketplace")
+    @GET("api/c/marketplace/propertyRental")
     Call<MarketplaceElasticList> showMyPostOnMarketplace(
         @Header("X-R-DID")
         String did,
@@ -42,7 +42,7 @@ public interface MarketplaceApi {
      * Errors
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/c/marketplace")
+    @POST("api/c/marketplace/propertyRental")
     Call<MarketplaceElastic> postOnMarketplace(
         @Header("X-R-DID")
         String did,
@@ -57,7 +57,7 @@ public interface MarketplaceApi {
         String auth,
 
         @Body
-        JsonMarketplace jsonMarketplace
+        JsonPropertyRental jsonPropertyRental
     );
 
     /**
@@ -67,7 +67,7 @@ public interface MarketplaceApi {
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
     @Multipart
-    @POST("api/c/marketplace/uploadImage")
+    @POST("api/c/marketplace/propertyRental/uploadImage")
     Call<JsonResponse> uploadImage(
         @Header("X-R-DID")
         String did,
@@ -97,7 +97,7 @@ public interface MarketplaceApi {
      * Errors
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/c/marketplace/removeImage")
+    @POST("api/c/marketplace/propertyRental/removeImage")
     Call<MarketplaceElastic> removeImage(
         @Header("X-R-DID")
         String did,
@@ -112,7 +112,7 @@ public interface MarketplaceApi {
         String auth,
 
         @Body
-        JsonMarketplace jsonMarketplace
+        JsonPropertyRental jsonPropertyRental
     );
 
     /**
@@ -122,7 +122,7 @@ public interface MarketplaceApi {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/c/view")
+    @POST("api/c/marketplace/propertyRental/view")
     Call<JsonResponse> viewMarketplace(
         @Header("X-R-DID")
         String did,
@@ -137,7 +137,7 @@ public interface MarketplaceApi {
         String auth,
 
         @Body
-        JsonMarketplace jsonMarketplace
+        JsonPropertyRental jsonPropertyRental
     );
 
     /**
@@ -147,7 +147,7 @@ public interface MarketplaceApi {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/c/initiateContact")
+    @POST("api/c/marketplace/propertyRental/initiateContact")
     Call<JsonResponse> initiateContact(
         @Header("X-R-DID")
         String did,
@@ -162,6 +162,6 @@ public interface MarketplaceApi {
         String auth,
 
         @Body
-        JsonMarketplace jsonMarketplace
+        JsonPropertyRental jsonPropertyRental
     );
 }

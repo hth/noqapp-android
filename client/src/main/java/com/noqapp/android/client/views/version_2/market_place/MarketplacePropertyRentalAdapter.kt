@@ -11,8 +11,8 @@ import com.noqapp.android.client.utils.ImageUtils
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.squareup.picasso.Picasso
 
-class MarketPlaceAdapter(private val marketplaceList: MutableList<MarketplaceElastic>) :
-    RecyclerView.Adapter<MarketPlaceAdapter.MarketPlaceViewHolder>() {
+class MarketplacePropertyRentalAdapter(private val marketplaceList: MutableList<MarketplaceElastic>) :
+    RecyclerView.Adapter<MarketplacePropertyRentalAdapter.MarketPlaceViewHolder>() {
 
     inner class MarketPlaceViewHolder(private val listItemMarketPlaceBinding: ListItemMarketPlaceBinding) :
         RecyclerView.ViewHolder(listItemMarketPlaceBinding.root) {

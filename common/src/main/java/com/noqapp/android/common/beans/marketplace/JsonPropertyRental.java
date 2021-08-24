@@ -111,4 +111,17 @@ public class JsonPropertyRental extends JsonMarketplace {
         this.housingAgentReview = housingAgentReview;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonPropertyRental{" +
+            "bedroom=" + bedroom +
+            ", bathroom=" + bathroom +
+            ", carpetArea=" + carpetArea +
+            ", rentalType=" + rentalType +
+            ", rentalAvailableDay='" + rentalAvailableDay + '\'' +
+            ", housingAgentQID='" + housingAgentQID + '\'' +
+            ", housingAgentReview='" + housingAgentReview + '\'' +
+            '}' + "\n" + super.toString();
+    }
 }

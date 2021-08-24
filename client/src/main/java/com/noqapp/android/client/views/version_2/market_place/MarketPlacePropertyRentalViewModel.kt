@@ -13,8 +13,8 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import java.util.*
 
-class MarketPlaceViewModel: ViewModel() {
-    val tag: String = MarketPlaceViewModel::class.java.simpleName
+class MarketPlacePropertyRentalViewModel: ViewModel() {
+    val tag: String = MarketPlacePropertyRentalViewModel::class.java.simpleName
 
     val marketPlaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
     val postMarketPlaceElasticLiveData = MutableLiveData<MarketplaceElastic>()
@@ -22,11 +22,11 @@ class MarketPlaceViewModel: ViewModel() {
     val authenticationError = MutableLiveData(false)
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
 
-    private var marketRepository: MarketRepository = MarketRepository()
+    private var marketplacePropertyRentalRepository: MarketplacePropertyRentalRepository = MarketplacePropertyRentalRepository()
 
     fun getMarketPlace(searchQuery: SearchQuery) {
         Log.i(tag, "Search $searchQuery");
-        marketRepository.getMarketPlace(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchQuery, {
+        marketplacePropertyRentalRepository.getMarketPlace(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchQuery, {
             marketPlaceElasticListLiveData.postValue(it)
         }, {
             errorEncounteredJsonLiveData.postValue(it)
@@ -54,15 +54,16 @@ class MarketPlaceViewModel: ViewModel() {
         jsonPropertyRental.town = town
         jsonPropertyRental.city = city
         jsonPropertyRental.address = address
-        jsonPropertyRental.publishUntil = Date()
+//        jsonPropertyRental.publishUntil = Date() -- Server Managed
         jsonPropertyRental.rentalType = rentalTypeEnum
-        jsonPropertyRental.rentalAvailableDay = Date().toString()
+        jsonPropertyRental.rentalAvailableDay = Date().toString() //Format of date is YYYY-MM-DD (Input field for user)
         jsonPropertyRental.businessType = BusinessTypeEnum.PR
         jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
         jsonPropertyRental.title = title
+        jsonPropertyRental.description = title
         Log.i(tag, "Post $jsonPropertyRental")
 
-        marketRepository.postMarketPlace(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPropertyRental, {
+        marketplacePropertyRentalRepository.postMarketPlace(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPropertyRental, {
             postMarketPlaceElasticLiveData.postValue(it)
         }, {
             errorEncounteredJsonLiveData.postValue(it)

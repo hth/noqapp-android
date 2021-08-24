@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import com.noqapp.android.client.databinding.ActivityMarketPlaceBinding
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.MarketPlaceListActivity
-import com.noqapp.android.client.views.version_2.market_place.post_market_place.PostMarketPlaceActivity
+import com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalListActivity
+import com.noqapp.android.client.views.version_2.market_place.post_market_place.PostMarketplacePropertyRentalActivity
 
-class MarketPlaceActivity : LocationBaseActivity() {
+class MarketplacePropertyRentalActivity : LocationBaseActivity() {
     override fun displayAddressOutput(
         addressOutput: String?,
         countryShortName: String?,
@@ -37,11 +37,11 @@ class MarketPlaceActivity : LocationBaseActivity() {
         setContentView(activityMarketPlaceBinding.root)
 
         activityMarketPlaceBinding.btnSearch.setOnClickListener {
-            startActivity(Intent(this, MarketPlaceListActivity::class.java))
+            startActivity(Intent(this, MarketplacePropertyRentalListActivity::class.java))
         }
 
         activityMarketPlaceBinding.cvPostAProperty.setOnClickListener {
-            startActivity(Intent(this, PostMarketPlaceActivity::class.java))
+            startActivity(Intent(this, PostMarketplacePropertyRentalActivity::class.java))
         }
 
         activityMarketPlaceBinding.ivClose.setOnClickListener {

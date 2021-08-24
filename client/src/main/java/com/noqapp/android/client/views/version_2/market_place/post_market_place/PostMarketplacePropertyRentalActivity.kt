@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import androidx.activity.viewModels
 import com.noqapp.android.client.databinding.ActivityPostMarketPlaceBinding
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.MarketPlaceViewModel
+import com.noqapp.android.client.views.version_2.market_place.MarketPlacePropertyRentalViewModel
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
 
-class PostMarketPlaceActivity : LocationBaseActivity() {
+class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
 
     override fun displayAddressOutput(
         addressOutput: String?,
@@ -44,7 +44,7 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
     }
 
     private lateinit var activityPostMarketPlaceBinding: ActivityPostMarketPlaceBinding
-    private val marketPlaceViewModel: MarketPlaceViewModel by viewModels()
+    private val marketPlacePropertyRentalViewModel: MarketPlacePropertyRentalViewModel by viewModels()
     private var title: String? = null
     private var address: String? = null
     private var town: String? = null
@@ -65,22 +65,22 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
     }
 
     private fun observeData() {
-        marketPlaceViewModel.postMarketPlaceElasticLiveData.observe(this, {
+        marketPlacePropertyRentalViewModel.postMarketPlaceElasticLiveData.observe(this, {
             dismissProgress()
             it?.let {
                 finish()
             }
         })
 
-        marketPlaceViewModel.authenticationError.observe(this, {
+        marketPlacePropertyRentalViewModel.authenticationError.observe(this, {
             if (it) {
                 dismissProgress()
                 super.authenticationFailure()
-                marketPlaceViewModel.authenticationError.value = false
+                marketPlacePropertyRentalViewModel.authenticationError.value = false
             }
         })
 
-        marketPlaceViewModel.errorEncounteredJsonLiveData.observe(this, {
+        marketPlacePropertyRentalViewModel.errorEncounteredJsonLiveData.observe(this, {
             dismissProgress()
             super.responseErrorPresenter(it)
         })
@@ -114,7 +114,7 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
             }
 
             showProgress()
-            marketPlaceViewModel.postMarketPlace(title, bathroom, bedroom, carpetArea, town, city, address, rentalType, latitude, longitude)
+            marketPlacePropertyRentalViewModel.postMarketPlace(title, bathroom, bedroom, carpetArea, town, city, address, rentalType, latitude, longitude)
         }
     }
 

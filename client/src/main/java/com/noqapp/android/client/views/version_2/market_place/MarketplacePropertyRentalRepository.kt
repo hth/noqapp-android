@@ -1,12 +1,11 @@
 package com.noqapp.android.client.views.version_2.market_place
 
-import com.noqapp.android.client.model.response.api.MarketplaceApi
+import com.noqapp.android.client.model.response.api.MarketplacePropertyRentalApi
 import com.noqapp.android.client.model.response.api.SearchApi
 import com.noqapp.android.client.network.RetrofitClient
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.common.beans.ErrorEncounteredJson
-import com.noqapp.android.common.beans.marketplace.JsonMarketplace
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
@@ -14,11 +13,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MarketRepository {
+class MarketplacePropertyRentalRepository {
 
     private var searchApi: SearchApi = RetrofitClient.getClient().create(SearchApi::class.java)
-    private var marketPlaceApi: MarketplaceApi =
-        RetrofitClient.getClient().create(MarketplaceApi::class.java)
+    private var marketPlacePropertyRentalApi: MarketplacePropertyRentalApi = RetrofitClient.getClient().create(MarketplacePropertyRentalApi::class.java)
 
     fun getMarketPlace(
         did: String, mail: String, auth: String,
@@ -59,7 +57,7 @@ class MarketRepository {
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketPlaceApi.postOnMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
+        marketPlacePropertyRentalApi.postOnMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
             .enqueue(object : Callback<MarketplaceElastic> {
                 override fun onResponse(
                     call: Call<MarketplaceElastic>,

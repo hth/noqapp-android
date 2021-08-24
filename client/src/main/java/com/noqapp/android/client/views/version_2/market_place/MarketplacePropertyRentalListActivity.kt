@@ -11,12 +11,12 @@ import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.views.activities.LocationBaseActivity
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class MarketPlaceListActivity : LocationBaseActivity() {
+class MarketplacePropertyRentalListActivity : LocationBaseActivity() {
 
     private lateinit var activityMarketPlaceListingBinding: ActivityMarketPlaceListingBinding
-    private lateinit var marketPlaceAdapter: MarketPlaceAdapter
+    private lateinit var marketplacePropertyRentalAdapter: MarketplacePropertyRentalAdapter
 
-    private val marketPlaceViewModel: MarketPlaceViewModel by viewModels()
+    private val marketPlacePropertyRentalViewModel: MarketPlacePropertyRentalViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,41 +27,41 @@ class MarketPlaceListActivity : LocationBaseActivity() {
     }
 
     private fun observeData() {
-        marketPlaceViewModel.marketPlaceElasticListLiveData.observe(this, {
+        marketPlacePropertyRentalViewModel.marketPlaceElasticListLiveData.observe(this, {
             activityMarketPlaceListingBinding.shimmerLayout.stopShimmer()
             activityMarketPlaceListingBinding.shimmerLayout.visibility = View.GONE
             activityMarketPlaceListingBinding.rvMarketPlace.visibility = View.VISIBLE
             it?.let { marketPlaceElasticList ->
-                marketPlaceAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
+                marketplacePropertyRentalAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
             }
         })
 
-        marketPlaceViewModel.authenticationError.observe(this, {
+        marketPlacePropertyRentalViewModel.authenticationError.observe(this, {
             if (it) {
                 super.authenticationFailure()
                 activityMarketPlaceListingBinding.shimmerLayout.stopShimmer()
                 activityMarketPlaceListingBinding.shimmerLayout.visibility = View.GONE
-                marketPlaceViewModel.authenticationError.value = false
+                marketPlacePropertyRentalViewModel.authenticationError.value = false
             }
         })
 
-        marketPlaceViewModel.errorEncounteredJsonLiveData.observe(this, {
+        marketPlacePropertyRentalViewModel.errorEncounteredJsonLiveData.observe(this, {
             activityMarketPlaceListingBinding.shimmerLayout.stopShimmer()
             activityMarketPlaceListingBinding.shimmerLayout.visibility = View.GONE
             super.responseErrorPresenter(it)
         })
 
-        marketPlaceViewModel.searchStoreQueryLiveData.observe(this, {
+        marketPlacePropertyRentalViewModel.searchStoreQueryLiveData.observe(this, {
             activityMarketPlaceListingBinding.shimmerLayout.startShimmer()
             it.searchedOnBusinessType = BusinessTypeEnum.PR
-            marketPlaceViewModel.getMarketPlace(it)
+            marketPlacePropertyRentalViewModel.getMarketPlace(it)
         })
     }
 
     private fun setUpRecyclerView() {
-        marketPlaceAdapter = MarketPlaceAdapter(mutableListOf())
+        marketplacePropertyRentalAdapter = MarketplacePropertyRentalAdapter(mutableListOf())
         activityMarketPlaceListingBinding.rvMarketPlace.layoutManager = LinearLayoutManager(this)
-        activityMarketPlaceListingBinding.rvMarketPlace.adapter = marketPlaceAdapter
+        activityMarketPlaceListingBinding.rvMarketPlace.adapter = marketplacePropertyRentalAdapter
     }
 
     override fun displayAddressOutput(
@@ -88,7 +88,7 @@ class MarketPlaceListActivity : LocationBaseActivity() {
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
 
-        marketPlaceViewModel.searchStoreQueryLiveData.value = searchStoreQuery
+        marketPlacePropertyRentalViewModel.searchStoreQueryLiveData.value = searchStoreQuery
     }
 
     override fun locationPermissionRequired() {

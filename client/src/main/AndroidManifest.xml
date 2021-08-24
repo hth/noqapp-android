@@ -72,17 +72,17 @@
             android:launchMode="singleTask"
             android:theme="@style/AppBaseTheme.Material"/>
 
-        <activity android:name=".views.version_2.market_place.MarketPlaceListActivity"
+        <activity android:name=".views.version_2.market_place.MarketplacePropertyRentalListActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".views.version_2.market_place.search_market_place.MarketPlaceActivity"
+        <activity android:name=".views.version_2.market_place.search_market_place.MarketplacePropertyRentalActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppBaseTheme.Material"/>
 
-        <activity android:name=".views.version_2.market_place.post_market_place.PostMarketPlaceActivity"
+        <activity android:name=".views.version_2.market_place.post_market_place.PostMarketplacePropertyRentalActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppBaseTheme.Material"/>
