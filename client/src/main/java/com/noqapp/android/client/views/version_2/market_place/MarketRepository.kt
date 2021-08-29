@@ -6,6 +6,7 @@ import com.noqapp.android.client.network.RetrofitClient
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.common.beans.ErrorEncounteredJson
+import com.noqapp.android.common.beans.JsonResponse
 import com.noqapp.android.common.beans.marketplace.JsonMarketplace
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
@@ -80,6 +81,70 @@ class MarketRepository {
                     catch(null)
                 }
 
+            })
+    }
+
+    fun initiateCall(
+        did: String,
+        mail: String,
+        auth: String,
+        jsonMarketplace: JsonMarketplace,
+        complete: () -> Unit,
+        catch: (ErrorEncounteredJson?) -> Unit,
+        authenticationError: () -> Unit
+    ) {
+        marketPlaceApi.initiateContact(did, Constants.DEVICE_TYPE, mail, auth, jsonMarketplace)
+            .enqueue(object : Callback<JsonResponse> {
+                override fun onResponse(
+                    call: Call<JsonResponse>,
+                    response: Response<JsonResponse>
+                ) {
+                    if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                        complete()
+                    } else {
+                        if (response.code() == Constants.INVALID_CREDENTIAL) {
+                            authenticationError()
+                        } else {
+                            catch(response.body()?.error)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonResponse>, t: Throwable) {
+                    catch(null)
+                }
+            })
+    }
+
+    fun viewDetails(
+        did: String,
+        mail: String,
+        auth: String,
+        jsonMarketplace: JsonMarketplace,
+        complete: () -> Unit,
+        catch: (ErrorEncounteredJson?) -> Unit,
+        authenticationError: () -> Unit
+    ) {
+        marketPlaceApi.viewMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonMarketplace)
+            .enqueue(object : Callback<JsonResponse> {
+                override fun onResponse(
+                    call: Call<JsonResponse>,
+                    response: Response<JsonResponse>
+                ) {
+                    if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                        complete()
+                    } else {
+                        if (response.code() == Constants.INVALID_CREDENTIAL) {
+                            authenticationError()
+                        } else {
+                            catch(response.body()?.error)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonResponse>, t: Throwable) {
+                    catch(null)
+                }
             })
     }
 }

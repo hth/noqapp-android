@@ -7,8 +7,32 @@ import com.noqapp.android.client.databinding.ActivityMarketPlaceBinding
 import com.noqapp.android.client.views.activities.LocationBaseActivity
 import com.noqapp.android.client.views.version_2.market_place.MarketPlaceListActivity
 import com.noqapp.android.client.views.version_2.market_place.post_market_place.PostMarketPlaceActivity
+import com.noqapp.android.client.views.version_2.market_place.post_market_place.UploadMarketPlaceImageActivity
 
 class MarketPlaceActivity : LocationBaseActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val activityMarketPlaceBinding = ActivityMarketPlaceBinding.inflate(LayoutInflater.from(this))
+        setContentView(activityMarketPlaceBinding.root)
+
+        activityMarketPlaceBinding.btnSearch.setOnClickListener {
+            startActivity(Intent(this, MarketPlaceListActivity::class.java))
+        }
+
+        activityMarketPlaceBinding.cvPostAProperty.setOnClickListener {
+            startActivity(Intent(this, PostMarketPlaceActivity::class.java))
+        }
+
+        activityMarketPlaceBinding.cvMyPosts.setOnClickListener {
+          //  startActivity(Intent(this, UploadMarketPlaceImageActivity::class.java))
+        }
+
+        activityMarketPlaceBinding.ivClose.setOnClickListener {
+            finish()
+        }
+    }
+
     override fun displayAddressOutput(
         addressOutput: String?,
         countryShortName: String?,
@@ -29,23 +53,5 @@ class MarketPlaceActivity : LocationBaseActivity() {
 
     override fun locationPermissionGranted() {
 
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val activityMarketPlaceBinding = ActivityMarketPlaceBinding.inflate(LayoutInflater.from(this))
-        setContentView(activityMarketPlaceBinding.root)
-
-        activityMarketPlaceBinding.btnSearch.setOnClickListener {
-            startActivity(Intent(this, MarketPlaceListActivity::class.java))
-        }
-
-        activityMarketPlaceBinding.cvPostAProperty.setOnClickListener {
-            startActivity(Intent(this, PostMarketPlaceActivity::class.java))
-        }
-
-        activityMarketPlaceBinding.ivClose.setOnClickListener {
-            finish()
-        }
     }
 }

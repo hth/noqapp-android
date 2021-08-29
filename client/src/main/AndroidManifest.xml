@@ -87,6 +87,11 @@
             android:exported="true"
             android:theme="@style/AppBaseTheme.Material"/>
 
+        <activity android:name=".views.version_2.market_place.market_place_details.MarketPlaceDetailsActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:theme="@style/AppBaseTheme.Material"/>
+
         <activity
             android:name=".views.activities.ReviewActivity"
             android:screenOrientation="portrait"

@@ -82,7 +82,7 @@
                 android:layout_weight="1">
 
                 <Button
-                    android:id="@+id/btn_allow_location_access"
+                    android:id="@+id/btn_call_agent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/orange_gradient"
@@ -102,6 +102,7 @@
                 android:layout_weight="1">
 
                 <Button
+                    android:id="@+id/btn_view_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_rounded_corner_theme"

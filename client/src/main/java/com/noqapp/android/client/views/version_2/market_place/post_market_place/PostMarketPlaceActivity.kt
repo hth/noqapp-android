@@ -1,9 +1,11 @@
 package com.noqapp.android.client.views.version_2.market_place.post_market_place
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import com.noqapp.android.client.databinding.ActivityPostMarketPlaceBinding
+import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.LocationBaseActivity
 import com.noqapp.android.client.views.version_2.market_place.MarketPlaceViewModel
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
@@ -69,7 +71,10 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
         marketPlaceViewModel.postMarketPlaceElasticLiveData.observe(this, {
             dismissProgress()
             it?.let {
-                finish()
+                val intent = Intent(this, UploadMarketPlaceImageActivity::class.java).apply {
+                    putExtra(Constants.MARKET_PLACE_ID, it.id)
+                }
+                startActivity(intent)
             }
         })
 
@@ -115,7 +120,18 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
             }
 
             showProgress()
-            marketPlaceViewModel.postMarketPlace(title, bathroom, bedroom, carpetArea, town, city, address, rentalType, latitude, longitude)
+            marketPlaceViewModel.postMarketPlace(
+                title,
+                bathroom,
+                bedroom,
+                carpetArea,
+                town,
+                city,
+                address,
+                rentalType,
+                latitude,
+                longitude
+            )
         }
     }
 

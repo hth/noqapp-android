@@ -1,14 +1,18 @@
 package com.noqapp.android.client.views.version_2.market_place
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityMarketPlaceListingBinding
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.views.activities.LocationBaseActivity
+import com.noqapp.android.client.views.version_2.market_place.market_place_details.MarketPlaceDetailsActivity
+import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
 class MarketPlaceListActivity : LocationBaseActivity() {
@@ -20,7 +24,8 @@ class MarketPlaceListActivity : LocationBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityMarketPlaceListingBinding = ActivityMarketPlaceListingBinding.inflate(LayoutInflater.from(this))
+        activityMarketPlaceListingBinding =
+            ActivityMarketPlaceListingBinding.inflate(LayoutInflater.from(this))
         setContentView(activityMarketPlaceListingBinding.root)
         setUpRecyclerView()
         observeData()
@@ -59,9 +64,26 @@ class MarketPlaceListActivity : LocationBaseActivity() {
     }
 
     private fun setUpRecyclerView() {
-        marketPlaceAdapter = MarketPlaceAdapter(mutableListOf())
+        marketPlaceAdapter = MarketPlaceAdapter(mutableListOf()) { marketPlace, view ->
+            onMarketPlaceItemClicked(marketPlace, view)
+        }
         activityMarketPlaceListingBinding.rvMarketPlace.layoutManager = LinearLayoutManager(this)
         activityMarketPlaceListingBinding.rvMarketPlace.adapter = marketPlaceAdapter
+    }
+
+    private fun onMarketPlaceItemClicked(marketPlace: MarketplaceElastic?, view: View) {
+        marketPlace?.let {
+            when (view.id) {
+                R.id.btn_view_details -> {
+                    marketPlaceViewModel.viewDetails(it.id)
+                    startActivity(Intent(this, MarketPlaceDetailsActivity::class.java))
+                }
+                R.id.btn_call_agent -> {
+                    marketPlaceViewModel.initiateContact(it.id)
+                    startActivity(Intent(this, MarketPlaceDetailsActivity::class.java))
+                }
+            }
+        }
     }
 
     override fun displayAddressOutput(

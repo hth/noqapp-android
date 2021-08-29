@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.version_2.market_place
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.BuildConfig
@@ -11,13 +12,26 @@ import com.noqapp.android.client.utils.ImageUtils
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.squareup.picasso.Picasso
 
-class MarketPlaceAdapter(private val marketplaceList: MutableList<MarketplaceElastic>) :
+class MarketPlaceAdapter(private val marketplaceList: MutableList<MarketplaceElastic>, val onClickListener: (MarketplaceElastic?, View) -> Unit) :
     RecyclerView.Adapter<MarketPlaceAdapter.MarketPlaceViewHolder>() {
 
     inner class MarketPlaceViewHolder(private val listItemMarketPlaceBinding: ListItemMarketPlaceBinding) :
         RecyclerView.ViewHolder(listItemMarketPlaceBinding.root) {
 
+        private var marketPlaceElastic: MarketplaceElastic? = null
+
+        init {
+            listItemMarketPlaceBinding.btnCallAgent.setOnClickListener {
+                onClickListener(marketPlaceElastic, it)
+            }
+
+            listItemMarketPlaceBinding.btnViewDetails.setOnClickListener {
+                onClickListener(marketPlaceElastic, it)
+            }
+        }
+
         fun bind(marketplaceElastic: MarketplaceElastic) {
+            this.marketPlaceElastic = marketPlaceElastic
             listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
             listItemMarketPlaceBinding.tvPrice.text = listItemMarketPlaceBinding.tvPrice.context?.getString(R.string.rupee_symbol, marketplaceElastic.productPrice)
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.town
