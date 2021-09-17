@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/favouritesFragment"
         android:name="com.noqapp.android.client.views.version_2.fragments.FavouritesFragment"
-        tools:layout="@layout/fragment_favourites" >
+        tools:layout="@layout/fragment_favourites">
 
         <action
             android:id="@+id/action_favourites_to_notification"
@@ -82,4 +82,8 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/market_place_fragment"
+        android:name="com.noqapp.android.client.views.version_2.market_place.MarketPlaceFragment"
+        tools:layout="@layout/fragment_market_place" />
 </navigation>

@@ -93,6 +93,11 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
     }
 
     private fun setListeners() {
+
+        activityPostMarketPlaceBinding.ivClose.setOnClickListener {
+            finish()
+        }
+
         activityPostMarketPlaceBinding.btnPost.setOnClickListener {
             showProgress()
             activityPostMarketPlaceBinding.etBathRoom.text?.let {

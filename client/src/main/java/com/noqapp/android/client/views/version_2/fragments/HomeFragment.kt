@@ -35,7 +35,6 @@ import com.noqapp.android.client.views.adapters.StoreInfoAdapter
 import com.noqapp.android.client.views.adapters.TokenAndQueueAdapter
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.NavigationBundleUtils
-import com.noqapp.android.client.views.version_2.market_place.search_market_place.MarketPlaceActivity
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.JsonSchedule
 import com.noqapp.android.common.fcm.data.speech.JsonTextToSpeech
@@ -46,6 +45,7 @@ import java.util.*
 import kotlin.math.abs
 
 class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
+
     private lateinit var fragmentHomeNewBinding: FragmentHomeNewBinding
     private lateinit var tokenAndQueueAndQueueAdapter: TokenAndQueueAdapter
     private lateinit var scheduledAppointmentAdapter: ScheduledAppointmentAdapter
@@ -158,7 +158,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.clMarketplace.setOnClickListener {
-            startActivity(Intent(requireContext(), MarketPlaceActivity::class.java))
+            findNavController().navigate(R.id.market_place_fragment)
         }
     }
 
@@ -311,7 +311,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         scheduledAppointmentAdapter =
-            ScheduledAppointmentAdapter(requireContext(), mutableListOf()) {
+            ScheduledAppointmentAdapter(mutableListOf()) {
                 onAppointmentClicked(it)
             }
 

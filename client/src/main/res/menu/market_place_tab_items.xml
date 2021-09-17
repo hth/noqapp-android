@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/search_market_place"
+        android:title="Search Properties" />
+    <item
+        android:id="@+id/user_market_place"
+        android:title="My Properties" />
+</menu>

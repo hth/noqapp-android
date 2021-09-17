@@ -3,15 +3,19 @@ package com.noqapp.android.client.views.version_2.market_place
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
+import com.noqapp.android.common.beans.JsonResponse
 import com.noqapp.android.common.beans.marketplace.JsonMarketplace
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.util.*
 
 class MarketPlaceViewModel : ViewModel() {
@@ -22,6 +26,7 @@ class MarketPlaceViewModel : ViewModel() {
     val errorEncounteredJsonLiveData = MutableLiveData<ErrorEncounteredJson>()
     val authenticationError = MutableLiveData(false)
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
+    val postImagesLiveData = MutableLiveData<JsonResponse>()
 
     private var marketRepository: MarketRepository = MarketRepository()
 
@@ -109,13 +114,37 @@ class MarketPlaceViewModel : ViewModel() {
     fun viewDetails(id: String) {
         val jsonMarketPlace = JsonPropertyRental()
         jsonMarketPlace.id = id
-        marketRepository.initiateCall(
+        marketRepository.viewDetails(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
             jsonMarketPlace,
             {
                 Log.d("Success", "View details api called")
+            },
+            {
+                errorEncounteredJsonLiveData.postValue(it)
+            },
+            {
+                authenticationError.postValue(true)
+            })
+    }
+
+    fun postImages(
+        did: String,
+        mail: String,
+        auth: String,
+        multipartFile: MultipartBody.Part, postId: RequestBody, businessTypeAsString: RequestBody
+    ) {
+        marketRepository.postMarketPlaceImages(
+            did,
+            mail,
+            auth,
+            multipartFile,
+            postId,
+            businessTypeAsString,
+            {
+                postImagesLiveData.postValue(it)
             },
             {
                 errorEncounteredJsonLiveData.postValue(it)

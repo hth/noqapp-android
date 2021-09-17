@@ -11,6 +11,8 @@ import com.noqapp.android.common.beans.marketplace.JsonMarketplace
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,6 +84,39 @@ class MarketRepository {
                 }
 
             })
+    }
+
+    fun postMarketPlaceImages(
+        did: String,
+        mail: String,
+        auth: String,
+        multipartFile: MultipartBody.Part, postId: RequestBody, businessTypeAsString: RequestBody,
+        complete: (JsonResponse?) -> Unit,
+        catch: (ErrorEncounteredJson?) -> Unit,
+        authenticationError: () -> Unit
+    ) {
+        marketPlaceApi.uploadImage(did, Constants.DEVICE_TYPE, mail, auth, multipartFile, postId, businessTypeAsString).enqueue(
+            object  : Callback<JsonResponse> {
+                override fun onResponse(
+                    call: Call<JsonResponse>,
+                    response: Response<JsonResponse>
+                ) {
+                    if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                        complete(response.body())
+                    } else {
+                        if (response.code() == Constants.INVALID_CREDENTIAL) {
+                            authenticationError()
+                        } else {
+                            catch(response.body()?.error)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonResponse>, t: Throwable) {
+                    catch(null)
+                }
+            }
+        )
     }
 
     fun initiateCall(

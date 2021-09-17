@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place
+package com.noqapp.android.client.views.version_2.market_place.market_place_details
 
 import android.view.LayoutInflater
 import android.view.View

@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.version_2.market_place.post_market_place
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -13,6 +14,7 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -23,6 +25,9 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.Constants.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.MarketPlaceViewModel
+import com.squareup.okhttp.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.*
 
 
@@ -197,6 +202,7 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
                         activityUploadMarketPlaceImageBinding.ivHeadImage.setImageBitmap(thumbnail)
                         bitMapToString(thumbnail)
                     }
+                    uploadImage(selectedImage)
                 }
             }
         }
@@ -224,8 +230,39 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
         return Bitmap.createScaledBitmap(image, width, height, true)
     }
 
-    private fun uploadImage(selectedImage: Uri) {
+    private fun uploadImage(imageUri: Uri) {
+        getRealPathFromURI(imageUri)?.let { imagePath ->
+            getMimeType(imageUri)?.let { type ->
+                val file: File = File(imagePath)
+                val profileImageFile = MultipartBody.Part.createFormData(
+                    "file",
+                    file.name,
+                    RequestBody.create(okhttp3.MediaType.parse(type, file)
+                )
+                val postId: RequestBody = RequestBody.create(okhttp3.MediaType.parse("text/plain"), marketPlaceId)
+            }
+        }
 
+        marketPlaceViewModel.postImagesLiveData()
     }
 
+    private fun getRealPathFromURI(contentUri: Uri?): String? {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = managedQuery(contentUri, proj, null, null, null)
+        val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        return cursor.getString(columnIndex)
+    }
+
+    private fun getMimeType(uri: Uri): String? {
+        var mimeType: String? = null
+        mimeType = if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
+            val cr = this.contentResolver
+            cr.getType(uri)
+        } else {
+            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase())
+        }
+        return mimeType
+    }
 }
