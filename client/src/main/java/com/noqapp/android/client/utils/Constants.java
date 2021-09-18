@@ -43,6 +43,8 @@ public class Constants extends BaseConstants{
     public static final String KEY_UNREAD = "0";
     public static final String KEY_NOTIFY = "KY_NOTI";
     public static final String COUNTRY_CODE = "IN";
+    public static final String MARKET_PLACE_ID = "market_place";
+    public static final Integer REQUEST_ID_MULTIPLE_PERMISSIONS = 1001;
 
     /** Distance in KMs. */
     public static final int VALID_DOCTOR_STORE_DISTANCE_FOR_TOKEN = 150;

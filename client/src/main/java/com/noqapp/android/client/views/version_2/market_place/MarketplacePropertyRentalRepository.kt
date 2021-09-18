@@ -1,22 +1,27 @@
 package com.noqapp.android.client.views.version_2.market_place
 
-import com.noqapp.android.client.model.response.api.MarketplacePropertyRentalApi
+import com.noqapp.android.client.model.response.api.MarketplaceApi
 import com.noqapp.android.client.model.response.api.SearchApi
 import com.noqapp.android.client.network.RetrofitClient
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.common.beans.ErrorEncounteredJson
+import com.noqapp.android.common.beans.JsonResponse
+import com.noqapp.android.common.beans.marketplace.JsonMarketplace
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MarketplacePropertyRentalRepository {
+class MarketRepository {
 
     private var searchApi: SearchApi = RetrofitClient.getClient().create(SearchApi::class.java)
-    private var marketPlacePropertyRentalApi: MarketplacePropertyRentalApi = RetrofitClient.getClient().create(MarketplacePropertyRentalApi::class.java)
+    private var marketPlaceApi: MarketplaceApi =
+        RetrofitClient.getClient().create(MarketplaceApi::class.java)
 
     fun getMarketPlace(
         did: String, mail: String, auth: String,
@@ -57,7 +62,7 @@ class MarketplacePropertyRentalRepository {
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketPlacePropertyRentalApi.postOnMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
+        marketPlaceApi.postOnMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
             .enqueue(object : Callback<MarketplaceElastic> {
                 override fun onResponse(
                     call: Call<MarketplaceElastic>,
@@ -78,6 +83,103 @@ class MarketplacePropertyRentalRepository {
                     catch(null)
                 }
 
+            })
+    }
+
+    fun postMarketPlaceImages(
+        did: String,
+        mail: String,
+        auth: String,
+        multipartFile: MultipartBody.Part, postId: RequestBody, businessTypeAsString: RequestBody,
+        complete: (JsonResponse?) -> Unit,
+        catch: (ErrorEncounteredJson?) -> Unit,
+        authenticationError: () -> Unit
+    ) {
+        marketPlaceApi.uploadImage(did, Constants.DEVICE_TYPE, mail, auth, multipartFile, postId, businessTypeAsString).enqueue(
+            object  : Callback<JsonResponse> {
+                override fun onResponse(
+                    call: Call<JsonResponse>,
+                    response: Response<JsonResponse>
+                ) {
+                    if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                        complete(response.body())
+                    } else {
+                        if (response.code() == Constants.INVALID_CREDENTIAL) {
+                            authenticationError()
+                        } else {
+                            catch(response.body()?.error)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonResponse>, t: Throwable) {
+                    catch(null)
+                }
+            }
+        )
+    }
+
+    fun initiateCall(
+        did: String,
+        mail: String,
+        auth: String,
+        jsonMarketplace: JsonMarketplace,
+        complete: () -> Unit,
+        catch: (ErrorEncounteredJson?) -> Unit,
+        authenticationError: () -> Unit
+    ) {
+        marketPlaceApi.initiateContact(did, Constants.DEVICE_TYPE, mail, auth, jsonMarketplace)
+            .enqueue(object : Callback<JsonResponse> {
+                override fun onResponse(
+                    call: Call<JsonResponse>,
+                    response: Response<JsonResponse>
+                ) {
+                    if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                        complete()
+                    } else {
+                        if (response.code() == Constants.INVALID_CREDENTIAL) {
+                            authenticationError()
+                        } else {
+                            catch(response.body()?.error)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonResponse>, t: Throwable) {
+                    catch(null)
+                }
+            })
+    }
+
+    fun viewDetails(
+        did: String,
+        mail: String,
+        auth: String,
+        jsonMarketplace: JsonMarketplace,
+        complete: () -> Unit,
+        catch: (ErrorEncounteredJson?) -> Unit,
+        authenticationError: () -> Unit
+    ) {
+        marketPlaceApi.viewMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonMarketplace)
+            .enqueue(object : Callback<JsonResponse> {
+                override fun onResponse(
+                    call: Call<JsonResponse>,
+                    response: Response<JsonResponse>
+                ) {
+                    if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                        complete()
+                    } else {
+                        if (response.code() == Constants.INVALID_CREDENTIAL) {
+                            authenticationError()
+                        } else {
+                            catch(response.body()?.error)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonResponse>, t: Throwable) {
+                    catch(null)
+                }
             })
     }
 }

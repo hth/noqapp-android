@@ -1,14 +1,16 @@
 package com.noqapp.android.client.views.version_2.market_place.post_market_place
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import com.noqapp.android.client.databinding.ActivityPostMarketPlaceBinding
+import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.MarketPlacePropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.MarketPlaceViewModel
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
 
-class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
+class PostMarketPlaceActivity : LocationBaseActivity() {
 
     override fun displayAddressOutput(
         addressOutput: String?,
@@ -44,7 +46,7 @@ class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
     }
 
     private lateinit var activityPostMarketPlaceBinding: ActivityPostMarketPlaceBinding
-    private val marketPlacePropertyRentalViewModel: MarketPlacePropertyRentalViewModel by viewModels()
+    private val marketPlaceViewModel: MarketPlaceViewModel by viewModels()
     private var title: String? = null
     private var address: String? = null
     private var town: String? = null
@@ -54,39 +56,48 @@ class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
     private var carpetArea = 0
     private var latitude = 0.0
     private var longitude = 0.0
-    private var rentalType = RentalTypeEnum.T
+    private var rentalType = RentalTypeEnum.TOWN_HOUSE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityPostMarketPlaceBinding = ActivityPostMarketPlaceBinding.inflate(LayoutInflater.from(this))
+        activityPostMarketPlaceBinding =
+            ActivityPostMarketPlaceBinding.inflate(LayoutInflater.from(this))
         setContentView(activityPostMarketPlaceBinding.root)
         setListeners()
         observeData()
     }
 
     private fun observeData() {
-        marketPlacePropertyRentalViewModel.postMarketPlaceElasticLiveData.observe(this, {
+        marketPlaceViewModel.postMarketPlaceElasticLiveData.observe(this, {
             dismissProgress()
             it?.let {
-                finish()
+                val intent = Intent(this, UploadMarketPlaceImageActivity::class.java).apply {
+                    putExtra(Constants.MARKET_PLACE_ID, it.id)
+                }
+                startActivity(intent)
             }
         })
 
-        marketPlacePropertyRentalViewModel.authenticationError.observe(this, {
+        marketPlaceViewModel.authenticationError.observe(this, {
             if (it) {
                 dismissProgress()
                 super.authenticationFailure()
-                marketPlacePropertyRentalViewModel.authenticationError.value = false
+                marketPlaceViewModel.authenticationError.value = false
             }
         })
 
-        marketPlacePropertyRentalViewModel.errorEncounteredJsonLiveData.observe(this, {
+        marketPlaceViewModel.errorEncounteredJsonLiveData.observe(this, {
             dismissProgress()
             super.responseErrorPresenter(it)
         })
     }
 
     private fun setListeners() {
+
+        activityPostMarketPlaceBinding.ivClose.setOnClickListener {
+            finish()
+        }
+
         activityPostMarketPlaceBinding.btnPost.setOnClickListener {
             showProgress()
             activityPostMarketPlaceBinding.etBathRoom.text?.let {
@@ -114,7 +125,18 @@ class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
             }
 
             showProgress()
-            marketPlacePropertyRentalViewModel.postMarketPlace(title, bathroom, bedroom, carpetArea, town, city, address, rentalType, latitude, longitude)
+            marketPlaceViewModel.postMarketPlace(
+                title,
+                bathroom,
+                bedroom,
+                carpetArea,
+                town,
+                city,
+                address,
+                rentalType,
+                latitude,
+                longitude
+            )
         }
     }
 
