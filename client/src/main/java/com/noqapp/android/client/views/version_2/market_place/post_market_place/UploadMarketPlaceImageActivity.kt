@@ -26,10 +26,11 @@ import com.noqapp.android.client.utils.Constants.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalViewModel
 import com.squareup.okhttp.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.*
-
 
 class UploadMarketPlaceImageActivity : BaseActivity() {
 
@@ -131,8 +132,7 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f))
                 startActivityForResult(intent, 1)
             } else if (options[item] == "Choose from Gallery") {
-                val intent =
-                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(intent, 2)
             } else if (options[item] == "Cancel") {
                 dialog.dismiss()
@@ -237,9 +237,9 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
                 val profileImageFile = MultipartBody.Part.createFormData(
                     "file",
                     file.name,
-                    RequestBody.create(okhttp3.MediaType.parse(type, file)
+                    file.asRequestBody(MediaType.parse(type).toString().toMediaType())
                 )
-                val postId: RequestBody = RequestBody.create(okhttp3.MediaType.parse("text/plain"), marketPlaceId)
+                val postId: RequestBody = RequestBody.create(marketPlaceId, MediaType.parse("text/plain"))
             }
         }
 
