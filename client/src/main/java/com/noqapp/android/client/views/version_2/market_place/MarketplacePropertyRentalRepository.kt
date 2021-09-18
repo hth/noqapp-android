@@ -19,7 +19,7 @@ import retrofit2.Response
 class MarketplacePropertyRentalRepository {
 
     private var searchApi: SearchApi = RetrofitClient.getClient().create(SearchApi::class.java)
-    private var marketPlaceApi: MarketplacePropertyRentalApi = RetrofitClient.getClient().create(MarketplacePropertyRentalApi::class.java)
+    private var marketplacePropertyRentalApi: MarketplacePropertyRentalApi = RetrofitClient.getClient().create(MarketplacePropertyRentalApi::class.java)
 
     fun getMarketPlace(
         did: String, mail: String, auth: String,
@@ -60,7 +60,7 @@ class MarketplacePropertyRentalRepository {
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketPlaceApi.postOnMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
+        marketplacePropertyRentalApi.postOnMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
             .enqueue(object : Callback<MarketplaceElastic> {
                 override fun onResponse(
                     call: Call<MarketplaceElastic>,
@@ -93,7 +93,7 @@ class MarketplacePropertyRentalRepository {
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketPlaceApi.uploadImage(did, Constants.DEVICE_TYPE, mail, auth, multipartFile, postId, businessTypeAsString).enqueue(
+        marketplacePropertyRentalApi.uploadImage(did, Constants.DEVICE_TYPE, mail, auth, multipartFile, postId, businessTypeAsString).enqueue(
             object  : Callback<JsonResponse> {
                 override fun onResponse(
                     call: Call<JsonResponse>,
@@ -126,7 +126,7 @@ class MarketplacePropertyRentalRepository {
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketPlaceApi.initiateContact(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
+        marketplacePropertyRentalApi.initiateContact(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
             .enqueue(object : Callback<JsonResponse> {
                 override fun onResponse(
                     call: Call<JsonResponse>,
@@ -158,7 +158,7 @@ class MarketplacePropertyRentalRepository {
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketPlaceApi.viewMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
+        marketplacePropertyRentalApi.viewMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
             .enqueue(object : Callback<JsonResponse> {
                 override fun onResponse(
                     call: Call<JsonResponse>,

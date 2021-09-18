@@ -3,12 +3,10 @@ package com.noqapp.android.client.views.version_2.market_place
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonResponse
-import com.noqapp.android.common.beans.marketplace.JsonMarketplace
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
@@ -21,7 +19,7 @@ import java.util.*
 class MarketplacePropertyRentalViewModel : ViewModel() {
     val tag: String = MarketplacePropertyRentalViewModel::class.java.simpleName
 
-    val marketPlaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
+    val marketplaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
     val postMarketPlaceElasticLiveData = MutableLiveData<MarketplaceElastic>()
     val errorEncounteredJsonLiveData = MutableLiveData<ErrorEncounteredJson>()
     val authenticationError = MutableLiveData(false)
@@ -38,7 +36,7 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
             UserUtils.getAuth(),
             searchQuery,
             {
-                marketPlaceElasticListLiveData.postValue(it)
+                marketplaceElasticListLiveData.postValue(it)
             },
             {
                 errorEncounteredJsonLiveData.postValue(it)
