@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.noqapp.android.client.databinding.FragmentMarketPlaceBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.MarketPlaceActivity
-import com.noqapp.android.client.views.version_2.market_place.post_market_place.PostMarketPlaceActivity
+import com.noqapp.android.client.views.version_2.market_place.post_market_place.PostMarketplacePropertyRentalActivity
 
-class MarketPlaceFragment : BaseFragment() {
+class MarketplacePropertyRentalFragment : BaseFragment() {
 
     private lateinit var fragmentMarketPlaceBinding: FragmentMarketPlaceBinding
 
@@ -33,15 +32,15 @@ class MarketPlaceFragment : BaseFragment() {
 
     private fun setListeners() {
         fragmentMarketPlaceBinding.btnSearch.setOnClickListener {
-            startActivity(Intent(requireContext(), MarketPlaceActivity::class.java))
+            startActivity(Intent(requireContext(), MarketplacePropertyRentalActivity::class.java))
         }
 
         fragmentMarketPlaceBinding.cvPostAProperty.setOnClickListener {
-            startActivity(Intent(requireContext(), PostMarketPlaceActivity::class.java))
+            startActivity(Intent(requireContext(), PostMarketplacePropertyRentalActivity::class.java))
         }
 
         fragmentMarketPlaceBinding.cvMyPosts.setOnClickListener {
-            startActivity(Intent(requireContext(), MarketPlaceActivity::class.java))
+            startActivity(Intent(requireContext(), MarketplacePropertyRentalActivity::class.java))
         }
 
         fragmentMarketPlaceBinding.ivClose.setOnClickListener {

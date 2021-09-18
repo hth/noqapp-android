@@ -24,7 +24,7 @@ import com.noqapp.android.client.databinding.ActivityUploadMarketPlaceImageBindi
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.Constants.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.noqapp.android.client.views.activities.BaseActivity
-import com.noqapp.android.client.views.version_2.market_place.MarketPlaceViewModel
+import com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalViewModel
 import com.squareup.okhttp.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,7 +35,7 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
 
     private lateinit var activityUploadMarketPlaceImageBinding: ActivityUploadMarketPlaceImageBinding
     private lateinit var marketPlaceId: String
-    private val marketPlaceViewModel: MarketPlaceViewModel by viewModels()
+    private val marketplacePropertyRentalViewModel: MarketplacePropertyRentalViewModel by viewModels()
     private var selectedImageUri: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -243,7 +243,7 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
             }
         }
 
-        marketPlaceViewModel.postImagesLiveData()
+        marketplacePropertyRentalViewModel.postImagesLiveData()
     }
 
     private fun getRealPathFromURI(contentUri: Uri?): String? {

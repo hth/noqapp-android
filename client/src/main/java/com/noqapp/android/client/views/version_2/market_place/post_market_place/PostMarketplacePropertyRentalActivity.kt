@@ -7,10 +7,10 @@ import androidx.activity.viewModels
 import com.noqapp.android.client.databinding.ActivityPostMarketPlaceBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.MarketPlaceViewModel
+import com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalViewModel
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
 
-class PostMarketPlaceActivity : LocationBaseActivity() {
+class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
 
     override fun displayAddressOutput(
         addressOutput: String?,
@@ -46,7 +46,7 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
     }
 
     private lateinit var activityPostMarketPlaceBinding: ActivityPostMarketPlaceBinding
-    private val marketPlaceViewModel: MarketPlaceViewModel by viewModels()
+    private val marketplacePropertyRentalViewModel: MarketplacePropertyRentalViewModel by viewModels()
     private var title: String? = null
     private var address: String? = null
     private var town: String? = null
@@ -56,7 +56,7 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
     private var carpetArea = 0
     private var latitude = 0.0
     private var longitude = 0.0
-    private var rentalType = RentalTypeEnum.TOWN_HOUSE
+    private var rentalType = RentalTypeEnum.T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +68,7 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
     }
 
     private fun observeData() {
-        marketPlaceViewModel.postMarketPlaceElasticLiveData.observe(this, {
+        marketplacePropertyRentalViewModel.postMarketPlaceElasticLiveData.observe(this, {
             dismissProgress()
             it?.let {
                 val intent = Intent(this, UploadMarketPlaceImageActivity::class.java).apply {
@@ -78,15 +78,15 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
             }
         })
 
-        marketPlaceViewModel.authenticationError.observe(this, {
+        marketplacePropertyRentalViewModel.authenticationError.observe(this, {
             if (it) {
                 dismissProgress()
                 super.authenticationFailure()
-                marketPlaceViewModel.authenticationError.value = false
+                marketplacePropertyRentalViewModel.authenticationError.value = false
             }
         })
 
-        marketPlaceViewModel.errorEncounteredJsonLiveData.observe(this, {
+        marketplacePropertyRentalViewModel.errorEncounteredJsonLiveData.observe(this, {
             dismissProgress()
             super.responseErrorPresenter(it)
         })
@@ -125,7 +125,7 @@ class PostMarketPlaceActivity : LocationBaseActivity() {
             }
 
             showProgress()
-            marketPlaceViewModel.postMarketPlace(
+            marketplacePropertyRentalViewModel.postMarketPlace(
                 title,
                 bathroom,
                 bedroom,

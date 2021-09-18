@@ -12,7 +12,7 @@ import com.noqapp.android.client.views.activities.LocationBaseActivity
 import com.noqapp.android.client.views.version_2.market_place.market_place_details.MarketPlaceListFragment
 import com.noqapp.android.client.views.version_2.market_place.my_posts.MyMarketPlacePostsFragment
 
-class MarketPlaceActivity : LocationBaseActivity() {
+class MarketplacePropertyRentalActivity : LocationBaseActivity() {
 
     override fun displayAddressOutput(
         addressOutput: String?,
@@ -38,7 +38,7 @@ class MarketPlaceActivity : LocationBaseActivity() {
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
 
-        marketPlaceViewModel.searchStoreQueryLiveData.value = searchStoreQuery
+        marketplacePropertyRentalViewModel.searchStoreQueryLiveData.value = searchStoreQuery
     }
 
     override fun locationPermissionRequired() {
@@ -48,8 +48,8 @@ class MarketPlaceActivity : LocationBaseActivity() {
     }
 
     private lateinit var activityMarketPlaceBinding: ActivityMarketPlaceBinding
-    private val marketPlaceViewModel: MarketPlaceViewModel by viewModels()
-    private lateinit var marketPlaceFragmentAdapter: MarketPlaceFragmentAdapter
+    private val marketplacePropertyRentalViewModel: MarketplacePropertyRentalViewModel by viewModels()
+    private lateinit var marketplacePropertyRentalFragmentAdapter: MarketplacePropertyRentalFragmentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,12 +68,12 @@ class MarketPlaceActivity : LocationBaseActivity() {
     }
 
     private fun setUpViewPager() {
-        marketPlaceFragmentAdapter = MarketPlaceFragmentAdapter(mutableListOf(), this)
-        activityMarketPlaceBinding.viewPager.adapter = marketPlaceFragmentAdapter
+        marketplacePropertyRentalFragmentAdapter = MarketplacePropertyRentalFragmentAdapter(mutableListOf(), this)
+        activityMarketPlaceBinding.viewPager.adapter = marketplacePropertyRentalFragmentAdapter
         val fragmentList = mutableListOf<Fragment>()
         fragmentList.add(MarketPlaceListFragment())
         fragmentList.add(MyMarketPlacePostsFragment())
-        marketPlaceFragmentAdapter.addFragments(fragmentList)
+        marketplacePropertyRentalFragmentAdapter.addFragments(fragmentList)
         TabLayoutMediator(activityMarketPlaceBinding.tabsMarketPlace, activityMarketPlaceBinding.viewPager) { tab, position ->
             if (position == 0) {
                 tab.text = "User Posts"

@@ -84,6 +84,6 @@
 
     <fragment
         android:id="@+id/market_place_fragment"
-        android:name="com.noqapp.android.client.views.version_2.market_place.MarketPlaceFragment"
+        android:name="com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalFragment"
         tools:layout="@layout/fragment_market_place" />
 </navigation>

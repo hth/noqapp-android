@@ -72,12 +72,12 @@
             android:launchMode="singleTask"
             android:theme="@style/AppBaseTheme.Material"/>
 
-        <activity android:name=".views.version_2.market_place.post_market_place.PostMarketPlaceActivity"
+        <activity android:name=".views.version_2.market_place.post_market_place.PostMarketplacePropertyRentalActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppBaseTheme.Material"/>
 
-        <activity android:name=".views.version_2.market_place.MarketPlaceActivity"
+        <activity android:name=".views.version_2.market_place.MarketplacePropertyRentalActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppBaseTheme.Material"/>

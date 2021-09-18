@@ -18,8 +18,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.util.*
 
-class MarketPlaceViewModel : ViewModel() {
-    val tag: String = MarketPlaceViewModel::class.java.simpleName
+class MarketplacePropertyRentalViewModel : ViewModel() {
+    val tag: String = MarketplacePropertyRentalViewModel::class.java.simpleName
 
     val marketPlaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
     val postMarketPlaceElasticLiveData = MutableLiveData<MarketplaceElastic>()
@@ -28,7 +28,7 @@ class MarketPlaceViewModel : ViewModel() {
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
     val postImagesLiveData = MutableLiveData<JsonResponse>()
 
-    private var marketRepository: MarketRepository = MarketRepository()
+    private var marketRepository: MarketplacePropertyRentalRepository = MarketplacePropertyRentalRepository()
 
     fun getMarketPlace(searchQuery: SearchQuery) {
         Log.i(tag, "Search $searchQuery");

@@ -1,13 +1,12 @@
 package com.noqapp.android.client.views.version_2.market_place
 
-import com.noqapp.android.client.model.response.api.MarketplaceApi
+import com.noqapp.android.client.model.response.api.MarketplacePropertyRentalApi
 import com.noqapp.android.client.model.response.api.SearchApi
 import com.noqapp.android.client.network.RetrofitClient
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonResponse
-import com.noqapp.android.common.beans.marketplace.JsonMarketplace
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
@@ -17,11 +16,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MarketRepository {
+class MarketplacePropertyRentalRepository {
 
     private var searchApi: SearchApi = RetrofitClient.getClient().create(SearchApi::class.java)
-    private var marketPlaceApi: MarketplaceApi =
-        RetrofitClient.getClient().create(MarketplaceApi::class.java)
+    private var marketPlaceApi: MarketplacePropertyRentalApi = RetrofitClient.getClient().create(MarketplacePropertyRentalApi::class.java)
 
     fun getMarketPlace(
         did: String, mail: String, auth: String,
@@ -123,12 +121,12 @@ class MarketRepository {
         did: String,
         mail: String,
         auth: String,
-        jsonMarketplace: JsonMarketplace,
+        jsonPropertyRental: JsonPropertyRental,
         complete: () -> Unit,
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketPlaceApi.initiateContact(did, Constants.DEVICE_TYPE, mail, auth, jsonMarketplace)
+        marketPlaceApi.initiateContact(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
             .enqueue(object : Callback<JsonResponse> {
                 override fun onResponse(
                     call: Call<JsonResponse>,
@@ -155,12 +153,12 @@ class MarketRepository {
         did: String,
         mail: String,
         auth: String,
-        jsonMarketplace: JsonMarketplace,
+        jsonPropertyRental: JsonPropertyRental,
         complete: () -> Unit,
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketPlaceApi.viewMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonMarketplace)
+        marketPlaceApi.viewMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
             .enqueue(object : Callback<JsonResponse> {
                 override fun onResponse(
                     call: Call<JsonResponse>,
