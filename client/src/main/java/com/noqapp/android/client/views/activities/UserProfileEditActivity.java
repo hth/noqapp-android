@@ -267,8 +267,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                                 setProgressMessage("Updating profile image");
                                 String type = getMimeType(UserProfileEditActivity.this, selectedImage);
                                 File file = new File(convertedPath);
-                                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                                RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), qUserId);
+                                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(file, MediaType.parse(type)));
+                                RequestBody profileImageOfQid = RequestBody.create(qUserId, MediaType.parse("text/plain"));
                                 clientProfileApiImpl.setImageUploadPresenter(UserProfileEditActivity.this);
                                 clientProfileApiImpl.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
 

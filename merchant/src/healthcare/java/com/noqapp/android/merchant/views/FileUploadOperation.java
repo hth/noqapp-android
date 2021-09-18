@@ -39,8 +39,8 @@ public class FileUploadOperation extends AsyncTask<String, Void, String> impleme
         try {
             File file = new File(medicalFile.getFileLocation());
             String type = getMimeType(Uri.fromFile(file));
-            MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-            RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), medicalFile.getRecordReferenceId());
+            MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(file, MediaType.parse(type)));
+            RequestBody requestBody = RequestBody.create(medicalFile.getRecordReferenceId(), MediaType.parse("text/plain"));
             medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
         } catch (Exception e) {
             e.printStackTrace();
