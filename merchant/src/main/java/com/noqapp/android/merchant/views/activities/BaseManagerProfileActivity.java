@@ -231,8 +231,8 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
                                 setProgressMessage("Updating profile image");
                                 String type = getMimeType(BaseManagerProfileActivity.this, selectedImage);
                                 File file = new File(convertedPath);
-                                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                                RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), AppInitialize.getUserProfile().getQueueUserId());
+                                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(file, MediaType.parse(type)));
+                                RequestBody profileImageOfQid = RequestBody.create(AppInitialize.getUserProfile().getQueueUserId(), MediaType.parse("text/plain"));
                                 merchantProfileApiCalls.setImageUploadPresenter(BaseManagerProfileActivity.this);
                                 merchantProfileApiCalls.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                             }
