@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.version_2.market_place.post_market_place
 
 import android.Manifest
-import android.R.attr
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
@@ -10,11 +9,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.webkit.MimeTypeMap
 import android.widget.Toast
@@ -35,17 +33,11 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.*
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import androidx.core.app.ActivityCompat.startActivityForResult
-import android.os.Build
-import android.R.attr.data
-
-
-
-
 
 class UploadMarketPlaceImageActivity : BaseActivity() {
 
@@ -281,23 +273,22 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
 
     private fun uploadImage(imagePath: String) {
         getMimeType(Uri.parse(imagePath))?.let { type ->
-            val file: File = File(imagePath)
-            val profileImageFile = MultipartBody.Part.createFormData(
+            val file = File(imagePath)
+            val marketplaceImage = MultipartBody.Part.createFormData(
                 "file",
                 file.name,
                 file.asRequestBody(MediaType.parse(type).toString().toMediaType())
             )
+            val requestBody: RequestBody = RequestBody.create(("text/plain").toMediaType(), "123")
             val postId = RequestBody.create("text/plain".toMediaType(), marketPlaceId)
-            val businessTypeAsString =
-                RequestBody.create("text/plain".toMediaType(), BusinessTypeEnum.PR.name)
+            val businessTypeAsString = RequestBody.create("text/plain".toMediaType(), BusinessTypeEnum.PR.name)
             marketplacePropertyRentalViewModel.postImages(
-                profileImageFile,
+                marketplaceImage,
                 postId,
                 businessTypeAsString
             )
         }
     }
-
 
     private fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
