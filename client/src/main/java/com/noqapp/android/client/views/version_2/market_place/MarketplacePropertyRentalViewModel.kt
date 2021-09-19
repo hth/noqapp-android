@@ -12,6 +12,7 @@ import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
+import com.noqapp.android.common.utils.CommonHelper.SDF_YYYY_MM_DD
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.util.*
@@ -65,9 +66,9 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
         jsonPropertyRental.town = town
         jsonPropertyRental.city = city
         jsonPropertyRental.address = address
-        jsonPropertyRental.publishUntil = Date()
+        //        jsonPropertyRental.publishUntil = Date() -- Server Managed
         jsonPropertyRental.rentalType = rentalTypeEnum
-        jsonPropertyRental.rentalAvailableDay = Date().toString()
+        jsonPropertyRental.rentalAvailableDay = SDF_YYYY_MM_DD.format(Date())
         jsonPropertyRental.businessType = BusinessTypeEnum.PR
         jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
         jsonPropertyRental.title = title
@@ -128,9 +129,7 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
             })
     }
 
-    fun postImages(
-        multipartFile: MultipartBody.Part, postId: RequestBody, businessTypeAsString: RequestBody
-    ) {
+    fun postImages(multipartFile: MultipartBody.Part, postId: RequestBody, businessTypeAsString: RequestBody) {
         marketRepository.postMarketPlaceImages(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),

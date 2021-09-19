@@ -60,8 +60,7 @@ class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityPostMarketPlaceBinding =
-            ActivityPostMarketPlaceBinding.inflate(LayoutInflater.from(this))
+        activityPostMarketPlaceBinding = ActivityPostMarketPlaceBinding.inflate(LayoutInflater.from(this))
         setContentView(activityPostMarketPlaceBinding.root)
         setListeners()
         observeData()
