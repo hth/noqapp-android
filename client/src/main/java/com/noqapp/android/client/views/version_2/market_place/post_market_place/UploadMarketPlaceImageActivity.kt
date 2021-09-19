@@ -226,7 +226,6 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
                     createImageFile()
                 } catch (ex: IOException) {
                     // Error occurred while creating the File
-
                     null
                 }
                 // Continue only if the File was successfully created
@@ -279,14 +278,8 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
                 file.name,
                 file.asRequestBody(MediaType.parse(type).toString().toMediaType())
             )
-            val requestBody: RequestBody = RequestBody.create(("text/plain").toMediaType(), "123")
             val postId = RequestBody.create("text/plain".toMediaType(), marketPlaceId)
-            val businessTypeAsString = RequestBody.create("text/plain".toMediaType(), BusinessTypeEnum.PR.name)
-            marketplacePropertyRentalViewModel.postImages(
-                marketplaceImage,
-                postId,
-                businessTypeAsString
-            )
+            marketplacePropertyRentalViewModel.postImages(marketplaceImage, postId)
         }
     }
 

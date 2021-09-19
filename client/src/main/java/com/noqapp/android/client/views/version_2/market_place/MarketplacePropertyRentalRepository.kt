@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.version_2.market_place
 
+import android.util.Log
 import com.noqapp.android.client.model.response.api.MarketplacePropertyRentalApi
 import com.noqapp.android.client.model.response.api.SearchApi
 import com.noqapp.android.client.network.RetrofitClient
@@ -17,6 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MarketplacePropertyRentalRepository {
+    private val TAG = MarketplacePropertyRentalRepository::class.java.simpleName
 
     private var searchApi: SearchApi = RetrofitClient.getClient().create(SearchApi::class.java)
     private var marketplacePropertyRentalApi: MarketplacePropertyRentalApi = RetrofitClient.getClient().create(MarketplacePropertyRentalApi::class.java)
@@ -88,12 +90,12 @@ class MarketplacePropertyRentalRepository {
         did: String,
         mail: String,
         auth: String,
-        multipartFile: MultipartBody.Part, postId: RequestBody, businessTypeAsString: RequestBody,
+        multipartFile: MultipartBody.Part, postId: RequestBody,
         complete: (JsonResponse?) -> Unit,
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
-        marketplacePropertyRentalApi.uploadImage(did, Constants.DEVICE_TYPE, mail, auth, multipartFile, postId, businessTypeAsString).enqueue(
+        marketplacePropertyRentalApi.uploadImage(did, Constants.DEVICE_TYPE, mail, auth, multipartFile, postId).enqueue(
             object  : Callback<JsonResponse> {
                 override fun onResponse(
                     call: Call<JsonResponse>,
@@ -105,6 +107,7 @@ class MarketplacePropertyRentalRepository {
                         if (response.code() == Constants.INVALID_CREDENTIAL) {
                             authenticationError()
                         } else {
+                            Log.e(TAG, "Failed uploadImage" + response.code())
                             catch(response.body()?.error)
                         }
                     }

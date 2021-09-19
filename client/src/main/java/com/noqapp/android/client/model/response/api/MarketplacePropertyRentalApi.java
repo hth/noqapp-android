@@ -85,10 +85,7 @@ public interface MarketplacePropertyRentalApi {
         MultipartBody.Part multipartFile,
 
         @Part("postId")
-        RequestBody postId,
-
-        @Part("businessTypeAsString")
-        RequestBody businessTypeAsString
+        RequestBody postId
     );
 
     /**
