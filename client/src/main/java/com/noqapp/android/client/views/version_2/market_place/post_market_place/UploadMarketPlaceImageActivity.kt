@@ -1,12 +1,14 @@
 package com.noqapp.android.client.views.version_2.market_place.post_market_place
 
 import android.Manifest
+import android.R.attr
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -20,24 +22,40 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.databinding.ActivityUploadMarketPlaceImageBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.Constants.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalViewModel
+import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.squareup.okhttp.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import androidx.core.app.ActivityCompat.startActivityForResult
+import android.os.Build
+import android.R.attr.data
+
+
+
+
 
 class UploadMarketPlaceImageActivity : BaseActivity() {
+
+    private val REQUEST_IMAGE_CAPTURE = 1001
+    private val REQUEST_PICK_IMAGE = 1002
 
     private lateinit var activityUploadMarketPlaceImageBinding: ActivityUploadMarketPlaceImageBinding
     private lateinit var marketPlaceId: String
     private val marketplacePropertyRentalViewModel: MarketplacePropertyRentalViewModel by viewModels()
-    private var selectedImageUri: String? = null
+    lateinit var currentPhotoPath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,13 +145,9 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
         builder.setTitle("Add Photo!")
         builder.setItems(options) { dialog, item ->
             if (options[item] == "Take Photo") {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                val f = File(Environment.getExternalStorageDirectory(), "temp.jpg")
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f))
-                startActivityForResult(intent, 1)
+                dispatchTakePictureIntent()
             } else if (options[item] == "Choose from Gallery") {
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                startActivityForResult(intent, 2)
+                pickImageFromGallery()
             } else if (options[item] == "Cancel") {
                 dialog.dismiss()
             }
@@ -143,108 +157,147 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                var f = File(Environment.getExternalStorageDirectory().toString())
-                for (temp in f.listFiles()) {
-                    if (temp.name == "temp.jpg") {
-                        f = temp
-                        break
-                    }
-                }
-                try {
-                    var bitmap: Bitmap?
-                    val bitmapOptions = BitmapFactory.Options()
-                    bitmap = BitmapFactory.decodeFile(f.absolutePath, bitmapOptions)
-                    bitmap = getResizedBitmap(bitmap, 400)
-                    activityUploadMarketPlaceImageBinding.ivHeadImage.setImageBitmap(bitmap)
-                    bitmap?.let {
-                        bitMapToString(bitmap)
-                    }
-                    val path = (Environment
-                        .getExternalStorageDirectory()
-                        .toString() + File.separator
-                            + "Phoenix" + File.separator + "default")
-                    f.delete()
-                    var outFile: OutputStream? = null
-                    val file = File(path, System.currentTimeMillis().toString() + ".jpg")
-                    try {
-                        outFile = FileOutputStream(file)
-                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 85, outFile)
-                        outFile.flush()
-                        outFile.close()
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            } else if (requestCode == 2) {
-                val uri: Uri? = intent?.data
-                val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                uri?.let { selectedImage ->
-                    val c = contentResolver.query(selectedImage, filePath, null, null, null)
-                    c?.let { cursor ->
-                        cursor.moveToFirst()
-                        val columnIndex = cursor.getColumnIndex(filePath[0])
-                        val picturePath = cursor.getString(columnIndex)
-                        cursor.close()
-                        var thumbnail = BitmapFactory.decodeFile(picturePath)
-                        thumbnail = getResizedBitmap(thumbnail, 400)
-                        Log.w(
-                            "path of image from gallery......******************.........",
-                            picturePath + ""
-                        )
-                        activityUploadMarketPlaceImageBinding.ivHeadImage.setImageBitmap(thumbnail)
-                        bitMapToString(thumbnail)
-                    }
-                    uploadImage(selectedImage)
-                }
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            setPic()
+        } else if (requestCode == REQUEST_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            val photoUri: Uri? = data?.data
+            // Load the image located at photoUri into selectedImage
+            val selectedImage = loadFromUri(photoUri)
+            activityUploadMarketPlaceImageBinding.ivHeadImage.setImageBitmap(selectedImage)
+            getRealPathFromURI(photoUri)?.let {
+                uploadImage(it)
             }
         }
     }
 
-    fun bitMapToString(userImage1: Bitmap): String? {
-        val baos = ByteArrayOutputStream()
-        userImage1.compress(Bitmap.CompressFormat.PNG, 60, baos)
-        val b = baos.toByteArray()
-        selectedImageUri = Base64.encodeToString(b, Base64.DEFAULT)
-        return selectedImageUri
-    }
-
-    fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap? {
-        var width = image.width
-        var height = image.height
-        val bitmapRatio = width.toFloat() / height.toFloat()
-        if (bitmapRatio > 1) {
-            width = maxSize
-            height = (width / bitmapRatio).toInt()
-        } else {
-            height = maxSize
-            width = (height * bitmapRatio).toInt()
-        }
-        return Bitmap.createScaledBitmap(image, width, height, true)
-    }
-
-    private fun uploadImage(imageUri: Uri) {
-        getRealPathFromURI(imageUri)?.let { imagePath ->
-            getMimeType(imageUri)?.let { type ->
-                val file: File = File(imagePath)
-                val profileImageFile = MultipartBody.Part.createFormData(
-                    "file",
-                    file.name,
-                    file.asRequestBody(MediaType.parse(type).toString().toMediaType())
+    fun loadFromUri(photoUri: Uri?): Bitmap? {
+        var image: Bitmap? = null
+        try {
+            // check version of Android on device
+            image = if (Build.VERSION.SDK_INT > 27) {
+                // on newer versions of Android, use the new decodeBitmap method
+                val source = ImageDecoder.createSource(
+                    this.contentResolver,
+                    photoUri!!
                 )
-                val postId: RequestBody = RequestBody.create(marketPlaceId, MediaType.parse("text/plain"))
+                ImageDecoder.decodeBitmap(source)
+            } else {
+                // support older versions of Android by using getBitmap
+                MediaStore.Images.Media.getBitmap(this.contentResolver, photoUri)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return image
+    }
+
+    private fun pickImageFromGallery() {
+        // Create intent for picking a photo from the gallery
+        // Create intent for picking a photo from the gallery
+        val intent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(packageManager) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, REQUEST_PICK_IMAGE)
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        BuildConfig.APPLICATION_ID + ".fileprovider",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
             }
         }
-
-        marketplacePropertyRentalViewModel.postImagesLiveData()
     }
+
+    private fun setPic() {
+        // Get the dimensions of the View
+        val targetW: Int = activityUploadMarketPlaceImageBinding.ivHeadImage.width
+        val targetH: Int = activityUploadMarketPlaceImageBinding.ivHeadImage.height
+
+        val bmOptions = BitmapFactory.Options().apply {
+            // Get the dimensions of the bitmap
+            inJustDecodeBounds = true
+
+            BitmapFactory.decodeFile(currentPhotoPath, this)
+
+            val photoW: Int = outWidth
+            val photoH: Int = outHeight
+
+            // Determine how much to scale down the image
+            val scaleFactor: Int = Math.max(1, Math.min(photoW / targetW, photoH / targetH))
+
+            // Decode the image file into a Bitmap sized to fill the View
+            inJustDecodeBounds = false
+            inSampleSize = scaleFactor
+            inPurgeable = true
+        }
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?.also { bitmap ->
+            activityUploadMarketPlaceImageBinding.ivHeadImage.setImageBitmap(bitmap)
+            uploadImage(currentPhotoPath)
+        }
+    }
+
+    private fun uploadImage(imagePath: String) {
+        getMimeType(Uri.parse(imagePath))?.let { type ->
+            val file: File = File(imagePath)
+            val profileImageFile = MultipartBody.Part.createFormData(
+                "file",
+                file.name,
+                file.asRequestBody(MediaType.parse(type).toString().toMediaType())
+            )
+            val postId = RequestBody.create("text/plain".toMediaType(), marketPlaceId)
+            val businessTypeAsString =
+                RequestBody.create("text/plain".toMediaType(), BusinessTypeEnum.PR.name)
+            marketplacePropertyRentalViewModel.postImages(
+                profileImageFile,
+                postId,
+                businessTypeAsString
+            )
+        }
+    }
+
 
     private fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)

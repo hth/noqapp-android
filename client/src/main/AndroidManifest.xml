@@ -77,6 +77,11 @@
             android:exported="true"
             android:theme="@style/AppBaseTheme.Material"/>
 
+        <activity android:name=".views.version_2.market_place.post_market_place.UploadMarketPlaceImageActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:theme="@style/AppBaseTheme.Material"/>
+
         <activity android:name=".views.version_2.market_place.MarketplacePropertyRentalActivity"
             android:screenOrientation="portrait"
             android:exported="true"

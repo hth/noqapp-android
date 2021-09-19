@@ -311,7 +311,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         scheduledAppointmentAdapter =
-            ScheduledAppointmentAdapter(mutableListOf()) {
+            ScheduledAppointmentAdapter(requireContext(), mutableListOf()) {
                 onAppointmentClicked(it)
             }
 

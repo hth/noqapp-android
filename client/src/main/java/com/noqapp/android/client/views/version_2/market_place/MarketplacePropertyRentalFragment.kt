@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.noqapp.android.client.databinding.FragmentMarketPlaceBinding
+import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.market_place.post_market_place.PostMarketplacePropertyRentalActivity
+import com.noqapp.android.client.views.version_2.market_place.post_market_place.UploadMarketPlaceImageActivity
 
 class MarketplacePropertyRentalFragment : BaseFragment() {
 
@@ -40,7 +42,11 @@ class MarketplacePropertyRentalFragment : BaseFragment() {
         }
 
         fragmentMarketPlaceBinding.cvMyPosts.setOnClickListener {
-            startActivity(Intent(requireContext(), MarketplacePropertyRentalActivity::class.java))
+            val intent = Intent(requireContext(), UploadMarketPlaceImageActivity::class.java).apply {
+                putExtra(Constants.MARKET_PLACE_ID, "testt")
+            }
+            startActivity(intent)
+           // startActivity(Intent(requireContext(), MarketplacePropertyRentalActivity::class.java))
         }
 
         fragmentMarketPlaceBinding.ivClose.setOnClickListener {

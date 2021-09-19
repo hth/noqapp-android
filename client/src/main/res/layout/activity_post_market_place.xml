@@ -312,7 +312,7 @@
                 android:inputType="number"
                 android:maxLines="1" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_post"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -320,7 +320,7 @@
                 android:background="@drawable/orange_gradient"
                 android:fontFamily="@font/roboto_bold"
                 android:gravity="center"
-                android:text="Search for Properties"
+                android:text="Post a Property"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/rs_price_range" />

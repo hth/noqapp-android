@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentMarketPlaceListBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.MarketPlaceViewModel
+import com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalViewModel
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
@@ -18,7 +18,7 @@ class MarketPlaceListFragment : BaseFragment() {
     private lateinit var fragmentMarketPlaceListBinding: FragmentMarketPlaceListBinding
     private lateinit var marketPlaceAdapter: MarketPlaceAdapter
 
-    private lateinit var marketPlaceViewModel: MarketPlaceViewModel
+    private lateinit var marketPlaceViewModel: MarketplacePropertyRentalViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,7 +26,7 @@ class MarketPlaceListFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentMarketPlaceListBinding = FragmentMarketPlaceListBinding.inflate(inflater, container, false)
-        marketPlaceViewModel = ViewModelProvider(requireActivity())[MarketPlaceViewModel::class.java]
+        marketPlaceViewModel = ViewModelProvider(requireActivity())[MarketplacePropertyRentalViewModel::class.java]
         return fragmentMarketPlaceListBinding.root
     }
 
@@ -39,7 +39,7 @@ class MarketPlaceListFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        marketPlaceViewModel.marketPlaceElasticListLiveData.observe(this, {
+        marketPlaceViewModel.marketplaceElasticListLiveData.observe(this, {
             fragmentMarketPlaceListBinding.shimmerLayout.stopShimmer()
             fragmentMarketPlaceListBinding.shimmerLayout.visibility = View.GONE
             fragmentMarketPlaceListBinding.rvMarketPlace.visibility = View.VISIBLE

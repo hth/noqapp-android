@@ -129,15 +129,12 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
     }
 
     fun postImages(
-        did: String,
-        mail: String,
-        auth: String,
         multipartFile: MultipartBody.Part, postId: RequestBody, businessTypeAsString: RequestBody
     ) {
         marketRepository.postMarketPlaceImages(
-            did,
-            mail,
-            auth,
+            UserUtils.getDeviceId(),
+            UserUtils.getEmail(),
+            UserUtils.getAuth(),
             multipartFile,
             postId,
             businessTypeAsString,
