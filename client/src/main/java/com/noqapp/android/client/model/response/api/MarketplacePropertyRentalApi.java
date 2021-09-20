@@ -1,9 +1,9 @@
 package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.marketplace.JsonMarketplaceList;
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental;
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic;
-import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -22,7 +22,7 @@ public interface MarketplacePropertyRentalApi {
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
     @GET("api/c/marketplace/propertyRental")
-    Call<MarketplaceElasticList> showMyPostOnMarketplace(
+    Call<JsonMarketplaceList> showMyPostOnMarketplace(
         @Header("X-R-DID")
         String did,
 
