@@ -9,8 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.noqapp.android.client.databinding.FragmentMarketPlaceBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.post_market_place.PostMarketplacePropertyRentalActivity
-import com.noqapp.android.client.views.version_2.market_place.post_market_place.UploadMarketPlaceImageActivity
+import com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostMarketplacePropertyRentalActivity
+import com.noqapp.android.client.views.version_2.market_place.post_property_rental.UploadMarketPlaceImageActivity
 
 class MarketplacePropertyRentalFragment : BaseFragment() {
 

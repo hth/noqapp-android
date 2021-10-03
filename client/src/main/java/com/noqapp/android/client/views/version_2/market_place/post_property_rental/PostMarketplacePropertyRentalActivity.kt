@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.post_market_place
+package com.noqapp.android.client.views.version_2.market_place.post_property_rental
 
 import android.content.Intent
 import android.os.Bundle
@@ -26,9 +26,6 @@ class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
         this.address = addressOutput
         this.town = town
         this.city = area
-        activityPostMarketPlaceBinding.etAddress.setText(addressOutput)
-        activityPostMarketPlaceBinding.etTown.setText(town)
-        activityPostMarketPlaceBinding.etCity.setText(city)
         latitude?.let {
             this.latitude = latitude
         }
@@ -93,50 +90,7 @@ class PostMarketplacePropertyRentalActivity : LocationBaseActivity() {
 
     private fun setListeners() {
 
-        activityPostMarketPlaceBinding.ivClose.setOnClickListener {
-            finish()
-        }
 
-        activityPostMarketPlaceBinding.btnPost.setOnClickListener {
-            showProgress()
-            activityPostMarketPlaceBinding.etBathRoom.text?.let {
-                bathroom = it.toString().toInt()
-            }
-
-            activityPostMarketPlaceBinding.etCarpetArea.text?.let {
-                carpetArea = it.toString().toInt()
-            }
-
-            activityPostMarketPlaceBinding.etTown.text?.let {
-                town = it.toString()
-            }
-
-            activityPostMarketPlaceBinding.etCity.text?.let {
-                city = it.toString()
-            }
-
-            activityPostMarketPlaceBinding.etAddress.text?.let {
-                address = it.toString()
-            }
-
-            activityPostMarketPlaceBinding.etTitle.text?.let {
-                title = it.toString()
-            }
-
-            showProgress()
-            marketplacePropertyRentalViewModel.postMarketPlace(
-                title,
-                bathroom,
-                bedroom,
-                carpetArea,
-                town,
-                city,
-                address,
-                rentalType,
-                latitude,
-                longitude
-            )
-        }
     }
 
 }

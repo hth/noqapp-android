@@ -172,4 +172,17 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="TextStyleNormal">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextStyleNormalSubHeading">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

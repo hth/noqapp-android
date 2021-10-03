@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.post_market_place
+package com.noqapp.android.client.views.version_2.market_place.post_property_rental
 
 import android.Manifest
 import android.app.Activity
@@ -27,7 +27,6 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.Constants.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalViewModel
-import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.squareup.okhttp.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody

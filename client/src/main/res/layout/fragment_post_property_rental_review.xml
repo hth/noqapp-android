@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_rent_per_month_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_rent_per_month"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_corner_theme"
+            android:paddingStart="16dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp"
+            android:text="@string/txt_edit"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_rent_per_month_label" />
+
+        <TextView
+            android:id="@+id/tv_rent_per_month"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_rent_per_month_label"
+            tools:text="2345" />
+
+        <TextView
+            android:id="@+id/tv_rental_type_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_rent_per_month"
+            app:layout_constraintTop_toBottomOf="@id/tv_rent_per_month" />
+
+        <TextView
+            android:id="@+id/tv_rental_type"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_rental_type_label"
+            tools:text="House" />
+
+        <View
+            android:id="@+id/view_rental_type"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_divider"
+            app:layout_constraintTop_toBottomOf="@id/tv_rental_type"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tv_bedrooms_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_number_of_bedrooms"
+            app:layout_constraintTop_toBottomOf="@id/view_rental_type" />
+
+        <TextView
+            android:id="@+id/tv_bedrooms"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_bedrooms_label"
+            tools:text="House" />
+
+        <TextView
+            android:id="@+id/tv_bathrooms_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_number_of_bathrooms"
+            app:layout_constraintTop_toBottomOf="@id/tv_bedrooms" />
+
+        <TextView
+            android:id="@+id/tv_bathrooms"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_bathrooms_label"
+            tools:text="House" />
+
+        <TextView
+            android:id="@+id/tv_carpet_area_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_rent_per_month"
+            app:layout_constraintTop_toBottomOf="@id/tv_bathrooms" />
+
+        <TextView
+            android:id="@+id/tv_carpet_area"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_carpet_area_label"
+            tools:text="House" />
+
+        <TextView
+            android:id="@+id/tv_available_from_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_available_from"
+            app:layout_constraintTop_toBottomOf="@id/tv_carpet_area" />
+
+        <TextView
+            android:id="@+id/tv_available_from"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_available_from_label"
+            tools:text="House" />
+
+        <View
+            android:id="@+id/view_available_from"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_divider"
+            app:layout_constraintTop_toBottomOf="@id/tv_available_from"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tv_rental_address_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_rental_address"
+            app:layout_constraintTop_toBottomOf="@id/view_available_from" />
+
+        <TextView
+            android:id="@+id/tv_rental_address"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_rental_address_label"
+            tools:text="House" />
+
+        <TextView
+            android:id="@+id/tv_city_area_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_area_city"
+            app:layout_constraintTop_toBottomOf="@id/tv_rental_address" />
+
+        <TextView
+            android:id="@+id/tv_city_area"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_city_area_label"
+            tools:text="House" />
+
+        <TextView
+            android:id="@+id/tv_town_locality_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_town_locality_sector"
+            app:layout_constraintTop_toBottomOf="@id/tv_city_area" />
+
+        <TextView
+            android:id="@+id/tv_town_locality"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_town_locality_label"
+            tools:text="House" />
+
+        <TextView
+            android:id="@+id/tv_landmark_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_rental_address"
+            app:layout_constraintTop_toBottomOf="@id/tv_town_locality" />
+
+        <TextView
+            android:id="@+id/tv_landmark"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_faded"
+            app:layout_constraintTop_toBottomOf="@id/tv_landmark_label"
+            tools:text="House" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_proceed"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_bg_enable"
+            android:gravity="center"
+            android:text="@string/txt_review_and_proceed"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            app:layout_constraintTop_toBottomOf="@id/tv_landmark" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

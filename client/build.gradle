@@ -482,6 +482,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testImplementation 'joda-time:joda-time:2.10.10'
+    implementation 'com.kofigyan.stateprogressbar:stateprogressbar:1.0.0'
 
     // (Required) Writing and executing Unit Tests on the JUnit Platform
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'

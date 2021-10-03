@@ -9,7 +9,7 @@ import com.noqapp.android.client.databinding.ActivityMarketPlaceBinding
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.market_place_details.MarketPlaceListFragment
+import com.noqapp.android.client.views.version_2.market_place.property_rental_details.MarketPlaceListFragment
 import com.noqapp.android.client.views.version_2.market_place.my_posts.MyMarketPlacePostsFragment
 
 class MarketplacePropertyRentalActivity : LocationBaseActivity() {

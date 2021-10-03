@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_rent_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_rent_per_month"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_rent_per_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_rent_label" />
+
+        <TextView
+            android:id="@+id/tv_rent_type"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_rental_type"
+            app:layout_constraintTop_toBottomOf="@id/et_rent_per_month" />
+
+        <Spinner
+            android:id="@+id/spinner_rental_type"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:entries="@array/rental_type_values"
+            app:layout_constraintTop_toBottomOf="@+id/tv_rent_type" />
+
+        <View
+            android:id="@+id/view_rental_type"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_divider"
+            app:layout_constraintTop_toBottomOf="@id/spinner_rental_type"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tv_bedrooms"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_number_of_bedrooms"
+            app:layout_constraintTop_toBottomOf="@id/view_rental_type" />
+
+        <TextView
+            android:id="@+id/tv_1_bhk"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="1"
+            app:layout_constraintTop_toBottomOf="@id/tv_bedrooms" />
+
+        <TextView
+            android:id="@+id/tv_2_bhk"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="2"
+            app:layout_constraintStart_toEndOf="@id/tv_1_bhk"
+            app:layout_constraintTop_toBottomOf="@id/tv_bedrooms" />
+
+        <TextView
+            android:id="@+id/tv_3_bhk"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="3"
+            app:layout_constraintStart_toEndOf="@id/tv_2_bhk"
+            app:layout_constraintTop_toBottomOf="@id/tv_bedrooms" />
+
+        <TextView
+            android:id="@+id/tv_4_bhk"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="4"
+            app:layout_constraintStart_toEndOf="@id/tv_3_bhk"
+            app:layout_constraintTop_toBottomOf="@id/tv_bedrooms" />
+
+        <TextView
+            android:id="@+id/tv_5_bhk"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="5+"
+            app:layout_constraintStart_toEndOf="@id/tv_4_bhk"
+            app:layout_constraintTop_toBottomOf="@id/tv_bedrooms" />
+
+        <TextView
+            android:id="@+id/tv_bathrooms"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_number_of_bathrooms"
+            app:layout_constraintTop_toBottomOf="@id/tv_1_bhk" />
+
+        <TextView
+            android:id="@+id/tv_1_bath"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="1"
+            app:layout_constraintTop_toBottomOf="@id/tv_bathrooms" />
+
+        <TextView
+            android:id="@+id/tv_2_bath"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="2"
+            app:layout_constraintStart_toEndOf="@id/tv_1_bath"
+            app:layout_constraintTop_toBottomOf="@id/tv_bathrooms" />
+
+        <TextView
+            android:id="@+id/tv_3_bath"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="3"
+            app:layout_constraintStart_toEndOf="@id/tv_2_bath"
+            app:layout_constraintTop_toBottomOf="@id/tv_bathrooms" />
+
+        <TextView
+            android:id="@+id/tv_4_bath"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="4"
+            app:layout_constraintStart_toEndOf="@id/tv_3_bath"
+            app:layout_constraintTop_toBottomOf="@id/tv_bathrooms" />
+
+        <TextView
+            android:id="@+id/tv_5_bath"
+            style="@style/TextStyleNormalSubHeading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:text="5+"
+            app:layout_constraintStart_toEndOf="@id/tv_4_bath"
+            app:layout_constraintTop_toBottomOf="@id/tv_bathrooms" />
+
+        <TextView
+            android:id="@+id/tv_carpet_area"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_carpet_area"
+            app:layout_constraintTop_toBottomOf="@id/tv_1_bath" />
+
+        <EditText
+            android:id="@+id/et_carpet_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_carpet_area" />
+
+        <TextView
+            android:id="@+id/tv_available_from_label"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_available_from"
+            app:layout_constraintTop_toBottomOf="@id/et_carpet_area" />
+
+        <TextView
+            android:id="@+id/tv_available_from"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:drawableEnd="@drawable/calendar"
+            android:paddingEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_available_from_label" />
+
+        <View
+            android:id="@+id/view_available_from"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_divider"
+            app:layout_constraintTop_toBottomOf="@id/tv_available_from"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tv_rental_address"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_rental_address"
+            app:layout_constraintTop_toBottomOf="@id/view_available_from" />
+
+        <EditText
+            android:id="@+id/et_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_rental_address" />
+
+        <TextView
+            android:id="@+id/tv_city_area"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_area_city"
+            app:layout_constraintTop_toBottomOf="@id/et_address" />
+
+        <EditText
+            android:id="@+id/et_city_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_city_area" />
+
+        <TextView
+            android:id="@+id/tv_town_locality"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_town_locality_sector"
+            app:layout_constraintTop_toBottomOf="@id/et_city_area" />
+
+        <EditText
+            android:id="@+id/et_town_locality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_town_locality" />
+
+        <TextView
+            android:id="@+id/tv_landmark"
+            style="@style/TextStyleNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_landmark"
+            app:layout_constraintTop_toBottomOf="@id/et_town_locality" />
+
+        <EditText
+            android:id="@+id/et_landmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_corner_cyan_background"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_landmark" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_bg_enable"
+            android:gravity="center"
+            android:text="@string/txt_next"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            app:layout_constraintTop_toBottomOf="@id/et_landmark" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
