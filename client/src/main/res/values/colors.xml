@@ -23,6 +23,7 @@
     <color name="before_opening_queue">@android:color/black</color>
     <!--65 % transparent -->
     <color name="black_transparent">#A6000000</color>
+    <color name="color_divider">#DFDFDF</color>
 
 
     <color name="segment_bg_color">#e5f8fa</color>
@@ -67,5 +68,8 @@
     <color name="color_light_grey">#DEDEDE</color>
     <color name="color_black">#000000</color>
     <color name="progress_bar_background">#A6000000</color>
+
+    <color name="color_faded">#717171</color>
+    <color name="color_state_disabled">#C4C4C4</color>
 
 </resources>

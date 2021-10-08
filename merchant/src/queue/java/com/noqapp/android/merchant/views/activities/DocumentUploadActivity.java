@@ -353,8 +353,8 @@ public class DocumentUploadActivity
                 setProgressMessage("Uploading document");
                 String type = getMimeType(path);
                 File file = new File(path);
-                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), transactionId);
+                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(file, MediaType.parse(type)));
+                RequestBody requestBody = RequestBody.create(transactionId, MediaType.parse("text/plain"));
                 purchaseOrderApiCalls.addAttachment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
             }
         } catch (Exception e) {

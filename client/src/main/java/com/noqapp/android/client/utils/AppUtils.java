@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -379,6 +378,8 @@ public class AppUtils extends CommonHelper {
                 Log.e(TAG, "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
+
+        Log.d(TAG, "Image location " + location);
         return location;
     }
 

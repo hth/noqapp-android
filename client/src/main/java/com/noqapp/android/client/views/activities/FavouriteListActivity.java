@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.FavouriteApiCall;
+import com.noqapp.android.client.model.api.FavouriteApiImpl;
 import com.noqapp.android.client.presenter.FavouriteListPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.FavoriteElastic;
@@ -138,9 +138,9 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
         if (NetworkUtils.isConnectingToInternet(this)) {
             setProgressMessage("Fetching the favourite list...");
             showProgress();
-            FavouriteApiCall favouriteApiCall = new FavouriteApiCall();
-            favouriteApiCall.setFavouriteListPresenter(this);
-            favouriteApiCall.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+            FavouriteApiImpl favouriteApiImpl = new FavouriteApiImpl();
+            favouriteApiImpl.setFavouriteListPresenter(this);
+            favouriteApiImpl.favorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }

@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.model.api.ClientProfileApiImpl;
 import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
@@ -71,9 +71,9 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     ChangeMailOTP changeMailOTP = new ChangeMailOTP();
                     changeMailOTP.setUserId(edt_email.getText().toString());
                     changeMailOTP.setMailOTP(edt_otp.getText().toString());
-                    ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
-                    clientProfileApiCall.setProfilePresenter(this);
-                    clientProfileApiCall.migrateMail(UserUtils.getEmail(), UserUtils.getAuth(), changeMailOTP);
+                    ClientProfileApiImpl clientProfileApiImpl = new ClientProfileApiImpl();
+                    clientProfileApiImpl.setProfilePresenter(this);
+                    clientProfileApiImpl.migrateMail(UserUtils.getEmail(), UserUtils.getAuth(), changeMailOTP);
                 }
                 break;
             case R.id.btn_verify_email:
@@ -85,7 +85,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     AppUtils.hideKeyBoard(ChangeEmailActivity.this);
                     MigrateMail migrateMail = new MigrateMail();
                     migrateMail.setMail(edt_email.getText().toString());
-                    ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
+                    ClientProfileApiImpl clientProfileModel = new ClientProfileApiImpl();
                     clientProfileModel.setMigrateEmailPresenter(this);
                     clientProfileModel.changeMail(UserUtils.getEmail(), UserUtils.getAuth(), migrateMail);
                 } else {

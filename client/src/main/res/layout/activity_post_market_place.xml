@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:foregroundTint="@color/color_black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back_new"
+        app:title="@string/txt_rental_property" />
+
+    <com.kofigyan.stateprogressbar.StateProgressBar
+        android:id="@+id/state_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:spb_animateToCurrentProgressState="true"
+        app:spb_checkStateCompleted="true"
+        app:spb_currentStateDescriptionColor="@color/color_black"
+        app:spb_currentStateNumber="one"
+        app:spb_maxStateNumber="four"
+        app:spb_stateBackgroundColor="@color/color_state_disabled"
+        app:spb_stateDescriptionColor="@color/color_state_disabled"
+        app:spb_stateForegroundColor="@color/theme_color_red"
+        app:spb_stateNumberBackgroundColor="@color/color_state_disabled"
+        app:spb_stateNumberForegroundColor="@color/white" />
+
+    <View
+        android:id="@+id/view_state"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/color_divider"
+        app:layout_constraintTop_toBottomOf="@id/state_progress_bar"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <fragment
+        android:id="@+id/homeNavHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:navGraph="@navigation/post_rental_property_graph"
+        tools:ignore="FragmentTagUsage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

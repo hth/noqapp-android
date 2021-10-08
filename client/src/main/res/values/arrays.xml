@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="initial_slider_values">
+        <item>20.0</item>
+        <item>70.0</item>
+    </array>
+
+    <array name="initial_slider_values_two">
+        <item>5000.0</item>
+        <item>20000.0</item>
+    </array>
+
+    <string-array name="rental_type_values">
+        <item>Apartment</item>
+        <item>Bungalow/Independent House</item>
+        <item>Sublet Room</item>
+        <item>Townhouse</item>
+    </string-array>
+</resources>

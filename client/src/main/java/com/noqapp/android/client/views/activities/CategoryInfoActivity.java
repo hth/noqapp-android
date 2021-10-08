@@ -32,7 +32,7 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DisplayCaseApiCall;
+import com.noqapp.android.client.model.api.DisplayCaseApiImpl;
 import com.noqapp.android.client.model.api.TokenQueueApiImpl;
 import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.model.types.AmenityEnum;
@@ -76,6 +76,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
+import static com.noqapp.android.common.utils.BaseConstants.DASH;
 
 /**
  * Created by chandra on 5/7/17.
@@ -197,8 +198,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 } else {
                     btn_register.setVisibility(View.VISIBLE);
                 }
-                DisplayCaseApiCall displayCaseApiCall = new DisplayCaseApiCall(this);
-                displayCaseApiCall.storeDisplayCase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                DisplayCaseApiImpl displayCaseApiImpl = new DisplayCaseApiImpl(this);
+                displayCaseApiImpl.storeDisplayCase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             }
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
@@ -239,7 +240,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
             tv_complete_address.setOnClickListener((View v) -> AppUtils.openAddressInMap(this, tv_complete_address.getText().toString()));
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+            if (!bizStoreElastic.getPhone().equalsIgnoreCase(DASH)) {
+                tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+            }
             tv_rating.setText(AppUtils.round(rating) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
@@ -300,7 +303,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             List<String> storeServiceImages = new ArrayList<>();
             // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
-                storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
+                storeServiceImages = bizStoreElastic.getBizServiceImages();
                 // load first image default
                 Picasso.get()
                     .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))

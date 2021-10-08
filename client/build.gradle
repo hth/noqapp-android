@@ -451,6 +451,8 @@ dependencies {
     implementation project(':cashfreeSDK')
     implementation 'com.google.zxing:core:3.4.1'
 
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
     //Dependencies for Navigation UI component
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
@@ -468,7 +470,7 @@ dependencies {
 
     implementation 'androidx.preference:preference:1.1.1'
 
-
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.4.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -480,6 +482,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testImplementation 'joda-time:joda-time:2.10.10'
+    implementation 'com.kofigyan.stateprogressbar:stateprogressbar:1.0.0'
 
     // (Required) Writing and executing Unit Tests on the JUnit Platform
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'

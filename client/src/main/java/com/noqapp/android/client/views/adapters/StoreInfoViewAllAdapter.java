@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
+import static com.noqapp.android.common.utils.BaseConstants.DASH;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -82,7 +84,9 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             final MyViewHolder holder = (MyViewHolder) viewHolder;
             final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
             holder.tv_address.setText(AppUtils.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
-            holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+            if (!bizStoreElastic.getPhone().equalsIgnoreCase(DASH)) {
+                holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+            }
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtils.round(bizStoreElastic.getRating())));
             switch (bizStoreElastic.getBusinessType()) {

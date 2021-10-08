@@ -11,6 +11,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum
 import com.noqapp.android.common.utils.CommonHelper
+import java.util.Date
 
 /** Appointment display on home screen. */
 class ScheduledAppointmentAdapter(
@@ -30,7 +31,7 @@ class ScheduledAppointmentAdapter(
             layoutScheduledAppointmentBinding.tvStoreAddress.text = AppUtils.getStoreAddress(jsonSchedule.jsonQueueDisplay.town, jsonSchedule.jsonQueueDisplay.area)
             layoutScheduledAppointmentBinding.tvScheduleTime.text = jsonSchedule.appointmentState.description
             try {
-                val scheduleDate = CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.scheduleDate);
+                val scheduleDate: Date? = CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.scheduleDate);
                 val date = CommonHelper.SDF_DOB_FROM_UI.format(scheduleDate)
                 layoutScheduledAppointmentBinding.tvScheduleDate.text = date
             } catch (e: java.lang.Exception) {

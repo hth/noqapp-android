@@ -24,9 +24,9 @@ import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientPreferenceApiCalls;
-import com.noqapp.android.client.model.ClientProfileApiCall;
-import com.noqapp.android.client.model.PurchaseOrderApiCall;
+import com.noqapp.android.client.model.api.ClientPreferenceApiImpl;
+import com.noqapp.android.client.model.api.ClientProfileApiImpl;
+import com.noqapp.android.client.model.api.PurchaseOrderApiImpl;
 import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
@@ -86,8 +86,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private TextView tv_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private ClientProfileApiCall clientProfileApiCall;
-    private PurchaseOrderApiCall purchaseOrderApiCall;
+    private ClientProfileApiImpl clientProfileApiImpl;
+    private PurchaseOrderApiImpl purchaseOrderApiImpl;
     private long mLastClickTime = 0;
     private String currencySymbol;
     private JsonPurchaseOrder jsonPurchaseOrderServer;
@@ -252,14 +252,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
         });
         initActionsViews(true);
-        purchaseOrderApiCall = new PurchaseOrderApiCall(this);
+        purchaseOrderApiImpl = new PurchaseOrderApiImpl(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         currencySymbol = getIntent().getExtras().getString(AppUtils.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
         //tv_address.setText(NoQueueBaseActivity.getAddress());
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        clientProfileApiCall = new ClientProfileApiCall();
-        clientProfileApiCall.setProfilePresenter(this);
+        clientProfileApiImpl = new ClientProfileApiImpl();
+        clientProfileApiImpl.setProfilePresenter(this);
         tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_tax_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getTax()));
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.total()));
@@ -270,7 +270,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             String couponName = jsonPurchaseOrder.getJsonCoupon().getDiscountName();
             tv_coupon_discount_label.setText(getString(R.string.discount_with_coupon, couponName));
         }
-        tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        tv_coupon_discount_amt.setText(Constants.DASH + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         StoreProductFinalOrderAdapter storeProductFinalOrderAdapter = new StoreProductFinalOrderAdapter(
                 this,
                 jsonPurchaseOrder.getPurchaseOrderProducts(),
@@ -308,7 +308,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                     .setPaymentMode(null) //not required here
                                     .setCustomerPhone(AppInitialize.getPhoneNo())
                                     .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
-                            purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            purchaseOrderApiImpl.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
                         } else {
                             ShowAlertInformation.showNetworkDialog(OrderActivity.this);
@@ -363,7 +363,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_grand_total_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
         tv_final_amount.setText("Grand Total \n" + currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-        tv_coupon_discount_amt.setText(Constants.MINUS + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        tv_coupon_discount_amt.setText(Constants.DASH + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_due_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
     }
 
@@ -437,7 +437,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 } else {
                     triggerCashPayment();
                 }
-                clientProfileApiCall.setProfilePresenter(this);
+                clientProfileApiImpl.setProfilePresenter(this);
                 if (TextUtils.isEmpty(AppInitialize.getAddress())) {
                     String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
@@ -446,7 +446,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     updateProfile.setGender(AppInitialize.getGender());
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     updateProfile.setQueueUserId(AppInitialize.getUserProfile().getQueueUserId());
-                    clientProfileApiCall.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    clientProfileApiImpl.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
                 new CustomToast().showToast(this, "Order failed.");
@@ -514,7 +514,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         for (Map.Entry entry : map.entrySet()) {
             Log.e("Payment success", entry.getKey() + " " + entry.getValue());
         }
-        purchaseOrderApiCall.setCashFreeNotifyPresenter(this);
+        purchaseOrderApiImpl.setCashFreeNotifyPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setTxTime(map.get("txTime"));
@@ -524,7 +524,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         jsonCashfreeNotification.setOrderAmount(map.get("orderAmount"));
         jsonCashfreeNotification.setTxStatus(map.get("txStatus"));
         jsonCashfreeNotification.setOrderId(map.get("orderId"));
-        purchaseOrderApiCall.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+        purchaseOrderApiImpl.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
     @Override
@@ -540,8 +540,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         enableDisableOrderButton(false);
         if (isOnline()) {
             showProgress();
-            purchaseOrderApiCall.setResponsePresenter(this);
-            purchaseOrderApiCall.cancelPayBeforeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
+            purchaseOrderApiImpl.setResponsePresenter(this);
+            purchaseOrderApiImpl.cancelPayBeforeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -612,7 +612,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     private void triggerCashPayment() {
         jsonPurchaseOrderServer.setPaymentMode(PaymentModeEnum.CA);
-        purchaseOrderApiCall.payCash(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
+        purchaseOrderApiImpl.payCash(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
     }
 
     @Override
@@ -662,7 +662,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     private void callAddressPreference() {
-        ClientPreferenceApiCalls clientProfileApiCall = new ClientPreferenceApiCalls();
+        ClientPreferenceApiImpl clientProfileApiCall = new ClientPreferenceApiImpl();
         clientProfileApiCall.setClientPreferencePresenter(this);
         JsonUserPreference jsonUserPreference = AppInitialize.getUserProfile().getJsonUserPreference();
         jsonUserPreference.setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO);

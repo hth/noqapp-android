@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientCouponApiCalls;
+import com.noqapp.android.client.model.api.ClientCouponApiImpl;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -54,14 +54,14 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
         if (new NetworkUtil(getActivity()).isOnline()) {
             setProgressMessage("Fetching coupons...");
             showProgress();
-            ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
-            clientCouponApiCalls.setCouponPresenter(this);
+            ClientCouponApiImpl clientCouponApiImpl = new ClientCouponApiImpl();
+            clientCouponApiImpl.setCouponPresenter(this);
             String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);
             if (TextUtils.isEmpty(codeQR)) {
-                clientCouponApiCalls.availableCoupon(UserUtils.getDeviceId(),
+                clientCouponApiImpl.availableCoupon(UserUtils.getDeviceId(),
                     UserUtils.getEmail(), UserUtils.getAuth());
             } else {
-                clientCouponApiCalls.filterCoupon(UserUtils.getDeviceId(),
+                clientCouponApiImpl.filterCoupon(UserUtils.getDeviceId(),
                     UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             }
         } else {

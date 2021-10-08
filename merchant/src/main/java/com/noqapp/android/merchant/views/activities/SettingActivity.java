@@ -199,7 +199,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         sc_today_closed.addSegments(yes_no_list);
         sc_day_closed.addSegments(yes_no_list);
         sc_store_offline.addSegments(yes_no_list);
-        sc_enable_appointment.addSegments(AppointmentStateEnum.asListOfDescription());
+        sc_enable_appointment.addSegments(AppointmentStateEnum.asListOfDescriptionShortForm());
 
         actionbarBack.setOnClickListener(v -> onBackPressed());
         iv_delete_scheduling.setOnClickListener(v -> {

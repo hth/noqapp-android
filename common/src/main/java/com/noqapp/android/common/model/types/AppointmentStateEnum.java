@@ -8,21 +8,23 @@ import java.util.List;
  * Date: 2019-07-19 17:03
  */
 public enum AppointmentStateEnum {
-    O("O", "Off", "No Appointment"),
-    A("A", "Traditional Appointment", "Appointment"),
-    S("S", "Walk-in Appointment", "Slots"),
+    O("O", "Off", "No Appointment", "Off"),
+    A("A", "Traditional Appointment", "Appointment", "Traditional"),
+    S("S", "Walk-in Appointment", "Slots", "Walk-in"),
 
     /* Mixture of Walk-ins and traditional appointments. To be implemented. */
-    F("F", "Flex Appointment", "Flex");
+    F("F", "Flex Appointment", "Flex", "Flex");
 
     private final String description;
     private final String name;
     private final String additionalDescription;
+    private final String shortForm;
 
-    AppointmentStateEnum(String name, String description, String additionalDescription) {
+    AppointmentStateEnum(String name, String description, String additionalDescription, String shortForm) {
         this.name = name;
         this.description = description;
         this.additionalDescription = additionalDescription;
+        this.shortForm = shortForm;
     }
 
     public String getName() {
@@ -37,10 +39,22 @@ public enum AppointmentStateEnum {
         return additionalDescription;
     }
 
+    public String getShortForm() {
+        return shortForm;
+    }
+
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
         for (AppointmentStateEnum appointmentStateEnum : AppointmentStateEnum.values()) {
             a.add(appointmentStateEnum.description);
+        }
+        return a;
+    }
+
+    public static List<String> asListOfDescriptionShortForm() {
+        List<String> a = new LinkedList<>();
+        for (AppointmentStateEnum appointmentStateEnum : AppointmentStateEnum.values()) {
+            a.add(appointmentStateEnum.shortForm);
         }
         return a;
     }

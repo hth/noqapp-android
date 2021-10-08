@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.FeedbackApiCall;
+import com.noqapp.android.client.model.api.FeedbackApiImpl;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
@@ -73,7 +73,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             } else {
                 setProgressMessage("Sending feedback...");
                 showProgress();
-                new FeedbackApiCall(ContactUsActivity.this).review(
+                new FeedbackApiImpl(ContactUsActivity.this).review(
                     UserUtils.getDeviceId(),
                     UserUtils.getEmail(),
                     UserUtils.getAuth(),

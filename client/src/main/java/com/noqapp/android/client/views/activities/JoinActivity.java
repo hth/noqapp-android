@@ -36,7 +36,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientCouponApiCalls;
+import com.noqapp.android.client.model.api.ClientCouponApiImpl;
 import com.noqapp.android.client.model.api.TokenQueueApiImpl;
 import com.noqapp.android.client.model.open.TokenQueueImpl;
 import com.noqapp.android.client.presenter.AuthorizeResponsePresenter;
@@ -178,15 +178,15 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                         setProgressMessage("Removing discount..");
                         // progressDialog.setCancelable(false);
                         // progressDialog.setCanceledOnTouchOutside(false);
-                        ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
-                        clientCouponApiCalls.setCouponApplyRemovePresenter(JoinActivity.this);
+                        ClientCouponApiImpl clientCouponApiImpl = new ClientCouponApiImpl();
+                        clientCouponApiImpl.setCouponApplyRemovePresenter(JoinActivity.this);
 
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
                                 .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                                 // .setCouponId(jsonCoupon.getCouponId())
                                 .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                        clientCouponApiCalls.remove(UserUtils.getDeviceId(),
+                        clientCouponApiImpl.remove(UserUtils.getDeviceId(),
                                 UserUtils.getEmail(),
                                 UserUtils.getAuth(),
                                 couponOnOrder);
@@ -831,14 +831,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     setProgressMessage("Applying discount..");
                     // progressDialog.setCancelable(false);
                     // progressDialog.setCanceledOnTouchOutside(false);
-                    ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
-                    clientCouponApiCalls.setCouponApplyRemovePresenter(this);
+                    ClientCouponApiImpl clientCouponApiImpl = new ClientCouponApiImpl();
+                    clientCouponApiImpl.setCouponApplyRemovePresenter(this);
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                             .setCouponId(jsonCoupon.getCouponId())
                             .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                    clientCouponApiCalls.apply(UserUtils.getDeviceId(),
+                    clientCouponApiImpl.apply(UserUtils.getDeviceId(),
                             UserUtils.getEmail(),
                             UserUtils.getAuth(),
                             couponOnOrder);

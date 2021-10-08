@@ -9,6 +9,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -60,8 +61,8 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
     @JsonProperty("tg")
     private String tags;
 
-    @JsonProperty("lc")
-    private int likeCount;
+    @JsonProperty("vc")
+    private int viewCount;
 
     @JsonProperty("ec")
     private int expressedInterestCount;
@@ -169,12 +170,12 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
         return this;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public int getViewCount() {
+        return viewCount;
     }
 
-    public JsonMarketplace setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public JsonMarketplace setViewCount(int viewCount) {
+        this.viewCount = viewCount;
         return this;
     }
 
@@ -248,5 +249,29 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
     public JsonMarketplace setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonMarketplace{" +
+            "id='" + id + '\'' +
+            ", queueUserId='" + queueUserId + '\'' +
+            ", businessType=" + businessType +
+            ", coordinate=" + Arrays.toString(coordinate) +
+            ", productPrice=" + productPrice +
+            ", title='" + title + '\'' +
+            ", description='" + description + '\'' +
+            ", postImages=" + postImages +
+            ", tags='" + tags + '\'' +
+            ", viewCount=" + viewCount +
+            ", expressedInterestCount=" + expressedInterestCount +
+            ", address='" + address + '\'' +
+            ", city='" + city + '\'' +
+            ", town='" + town + '\'' +
+            ", countryShortName='" + countryShortName + '\'' +
+            ", landmark='" + landmark + '\'' +
+            ", publishUntil=" + publishUntil +
+            ", error=" + error +
+            '}';
     }
 }

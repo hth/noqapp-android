@@ -1,16 +1,15 @@
 package com.noqapp.android.common.beans.marketplace;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -35,11 +34,8 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MarketplaceElastic extends AbstractDomain {
 
-    @JsonIgnore
+    @JsonProperty("id")
     private String id;
-
-    @JsonProperty("EI")
-    private String entityId;
 
     @JsonProperty("BT")
     private BusinessTypeEnum businessType;
@@ -60,8 +56,8 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("TG")
     private String tag;
 
-    @JsonProperty("LC")
-    private int likeCount;
+    @JsonProperty("VC")
+    private int viewCount;
 
     @JsonProperty("EC")
     private int expressedInterestCount;
@@ -85,21 +81,15 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("TS")
     private String[] fieldTags;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public String getId() {
         return id;
     }
 
     public MarketplaceElastic setId(String id) {
         this.id = id;
-        return this;
-    }
-
-    public String getEntityId() {
-        return entityId;
-    }
-
-    public MarketplaceElastic setEntityId(String entityId) {
-        this.entityId = entityId;
         return this;
     }
 
@@ -157,12 +147,12 @@ public class MarketplaceElastic extends AbstractDomain {
         return this;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public int getViewCount() {
+        return viewCount;
     }
 
-    public MarketplaceElastic setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public MarketplaceElastic setViewCount(int viewCount) {
+        this.viewCount = viewCount;
         return this;
     }
 
@@ -226,6 +216,15 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setFieldTags(String[] fieldTags) {
         this.fieldTags = fieldTags;
+        return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public MarketplaceElastic setError(ErrorEncounteredJson error) {
+        this.error = error;
         return this;
     }
 }

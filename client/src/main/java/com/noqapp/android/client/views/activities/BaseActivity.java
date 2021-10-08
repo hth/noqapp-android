@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.FavouriteApiCall;
+import com.noqapp.android.client.model.api.FavouriteApiImpl;
 import com.noqapp.android.client.presenter.beans.FavoriteElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.Constants;
@@ -186,12 +186,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
 
     private void markFavourite() {
         showProgress();
-        FavouriteApiCall favouriteApiCall = new FavouriteApiCall();
-        favouriteApiCall.setFavouritePresenter(this);
+        FavouriteApiImpl favouriteApiImpl = new FavouriteApiImpl();
+        favouriteApiImpl.setFavouritePresenter(this);
         FavoriteElastic favoriteElastic = new FavoriteElastic();
         favoriteElastic.setActionType(isFavourite ? ActionTypeEnum.REMOVE : ActionTypeEnum.ADD);
         favoriteElastic.setCodeQR(codeQR);
-        favouriteApiCall.actionOnFavorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), favoriteElastic);
+        favouriteApiImpl.actionOnFavorite(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), favoriteElastic);
     }
 
     @Override
