@@ -25,7 +25,6 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.AllDayTimingActivity;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.LoginActivity;
@@ -36,7 +35,6 @@ import com.noqapp.android.common.model.types.WalkInStateEnum;
 import com.noqapp.android.common.model.types.category.CanteenStoreDepartmentEnum;
 import com.noqapp.android.common.utils.Formatter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -169,8 +167,12 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
             } else {
                 childViewHolder.tv_store_timing.setVisibility(View.VISIBLE);
                 childViewHolder.tv_status.setVisibility(View.VISIBLE);
-                String time = new AppUtils().formatTodayStoreTiming(context, storeHourElastic.isDayClosed(),
-                        storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
+                String time = new AppUtils().formatTodayStoreTiming(
+                    context,
+                    storeHourElastic.isDayClosed(),
+                    storeHourElastic.getStartHour(),
+                    storeHourElastic.getEndHour());
+
                 String lunchTime = new AppUtils().formatTodayStoreLunchTiming(context, storeHourElastic.getLunchTimeStart(), storeHourElastic.getLunchTimeEnd());
                 if (!TextUtils.isEmpty(lunchTime)) {
                     childViewHolder.tv_lunch_time.setText(lunchTime);

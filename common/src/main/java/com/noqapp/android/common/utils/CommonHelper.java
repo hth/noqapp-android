@@ -487,7 +487,7 @@ public class CommonHelper {
                 return jsonStoreCategories;
             default:
                 FirebaseCrashlytics.getInstance().log("Failed get categories for businessType " + businessType);
-                Log.e(TAG, "Reached un-supported condition" + businessType);
+                Log.e(TAG, "Reached un-supported condition " + businessType);
                 return jsonStoreCategories;
         }
     }
