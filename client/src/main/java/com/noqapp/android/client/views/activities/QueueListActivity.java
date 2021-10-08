@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class QueueListActivity extends BaseActivity implements
     CategoryHeaderAdapter.OnItemClickListener, LevelUpQueueAdapter.OnItemClickListener {
 
@@ -47,7 +46,7 @@ public class QueueListActivity extends BaseActivity implements
             if (getIntent().getExtras().getBoolean("isCanteenStore", false)) {
                 categoryMap = new ArrayList<>();
                 queueMap = new HashMap<>();
-                Map<String, JsonCategory> keys = new HashMap();
+                Map<String, JsonCategory> keys = new HashMap<>();
                 for (int i = 0; i < tempCategoryMap.size(); i++) {
                     BusinessCustomerAttributeEnum businessCustomerAttribute = CanteenStoreDepartmentEnum.
                         getBusinessCustomerAttribute(tempCategoryMap.get(i).getBizCategoryId());
@@ -92,7 +91,6 @@ public class QueueListActivity extends BaseActivity implements
         LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, categoryMap, queueMap, this);
         expandableListView.setAdapter(expandableListAdapter);
         expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int position = new AppUtils().getFirstVisibleGroup(expandableListView);
@@ -102,13 +100,13 @@ public class QueueListActivity extends BaseActivity implements
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
         });
-        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++)
+
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
             expandableListView.expandGroup(i);
+        }
 
         expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
         if (pos > 0) {

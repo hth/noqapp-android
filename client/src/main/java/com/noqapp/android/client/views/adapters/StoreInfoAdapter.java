@@ -66,10 +66,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
         }
         if (!TextUtils.isEmpty(item.getDisplayImage())) {
             Picasso.get()
-                    .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, item.getDisplayImage()))
-                    .placeholder(ImageUtils.getThumbPlaceholder(context))
-                    .error(ImageUtils.getThumbErrorPlaceholder(context))
-                    .into(holder.iv_main);
+                .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, item.getDisplayImage()))
+                .placeholder(ImageUtils.getThumbPlaceholder(context))
+                .error(ImageUtils.getThumbErrorPlaceholder(context))
+                .into(holder.iv_main);
         } else {
             Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
@@ -84,10 +84,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
                 break;
             default:
                 holder.tv_distance.setText(String.valueOf(AppUtils.calculateDistance(
-                        (float) lat,
-                        (float) log,
-                        (float) GeoHashUtils.decodeLatitude(item.getGeoHash()),
-                        (float) GeoHashUtils.decodeLongitude(item.getGeoHash()))));
+                    (float) lat,
+                    (float) log,
+                    (float) GeoHashUtils.decodeLatitude(item.getGeoHash()),
+                    (float) GeoHashUtils.decodeLongitude(item.getGeoHash()))));
                 holder.tv_distance_unit.setText(Constants.DISTANCE_UNIT);
         }
 

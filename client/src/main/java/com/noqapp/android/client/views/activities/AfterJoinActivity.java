@@ -220,15 +220,15 @@ public class AfterJoinActivity
                         clientCouponApiImpl.setCouponApplyRemovePresenter(AfterJoinActivity.this);
 
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
-                                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                                // .setCouponId(jsonCoupon.getCouponId())
-                                .setTransactionId(jsonTokenAndQueue.getTransactionId());
+                            .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                            // .setCouponId(jsonCoupon.getCouponId())
+                            .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
                         clientCouponApiImpl.remove(
-                                UserUtils.getDeviceId(),
-                                UserUtils.getEmail(),
-                                UserUtils.getAuth(),
-                                couponOnOrder);
+                            UserUtils.getDeviceId(),
+                            UserUtils.getEmail(),
+                            UserUtils.getAuth(),
+                            couponOnOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(AfterJoinActivity.this);
                     }
@@ -312,8 +312,8 @@ public class AfterJoinActivity
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl)
-                        .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
-                        .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
+                    .placeholder(ContextCompat.getDrawable(this, R.drawable.profile_theme))
+                    .error(ContextCompat.getDrawable(this, R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
@@ -383,11 +383,11 @@ public class AfterJoinActivity
                     setProgressMessage("Fetching Queue data...");
                     showProgress();
                     tokenQueueApiImpl.purchaseOrder(
-                            UserUtils.getDeviceId(),
-                            UserUtils.getEmail(),
-                            UserUtils.getAuth(),
-                            String.valueOf(jsonTokenAndQueue.getToken()),
-                            codeQR);
+                        UserUtils.getDeviceId(),
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        String.valueOf(jsonTokenAndQueue.getToken()),
+                        codeQR);
                 }
             } else {
                 queueJsonPurchaseOrderResponse(jsonTokenAndQueue.getJsonPurchaseOrder());
@@ -591,11 +591,11 @@ public class AfterJoinActivity
                     break;
                 default:
                     String waitTime = TokenStatusUtils.calculateEstimatedWaitTime(
-                            avgServiceTime,
-                            jsonTokenAndQueue.afterHowLong(),
-                            jsonTokenAndQueue.getQueueStatus(),
-                            jsonTokenAndQueue.getStartHour(),
-                            this);
+                        avgServiceTime,
+                        jsonTokenAndQueue.afterHowLong(),
+                        jsonTokenAndQueue.getQueueStatus(),
+                        jsonTokenAndQueue.getStartHour(),
+                        this);
                     if (!TextUtils.isEmpty(waitTime)) {
                         tv_estimated_time.setText(waitTime);
                         tv_left.setText(R.string.wait_time);

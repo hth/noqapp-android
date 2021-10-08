@@ -196,9 +196,14 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         }
     }
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-                                   PeopleInQAdapterClick peopleInQAdapterClick, String codeQR,
-                                   JsonDataVisibility jsonDataVisibility, JsonPaymentPermission jsonPaymentPermission) {
+    protected BasePeopleInQAdapter(
+        List<JsonQueuedPerson> data,
+        Context context,
+        PeopleInQAdapterClick peopleInQAdapterClick,
+        String codeQR,
+        JsonDataVisibility jsonDataVisibility,
+        JsonPaymentPermission jsonPaymentPermission
+    ) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -213,8 +218,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     }
 
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context,
-                                   PeopleInQAdapterClick peopleInQAdapterClick, JsonTopic jsonTopic) {
+    protected BasePeopleInQAdapter(
+        List<JsonQueuedPerson> data,
+        Context context,
+        PeopleInQAdapterClick peopleInQAdapterClick,
+        JsonTopic jsonTopic
+    ) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -246,27 +255,26 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
         recordHolder.tv_sequence_number.setText(jsonQueuedPerson.getDisplayToken());
         recordHolder.tv_last_visit.setText(TextUtils.isEmpty(
-                jsonQueuedPerson.getClientVisitedThisStoreDate())
-                ? ""
-                : "Last visit: " + CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonQueuedPerson.getClientVisitedThisStoreDate()));
+            jsonQueuedPerson.getClientVisitedThisStoreDate())
+            ? ""
+            : "Last visit: " + CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonQueuedPerson.getClientVisitedThisStoreDate()));
         recordHolder.tv_customer_name.setText(
-                TextUtils.isEmpty(jsonQueuedPerson.getCustomerName())
-                        ? context.getString(R.string.unregister_user)
-                        : jsonQueuedPerson.getCustomerName());
+            TextUtils.isEmpty(jsonQueuedPerson.getCustomerName())
+                ? context.getString(R.string.unregister_user)
+                : jsonQueuedPerson.getCustomerName());
         recordHolder.tv_business_customer_id.setText(
-                TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
-                        ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
-                        : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
+            TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
+                ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
+                : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
         // Time slot should be visible only for CD or CDQ.
-        if((businessTypeEnum == BusinessTypeEnum.CD || businessTypeEnum == BusinessTypeEnum.CDQ)
-                && !TextUtils.isEmpty(jsonQueuedPerson.getTimeSlotMessage())) {
+        if ((businessTypeEnum == BusinessTypeEnum.CD || businessTypeEnum == BusinessTypeEnum.CDQ) && !TextUtils.isEmpty(jsonQueuedPerson.getTimeSlotMessage())) {
             recordHolder.tv_token_time_slot.setVisibility(View.VISIBLE);
             recordHolder.tv_token_time_slot.setText(context.getString(R.string.time_slot, jsonQueuedPerson.getTimeSlotMessage()));
         }
         if (null != AppInitialize.getUserProfile()) {
             recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo)
-                    ? context.getString(R.string.unregister_user)
-                    : PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
+                ? context.getString(R.string.unregister_user)
+                : PhoneFormatterUtil.formatNumber(AppInitialize.getUserProfile().getCountryShortName(), phoneNo));
         }
 
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));

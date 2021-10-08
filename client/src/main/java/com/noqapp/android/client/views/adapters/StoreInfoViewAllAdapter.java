@@ -153,8 +153,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.VISIBLE);
                     holder.tv_status.setText(AppUtils.getStoreOpenStatus(bizStoreElastic));
-                    holder.tv_category_name.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic.isDayClosed(),
-                        storeHourElastic.getStartHour(), storeHourElastic.getEndHour()));
+                    holder.tv_category_name.setText(new AppUtils().formatTodayStoreTiming(context, storeHourElastic.isDayClosed(), storeHourElastic.getStartHour(), storeHourElastic.getEndHour()));
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
             }
