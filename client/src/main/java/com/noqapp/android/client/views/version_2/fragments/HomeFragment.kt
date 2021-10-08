@@ -17,6 +17,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentHomeNewBinding
 import com.noqapp.android.client.databinding.ViewIndicatorBinding

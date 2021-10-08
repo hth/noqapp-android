@@ -128,7 +128,7 @@
                             style="@style/CheckBoxStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/cb_2_bhk" />
+                            android:text="@string/txt_2_bhk" />
 
                     </FrameLayout>
 
@@ -177,7 +177,7 @@
                             style="@style/CheckBoxStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/cb_4_plus_bhk" />
+                            android:text="@string/txt_4_plus_bhk" />
 
                     </FrameLayout>
                 </LinearLayout>

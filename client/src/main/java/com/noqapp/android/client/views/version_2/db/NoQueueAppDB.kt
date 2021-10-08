@@ -14,7 +14,7 @@ import com.noqapp.android.common.pojos.PropertyRentalEntity
 
 @Database(
     entities = [DisplayNotification::class, ReviewData::class, JsonTokenAndQueue::class, ForegroundNotificationModel::class, PropertyRentalEntity::class],
-    version = 1
+    version = 2
 )
 @TypeConverters(
     BusinessTypeConverter::class,
@@ -42,6 +42,7 @@ abstract class NoQueueAppDB : RoomDatabase() {
                 synchronized(NoQueueAppDB::class) {
                     instance =
                         Room.databaseBuilder(context, NoQueueAppDB::class.java, "noqueue_database")
+                            .fallbackToDestructiveMigration()
                             .build()
                 }
             }

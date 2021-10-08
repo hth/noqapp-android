@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalTitleBinding
+import com.noqapp.android.client.views.fragments.BaseFragment
 
-class PostPropertyRentalTitleFragment {
+class PostPropertyRentalTitleFragment: BaseFragment() {
 
     private lateinit var fragmentPostPropertyRentalTitle: FragmentPostPropertyRentalTitleBinding
 

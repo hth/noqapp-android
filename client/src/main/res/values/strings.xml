@@ -601,4 +601,10 @@
     <string name="txt_edit">Edit</string>
     <string name="txt_review_and_proceed"><![CDATA[Review & Proceed]]></string>
     <string name="txt_rental_property">Rental Property</string>
+    <string name="txt_4_plus_bhk">4+ bhk</string>
+    <string name="txt_4_bhk">4 bhk</string>
+    <string name="txt_3_bhk">3 bhk</string>
+    <string name="txt_2_bhk">2 bhk</string>
+    <string name="txt_1_bhk">1 bhk</string>
+    <string name="txt_1_rk">1 rk</string>
 </resources>
