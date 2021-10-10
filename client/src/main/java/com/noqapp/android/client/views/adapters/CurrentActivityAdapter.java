@@ -68,6 +68,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     switch (jsonTokenAndQueue.getBusinessType()) {
                         case CD:
                         case CDQ:
+                        case DO:
                             String slot = jsonTokenAndQueue.getTimeSlotMessage();
                             if (!TextUtils.isEmpty(slot)) {
                                 holder.tv_wait_time.setText(String.format(this.context.getString(R.string.time_slot_formatted), slot));
@@ -86,6 +87,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter {
                     switch (jsonTokenAndQueue.getBusinessType()) {
                         case CD:
                         case CDQ:
+                        case DO:
                             String slot = jsonTokenAndQueue.getTimeSlotMessage();
                             if (!TextUtils.isEmpty(slot)) {
                                 holder.tv_wait_time.setText(String.format(this.context.getString(R.string.time_slot_formatted), slot));
