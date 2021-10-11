@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/post_rental_property_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/post_rental_property_graph"
+    app:startDestination="@id/fragment_post_property_rental_title_desc">
+
+    <fragment
+        android:id="@+id/fragment_post_property_rental_title_desc"
+        android:name="com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostPropertyRentalTitleFragment"
+        tools:layout="@layout/fragment_post_property_rental_title" />
+
+    <fragment
+        android:id="@+id/fragment_post_property_rental_details"
+        android:name="com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostPropertyRentalDetailsFragment"
+        tools:layout="@layout/fragment_post_property_rental_details" />
+
+    <fragment
+        android:id="@+id/fragment_post_property_rental_image"
+        android:name="com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostPropertyRentalImageFragment"
+        tools:layout="@layout/fragment_upload_property_rental_images" />
+
+    <fragment
+        android:id="@+id/fragment_post_property_rental_review"
+        android:name="com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostPropertyRentalReviewFragment"
+        tools:layout="@layout/fragment_post_property_rental_review" />
 
 </navigation>

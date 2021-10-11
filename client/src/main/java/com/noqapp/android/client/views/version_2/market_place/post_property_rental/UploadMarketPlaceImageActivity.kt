@@ -26,7 +26,7 @@ import com.noqapp.android.client.databinding.ActivityUploadMarketPlaceImageBindi
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.Constants.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.noqapp.android.client.views.activities.BaseActivity
-import com.noqapp.android.client.views.version_2.market_place.MarketplacePropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
 import com.squareup.okhttp.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -45,7 +45,7 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
 
     private lateinit var activityUploadMarketPlaceImageBinding: ActivityUploadMarketPlaceImageBinding
     private lateinit var marketPlaceId: String
-    private val marketplacePropertyRentalViewModel: MarketplacePropertyRentalViewModel by viewModels()
+    private val postPropertyRentalViewModel: PostPropertyRentalViewModel by viewModels()
     lateinit var currentPhotoPath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -278,7 +278,7 @@ class UploadMarketPlaceImageActivity : BaseActivity() {
                 file.asRequestBody(MediaType.parse(type).toString().toMediaType())
             )
             val postId = RequestBody.create("text/plain".toMediaType(), marketPlaceId)
-            marketplacePropertyRentalViewModel.postImages(marketplaceImage, postId)
+            postPropertyRentalViewModel.postImages(marketplaceImage, postId)
         }
     }
 

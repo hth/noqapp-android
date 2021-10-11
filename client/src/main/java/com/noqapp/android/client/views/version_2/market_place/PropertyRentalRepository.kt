@@ -17,8 +17,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MarketplacePropertyRentalRepository {
-    private val TAG = MarketplacePropertyRentalRepository::class.java.simpleName
+class PropertyRentalRepository {
+    private val TAG = PropertyRentalRepository::class.java.simpleName
 
     private var searchApi: SearchApi = RetrofitClient.getClient().create(SearchApi::class.java)
     private var marketplacePropertyRentalApi: MarketplacePropertyRentalApi = RetrofitClient.getClient().create(MarketplacePropertyRentalApi::class.java)

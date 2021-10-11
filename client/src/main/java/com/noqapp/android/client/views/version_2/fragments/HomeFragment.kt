@@ -159,7 +159,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.clMarketplace.setOnClickListener {
-            findNavController().navigate(R.id.market_place_fragment)
+            findNavController().navigate(R.id.property_rental_fragment)
         }
     }
 

@@ -109,7 +109,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var searchQuery: SearchQuery? = null
     private var checkIfAppIsSupported = true
 
-    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds =
+        CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -347,7 +348,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
-        activityHomeBinding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
+        activityHomeBinding.bottomNavigationView.setOnItemSelectedListener(this)
 
         navHostFragment.childFragmentManager.addOnBackStackChangedListener {
             navController.currentDestination?.id?.let {
