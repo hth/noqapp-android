@@ -23,7 +23,8 @@ import com.noqapp.android.common.pojos.PropertyRentalEntity
     JsonPurchaseOrderTypeConverter::class,
     TextToSpeechTypeConverter::class,
     RentalTypeConverter::class,
-    CoordinateConverter::class
+    CoordinateConverter::class,
+    StringToListTypeConverter::class
 )
 abstract class NoQueueAppDB : RoomDatabase() {
 

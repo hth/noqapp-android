@@ -1,16 +1,20 @@
 package com.noqapp.android.client.views.version_2.market_place
 
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.noqapp.android.client.model.response.api.MarketplacePropertyRentalApi
 import com.noqapp.android.client.model.response.api.SearchApi
 import com.noqapp.android.client.network.RetrofitClient
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.Constants
+import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonResponse
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
+import com.noqapp.android.common.pojos.PropertyRentalEntity
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -182,5 +186,13 @@ class PropertyRentalRepository {
                     catch(null)
                 }
             })
+    }
+
+    suspend fun insertPropertyRental(context: Context, propertyRentalEntity: PropertyRentalEntity?) {
+        NoQueueAppDB.dbInstance(context).propertyRentalDao().insertPropertyRental(propertyRentalEntity)
+    }
+
+    fun getPropertyRental(context: Context): LiveData<List<PropertyRentalEntity>> {
+        return NoQueueAppDB.dbInstance(context).propertyRentalDao().getPropertyRental()
     }
 }
