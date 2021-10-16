@@ -33,7 +33,6 @@ public class RetrofitClient {
                         .addHeader("x-r-mod", Build.MODEL + ", " + Build.BRAND + ", " + Build.MANUFACTURER)
                         .addHeader("x-r-lat", String.valueOf(AppInitialize.location.getLatitude()))
                         .addHeader("x-r-lng", String.valueOf(AppInitialize.location.getLongitude()))
-                        .addHeader("Content-Type", "multipart/form-data")
                         .addHeader("x-r-did", AppInitialize.getDeviceId() == null ? "" : AppInitialize.getDeviceId())
                         .addHeader("x-r-mail", AppInitialize.getMail())
                         .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
