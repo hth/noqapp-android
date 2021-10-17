@@ -122,8 +122,8 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                     fragmentPostPropertyRentalDetails.etLandmark.setText(propertyRentalEntity.landmark)
                     fragmentPostPropertyRentalDetails.etTownLocality.setText(propertyRentalEntity.town)
                     fragmentPostPropertyRentalDetails.etCityArea.setText(propertyRentalEntity.city)
-                    fragmentPostPropertyRentalDetails.etCarpetArea.setText(propertyRentalEntity.carpetArea?.toString())
-                    fragmentPostPropertyRentalDetails.etRentPerMonth.setText(propertyRentalEntity.price?.toString())
+                    fragmentPostPropertyRentalDetails.etCarpetArea.setText(propertyRentalEntity.carpetArea.toString())
+                    fragmentPostPropertyRentalDetails.etRentPerMonth.setText(propertyRentalEntity.price.toString())
                     fragmentPostPropertyRentalDetails.tvAvailableFrom.text =
                         propertyRentalEntity.availableFrom
 

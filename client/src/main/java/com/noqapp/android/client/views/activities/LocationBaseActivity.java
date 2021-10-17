@@ -75,7 +75,6 @@ public abstract class LocationBaseActivity extends BaseActivity {
         }
     }
 
-
     public void showSnackbar(int mainTextStringId, int actionStringId, View.OnClickListener listener) {
         Snackbar.make(findViewById(android.R.id.content), getString(mainTextStringId),
                 Snackbar.LENGTH_INDEFINITE)

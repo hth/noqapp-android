@@ -15,6 +15,6 @@ interface PropertyRentalDao {
     @Update
     suspend fun updatePropertyRental(propertyRentalEntity: PropertyRentalEntity)
 
-    @Delete
-    suspend fun deletePropertyRental(propertyRentalEntity: PropertyRentalEntity?)
+    @Query("DELETE FROM post_property_rental")
+    suspend fun deletePropertyRental()
 }

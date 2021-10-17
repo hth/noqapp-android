@@ -196,7 +196,7 @@ class PropertyRentalRepository {
         return NoQueueAppDB.dbInstance(context).propertyRentalDao().getPropertyRental()
     }
 
-    suspend fun deletePostsLocally(context: Context, propertyRentalEntity: PropertyRentalEntity?) {
-        NoQueueAppDB.dbInstance(context).propertyRentalDao().deletePropertyRental(propertyRentalEntity)
+    suspend fun deletePostsLocally(context: Context) {
+        NoQueueAppDB.dbInstance(context).propertyRentalDao().deletePropertyRental()
     }
 }
