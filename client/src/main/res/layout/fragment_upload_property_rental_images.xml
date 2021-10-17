@@ -5,11 +5,22 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/tv_upload_images_label"
+        style="@style/TextStyleNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/txt_upload_images"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_head"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@drawable/rounded_corner_cyan_background">
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corner_cyan_background"
+        app:layout_constraintTop_toBottomOf="@id/tv_upload_images_label">
 
         <ImageView
             android:id="@+id/iv_head_image"

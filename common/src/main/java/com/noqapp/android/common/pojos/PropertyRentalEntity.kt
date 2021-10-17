@@ -11,17 +11,17 @@ data class PropertyRentalEntity(
     @ColumnInfo(name = "id")
     var id: Int? = null,
     @ColumnInfo(name = "bed_room")
-    var bedroom: Int?,
+    var bedroom: Int,
     @ColumnInfo(name = "bath_room")
-    var bathroom: Int?,
+    var bathroom: Int,
     @ColumnInfo(name = "carpet_area")
-    var carpetArea: Int?,
+    var carpetArea: Int,
     @ColumnInfo(name = "rental_type")
-    var rentalType: RentalTypeEnum?,
+    var rentalType: RentalTypeEnum,
     @ColumnInfo(name = "coordinates")
-    var coordinates: List<Double>?,
+    var coordinates: List<Double>,
     @ColumnInfo(name = "price")
-    var price: Int?,
+    var price: Int,
     @ColumnInfo(name = "title")
     var title: String,
     @ColumnInfo(name = "description")

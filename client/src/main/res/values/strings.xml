@@ -586,7 +586,7 @@
     <string name="txt_price_range">Price range</string>
     <string name="slider_desc">"Price range "</string>
     <string name="txt_rental_type">Rental type</string>
-    <string name="txt_carpet_area"><![CDATA[Carpet area (In X<sup>2</sup>)]]></string>
+    <string name="txt_carpet_area"><![CDATA[Carpet area (sq. ft.)]]></string>
     <string name="txt_title">Title</string>
     <string name="txt_description">Description</string>
     <string name="txt_rent_per_month">Rent per Month</string>
@@ -607,4 +607,6 @@
     <string name="txt_2_bhk">2 bhk</string>
     <string name="txt_1_bhk">1 bhk</string>
     <string name="txt_1_rk">1 rk</string>
+    <string name="txt_upload_images">Upload Images</string>
+    <string name="txt_post_rental_progress_data">Posting property rental data, please wait ...</string>
 </resources>

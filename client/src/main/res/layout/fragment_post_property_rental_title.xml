@@ -44,6 +44,7 @@
         android:maxLines="8"
         android:minLines="8"
         android:padding="8dp"
+        android:gravity="start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_description_label" />

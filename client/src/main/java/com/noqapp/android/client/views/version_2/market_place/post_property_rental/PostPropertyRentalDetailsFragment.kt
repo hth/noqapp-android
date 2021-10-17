@@ -15,6 +15,8 @@ import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
+import android.graphics.Color
 import android.widget.DatePicker
 import java.util.*
 import org.joda.time.DateTimeFieldType.dayOfMonth
@@ -25,8 +27,15 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
 
     private lateinit var fragmentPostPropertyRentalDetails: FragmentPostPropertyRentalDetailsBinding
     private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
+    private lateinit var postPropertyRentalDetailsFragmentInteractionListener: PostPropertyRentalDetailsFragmentInteractionListener
 
     private var propertyRentalEntityVal: PropertyRentalEntity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is PostPropertyRentalDetailsFragmentInteractionListener)
+            postPropertyRentalDetailsFragmentInteractionListener = context
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,18 +59,19 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
     private fun observeData() {
         postPropertyRentalViewModel.getPropertyRental(requireContext())
             .observe(viewLifecycleOwner, {
-                val propertyRentalEntity = it[0]
-                propertyRentalEntityVal = propertyRentalEntity
-                fragmentPostPropertyRentalDetails.etAddress.setText(propertyRentalEntity.address)
-                fragmentPostPropertyRentalDetails.etLandmark.setText(propertyRentalEntity.landmark)
-                fragmentPostPropertyRentalDetails.etTownLocality.setText(propertyRentalEntity.town)
-                fragmentPostPropertyRentalDetails.etCityArea.setText(propertyRentalEntity.city)
-                fragmentPostPropertyRentalDetails.etCarpetArea.setText(propertyRentalEntity.carpetArea!!)
-                fragmentPostPropertyRentalDetails.etRentPerMonth.setText(propertyRentalEntity.price!!)
-                fragmentPostPropertyRentalDetails.tvAvailableFrom.text = propertyRentalEntity.availableFrom
+                if (it.isNotEmpty()) {
+                    val propertyRentalEntity = it[0]
+                    propertyRentalEntityVal = propertyRentalEntity
+                    fragmentPostPropertyRentalDetails.etAddress.setText(propertyRentalEntity.address)
+                    fragmentPostPropertyRentalDetails.etLandmark.setText(propertyRentalEntity.landmark)
+                    fragmentPostPropertyRentalDetails.etTownLocality.setText(propertyRentalEntity.town)
+                    fragmentPostPropertyRentalDetails.etCityArea.setText(propertyRentalEntity.city)
+                    fragmentPostPropertyRentalDetails.etCarpetArea.setText(propertyRentalEntity.carpetArea?.toString())
+                    fragmentPostPropertyRentalDetails.etRentPerMonth.setText(propertyRentalEntity.price?.toString())
+                    fragmentPostPropertyRentalDetails.tvAvailableFrom.text =
+                        propertyRentalEntity.availableFrom
 
-                propertyRentalEntity.rentalType?.let { rentalType ->
-                    when (rentalType) {
+                    when (propertyRentalEntity.rentalType) {
                         RentalTypeEnum.A -> {
                             fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(0)
                         }
@@ -75,16 +85,15 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
                             fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(3)
                         }
                     }
-                }
 
-                propertyRentalEntity.bedroom?.let { bedRoom ->
-                    selectBedroom(bedRoom)
-                }
+                    propertyRentalEntity.bedroom?.let { bedRoom ->
+                        selectBedroom(bedRoom)
+                    }
 
-                propertyRentalEntity.bathroom?.let { bathRoom ->
-                    selectBathRoom(bathRoom)
+                    propertyRentalEntity.bathroom?.let { bathRoom ->
+                        selectBathRoom(bathRoom)
+                    }
                 }
-
             })
     }
 
@@ -172,17 +181,43 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
 
     private fun setListeners() {
         fragmentPostPropertyRentalDetails.btnNext.setOnClickListener {
-            propertyRentalEntityVal?.address = fragmentPostPropertyRentalDetails.etAddress.text.toString()
-            propertyRentalEntityVal?.town = fragmentPostPropertyRentalDetails.etAddress.text.toString()
-            propertyRentalEntityVal?.city = fragmentPostPropertyRentalDetails.etAddress.text.toString()
-            propertyRentalEntityVal?.landmark = fragmentPostPropertyRentalDetails.etAddress.text.toString()
-            propertyRentalEntityVal?.carpetArea = fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt()
-            propertyRentalEntityVal?.price = fragmentPostPropertyRentalDetails.etRentPerMonth.text.toString().toInt()
-            propertyRentalEntityVal?.rentalType = fragmentPostPropertyRentalDetails.spinnerRentalType.selectedItem as RentalTypeEnum
-            propertyRentalEntityVal?.availableFrom = fragmentPostPropertyRentalDetails.tvAvailableFrom.text.toString()
+            propertyRentalEntityVal?.address =
+                fragmentPostPropertyRentalDetails.etAddress.text.toString()
+            propertyRentalEntityVal?.town =
+                fragmentPostPropertyRentalDetails.etAddress.text.toString()
+            propertyRentalEntityVal?.city =
+                fragmentPostPropertyRentalDetails.etAddress.text.toString()
+            propertyRentalEntityVal?.landmark =
+                fragmentPostPropertyRentalDetails.etAddress.text.toString()
+            propertyRentalEntityVal?.carpetArea =
+                fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt()
+            propertyRentalEntityVal?.price =
+                fragmentPostPropertyRentalDetails.etRentPerMonth.text.toString().toInt()
 
-            postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntityVal)
-            findNavController().navigate(R.id.fragment_post_property_rental_image)
+            when (fragmentPostPropertyRentalDetails.spinnerRentalType.selectedItemPosition) {
+                0 -> {
+                    propertyRentalEntityVal?.rentalType = RentalTypeEnum.A
+                }
+                1 -> {
+                    propertyRentalEntityVal?.rentalType = RentalTypeEnum.H
+                }
+                2 -> {
+                    propertyRentalEntityVal?.rentalType = RentalTypeEnum.R
+                }
+                3 -> {
+                    propertyRentalEntityVal?.rentalType = RentalTypeEnum.T
+                }
+            }
+
+            propertyRentalEntityVal?.availableFrom =
+                fragmentPostPropertyRentalDetails.tvAvailableFrom.text.toString()
+
+            postPropertyRentalViewModel.insertPropertyRental(
+                requireContext(),
+                propertyRentalEntityVal
+            )
+
+            postPropertyRentalDetailsFragmentInteractionListener.goToPostPropertyRentalImageUploadFragment()
         }
 
         fragmentPostPropertyRentalDetails.tv1Bhk.setOnClickListener {
@@ -206,23 +241,23 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
         }
 
         fragmentPostPropertyRentalDetails.tv1Bath.setOnClickListener {
-            selectBedroom(1)
+            selectBathRoom(1)
         }
 
         fragmentPostPropertyRentalDetails.tv2Bath.setOnClickListener {
-            selectBedroom(2)
+            selectBathRoom(2)
         }
 
         fragmentPostPropertyRentalDetails.tv3Bath.setOnClickListener {
-            selectBedroom(3)
+            selectBathRoom(3)
         }
 
         fragmentPostPropertyRentalDetails.tv4Bath.setOnClickListener {
-            selectBedroom(4)
+            selectBathRoom(4)
         }
 
         fragmentPostPropertyRentalDetails.tv5Bath.setOnClickListener {
-            selectBedroom(5)
+            selectBathRoom(5)
         }
 
         fragmentPostPropertyRentalDetails.tvAvailableFrom.setOnClickListener {
@@ -237,6 +272,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
                 month,
                 dayOfMonth
             )
+
             datePickerDialog.show()
         }
 
@@ -254,4 +290,8 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
 
         fragmentPostPropertyRentalDetails.tvAvailableFrom.text = selectedDate
     }
+}
+
+interface PostPropertyRentalDetailsFragmentInteractionListener {
+    fun goToPostPropertyRentalImageUploadFragment()
 }

@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.version_2.market_place.post_property_ren
 import android.Manifest
 import android.app.Activity
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -23,11 +24,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.BuildConfig
-import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentUploadPropertyRentalImagesBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.fragments.BaseFragment
@@ -48,6 +47,13 @@ class PostPropertyRentalImageFragment : BaseFragment() {
     private lateinit var propertyRentalImageAdapter: PropertyRentalImageAdapter
     private lateinit var propertyRentalEntity: PropertyRentalEntity
     private lateinit var currentPhotoPath: String
+    private lateinit var postPropertyRentalImageFragmentInteractionListener: PostPropertyRentalImageFragmentInteractionListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is PostPropertyRentalImageFragmentInteractionListener)
+            postPropertyRentalImageFragmentInteractionListener = context
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,8 +80,10 @@ class PostPropertyRentalImageFragment : BaseFragment() {
     private fun observeData() {
         postPropertyRentalViewModel.getPropertyRental(requireContext())
             .observe(viewLifecycleOwner, {
-                propertyRentalEntity = it[0]
-                propertyRentalImageAdapter.addAllImages(propertyRentalEntity.images)
+                if (it.isNotEmpty()) {
+                    propertyRentalEntity = it[0]
+                    propertyRentalImageAdapter.addAllImages(propertyRentalEntity.images)
+                }
             })
     }
 
@@ -91,7 +99,8 @@ class PostPropertyRentalImageFragment : BaseFragment() {
         fragmentPostPropertyRentalUpload.btnNext.setOnClickListener {
             propertyRentalEntity.images = propertyRentalImageAdapter.getAllImages()
             postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
-            findNavController().navigate(R.id.fragment_post_property_rental_review)
+
+            postPropertyRentalImageFragmentInteractionListener.goToPostPropertyRentalReviewFragment()
         }
 
         fragmentPostPropertyRentalUpload.ivAddPhoto.setOnClickListener {
@@ -332,4 +341,8 @@ class PostPropertyRentalImageFragment : BaseFragment() {
         return mimeType
     }
 
+}
+
+interface PostPropertyRentalImageFragmentInteractionListener {
+    fun goToPostPropertyRentalReviewFragment()
 }

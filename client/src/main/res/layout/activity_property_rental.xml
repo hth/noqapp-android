@@ -21,6 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
+                app:navigationIcon="@drawable/ic_back_new"
                 app:title="@string/txt_listing" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -28,7 +29,7 @@
             android:id="@+id/rv_market_place"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 

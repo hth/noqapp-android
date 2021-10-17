@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.databinding.ItemImagesBinding
+import com.squareup.picasso.Picasso
 import kotlin.math.max
 import kotlin.math.min
 
@@ -17,23 +18,7 @@ class PropertyRentalImageAdapter(
         RecyclerView.ViewHolder(itemImagesBinding.root) {
 
         fun bindImage(imagePath: String) {
-            // Get the dimensions of the View
-            val targetW: Int = itemImagesBinding.ivPropertyImage.width
-            val targetH: Int = itemImagesBinding.ivPropertyImage.height
-
-            val bmOptions = BitmapFactory.Options().apply {
-                inJustDecodeBounds = true
-                BitmapFactory.decodeFile(imagePath, this)
-                val photoW: Int = outWidth
-                val photoH: Int = outHeight
-                val scaleFactor: Int = max(1, min(photoW / targetW, photoH / targetH))
-                inJustDecodeBounds = false
-                inSampleSize = scaleFactor
-                inPurgeable = true
-            }
-            BitmapFactory.decodeFile(imagePath, bmOptions)?.also { bitmap ->
-                itemImagesBinding.ivPropertyImage.setImageBitmap(bitmap)
-            }
+            Picasso.get().load(imagePath).into(itemImagesBinding.ivPropertyImage)
         }
 
         init {

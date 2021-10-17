@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.vision.face.Landmark
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
@@ -54,13 +55,16 @@ class PostPropertyRentalViewModel : ViewModel() {
     }
 
     fun postMarketPlace(
-        title: String?,
+        title: String,
+        description: String,
         bathRoom: Int,
         bedroom: Int,
         carpetArea: Int,
         town: String?,
         city: String?,
         address: String?,
+        landmark: String?,
+        availableFrom: String?,
         rentalTypeEnum: RentalTypeEnum,
         latitude: Double,
         longitude: Double
@@ -72,13 +76,14 @@ class PostPropertyRentalViewModel : ViewModel() {
         jsonPropertyRental.town = town
         jsonPropertyRental.city = city
         jsonPropertyRental.address = address
-        //        jsonPropertyRental.publishUntil = Date() -- Server Managed
         jsonPropertyRental.rentalType = rentalTypeEnum
         jsonPropertyRental.rentalAvailableDay = SDF_YYYY_MM_DD.format(Date())
         jsonPropertyRental.businessType = BusinessTypeEnum.PR
         jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
         jsonPropertyRental.title = title
-        jsonPropertyRental.description = "This is test data"
+        jsonPropertyRental.description = description
+        jsonPropertyRental.landmark = landmark
+        jsonPropertyRental.rentalAvailableDay = availableFrom
         Log.i(tag, "Post $jsonPropertyRental")
 
         propertyRentalRepository.postMarketPlace(
