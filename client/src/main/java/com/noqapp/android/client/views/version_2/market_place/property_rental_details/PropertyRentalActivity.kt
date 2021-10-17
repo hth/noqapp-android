@@ -8,13 +8,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityPropertyRentalBinding
-import com.noqapp.android.client.views.activities.BaseActivity
+import com.noqapp.android.client.presenter.beans.body.SearchQuery
+import com.noqapp.android.client.utils.AppUtils
+import com.noqapp.android.client.views.activities.LocationBaseActivity
 import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
 import com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostMarketplacePropertyRentalActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class PropertyRentalActivity : BaseActivity() {
+class PropertyRentalActivity : LocationBaseActivity() {
 
     private lateinit var activityPropertyRentalBinding: ActivityPropertyRentalBinding
     private lateinit var propertyRentalAdapter: PropertyRentalAdapter
@@ -40,6 +42,45 @@ class PropertyRentalActivity : BaseActivity() {
         observeData()
     }
 
+    override fun displayAddressOutput(
+        addressOutput: String?,
+        countryShortName: String?,
+        area: String?,
+        town: String?,
+        district: String?,
+        state: String?,
+        stateShortName: String?,
+        latitude: Double?,
+        longitude: Double?
+    ) {
+        val searchStoreQuery = SearchQuery()
+        area?.let {
+            searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
+        }
+        latitude?.let {
+            searchStoreQuery.latitude = it.toString()
+        }
+        longitude?.let {
+            searchStoreQuery.longitude = it.toString()
+        }
+
+        searchStoreQuery.latitude = latitude.toString()
+        searchStoreQuery.longitude = longitude.toString()
+
+        searchStoreQuery.filters = ""
+        searchStoreQuery.scrollId = ""
+
+        postPropertyRentalViewModel.searchStoreQueryLiveData.value = searchStoreQuery
+    }
+
+    override fun locationPermissionRequired() {
+        activityPropertyRentalBinding.clLocationAccessRequired.visibility = View.VISIBLE
+    }
+
+    override fun locationPermissionGranted() {
+        activityPropertyRentalBinding.clLocationAccessRequired.visibility = View.GONE
+    }
+
     private fun setListeners() {
         activityPropertyRentalBinding.fabPost.setOnClickListener {
             startActivity(
@@ -56,6 +97,9 @@ class PropertyRentalActivity : BaseActivity() {
             activityPropertyRentalBinding.shimmerLayout.stopShimmer()
             activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
             activityPropertyRentalBinding.rvMarketPlace.visibility = View.VISIBLE
+            if (it.marketplaceElastics.isEmpty()) {
+                showSnackbar(R.string.txt_no_data_found)
+            }
             it?.let { marketPlaceElasticList ->
                 propertyRentalAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
             }
