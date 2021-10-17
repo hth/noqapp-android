@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.version_2.market_place.post_property_rental
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,20 +17,57 @@ import com.noqapp.android.common.pojos.PropertyRentalEntity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.widget.DatePicker
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.noqapp.android.client.utils.Constants
+import com.noqapp.android.client.views.activities.AddAddressActivity
+import com.noqapp.android.common.beans.JsonUserAddress
 import java.util.*
 import org.joda.time.DateTimeFieldType.dayOfMonth
 import java.text.DateFormat
 
 
-class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
+class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val jsonUserAddress =
+                    intent?.getSerializableExtra(Constants.JSON_USER_ADDRESS) as JsonUserAddress
+                this.jsonUserAddress = jsonUserAddress
+                if (jsonUserAddress.address != null || jsonUserAddress.address != "")
+                    fragmentPostPropertyRentalDetails.tvAddress.text =
+                        jsonUserAddress.address
+                fragmentPostPropertyRentalDetails.etCityArea.setText(jsonUserAddress.area.toString())
+                fragmentPostPropertyRentalDetails.etTownLocality.setText(jsonUserAddress.town.toString())
+
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            jsonUserAddress.latitude.toDouble(),
+                            jsonUserAddress.longitude.toDouble()
+                        ), 16.0f
+                    )
+                )
+
+            }
+        }
 
     private lateinit var fragmentPostPropertyRentalDetails: FragmentPostPropertyRentalDetailsBinding
     private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
     private lateinit var postPropertyRentalDetailsFragmentInteractionListener: PostPropertyRentalDetailsFragmentInteractionListener
-
+    private var jsonUserAddress: JsonUserAddress? = null
     private var propertyRentalEntityVal: PropertyRentalEntity? = null
+    private lateinit var googleMap: GoogleMap
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -54,6 +92,9 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
         view.setOnTouchListener { _, _ -> true }
         observeData()
         setListeners()
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
     }
 
     private fun observeData() {
@@ -62,7 +103,22 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
                 if (it.isNotEmpty()) {
                     val propertyRentalEntity = it[0]
                     propertyRentalEntityVal = propertyRentalEntity
-                    fragmentPostPropertyRentalDetails.etAddress.setText(propertyRentalEntity.address)
+
+                    if (propertyRentalEntity.address != null || propertyRentalEntity.address != "")
+                        fragmentPostPropertyRentalDetails.tvAddress.text =
+                            propertyRentalEntity.address
+
+                    if (propertyRentalEntity.coordinates[0] != 0.0) {
+                        googleMap.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                LatLng(
+                                    propertyRentalEntity.coordinates[0],
+                                    propertyRentalEntity.coordinates[1]
+                                ), 16.0f
+                            )
+                        )
+                    }
+
                     fragmentPostPropertyRentalDetails.etLandmark.setText(propertyRentalEntity.landmark)
                     fragmentPostPropertyRentalDetails.etTownLocality.setText(propertyRentalEntity.town)
                     fragmentPostPropertyRentalDetails.etCityArea.setText(propertyRentalEntity.city)
@@ -177,17 +233,22 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
     private fun setListeners() {
         fragmentPostPropertyRentalDetails.btnNext.setOnClickListener {
             propertyRentalEntityVal?.address =
-                fragmentPostPropertyRentalDetails.etAddress.text.toString()
+                fragmentPostPropertyRentalDetails.tvAddress.text.toString()
             propertyRentalEntityVal?.town =
-                fragmentPostPropertyRentalDetails.etAddress.text.toString()
+                fragmentPostPropertyRentalDetails.etTownLocality.text.toString()
             propertyRentalEntityVal?.city =
-                fragmentPostPropertyRentalDetails.etAddress.text.toString()
+                fragmentPostPropertyRentalDetails.etCityArea.text.toString()
             propertyRentalEntityVal?.landmark =
-                fragmentPostPropertyRentalDetails.etAddress.text.toString()
+                fragmentPostPropertyRentalDetails.etLandmark.text.toString()
             propertyRentalEntityVal?.carpetArea =
                 fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt()
             propertyRentalEntityVal?.price =
                 fragmentPostPropertyRentalDetails.etRentPerMonth.text.toString().toInt()
+
+            jsonUserAddress?.let { jua ->
+                propertyRentalEntityVal?.coordinates =
+                    listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
+            }
 
             when (fragmentPostPropertyRentalDetails.spinnerRentalType.selectedItemPosition) {
                 0 -> {
@@ -255,6 +316,27 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
             selectBathRoom(5)
         }
 
+        fragmentPostPropertyRentalDetails.tvAddress.setOnClickListener {
+            val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
+                putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
+            }
+            startForResult.launch(setAddressIntent)
+        }
+
+        fragmentPostPropertyRentalDetails.etTownLocality.setOnClickListener {
+            val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
+                putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
+            }
+            startForResult.launch(setAddressIntent)
+        }
+
+        fragmentPostPropertyRentalDetails.etCityArea.setOnClickListener {
+            val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
+                putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
+            }
+            startForResult.launch(setAddressIntent)
+        }
+
         fragmentPostPropertyRentalDetails.tvAvailableFrom.setOnClickListener {
             val mCalendar: Calendar = Calendar.getInstance()
             val year: Int = mCalendar.get(Calendar.YEAR)
@@ -279,20 +361,28 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
         mCalendar[Calendar.YEAR] = year
         mCalendar[Calendar.MONTH] = month
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        var mon = ""
-        var day = ""
 
-        if (month < 10) {
-            mon = "0$month";
+        val mon = if (month < 10) {
+            "0$month"
+        } else {
+            month.toString()
         }
 
-        if (dayOfMonth < 10) {
-            day = "0$dayOfMonth";
+        val day = if (dayOfMonth < 10) {
+            "0$dayOfMonth"
+        } else {
+            dayOfMonth.toString()
         }
 
-        val selectedDate = "$day-$mon-$year"
+        val selectedDate = "$year-$mon-$day"
 
         fragmentPostPropertyRentalDetails.tvAvailableFrom.text = selectedDate
+    }
+
+    override fun onMapReady(gm: GoogleMap?) {
+        gm?.let {
+            googleMap = it
+        }
     }
 }
 

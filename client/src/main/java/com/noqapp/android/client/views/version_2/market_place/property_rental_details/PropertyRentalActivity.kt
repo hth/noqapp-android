@@ -19,14 +19,14 @@ class PropertyRentalActivity : BaseActivity() {
     private lateinit var activityPropertyRentalBinding: ActivityPropertyRentalBinding
     private lateinit var propertyRentalAdapter: PropertyRentalAdapter
 
-    private lateinit var marketPlaceViewModel: PostPropertyRentalViewModel
+    private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityPropertyRentalBinding =
             ActivityPropertyRentalBinding.inflate(LayoutInflater.from(this))
         setContentView(activityPropertyRentalBinding.root)
-        marketPlaceViewModel =
+        postPropertyRentalViewModel =
             ViewModelProvider(this)[PostPropertyRentalViewModel::class.java]
 
         setSupportActionBar(activityPropertyRentalBinding.toolbar)
@@ -52,7 +52,7 @@ class PropertyRentalActivity : BaseActivity() {
     }
 
     private fun observeData() {
-        marketPlaceViewModel.marketplaceElasticListLiveData.observe(this, {
+        postPropertyRentalViewModel.marketplaceElasticListLiveData.observe(this, {
             activityPropertyRentalBinding.shimmerLayout.stopShimmer()
             activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
             activityPropertyRentalBinding.rvMarketPlace.visibility = View.VISIBLE
@@ -61,25 +61,25 @@ class PropertyRentalActivity : BaseActivity() {
             }
         })
 
-        marketPlaceViewModel.authenticationError.observe(this, {
+        postPropertyRentalViewModel.authenticationError.observe(this, {
             if (it) {
                 super.authenticationFailure()
                 activityPropertyRentalBinding.shimmerLayout.stopShimmer()
                 activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
-                marketPlaceViewModel.authenticationError.value = false
+                postPropertyRentalViewModel.authenticationError.value = false
             }
         })
 
-        marketPlaceViewModel.errorEncounteredJsonLiveData.observe(this, {
+        postPropertyRentalViewModel.errorEncounteredJsonLiveData.observe(this, {
             activityPropertyRentalBinding.shimmerLayout.stopShimmer()
             activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
             super.responseErrorPresenter(it)
         })
 
-        marketPlaceViewModel.searchStoreQueryLiveData.observe(this, {
+        postPropertyRentalViewModel.searchStoreQueryLiveData.observe(this, {
             activityPropertyRentalBinding.shimmerLayout.startShimmer()
             it.searchedOnBusinessType = BusinessTypeEnum.PR
-            marketPlaceViewModel.getMarketPlace(it)
+            postPropertyRentalViewModel.getMarketPlace(it)
         })
     }
 
@@ -96,11 +96,11 @@ class PropertyRentalActivity : BaseActivity() {
         marketPlace?.let {
             when (view.id) {
                 R.id.btn_view_details -> {
-                    marketPlaceViewModel.viewDetails(it.id)
+                    postPropertyRentalViewModel.viewDetails(it.id)
                     // startActivity(Intent(this, MarketPlaceDetailsActivity::class.java))
                 }
                 R.id.btn_call_agent -> {
-                    marketPlaceViewModel.initiateContact(it.id)
+                    postPropertyRentalViewModel.initiateContact(it.id)
                     // startActivity(Intent(this, MarketPlaceDetailsActivity::class.java))
                 }
             }

@@ -609,4 +609,7 @@
     <string name="txt_1_rk">1 rk</string>
     <string name="txt_upload_images">Upload Images</string>
     <string name="txt_post_rental_progress_data">Posting property rental data, please wait ...</string>
+    <string name="txt_images">Images</string>
+    <string name="txt_set_address">Set Address</string>
+    <string name="txt_select_address">Select Address</string>
 </resources>

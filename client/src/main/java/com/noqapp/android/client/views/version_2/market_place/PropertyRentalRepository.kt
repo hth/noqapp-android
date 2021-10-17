@@ -195,4 +195,8 @@ class PropertyRentalRepository {
     fun getPropertyRental(context: Context): LiveData<List<PropertyRentalEntity>> {
         return NoQueueAppDB.dbInstance(context).propertyRentalDao().getPropertyRental()
     }
+
+    suspend fun deletePostsLocally(context: Context, propertyRentalEntity: PropertyRentalEntity?) {
+        NoQueueAppDB.dbInstance(context).propertyRentalDao().deletePropertyRental(propertyRentalEntity)
+    }
 }

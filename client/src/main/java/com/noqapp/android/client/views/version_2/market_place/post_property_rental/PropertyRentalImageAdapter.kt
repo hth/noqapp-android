@@ -1,13 +1,10 @@
 package com.noqapp.android.client.views.version_2.market_place.post_property_rental
 
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.databinding.ItemImagesBinding
 import com.squareup.picasso.Picasso
-import kotlin.math.max
-import kotlin.math.min
 
 class PropertyRentalImageAdapter(
     val propertyRentalImages: MutableList<String>,
@@ -65,6 +62,7 @@ class PropertyRentalImageAdapter(
         images?.let {
             propertyRentalImages.addAll(images)
         }
+        notifyDataSetChanged()
     }
 
 }

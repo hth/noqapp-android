@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalReviewBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
@@ -25,6 +27,8 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
 
     private lateinit var fragmentPostPropertyRentalReview: FragmentPostPropertyRentalReviewBinding
     private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
+    private lateinit var propertyRentalImageAdapter: PropertyRentalImageAdapter
+
     private var propertyRentalEntity: PropertyRentalEntity? = null
     private var imageUploadCount = -1
 
@@ -43,10 +47,17 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.setOnTouchListener { _, _ -> true }
-
+        setUpRecyclerView()
         observeData()
-
         setListeners()
+    }
+
+    private fun setUpRecyclerView() {
+        propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {}
+        fragmentPostPropertyRentalReview.rvSelectedImages.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        fragmentPostPropertyRentalReview.rvSelectedImages.setHasFixedSize(true)
+        fragmentPostPropertyRentalReview.rvSelectedImages.adapter = propertyRentalImageAdapter
     }
 
     private fun setListeners() {
@@ -100,6 +111,8 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                         propertyRentalEntity?.landmark
                     fragmentPostPropertyRentalReview.tvRentalAddress.text =
                         propertyRentalEntity?.address
+
+                    propertyRentalImageAdapter.addAllImages(propertyRentalEntity?.images)
                 }
             })
 
@@ -118,6 +131,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
             propertyRentalEntity?.let { pre ->
                 if (imageUploadCount == pre.images?.size) {
                     fragmentPostPropertyRentalReview.clProgressBar.visibility = View.GONE
+                    postPropertyRentalViewModel.deletePostsLocally(requireContext(), pre)
                     activity?.finish()
                 }
             }

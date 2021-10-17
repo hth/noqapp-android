@@ -143,7 +143,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
         }
     }
 
-    fun checkAndRequestPermissions(context: Activity): Boolean {
+    private fun checkAndRequestPermissions(context: Activity): Boolean {
         val wExtStorePermission: Int = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.WRITE_EXTERNAL_STORAGE

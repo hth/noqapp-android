@@ -226,6 +226,33 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_landmark_label"
                 tools:text="House" />
 
+            <View
+                android:id="@+id/view_address"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/color_divider"
+                app:layout_constraintTop_toBottomOf="@id/tv_landmark"
+                app:layout_constraintWidth_percent="0.5" />
+
+            <TextView
+                android:id="@+id/tv_images_label"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/txt_images"
+                app:layout_constraintTop_toBottomOf="@id/view_address" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_selected_images"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_images_label" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_proceed"
                 android:layout_width="match_parent"
@@ -238,7 +265,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:backgroundTint="@null"
-                app:layout_constraintTop_toBottomOf="@id/tv_landmark" />
+                app:layout_constraintTop_toBottomOf="@id/rv_selected_images" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

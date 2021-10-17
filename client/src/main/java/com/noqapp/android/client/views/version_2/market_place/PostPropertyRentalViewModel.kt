@@ -167,4 +167,10 @@ class PostPropertyRentalViewModel : ViewModel() {
     fun getPropertyRental(context: Context): LiveData<List<PropertyRentalEntity>> {
         return propertyRentalRepository.getPropertyRental(context)
     }
+
+    fun deletePostsLocally(context: Context, propertyRentalEntity: PropertyRentalEntity?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            propertyRentalRepository.deletePostsLocally(context, propertyRentalEntity)
+        }
+    }
 }

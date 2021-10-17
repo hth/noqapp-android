@@ -45,6 +45,9 @@ public class Constants extends BaseConstants{
     public static final String COUNTRY_CODE = "IN";
     public static final String MARKET_PLACE_ID = "market_place";
     public static final Integer REQUEST_ID_MULTIPLE_PERMISSIONS = 1001;
+    public static final String REQUEST_ADDRESS_FROM = "request_address_key";
+
+    public static final String POST_PROPERTY_RENTAL = "post_property_rental";
 
     /** Distance in KMs. */
     public static final int VALID_DOCTOR_STORE_DISTANCE_FOR_TOKEN = 150;
