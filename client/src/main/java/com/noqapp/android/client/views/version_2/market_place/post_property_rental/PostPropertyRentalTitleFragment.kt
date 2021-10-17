@@ -11,7 +11,6 @@ import com.noqapp.android.client.databinding.FragmentPostPropertyRentalTitleBind
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
 import com.noqapp.android.common.pojos.PropertyRentalEntity
-import javax.inject.Inject
 
 class PostPropertyRentalTitleFragment : BaseFragment() {
 
@@ -23,10 +22,8 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostPropertyRentalTitle =
-            FragmentPostPropertyRentalTitleBinding.inflate(inflater, container, false)
-        postPropertyRentalViewModel =
-            ViewModelProvider(requireActivity())[PostPropertyRentalViewModel::class.java]
+        fragmentPostPropertyRentalTitle = FragmentPostPropertyRentalTitleBinding.inflate(inflater, container, false)
+        postPropertyRentalViewModel = ViewModelProvider(requireActivity())[PostPropertyRentalViewModel::class.java]
         return fragmentPostPropertyRentalTitle.root
     }
 
@@ -55,7 +52,7 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
 
     private fun insertPropertyRentalInDb() {
         val propertyRentalEntity = PropertyRentalEntity(
-            1,
+            null,
             null,
             null,
             null,
