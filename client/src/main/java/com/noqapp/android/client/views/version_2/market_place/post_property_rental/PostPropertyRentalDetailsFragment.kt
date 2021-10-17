@@ -86,13 +86,8 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
                         }
                     }
 
-                    propertyRentalEntity.bedroom?.let { bedRoom ->
-                        selectBedroom(bedRoom)
-                    }
-
-                    propertyRentalEntity.bathroom?.let { bathRoom ->
-                        selectBathRoom(bathRoom)
-                    }
+                    selectBedroom(propertyRentalEntity.bedroom)
+                    selectBathRoom(propertyRentalEntity.bathroom)
                 }
             })
     }
@@ -284,9 +279,18 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener {
         mCalendar[Calendar.YEAR] = year
         mCalendar[Calendar.MONTH] = month
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        var mon = ""
+        var day = ""
 
-        val selectedDate: String =
-            DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.time)
+        if (month < 10) {
+            mon = "0$month";
+        }
+
+        if (dayOfMonth < 10) {
+            day = "0$dayOfMonth";
+        }
+
+        val selectedDate = "$day-$mon-$year"
 
         fragmentPostPropertyRentalDetails.tvAvailableFrom.text = selectedDate
     }

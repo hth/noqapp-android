@@ -92,7 +92,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                     fragmentPostPropertyRentalReview.tvRentPerMonth.text =
                         propertyRentalEntity?.price.toString()
                     fragmentPostPropertyRentalReview.tvRentalType.text =
-                        propertyRentalEntity?.rentalType?.name
+                        propertyRentalEntity?.rentalType?.description
                     fragmentPostPropertyRentalReview.tvTownLocality.text =
                         propertyRentalEntity?.town
                     fragmentPostPropertyRentalReview.tvCityArea.text = propertyRentalEntity?.city

@@ -27,14 +27,13 @@ class PostMarketplacePropertyRentalActivity : LocationBaseActivity(),
         latitude: Double?,
         longitude: Double?
     ) {
+
     }
 
     override fun locationPermissionRequired() {
-
     }
 
     override fun locationPermissionGranted() {
-
     }
 
     private lateinit var activityPostMarketPlaceBinding: ActivityPostMarketPlaceBinding
@@ -46,6 +45,12 @@ class PostMarketplacePropertyRentalActivity : LocationBaseActivity(),
         activityPostMarketPlaceBinding =
             ActivityPostMarketPlaceBinding.inflate(LayoutInflater.from(this))
         setContentView(activityPostMarketPlaceBinding.root)
+
+        setSupportActionBar(activityPostMarketPlaceBinding.toolbar)
+
+        activityPostMarketPlaceBinding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
 
         setUpNavigation()
 

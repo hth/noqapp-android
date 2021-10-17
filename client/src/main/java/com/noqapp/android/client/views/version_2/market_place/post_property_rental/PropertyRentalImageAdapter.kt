@@ -18,7 +18,7 @@ class PropertyRentalImageAdapter(
         RecyclerView.ViewHolder(itemImagesBinding.root) {
 
         fun bindImage(imagePath: String) {
-            Picasso.get().load(imagePath).into(itemImagesBinding.ivPropertyImage)
+            Picasso.get().load("file://$imagePath").into(itemImagesBinding.ivPropertyImage)
         }
 
         init {
