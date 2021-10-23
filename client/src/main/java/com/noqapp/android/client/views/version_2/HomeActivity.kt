@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.common.cache.CacheBuilder
@@ -40,6 +41,7 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
 import com.noqapp.android.client.views.customviews.BadgeDrawable
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
+import com.noqapp.android.client.views.version_2.market_place.property_rental_details.PropertyRentalActivity
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.beans.ErrorEncounteredJson
@@ -109,7 +111,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var searchQuery: SearchQuery? = null
     private var checkIfAppIsSupported = true
 
-    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds =
+        CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -347,7 +350,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
-        activityHomeBinding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
+        activityHomeBinding.bottomNavigationView.setOnItemSelectedListener(this)
 
         navHostFragment.childFragmentManager.addOnBackStackChangedListener {
             navController.currentDestination?.id?.let {
@@ -860,6 +863,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         } catch (e: java.lang.Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
         }
+    }
+
+    override fun goToPropertyRentalFragment() {
+        startActivity(Intent(this, PropertyRentalActivity::class.java))
     }
 
     private fun callReviewActivity(

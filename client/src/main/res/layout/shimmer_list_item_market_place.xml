@@ -80,7 +80,7 @@
                     android:id="@+id/btn_allow_location_access"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/txt_call_agent"
+                    android:text="@string/txt_interested"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"

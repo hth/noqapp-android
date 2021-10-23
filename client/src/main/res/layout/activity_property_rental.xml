@@ -21,17 +21,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
-                app:title="@string/txt_listing"/>
+                app:navigationIcon="@drawable/ic_back_new"
+                app:title="@string/txt_listing" />
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_market_place"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_layout"
@@ -60,6 +60,17 @@
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_post"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/add_address"
+        app:backgroundTint="@color/theme_color_dark"
+        app:fabCustomSize="60dp"
+        app:maxImageSize="24dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_location_access_required"
@@ -118,8 +129,9 @@
                     android:id="@+id/btn_allow_location_access"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/txt_location_enable_button"
                     android:textColor="@color/white"
+                    android:minHeight="64dp"
+                    android:text="@string/txt_location_enable_button"
                     app:backgroundTint="@color/theme_color_dark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -159,7 +159,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.clMarketplace.setOnClickListener {
-            findNavController().navigate(R.id.market_place_fragment)
+            homeFragmentInteractionListener.goToPropertyRentalFragment()
         }
     }
 
@@ -450,4 +450,5 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 interface HomeFragmentInteractionListener {
     fun makeAnnouncement(jsonTextToSpeeches: List<JsonTextToSpeech?>, msgId: String)
     fun callReviewActivity(codeQr: String, token: String)
+    fun goToPropertyRentalFragment()
 }

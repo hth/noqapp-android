@@ -5,11 +5,22 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/tv_upload_images_label"
+        style="@style/TextStyleNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/txt_upload_images"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_head"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@drawable/rounded_corner_cyan_background">
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corner_cyan_background"
+        app:layout_constraintTop_toBottomOf="@id/tv_upload_images_label">
 
         <ImageView
             android:id="@+id/iv_head_image"
@@ -21,7 +32,7 @@
             android:id="@+id/iv_add_photo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_baseline_add_a_photo_24"
+            android:src="@drawable/ic_market_place_upload_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,17 +49,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_head" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_next"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_next"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/btn_bg_enable"
-        android:gravity="center"
-        android:text="@string/txt_next"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg_enable">
+
+            <TextView
+                android:id="@+id/tv_next"
+                android:layout_width="wrap_content"
+                android:layout_height="54dp"
+                android:drawableStart="@drawable/ic_market_place_arrow_next"
+                android:drawablePadding="24dp"
+                android:gravity="center"
+                android:text="@string/txt_next"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

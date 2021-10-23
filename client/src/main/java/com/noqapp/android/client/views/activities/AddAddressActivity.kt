@@ -44,12 +44,24 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     private var wasCameraChangeManual = false
     private var isAnimatingCamera = false
     private val queryHandler = Handler(Looper.getMainLooper())
+    private var from: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addAddressBinding = ActivityAddAddressBinding.inflate(LayoutInflater.from(this))
         setContentView(addAddressBinding.root)
         setSupportActionBar(addAddressBinding.toolbar)
+
+        intent?.let {
+            from = it.getStringExtra(Constants.REQUEST_ADDRESS_FROM)
+        }
+
+        from?.let {
+            if (it == Constants.POST_PROPERTY_RENTAL) {
+                addAddressBinding.toolbar.title = getString(R.string.txt_set_address)
+                addAddressBinding.btnAddAddress.text = getString(R.string.txt_set_address)
+            }
+        }
 
         addAddressBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
@@ -113,12 +125,29 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
             .setLatitude(latitude.toString())
             .setLongitude(longitude.toString())
 
-        showProgress()
-        clientProfileApiImpl.addProfileAddress(
-            UserUtils.getEmail(),
-            UserUtils.getAuth(),
-            jsonUserAddress
-        )
+        from?.let {
+            if (it == Constants.POST_PROPERTY_RENTAL) {
+                val intent = Intent().apply {
+                    this.putExtra(Constants.JSON_USER_ADDRESS, jsonUserAddress)
+                }
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            } else {
+                showProgress()
+                clientProfileApiImpl.addProfileAddress(
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(),
+                    jsonUserAddress
+                )
+            }
+        } ?: run {
+            showProgress()
+            clientProfileApiImpl.addProfileAddress(
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
+                jsonUserAddress
+            )
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {

@@ -1,24 +1,28 @@
 package com.noqapp.android.client.views.version_2.market_place
 
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.noqapp.android.client.model.response.api.MarketplacePropertyRentalApi
 import com.noqapp.android.client.model.response.api.SearchApi
 import com.noqapp.android.client.network.RetrofitClient
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.Constants
+import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonResponse
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
+import com.noqapp.android.common.pojos.PropertyRentalEntity
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MarketplacePropertyRentalRepository {
-    private val TAG = MarketplacePropertyRentalRepository::class.java.simpleName
+class PropertyRentalRepository {
+    private val TAG = PropertyRentalRepository::class.java.simpleName
 
     private var searchApi: SearchApi = RetrofitClient.getClient().create(SearchApi::class.java)
     private var marketplacePropertyRentalApi: MarketplacePropertyRentalApi = RetrofitClient.getClient().create(MarketplacePropertyRentalApi::class.java)
@@ -182,5 +186,17 @@ class MarketplacePropertyRentalRepository {
                     catch(null)
                 }
             })
+    }
+
+    suspend fun insertPropertyRental(context: Context, propertyRentalEntity: PropertyRentalEntity?) {
+        NoQueueAppDB.dbInstance(context).propertyRentalDao().insertPropertyRental(propertyRentalEntity)
+    }
+
+    fun getPropertyRental(context: Context): LiveData<List<PropertyRentalEntity>> {
+        return NoQueueAppDB.dbInstance(context).propertyRentalDao().getPropertyRental()
+    }
+
+    suspend fun deletePostsLocally(context: Context) {
+        NoQueueAppDB.dbInstance(context).propertyRentalDao().deletePropertyRental()
     }
 }

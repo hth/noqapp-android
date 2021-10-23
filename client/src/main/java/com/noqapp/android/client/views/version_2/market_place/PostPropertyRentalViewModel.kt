@@ -1,8 +1,11 @@
 package com.noqapp.android.client.views.version_2.market_place
 
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
@@ -12,13 +15,16 @@ import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
+import com.noqapp.android.common.pojos.PropertyRentalEntity
 import com.noqapp.android.common.utils.CommonHelper.SDF_YYYY_MM_DD
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.util.*
 
-class MarketplacePropertyRentalViewModel : ViewModel() {
-    val tag: String = MarketplacePropertyRentalViewModel::class.java.simpleName
+class PostPropertyRentalViewModel : ViewModel() {
+    val tag: String = PostPropertyRentalViewModel::class.java.simpleName
 
     val marketplaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
     val postMarketPlaceElasticLiveData = MutableLiveData<MarketplaceElastic>()
@@ -27,11 +33,11 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
     val postImagesLiveData = MutableLiveData<JsonResponse>()
 
-    private var marketRepository: MarketplacePropertyRentalRepository = MarketplacePropertyRentalRepository()
+    private var propertyRentalRepository: PropertyRentalRepository = PropertyRentalRepository()
 
     fun getMarketPlace(searchQuery: SearchQuery) {
         Log.i(tag, "Search $searchQuery");
-        marketRepository.getMarketPlace(
+        propertyRentalRepository.getMarketPlace(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -48,13 +54,17 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
     }
 
     fun postMarketPlace(
-        title: String?,
+        productPrice: Int,
+        title: String,
+        description: String,
         bathRoom: Int,
         bedroom: Int,
         carpetArea: Int,
         town: String?,
         city: String?,
         address: String?,
+        landmark: String?,
+        availableFrom: String?,
         rentalTypeEnum: RentalTypeEnum,
         latitude: Double,
         longitude: Double
@@ -66,16 +76,18 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
         jsonPropertyRental.town = town
         jsonPropertyRental.city = city
         jsonPropertyRental.address = address
-        //        jsonPropertyRental.publishUntil = Date() -- Server Managed
         jsonPropertyRental.rentalType = rentalTypeEnum
         jsonPropertyRental.rentalAvailableDay = SDF_YYYY_MM_DD.format(Date())
         jsonPropertyRental.businessType = BusinessTypeEnum.PR
         jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
+        jsonPropertyRental.productPrice = productPrice
         jsonPropertyRental.title = title
-        jsonPropertyRental.description = "This is test data"
+        jsonPropertyRental.description = description
+        jsonPropertyRental.landmark = landmark
+        jsonPropertyRental.rentalAvailableDay = availableFrom
         Log.i(tag, "Post $jsonPropertyRental")
 
-        marketRepository.postMarketPlace(
+        propertyRentalRepository.postMarketPlace(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -94,7 +106,7 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
     fun initiateContact(id: String) {
         val jsonMarketPlace = JsonPropertyRental()
         jsonMarketPlace.id = id
-        marketRepository.initiateCall(
+        propertyRentalRepository.initiateCall(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -113,7 +125,7 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
     fun viewDetails(id: String) {
         val jsonMarketPlace = JsonPropertyRental()
         jsonMarketPlace.id = id
-        marketRepository.viewDetails(
+        propertyRentalRepository.viewDetails(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -130,7 +142,7 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
     }
 
     fun postImages(multipartFile: MultipartBody.Part, postId: RequestBody) {
-        marketRepository.postMarketPlaceImages(
+        propertyRentalRepository.postMarketPlaceImages(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -145,5 +157,21 @@ class MarketplacePropertyRentalViewModel : ViewModel() {
             {
                 authenticationError.postValue(true)
             })
+    }
+
+    fun insertPropertyRental(context: Context, propertyRentalEntity: PropertyRentalEntity?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            propertyRentalRepository.insertPropertyRental(context, propertyRentalEntity)
+        }
+    }
+
+    fun getPropertyRental(context: Context): LiveData<List<PropertyRentalEntity>> {
+        return propertyRentalRepository.getPropertyRental(context)
+    }
+
+    fun deletePostsLocally(context: Context) {
+        viewModelScope.launch(Dispatchers.IO) {
+            propertyRentalRepository.deletePostsLocally(context)
+        }
     }
 }

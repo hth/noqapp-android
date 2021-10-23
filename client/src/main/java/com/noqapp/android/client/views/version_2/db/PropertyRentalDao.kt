@@ -6,15 +6,15 @@ import com.noqapp.android.common.pojos.PropertyRentalEntity
 
 @Dao
 interface PropertyRentalDao {
-    @Insert
-    fun insertPropertyRental(propertyRentalEntity: PropertyRentalEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPropertyRental(propertyRentalEntity: PropertyRentalEntity?)
 
-    @Query("SELECT * FROM post_property_rental WHERE id=:id")
-    fun getPropertyRental(id: Int): LiveData<PropertyRentalEntity>
+    @Query("SELECT * FROM post_property_rental WHERE id=1")
+    fun getPropertyRental(): LiveData<List<PropertyRentalEntity>>
 
     @Update
-    fun updatePropertyRental(propertyRentalEntity: PropertyRentalEntity)
+    suspend fun updatePropertyRental(propertyRentalEntity: PropertyRentalEntity)
 
-    @Delete
-    fun deletePropertyRental(propertyRentalEntity: PropertyRentalEntity)
+    @Query("DELETE FROM post_property_rental")
+    suspend fun deletePropertyRental()
 }
