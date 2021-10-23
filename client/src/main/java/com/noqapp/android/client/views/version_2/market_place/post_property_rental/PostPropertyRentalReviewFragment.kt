@@ -81,8 +81,8 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                     pre.landmark,
                     pre.availableFrom,
                     pre.rentalType,
-                    pre.coordinates[0],
-                    pre.coordinates[1]
+                    pre.coordinates[1],
+                    pre.coordinates[0]
                 )
             }
         }
