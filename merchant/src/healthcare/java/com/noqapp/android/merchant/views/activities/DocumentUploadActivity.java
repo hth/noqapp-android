@@ -430,7 +430,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
                 Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                 try {
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
-                    Log.e("file path temp:", convertedPath);
+                    Log.e("File path temp:", convertedPath);
 
                     if (!TextUtils.isEmpty(convertedPath)) {
                         ShowUploadImageDialog uploadImageDialog = new ShowUploadImageDialog(DocumentUploadActivity.this);
