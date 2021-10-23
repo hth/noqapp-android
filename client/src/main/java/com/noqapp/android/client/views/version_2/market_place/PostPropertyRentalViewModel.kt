@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.vision.face.Landmark
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
@@ -55,6 +54,7 @@ class PostPropertyRentalViewModel : ViewModel() {
     }
 
     fun postMarketPlace(
+        productPrice: Int,
         title: String,
         description: String,
         bathRoom: Int,
@@ -80,6 +80,7 @@ class PostPropertyRentalViewModel : ViewModel() {
         jsonPropertyRental.rentalAvailableDay = SDF_YYYY_MM_DD.format(Date())
         jsonPropertyRental.businessType = BusinessTypeEnum.PR
         jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
+        jsonPropertyRental.productPrice = productPrice
         jsonPropertyRental.title = title
         jsonPropertyRental.description = description
         jsonPropertyRental.landmark = landmark

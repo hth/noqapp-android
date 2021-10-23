@@ -69,6 +69,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
             propertyRentalEntity?.let { pre ->
                 fragmentPostPropertyRentalReview.clProgressBar.visibility = View.VISIBLE
                 postPropertyRentalViewModel.postMarketPlace(
+                    pre.price,
                     pre.title,
                     pre.description,
                     pre.bathroom,
