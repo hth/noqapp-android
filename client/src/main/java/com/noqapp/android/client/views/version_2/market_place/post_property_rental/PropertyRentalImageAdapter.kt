@@ -8,7 +8,7 @@ import com.squareup.picasso.Picasso
 
 class PropertyRentalImageAdapter(
     val propertyRentalImages: MutableList<String>,
-    val onImageClicked: (String) -> Unit
+    val onClicked: (String) -> Unit
 ) : RecyclerView.Adapter<PropertyRentalImageAdapter.PropertyRentalImagesViewHolder>() {
 
     inner class PropertyRentalImagesViewHolder(private val itemImagesBinding: ItemImagesBinding) :
@@ -20,12 +20,13 @@ class PropertyRentalImageAdapter(
 
         init {
             itemImagesBinding.ivDelete.setOnClickListener {
+                onClicked(propertyRentalImages[absoluteAdapterPosition])
                 propertyRentalImages.removeAt(absoluteAdapterPosition)
                 notifyDataSetChanged()
             }
 
             itemImagesBinding.ivPropertyImage.setOnClickListener {
-                onImageClicked(propertyRentalImages[absoluteAdapterPosition])
+                onClicked(propertyRentalImages[absoluteAdapterPosition])
             }
         }
 

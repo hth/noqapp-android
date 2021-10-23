@@ -88,7 +88,16 @@ class PostPropertyRentalImageFragment : BaseFragment() {
     }
 
     private fun setUpRecyclerView() {
-        propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {}
+        propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {
+            propertyRentalEntity.images.forEach { imagePath ->
+                if (it == imagePath) {
+                    val list = propertyRentalEntity.images.toMutableList()
+                    list.remove(imagePath)
+                    propertyRentalEntity.images = list
+                }
+            }
+            postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
+        }
         fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostPropertyRentalUpload.rvSelectedImages.setHasFixedSize(true)
@@ -309,6 +318,11 @@ class PostPropertyRentalImageFragment : BaseFragment() {
 
     private fun saveImage(imagePath: String) {
         propertyRentalImageAdapter.addImage(imagePath)
+        val images = mutableListOf<String>()
+        images.addAll(propertyRentalEntity.images)
+        images.add(imagePath)
+        propertyRentalEntity.images = images
+        postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
 //        getMimeType(Uri.parse(imagePath))?.let { type ->
 //            val file = File(imagePath)
 //            val marketplaceImage = MultipartBody.Part.createFormData(

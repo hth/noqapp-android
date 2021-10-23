@@ -39,5 +39,5 @@ data class PropertyRentalEntity(
     @ColumnInfo(name = "available_from")
     var availableFrom: String?,
     @ColumnInfo(name = "images")
-    var images: List<String>?
+    var images: List<String>
 )
