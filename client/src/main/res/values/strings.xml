@@ -579,7 +579,7 @@
     <string name="txt_location_allow_access_label">Please allow location to find stores nearest to you.</string>
     <string name="txt_location_enable_button">Enable Location</string>
     <string name="rupee_symbol">\u20B9 %s</string>
-    <string name="txt_call_agent">Call Agent</string>
+    <string name="txt_interested">Interested?</string>
     <string name="txt_listing">Listing</string>
     <string name="txt_search_locality">Search for places, locality, area ...</string>
     <string name="txt_property_type">Property type</string>
@@ -613,4 +613,5 @@
     <string name="txt_set_address">Set Address</string>
     <string name="txt_select_address">Select Address</string>
     <string name="txt_no_data_found">No data found</string>
+    <string name="txt_views">Views</string>
 </resources>

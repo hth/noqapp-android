@@ -7,9 +7,8 @@ import com.noqapp.android.common.model.types.category.RentalTypeEnum
 
 @Entity(tableName = "post_property_rental")
 data class PropertyRentalEntity(
-    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int? = null,
+    var id: Int,
     @ColumnInfo(name = "bed_room")
     var bedroom: Int,
     @ColumnInfo(name = "bath_room")

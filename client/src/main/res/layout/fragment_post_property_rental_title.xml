@@ -49,16 +49,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_description_label" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_next"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_next"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:background="@drawable/btn_bg_enable"
-        android:gravity="center"
-        android:text="@string/txt_next"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg_enable">
+
+            <TextView
+                android:id="@+id/tv_next"
+                android:layout_width="wrap_content"
+                android:layout_height="54dp"
+                android:drawableStart="@drawable/ic_market_place_arrow_next"
+                android:drawablePadding="24dp"
+                android:gravity="center"
+                android:text="@string/txt_next"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

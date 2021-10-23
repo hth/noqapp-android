@@ -57,7 +57,11 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
     }
 
     private fun setListeners() {
-        fragmentPostPropertyRentalTitle.btnNext.setOnClickListener {
+        fragmentPostPropertyRentalTitle.cvNext.setOnClickListener {
+            insertPropertyRentalInDb()
+            postPropertyRentalTitleFragmentInteractionListener.goToPostPropertyRentalDetails()
+        }
+        fragmentPostPropertyRentalTitle.tvNext.setOnClickListener {
             insertPropertyRentalInDb()
             postPropertyRentalTitleFragmentInteractionListener.goToPostPropertyRentalDetails()
         }
@@ -65,7 +69,7 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
 
     private fun insertPropertyRentalInDb() {
         val propertyRentalEntity = PropertyRentalEntity(
-            null,
+            1,
             0,
             0,
             0,

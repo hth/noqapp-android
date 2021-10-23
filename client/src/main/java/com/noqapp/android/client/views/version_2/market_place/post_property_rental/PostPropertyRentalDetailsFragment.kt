@@ -231,7 +231,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
     }
 
     private fun setListeners() {
-        fragmentPostPropertyRentalDetails.btnNext.setOnClickListener {
+        fragmentPostPropertyRentalDetails.cvNext.setOnClickListener {
             propertyRentalEntityVal?.address =
                 fragmentPostPropertyRentalDetails.tvAddress.text.toString()
             propertyRentalEntityVal?.town =

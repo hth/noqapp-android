@@ -28,10 +28,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rounded_corner_theme"
+                android:drawableEnd="@drawable/ic_marketplace_edit"
+                android:drawablePadding="8dp"
                 android:paddingStart="16dp"
-                android:paddingTop="4dp"
+                android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:paddingBottom="4dp"
+                android:paddingBottom="8dp"
                 android:text="@string/txt_edit"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -253,20 +255,36 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_images_label" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_proceed"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_proceed"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/btn_bg_enable"
-                android:gravity="center"
-                android:text="@string/txt_review_and_proceed"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                app:backgroundTint="@null"
-                app:layout_constraintTop_toBottomOf="@id/rv_selected_images" />
+                app:layout_constraintTop_toBottomOf="@id/rv_selected_images">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_bg_enable">
+
+                    <TextView
+                        android:id="@+id/tv_proceed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="54dp"
+                        android:drawableStart="@drawable/ic_market_place_arrow_next"
+                        android:drawablePadding="24dp"
+                        android:gravity="center"
+                        android:text="@string/txt_review_and_proceed"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

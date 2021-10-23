@@ -12,7 +12,10 @@ import com.noqapp.android.client.utils.ImageUtils
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.squareup.picasso.Picasso
 
-class PropertyRentalAdapter(private val marketplaceList: MutableList<MarketplaceElastic>, val onClickListener: (MarketplaceElastic?, View) -> Unit) :
+class PropertyRentalAdapter(
+    private val marketplaceList: MutableList<MarketplaceElastic>,
+    val onClickListener: (MarketplaceElastic?, View) -> Unit
+) :
     RecyclerView.Adapter<PropertyRentalAdapter.MarketPlaceViewHolder>() {
 
     inner class MarketPlaceViewHolder(private val listItemMarketPlaceBinding: ListItemMarketPlaceBinding) :
@@ -33,12 +36,22 @@ class PropertyRentalAdapter(private val marketplaceList: MutableList<Marketplace
         fun bind(marketplaceElastic: MarketplaceElastic) {
             this.marketPlaceElastic = marketPlaceElastic
             listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
-            listItemMarketPlaceBinding.tvPrice.text = listItemMarketPlaceBinding.tvPrice.context?.getString(R.string.rupee_symbol, marketplaceElastic.productPrice)
+            listItemMarketPlaceBinding.tvPrice.text =
+                listItemMarketPlaceBinding.tvPrice.context?.getString(
+                    R.string.rupee_symbol,
+                    marketplaceElastic.productPrice
+                )
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.town
+            listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
+                "%d %s",
+                marketplaceElastic.viewCount,
+                context.getString(R.string.txt_views)
+            )
 
             if (marketplaceElastic.postImages.size > 0) {
                 val displayImage = marketplaceElastic.postImages.iterator().next()
-                val url = marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage;
+                val url =
+                    marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage;
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))

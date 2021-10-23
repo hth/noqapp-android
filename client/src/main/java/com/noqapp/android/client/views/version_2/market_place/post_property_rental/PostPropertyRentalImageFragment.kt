@@ -96,7 +96,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
     }
 
     private fun setListeners() {
-        fragmentPostPropertyRentalUpload.btnNext.setOnClickListener {
+        fragmentPostPropertyRentalUpload.cvNext.setOnClickListener {
             propertyRentalEntity.images = propertyRentalImageAdapter.getAllImages()
             postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
 

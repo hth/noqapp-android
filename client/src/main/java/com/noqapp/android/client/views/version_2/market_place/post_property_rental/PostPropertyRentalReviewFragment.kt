@@ -65,7 +65,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
             findNavController().navigate(R.id.action_review_to_start_destination)
         }
 
-        fragmentPostPropertyRentalReview.btnProceed.setOnClickListener {
+        fragmentPostPropertyRentalReview.cvProceed.setOnClickListener {
             propertyRentalEntity?.let { pre ->
                 fragmentPostPropertyRentalReview.clProgressBar.visibility = View.VISIBLE
                 postPropertyRentalViewModel.postMarketPlace(
@@ -131,7 +131,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
             propertyRentalEntity?.let { pre ->
                 if (imageUploadCount == pre.images?.size) {
                     fragmentPostPropertyRentalReview.clProgressBar.visibility = View.GONE
-                    postPropertyRentalViewModel.deletePostsLocally(requireContext(), pre)
+                    postPropertyRentalViewModel.deletePostsLocally(requireContext())
                     activity?.finish()
                 }
             }

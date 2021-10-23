@@ -9,7 +9,7 @@ interface PropertyRentalDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPropertyRental(propertyRentalEntity: PropertyRentalEntity?)
 
-    @Query("SELECT * FROM post_property_rental")
+    @Query("SELECT * FROM post_property_rental WHERE id=1")
     fun getPropertyRental(): LiveData<List<PropertyRentalEntity>>
 
     @Update
