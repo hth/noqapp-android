@@ -216,7 +216,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/txt_rental_address"
+                android:text="@string/txt_landmark"
                 app:layout_constraintTop_toBottomOf="@id/tv_town_locality" />
 
             <TextView
