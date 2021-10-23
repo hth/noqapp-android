@@ -44,7 +44,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                 val jsonUserAddress =
                     intent?.getSerializableExtra(Constants.JSON_USER_ADDRESS) as JsonUserAddress
                 this.jsonUserAddress = jsonUserAddress
-                if (jsonUserAddress.address != null || jsonUserAddress.address != "")
+                if (jsonUserAddress.address != null && jsonUserAddress.address != "")
                     fragmentPostPropertyRentalDetails.tvAddress.text =
                         jsonUserAddress.address
                 fragmentPostPropertyRentalDetails.etCityArea.setText(jsonUserAddress.area.toString())
@@ -104,7 +104,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                     val propertyRentalEntity = it[0]
                     propertyRentalEntityVal = propertyRentalEntity
 
-                    if (propertyRentalEntity.address != null || propertyRentalEntity.address != "")
+                    if (propertyRentalEntity.address != null && propertyRentalEntity.address != "")
                         fragmentPostPropertyRentalDetails.tvAddress.text =
                             propertyRentalEntity.address
 
@@ -323,14 +323,14 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
             startForResult.launch(setAddressIntent)
         }
 
-        fragmentPostPropertyRentalDetails.etTownLocality.setOnClickListener {
+        fragmentPostPropertyRentalDetails.viewCityArea.setOnClickListener {
             val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
                 putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
             }
             startForResult.launch(setAddressIntent)
         }
 
-        fragmentPostPropertyRentalDetails.etCityArea.setOnClickListener {
+        fragmentPostPropertyRentalDetails.viewTownLocality.setOnClickListener {
             val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
                 putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
             }

@@ -84,7 +84,7 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
             null,
             null,
             null,
-            listOf("sample")
+            listOf()
         )
         postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
     }

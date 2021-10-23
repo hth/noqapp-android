@@ -307,6 +307,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_corner_cyan_background"
+                android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1"
@@ -314,6 +315,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_city_area" />
+
+            <View
+                android:id="@+id/view_city_area"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@id/et_city_area"
+                app:layout_constraintEnd_toEndOf="@id/et_city_area"
+                app:layout_constraintStart_toStartOf="@id/et_city_area"
+                app:layout_constraintTop_toTopOf="@id/et_city_area" />
 
             <TextView
                 android:id="@+id/tv_town_locality"
@@ -330,6 +341,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_corner_cyan_background"
+                android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1"
@@ -337,6 +349,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_town_locality" />
+
+            <View
+                android:id="@+id/view_town_locality"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@id/et_town_locality"
+                app:layout_constraintEnd_toEndOf="@id/et_town_locality"
+                app:layout_constraintStart_toStartOf="@id/et_town_locality"
+                app:layout_constraintTop_toTopOf="@id/et_town_locality" />
 
             <TextView
                 android:id="@+id/tv_landmark"
