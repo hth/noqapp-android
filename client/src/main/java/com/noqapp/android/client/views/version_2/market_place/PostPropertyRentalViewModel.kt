@@ -11,7 +11,6 @@ import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonResponse
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
-import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
@@ -27,7 +26,7 @@ class PostPropertyRentalViewModel : ViewModel() {
     val tag: String = PostPropertyRentalViewModel::class.java.simpleName
 
     val marketplaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
-    val postMarketPlaceElasticLiveData = MutableLiveData<MarketplaceElastic>()
+    val postMarketPlaceJsonLiveData = MutableLiveData<JsonPropertyRental>()
     val errorEncounteredJsonLiveData = MutableLiveData<ErrorEncounteredJson>()
     val authenticationError = MutableLiveData(false)
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
@@ -93,7 +92,7 @@ class PostPropertyRentalViewModel : ViewModel() {
             UserUtils.getAuth(),
             jsonPropertyRental,
             {
-                postMarketPlaceElasticLiveData.postValue(it)
+                postMarketPlaceJsonLiveData.postValue(it)
             },
             {
                 errorEncounteredJsonLiveData.postValue(it)

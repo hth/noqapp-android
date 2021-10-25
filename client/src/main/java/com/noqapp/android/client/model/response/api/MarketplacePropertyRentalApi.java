@@ -43,7 +43,7 @@ public interface MarketplacePropertyRentalApi {
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
     @POST("api/c/marketplace/propertyRental")
-    Call<MarketplaceElastic> postOnMarketplace(
+    Call<JsonPropertyRental> postOnMarketplace(
         @Header("X-R-DID")
         String did,
 

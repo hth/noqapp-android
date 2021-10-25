@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.category.RentalTypeEnum;
 
 /**
@@ -48,6 +49,9 @@ public class JsonPropertyRental extends JsonMarketplace {
     /** Review submitted by owner against the housing agent for providing service. */
     @JsonProperty("hr")
     private String housingAgentReview;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public int getBedroom() {
         return bedroom;
@@ -109,6 +113,17 @@ public class JsonPropertyRental extends JsonMarketplace {
 
     public JsonPropertyRental setHousingAgentReview(String housingAgentReview) {
         this.housingAgentReview = housingAgentReview;
+        return this;
+    }
+
+    @Override
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    @Override
+    public JsonPropertyRental setError(ErrorEncounteredJson error) {
+        this.error = error;
         return this;
     }
 

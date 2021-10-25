@@ -117,7 +117,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                 }
             })
 
-        postPropertyRentalViewModel.postMarketPlaceElasticLiveData.observe(
+        postPropertyRentalViewModel.postMarketPlaceJsonLiveData.observe(
             viewLifecycleOwner,
             { mre ->
                 propertyRentalEntity?.let { pre ->
