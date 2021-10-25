@@ -62,15 +62,15 @@ class PropertyRentalRepository {
         mail: String,
         auth: String,
         jsonPropertyRental: JsonPropertyRental,
-        complete: (MarketplaceElastic?) -> Unit,
+        complete: (JsonPropertyRental?) -> Unit,
         catch: (ErrorEncounteredJson?) -> Unit,
         authenticationError: () -> Unit
     ) {
         marketplacePropertyRentalApi.postOnMarketplace(did, Constants.DEVICE_TYPE, mail, auth, jsonPropertyRental)
-            .enqueue(object : Callback<MarketplaceElastic> {
+            .enqueue(object : Callback<JsonPropertyRental> {
                 override fun onResponse(
-                    call: Call<MarketplaceElastic>,
-                    response: Response<MarketplaceElastic>
+                    call: Call<JsonPropertyRental>,
+                    response: Response<JsonPropertyRental>
                 ) {
                     if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                         complete(response.body())
@@ -83,7 +83,7 @@ class PropertyRentalRepository {
                     }
                 }
 
-                override fun onFailure(call: Call<MarketplaceElastic>, t: Throwable) {
+                override fun onFailure(call: Call<JsonPropertyRental>, t: Throwable) {
                     catch(null)
                 }
 
