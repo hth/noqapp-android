@@ -234,7 +234,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_corner_cyan_background"
-                android:drawableEnd="@drawable/calendar"
+                android:drawableEnd="@drawable/ic_marketplace_calendar"
                 android:gravity="center_vertical"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"

@@ -10,6 +10,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ import java.util.Set;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MarketplaceElastic extends AbstractDomain {
+public class MarketplaceElastic extends AbstractDomain implements Serializable {
 
     @JsonProperty("id")
     private String id;

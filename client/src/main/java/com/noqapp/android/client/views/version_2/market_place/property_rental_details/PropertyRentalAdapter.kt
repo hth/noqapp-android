@@ -25,11 +25,11 @@ class PropertyRentalAdapter(
 
         init {
             listItemMarketPlaceBinding.btnCallAgent.setOnClickListener {
-                onClickListener(marketPlaceElastic, it)
+                onClickListener(marketplaceList[absoluteAdapterPosition], it)
             }
 
             listItemMarketPlaceBinding.btnViewDetails.setOnClickListener {
-                onClickListener(marketPlaceElastic, it)
+                onClickListener(marketplaceList[absoluteAdapterPosition], it)
             }
         }
 
@@ -51,7 +51,7 @@ class PropertyRentalAdapter(
             if (marketplaceElastic.postImages.size > 0) {
                 val displayImage = marketplaceElastic.postImages.iterator().next()
                 val url =
-                    marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage;
+                    marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))

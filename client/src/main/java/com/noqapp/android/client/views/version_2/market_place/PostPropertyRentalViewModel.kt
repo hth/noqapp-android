@@ -31,6 +31,7 @@ class PostPropertyRentalViewModel : ViewModel() {
     val authenticationError = MutableLiveData(false)
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
     val postImagesLiveData = MutableLiveData<JsonResponse>()
+    val shownInterestLiveData = MutableLiveData<Boolean>()
 
     private var propertyRentalRepository: PropertyRentalRepository = PropertyRentalRepository()
 
@@ -111,7 +112,7 @@ class PostPropertyRentalViewModel : ViewModel() {
             UserUtils.getAuth(),
             jsonMarketPlace,
             {
-                Log.d("Success", "Initiated contact successfully")
+                shownInterestLiveData.postValue(true)
             },
             {
                 errorEncounteredJsonLiveData.postValue(it)

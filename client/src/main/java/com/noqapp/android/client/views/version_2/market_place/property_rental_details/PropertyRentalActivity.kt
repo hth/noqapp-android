@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityPropertyRentalBinding
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AppUtils
+import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.LocationBaseActivity
 import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
 import com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostMarketplacePropertyRentalActivity
@@ -125,6 +127,13 @@ class PropertyRentalActivity : LocationBaseActivity() {
             it.searchedOnBusinessType = BusinessTypeEnum.PR
             postPropertyRentalViewModel.getMarketPlace(it)
         })
+
+        postPropertyRentalViewModel.shownInterestLiveData.observe(this, {
+            if (it) {
+                showSnackbar(R.string.txt_owner_notified)
+                postPropertyRentalViewModel.shownInterestLiveData.value = false
+            }
+        })
     }
 
     private fun setUpRecyclerView() {
@@ -141,11 +150,14 @@ class PropertyRentalActivity : LocationBaseActivity() {
             when (view.id) {
                 R.id.btn_view_details -> {
                     postPropertyRentalViewModel.viewDetails(it.id)
-                    // startActivity(Intent(this, MarketPlaceDetailsActivity::class.java))
+                    val propertyDetailsIntent =
+                        Intent(this, ViewPropertyRentalDetailsActivity::class.java).apply {
+                            putExtra(Constants.POST_PROPERTY_RENTAL, marketPlace)
+                        }
+                    startActivity(propertyDetailsIntent)
                 }
                 R.id.btn_call_agent -> {
                     postPropertyRentalViewModel.initiateContact(it.id)
-                    // startActivity(Intent(this, MarketPlaceDetailsActivity::class.java))
                 }
             }
         }
