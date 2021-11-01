@@ -7,6 +7,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityViewPropertyRentalDetailsBinding
 import com.noqapp.android.client.utils.Constants
+import com.noqapp.android.client.utils.GeoHashUtils
 import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
@@ -53,6 +54,10 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
         // activityViewPropertyRentalDetailsBinding.tvCarpetArea.text = String.format("%s: ", marketPlaceElastic.are)
         // activityViewPropertyRentalDetailsBinding.tvBathrooms = marketPlaceElastic.b
         // activityViewPropertyRentalDetailsBinding.tvBathrooms.text
+
+        val lat = GeoHashUtils.decodeLatitude(marketPlaceElastic.geoHash)
+        val lon = GeoHashUtils.decodeLongitude(marketPlaceElastic.geoHash)
+
         activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.townCity()
         activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.rating
         activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + if (marketPlaceElastic.viewCount > 1)  { getString(R.string.txt_views) } else { getString(R.string.txt_view) }
