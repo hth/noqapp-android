@@ -11,6 +11,9 @@ import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.ImageUtils
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.squareup.picasso.Picasso
+import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.*
 
 class PropertyRentalAdapter(
     private val marketplaceList: MutableList<MarketplaceElastic>,
@@ -35,12 +38,9 @@ class PropertyRentalAdapter(
 
         fun bind(marketplaceElastic: MarketplaceElastic) {
             this.marketPlaceElastic = marketPlaceElastic
+            val nf: NumberFormat = NumberFormat.getCurrencyInstance(Locale("en", marketplaceElastic.countryShortName))
             listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
-            listItemMarketPlaceBinding.tvPrice.text =
-                listItemMarketPlaceBinding.tvPrice.context?.getString(
-                    R.string.rupee_symbol,
-                    marketplaceElastic.productPrice
-                )
+            listItemMarketPlaceBinding.tvPrice.text = nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
             listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.rating
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.town
             listItemMarketPlaceBinding.tvPropertyViews.text = String.format(

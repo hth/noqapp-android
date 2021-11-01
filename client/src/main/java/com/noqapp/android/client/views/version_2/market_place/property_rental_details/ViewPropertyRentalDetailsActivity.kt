@@ -10,6 +10,9 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
+import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.*
 
 class ViewPropertyRentalDetailsActivity : BaseActivity() {
     private lateinit var activityViewPropertyRentalDetailsBinding: ActivityViewPropertyRentalDetailsBinding
@@ -43,7 +46,8 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
     }
 
     private fun setData(marketPlaceElastic: MarketplaceElastic) {
-        activityViewPropertyRentalDetailsBinding.tvPrice.text = marketPlaceElastic.productPrice
+        val nf: NumberFormat = NumberFormat.getCurrencyInstance(Locale("en", marketPlaceElastic.countryShortName))
+        activityViewPropertyRentalDetailsBinding.tvPrice.text = nf.format(BigDecimal(marketPlaceElastic.productPrice)) + "/-"
         activityViewPropertyRentalDetailsBinding.tvDescription.text = marketPlaceElastic.description
         activityViewPropertyRentalDetailsBinding.toolbar.title = marketPlaceElastic.title
         // activityViewPropertyRentalDetailsBinding.tvCarpetArea.text = String.format("%s: ", marketPlaceElastic.are)
