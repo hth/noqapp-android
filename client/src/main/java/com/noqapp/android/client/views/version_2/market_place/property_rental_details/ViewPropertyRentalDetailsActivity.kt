@@ -53,7 +53,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
         // activityViewPropertyRentalDetailsBinding.tvCarpetArea.text = String.format("%s: ", marketPlaceElastic.are)
         // activityViewPropertyRentalDetailsBinding.tvBathrooms = marketPlaceElastic.b
         // activityViewPropertyRentalDetailsBinding.tvBathrooms.text
-        activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.city
+        activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.townCity()
         activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.rating
         activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + if (marketPlaceElastic.viewCount > 1)  { getString(R.string.txt_views) } else { getString(R.string.txt_view) }
 

@@ -42,7 +42,7 @@ class PropertyRentalAdapter(
             listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
             listItemMarketPlaceBinding.tvPrice.text = nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
             listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.rating
-            listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.town
+            listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.townCity()
             listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
                 "%d%s",
                 marketplaceElastic.viewCount,

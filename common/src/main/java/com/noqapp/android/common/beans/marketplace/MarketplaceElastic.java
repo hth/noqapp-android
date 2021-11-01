@@ -10,6 +10,8 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -242,5 +244,17 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
     public MarketplaceElastic setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    public String townCity() {
+        if (StringUtils.isBlank(town) && StringUtils.isBlank(city)) {
+            return "";
+        } else if (StringUtils.isBlank(town)) {
+            return city;
+        } else if (StringUtils.isBlank(city)) {
+            return town;
+        } else {
+            return town + "," + city;
+        }
     }
 }
