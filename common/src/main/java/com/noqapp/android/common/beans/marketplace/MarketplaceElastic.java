@@ -11,6 +11,9 @@ import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -218,6 +221,10 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
     public MarketplaceElastic setFieldTags(String[] fieldTags) {
         this.fieldTags = fieldTags;
         return this;
+    }
+
+    public BigDecimal computeRating() {
+        return new BigDecimal(expressedInterestCount * 5).divide(new BigDecimal(viewCount), MathContext.DECIMAL64).setScale(1, RoundingMode.HALF_UP);
     }
 
     public ErrorEncounteredJson getError() {
