@@ -19,6 +19,8 @@ import java.math.RoundingMode;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import kotlin.jvm.Transient;
+
 /**
  * hitender
  * 2/27/21 8:07 AM
@@ -254,7 +256,7 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
         } else if (StringUtils.isBlank(city)) {
             return town;
         } else {
-            return town + "," + city;
+            return town + ", " + city;
         }
     }
 }
