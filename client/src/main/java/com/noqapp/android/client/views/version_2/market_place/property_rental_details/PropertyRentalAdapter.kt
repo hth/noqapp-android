@@ -46,7 +46,11 @@ class PropertyRentalAdapter(
             listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
                 "%d %s",
                 marketplaceElastic.viewCount,
-                listItemMarketPlaceBinding.tvPropertyViews.context.getString(R.string.txt_views)
+                if (marketplaceElastic.viewCount > 1) {
+                    listItemMarketPlaceBinding.tvPropertyViews.context.getString(R.string.txt_views)
+                } else {
+                    listItemMarketPlaceBinding.tvPropertyViews.context.getString(R.string.txt_view)
+                }
             )
 
             if (marketplaceElastic.postImages.size > 0) {

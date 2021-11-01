@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
+import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityViewPropertyRentalDetailsBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.BaseActivity
@@ -17,8 +18,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityViewPropertyRentalDetailsBinding =
-            ActivityViewPropertyRentalDetailsBinding.inflate(LayoutInflater.from(this))
+        activityViewPropertyRentalDetailsBinding = ActivityViewPropertyRentalDetailsBinding.inflate(LayoutInflater.from(this))
         setContentView(activityViewPropertyRentalDetailsBinding.root)
 
         propertyRentalViewModel = ViewModelProvider(this)[PostPropertyRentalViewModel::class.java]
@@ -52,8 +52,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
         // activityViewPropertyRentalDetailsBinding.tvBathrooms.text
         activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.city
         activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.rating
-        activityViewPropertyRentalDetailsBinding.tvPropertyViews.text =
-            marketPlaceElastic.viewCount.toString() + " Views"
+        activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + if (marketPlaceElastic.viewCount > 1)  { R.string.txt_views } else { R.string.txt_view }
 
         setUpViewPager()
     }

@@ -614,6 +614,7 @@
     <string name="txt_select_address">Select Address</string>
     <string name="txt_no_data_found">No data found</string>
     <string name="txt_views">Views</string>
+    <string name="txt_view">View</string>
     <string name="txt_number_of_bedrooms_">Number of bedrooms:</string>
     <string name="txt_owner_notified">\"Owner has been notified, you will get a callback shortly.\"</string>
 </resources>
