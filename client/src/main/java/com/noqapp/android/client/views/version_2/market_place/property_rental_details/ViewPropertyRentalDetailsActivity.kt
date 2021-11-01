@@ -11,11 +11,6 @@ import com.noqapp.android.client.views.version_2.market_place.PostPropertyRental
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 
 class ViewPropertyRentalDetailsActivity : BaseActivity() {
-
-    val staticUrl =
-        "https://maps.googleapis.com/maps/api/staticmap?center=63.259591,-144.667969&zoom=6&size=400x400\n" +
-                "&markers=color:red%7Clabel:S%7C62.107733,-145.541936&key=YOUR_API_KEY"
-
     private lateinit var activityViewPropertyRentalDetailsBinding: ActivityViewPropertyRentalDetailsBinding
     private lateinit var propertyRentalViewModel: PostPropertyRentalViewModel
     private lateinit var marketPlaceElastic: MarketplaceElastic
@@ -56,6 +51,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
         // activityViewPropertyRentalDetailsBinding.tvBathrooms = marketPlaceElastic.b
         // activityViewPropertyRentalDetailsBinding.tvBathrooms.text
         activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.city
+        activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.computeRating().toString()
         activityViewPropertyRentalDetailsBinding.tvPropertyViews.text =
             marketPlaceElastic.viewCount.toString() + " Views"
 

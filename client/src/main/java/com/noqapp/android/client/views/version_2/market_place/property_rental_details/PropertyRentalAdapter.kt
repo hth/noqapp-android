@@ -41,6 +41,7 @@ class PropertyRentalAdapter(
                     R.string.rupee_symbol,
                     marketplaceElastic.productPrice
                 )
+            listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.computeRating().toString()
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.town
             listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
                 "%d %s",
@@ -50,8 +51,7 @@ class PropertyRentalAdapter(
 
             if (marketplaceElastic.postImages.size > 0) {
                 val displayImage = marketplaceElastic.postImages.iterator().next()
-                val url =
-                    marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
+                val url = marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
