@@ -51,7 +51,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
         // activityViewPropertyRentalDetailsBinding.tvBathrooms = marketPlaceElastic.b
         // activityViewPropertyRentalDetailsBinding.tvBathrooms.text
         activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.city
-        activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.computeRating().toString()
+        activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.rating
         activityViewPropertyRentalDetailsBinding.tvPropertyViews.text =
             marketPlaceElastic.viewCount.toString() + " Views"
 

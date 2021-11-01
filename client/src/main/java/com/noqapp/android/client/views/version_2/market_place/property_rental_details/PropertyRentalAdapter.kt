@@ -41,7 +41,7 @@ class PropertyRentalAdapter(
                     R.string.rupee_symbol,
                     marketplaceElastic.productPrice
                 )
-            listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.computeRating().toString()
+            listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.rating
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.town
             listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
                 "%d %s",

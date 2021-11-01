@@ -66,6 +66,9 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
     @JsonProperty("EC")
     private int expressedInterestCount;
 
+    @JsonProperty("RA")
+    private String rating;
+
     @JsonProperty("COR")
     private GeoPointOfQ geoPointOfQ;
 
@@ -169,6 +172,15 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getRating() {
+        return rating;
+    }
+
+    public MarketplaceElastic setRating(String rating) {
+        this.rating = rating;
+        return this;
+    }
+
     public GeoPointOfQ getGeoPointOfQ() {
         return geoPointOfQ;
     }
@@ -221,10 +233,6 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
     public MarketplaceElastic setFieldTags(String[] fieldTags) {
         this.fieldTags = fieldTags;
         return this;
-    }
-
-    public BigDecimal computeRating() {
-        return new BigDecimal(expressedInterestCount * 5).divide(new BigDecimal(viewCount), MathContext.DECIMAL64).setScale(1, RoundingMode.HALF_UP);
     }
 
     public ErrorEncounteredJson getError() {
