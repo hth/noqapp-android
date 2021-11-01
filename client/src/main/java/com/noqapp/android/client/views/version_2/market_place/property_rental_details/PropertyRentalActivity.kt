@@ -138,8 +138,7 @@ class PropertyRentalActivity : LocationBaseActivity() {
         propertyRentalAdapter = PropertyRentalAdapter(mutableListOf()) { marketPlace, view ->
             onMarketPlaceItemClicked(marketPlace, view)
         }
-        activityPropertyRentalBinding.rvMarketPlace.layoutManager =
-            LinearLayoutManager(this)
+        activityPropertyRentalBinding.rvMarketPlace.layoutManager = LinearLayoutManager(this)
         activityPropertyRentalBinding.rvMarketPlace.adapter = propertyRentalAdapter
     }
 

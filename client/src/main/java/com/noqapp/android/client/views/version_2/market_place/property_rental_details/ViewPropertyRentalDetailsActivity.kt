@@ -24,8 +24,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
         propertyRentalViewModel = ViewModelProvider(this)[PostPropertyRentalViewModel::class.java]
 
         intent?.let {
-            marketPlaceElastic =
-                it.getSerializableExtra(Constants.POST_PROPERTY_RENTAL) as MarketplaceElastic
+            marketPlaceElastic = it.getSerializableExtra(Constants.POST_PROPERTY_RENTAL) as MarketplaceElastic
             setData(marketPlaceElastic)
         }
 
@@ -52,7 +51,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
         // activityViewPropertyRentalDetailsBinding.tvBathrooms.text
         activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.city
         activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.rating
-        activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + if (marketPlaceElastic.viewCount > 1)  { R.string.txt_views } else { R.string.txt_view }
+        activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + if (marketPlaceElastic.viewCount > 1)  { getString(R.string.txt_views) } else { getString(R.string.txt_view) }
 
         setUpViewPager()
     }
