@@ -1,5 +1,7 @@
 package com.noqapp.android.common.beans.marketplace;
 
+import android.os.Build;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,13 +15,9 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import kotlin.jvm.Transient;
 
 /**
  * hitender
@@ -257,6 +255,21 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
             return town;
         } else {
             return town + ", " + city;
+        }
+    }
+
+    public String getValueFromTag(String field) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String found = Arrays.stream(tag.split(" ")).filter(x -> x.endsWith(field.toUpperCase())).findFirst().orElse(null);
+            return found != null ? found.replaceAll("_" + field, "") : "";
+        } else {
+            String[] a = tag.split(" ");
+            for (String s : a) {
+                if (s.endsWith(field)) {
+                    return s;
+                }
+            }
+            return "";
         }
     }
 }

@@ -11,6 +11,7 @@ import com.noqapp.android.client.utils.GeoHashUtils
 import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
+import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
@@ -51,9 +52,11 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
         activityViewPropertyRentalDetailsBinding.tvPrice.text = nf.format(BigDecimal(marketPlaceElastic.productPrice)) + "/-"
         activityViewPropertyRentalDetailsBinding.tvDescription.text = marketPlaceElastic.description
         activityViewPropertyRentalDetailsBinding.toolbar.title = marketPlaceElastic.title
-        // activityViewPropertyRentalDetailsBinding.tvCarpetArea.text = String.format("%s: ", marketPlaceElastic.are)
-        // activityViewPropertyRentalDetailsBinding.tvBathrooms = marketPlaceElastic.b
-        // activityViewPropertyRentalDetailsBinding.tvBathrooms.text
+        activityViewPropertyRentalDetailsBinding.tvBedrooms.text = marketPlaceElastic.getValueFromTag("BE")
+        activityViewPropertyRentalDetailsBinding.tvBathrooms.text = marketPlaceElastic.getValueFromTag("BR")
+        activityViewPropertyRentalDetailsBinding.tvCarpetArea.text = marketPlaceElastic.getValueFromTag("CA")
+        //Rental Type = RentalTypeEnum.valueOf(marketPlaceElastic.getValueFromTag("RT"))
+        activityViewPropertyRentalDetailsBinding.tvAvailableFrom.text = marketPlaceElastic.getValueFromTag("RA")
 
         val lat = GeoHashUtils.decodeLatitude(marketPlaceElastic.geoHash)
         val lon = GeoHashUtils.decodeLongitude(marketPlaceElastic.geoHash)
