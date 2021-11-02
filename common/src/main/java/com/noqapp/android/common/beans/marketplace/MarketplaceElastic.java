@@ -263,10 +263,10 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
             String found = Arrays.stream(tag.split(" ")).filter(x -> x.endsWith(field.toUpperCase())).findFirst().orElse(null);
             return found != null ? found.replaceAll("_" + field, "") : "";
         } else {
-            String[] a = tag.split(" ");
-            for (String s : a) {
-                if (s.endsWith(field)) {
-                    return s;
+            String[] tags = tag.split(" ");
+            for (String individualTag : tags) {
+                if (individualTag.endsWith(field.toUpperCase())) {
+                    return individualTag.replaceAll("_" + field, "");
                 }
             }
             return "";

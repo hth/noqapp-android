@@ -35,11 +35,9 @@ class PropertyRentalActivity : LocationBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityPropertyRentalBinding =
-            ActivityPropertyRentalBinding.inflate(LayoutInflater.from(this))
+        activityPropertyRentalBinding = ActivityPropertyRentalBinding.inflate(LayoutInflater.from(this))
         setContentView(activityPropertyRentalBinding.root)
-        postPropertyRentalViewModel =
-            ViewModelProvider(this)[PostPropertyRentalViewModel::class.java]
+        postPropertyRentalViewModel = ViewModelProvider(this)[PostPropertyRentalViewModel::class.java]
 
         activityPropertyRentalBinding.swipeRefreshLayout.setOnRefreshListener {
             postPropertyRentalViewModel.searchStoreQueryLiveData.value?.let {

@@ -12,7 +12,6 @@ import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonResponse
 import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
-import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import okhttp3.MultipartBody
