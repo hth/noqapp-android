@@ -376,6 +376,7 @@
     <string name="empty_my_appointment_title">Empty Appointments</string>
     <string name="empty_upcoming_appointment_subtitle">You don\'t have any scheduled appointment</string>
     <string name="empty_past_appointment_subtitle">There are no past schedule appointment</string>
+    <string name="empty_property_rental">There are no properties to show, however you can come back later to look for properties you are interested in.</string>
 
     <string name="empty_my_coupon_title">Empty Coupons</string>
     <string name="empty_my_coupon_subtitle">Sorry, You don\'t have any coupon right now.</string>
