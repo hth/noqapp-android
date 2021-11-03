@@ -51,7 +51,7 @@ class PropertyRentalAdapter(
             listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.rating
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.townCity()
             listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
-                "%d%s",
+                "%d %s",
                 marketplaceElastic.viewCount,
                 if (marketplaceElastic.viewCount > 1) {
                     listItemMarketPlaceBinding.tvPropertyViews.context.getString(R.string.txt_views)

@@ -63,7 +63,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity() {
 
         activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.townCity()
         activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.rating
-        activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + if (marketPlaceElastic.viewCount > 1)  { getString(R.string.txt_views) } else { getString(R.string.txt_view) }
+        activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + " " + if (marketPlaceElastic.viewCount > 1)  { getString(R.string.txt_views) } else { getString(R.string.txt_view) }
 
         setUpViewPager()
     }
