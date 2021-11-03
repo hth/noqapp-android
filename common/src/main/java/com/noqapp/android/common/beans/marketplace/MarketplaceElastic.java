@@ -65,9 +65,6 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
     @JsonProperty("VC")
     private int viewCount;
 
-    @JsonProperty("EC")
-    private int expressedInterestCount;
-
     @JsonProperty("RA")
     private String rating;
 
@@ -162,15 +159,6 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
 
     public MarketplaceElastic setViewCount(int viewCount) {
         this.viewCount = viewCount;
-        return this;
-    }
-
-    public int getExpressedInterestCount() {
-        return expressedInterestCount;
-    }
-
-    public MarketplaceElastic setExpressedInterestCount(int expressedInterestCount) {
-        this.expressedInterestCount = expressedInterestCount;
         return this;
     }
 
