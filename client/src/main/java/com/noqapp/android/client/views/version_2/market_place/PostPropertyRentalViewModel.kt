@@ -80,7 +80,7 @@ class PostPropertyRentalViewModel : ViewModel() {
         jsonPropertyRental.rentalAvailableDay = SDF_YYYY_MM_DD.format(Date())
         jsonPropertyRental.businessType = BusinessTypeEnum.PR
         jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
-        jsonPropertyRental.productPrice = productPrice
+        jsonPropertyRental.productPrice = productPrice * 100
         jsonPropertyRental.title = title
         jsonPropertyRental.description = description
         jsonPropertyRental.landmark = landmark
