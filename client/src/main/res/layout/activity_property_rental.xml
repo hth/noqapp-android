@@ -170,11 +170,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:text="@string/empty_property_rental"
+                    android:padding="10dp"
+                    android:text="@string/empty_property_rental_title"
                     android:textSize="@dimen/empty_title_size"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/empty_property_rental"
+                    android:textSize="@dimen/empty_subtitle_size" />
 
             </LinearLayout>
         </RelativeLayout>
