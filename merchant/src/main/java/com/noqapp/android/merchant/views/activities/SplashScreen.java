@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -10,8 +11,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
-
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import com.airbnb.lottie.LottieAnimationView;
 import org.apache.commons.lang3.StringUtils;
@@ -49,9 +48,10 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
         animationView.playAnimation();
         animationView.setRepeatCount(10);
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
-            tokenFCM = instanceIdResult.getToken();
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
+            tokenFCM = token;
             Log.d(TAG, "New FCM Token=" + tokenFCM);
+            //Why not do this directly AppInitialize.setTokenFCM(token);
             sendRegistrationToServer(tokenFCM);
         });
 
