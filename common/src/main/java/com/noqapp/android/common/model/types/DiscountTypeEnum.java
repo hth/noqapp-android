@@ -1,8 +1,5 @@
 package com.noqapp.android.common.model.types;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
  * User: hitender
  * Date: 2019-06-10 11:18
