@@ -30,7 +30,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
     private lateinit var propertyRentalImageAdapter: PropertyRentalImageAdapter
 
     private var propertyRentalEntity: PropertyRentalEntity? = null
-    private var imageUploadCount = -1
+    private var imageUploadCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -128,7 +128,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
             })
 
         postPropertyRentalViewModel.postImagesLiveData.observe(viewLifecycleOwner, {
-            imageUploadCount++
+            imageUploadCount = imageUploadCount.inc()
             propertyRentalEntity?.let { pre ->
                 if (imageUploadCount == pre.images?.size) {
                     fragmentPostPropertyRentalReview.clProgressBar.visibility = View.GONE

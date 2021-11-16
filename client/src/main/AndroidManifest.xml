@@ -356,6 +356,12 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
+            android:name=".views.version_2.market_place.property_rental_details.ViewPropertyRentalDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme.Material"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
             android:name=".views.activities.AddAddressActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />

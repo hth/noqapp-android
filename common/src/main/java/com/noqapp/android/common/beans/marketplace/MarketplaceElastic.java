@@ -1,5 +1,7 @@
 package com.noqapp.android.common.beans.marketplace;
 
+import android.os.Build;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,6 +12,10 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.GeoPointOfQ;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -32,7 +38,7 @@ import java.util.Set;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MarketplaceElastic extends AbstractDomain {
+public class MarketplaceElastic extends AbstractDomain implements Serializable {
 
     @JsonProperty("id")
     private String id;
@@ -59,8 +65,8 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("VC")
     private int viewCount;
 
-    @JsonProperty("EC")
-    private int expressedInterestCount;
+    @JsonProperty("RA")
+    private String rating;
 
     @JsonProperty("COR")
     private GeoPointOfQ geoPointOfQ;
@@ -156,12 +162,12 @@ public class MarketplaceElastic extends AbstractDomain {
         return this;
     }
 
-    public int getExpressedInterestCount() {
-        return expressedInterestCount;
+    public String getRating() {
+        return rating;
     }
 
-    public MarketplaceElastic setExpressedInterestCount(int expressedInterestCount) {
-        this.expressedInterestCount = expressedInterestCount;
+    public MarketplaceElastic setRating(String rating) {
+        this.rating = rating;
         return this;
     }
 
@@ -226,5 +232,32 @@ public class MarketplaceElastic extends AbstractDomain {
     public MarketplaceElastic setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    public String townCity() {
+        if (StringUtils.isBlank(town) && StringUtils.isBlank(city)) {
+            return "";
+        } else if (StringUtils.isBlank(town)) {
+            return city;
+        } else if (StringUtils.isBlank(city)) {
+            return town;
+        } else {
+            return town + ", " + city;
+        }
+    }
+
+    public String getValueFromTag(String field) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String found = Arrays.stream(tag.split(" ")).filter(x -> x.endsWith(field.toUpperCase())).findFirst().orElse(null);
+            return found != null ? found.replaceAll("_" + field, "") : "";
+        } else {
+            String[] tags = tag.split(" ");
+            for (String individualTag : tags) {
+                if (individualTag.endsWith(field.toUpperCase())) {
+                    return individualTag.replaceAll("_" + field, "");
+                }
+            }
+            return "";
+        }
     }
 }

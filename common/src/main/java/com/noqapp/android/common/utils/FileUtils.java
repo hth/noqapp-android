@@ -25,7 +25,7 @@ public class FileUtils extends BaseFileUtils {
                     return Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
                 }
                 final String id = DocumentsContract.getDocumentId(uri);
-                uri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                uri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
             } else if (isMediaDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -52,3 +52,4 @@ public class FileUtils extends BaseFileUtils {
         return null;
     }
 }
+

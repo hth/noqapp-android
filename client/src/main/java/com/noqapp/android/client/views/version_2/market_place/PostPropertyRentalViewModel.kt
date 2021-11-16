@@ -31,6 +31,7 @@ class PostPropertyRentalViewModel : ViewModel() {
     val authenticationError = MutableLiveData(false)
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
     val postImagesLiveData = MutableLiveData<JsonResponse>()
+    val shownInterestLiveData = MutableLiveData<Boolean>()
 
     private var propertyRentalRepository: PropertyRentalRepository = PropertyRentalRepository()
 
@@ -79,7 +80,7 @@ class PostPropertyRentalViewModel : ViewModel() {
         jsonPropertyRental.rentalAvailableDay = SDF_YYYY_MM_DD.format(Date())
         jsonPropertyRental.businessType = BusinessTypeEnum.PR
         jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
-        jsonPropertyRental.productPrice = productPrice
+        jsonPropertyRental.productPrice = productPrice * 100
         jsonPropertyRental.title = title
         jsonPropertyRental.description = description
         jsonPropertyRental.landmark = landmark
@@ -111,7 +112,7 @@ class PostPropertyRentalViewModel : ViewModel() {
             UserUtils.getAuth(),
             jsonMarketPlace,
             {
-                Log.d("Success", "Initiated contact successfully")
+                shownInterestLiveData.postValue(true)
             },
             {
                 errorEncounteredJsonLiveData.postValue(it)

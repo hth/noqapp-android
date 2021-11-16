@@ -64,9 +64,6 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
     @JsonProperty("vc")
     private int viewCount;
 
-    @JsonProperty("ec")
-    private int expressedInterestCount;
-
     /** Marketplace location. */
     @JsonProperty("ma")
     private String address;
@@ -179,15 +176,6 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
         return this;
     }
 
-    public int getExpressedInterestCount() {
-        return expressedInterestCount;
-    }
-
-    public JsonMarketplace setExpressedInterestCount(int expressedInterestCount) {
-        this.expressedInterestCount = expressedInterestCount;
-        return this;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -264,7 +252,6 @@ public abstract class JsonMarketplace extends AbstractDomain implements Serializ
             ", postImages=" + postImages +
             ", tags='" + tags + '\'' +
             ", viewCount=" + viewCount +
-            ", expressedInterestCount=" + expressedInterestCount +
             ", address='" + address + '\'' +
             ", city='" + city + '\'' +
             ", town='" + town + '\'' +

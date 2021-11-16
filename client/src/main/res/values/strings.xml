@@ -376,6 +376,8 @@
     <string name="empty_my_appointment_title">Empty Appointments</string>
     <string name="empty_upcoming_appointment_subtitle">You don\'t have any scheduled appointment</string>
     <string name="empty_past_appointment_subtitle">There are no past schedule appointment</string>
+    <string name="empty_property_rental_title">Rental Properties</string>
+    <string name="empty_property_rental">No properties listed in your location, however you can come back later to look for properties you are interested in.</string>
 
     <string name="empty_my_coupon_title">Empty Coupons</string>
     <string name="empty_my_coupon_subtitle">Sorry, You don\'t have any coupon right now.</string>
@@ -586,13 +588,13 @@
     <string name="txt_price_range">Price range</string>
     <string name="slider_desc">"Price range "</string>
     <string name="txt_rental_type">Rental type</string>
-    <string name="txt_carpet_area"><![CDATA[Carpet area (sq. ft.)]]></string>
+    <string name="txt_carpet_area">Carpet area (sq. ft.):</string>
     <string name="txt_title">Title</string>
     <string name="txt_description">Description</string>
     <string name="txt_rent_per_month">Rent per Month</string>
-    <string name="txt_number_of_bedrooms">Number of Bedrooms</string>
-    <string name="txt_number_of_bathrooms">Number of Bathrooms</string>
-    <string name="txt_available_from">Available From</string>
+    <string name="txt_number_of_bedrooms">Number of Bedrooms:</string>
+    <string name="txt_number_of_bathrooms">Number of Bathrooms:</string>
+    <string name="txt_available_from">Available From:</string>
     <string name="txt_rental_address">Rental Address</string>
     <string name="txt_area_city">Area/City</string>
     <string name="txt_town_locality_sector">Town/Locality/Sector</string>
@@ -614,4 +616,10 @@
     <string name="txt_select_address">Select Address</string>
     <string name="txt_no_data_found">No data found</string>
     <string name="txt_views">Views</string>
+    <string name="txt_view">View</string>
+    <string name="txt_number_of_bedrooms_">Number of bedrooms:</string>
+    <string name="txt_owner_notified">\"Owner has been notified, you will get a callback shortly.\"</string>
+    <string name="google_maps_navigate_to" translatable="false">google.navigation:mode=%1$s&amp;q=%2$s</string>
+    <string name="google_maps_package" translatable="false">com.google.android.apps.maps</string>
+    <string name="google_maps_navigation_mode_driving" translatable="false">d</string>
 </resources>
