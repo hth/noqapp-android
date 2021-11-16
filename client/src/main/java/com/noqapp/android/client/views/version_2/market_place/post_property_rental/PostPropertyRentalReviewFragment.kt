@@ -128,7 +128,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
             })
 
         postPropertyRentalViewModel.postImagesLiveData.observe(viewLifecycleOwner, {
-            imageUploadCount++
+            imageUploadCount = imageUploadCount.inc()
             propertyRentalEntity?.let { pre ->
                 if (imageUploadCount == pre.images?.size) {
                     fragmentPostPropertyRentalReview.clProgressBar.visibility = View.GONE

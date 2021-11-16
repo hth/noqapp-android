@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalTitleBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
@@ -58,12 +60,17 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
 
     private fun setListeners() {
         fragmentPostPropertyRentalTitle.cvNext.setOnClickListener {
-            insertPropertyRentalInDb()
-            postPropertyRentalTitleFragmentInteractionListener.goToPostPropertyRentalDetails()
+            if (validate()) {
+                insertPropertyRentalInDb()
+                postPropertyRentalTitleFragmentInteractionListener.goToPostPropertyRentalDetails()
+            }
         }
+
         fragmentPostPropertyRentalTitle.tvNext.setOnClickListener {
-            insertPropertyRentalInDb()
-            postPropertyRentalTitleFragmentInteractionListener.goToPostPropertyRentalDetails()
+            if (validate()) {
+                insertPropertyRentalInDb()
+                postPropertyRentalTitleFragmentInteractionListener.goToPostPropertyRentalDetails()
+            }
         }
     }
 
@@ -87,6 +94,25 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
             listOf()
         )
         postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
+    }
+
+    private fun validate(): Boolean {
+        if (fragmentPostPropertyRentalTitle.etTitle.text.isNullOrEmpty()) {
+            showSnackBar("Please enter title.")
+            return false
+        } else if (fragmentPostPropertyRentalTitle.etDescription.text.isNullOrEmpty()) {
+            showSnackBar("Please enter property description.")
+            return false
+        }
+        return true
+    }
+
+
+    private fun showSnackBar(text: String) {
+        Snackbar.make(
+            fragmentPostPropertyRentalTitle.root, text,
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 }
 
