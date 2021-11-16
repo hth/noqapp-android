@@ -265,33 +265,31 @@ public class MainActivity
                     new CastRemoteDisplayLocalService.NotificationSettings.Builder()
                             .setNotificationPendingIntent(notificationPendingIntent).build();
 
-            CastRemoteDisplayLocalService.startService(MainActivity.this, PresentationService.class,
-                    getString(R.string.app_cast_id), castDevice, settings,
-                    new CastRemoteDisplayLocalService.Callbacks() {
-                        @Override
-                        public void onServiceCreated(CastRemoteDisplayLocalService service) {
-                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).professionalProfilesResponse(jsonProfessionalProfileTVList);
-                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
-                            ((PresentationService) service).setTopicAndQueueTV(topicAndQueueTVList);
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService service) {
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionError(Status errorReason) {
-                            initError();
-
-                            MainActivity.this.castDevice = null;
-                            MainActivity.this.finish();
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                        }
-                    });
-
+//            CastRemoteDisplayLocalService.startService(MainActivity.this, PresentationService.class, getString(R.string.app_cast_id), castDevice, settings,
+//                new CastRemoteDisplayLocalService.Callbacks() {
+//                    @Override
+//                    public void onServiceCreated(CastRemoteDisplayLocalService service) {
+//                        ((PresentationService) CastRemoteDisplayLocalService.getInstance()).professionalProfilesResponse(jsonProfessionalProfileTVList);
+//                        ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
+//                        ((PresentationService) service).setTopicAndQueueTV(topicAndQueueTVList);
+//                    }
+//
+//                    @Override
+//                    public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService service) {
+//                    }
+//
+//                    @Override
+//                    public void onRemoteDisplaySessionError(Status errorReason) {
+//                        initError();
+//
+//                        MainActivity.this.castDevice = null;
+//                        MainActivity.this.finish();
+//                    }
+//
+//                    @Override
+//                    public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+//                    }
+//                });
         });
     }
 
