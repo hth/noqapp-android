@@ -194,7 +194,7 @@
                             android:id="@+id/cl_housing"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:layout_weight="1">
 
                             <androidx.appcompat.widget.AppCompatImageView
