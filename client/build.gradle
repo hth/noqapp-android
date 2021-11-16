@@ -26,7 +26,7 @@ repositories {
 }
 
 jacoco {
-    toolVersion = '0.8.5'
+    toolVersion = '0.8.7'
 }
 
 tasks.withType(Test) {
@@ -95,10 +95,6 @@ android {
 
     buildFeatures {
         viewBinding true
-    }
-
-    dexOptions {
-        javaMaxHeapSize "4g"
     }
 
     defaultConfig {
