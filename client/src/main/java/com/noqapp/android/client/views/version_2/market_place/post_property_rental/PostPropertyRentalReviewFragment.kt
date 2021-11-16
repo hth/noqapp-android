@@ -30,7 +30,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
     private lateinit var propertyRentalImageAdapter: PropertyRentalImageAdapter
 
     private var propertyRentalEntity: PropertyRentalEntity? = null
-    private var imageUploadCount = -1
+    private var imageUploadCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
