@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.post_housing_item
+package com.noqapp.android.client.views.version_2.housing.post_household_item
 
 import android.app.Activity
 import android.os.Bundle
