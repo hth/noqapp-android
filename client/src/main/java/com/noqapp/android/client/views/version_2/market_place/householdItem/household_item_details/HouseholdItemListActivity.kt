@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.household_item_details
+package com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +14,8 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.utils.PaginationListener.PAGE_START
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.housing.HouseholdItemViewModel
-import com.noqapp.android.client.views.version_2.housing.post_household_item.PostHouseholdItemActivity
+import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
+import com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item.PostHouseholdItemActivity
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.ViewPropertyRentalDetailsActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum

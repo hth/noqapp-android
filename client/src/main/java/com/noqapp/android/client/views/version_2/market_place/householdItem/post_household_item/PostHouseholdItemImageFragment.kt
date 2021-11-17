@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.post_household_item
+package com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item
 
 import android.Manifest
 import android.app.Activity
@@ -30,7 +30,7 @@ import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.databinding.FragmentUploadPropertyRentalImagesBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.housing.HouseholdItemViewModel
+import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import java.io.File
 import java.io.IOException

@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.post_household_item
+package com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item
 
 import android.content.ContentResolver
 import android.net.Uri
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemReviewBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.housing.HouseholdItemViewModel
+import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import com.squareup.okhttp.MediaType

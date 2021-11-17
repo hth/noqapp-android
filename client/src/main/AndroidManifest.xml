@@ -356,12 +356,12 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name=".views.version_2.housing.household_item_details.HouseholdItemListActivity"
+            android:name=".views.version_2.market_place.householdItem.household_item_details.HouseholdItemListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.version_2.housing.post_household_item.PostHouseholdItemActivity"
+            android:name=".views.version_2.market_place.householdItem.post_household_item.PostHouseholdItemActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material" />

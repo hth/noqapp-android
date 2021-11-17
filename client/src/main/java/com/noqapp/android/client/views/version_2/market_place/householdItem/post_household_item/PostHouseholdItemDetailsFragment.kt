@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.post_household_item
+package com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item
 
 import android.app.Activity
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemDetailsBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.housing.HouseholdItemViewModel
+import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context

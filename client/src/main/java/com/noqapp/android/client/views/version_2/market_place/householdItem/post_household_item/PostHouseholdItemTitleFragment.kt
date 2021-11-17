@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.post_household_item
+package com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item
 
 import android.content.Context
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemTitleBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.housing.HouseholdItemViewModel
+import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 
