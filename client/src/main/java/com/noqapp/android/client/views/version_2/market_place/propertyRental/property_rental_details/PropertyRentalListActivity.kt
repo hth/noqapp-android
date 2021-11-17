@@ -14,7 +14,7 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.utils.PaginationListener.PAGE_START
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental.PostPropertyRentalActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
@@ -24,7 +24,7 @@ class PropertyRentalListActivity : LocationBaseActivity() {
     private lateinit var activityPropertyRentalBinding: ActivityPropertyRentalBinding
     private lateinit var propertyRentalListAdapter: PropertyRentalListAdapter
 
-    private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
+    private lateinit var propertyRentalViewModel: PropertyRentalViewModel
 
     private var from: Int = PAGE_START
     private var size: Int = 3
@@ -36,10 +36,10 @@ class PropertyRentalListActivity : LocationBaseActivity() {
         super.onCreate(savedInstanceState)
         activityPropertyRentalBinding = ActivityPropertyRentalBinding.inflate(LayoutInflater.from(this))
         setContentView(activityPropertyRentalBinding.root)
-        postPropertyRentalViewModel = ViewModelProvider(this)[PostPropertyRentalViewModel::class.java]
+        propertyRentalViewModel = ViewModelProvider(this)[PropertyRentalViewModel::class.java]
 
         activityPropertyRentalBinding.swipeRefreshLayout.setOnRefreshListener {
-            postPropertyRentalViewModel.searchStoreQueryLiveData.value?.let {
+            propertyRentalViewModel.searchStoreQueryLiveData.value?.let {
                 activityPropertyRentalBinding.rlEmpty.visibility = View.GONE
                 activityPropertyRentalBinding.shimmerLayout.startShimmer()
                 propertyRentalListAdapter.clear()
@@ -48,7 +48,7 @@ class PropertyRentalListActivity : LocationBaseActivity() {
                 it.searchedOnBusinessType = BusinessTypeEnum.PR
                 it.from = from
                 it.size = size
-                postPropertyRentalViewModel.getMarketPlace(it)
+                propertyRentalViewModel.getMarketPlace(it)
             }
         }
 
@@ -75,14 +75,14 @@ class PropertyRentalListActivity : LocationBaseActivity() {
             PaginationListener(layoutManager) {
             override fun loadMoreItems() {
                 isItemLoading = true
-                postPropertyRentalViewModel.searchStoreQueryLiveData.value?.let {
+                propertyRentalViewModel.searchStoreQueryLiveData.value?.let {
                     it.searchedOnBusinessType = BusinessTypeEnum.PR
                     size += 3
                     from += 3
                     it.from = from
                     it.size = size
                     propertyRentalListAdapter.addLoading()
-                    postPropertyRentalViewModel.getMarketPlace(it)
+                    propertyRentalViewModel.getMarketPlace(it)
                 }
             }
 
@@ -116,7 +116,7 @@ class PropertyRentalListActivity : LocationBaseActivity() {
     }
 
     private fun observeData() {
-        postPropertyRentalViewModel.marketplaceElasticListLiveData.observe(this, {
+        propertyRentalViewModel.marketplaceElasticListLiveData.observe(this, {
             activityPropertyRentalBinding.shimmerLayout.stopShimmer()
             activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
             activityPropertyRentalBinding.rvMarketPlace.visibility = View.VISIBLE
@@ -136,31 +136,31 @@ class PropertyRentalListActivity : LocationBaseActivity() {
             isItemLoading = false
         })
 
-        postPropertyRentalViewModel.authenticationError.observe(this, {
+        propertyRentalViewModel.authenticationError.observe(this, {
             if (it) {
                 super.authenticationFailure()
                 activityPropertyRentalBinding.shimmerLayout.stopShimmer()
                 activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
-                postPropertyRentalViewModel.authenticationError.value = false
+                propertyRentalViewModel.authenticationError.value = false
             }
         })
 
-        postPropertyRentalViewModel.errorEncounteredJsonLiveData.observe(this, {
+        propertyRentalViewModel.errorEncounteredJsonLiveData.observe(this, {
             activityPropertyRentalBinding.shimmerLayout.stopShimmer()
             activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
             super.responseErrorPresenter(it)
         })
 
-        postPropertyRentalViewModel.searchStoreQueryLiveData.observe(this, {
+        propertyRentalViewModel.searchStoreQueryLiveData.observe(this, {
             activityPropertyRentalBinding.shimmerLayout.startShimmer()
             it.searchedOnBusinessType = BusinessTypeEnum.PR
-            postPropertyRentalViewModel.getMarketPlace(it)
+            propertyRentalViewModel.getMarketPlace(it)
         })
 
-        postPropertyRentalViewModel.shownInterestLiveData.observe(this, {
+        propertyRentalViewModel.shownInterestLiveData.observe(this, {
             if (it) {
                 showSnackbar(R.string.txt_owner_notified)
-                postPropertyRentalViewModel.shownInterestLiveData.value = false
+                propertyRentalViewModel.shownInterestLiveData.value = false
             }
         })
     }
@@ -169,7 +169,7 @@ class PropertyRentalListActivity : LocationBaseActivity() {
         marketPlace?.let {
             when (view.id) {
                 R.id.btn_view_details -> {
-                    postPropertyRentalViewModel.viewDetails(it.id)
+                    propertyRentalViewModel.viewDetails(it.id)
                     val propertyDetailsIntent =
                         Intent(this, ViewPropertyRentalDetailsActivity::class.java).apply {
                             putExtra(Constants.POST_PROPERTY_RENTAL, marketPlace)
@@ -177,7 +177,7 @@ class PropertyRentalListActivity : LocationBaseActivity() {
                     startActivity(propertyDetailsIntent)
                 }
                 R.id.btn_call_agent -> {
-                    postPropertyRentalViewModel.initiateContact(it.id)
+                    propertyRentalViewModel.initiateContact(it.id)
                 }
             }
         }
@@ -211,6 +211,6 @@ class PropertyRentalListActivity : LocationBaseActivity() {
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
 
-        postPropertyRentalViewModel.searchStoreQueryLiveData.value = searchStoreQuery
+        propertyRentalViewModel.searchStoreQueryLiveData.value = searchStoreQuery
     }
 }

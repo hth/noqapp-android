@@ -22,8 +22,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.util.*
 
-class PostPropertyRentalViewModel : ViewModel() {
-    val tag: String = PostPropertyRentalViewModel::class.java.simpleName
+class PropertyRentalViewModel : ViewModel() {
+    val tag: String = PropertyRentalViewModel::class.java.simpleName
 
     val marketplaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
     val postMarketPlaceJsonLiveData = MutableLiveData<JsonPropertyRental>()

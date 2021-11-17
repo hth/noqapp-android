@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalReviewBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import com.squareup.okhttp.MediaType
@@ -27,7 +27,7 @@ import java.io.File
 class PostPropertyRentalReviewFragment : BaseFragment() {
 
     private lateinit var fragmentPostPropertyRentalReview: FragmentPostPropertyRentalReviewBinding
-    private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
+    private lateinit var propertyRentalViewModel: PropertyRentalViewModel
     private lateinit var propertyRentalImageAdapter: PropertyRentalImageAdapter
 
     private var propertyRentalEntity: PropertyRentalEntity? = null
@@ -40,8 +40,8 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
     ): View {
         fragmentPostPropertyRentalReview =
             FragmentPostPropertyRentalReviewBinding.inflate(inflater, container, false)
-        postPropertyRentalViewModel =
-            ViewModelProvider(requireActivity())[PostPropertyRentalViewModel::class.java]
+        propertyRentalViewModel =
+            ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
         return fragmentPostPropertyRentalReview.root
     }
 
@@ -69,7 +69,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
         fragmentPostPropertyRentalReview.cvProceed.setOnClickListener {
             propertyRentalEntity?.let { pre ->
                 fragmentPostPropertyRentalReview.clProgressBar.visibility = View.VISIBLE
-                postPropertyRentalViewModel.postMarketPlace(
+                propertyRentalViewModel.postMarketPlace(
                     pre.price,
                     pre.title,
                     pre.description,
@@ -90,7 +90,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        postPropertyRentalViewModel.getPropertyRental(requireContext())
+        propertyRentalViewModel.getPropertyRental(requireContext())
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     propertyRentalEntity = it[0]
@@ -118,7 +118,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                 }
             })
 
-        postPropertyRentalViewModel.postMarketPlaceJsonLiveData.observe(
+        propertyRentalViewModel.postMarketPlaceJsonLiveData.observe(
             viewLifecycleOwner,
             { mre ->
                 propertyRentalEntity?.let { pre ->
@@ -128,12 +128,12 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                 }
             })
 
-        postPropertyRentalViewModel.postImagesLiveData.observe(viewLifecycleOwner, {
+        propertyRentalViewModel.postImagesLiveData.observe(viewLifecycleOwner, {
             imageUploadCount = imageUploadCount.inc()
             propertyRentalEntity?.let { pre ->
                 if (imageUploadCount == pre.images?.size) {
                     fragmentPostPropertyRentalReview.clProgressBar.visibility = View.GONE
-                    postPropertyRentalViewModel.deletePostsLocally(requireContext())
+                    propertyRentalViewModel.deletePostsLocally(requireContext())
                     activity?.finish()
                 }
             }
@@ -149,7 +149,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                 file.asRequestBody(MediaType.parse(type).toString().toMediaType())
             )
             val postId = RequestBody.create("text/plain".toMediaType(), marketPlaceId)
-            postPropertyRentalViewModel.postImages(marketplaceImage, postId)
+            propertyRentalViewModel.postImages(marketplaceImage, postId)
         }
     }
 
