@@ -16,7 +16,7 @@ import com.noqapp.android.client.databinding.ActivityViewPropertyRentalDetailsBi
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.GeoHashUtils
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import java.math.BigDecimal
 import java.text.NumberFormat
@@ -24,7 +24,7 @@ import java.util.*
 
 class ViewPropertyRentalDetailsActivity : LocationBaseActivity(), OnMapReadyCallback {
     private lateinit var activityViewPropertyRentalDetailsBinding: ActivityViewPropertyRentalDetailsBinding
-    private lateinit var propertyRentalViewModel: PostPropertyRentalViewModel
+    private lateinit var propertyRentalViewModel: PropertyRentalViewModel
     private lateinit var marketPlaceElastic: MarketplaceElastic
     private var latitude = 0.0
     private var longitude = 0.0
@@ -37,7 +37,7 @@ class ViewPropertyRentalDetailsActivity : LocationBaseActivity(), OnMapReadyCall
             ActivityViewPropertyRentalDetailsBinding.inflate(LayoutInflater.from(this))
         setContentView(activityViewPropertyRentalDetailsBinding.root)
 
-        propertyRentalViewModel = ViewModelProvider(this)[PostPropertyRentalViewModel::class.java]
+        propertyRentalViewModel = ViewModelProvider(this)[PropertyRentalViewModel::class.java]
 
         intent?.let {
             marketPlaceElastic =

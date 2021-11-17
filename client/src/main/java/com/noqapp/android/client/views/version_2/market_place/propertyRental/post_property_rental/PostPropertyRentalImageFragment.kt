@@ -30,7 +30,7 @@ import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.databinding.FragmentUploadPropertyRentalImagesBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import java.io.File
 import java.io.IOException
@@ -43,7 +43,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
     private val REQUEST_PICK_IMAGE = 1002
 
     private lateinit var fragmentPostPropertyRentalUpload: FragmentUploadPropertyRentalImagesBinding
-    private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
+    private lateinit var propertyRentalViewModel: PropertyRentalViewModel
     private lateinit var propertyRentalImageAdapter: PropertyRentalImageAdapter
     private lateinit var propertyRentalEntity: PropertyRentalEntity
     private lateinit var currentPhotoPath: String
@@ -62,8 +62,8 @@ class PostPropertyRentalImageFragment : BaseFragment() {
     ): View {
         fragmentPostPropertyRentalUpload =
             FragmentUploadPropertyRentalImagesBinding.inflate(inflater, container, false)
-        postPropertyRentalViewModel =
-            ViewModelProvider(requireActivity())[PostPropertyRentalViewModel::class.java]
+        propertyRentalViewModel =
+            ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
         return fragmentPostPropertyRentalUpload.root
     }
 
@@ -78,7 +78,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        postPropertyRentalViewModel.getPropertyRental(requireContext())
+        propertyRentalViewModel.getPropertyRental(requireContext())
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     propertyRentalEntity = it[0]
@@ -96,7 +96,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
                     propertyRentalEntity.images = list
                 }
             }
-            postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
+            propertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
         }
         fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
@@ -107,7 +107,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
     private fun setListeners() {
         fragmentPostPropertyRentalUpload.cvNext.setOnClickListener {
             propertyRentalEntity.images = propertyRentalImageAdapter.getAllImages()
-            postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
+            propertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
 
             postPropertyRentalImageFragmentInteractionListener.goToPostPropertyRentalReviewFragment()
         }
@@ -322,7 +322,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
         images.addAll(propertyRentalEntity.images)
         images.add(imagePath)
         propertyRentalEntity.images = images
-        postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
+        propertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
 //        getMimeType(Uri.parse(imagePath))?.let { type ->
 //            val file = File(imagePath)
 //            val marketplaceImage = MultipartBody.Part.createFormData(

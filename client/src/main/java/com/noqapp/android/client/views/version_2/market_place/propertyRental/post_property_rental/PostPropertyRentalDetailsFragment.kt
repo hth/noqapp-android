@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalDetailsBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import android.app.DatePickerDialog
@@ -30,7 +30,6 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
 import java.util.*
-
 
 class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {
 
@@ -60,7 +59,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
         }
 
     private lateinit var fragmentPostPropertyRentalDetails: FragmentPostPropertyRentalDetailsBinding
-    private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
+    private lateinit var propertyRentalViewModel: PropertyRentalViewModel
     private lateinit var postPropertyRentalDetailsFragmentInteractionListener: PostPropertyRentalDetailsFragmentInteractionListener
     private var jsonUserAddress: JsonUserAddress? = null
     private var propertyRentalEntityVal: PropertyRentalEntity? = null
@@ -79,8 +78,8 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
     ): View {
         fragmentPostPropertyRentalDetails =
             FragmentPostPropertyRentalDetailsBinding.inflate(inflater, container, false)
-        postPropertyRentalViewModel =
-            ViewModelProvider(requireActivity())[PostPropertyRentalViewModel::class.java]
+        propertyRentalViewModel =
+            ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
         return fragmentPostPropertyRentalDetails.root
     }
 
@@ -96,7 +95,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
     }
 
     private fun observeData() {
-        postPropertyRentalViewModel.getPropertyRental(requireContext())
+        propertyRentalViewModel.getPropertyRental(requireContext())
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     val propertyRentalEntity = it[0]
@@ -238,7 +237,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
             propertyRentalEntityVal?.availableFrom =
                 fragmentPostPropertyRentalDetails.tvAvailableFrom.text.toString()
 
-            postPropertyRentalViewModel.insertPropertyRental(
+            propertyRentalViewModel.insertPropertyRental(
                 requireContext(),
                 propertyRentalEntityVal
             )
