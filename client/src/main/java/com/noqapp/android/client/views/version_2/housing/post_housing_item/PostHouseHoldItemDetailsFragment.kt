@@ -14,6 +14,7 @@ import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -85,7 +86,8 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
         view.setOnTouchListener { _, _ -> true }
         observeData()
         setListeners()
-
+        val spAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, ItemConditionEnum.asListOfDescription())
+        fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.adapter = spAdapter
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
     }
@@ -116,19 +118,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
                     fragmentPostHouseHoldItemDetailsBinding.etTownLocality.setText(houseHoldItemEntity.town)
                     fragmentPostHouseHoldItemDetailsBinding.etCityArea.setText(houseHoldItemEntity.city)
                     fragmentPostHouseHoldItemDetailsBinding.etRentPerMonth.setText(houseHoldItemEntity.price.toString())
-
-
-                    when (houseHoldItemEntity.itemConditionType) {
-                        ItemConditionEnum.P -> {
-                            fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(0)
-                        }
-                        ItemConditionEnum.G -> {
-                            fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(1)
-                        }
-                        ItemConditionEnum.V -> {
-                            fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(2)
-                        }
-                    }
+                    fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(ItemConditionEnum.asListOfDescription().indexOf(houseHoldItemEntity.itemConditionType))
 
                 }
             })
@@ -153,18 +143,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
                     listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
             }
 
-            when (fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.selectedItemPosition) {
-                0 -> {
-                    houseHoldItemEntityVal?.itemConditionType = ItemConditionEnum.P
-                }
-                1 -> {
-                    houseHoldItemEntityVal?.itemConditionType = ItemConditionEnum.G
-                }
-                2 -> {
-                    houseHoldItemEntityVal?.itemConditionType = ItemConditionEnum.V
-                }
-            }
-
+            houseHoldItemEntityVal?.itemConditionType = fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.selectedItem.toString()
             housingViewModel.insertHouseHoldItem(
                 requireContext(),
                 houseHoldItemEntityVal

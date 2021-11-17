@@ -11,7 +11,7 @@ data class HouseHoldItemEntity(
     @ColumnInfo(name = "id")
     var id: Int,
     @ColumnInfo(name = "item_condition_type")
-    var itemConditionType: ItemConditionEnum,
+    var itemConditionType: String,
     @ColumnInfo(name = "coordinates")
     var coordinates: List<Double>,
     @ColumnInfo(name = "price")

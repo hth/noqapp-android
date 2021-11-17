@@ -51,7 +51,6 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/rounded_corner_cyan_background"
-                android:entries="@array/house_hold_item_usages_values"
                 app:layout_constraintTop_toBottomOf="@+id/tv_rent_type" />
 
             <View

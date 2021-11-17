@@ -19,6 +19,7 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
+import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import java.util.*
 import org.joda.time.DateTimeFieldType.dayOfMonth
 import java.text.DateFormat
@@ -92,7 +94,8 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
         view.setOnTouchListener { _, _ -> true }
         observeData()
         setListeners()
-
+        val spAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, RentalTypeEnum.asListOfDescription())
+        fragmentPostPropertyRentalDetails.spinnerRentalType.adapter = spAdapter
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
     }
@@ -126,21 +129,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                     fragmentPostPropertyRentalDetails.etRentPerMonth.setText(propertyRentalEntity.price.toString())
                     fragmentPostPropertyRentalDetails.tvAvailableFrom.text =
                         propertyRentalEntity.availableFrom
-
-                    when (propertyRentalEntity.rentalType) {
-                        RentalTypeEnum.A -> {
-                            fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(0)
-                        }
-                        RentalTypeEnum.H -> {
-                            fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(1)
-                        }
-                        RentalTypeEnum.R -> {
-                            fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(2)
-                        }
-                        RentalTypeEnum.T -> {
-                            fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(3)
-                        }
-                    }
+                    fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(RentalTypeEnum.asListOfDescription().indexOf(propertyRentalEntity.rentalType))
 
                     selectBedroom(propertyRentalEntity.bedroom)
                     selectBathRoom(propertyRentalEntity.bathroom)
@@ -249,21 +238,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                 propertyRentalEntityVal?.coordinates =
                     listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
             }
-
-            when (fragmentPostPropertyRentalDetails.spinnerRentalType.selectedItemPosition) {
-                0 -> {
-                    propertyRentalEntityVal?.rentalType = RentalTypeEnum.A
-                }
-                1 -> {
-                    propertyRentalEntityVal?.rentalType = RentalTypeEnum.H
-                }
-                2 -> {
-                    propertyRentalEntityVal?.rentalType = RentalTypeEnum.R
-                }
-                3 -> {
-                    propertyRentalEntityVal?.rentalType = RentalTypeEnum.T
-                }
-            }
+            propertyRentalEntityVal?.rentalType = fragmentPostPropertyRentalDetails.spinnerRentalType.selectedItem.toString()
 
             propertyRentalEntityVal?.availableFrom =
                 fragmentPostPropertyRentalDetails.tvAvailableFrom.text.toString()

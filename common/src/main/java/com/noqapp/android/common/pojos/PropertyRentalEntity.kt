@@ -17,7 +17,7 @@ data class PropertyRentalEntity(
     @ColumnInfo(name = "carpet_area")
     var carpetArea: Int,
     @ColumnInfo(name = "rental_type")
-    var rentalType: RentalTypeEnum,
+    var rentalType: String,
     @ColumnInfo(name = "coordinates")
     var coordinates: List<Double>,
     @ColumnInfo(name = "price")

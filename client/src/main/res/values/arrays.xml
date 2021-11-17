@@ -10,16 +10,4 @@
         <item>20000.0</item>
     </array>
 
-    <string-array name="rental_type_values">
-        <item>Apartment</item>
-        <item>Bungalow/Independent House</item>
-        <item>Sublet Room</item>
-        <item>Townhouse</item>
-    </string-array>
-
-    <string-array name="house_hold_item_usages_values">
-        <item>Poor</item>
-        <item>Good</item>
-        <item>Very Good</item>
-    </string-array>
 </resources>

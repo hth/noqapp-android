@@ -48,10 +48,10 @@ class PostHouseHoldItemTitleFragment : BaseFragment() {
         housingViewModel.getHouseHoldItem(requireContext())
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
-                    val propertyRentalEntity = it[0]
-                    fragmentPostHouseHoldItemTitleBinding.etTitle.setText(propertyRentalEntity.title)
-                    fragmentPostHouseHoldItemTitleBinding.etDescription.setText(propertyRentalEntity.description)
-                    savedHouseHoldItemEntityInstance = propertyRentalEntity
+                    val houseHoldItemEntity = it[0]
+                    fragmentPostHouseHoldItemTitleBinding.etTitle.setText(houseHoldItemEntity.title)
+                    fragmentPostHouseHoldItemTitleBinding.etDescription.setText(houseHoldItemEntity.description)
+                    savedHouseHoldItemEntityInstance = houseHoldItemEntity
                 }
             })
     }
@@ -73,10 +73,10 @@ class PostHouseHoldItemTitleFragment : BaseFragment() {
     }
 
     private fun insertPropertyRentalInDb() {
-        if(savedHouseHoldItemEntityInstance == null){
+        if(null == savedHouseHoldItemEntityInstance){
             savedHouseHoldItemEntityInstance = HouseHoldItemEntity(
                 1,
-                ItemConditionEnum.G,
+                ItemConditionEnum.B.description,
                 listOf(0.0, 0.0),
                 0,
                 fragmentPostHouseHoldItemTitleBinding.etTitle.text.toString(),

@@ -5,11 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalTitleBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
@@ -21,7 +18,7 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
     private lateinit var fragmentPostPropertyRentalTitle: FragmentPostPropertyRentalTitleBinding
     private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
     private lateinit var postPropertyRentalTitleFragmentInteractionListener: PostPropertyRentalTitleFragmentInteractionListener
-
+    private var savedPropertyRentalEntityInstance: PropertyRentalEntity? = null
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is PostPropertyRentalTitleFragmentInteractionListener)
@@ -54,6 +51,7 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
                     val propertyRentalEntity = it[0]
                     fragmentPostPropertyRentalTitle.etTitle.setText(propertyRentalEntity.title)
                     fragmentPostPropertyRentalTitle.etDescription.setText(propertyRentalEntity.description)
+                    savedPropertyRentalEntityInstance = propertyRentalEntity
                 }
             })
     }
@@ -75,25 +73,31 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
     }
 
     private fun insertPropertyRentalInDb() {
-        val propertyRentalEntity = PropertyRentalEntity(
-            1,
-            0,
-            0,
-            0,
-            RentalTypeEnum.A,
-            listOf(0.0, 0.0),
-            0,
-            fragmentPostPropertyRentalTitle.etTitle.text.toString(),
-            fragmentPostPropertyRentalTitle.etDescription.text.toString(),
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            listOf()
-        )
-        postPropertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
+        if(null == savedPropertyRentalEntityInstance) {
+            savedPropertyRentalEntityInstance = PropertyRentalEntity(
+                1,
+                0,
+                0,
+                0,
+                RentalTypeEnum.A.description,
+                listOf(0.0, 0.0),
+                0,
+                fragmentPostPropertyRentalTitle.etTitle.text.toString(),
+                fragmentPostPropertyRentalTitle.etDescription.text.toString(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                listOf()
+            )
+        }else{
+            savedPropertyRentalEntityInstance!!.title = fragmentPostPropertyRentalTitle.etTitle.text.toString()
+            savedPropertyRentalEntityInstance!!.description =fragmentPostPropertyRentalTitle.etDescription.text.toString()
+
+        }
+        postPropertyRentalViewModel.insertPropertyRental(requireContext(), savedPropertyRentalEntityInstance)
     }
 
     private fun validate(): Boolean {

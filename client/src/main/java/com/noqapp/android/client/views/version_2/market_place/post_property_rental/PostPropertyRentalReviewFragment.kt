@@ -15,6 +15,8 @@ import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalReviewBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
+import com.noqapp.android.common.model.types.category.ItemConditionEnum
+import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import com.squareup.okhttp.MediaType
 import okhttp3.MediaType.Companion.toMediaType
@@ -80,7 +82,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                     pre.address,
                     pre.landmark,
                     pre.availableFrom,
-                    pre.rentalType,
+                    RentalTypeEnum.getNameByDescription(pre.rentalType),
                     pre.coordinates[1],
                     pre.coordinates[0]
                 )
@@ -104,7 +106,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                     fragmentPostPropertyRentalReview.tvRentPerMonth.text =
                         propertyRentalEntity?.price.toString()
                     fragmentPostPropertyRentalReview.tvRentalType.text =
-                        propertyRentalEntity?.rentalType?.description
+                        propertyRentalEntity?.rentalType
                     fragmentPostPropertyRentalReview.tvTownLocality.text =
                         propertyRentalEntity?.town
                     fragmentPostPropertyRentalReview.tvCityArea.text = propertyRentalEntity?.city
