@@ -5,9 +5,9 @@ package com.noqapp.android.common.model.types.category;
  * 2/24/21 4:37 PM
  */
 public enum ItemConditionEnum {
-    G("G", "Good"),
-    P("P", "Poor"),
-    V("V", "Very Good");
+    W("W", "Worn Off"),
+    U("U", "Used"),
+    N("N", "Brand New");
 
     private final String description;
     private final String name;
