@@ -28,7 +28,6 @@ import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 
-
 class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {
 
     private val startForResult =

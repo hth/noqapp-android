@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.lists
+package com.noqapp.android.client.views.version_2.housing.household_item_details
 
 import android.view.LayoutInflater
 import android.view.View
