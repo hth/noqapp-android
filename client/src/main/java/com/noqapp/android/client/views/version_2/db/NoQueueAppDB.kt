@@ -10,11 +10,12 @@ import com.noqapp.android.client.presenter.beans.ReviewData
 import com.noqapp.android.client.views.version_2.db.converters.*
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.common.pojos.DisplayNotification
+import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 
 @Database(
-    entities = [DisplayNotification::class, ReviewData::class, JsonTokenAndQueue::class, ForegroundNotificationModel::class, PropertyRentalEntity::class],
-    version = 2
+    entities = [DisplayNotification::class, ReviewData::class, JsonTokenAndQueue::class, ForegroundNotificationModel::class, PropertyRentalEntity::class, HouseHoldItemEntity::class],
+    version = 3
 )
 @TypeConverters(
     BusinessTypeConverter::class,
@@ -33,6 +34,7 @@ abstract class NoQueueAppDB : RoomDatabase() {
     abstract fun tokenAndQueueDao(): TokenAndQueueDao
     abstract fun foregroundNotificationDao(): ForegroundNotificationDao
     abstract fun propertyRentalDao(): PropertyRentalDao
+    abstract fun houseHoldItemDao(): HouseHoldItemDao
 
     companion object {
         private var instance: NoQueueAppDB? = null

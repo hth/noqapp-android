@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tv_rent_label"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_house_hold_item_price"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_rent_per_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/rounded_corner_cyan_background"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_rent_label" />
+
+            <TextView
+                android:id="@+id/tv_rent_type"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/txt_house_hold_item_usages"
+                app:layout_constraintTop_toBottomOf="@id/et_rent_per_month" />
+
+            <Spinner
+                android:id="@+id/spinner_rental_type"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_corner_cyan_background"
+                android:entries="@array/house_hold_item_usages_values"
+                app:layout_constraintTop_toBottomOf="@+id/tv_rent_type" />
+
+            <View
+                android:id="@+id/view_rental_type"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/color_divider"
+               />
+
+            <TextView
+                android:id="@+id/tv_rental_address"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/txt_address"
+                app:layout_constraintTop_toBottomOf="@id/spinner_rental_type" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_rental_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@id/tv_rental_address">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <fragment
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/tv_rental_address" />
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        style="@style/TextStyleNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/black_transparent"
+                        android:padding="16dp"
+                        android:text="@string/txt_select_address"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_city_area"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/txt_area_city"
+                app:layout_constraintTop_toBottomOf="@id/cv_rental_address" />
+
+            <EditText
+                android:id="@+id/et_city_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/rounded_corner_cyan_background"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_city_area" />
+
+            <View
+                android:id="@+id/view_city_area"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@id/et_city_area"
+                app:layout_constraintEnd_toEndOf="@id/et_city_area"
+                app:layout_constraintStart_toStartOf="@id/et_city_area"
+                app:layout_constraintTop_toTopOf="@id/et_city_area" />
+
+            <TextView
+                android:id="@+id/tv_town_locality"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/txt_town_locality_sector"
+                app:layout_constraintTop_toBottomOf="@id/et_city_area" />
+
+            <EditText
+                android:id="@+id/et_town_locality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/rounded_corner_cyan_background"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_town_locality" />
+
+            <View
+                android:id="@+id/view_town_locality"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@id/et_town_locality"
+                app:layout_constraintEnd_toEndOf="@id/et_town_locality"
+                app:layout_constraintStart_toStartOf="@id/et_town_locality"
+                app:layout_constraintTop_toTopOf="@id/et_town_locality" />
+
+            <TextView
+                android:id="@+id/tv_landmark"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/txt_landmark"
+                app:layout_constraintTop_toBottomOf="@id/et_town_locality" />
+
+            <EditText
+                android:id="@+id/et_landmark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/rounded_corner_cyan_background"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_landmark" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@id/et_landmark">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_bg_enable">
+
+                    <TextView
+                        android:id="@+id/tv_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="54dp"
+                        android:drawableStart="@drawable/ic_market_place_arrow_next"
+                        android:drawablePadding="24dp"
+                        android:gravity="center"
+                        android:text="@string/txt_next"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>

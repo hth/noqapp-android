@@ -103,4 +103,17 @@ public class MarketplaceElasticList {
         this.error = error;
         return this;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("MarketplaceElasticList{");
+        sb.append("scrollId='").append(scrollId).append('\'');
+        sb.append(", from=").append(from);
+        sb.append(", size=").append(size);
+        sb.append(", marketplaceElastics=").append(marketplaceElastics);
+        sb.append(", searchedOnBusinessType=").append(searchedOnBusinessType);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
+    }
 }

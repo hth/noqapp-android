@@ -1,0 +1,212 @@
+package com.noqapp.android.client.views.version_2.housing.post_housing_item
+
+import android.app.Activity
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import com.noqapp.android.client.R
+import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemDetailsBinding
+import com.noqapp.android.client.views.fragments.BaseFragment
+import com.noqapp.android.client.views.version_2.housing.HousingViewModel
+import com.noqapp.android.common.pojos.HouseHoldItemEntity
+import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
+import android.content.Intent
+import android.widget.DatePicker
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.noqapp.android.client.utils.Constants
+import com.noqapp.android.client.views.activities.AddAddressActivity
+import com.noqapp.android.common.beans.JsonUserAddress
+import com.noqapp.android.common.model.types.category.ItemConditionEnum
+
+
+class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val jsonUserAddress =
+                    intent?.getSerializableExtra(Constants.JSON_USER_ADDRESS) as JsonUserAddress
+                this.jsonUserAddress = jsonUserAddress
+                if (jsonUserAddress.address != null && jsonUserAddress.address != "")
+                    fragmentPostHouseHoldItemDetailsBinding.tvAddress.text =
+                        jsonUserAddress.address
+                fragmentPostHouseHoldItemDetailsBinding.etCityArea.setText(jsonUserAddress.area.toString())
+                fragmentPostHouseHoldItemDetailsBinding.etTownLocality.setText(jsonUserAddress.town.toString())
+
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            jsonUserAddress.latitude.toDouble(),
+                            jsonUserAddress.longitude.toDouble()
+                        ), 16.0f
+                    )
+                )
+
+            }
+        }
+
+    private lateinit var fragmentPostHouseHoldItemDetailsBinding: FragmentPostHouseHoldItemDetailsBinding
+    private lateinit var housingViewModel: HousingViewModel
+    private lateinit var postHouseHoldItemDetailsFragmentInteractionListener: PostHouseHoldItemDetailsFragmentInteractionListener
+    private var jsonUserAddress: JsonUserAddress? = null
+    private var houseHoldItemEntityVal: HouseHoldItemEntity? = null
+    private lateinit var googleMap: GoogleMap
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is PostHouseHoldItemDetailsFragmentInteractionListener)
+            postHouseHoldItemDetailsFragmentInteractionListener = context
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        fragmentPostHouseHoldItemDetailsBinding =
+            FragmentPostHouseHoldItemDetailsBinding.inflate(inflater, container, false)
+        housingViewModel =
+            ViewModelProvider(requireActivity())[HousingViewModel::class.java]
+        return fragmentPostHouseHoldItemDetailsBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.setOnTouchListener { _, _ -> true }
+        observeData()
+        setListeners()
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
+    }
+
+    private fun observeData() {
+        housingViewModel.getHouseHoldItem(requireContext())
+            .observe(viewLifecycleOwner, {
+                if (it.isNotEmpty()) {
+                    val houseHoldItemEntity = it[0]
+                    houseHoldItemEntityVal = houseHoldItemEntity
+
+                    if (houseHoldItemEntity.address != null && houseHoldItemEntity.address != "")
+                        fragmentPostHouseHoldItemDetailsBinding.tvAddress.text =
+                            houseHoldItemEntity.address
+
+                    if (houseHoldItemEntity.coordinates[0] != 0.0) {
+                        googleMap.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                LatLng(
+                                    houseHoldItemEntity.coordinates[0],
+                                    houseHoldItemEntity.coordinates[1]
+                                ), 16.0f
+                            )
+                        )
+                    }
+
+                    fragmentPostHouseHoldItemDetailsBinding.etLandmark.setText(houseHoldItemEntity.landmark)
+                    fragmentPostHouseHoldItemDetailsBinding.etTownLocality.setText(houseHoldItemEntity.town)
+                    fragmentPostHouseHoldItemDetailsBinding.etCityArea.setText(houseHoldItemEntity.city)
+                    fragmentPostHouseHoldItemDetailsBinding.etRentPerMonth.setText(houseHoldItemEntity.price.toString())
+
+
+                    when (houseHoldItemEntity.itemConditionType) {
+                        ItemConditionEnum.P -> {
+                            fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(0)
+                        }
+                        ItemConditionEnum.G -> {
+                            fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(1)
+                        }
+                        ItemConditionEnum.V -> {
+                            fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(2)
+                        }
+                    }
+
+                }
+            })
+    }
+
+
+    private fun setListeners() {
+        fragmentPostHouseHoldItemDetailsBinding.cvNext.setOnClickListener {
+            houseHoldItemEntityVal?.address =
+                fragmentPostHouseHoldItemDetailsBinding.tvAddress.text.toString()
+            houseHoldItemEntityVal?.town =
+                fragmentPostHouseHoldItemDetailsBinding.etTownLocality.text.toString()
+            houseHoldItemEntityVal?.city =
+                fragmentPostHouseHoldItemDetailsBinding.etCityArea.text.toString()
+            houseHoldItemEntityVal?.landmark =
+                fragmentPostHouseHoldItemDetailsBinding.etLandmark.text.toString()
+            houseHoldItemEntityVal?.price =
+                fragmentPostHouseHoldItemDetailsBinding.etRentPerMonth.text.toString().toInt()
+
+            jsonUserAddress?.let { jua ->
+                houseHoldItemEntityVal?.coordinates =
+                    listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
+            }
+
+            when (fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.selectedItemPosition) {
+                0 -> {
+                    houseHoldItemEntityVal?.itemConditionType = ItemConditionEnum.P
+                }
+                1 -> {
+                    houseHoldItemEntityVal?.itemConditionType = ItemConditionEnum.G
+                }
+                2 -> {
+                    houseHoldItemEntityVal?.itemConditionType = ItemConditionEnum.V
+                }
+            }
+
+            housingViewModel.insertHouseHoldItem(
+                requireContext(),
+                houseHoldItemEntityVal
+            )
+
+            postHouseHoldItemDetailsFragmentInteractionListener.goToHouseHoldItemImageUploadFragment()
+        }
+
+        fragmentPostHouseHoldItemDetailsBinding.tvAddress.setOnClickListener {
+            val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
+                putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
+            }
+            startForResult.launch(setAddressIntent)
+        }
+
+        fragmentPostHouseHoldItemDetailsBinding.viewCityArea.setOnClickListener {
+            val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
+                putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
+            }
+            startForResult.launch(setAddressIntent)
+        }
+
+        fragmentPostHouseHoldItemDetailsBinding.viewTownLocality.setOnClickListener {
+            val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
+                putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
+            }
+            startForResult.launch(setAddressIntent)
+        }
+
+    }
+
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+
+    }
+
+    override fun onMapReady(gm: GoogleMap?) {
+        gm?.let {
+            googleMap = it
+        }
+    }
+}
+
+interface PostHouseHoldItemDetailsFragmentInteractionListener {
+    fun goToHouseHoldItemImageUploadFragment()
+}

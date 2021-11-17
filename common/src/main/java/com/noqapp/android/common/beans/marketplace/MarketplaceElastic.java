@@ -260,4 +260,27 @@ public class MarketplaceElastic extends AbstractDomain implements Serializable {
             return "";
         }
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("MarketplaceElastic{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", businessType=").append(businessType);
+        sb.append(", productPrice='").append(productPrice).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", postImages=").append(postImages);
+        sb.append(", tag='").append(tag).append('\'');
+        sb.append(", viewCount=").append(viewCount);
+        sb.append(", rating='").append(rating).append('\'');
+        sb.append(", geoPointOfQ=").append(geoPointOfQ);
+        sb.append(", geoHash='").append(geoHash).append('\'');
+        sb.append(", city='").append(city).append('\'');
+        sb.append(", town='").append(town).append('\'');
+        sb.append(", countryShortName='").append(countryShortName).append('\'');
+        sb.append(", fieldTags=").append(Arrays.toString(fieldTags));
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
+    }
 }

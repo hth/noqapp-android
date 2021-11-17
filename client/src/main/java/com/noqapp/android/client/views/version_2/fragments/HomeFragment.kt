@@ -161,6 +161,10 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         fragmentHomeNewBinding.clMarketplace.setOnClickListener {
             homeFragmentInteractionListener.goToPropertyRentalFragment()
         }
+
+        fragmentHomeNewBinding.clHousing.setOnClickListener {
+            homeFragmentInteractionListener.navigateToHousingScreen()
+        }
     }
 
     private fun observeValues() {
@@ -451,4 +455,5 @@ interface HomeFragmentInteractionListener {
     fun makeAnnouncement(jsonTextToSpeeches: List<JsonTextToSpeech?>, msgId: String)
     fun callReviewActivity(codeQr: String, token: String)
     fun goToPropertyRentalFragment()
+    fun navigateToHousingScreen()
 }

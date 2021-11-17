@@ -356,6 +356,17 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
+            android:name=".views.version_2.housing.lists.HousingListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme.Material"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.version_2.housing.post_housing_item.PostHouseholdItemActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme.Material" />
+
+        <activity
             android:name=".views.version_2.market_place.property_rental_details.ViewPropertyRentalDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"

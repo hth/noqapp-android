@@ -41,6 +41,7 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
 import com.noqapp.android.client.views.customviews.BadgeDrawable
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
+import com.noqapp.android.client.views.version_2.housing.lists.HousingListActivity
 import com.noqapp.android.client.views.version_2.market_place.property_rental_details.PropertyRentalActivity
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
@@ -867,6 +868,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
     override fun goToPropertyRentalFragment() {
         startActivity(Intent(this, PropertyRentalActivity::class.java))
+    }
+
+    override fun navigateToHousingScreen() {
+        startActivity(Intent(this, HousingListActivity::class.java))
     }
 
     private fun callReviewActivity(
