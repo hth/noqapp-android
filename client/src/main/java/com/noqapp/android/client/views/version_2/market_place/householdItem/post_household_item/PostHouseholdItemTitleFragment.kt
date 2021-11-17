@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.post_housing_item
+package com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item
 
 import android.content.Context
 import android.os.Bundle
@@ -9,14 +9,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemTitleBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.housing.HousingViewModel
+import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 
 class PostHouseHoldItemTitleFragment : BaseFragment() {
 
     private lateinit var fragmentPostHouseHoldItemTitleBinding: FragmentPostHouseHoldItemTitleBinding
-    private lateinit var housingViewModel: HousingViewModel
+    private lateinit var householdItemViewModel: HouseholdItemViewModel
     private lateinit var postHouseHoldTitleFragmentInteractionListener: PostHouseHoldTitleFragmentInteractionListener
     private var savedHouseHoldItemEntityInstance: HouseHoldItemEntity? = null
     override fun onAttach(context: Context) {
@@ -32,8 +32,8 @@ class PostHouseHoldItemTitleFragment : BaseFragment() {
     ): View {
         fragmentPostHouseHoldItemTitleBinding =
             FragmentPostHouseHoldItemTitleBinding.inflate(inflater, container, false)
-        housingViewModel =
-            ViewModelProvider(requireActivity())[HousingViewModel::class.java]
+        householdItemViewModel =
+            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostHouseHoldItemTitleBinding.root
     }
 
@@ -45,7 +45,7 @@ class PostHouseHoldItemTitleFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        housingViewModel.getHouseHoldItem(requireContext())
+        householdItemViewModel.getHouseHoldItem(requireContext())
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     val houseHoldItemEntity = it[0]
@@ -93,7 +93,7 @@ class PostHouseHoldItemTitleFragment : BaseFragment() {
             savedHouseHoldItemEntityInstance!!.description =fragmentPostHouseHoldItemTitleBinding.etDescription.text.toString()
         }
 
-        housingViewModel.insertHouseHoldItem(requireContext(), savedHouseHoldItemEntityInstance)
+        householdItemViewModel.insertHouseHoldItem(requireContext(), savedHouseHoldItemEntityInstance)
     }
 
     private fun validate(): Boolean {

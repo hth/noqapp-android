@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing
+package com.noqapp.android.client.views.version_2.market_place.householdItem
 
 import android.content.Context
 import android.util.Log
@@ -20,8 +20,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HousingRepository {
-    private val TAG = HousingRepository::class.java.simpleName
+class HouseholdItemRepository {
+    private val TAG = HouseholdItemRepository::class.java.simpleName
 
     private var searchApi: SearchApi = RetrofitClient.getClient().create(SearchApi::class.java)
     private var marketplaceHouseholdItemApi: MarketplaceHouseholdItemApi = RetrofitClient.getClient().create(MarketplaceHouseholdItemApi::class.java)

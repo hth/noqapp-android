@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.post_property_rental
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental
 
 import android.content.ContentResolver
 import android.net.Uri
@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalReviewBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
-import com.noqapp.android.common.model.types.category.ItemConditionEnum
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import com.squareup.okhttp.MediaType

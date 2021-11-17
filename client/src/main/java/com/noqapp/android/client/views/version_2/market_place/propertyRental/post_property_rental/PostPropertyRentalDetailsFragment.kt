@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.post_property_rental
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental
 
 import android.app.Activity
 import android.os.Bundle
@@ -7,18 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostPropertyRentalDetailsBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
 import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.result.ActivityResult
@@ -31,10 +29,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
-import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import java.util.*
-import org.joda.time.DateTimeFieldType.dayOfMonth
-import java.text.DateFormat
 
 
 class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {

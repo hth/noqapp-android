@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/fragment_post_house_hold_item_title_desc"
-        android:name="com.noqapp.android.client.views.version_2.housing.post_housing_item.PostHouseHoldItemTitleFragment"
+        android:name="com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item.PostHouseHoldItemTitleFragment"
         tools:layout="@layout/fragment_post_property_rental_title" />
 
     <fragment
         android:id="@+id/fragment_post_house_hold_item_details"
-        android:name="com.noqapp.android.client.views.version_2.housing.post_housing_item.PostHouseHoldItemDetailsFragment"
+        android:name="com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item.PostHouseHoldItemDetailsFragment"
         tools:layout="@layout/fragment_post_property_rental_details" />
 
     <fragment
         android:id="@+id/fragment_post_house_hold_item_image"
-        android:name="com.noqapp.android.client.views.version_2.housing.post_housing_item.PostHouseHoldItemImageFragment"
+        android:name="com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item.PostHouseHoldItemImageFragment"
         tools:layout="@layout/fragment_upload_property_rental_images" />
 
     <fragment
         android:id="@+id/fragment_post_house_hold_item_review"
-        android:name="com.noqapp.android.client.views.version_2.housing.post_housing_item.PostHouseHoldItemReviewFragment"
+        android:name="com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item.PostHouseholdItemReviewFragment"
         tools:layout="@layout/fragment_post_property_rental_review">
 
         <action

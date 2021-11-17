@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.lists
+package com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details
 
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 
-class HousingListAdapter(
+class HouseholdItemListAdapter(
     private val marketplaceList: MutableList<MarketplaceElastic>,
     val onClickListener: (MarketplaceElastic?, View) -> Unit
 ) :

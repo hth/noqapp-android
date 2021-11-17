@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.post_housing_item
+package com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item
 
 import android.os.Bundle
 import android.view.LayoutInflater

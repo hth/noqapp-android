@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place
+package com.noqapp.android.client.views.version_2.market_place.householdItem
 
 import android.content.Context
 import android.util.Log
@@ -10,34 +10,32 @@ import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.UserUtils
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonResponse
-import com.noqapp.android.common.beans.marketplace.JsonPropertyRental
+import com.noqapp.android.common.beans.marketplace.JsonHouseholdItem
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
 import com.noqapp.android.common.model.types.BusinessTypeEnum
-import com.noqapp.android.common.model.types.category.RentalTypeEnum
-import com.noqapp.android.common.pojos.PropertyRentalEntity
-import com.noqapp.android.common.utils.CommonHelper.SDF_YYYY_MM_DD
+import com.noqapp.android.common.model.types.category.ItemConditionEnum
+import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.util.*
 
-class PostPropertyRentalViewModel : ViewModel() {
-    val tag: String = PostPropertyRentalViewModel::class.java.simpleName
+class HouseholdItemViewModel : ViewModel() {
+    val tag: String = HouseholdItemViewModel::class.java.simpleName
 
     val marketplaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
-    val postMarketPlaceJsonLiveData = MutableLiveData<JsonPropertyRental>()
+    val postMarketPlaceJsonLiveData = MutableLiveData<JsonHouseholdItem>()
     val errorEncounteredJsonLiveData = MutableLiveData<ErrorEncounteredJson>()
     val authenticationError = MutableLiveData(false)
     val searchStoreQueryLiveData = MutableLiveData<SearchQuery>()
     val postImagesLiveData = MutableLiveData<JsonResponse>()
     val shownInterestLiveData = MutableLiveData<Boolean>()
 
-    private var propertyRentalRepository: PropertyRentalRepository = PropertyRentalRepository()
+    private var householdItemRepository: HouseholdItemRepository = HouseholdItemRepository()
 
     fun getMarketPlace(searchQuery: SearchQuery) {
         Log.i(tag, "Search $searchQuery");
-        propertyRentalRepository.getMarketPlace(
+        householdItemRepository.getMarketPlace(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -57,41 +55,32 @@ class PostPropertyRentalViewModel : ViewModel() {
         productPrice: Int,
         title: String,
         description: String,
-        bathRoom: Int,
-        bedroom: Int,
-        carpetArea: Int,
         town: String?,
         city: String?,
         address: String?,
         landmark: String?,
-        availableFrom: String?,
-        rentalTypeEnum: RentalTypeEnum,
         latitude: Double,
-        longitude: Double
+        longitude: Double,
+        itemConditionEnum: ItemConditionEnum
     ) {
-        val jsonPropertyRental = JsonPropertyRental()
-        jsonPropertyRental.bathroom = bathRoom
-        jsonPropertyRental.bedroom = bedroom
-        jsonPropertyRental.carpetArea = carpetArea
-        jsonPropertyRental.town = town
-        jsonPropertyRental.city = city
-        jsonPropertyRental.address = address
-        jsonPropertyRental.rentalType = rentalTypeEnum
-        jsonPropertyRental.rentalAvailableDay = SDF_YYYY_MM_DD.format(Date())
-        jsonPropertyRental.businessType = BusinessTypeEnum.PR
-        jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
-        jsonPropertyRental.productPrice = productPrice * 100
-        jsonPropertyRental.title = title
-        jsonPropertyRental.description = description
-        jsonPropertyRental.landmark = landmark
-        jsonPropertyRental.rentalAvailableDay = availableFrom
-        Log.i(tag, "Post $jsonPropertyRental")
+        val jsonHouseholdItem = JsonHouseholdItem()
+        jsonHouseholdItem.town = town
+        jsonHouseholdItem.city = city
+        jsonHouseholdItem.address = address
+        jsonHouseholdItem.businessType = BusinessTypeEnum.HI
+        jsonHouseholdItem.coordinate = doubleArrayOf(latitude, longitude)
+        jsonHouseholdItem.productPrice = productPrice * 100
+        jsonHouseholdItem.title = title
+        jsonHouseholdItem.description = description
+        jsonHouseholdItem.landmark = landmark
+        jsonHouseholdItem.itemCondition = itemConditionEnum
+        Log.i(tag, "Post $jsonHouseholdItem")
 
-        propertyRentalRepository.postMarketPlace(
+        householdItemRepository.postMarketPlace(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
-            jsonPropertyRental,
+            jsonHouseholdItem,
             {
                 postMarketPlaceJsonLiveData.postValue(it)
             },
@@ -104,13 +93,13 @@ class PostPropertyRentalViewModel : ViewModel() {
     }
 
     fun initiateContact(id: String) {
-        val jsonMarketPlace = JsonPropertyRental()
-        jsonMarketPlace.id = id
-        propertyRentalRepository.initiateCall(
+        val jsonHouseholdItem = JsonHouseholdItem()
+        jsonHouseholdItem.id = id
+        householdItemRepository.initiateCall(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
-            jsonMarketPlace,
+            jsonHouseholdItem,
             {
                 shownInterestLiveData.postValue(true)
             },
@@ -123,13 +112,13 @@ class PostPropertyRentalViewModel : ViewModel() {
     }
 
     fun viewDetails(id: String) {
-        val jsonMarketPlace = JsonPropertyRental()
-        jsonMarketPlace.id = id
-        propertyRentalRepository.viewDetails(
+        val jsonHouseholdItem = JsonHouseholdItem()
+        jsonHouseholdItem.id = id
+        householdItemRepository.viewDetails(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
-            jsonMarketPlace,
+            jsonHouseholdItem,
             {
                 Log.d("Success", "View details api called")
             },
@@ -142,7 +131,7 @@ class PostPropertyRentalViewModel : ViewModel() {
     }
 
     fun postImages(multipartFile: MultipartBody.Part, postId: RequestBody) {
-        propertyRentalRepository.postMarketPlaceImages(
+        householdItemRepository.postMarketPlaceImages(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -159,19 +148,19 @@ class PostPropertyRentalViewModel : ViewModel() {
             })
     }
 
-    fun insertPropertyRental(context: Context, propertyRentalEntity: PropertyRentalEntity?) {
+    fun insertHouseHoldItem(context: Context, houseHoldItemEntity: HouseHoldItemEntity?) {
         viewModelScope.launch(Dispatchers.IO) {
-            propertyRentalRepository.insertPropertyRental(context, propertyRentalEntity)
+            householdItemRepository.insertHouseHoldItem(context, houseHoldItemEntity)
         }
     }
 
-    fun getPropertyRental(context: Context): LiveData<List<PropertyRentalEntity>> {
-        return propertyRentalRepository.getPropertyRental(context)
+    fun getHouseHoldItem(context: Context): LiveData<List<HouseHoldItemEntity>> {
+        return householdItemRepository.getHouseHoldItem(context)
     }
 
     fun deletePostsLocally(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            propertyRentalRepository.deletePostsLocally(context)
+            householdItemRepository.deletePostsLocally(context)
         }
     }
 }

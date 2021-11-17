@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.property_rental_details
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details
 
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 
-class PropertyRentalAdapter(
+class PropertyRentalListAdapter(
     private val marketplaceList: MutableList<MarketplaceElastic>,
     val onClickListener: (MarketplaceElastic?, View) -> Unit
 ) :

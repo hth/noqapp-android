@@ -1,10 +1,9 @@
-package com.noqapp.android.client.views.version_2.market_place.property_rental_details
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
@@ -15,15 +14,15 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.utils.PaginationListener.PAGE_START
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
-import com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostMarketplacePropertyRentalActivity
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental.PostPropertyRentalActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class PropertyRentalActivity : LocationBaseActivity() {
+class PropertyRentalListActivity : LocationBaseActivity() {
 
     private lateinit var activityPropertyRentalBinding: ActivityPropertyRentalBinding
-    private lateinit var propertyRentalAdapter: PropertyRentalAdapter
+    private lateinit var propertyRentalListAdapter: PropertyRentalListAdapter
 
     private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
 
@@ -43,7 +42,7 @@ class PropertyRentalActivity : LocationBaseActivity() {
             postPropertyRentalViewModel.searchStoreQueryLiveData.value?.let {
                 activityPropertyRentalBinding.rlEmpty.visibility = View.GONE
                 activityPropertyRentalBinding.shimmerLayout.startShimmer()
-                propertyRentalAdapter.clear()
+                propertyRentalListAdapter.clear()
                 from = PAGE_START
                 size = 3
                 it.searchedOnBusinessType = BusinessTypeEnum.PR
@@ -65,12 +64,12 @@ class PropertyRentalActivity : LocationBaseActivity() {
     }
 
     private fun setUpRecyclerView() {
-        propertyRentalAdapter = PropertyRentalAdapter(mutableListOf()) { marketPlace, view ->
+        propertyRentalListAdapter = PropertyRentalListAdapter(mutableListOf()) { marketPlace, view ->
             onMarketPlaceItemClicked(marketPlace, view)
         }
         val layoutManager = LinearLayoutManager(this)
         activityPropertyRentalBinding.rvMarketPlace.layoutManager = layoutManager
-        activityPropertyRentalBinding.rvMarketPlace.adapter = propertyRentalAdapter
+        activityPropertyRentalBinding.rvMarketPlace.adapter = propertyRentalListAdapter
 
         activityPropertyRentalBinding.rvMarketPlace.addOnScrollListener(object :
             PaginationListener(layoutManager) {
@@ -82,7 +81,7 @@ class PropertyRentalActivity : LocationBaseActivity() {
                     from += 3
                     it.from = from
                     it.size = size
-                    propertyRentalAdapter.addLoading()
+                    propertyRentalListAdapter.addLoading()
                     postPropertyRentalViewModel.getMarketPlace(it)
                 }
             }
@@ -110,7 +109,7 @@ class PropertyRentalActivity : LocationBaseActivity() {
             startActivity(
                 Intent(
                     this,
-                    PostMarketplacePropertyRentalActivity::class.java
+                    PostPropertyRentalActivity::class.java
                 )
             )
         }
@@ -124,14 +123,14 @@ class PropertyRentalActivity : LocationBaseActivity() {
             activityPropertyRentalBinding.swipeRefreshLayout.isRefreshing = false
 
             if (from != PAGE_START) {
-                propertyRentalAdapter.removeLoading()
+                propertyRentalListAdapter.removeLoading()
             }
-            if (it.marketplaceElastics.isEmpty() && propertyRentalAdapter.itemCount == 0) {
+            if (it.marketplaceElastics.isEmpty() && propertyRentalListAdapter.itemCount == 0) {
                 activityPropertyRentalBinding.rlEmpty.visibility = View.VISIBLE
             } else {
                 it?.let { marketPlaceElasticList ->
                     activityPropertyRentalBinding.rlEmpty.visibility = View.GONE
-                    propertyRentalAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
+                    propertyRentalListAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
                 }
             }
             isItemLoading = false

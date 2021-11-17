@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.housing.lists
+package com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,18 +14,18 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.utils.PaginationListener.PAGE_START
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.housing.HousingViewModel
-import com.noqapp.android.client.views.version_2.housing.post_housing_item.PostHouseholdItemActivity
-import com.noqapp.android.client.views.version_2.market_place.property_rental_details.ViewPropertyRentalDetailsActivity
+import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
+import com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item.PostHouseholdItemActivity
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.ViewPropertyRentalDetailsActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class HousingListActivity : LocationBaseActivity() {
+class HouseholdItemListActivity : LocationBaseActivity() {
 
     private lateinit var activityHousingListBinding: ActivityHousingListBinding
-    private lateinit var housingListAdapter: HousingListAdapter
+    private lateinit var householdItemListAdapter: HouseholdItemListAdapter
 
-    private lateinit var housingViewModel: HousingViewModel
+    private lateinit var householdItemViewModel: HouseholdItemViewModel
 
     private var from: Int = PAGE_START
     private var size: Int = 3
@@ -37,19 +37,19 @@ class HousingListActivity : LocationBaseActivity() {
         super.onCreate(savedInstanceState)
         activityHousingListBinding = ActivityHousingListBinding.inflate(LayoutInflater.from(this))
         setContentView(activityHousingListBinding.root)
-        housingViewModel = ViewModelProvider(this)[HousingViewModel::class.java]
+        householdItemViewModel = ViewModelProvider(this)[HouseholdItemViewModel::class.java]
 
         activityHousingListBinding.swipeRefreshLayout.setOnRefreshListener {
-            housingViewModel.searchStoreQueryLiveData.value?.let {
+            householdItemViewModel.searchStoreQueryLiveData.value?.let {
                 activityHousingListBinding.rlEmpty.visibility = View.GONE
                 activityHousingListBinding.shimmerLayout.startShimmer()
-                housingListAdapter.clear()
+                householdItemListAdapter.clear()
                 from = PAGE_START
                 size = 3
                 it.searchedOnBusinessType = BusinessTypeEnum.PR
                 it.from = from
                 it.size = size
-                housingViewModel.getMarketPlace(it)
+                householdItemViewModel.getMarketPlace(it)
             }
         }
 
@@ -65,25 +65,25 @@ class HousingListActivity : LocationBaseActivity() {
     }
 
     private fun setUpRecyclerView() {
-        housingListAdapter = HousingListAdapter(mutableListOf()) { marketPlace, view ->
+        householdItemListAdapter = HouseholdItemListAdapter(mutableListOf()) { marketPlace, view ->
             onMarketPlaceItemClicked(marketPlace, view)
         }
         val layoutManager = LinearLayoutManager(this)
         activityHousingListBinding.rvMarketPlace.layoutManager = layoutManager
-        activityHousingListBinding.rvMarketPlace.adapter = housingListAdapter
+        activityHousingListBinding.rvMarketPlace.adapter = householdItemListAdapter
 
         activityHousingListBinding.rvMarketPlace.addOnScrollListener(object :
             PaginationListener(layoutManager) {
             override fun loadMoreItems() {
                 isItemLoading = true
-                housingViewModel.searchStoreQueryLiveData.value?.let {
+                householdItemViewModel.searchStoreQueryLiveData.value?.let {
                     it.searchedOnBusinessType = BusinessTypeEnum.PR
                     size += 3
                     from += 3
                     it.from = from
                     it.size = size
-                    housingListAdapter.addLoading()
-                    housingViewModel.getMarketPlace(it)
+                    householdItemListAdapter.addLoading()
+                    householdItemViewModel.getMarketPlace(it)
                 }
             }
 
@@ -117,51 +117,51 @@ class HousingListActivity : LocationBaseActivity() {
     }
 
     private fun observeData() {
-        housingViewModel.marketplaceElasticListLiveData.observe(this, {
+        householdItemViewModel.marketplaceElasticListLiveData.observe(this, {
             activityHousingListBinding.shimmerLayout.stopShimmer()
             activityHousingListBinding.shimmerLayout.visibility = View.GONE
             activityHousingListBinding.rvMarketPlace.visibility = View.VISIBLE
             activityHousingListBinding.swipeRefreshLayout.isRefreshing = false
 
             if (from != PAGE_START) {
-                housingListAdapter.removeLoading()
+                householdItemListAdapter.removeLoading()
             }
-            if (it.marketplaceElastics.isEmpty() && housingListAdapter.itemCount == 0) {
+            if (it.marketplaceElastics.isEmpty() && householdItemListAdapter.itemCount == 0) {
                 activityHousingListBinding.rlEmpty.visibility = View.VISIBLE
             } else {
                 it?.let { marketPlaceElasticList ->
                     activityHousingListBinding.rlEmpty.visibility = View.GONE
-                    housingListAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
+                    householdItemListAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
                 }
             }
             isItemLoading = false
         })
 
-        housingViewModel.authenticationError.observe(this, {
+        householdItemViewModel.authenticationError.observe(this, {
             if (it) {
                 super.authenticationFailure()
                 activityHousingListBinding.shimmerLayout.stopShimmer()
                 activityHousingListBinding.shimmerLayout.visibility = View.GONE
-                housingViewModel.authenticationError.value = false
+                householdItemViewModel.authenticationError.value = false
             }
         })
 
-        housingViewModel.errorEncounteredJsonLiveData.observe(this, {
+        householdItemViewModel.errorEncounteredJsonLiveData.observe(this, {
             activityHousingListBinding.shimmerLayout.stopShimmer()
             activityHousingListBinding.shimmerLayout.visibility = View.GONE
             super.responseErrorPresenter(it)
         })
 
-        housingViewModel.searchStoreQueryLiveData.observe(this, {
+        householdItemViewModel.searchStoreQueryLiveData.observe(this, {
             activityHousingListBinding.shimmerLayout.startShimmer()
             it.searchedOnBusinessType = BusinessTypeEnum.PR
-            housingViewModel.getMarketPlace(it)
+            householdItemViewModel.getMarketPlace(it)
         })
 
-        housingViewModel.shownInterestLiveData.observe(this, {
+        householdItemViewModel.shownInterestLiveData.observe(this, {
             if (it) {
                 showSnackbar(R.string.txt_owner_notified)
-                housingViewModel.shownInterestLiveData.value = false
+                householdItemViewModel.shownInterestLiveData.value = false
             }
         })
     }
@@ -170,7 +170,7 @@ class HousingListActivity : LocationBaseActivity() {
         marketPlace?.let {
             when (view.id) {
                 R.id.btn_view_details -> {
-                    housingViewModel.viewDetails(it.id)
+                    householdItemViewModel.viewDetails(it.id)
                     val propertyDetailsIntent =
                         Intent(this, ViewPropertyRentalDetailsActivity::class.java).apply {
                             putExtra(Constants.POST_PROPERTY_RENTAL, marketPlace)
@@ -178,7 +178,7 @@ class HousingListActivity : LocationBaseActivity() {
                     startActivity(propertyDetailsIntent)
                 }
                 R.id.btn_call_agent -> {
-                    housingViewModel.initiateContact(it.id)
+                    householdItemViewModel.initiateContact(it.id)
                 }
             }
         }
@@ -212,6 +212,6 @@ class HousingListActivity : LocationBaseActivity() {
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
 
-        housingViewModel.searchStoreQueryLiveData.value = searchStoreQuery
+        householdItemViewModel.searchStoreQueryLiveData.value = searchStoreQuery
     }
 }

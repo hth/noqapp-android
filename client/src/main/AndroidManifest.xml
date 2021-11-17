@@ -74,7 +74,7 @@
             android:theme="@style/AppBaseTheme.Material" />
 
         <activity
-            android:name=".views.version_2.market_place.post_property_rental.PostMarketplacePropertyRentalActivity"
+            android:name=".views.version_2.market_place.propertyRental.post_property_rental.PostPropertyRentalActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material" />
@@ -350,24 +350,24 @@
         </activity>
 
         <activity
-            android:name=".views.version_2.market_place.property_rental_details.PropertyRentalActivity"
+            android:name=".views.version_2.market_place.propertyRental.property_rental_details.PropertyRentalListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name=".views.version_2.housing.lists.HousingListActivity"
+            android:name=".views.version_2.market_place.householdItem.household_item_details.HouseholdItemListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.version_2.housing.post_housing_item.PostHouseholdItemActivity"
+            android:name=".views.version_2.market_place.householdItem.post_household_item.PostHouseholdItemActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material" />
 
         <activity
-            android:name=".views.version_2.market_place.property_rental_details.ViewPropertyRentalDetailsActivity"
+            android:name=".views.version_2.market_place.propertyRental.property_rental_details.ViewPropertyRentalDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"
             android:windowSoftInputMode="stateAlwaysHidden" />
