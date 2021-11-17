@@ -1,6 +1,5 @@
-package com.noqapp.android.client.views.version_2.market_place.property_rental_details
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,17 +10,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityViewPropertyRentalDetailsBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.GeoHashUtils
-import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
-import com.noqapp.android.common.model.types.category.RentalTypeEnum
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*

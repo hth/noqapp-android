@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.post_property_rental
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental
 
 import android.Manifest
 import android.app.Activity
@@ -30,7 +30,7 @@ import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.databinding.FragmentUploadPropertyRentalImagesBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
 import com.noqapp.android.common.pojos.PropertyRentalEntity
 import java.io.File
 import java.io.IOException

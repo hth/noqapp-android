@@ -1,10 +1,9 @@
-package com.noqapp.android.client.views.version_2.market_place.property_rental_details
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
@@ -15,8 +14,8 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.utils.PaginationListener.PAGE_START
 import com.noqapp.android.client.views.activities.LocationBaseActivity
-import com.noqapp.android.client.views.version_2.market_place.PostPropertyRentalViewModel
-import com.noqapp.android.client.views.version_2.market_place.post_property_rental.PostMarketplacePropertyRentalActivity
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.PostPropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental.PostPropertyRentalActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
@@ -110,7 +109,7 @@ class PropertyRentalActivity : LocationBaseActivity() {
             startActivity(
                 Intent(
                     this,
-                    PostMarketplacePropertyRentalActivity::class.java
+                    PostPropertyRentalActivity::class.java
                 )
             )
         }

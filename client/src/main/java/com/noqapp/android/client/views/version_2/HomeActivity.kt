@@ -41,7 +41,7 @@ import com.noqapp.android.client.views.customviews.BadgeDrawable
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
 import com.noqapp.android.client.views.version_2.housing.lists.HousingListActivity
-import com.noqapp.android.client.views.version_2.market_place.property_rental_details.PropertyRentalActivity
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.PropertyRentalActivity
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.beans.ErrorEncounteredJson

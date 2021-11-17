@@ -1,17 +1,15 @@
-package com.noqapp.android.client.views.version_2.market_place.post_property_rental
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.kofigyan.stateprogressbar.StateProgressBar
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityPostMarketPlaceBinding
 import com.noqapp.android.client.views.activities.LocationBaseActivity
 
-class PostMarketplacePropertyRentalActivity : LocationBaseActivity(),
+class PostPropertyRentalActivity : LocationBaseActivity(),
     PostPropertyRentalTitleFragmentInteractionListener,
     PostPropertyRentalDetailsFragmentInteractionListener,
     PostPropertyRentalImageFragmentInteractionListener {

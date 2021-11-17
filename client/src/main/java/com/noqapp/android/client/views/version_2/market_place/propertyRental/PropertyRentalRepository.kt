@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place
+package com.noqapp.android.client.views.version_2.market_place.propertyRental
 
 import android.content.Context
 import android.util.Log

@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.property_rental_details
+package com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details
 
 import android.view.LayoutInflater
 import android.view.View

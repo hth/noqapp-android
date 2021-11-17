@@ -16,7 +16,7 @@ import com.noqapp.android.client.utils.PaginationListener.PAGE_START
 import com.noqapp.android.client.views.activities.LocationBaseActivity
 import com.noqapp.android.client.views.version_2.housing.HousingViewModel
 import com.noqapp.android.client.views.version_2.housing.post_housing_item.PostHouseholdItemActivity
-import com.noqapp.android.client.views.version_2.market_place.property_rental_details.ViewPropertyRentalDetailsActivity
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.ViewPropertyRentalDetailsActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
