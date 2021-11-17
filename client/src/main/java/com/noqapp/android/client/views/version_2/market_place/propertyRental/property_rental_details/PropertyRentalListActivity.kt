@@ -19,10 +19,10 @@ import com.noqapp.android.client.views.version_2.market_place.propertyRental.pos
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class PropertyRentalActivity : LocationBaseActivity() {
+class PropertyRentalListActivity : LocationBaseActivity() {
 
     private lateinit var activityPropertyRentalBinding: ActivityPropertyRentalBinding
-    private lateinit var propertyRentalAdapter: PropertyRentalAdapter
+    private lateinit var propertyRentalListAdapter: PropertyRentalListAdapter
 
     private lateinit var postPropertyRentalViewModel: PostPropertyRentalViewModel
 
@@ -42,7 +42,7 @@ class PropertyRentalActivity : LocationBaseActivity() {
             postPropertyRentalViewModel.searchStoreQueryLiveData.value?.let {
                 activityPropertyRentalBinding.rlEmpty.visibility = View.GONE
                 activityPropertyRentalBinding.shimmerLayout.startShimmer()
-                propertyRentalAdapter.clear()
+                propertyRentalListAdapter.clear()
                 from = PAGE_START
                 size = 3
                 it.searchedOnBusinessType = BusinessTypeEnum.PR
@@ -64,12 +64,12 @@ class PropertyRentalActivity : LocationBaseActivity() {
     }
 
     private fun setUpRecyclerView() {
-        propertyRentalAdapter = PropertyRentalAdapter(mutableListOf()) { marketPlace, view ->
+        propertyRentalListAdapter = PropertyRentalListAdapter(mutableListOf()) { marketPlace, view ->
             onMarketPlaceItemClicked(marketPlace, view)
         }
         val layoutManager = LinearLayoutManager(this)
         activityPropertyRentalBinding.rvMarketPlace.layoutManager = layoutManager
-        activityPropertyRentalBinding.rvMarketPlace.adapter = propertyRentalAdapter
+        activityPropertyRentalBinding.rvMarketPlace.adapter = propertyRentalListAdapter
 
         activityPropertyRentalBinding.rvMarketPlace.addOnScrollListener(object :
             PaginationListener(layoutManager) {
@@ -81,7 +81,7 @@ class PropertyRentalActivity : LocationBaseActivity() {
                     from += 3
                     it.from = from
                     it.size = size
-                    propertyRentalAdapter.addLoading()
+                    propertyRentalListAdapter.addLoading()
                     postPropertyRentalViewModel.getMarketPlace(it)
                 }
             }
@@ -123,14 +123,14 @@ class PropertyRentalActivity : LocationBaseActivity() {
             activityPropertyRentalBinding.swipeRefreshLayout.isRefreshing = false
 
             if (from != PAGE_START) {
-                propertyRentalAdapter.removeLoading()
+                propertyRentalListAdapter.removeLoading()
             }
-            if (it.marketplaceElastics.isEmpty() && propertyRentalAdapter.itemCount == 0) {
+            if (it.marketplaceElastics.isEmpty() && propertyRentalListAdapter.itemCount == 0) {
                 activityPropertyRentalBinding.rlEmpty.visibility = View.VISIBLE
             } else {
                 it?.let { marketPlaceElasticList ->
                     activityPropertyRentalBinding.rlEmpty.visibility = View.GONE
-                    propertyRentalAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
+                    propertyRentalListAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
                 }
             }
             isItemLoading = false

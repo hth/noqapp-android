@@ -20,10 +20,10 @@ import com.noqapp.android.client.views.version_2.market_place.propertyRental.pro
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class HousingListActivity : LocationBaseActivity() {
+class HouseholdItemListActivity : LocationBaseActivity() {
 
     private lateinit var activityHousingListBinding: ActivityHousingListBinding
-    private lateinit var housingListAdapter: HousingListAdapter
+    private lateinit var householdItemListAdapter: HouseholdItemListAdapter
 
     private lateinit var housingViewModel: HousingViewModel
 
@@ -43,7 +43,7 @@ class HousingListActivity : LocationBaseActivity() {
             housingViewModel.searchStoreQueryLiveData.value?.let {
                 activityHousingListBinding.rlEmpty.visibility = View.GONE
                 activityHousingListBinding.shimmerLayout.startShimmer()
-                housingListAdapter.clear()
+                householdItemListAdapter.clear()
                 from = PAGE_START
                 size = 3
                 it.searchedOnBusinessType = BusinessTypeEnum.PR
@@ -65,12 +65,12 @@ class HousingListActivity : LocationBaseActivity() {
     }
 
     private fun setUpRecyclerView() {
-        housingListAdapter = HousingListAdapter(mutableListOf()) { marketPlace, view ->
+        householdItemListAdapter = HouseholdItemListAdapter(mutableListOf()) { marketPlace, view ->
             onMarketPlaceItemClicked(marketPlace, view)
         }
         val layoutManager = LinearLayoutManager(this)
         activityHousingListBinding.rvMarketPlace.layoutManager = layoutManager
-        activityHousingListBinding.rvMarketPlace.adapter = housingListAdapter
+        activityHousingListBinding.rvMarketPlace.adapter = householdItemListAdapter
 
         activityHousingListBinding.rvMarketPlace.addOnScrollListener(object :
             PaginationListener(layoutManager) {
@@ -82,7 +82,7 @@ class HousingListActivity : LocationBaseActivity() {
                     from += 3
                     it.from = from
                     it.size = size
-                    housingListAdapter.addLoading()
+                    householdItemListAdapter.addLoading()
                     housingViewModel.getMarketPlace(it)
                 }
             }
@@ -124,14 +124,14 @@ class HousingListActivity : LocationBaseActivity() {
             activityHousingListBinding.swipeRefreshLayout.isRefreshing = false
 
             if (from != PAGE_START) {
-                housingListAdapter.removeLoading()
+                householdItemListAdapter.removeLoading()
             }
-            if (it.marketplaceElastics.isEmpty() && housingListAdapter.itemCount == 0) {
+            if (it.marketplaceElastics.isEmpty() && householdItemListAdapter.itemCount == 0) {
                 activityHousingListBinding.rlEmpty.visibility = View.VISIBLE
             } else {
                 it?.let { marketPlaceElasticList ->
                     activityHousingListBinding.rlEmpty.visibility = View.GONE
-                    housingListAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
+                    householdItemListAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
                 }
             }
             isItemLoading = false

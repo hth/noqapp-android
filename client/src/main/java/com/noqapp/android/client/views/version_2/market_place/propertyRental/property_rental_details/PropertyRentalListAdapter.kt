@@ -16,7 +16,7 @@ import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 
-class PropertyRentalAdapter(
+class PropertyRentalListAdapter(
     private val marketplaceList: MutableList<MarketplaceElastic>,
     val onClickListener: (MarketplaceElastic?, View) -> Unit
 ) :

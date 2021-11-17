@@ -350,13 +350,13 @@
         </activity>
 
         <activity
-            android:name=".views.version_2.market_place.propertyRental.property_rental_details.PropertyRentalActivity"
+            android:name=".views.version_2.market_place.propertyRental.property_rental_details.PropertyRentalListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name=".views.version_2.housing.lists.HousingListActivity"
+            android:name=".views.version_2.housing.lists.HouseholdItemListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"
             android:windowSoftInputMode="stateAlwaysHidden" />
