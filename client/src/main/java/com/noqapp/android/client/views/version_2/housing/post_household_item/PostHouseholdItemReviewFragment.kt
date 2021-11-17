@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemReviewBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.housing.HousingViewModel
+import com.noqapp.android.client.views.version_2.housing.HouseholdItemViewModel
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import com.squareup.okhttp.MediaType
@@ -24,10 +24,10 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
-class PostHouseHoldItemReviewFragment : BaseFragment() {
+class PostHouseholdItemReviewFragment : BaseFragment() {
 
     private lateinit var fragmentPostHouseHoldItemReviewBinding: FragmentPostHouseHoldItemReviewBinding
-    private lateinit var housingViewModel: HousingViewModel
+    private lateinit var householdItemViewModel: HouseholdItemViewModel
     private lateinit var propertyRentalImageAdapter: PropertyRentalImageAdapter
 
     private var houseHoldItemEntity: HouseHoldItemEntity? = null
@@ -40,8 +40,8 @@ class PostHouseHoldItemReviewFragment : BaseFragment() {
     ): View {
         fragmentPostHouseHoldItemReviewBinding =
             FragmentPostHouseHoldItemReviewBinding.inflate(inflater, container, false)
-        housingViewModel =
-            ViewModelProvider(requireActivity())[HousingViewModel::class.java]
+        householdItemViewModel =
+            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostHouseHoldItemReviewBinding.root
     }
 
@@ -69,7 +69,7 @@ class PostHouseHoldItemReviewFragment : BaseFragment() {
         fragmentPostHouseHoldItemReviewBinding.cvProceed.setOnClickListener {
             houseHoldItemEntity?.let { pre ->
                 fragmentPostHouseHoldItemReviewBinding.clProgressBar.visibility = View.VISIBLE
-                housingViewModel.postMarketPlace(
+                householdItemViewModel.postMarketPlace(
                     pre.price,
                     pre.title,
                     pre.description,
@@ -86,7 +86,7 @@ class PostHouseHoldItemReviewFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        housingViewModel.getHouseHoldItem(requireContext())
+        householdItemViewModel.getHouseHoldItem(requireContext())
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     houseHoldItemEntity = it[0]
@@ -106,7 +106,7 @@ class PostHouseHoldItemReviewFragment : BaseFragment() {
                 }
             })
 
-        housingViewModel.postMarketPlaceJsonLiveData.observe(
+        householdItemViewModel.postMarketPlaceJsonLiveData.observe(
             viewLifecycleOwner,
             { mre ->
                 houseHoldItemEntity?.let { pre ->
@@ -116,12 +116,12 @@ class PostHouseHoldItemReviewFragment : BaseFragment() {
                 }
             })
 
-        housingViewModel.postImagesLiveData.observe(viewLifecycleOwner, {
+        householdItemViewModel.postImagesLiveData.observe(viewLifecycleOwner, {
             imageUploadCount = imageUploadCount.inc()
             houseHoldItemEntity?.let { pre ->
                 if (imageUploadCount == pre.images?.size) {
                     fragmentPostHouseHoldItemReviewBinding.clProgressBar.visibility = View.GONE
-                    housingViewModel.deletePostsLocally(requireContext())
+                    householdItemViewModel.deletePostsLocally(requireContext())
                     activity?.finish()
                 }
             }
@@ -137,7 +137,7 @@ class PostHouseHoldItemReviewFragment : BaseFragment() {
                 file.asRequestBody(MediaType.parse(type).toString().toMediaType())
             )
             val postId = RequestBody.create("text/plain".toMediaType(), marketPlaceId)
-            housingViewModel.postImages(marketplaceImage, postId)
+            householdItemViewModel.postImages(marketplaceImage, postId)
         }
     }
 

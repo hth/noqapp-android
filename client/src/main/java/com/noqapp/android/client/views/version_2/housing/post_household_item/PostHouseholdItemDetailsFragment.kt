@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemDetailsBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.housing.HousingViewModel
+import com.noqapp.android.client.views.version_2.housing.HouseholdItemViewModel
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
@@ -56,7 +56,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
         }
 
     private lateinit var fragmentPostHouseHoldItemDetailsBinding: FragmentPostHouseHoldItemDetailsBinding
-    private lateinit var housingViewModel: HousingViewModel
+    private lateinit var householdItemViewModel: HouseholdItemViewModel
     private lateinit var postHouseHoldItemDetailsFragmentInteractionListener: PostHouseHoldItemDetailsFragmentInteractionListener
     private var jsonUserAddress: JsonUserAddress? = null
     private var houseHoldItemEntityVal: HouseHoldItemEntity? = null
@@ -75,8 +75,8 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
     ): View {
         fragmentPostHouseHoldItemDetailsBinding =
             FragmentPostHouseHoldItemDetailsBinding.inflate(inflater, container, false)
-        housingViewModel =
-            ViewModelProvider(requireActivity())[HousingViewModel::class.java]
+        householdItemViewModel =
+            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostHouseHoldItemDetailsBinding.root
     }
 
@@ -92,7 +92,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
     }
 
     private fun observeData() {
-        housingViewModel.getHouseHoldItem(requireContext())
+        householdItemViewModel.getHouseHoldItem(requireContext())
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     val houseHoldItemEntity = it[0]
@@ -143,7 +143,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
             }
 
             houseHoldItemEntityVal?.itemConditionType = fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.selectedItem.toString()
-            housingViewModel.insertHouseHoldItem(
+            householdItemViewModel.insertHouseHoldItem(
                 requireContext(),
                 houseHoldItemEntityVal
             )

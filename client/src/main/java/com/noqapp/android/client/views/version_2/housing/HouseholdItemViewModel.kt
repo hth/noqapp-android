@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class HousingViewModel : ViewModel() {
-    val tag: String = HousingViewModel::class.java.simpleName
+class HouseholdItemViewModel : ViewModel() {
+    val tag: String = HouseholdItemViewModel::class.java.simpleName
 
     val marketplaceElasticListLiveData = MutableLiveData<MarketplaceElasticList>()
     val postMarketPlaceJsonLiveData = MutableLiveData<JsonHouseholdItem>()
@@ -31,11 +31,11 @@ class HousingViewModel : ViewModel() {
     val postImagesLiveData = MutableLiveData<JsonResponse>()
     val shownInterestLiveData = MutableLiveData<Boolean>()
 
-    private var housingRepository: HousingRepository = HousingRepository()
+    private var householdItemRepository: HouseholdItemRepository = HouseholdItemRepository()
 
     fun getMarketPlace(searchQuery: SearchQuery) {
         Log.i(tag, "Search $searchQuery");
-        housingRepository.getMarketPlace(
+        householdItemRepository.getMarketPlace(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -76,7 +76,7 @@ class HousingViewModel : ViewModel() {
         jsonHouseholdItem.itemCondition = itemConditionEnum
         Log.i(tag, "Post $jsonHouseholdItem")
 
-        housingRepository.postMarketPlace(
+        householdItemRepository.postMarketPlace(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -95,7 +95,7 @@ class HousingViewModel : ViewModel() {
     fun initiateContact(id: String) {
         val jsonHouseholdItem = JsonHouseholdItem()
         jsonHouseholdItem.id = id
-        housingRepository.initiateCall(
+        householdItemRepository.initiateCall(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -114,7 +114,7 @@ class HousingViewModel : ViewModel() {
     fun viewDetails(id: String) {
         val jsonHouseholdItem = JsonHouseholdItem()
         jsonHouseholdItem.id = id
-        housingRepository.viewDetails(
+        householdItemRepository.viewDetails(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -131,7 +131,7 @@ class HousingViewModel : ViewModel() {
     }
 
     fun postImages(multipartFile: MultipartBody.Part, postId: RequestBody) {
-        housingRepository.postMarketPlaceImages(
+        householdItemRepository.postMarketPlaceImages(
             UserUtils.getDeviceId(),
             UserUtils.getEmail(),
             UserUtils.getAuth(),
@@ -150,17 +150,17 @@ class HousingViewModel : ViewModel() {
 
     fun insertHouseHoldItem(context: Context, houseHoldItemEntity: HouseHoldItemEntity?) {
         viewModelScope.launch(Dispatchers.IO) {
-            housingRepository.insertHouseHoldItem(context, houseHoldItemEntity)
+            householdItemRepository.insertHouseHoldItem(context, houseHoldItemEntity)
         }
     }
 
     fun getHouseHoldItem(context: Context): LiveData<List<HouseHoldItemEntity>> {
-        return housingRepository.getHouseHoldItem(context)
+        return householdItemRepository.getHouseHoldItem(context)
     }
 
     fun deletePostsLocally(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            housingRepository.deletePostsLocally(context)
+            householdItemRepository.deletePostsLocally(context)
         }
     }
 }

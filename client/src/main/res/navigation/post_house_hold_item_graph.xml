@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/fragment_post_house_hold_item_review"
-        android:name="com.noqapp.android.client.views.version_2.housing.post_household_item.PostHouseHoldItemReviewFragment"
+        android:name="com.noqapp.android.client.views.version_2.housing.post_household_item.PostHouseholdItemReviewFragment"
         tools:layout="@layout/fragment_post_property_rental_review">
 
         <action

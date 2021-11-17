@@ -30,7 +30,7 @@ import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.databinding.FragmentUploadPropertyRentalImagesBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.fragments.BaseFragment
-import com.noqapp.android.client.views.version_2.housing.HousingViewModel
+import com.noqapp.android.client.views.version_2.housing.HouseholdItemViewModel
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import java.io.File
 import java.io.IOException
@@ -43,7 +43,7 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
     private val REQUEST_PICK_IMAGE = 1002
 
     private lateinit var fragmentPostPropertyRentalUpload: FragmentUploadPropertyRentalImagesBinding
-    private lateinit var housingViewModel: HousingViewModel
+    private lateinit var householdItemViewModel: HouseholdItemViewModel
     private lateinit var propertyRentalImageAdapter: PropertyRentalImageAdapter
     private lateinit var houseHoldItemEntity: HouseHoldItemEntity
     private lateinit var currentPhotoPath: String
@@ -62,8 +62,8 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
     ): View {
         fragmentPostPropertyRentalUpload =
             FragmentUploadPropertyRentalImagesBinding.inflate(inflater, container, false)
-        housingViewModel =
-            ViewModelProvider(requireActivity())[HousingViewModel::class.java]
+        householdItemViewModel =
+            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostPropertyRentalUpload.root
     }
 
@@ -78,7 +78,7 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        housingViewModel.getHouseHoldItem(requireContext())
+        householdItemViewModel.getHouseHoldItem(requireContext())
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     houseHoldItemEntity = it[0]
@@ -96,7 +96,7 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
                     houseHoldItemEntity.images = list
                 }
             }
-            housingViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntity)
+            householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntity)
         }
         fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
@@ -107,7 +107,7 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
     private fun setListeners() {
         fragmentPostPropertyRentalUpload.cvNext.setOnClickListener {
             houseHoldItemEntity.images = propertyRentalImageAdapter.getAllImages()
-            housingViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntity)
+            householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntity)
 
             postHouseHoldItemImageFragmentInteractionListener.goToPostHouseHoldItemReviewFragment()
         }
@@ -322,7 +322,7 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
         images.addAll(houseHoldItemEntity.images)
         images.add(imagePath)
         houseHoldItemEntity.images = images
-        housingViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntity)
+        householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntity)
 //        getMimeType(Uri.parse(imagePath))?.let { type ->
 //            val file = File(imagePath)
 //            val marketplaceImage = MultipartBody.Part.createFormData(
