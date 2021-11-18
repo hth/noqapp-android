@@ -30,7 +30,7 @@
                     android:background="@color/white"
                     app:contentInsetEnd="16dp"
                     app:navigationIcon="@drawable/ic_back_new"
-                    app:title="@string/txt_listing">
+                    app:title="@string/txt_property_rental_listing">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"

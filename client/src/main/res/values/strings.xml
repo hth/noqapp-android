@@ -582,8 +582,8 @@
     <string name="txt_location_enable_button">Enable Location</string>
     <string name="rupee_symbol">\u20B9 %s</string>
     <string name="txt_interested">Interested?</string>
-    <string name="txt_listing">Listing</string>
-    <string name="txt_house_listing">Housing Listing</string>
+    <string name="txt_property_rental_listing">Property Rentals</string>
+    <string name="txt_household_item_listing">Household Items</string>
     <string name="txt_search_locality">Search for places, locality, area ...</string>
     <string name="txt_property_type">Property type</string>
     <string name="txt_price_range">Price range</string>
@@ -606,7 +606,7 @@
     <string name="txt_next">Next</string>
     <string name="txt_edit">Edit</string>
     <string name="txt_review_and_proceed"><![CDATA[Review & Proceed]]></string>
-    <string name="txt_rental_property">Rental Property</string>
+    <string name="txt_rental_property">Post Rental Property</string>
     <string name="txt_house_hold_item">Post Household Item</string>
     <string name="txt_4_plus_bhk">4+ bhk</string>
     <string name="txt_4_bhk">4 bhk</string>
