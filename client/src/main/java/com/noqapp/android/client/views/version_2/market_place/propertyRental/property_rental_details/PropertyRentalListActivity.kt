@@ -7,7 +7,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
-import com.noqapp.android.client.databinding.ActivityPropertyRentalBinding
+import com.noqapp.android.client.databinding.ActivityPropertyRentalListBinding
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.Constants
@@ -21,7 +21,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum
 
 class PropertyRentalListActivity : LocationBaseActivity() {
 
-    private lateinit var activityPropertyRentalBinding: ActivityPropertyRentalBinding
+    private lateinit var activityPropertyRentalListBinding: ActivityPropertyRentalListBinding
     private lateinit var propertyRentalListAdapter: PropertyRentalListAdapter
 
     private lateinit var propertyRentalViewModel: PropertyRentalViewModel
@@ -34,14 +34,14 @@ class PropertyRentalListActivity : LocationBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityPropertyRentalBinding = ActivityPropertyRentalBinding.inflate(LayoutInflater.from(this))
-        setContentView(activityPropertyRentalBinding.root)
+        activityPropertyRentalListBinding = ActivityPropertyRentalListBinding.inflate(LayoutInflater.from(this))
+        setContentView(activityPropertyRentalListBinding.root)
         propertyRentalViewModel = ViewModelProvider(this)[PropertyRentalViewModel::class.java]
 
-        activityPropertyRentalBinding.swipeRefreshLayout.setOnRefreshListener {
+        activityPropertyRentalListBinding.swipeRefreshLayout.setOnRefreshListener {
             propertyRentalViewModel.searchStoreQueryLiveData.value?.let {
-                activityPropertyRentalBinding.rlEmpty.visibility = View.GONE
-                activityPropertyRentalBinding.shimmerLayout.startShimmer()
+                activityPropertyRentalListBinding.rlEmpty.visibility = View.GONE
+                activityPropertyRentalListBinding.shimmerLayout.startShimmer()
                 propertyRentalListAdapter.clear()
                 from = PAGE_START
                 size = 3
@@ -52,9 +52,9 @@ class PropertyRentalListActivity : LocationBaseActivity() {
             }
         }
 
-        setSupportActionBar(activityPropertyRentalBinding.toolbar)
+        setSupportActionBar(activityPropertyRentalListBinding.toolbar)
 
-        activityPropertyRentalBinding.toolbar.setNavigationOnClickListener {
+        activityPropertyRentalListBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
 
@@ -68,10 +68,10 @@ class PropertyRentalListActivity : LocationBaseActivity() {
             onMarketPlaceItemClicked(marketPlace, view)
         }
         val layoutManager = LinearLayoutManager(this)
-        activityPropertyRentalBinding.rvMarketPlace.layoutManager = layoutManager
-        activityPropertyRentalBinding.rvMarketPlace.adapter = propertyRentalListAdapter
+        activityPropertyRentalListBinding.rvMarketPlace.layoutManager = layoutManager
+        activityPropertyRentalListBinding.rvMarketPlace.adapter = propertyRentalListAdapter
 
-        activityPropertyRentalBinding.rvMarketPlace.addOnScrollListener(object :
+        activityPropertyRentalListBinding.rvMarketPlace.addOnScrollListener(object :
             PaginationListener(layoutManager) {
             override fun loadMoreItems() {
                 isItemLoading = true
@@ -97,15 +97,15 @@ class PropertyRentalListActivity : LocationBaseActivity() {
     }
 
     override fun locationPermissionRequired() {
-        activityPropertyRentalBinding.clLocationAccessRequired.visibility = View.VISIBLE
+        activityPropertyRentalListBinding.clLocationAccessRequired.visibility = View.VISIBLE
     }
 
     override fun locationPermissionGranted() {
-        activityPropertyRentalBinding.clLocationAccessRequired.visibility = View.GONE
+        activityPropertyRentalListBinding.clLocationAccessRequired.visibility = View.GONE
     }
 
     private fun setListeners() {
-        activityPropertyRentalBinding.fabPost.setOnClickListener {
+        activityPropertyRentalListBinding.fabPost.setOnClickListener {
             startActivity(
                 Intent(
                     this,
@@ -117,19 +117,19 @@ class PropertyRentalListActivity : LocationBaseActivity() {
 
     private fun observeData() {
         propertyRentalViewModel.marketplaceElasticListLiveData.observe(this, {
-            activityPropertyRentalBinding.shimmerLayout.stopShimmer()
-            activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
-            activityPropertyRentalBinding.rvMarketPlace.visibility = View.VISIBLE
-            activityPropertyRentalBinding.swipeRefreshLayout.isRefreshing = false
+            activityPropertyRentalListBinding.shimmerLayout.stopShimmer()
+            activityPropertyRentalListBinding.shimmerLayout.visibility = View.GONE
+            activityPropertyRentalListBinding.rvMarketPlace.visibility = View.VISIBLE
+            activityPropertyRentalListBinding.swipeRefreshLayout.isRefreshing = false
 
             if (from != PAGE_START) {
                 propertyRentalListAdapter.removeLoading()
             }
             if (it.marketplaceElastics.isEmpty() && propertyRentalListAdapter.itemCount == 0) {
-                activityPropertyRentalBinding.rlEmpty.visibility = View.VISIBLE
+                activityPropertyRentalListBinding.rlEmpty.visibility = View.VISIBLE
             } else {
                 it?.let { marketPlaceElasticList ->
-                    activityPropertyRentalBinding.rlEmpty.visibility = View.GONE
+                    activityPropertyRentalListBinding.rlEmpty.visibility = View.GONE
                     propertyRentalListAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
                 }
             }
@@ -139,20 +139,20 @@ class PropertyRentalListActivity : LocationBaseActivity() {
         propertyRentalViewModel.authenticationError.observe(this, {
             if (it) {
                 super.authenticationFailure()
-                activityPropertyRentalBinding.shimmerLayout.stopShimmer()
-                activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
+                activityPropertyRentalListBinding.shimmerLayout.stopShimmer()
+                activityPropertyRentalListBinding.shimmerLayout.visibility = View.GONE
                 propertyRentalViewModel.authenticationError.value = false
             }
         })
 
         propertyRentalViewModel.errorEncounteredJsonLiveData.observe(this, {
-            activityPropertyRentalBinding.shimmerLayout.stopShimmer()
-            activityPropertyRentalBinding.shimmerLayout.visibility = View.GONE
+            activityPropertyRentalListBinding.shimmerLayout.stopShimmer()
+            activityPropertyRentalListBinding.shimmerLayout.visibility = View.GONE
             super.responseErrorPresenter(it)
         })
 
         propertyRentalViewModel.searchStoreQueryLiveData.observe(this, {
-            activityPropertyRentalBinding.shimmerLayout.startShimmer()
+            activityPropertyRentalListBinding.shimmerLayout.startShimmer()
             it.searchedOnBusinessType = BusinessTypeEnum.PR
             propertyRentalViewModel.getMarketPlace(it)
         })
