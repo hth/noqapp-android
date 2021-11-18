@@ -23,6 +23,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.util.*
 
 class PostHouseholdItemReviewFragment : BaseFragment() {
 
@@ -148,7 +149,7 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
             cr.getType(uri)
         } else {
             val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
-            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase())
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.lowercase(Locale.getDefault()))
         }
         return mimeType
     }
