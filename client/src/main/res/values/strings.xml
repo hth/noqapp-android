@@ -378,6 +378,8 @@
     <string name="empty_past_appointment_subtitle">There are no past schedule appointment</string>
     <string name="empty_property_rental_title">Rental Properties</string>
     <string name="empty_property_rental">No properties listed in your location, however you can come back later to look for properties you are interested in.</string>
+    <string name="empty_household_item_title">Household Items</string>
+    <string name="empty_household_item">No household items listed in your location, however you can come back later to find items of your interested.</string>
 
     <string name="empty_my_coupon_title">Empty Coupons</string>
     <string name="empty_my_coupon_subtitle">Sorry, You don\'t have any coupon right now.</string>
