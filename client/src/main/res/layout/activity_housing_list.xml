@@ -28,7 +28,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/white"
                     app:navigationIcon="@drawable/ic_back_new"
-                    app:title="@string/txt_house_listing" />
+                    app:title="@string/txt_household_item_listing" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.recyclerview.widget.RecyclerView
