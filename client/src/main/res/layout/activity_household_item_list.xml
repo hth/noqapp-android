@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="10dp"
-                    android:text="@string/empty_property_rental_title"
+                    android:text="@string/empty_household_item_title"
                     android:textSize="@dimen/empty_title_size"
                     android:textStyle="bold" />
 
@@ -180,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/empty_property_rental"
+                    android:text="@string/empty_household_item"
                     android:textSize="@dimen/empty_subtitle_size" />
 
             </LinearLayout>

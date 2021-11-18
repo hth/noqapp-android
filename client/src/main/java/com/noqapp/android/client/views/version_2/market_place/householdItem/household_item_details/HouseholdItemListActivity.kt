@@ -7,7 +7,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noqapp.android.client.R
-import com.noqapp.android.client.databinding.ActivityHousingListBinding
+import com.noqapp.android.client.databinding.ActivityHouseholdItemListBinding
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.Constants
@@ -22,7 +22,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum
 
 class HouseholdItemListActivity : LocationBaseActivity() {
 
-    private lateinit var activityHousingListBinding: ActivityHousingListBinding
+    private lateinit var activityHouseholdItemListBinding: ActivityHouseholdItemListBinding
     private lateinit var householdItemListAdapter: HouseholdItemListAdapter
 
     private lateinit var householdItemViewModel: HouseholdItemViewModel
@@ -35,14 +35,14 @@ class HouseholdItemListActivity : LocationBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityHousingListBinding = ActivityHousingListBinding.inflate(LayoutInflater.from(this))
-        setContentView(activityHousingListBinding.root)
+        activityHouseholdItemListBinding = ActivityHouseholdItemListBinding.inflate(LayoutInflater.from(this))
+        setContentView(activityHouseholdItemListBinding.root)
         householdItemViewModel = ViewModelProvider(this)[HouseholdItemViewModel::class.java]
 
-        activityHousingListBinding.swipeRefreshLayout.setOnRefreshListener {
+        activityHouseholdItemListBinding.swipeRefreshLayout.setOnRefreshListener {
             householdItemViewModel.searchStoreQueryLiveData.value?.let {
-                activityHousingListBinding.rlEmpty.visibility = View.GONE
-                activityHousingListBinding.shimmerLayout.startShimmer()
+                activityHouseholdItemListBinding.rlEmpty.visibility = View.GONE
+                activityHouseholdItemListBinding.shimmerLayout.startShimmer()
                 householdItemListAdapter.clear()
                 from = PAGE_START
                 size = 3
@@ -53,9 +53,9 @@ class HouseholdItemListActivity : LocationBaseActivity() {
             }
         }
 
-        setSupportActionBar(activityHousingListBinding.toolbar)
+        setSupportActionBar(activityHouseholdItemListBinding.toolbar)
 
-        activityHousingListBinding.toolbar.setNavigationOnClickListener {
+        activityHouseholdItemListBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
 
@@ -69,10 +69,10 @@ class HouseholdItemListActivity : LocationBaseActivity() {
             onMarketPlaceItemClicked(marketPlace, view)
         }
         val layoutManager = LinearLayoutManager(this)
-        activityHousingListBinding.rvMarketPlace.layoutManager = layoutManager
-        activityHousingListBinding.rvMarketPlace.adapter = householdItemListAdapter
+        activityHouseholdItemListBinding.rvMarketPlace.layoutManager = layoutManager
+        activityHouseholdItemListBinding.rvMarketPlace.adapter = householdItemListAdapter
 
-        activityHousingListBinding.rvMarketPlace.addOnScrollListener(object :
+        activityHouseholdItemListBinding.rvMarketPlace.addOnScrollListener(object :
             PaginationListener(layoutManager) {
             override fun loadMoreItems() {
                 isItemLoading = true
@@ -98,15 +98,15 @@ class HouseholdItemListActivity : LocationBaseActivity() {
     }
 
     override fun locationPermissionRequired() {
-        activityHousingListBinding.clLocationAccessRequired.visibility = View.VISIBLE
+        activityHouseholdItemListBinding.clLocationAccessRequired.visibility = View.VISIBLE
     }
 
     override fun locationPermissionGranted() {
-        activityHousingListBinding.clLocationAccessRequired.visibility = View.GONE
+        activityHouseholdItemListBinding.clLocationAccessRequired.visibility = View.GONE
     }
 
     private fun setListeners() {
-        activityHousingListBinding.fabPost.setOnClickListener {
+        activityHouseholdItemListBinding.fabPost.setOnClickListener {
             startActivity(
                 Intent(
                     this,
@@ -118,19 +118,19 @@ class HouseholdItemListActivity : LocationBaseActivity() {
 
     private fun observeData() {
         householdItemViewModel.marketplaceElasticListLiveData.observe(this, {
-            activityHousingListBinding.shimmerLayout.stopShimmer()
-            activityHousingListBinding.shimmerLayout.visibility = View.GONE
-            activityHousingListBinding.rvMarketPlace.visibility = View.VISIBLE
-            activityHousingListBinding.swipeRefreshLayout.isRefreshing = false
+            activityHouseholdItemListBinding.shimmerLayout.stopShimmer()
+            activityHouseholdItemListBinding.shimmerLayout.visibility = View.GONE
+            activityHouseholdItemListBinding.rvMarketPlace.visibility = View.VISIBLE
+            activityHouseholdItemListBinding.swipeRefreshLayout.isRefreshing = false
 
             if (from != PAGE_START) {
                 householdItemListAdapter.removeLoading()
             }
             if (it.marketplaceElastics.isEmpty() && householdItemListAdapter.itemCount == 0) {
-                activityHousingListBinding.rlEmpty.visibility = View.VISIBLE
+                activityHouseholdItemListBinding.rlEmpty.visibility = View.VISIBLE
             } else {
                 it?.let { marketPlaceElasticList ->
-                    activityHousingListBinding.rlEmpty.visibility = View.GONE
+                    activityHouseholdItemListBinding.rlEmpty.visibility = View.GONE
                     householdItemListAdapter.addMarketPlaces(marketPlaceElasticList.marketplaceElastics)
                 }
             }
@@ -140,20 +140,20 @@ class HouseholdItemListActivity : LocationBaseActivity() {
         householdItemViewModel.authenticationError.observe(this, {
             if (it) {
                 super.authenticationFailure()
-                activityHousingListBinding.shimmerLayout.stopShimmer()
-                activityHousingListBinding.shimmerLayout.visibility = View.GONE
+                activityHouseholdItemListBinding.shimmerLayout.stopShimmer()
+                activityHouseholdItemListBinding.shimmerLayout.visibility = View.GONE
                 householdItemViewModel.authenticationError.value = false
             }
         })
 
         householdItemViewModel.errorEncounteredJsonLiveData.observe(this, {
-            activityHousingListBinding.shimmerLayout.stopShimmer()
-            activityHousingListBinding.shimmerLayout.visibility = View.GONE
+            activityHouseholdItemListBinding.shimmerLayout.stopShimmer()
+            activityHouseholdItemListBinding.shimmerLayout.visibility = View.GONE
             super.responseErrorPresenter(it)
         })
 
         householdItemViewModel.searchStoreQueryLiveData.observe(this, {
-            activityHousingListBinding.shimmerLayout.startShimmer()
+            activityHouseholdItemListBinding.shimmerLayout.startShimmer()
             it.searchedOnBusinessType = BusinessTypeEnum.PR
             householdItemViewModel.getMarketPlace(it)
         })
