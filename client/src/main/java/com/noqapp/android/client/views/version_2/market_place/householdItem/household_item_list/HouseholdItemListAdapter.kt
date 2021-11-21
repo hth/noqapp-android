@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details
+package com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -121,12 +121,14 @@ class HouseholdItemListAdapter(
     }
 
     fun addMarketPlaces(marketPlaceList: List<MarketplaceElastic>) {
+        val size = marketplaceList.size
         this.marketplaceList.addAll(marketPlaceList)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(size, marketplaceList.size - 1)
+       // notifyDataSetChanged()
     }
 
     fun getItem(position: Int): MarketplaceElastic? {
-        return if (position < marketplaceList.size)
+        return if (position < marketplaceList.size && position != -1)
             marketplaceList[position]
         else null
     }

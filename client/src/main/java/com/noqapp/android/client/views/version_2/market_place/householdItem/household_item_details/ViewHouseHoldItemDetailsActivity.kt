@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details
+package com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details
 
 import android.content.Intent
 import android.net.Uri
@@ -12,30 +12,32 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayoutMediator
 import com.noqapp.android.client.R
-import com.noqapp.android.client.databinding.ActivityViewPropertyRentalDetailsBinding
+import com.noqapp.android.client.databinding.ActivityViewHouseholdItemDetailsBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.GeoHashUtils
 import com.noqapp.android.client.views.activities.BaseActivity
-import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
+import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
+import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.ImagesAdapter
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
+import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 
-class ViewPropertyRentalDetailsActivity : BaseActivity(), OnMapReadyCallback {
-    private lateinit var activityViewPropertyRentalDetailsBinding: ActivityViewPropertyRentalDetailsBinding
-    private lateinit var propertyRentalViewModel: PropertyRentalViewModel
+class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
+    private lateinit var activityViewHouseholdItemDetailsBinding: ActivityViewHouseholdItemDetailsBinding
+    private lateinit var householdItemViewModel: HouseholdItemViewModel
     private lateinit var marketPlaceElastic: MarketplaceElastic
     private var latitude = 0.0
     private var longitude = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityViewPropertyRentalDetailsBinding =
-            ActivityViewPropertyRentalDetailsBinding.inflate(LayoutInflater.from(this))
-        setContentView(activityViewPropertyRentalDetailsBinding.root)
+        activityViewHouseholdItemDetailsBinding =
+            ActivityViewHouseholdItemDetailsBinding.inflate(LayoutInflater.from(this))
+        setContentView(activityViewHouseholdItemDetailsBinding.root)
 
-        propertyRentalViewModel = ViewModelProvider(this)[PropertyRentalViewModel::class.java]
+        householdItemViewModel = ViewModelProvider(this)[HouseholdItemViewModel::class.java]
 
         intent?.let {
             marketPlaceElastic =
@@ -47,43 +49,37 @@ class ViewPropertyRentalDetailsActivity : BaseActivity(), OnMapReadyCallback {
 
     }
 
-
     private fun setListeners() {
-        activityViewPropertyRentalDetailsBinding.toolbar.setNavigationOnClickListener {
+        activityViewHouseholdItemDetailsBinding.toolbar.setNavigationOnClickListener {
             finish()
         }
 
-        activityViewPropertyRentalDetailsBinding.cvInterested.setOnClickListener {
-            propertyRentalViewModel.initiateContact(marketPlaceElastic.id)
+        activityViewHouseholdItemDetailsBinding.cvInterested.setOnClickListener {
+            householdItemViewModel.initiateContact(marketPlaceElastic.id)
         }
     }
 
     private fun setData(marketPlaceElastic: MarketplaceElastic) {
         val nf: NumberFormat =
             NumberFormat.getCurrencyInstance(Locale("en", marketPlaceElastic.countryShortName))
-        activityViewPropertyRentalDetailsBinding.tvTitle.text = marketPlaceElastic.title
-        activityViewPropertyRentalDetailsBinding.tvPrice.text =
+        activityViewHouseholdItemDetailsBinding.tvTitle.text = marketPlaceElastic.title
+        activityViewHouseholdItemDetailsBinding.tvPrice.text =
             nf.format(BigDecimal(marketPlaceElastic.productPrice)) + "/-"
-        activityViewPropertyRentalDetailsBinding.tvDescription.text = marketPlaceElastic.description
-        activityViewPropertyRentalDetailsBinding.toolbar.title = marketPlaceElastic.title
-        activityViewPropertyRentalDetailsBinding.tvBedrooms.text =
-            getString(R.string.txt_number_of_bedrooms) + " " + marketPlaceElastic.getValueFromTag("BE")
-        activityViewPropertyRentalDetailsBinding.tvBathrooms.text =
-            getString(R.string.txt_number_of_bathrooms) + " " + marketPlaceElastic.getValueFromTag("BR")
-        activityViewPropertyRentalDetailsBinding.tvCarpetArea.text =
-            getString(R.string.txt_carpet_area) + " " + marketPlaceElastic.getValueFromTag("CA")
-        //Rental Type = RentalTypeEnum.valueOf(marketPlaceElastic.getValueFromTag("RT"))
-        activityViewPropertyRentalDetailsBinding.tvAvailableFrom.text =
-            getString(R.string.txt_available_from) + " " + marketPlaceElastic.getValueFromTag("RA")
+        activityViewHouseholdItemDetailsBinding.tvDescription.text = marketPlaceElastic.description
+        activityViewHouseholdItemDetailsBinding.toolbar.title = marketPlaceElastic.title
+        activityViewHouseholdItemDetailsBinding.tvBedrooms.text =
+            getString(R.string.txt_house_hold_item_usages) + " - " + ItemConditionEnum.valueOf(marketPlaceElastic.getValueFromTag("IC"))
+        activityViewHouseholdItemDetailsBinding.tvBathrooms.text =
+            getString(R.string.txt_house_hold_item_price) + " - " + nf.format(BigDecimal(marketPlaceElastic.productPrice))
 
         latitude = GeoHashUtils.decodeLatitude(marketPlaceElastic.geoHash)
         longitude = GeoHashUtils.decodeLongitude(marketPlaceElastic.geoHash)
 
-        activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.townCity()
-        activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.rating
-        activityViewPropertyRentalDetailsBinding.rbMarketPlaceRating.setStar(marketPlaceElastic.rating.toFloat())
+        activityViewHouseholdItemDetailsBinding.tvAddress.text = marketPlaceElastic.townCity()
+        activityViewHouseholdItemDetailsBinding.tvRating.text = marketPlaceElastic.rating
+        activityViewHouseholdItemDetailsBinding.rbMarketPlaceRating.setStar(marketPlaceElastic.rating.toFloat())
 
-        activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + " " + if (marketPlaceElastic.viewCount > 1)  { getString(R.string.txt_views) } else { getString(R.string.txt_view) }
+        activityViewHouseholdItemDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + " " + if (marketPlaceElastic.viewCount > 1)  { getString(R.string.txt_views) } else { getString(R.string.txt_view) }
 
         setUpViewPager()
 
@@ -93,10 +89,10 @@ class ViewPropertyRentalDetailsActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun setUpViewPager() {
         val imagesAdapter = ImagesAdapter(marketPlaceElastic)
-        activityViewPropertyRentalDetailsBinding.viewPager.adapter = imagesAdapter
+        activityViewHouseholdItemDetailsBinding.viewPager.adapter = imagesAdapter
         TabLayoutMediator(
-            activityViewPropertyRentalDetailsBinding.tabLayout,
-            activityViewPropertyRentalDetailsBinding.viewPager
+            activityViewHouseholdItemDetailsBinding.tabLayout,
+            activityViewHouseholdItemDetailsBinding.viewPager
         ) { tab, position ->
             //Some implementation
         }.attach()
@@ -116,7 +112,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity(), OnMapReadyCallback {
             launchDirections()
         }
 
-        activityViewPropertyRentalDetailsBinding.tvAddress.setOnClickListener {
+        activityViewHouseholdItemDetailsBinding.tvAddress.setOnClickListener {
             launchDirections()
         }
     }

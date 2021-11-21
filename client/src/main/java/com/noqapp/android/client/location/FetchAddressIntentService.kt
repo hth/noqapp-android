@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
 import android.os.ResultReceiver
 import android.text.TextUtils
@@ -21,6 +22,8 @@ import java.util.*
 class FetchAddressIntentService : JobIntentService() {
     private val TAG = FetchAddressIntentService::class.java.simpleName
     private var receiver: ResultReceiver? = null
+    private var lastKnownLatitude = 0.0
+    private var lastKnownLongitude = 0.0
 
     companion object {
         fun enqueueWork(context: Context, work: Intent) {
@@ -92,7 +95,20 @@ class FetchAddressIntentService : JobIntentService() {
                 state = address.adminArea
             }
 
-            deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressStr, countryShortName, area, town, district, state, stateShortName, latitude, longitude)
+            val results = FloatArray(1)
+            Location.distanceBetween(
+                lastKnownLatitude, lastKnownLongitude,
+                latitude, longitude, results
+            )
+
+            if(results[0] <= 1000){
+                Log.i(TAG, "new Address found less than 1 km ")
+            }else{
+                Log.i(TAG, "new Address found and assigned")
+                deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressStr, countryShortName, area, town, district, state, stateShortName, latitude, longitude)
+            }
+            lastKnownLatitude = latitude
+            lastKnownLongitude = longitude
         }
     }
 

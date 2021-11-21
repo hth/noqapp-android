@@ -7,32 +7,13 @@ import androidx.navigation.fragment.NavHostFragment
 import com.kofigyan.stateprogressbar.StateProgressBar
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityPostMarketPlaceBinding
-import com.noqapp.android.client.views.activities.LocationBaseActivity
+import com.noqapp.android.client.views.activities.BaseActivity
 
-class PostPropertyRentalActivity : LocationBaseActivity(),
+class PostPropertyRentalActivity : BaseActivity(),
     PostPropertyRentalTitleFragmentInteractionListener,
     PostPropertyRentalDetailsFragmentInteractionListener,
     PostPropertyRentalImageFragmentInteractionListener {
 
-    override fun displayAddressOutput(
-        addressOutput: String?,
-        countryShortName: String?,
-        area: String?,
-        town: String?,
-        district: String?,
-        state: String?,
-        stateShortName: String?,
-        latitude: Double?,
-        longitude: Double?
-    ) {
-
-    }
-
-    override fun locationPermissionRequired() {
-    }
-
-    override fun locationPermissionGranted() {
-    }
 
     private lateinit var activityPostMarketPlaceBinding: ActivityPostMarketPlaceBinding
     private lateinit var navHostFragment: NavHostFragment

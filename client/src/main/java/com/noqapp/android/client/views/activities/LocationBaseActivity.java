@@ -63,6 +63,7 @@ public abstract class LocationBaseActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("Location tag", "service started");
         getCurrentLocation();
     }
 
@@ -190,8 +191,9 @@ public abstract class LocationBaseActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         LocationManager.INSTANCE.stopLocationUpdate(this);
+        Log.d("Location tag", "service stopped");
     }
 }

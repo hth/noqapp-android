@@ -40,7 +40,7 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter
 import com.noqapp.android.client.views.customviews.BadgeDrawable
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteractionListener
-import com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details.HouseholdItemListActivity
+import com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_list.HouseholdItemListActivity
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.PropertyRentalListActivity
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 import com.noqapp.android.common.beans.DeviceRegistered
@@ -70,6 +70,13 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
 
+    companion object {
+         var locationLatitude = 0.0
+         var locationLongitude = 0.0
+         var locationArea = ""
+         var locationTown = ""
+    }
+
     override fun displayAddressOutput(
         addressOutput: String?,
         countryShortName: String?,
@@ -82,16 +89,19 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         longitude: Double?
     ) {
         activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
-
+        locationArea = area!!
+        locationTown = town!!
         val searchStoreQuery = SearchQuery()
         area?.let {
             searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
         }
         latitude?.let {
             searchStoreQuery.latitude = it.toString()
+            locationLatitude = it
         }
         longitude?.let {
             searchStoreQuery.longitude = it.toString()
+            locationLongitude = it
         }
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
