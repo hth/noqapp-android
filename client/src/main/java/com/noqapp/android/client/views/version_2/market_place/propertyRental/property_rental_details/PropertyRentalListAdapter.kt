@@ -134,7 +134,7 @@ class PropertyRentalListAdapter(
     }
 
     fun getItem(position: Int): MarketplaceElastic? {
-        return if (position < marketplaceList.size && position != -1)
+        return if ( position != -1 && position < marketplaceList.size)
             marketplaceList[position]
         else null
     }

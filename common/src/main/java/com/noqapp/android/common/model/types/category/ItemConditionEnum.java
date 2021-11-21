@@ -48,6 +48,14 @@ public enum ItemConditionEnum {
         }
     }
 
+    public static String findByName(String name) {
+        try {
+            return ItemConditionEnum.valueOf(name).description;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     @Override
     public String toString() {
         return description;

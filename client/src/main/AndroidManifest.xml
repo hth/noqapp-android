@@ -356,7 +356,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name=".views.version_2.market_place.householdItem.household_item_details.HouseholdItemListActivity"
+            android:name=".views.version_2.market_place.householdItem.household_item_list.HouseholdItemListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"
             android:windowSoftInputMode="stateAlwaysHidden" />
@@ -368,6 +368,12 @@
 
         <activity
             android:name=".views.version_2.market_place.propertyRental.property_rental_details.ViewPropertyRentalDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme.Material"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name=".views.version_2.market_place.householdItem.household_item_details.ViewHouseHoldItemDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme.Material"
             android:windowSoftInputMode="stateAlwaysHidden" />

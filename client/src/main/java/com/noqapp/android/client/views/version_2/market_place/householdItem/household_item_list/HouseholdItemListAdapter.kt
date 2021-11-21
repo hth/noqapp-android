@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details
+package com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -126,7 +126,7 @@ class HouseholdItemListAdapter(
     }
 
     fun getItem(position: Int): MarketplaceElastic? {
-        return if (position < marketplaceList.size)
+        return if (position < marketplaceList.size && position != -1)
             marketplaceList[position]
         else null
     }
