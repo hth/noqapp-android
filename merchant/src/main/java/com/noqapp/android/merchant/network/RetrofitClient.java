@@ -16,9 +16,9 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * User: hitender
  * Date: 4/16/17 5:58 PM
  */
-
 public class RetrofitClient {
     private static Retrofit retrofit;
+    private static HttpLoggingInterceptor logging = null;
     private static long TIME_OUT = 35;
 
     public static Retrofit getClient() {
@@ -39,6 +39,13 @@ public class RetrofitClient {
                     .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
                 return chain.proceed(request);
             });
+
+            if (BuildConfig.DEBUG) {
+                logging = new HttpLoggingInterceptor();
+                logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+
+                builder.addInterceptor(logging);
+            }
 
             retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.NOQAPP_MOBILE)
