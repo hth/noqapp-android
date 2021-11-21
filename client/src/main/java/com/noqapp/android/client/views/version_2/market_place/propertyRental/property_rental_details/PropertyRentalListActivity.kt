@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityPropertyRentalListBinding
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
@@ -13,13 +14,14 @@ import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.utils.PaginationListener.PAGE_START
-import com.noqapp.android.client.views.activities.LocationBaseActivity
+import com.noqapp.android.client.views.activities.BaseActivity
+import com.noqapp.android.client.views.version_2.HomeActivity
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental.PostPropertyRentalActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class PropertyRentalListActivity : LocationBaseActivity() {
+class PropertyRentalListActivity : BaseActivity() {
 
     private lateinit var activityPropertyRentalListBinding: ActivityPropertyRentalListBinding
     private lateinit var propertyRentalListAdapter: PropertyRentalListAdapter
@@ -57,7 +59,20 @@ class PropertyRentalListActivity : LocationBaseActivity() {
         activityPropertyRentalListBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+        val searchStoreQuery = SearchQuery()
+        val area = HomeActivity.locationArea
+        val town = HomeActivity.locationTown
+        searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
+        searchStoreQuery.latitude = HomeActivity.locationLatitude.toString()
+        searchStoreQuery.longitude = HomeActivity.locationLongitude.toString()
 
+        searchStoreQuery.filters = ""
+        searchStoreQuery.scrollId = ""
+
+        searchStoreQuery.filters = ""
+        searchStoreQuery.scrollId = ""
+
+        propertyRentalViewModel.searchStoreQueryLiveData.value = searchStoreQuery
         setListeners()
         setUpRecyclerView()
         observeData()
@@ -93,14 +108,6 @@ class PropertyRentalListActivity : LocationBaseActivity() {
                 return isItemLoading
             }
         })
-    }
-
-    override fun locationPermissionRequired() {
-        activityPropertyRentalListBinding.clLocationAccessRequired.visibility = View.VISIBLE
-    }
-
-    override fun locationPermissionGranted() {
-        activityPropertyRentalListBinding.clLocationAccessRequired.visibility = View.GONE
     }
 
     private fun setListeners() {
@@ -163,7 +170,9 @@ class PropertyRentalListActivity : LocationBaseActivity() {
 
         propertyRentalViewModel.shownInterestLiveData.observe(this, {
             if (it) {
-                showSnackbar(R.string.txt_owner_notified)
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.txt_owner_notified),
+                    Snackbar.LENGTH_SHORT)
+                    .show()
                 propertyRentalViewModel.shownInterestLiveData.value = false
             }
         })
@@ -187,34 +196,4 @@ class PropertyRentalListActivity : LocationBaseActivity() {
         }
     }
 
-    override fun displayAddressOutput(
-        addressOutput: String?,
-        countryShortName: String?,
-        area: String?,
-        town: String?,
-        district: String?,
-        state: String?,
-        stateShortName: String?,
-        latitude: Double?,
-        longitude: Double?
-    ) {
-        val searchStoreQuery = SearchQuery()
-        area?.let {
-            searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
-        }
-        latitude?.let {
-            searchStoreQuery.latitude = it.toString()
-        }
-        longitude?.let {
-            searchStoreQuery.longitude = it.toString()
-        }
-
-        searchStoreQuery.latitude = latitude.toString()
-        searchStoreQuery.longitude = longitude.toString()
-
-        searchStoreQuery.filters = ""
-        searchStoreQuery.scrollId = ""
-
-        propertyRentalViewModel.searchStoreQueryLiveData.value = searchStoreQuery
-    }
 }

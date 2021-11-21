@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHouseholdItemListBinding
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
@@ -13,14 +14,15 @@ import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.utils.PaginationListener.PAGE_START
-import com.noqapp.android.client.views.activities.LocationBaseActivity
+import com.noqapp.android.client.views.activities.BaseActivity
+import com.noqapp.android.client.views.version_2.HomeActivity
 import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details.ViewHouseHoldItemDetailsActivity
 import com.noqapp.android.client.views.version_2.market_place.householdItem.post_household_item.PostHouseholdItemActivity
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import com.noqapp.android.common.model.types.BusinessTypeEnum
 
-class HouseholdItemListActivity : LocationBaseActivity() {
+class HouseholdItemListActivity : BaseActivity() {
 
     private lateinit var activityHouseholdItemListBinding: ActivityHouseholdItemListBinding
     private lateinit var householdItemListAdapter: HouseholdItemListAdapter
@@ -58,7 +60,17 @@ class HouseholdItemListActivity : LocationBaseActivity() {
         activityHouseholdItemListBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+        val searchStoreQuery = SearchQuery()
+        val area = HomeActivity.locationArea
+        val town = HomeActivity.locationTown
+        searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
+        searchStoreQuery.latitude = HomeActivity.locationLatitude.toString()
+        searchStoreQuery.longitude = HomeActivity.locationLongitude.toString()
 
+        searchStoreQuery.filters = ""
+        searchStoreQuery.scrollId = ""
+
+        householdItemViewModel.searchStoreQueryLiveData.value = searchStoreQuery
         setListeners()
         setUpRecyclerView()
         observeData()
@@ -93,14 +105,6 @@ class HouseholdItemListActivity : LocationBaseActivity() {
                 return isItemLoading
             }
         })
-    }
-
-    override fun locationPermissionRequired() {
-        activityHouseholdItemListBinding.clLocationAccessRequired.visibility = View.VISIBLE
-    }
-
-    override fun locationPermissionGranted() {
-        activityHouseholdItemListBinding.clLocationAccessRequired.visibility = View.GONE
     }
 
     private fun setListeners() {
@@ -163,7 +167,9 @@ class HouseholdItemListActivity : LocationBaseActivity() {
 
         householdItemViewModel.shownInterestLiveData.observe(this, {
             if (it) {
-                showSnackbar(R.string.txt_owner_notified)
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.txt_owner_notified),
+                    Snackbar.LENGTH_SHORT)
+                    .show()
                 householdItemViewModel.shownInterestLiveData.value = false
             }
         })
@@ -187,34 +193,4 @@ class HouseholdItemListActivity : LocationBaseActivity() {
         }
     }
 
-    override fun displayAddressOutput(
-        addressOutput: String?,
-        countryShortName: String?,
-        area: String?,
-        town: String?,
-        district: String?,
-        state: String?,
-        stateShortName: String?,
-        latitude: Double?,
-        longitude: Double?
-    ) {
-        val searchStoreQuery = SearchQuery()
-        area?.let {
-            searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
-        }
-        latitude?.let {
-            searchStoreQuery.latitude = it.toString()
-        }
-        longitude?.let {
-            searchStoreQuery.longitude = it.toString()
-        }
-
-        searchStoreQuery.latitude = latitude.toString()
-        searchStoreQuery.longitude = longitude.toString()
-
-        searchStoreQuery.filters = ""
-        searchStoreQuery.scrollId = ""
-
-        householdItemViewModel.searchStoreQueryLiveData.value = searchStoreQuery
-    }
 }

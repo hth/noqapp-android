@@ -70,6 +70,13 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
 
+    companion object {
+         var locationLatitude = 0.0
+         var locationLongitude = 0.0
+         var locationArea = ""
+         var locationTown = ""
+    }
+
     override fun displayAddressOutput(
         addressOutput: String?,
         countryShortName: String?,
@@ -82,16 +89,19 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         longitude: Double?
     ) {
         activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
-
+        locationArea = area!!
+        locationTown = town!!
         val searchStoreQuery = SearchQuery()
         area?.let {
             searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
         }
         latitude?.let {
             searchStoreQuery.latitude = it.toString()
+            locationLatitude = it
         }
         longitude?.let {
             searchStoreQuery.longitude = it.toString()
+            locationLongitude = it
         }
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""

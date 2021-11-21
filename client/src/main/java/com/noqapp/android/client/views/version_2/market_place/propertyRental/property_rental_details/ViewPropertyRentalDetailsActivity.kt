@@ -15,21 +15,19 @@ import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityViewPropertyRentalDetailsBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.GeoHashUtils
-import com.noqapp.android.client.views.activities.LocationBaseActivity
+import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 
-class ViewPropertyRentalDetailsActivity : LocationBaseActivity(), OnMapReadyCallback {
+class ViewPropertyRentalDetailsActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var activityViewPropertyRentalDetailsBinding: ActivityViewPropertyRentalDetailsBinding
     private lateinit var propertyRentalViewModel: PropertyRentalViewModel
     private lateinit var marketPlaceElastic: MarketplaceElastic
     private var latitude = 0.0
     private var longitude = 0.0
-    private var currentLatitude: Double? = 0.0
-    private var currentLongitude: Double? = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,28 +47,6 @@ class ViewPropertyRentalDetailsActivity : LocationBaseActivity(), OnMapReadyCall
 
     }
 
-    override fun displayAddressOutput(
-        addressOutput: String?,
-        countryShortName: String?,
-        area: String?,
-        town: String?,
-        district: String?,
-        state: String?,
-        stateShortName: String?,
-        latitude: Double?,
-        longitude: Double?
-    ) {
-        currentLatitude = latitude
-        currentLongitude = longitude
-    }
-
-    override fun locationPermissionRequired() {
-
-    }
-
-    override fun locationPermissionGranted() {
-
-    }
 
     private fun setListeners() {
         activityViewPropertyRentalDetailsBinding.toolbar.setNavigationOnClickListener {

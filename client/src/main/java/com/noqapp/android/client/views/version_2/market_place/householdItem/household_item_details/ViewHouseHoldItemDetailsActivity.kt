@@ -15,7 +15,7 @@ import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityViewHouseholdItemDetailsBinding
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.GeoHashUtils
-import com.noqapp.android.client.views.activities.LocationBaseActivity
+import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.ImagesAdapter
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
@@ -24,14 +24,12 @@ import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 
-class ViewHouseHoldItemDetailsActivity : LocationBaseActivity(), OnMapReadyCallback {
+class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var activityViewHouseholdItemDetailsBinding: ActivityViewHouseholdItemDetailsBinding
     private lateinit var householdItemViewModel: HouseholdItemViewModel
     private lateinit var marketPlaceElastic: MarketplaceElastic
     private var latitude = 0.0
     private var longitude = 0.0
-    private var currentLatitude: Double? = 0.0
-    private var currentLongitude: Double? = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,29 +46,6 @@ class ViewHouseHoldItemDetailsActivity : LocationBaseActivity(), OnMapReadyCallb
         }
 
         setListeners()
-
-    }
-
-    override fun displayAddressOutput(
-        addressOutput: String?,
-        countryShortName: String?,
-        area: String?,
-        town: String?,
-        district: String?,
-        state: String?,
-        stateShortName: String?,
-        latitude: Double?,
-        longitude: Double?
-    ) {
-        currentLatitude = latitude
-        currentLongitude = longitude
-    }
-
-    override fun locationPermissionRequired() {
-
-    }
-
-    override fun locationPermissionGranted() {
 
     }
 

@@ -129,8 +129,10 @@ class PropertyRentalListAdapter(
     }
 
     fun addMarketPlaces(marketPlaceList: List<MarketplaceElastic>) {
+        val size = marketplaceList.size
         this.marketplaceList.addAll(marketPlaceList)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(size, marketplaceList.size - 1)
+        //notifyDataSetChanged()
     }
 
     fun getItem(position: Int): MarketplaceElastic? {
