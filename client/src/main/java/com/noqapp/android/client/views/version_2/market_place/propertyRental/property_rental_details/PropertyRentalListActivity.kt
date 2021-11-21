@@ -27,7 +27,7 @@ class PropertyRentalListActivity : LocationBaseActivity() {
     private lateinit var propertyRentalViewModel: PropertyRentalViewModel
 
     private var from: Int = PAGE_START
-    private var size: Int = 3
+    private var size: Int = 0
     private var isLastPage = false
     private var isItemLoading = false
     private var itemCount = 0
@@ -44,7 +44,7 @@ class PropertyRentalListActivity : LocationBaseActivity() {
                 activityPropertyRentalListBinding.shimmerLayout.startShimmer()
                 propertyRentalListAdapter.clear()
                 from = PAGE_START
-                size = 3
+                size = 0
                 it.searchedOnBusinessType = BusinessTypeEnum.PR
                 it.from = from
                 it.size = size
@@ -67,6 +67,7 @@ class PropertyRentalListActivity : LocationBaseActivity() {
         propertyRentalListAdapter = PropertyRentalListAdapter(mutableListOf()) { marketPlace, view ->
             onMarketPlaceItemClicked(marketPlace, view)
         }
+
         val layoutManager = LinearLayoutManager(this)
         activityPropertyRentalListBinding.rvMarketPlace.layoutManager = layoutManager
         activityPropertyRentalListBinding.rvMarketPlace.adapter = propertyRentalListAdapter
@@ -77,8 +78,6 @@ class PropertyRentalListActivity : LocationBaseActivity() {
                 isItemLoading = true
                 propertyRentalViewModel.searchStoreQueryLiveData.value?.let {
                     it.searchedOnBusinessType = BusinessTypeEnum.PR
-                    size += 3
-                    from += 3
                     it.from = from
                     it.size = size
                     propertyRentalListAdapter.addLoading()
@@ -117,6 +116,9 @@ class PropertyRentalListActivity : LocationBaseActivity() {
 
     private fun observeData() {
         propertyRentalViewModel.marketplaceElasticListLiveData.observe(this, {
+            from = it.from
+            size = it.size
+
             activityPropertyRentalListBinding.shimmerLayout.stopShimmer()
             activityPropertyRentalListBinding.shimmerLayout.visibility = View.GONE
             activityPropertyRentalListBinding.rvMarketPlace.visibility = View.VISIBLE
@@ -154,6 +156,8 @@ class PropertyRentalListActivity : LocationBaseActivity() {
         propertyRentalViewModel.searchStoreQueryLiveData.observe(this, {
             activityPropertyRentalListBinding.shimmerLayout.startShimmer()
             it.searchedOnBusinessType = BusinessTypeEnum.PR
+            it.size = size
+            it.from = from
             propertyRentalViewModel.getMarketPlace(it)
         })
 

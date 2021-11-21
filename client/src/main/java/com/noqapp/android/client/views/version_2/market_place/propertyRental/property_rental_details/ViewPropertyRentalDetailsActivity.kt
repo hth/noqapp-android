@@ -105,6 +105,7 @@ class ViewPropertyRentalDetailsActivity : LocationBaseActivity(), OnMapReadyCall
 
         activityViewPropertyRentalDetailsBinding.tvAddress.text = marketPlaceElastic.townCity()
         activityViewPropertyRentalDetailsBinding.tvRating.text = marketPlaceElastic.rating
+        activityViewPropertyRentalDetailsBinding.rbMarketPlaceRating.setStar(marketPlaceElastic.rating.toFloat())
 
         activityViewPropertyRentalDetailsBinding.tvPropertyViews.text = marketPlaceElastic.viewCount.toString() + " " + if (marketPlaceElastic.viewCount > 1)  { getString(R.string.txt_views) } else { getString(R.string.txt_view) }
 

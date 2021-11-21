@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/white"
-    app:contentPadding="16dp"
     app:cardCornerRadius="4dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    app:contentPadding="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,13 +15,13 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_market_place"
-            style="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
-            android:layout_width="120dp"
+            android:layout_width="140dp"
             android:layout_height="150dp"
             android:layout_marginStart="10dp"
             android:background="@color/color_grey_bg"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_foreground" />
+            android:src="@drawable/image_foreground"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
         <TextView
             android:id="@+id/tv_price"
@@ -49,7 +49,7 @@
             android:id="@+id/tv_property_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:drawablePadding="4dp"
             android:fontFamily="sans-serif"
             android:paddingEnd="16dp"
@@ -74,7 +74,6 @@
             android:id="@+id/tv_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:drawablePadding="4dp"
             android:fontFamily="sans-serif"
             android:maxLines="3"
@@ -82,7 +81,7 @@
             android:textColor="@color/color_black"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/iv_market_place_location"
+            app:layout_constraintStart_toStartOf="@+id/tv_property_title"
             app:layout_constraintTop_toTopOf="@id/iv_market_place_location"
             tools:text="26, Spaze Street, Gurgaon, Sector 22" />
 
@@ -102,11 +101,11 @@
                 <TextView
                     android:id="@+id/btn_call_agent"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:background="@drawable/orange_gradient"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_theme_color_select"
+                    android:gravity="center"
                     android:text="@string/txt_interested"
                     android:textAllCaps="false"
-                    android:gravity="center"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -123,11 +122,11 @@
                 <TextView
                     android:id="@+id/btn_view_details"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_rounded_corner_theme"
+                    android:gravity="center"
                     android:text="View Details"
                     android:textAllCaps="false"
-                    android:gravity="center"
                     android:textColor="@color/theme_color_dark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -153,6 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
@@ -160,20 +160,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ic_market_place_rating_circle"
+                        android:fontFamily="sans-serif"
                         android:gravity="center"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
+                        android:textStyle="normal"
                         tools:text="3.5" />
 
-                    <RatingBar
+                    <com.hedgehog.ratingbar.RatingBar
                         android:id="@+id/rb_market_place_rating"
-                        style="@style/Widget.AppCompat.RatingBar.Small"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_marginStart="8dp"
-                        android:progressDrawable="@drawable/layer_list_market_place_rating"
-                        android:rating="2.5" />
+                        app:clickable="false"
+                        app:halfstart="true"
+                        app:starCount="5"
+                        app:starEmpty="@drawable/ic_marketplace_rating_empty"
+                        app:starFill="@drawable/ic_marketplace_rating"
+                        app:starHalf="@drawable/ic_marketplace_rating_half"
+                        app:starImageHeight="18dp" />
 
                 </LinearLayout>
             </FrameLayout>
