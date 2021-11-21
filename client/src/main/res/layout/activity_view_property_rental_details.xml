@@ -104,15 +104,18 @@
                     android:textSize="12sp"
                     tools:text="3.5" />
 
-                <RatingBar
+                <com.hedgehog.ratingbar.RatingBar
                     android:id="@+id/rb_market_place_rating"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginStart="8dp"
-                    android:progressDrawable="@drawable/layer_list_market_place_rating"
-                    android:rating="2.5" />
+                    app:clickable="false"
+                    app:halfstart="true"
+                    app:starCount="5"
+                    app:starEmpty="@drawable/ic_marketplace_rating_empty"
+                    app:starFill="@drawable/ic_marketplace_rating"
+                    app:starHalf="@drawable/ic_marketplace_rating_half"
+                    app:starImageHeight="18dp" />
 
             </LinearLayout>
 

@@ -37,7 +37,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:allowBackup,android:icon">
+        tools:replace="android:allowBackup,android:icon,android:theme">
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

@@ -43,12 +43,20 @@ class PropertyRentalListAdapter(
 
         fun bind(marketplaceElastic: MarketplaceElastic) {
             this.marketPlaceElastic = marketPlaceElastic
+
+            val radius = listItemMarketPlaceBinding.ivMarketPlace.resources.getDimension(R.dimen.corner_radius)
+            val shapeAppearanceModel = listItemMarketPlaceBinding.ivMarketPlace.shapeAppearanceModel.toBuilder()
+                .setAllCornerSizes(radius)
+                .build()
+            listItemMarketPlaceBinding.ivMarketPlace.shapeAppearanceModel = shapeAppearanceModel
+
             val nf: NumberFormat =
                 NumberFormat.getCurrencyInstance(Locale("en", marketplaceElastic.countryShortName))
             listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
             listItemMarketPlaceBinding.tvPrice.text =
                 nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
             listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.rating
+            listItemMarketPlaceBinding.rbMarketPlaceRating.setStar(marketplaceElastic.rating.toFloat())
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.townCity()
             listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
                 "%d %s",
@@ -126,7 +134,7 @@ class PropertyRentalListAdapter(
     }
 
     fun getItem(position: Int): MarketplaceElastic? {
-        return if (position < marketplaceList.size)
+        return if (position < marketplaceList.size && position != -1)
             marketplaceList[position]
         else null
     }
