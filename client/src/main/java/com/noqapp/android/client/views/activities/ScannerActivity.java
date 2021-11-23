@@ -38,17 +38,12 @@ import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-public abstract class ScannerActivity extends LocationBaseActivity implements ClientInQueuePresenter {
+public abstract class ScannerActivity extends BaseActivity implements ClientInQueuePresenter {
     public static final int RC_BARCODE_CAPTURE = 23;
     private final String TAG = ScannerActivity.class.getSimpleName();
     private int requestCode;
     private CustomProgressBar customProgressBar;
     public abstract void displayAddress(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude);
-
-    @Override
-    public void displayAddressOutput(String addressOutput, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
-        displayAddress(addressOutput, countryShortName, area, town, district, state, stateShortName, latitude, longitude);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

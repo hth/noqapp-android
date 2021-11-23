@@ -28,7 +28,7 @@ internal object LocationManager {
     private val locationRequest = LocationRequest.create().apply {
         fastestInterval = 5000
         interval = 60000
-        smallestDisplacement = 10f
+        smallestDisplacement = 500f
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 

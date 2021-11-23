@@ -101,9 +101,9 @@ class FetchAddressIntentService : JobIntentService() {
                 latitude, longitude, results
             )
 
-            if (results[0] <= 1000) {
-                Log.i(TAG, "New address found is less than 1 km")
-            } else {
+//            if (results[0] <= 1000) {
+//                Log.i(TAG, "New address found is less than 1 km")
+//            } else {
                 Log.i(TAG, "New address found and updated '$area', '$town'")
                 deliverResultToReceiver(
                     Constants.LocationConstants.SUCCESS_RESULT,
@@ -117,7 +117,7 @@ class FetchAddressIntentService : JobIntentService() {
                     latitude,
                     longitude
                 )
-            }
+         //   }
             lastKnownLatitude = latitude
             lastKnownLongitude = longitude
         }

@@ -24,7 +24,6 @@ import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
 import com.noqapp.android.client.location.LocationManager;
 
 import static com.noqapp.android.client.utils.Constants.REQUEST_CHECK_SETTINGS;
