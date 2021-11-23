@@ -46,9 +46,9 @@ public class AccountClientImpl {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response register", String.valueOf(response.body()));
                         profilePresenter.profileResponse(
-                                response.body(),
-                                response.headers().get(APIConstant.Key.XR_MAIL),
-                                response.headers().get(APIConstant.Key.XR_AUTH));
+                            response.body(),
+                            response.headers().get(APIConstant.Key.XR_MAIL),
+                            response.headers().get(APIConstant.Key.XR_AUTH));
                     } else {
                         Log.e(TAG, "Error register:" + response.body().getError());
                         profilePresenter.responseErrorPresenter(response.body().getError());
