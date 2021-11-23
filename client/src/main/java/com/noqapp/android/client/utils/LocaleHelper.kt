@@ -29,7 +29,7 @@ object LocaleHelper {
 
     fun getLocaleLanguage(context: Context): String? {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        return preferences.getString(SELECTED_LANGUAGE, "en_US")
+        return preferences.getString(SELECTED_LANGUAGE, Locale.ENGLISH.toLanguageTag())
     }
 
     // the method is used update the language of application by creating

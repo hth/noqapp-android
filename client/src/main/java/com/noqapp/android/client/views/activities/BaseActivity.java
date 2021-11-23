@@ -105,8 +105,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     @Override
     protected void attachBaseContext(Context newBase) {
         String localLanguage = LocaleHelper.INSTANCE.getLocaleLanguage(newBase);
-        if(null == localLanguage){
-            localLanguage = "en_US";
+        if (null == localLanguage) {
+            localLanguage = Locale.ENGLISH.getLanguage();
         }
         Locale localeToSwitchTo = new Locale(localLanguage);
         ContextWrapper localeUpdatedContext = ContextUtils.Companion.updateLocale(newBase, localeToSwitchTo);
