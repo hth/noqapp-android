@@ -47,6 +47,13 @@ public class JsonUserPreference extends AbstractDomain implements Serializable {
     @JsonProperty("uai")
     private String userAddressId;
 
+    /** Net point earned. */
+    @JsonProperty("ep")
+    private int earnedPoint = 0;
+
+    @JsonProperty("epp")
+    private int earnedPointPreviously= 0;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -92,6 +99,24 @@ public class JsonUserPreference extends AbstractDomain implements Serializable {
 
     public JsonUserPreference setUserAddressId(String userAddressId) {
         this.userAddressId = userAddressId;
+        return this;
+    }
+
+    public int getEarnedPoint() {
+        return earnedPoint;
+    }
+
+    public JsonUserPreference setEarnedPoint(int earnedPoint) {
+        this.earnedPoint = earnedPoint;
+        return this;
+    }
+
+    public int getEarnedPointPreviously() {
+        return earnedPointPreviously;
+    }
+
+    public JsonUserPreference setEarnedPointPreviously(int earnedPointPreviously) {
+        this.earnedPointPreviously = earnedPointPreviously;
         return this;
     }
 

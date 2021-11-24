@@ -70,7 +70,7 @@ class FetchAddressIntentService : JobIntentService() {
             deliverResultToReceiver(Constants.LocationConstants.FAILURE_RESULT, errorMessage, latitude, longitude)
         } else {
             val address = addresses[0]
-            Log.i(TAG, getString(R.string.address_found))
+            Log.i(TAG, getString(R.string.address_found) + address)
             //TODO(hth) may be subAdminArea would not be needed
 //            val addressStr = address.getAddressLine(0) + ", " + address.subAdminArea
             val addressStr = address.getAddressLine(0)
@@ -101,19 +101,41 @@ class FetchAddressIntentService : JobIntentService() {
                 latitude, longitude, results
             )
 
-            if(results[0] <= 1000){
-                Log.i(TAG, "new Address found less than 1 km ")
-            }else{
-                Log.i(TAG, "new Address found and assigned")
-                deliverResultToReceiver(Constants.LocationConstants.SUCCESS_RESULT, addressStr, countryShortName, area, town, district, state, stateShortName, latitude, longitude)
-            }
+//            if (results[0] <= 1000) {
+//                Log.i(TAG, "New address found is less than 1 km")
+//            } else {
+                Log.i(TAG, "New address found and updated '$area', '$town'")
+                deliverResultToReceiver(
+                    Constants.LocationConstants.SUCCESS_RESULT,
+                    addressStr,
+                    countryShortName,
+                    area,
+                    town,
+                    district,
+                    state,
+                    stateShortName,
+                    latitude,
+                    longitude
+                )
+         //   }
             lastKnownLatitude = latitude
             lastKnownLongitude = longitude
         }
     }
 
     /** Sends a resultCode and message to the receiver. */
-    private fun deliverResultToReceiver(resultCode: Int, addressOutput: String, countryShortName: String, area: String, town: String, district: String, state: String, stateShortName: String, latitude: Double, longitude: Double) {
+    private fun deliverResultToReceiver(
+        resultCode: Int,
+        addressOutput: String,
+        countryShortName: String,
+        area: String,
+        town: String,
+        district: String,
+        state: String,
+        stateShortName: String,
+        latitude: Double,
+        longitude: Double
+    ) {
         val bundle = Bundle().apply {
             putString(Constants.LocationConstants.COUNTRY_SHORT_NAME, countryShortName)
             putString(Constants.LocationConstants.AREA, area)
