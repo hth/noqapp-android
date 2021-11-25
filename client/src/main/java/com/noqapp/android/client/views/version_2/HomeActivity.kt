@@ -383,12 +383,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
         homeViewModel.notificationCountLiveData.observe(this, { nc ->
             nc?.let { notificationCount ->
-
-                if (notificationCount > 0)
-                    activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number =
-                        notificationCount
-                else
+                if (notificationCount > 0) {
+                    activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number = notificationCount
+                } else {
                     activityHomeBinding.bottomNavigationView.removeBadge(R.id.menuNotification)
+                }
 
                 navController.currentDestination?.id?.let {
                     when (it) {
