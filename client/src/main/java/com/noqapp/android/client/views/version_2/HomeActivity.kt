@@ -121,8 +121,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var searchQuery: SearchQuery? = null
     private var checkIfAppIsSupported = true
 
-    private val cacheMsgIds =
-        CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -356,8 +355,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun setUpNavigation() {
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
         activityHomeBinding.bottomNavigationView.setOnItemSelectedListener(this)
@@ -385,12 +383,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
 
         homeViewModel.notificationCountLiveData.observe(this, { nc ->
             nc?.let { notificationCount ->
-
-                if (notificationCount > 0)
-                    activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number =
-                        notificationCount
-                else
+                if (notificationCount > 0) {
+                    activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number = notificationCount
+                } else {
                     activityHomeBinding.bottomNavigationView.removeBadge(R.id.menuNotification)
+                }
 
                 navController.currentDestination?.id?.let {
                     when (it) {

@@ -55,10 +55,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private var showRecentVisitsFirst = true
 
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(
-            requireActivity(),
-            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        )[HomeViewModel::class.java]
+        ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -147,8 +144,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.clGrocery.setOnClickListener {
-            val navigationDirections =
-                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
             findNavController().navigate(navigationDirections)
         }
 

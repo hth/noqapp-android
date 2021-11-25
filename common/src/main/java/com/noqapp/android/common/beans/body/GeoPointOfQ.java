@@ -10,7 +10,6 @@ import java.io.Serializable;
 /**
  * Created by hitender on 3/22/18.
  */
-
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -48,5 +47,13 @@ public class GeoPointOfQ implements Serializable {
 
     public double getLon() {
         return lon;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            "lat=" + lat +
+            ", lon=" + lon +
+            '}';
     }
 }

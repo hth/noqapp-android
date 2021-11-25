@@ -55,10 +55,10 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
         AppInitialize.cityName = city;
         LocationPref locationPref = AppInitialize.getLocationPreference()
-                .setArea(area)
-                .setTown(town)
-                .setLatitude(latitude)
-                .setLongitude(longitude);
+            .setArea(area)
+            .setTown(town)
+            .setLatitude(latitude)
+            .setLongitude(longitude);
         AppInitialize.setLocationPreference(locationPref);
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this, token -> {
@@ -95,7 +95,6 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
         btnAllowLocationPermission.setOnClickListener(v -> {
             requestPermissions();
         });
-
     }
 
     @Override
@@ -111,7 +110,7 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
     @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
-            Log.e("Launch", "launching from deviceRegisterResponse");
+            Log.e(TAG, "launching from deviceRegisterResponse");
             deviceId = deviceRegistered.getDeviceId();
             AppInitialize.setDeviceID(deviceId);
 
@@ -122,16 +121,15 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
 
             if (0.0 == locationPref.getLatitude() && 0.0 == locationPref.getLatitude()) {
                 locationPref
-                        .setArea(jsonUserAddress.getArea())
-                        .setTown(jsonUserAddress.getTown())
-                        .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                        .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
+                    .setArea(jsonUserAddress.getArea())
+                    .setTown(jsonUserAddress.getTown())
+                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
+                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
                 AppInitialize.setLocationPreference(locationPref);
                 Location location = new Location("");
                 location.setLatitude(locationPref.getLatitude());
                 location.setLongitude(locationPref.getLongitude());
             }
-
 
             callLaunchScreen();
         } else {
@@ -196,5 +194,4 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
             finish();
         }
     }
-
 }
