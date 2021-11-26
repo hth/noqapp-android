@@ -24,8 +24,8 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 
-public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener,
-    MigrateEmailPresenter, ProfilePresenter {
+public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener, MigrateEmailPresenter, ProfilePresenter {
+    private final String TAG = ChangeEmailActivity.class.getSimpleName();
 
     private TextView tv_header;
     private TextView tv_msg;
@@ -92,13 +92,12 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     edt_email.setError(getString(R.string.error_invalid_email));
                 }
                 break;
-
         }
     }
 
     @Override
     public void migrateEmailResponse(JsonResponse jsonResponse) {
-        Log.e("Email migrate:", jsonResponse.toString());
+        Log.d(TAG, "Email migrate: " + jsonResponse.toString());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             btn_validate_otp.setVisibility(View.VISIBLE);
             edt_otp.setVisibility(View.VISIBLE);
@@ -120,15 +119,13 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
-            Log.d(ChangeEmailActivity.class.getSimpleName(), "profile :" + profile.toString());
+            Log.d(TAG, "profile :" + profile.toString());
             AppInitialize.commitProfile(profile, email, auth);
             finish();
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
-            if (null != eej) {
-                ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
-            }
+            ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
         }
         dismissProgress();
     }
