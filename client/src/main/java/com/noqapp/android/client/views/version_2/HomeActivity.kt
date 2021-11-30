@@ -62,6 +62,7 @@ import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.RuntimeException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -607,15 +608,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 startActivity(`in`)
             }
             R.drawable.offers -> {
-                if (UserUtils.isLogin()) {
-                    val `in` = Intent(this, CouponsActivity::class.java)
-                    startActivity(`in`)
-                } else {
-                    CustomToast().showToast(
-                        this,
-                        getString(R.string.txt_please_login_to_see_the_details)
-                    )
-                }
+                navigateToScreenAfterLogin(CouponsActivity::class.java)
             }
             R.drawable.settings -> {
                 val `in` = Intent(this, PreferenceSettings::class.java)
@@ -642,37 +635,13 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg))
             }
             R.drawable.medical_history -> {
-                if (UserUtils.isLogin()) {
-                    val `in` = Intent(this, MedicalHistoryActivity::class.java)
-                    startActivity(`in`)
-                } else {
-                    CustomToast().showToast(
-                        this,
-                        getString(R.string.txt_please_login_to_see_the_details)
-                    )
-                }
+                navigateToScreenAfterLogin(MedicalHistoryActivity::class.java)
             }
             R.drawable.medical_profile -> {
-                if (UserUtils.isLogin()) {
-                    val `in` = Intent(this, AllUsersProfileActivity::class.java)
-                    startActivity(`in`)
-                } else {
-                    CustomToast().showToast(
-                        this,
-                        getString(R.string.txt_please_login_to_see_the_details)
-                    )
-                }
+                navigateToScreenAfterLogin(AllUsersProfileActivity::class.java)
             }
             R.drawable.appointment -> {
-                if (UserUtils.isLogin()) {
-                    val `in` = Intent(this, AppointmentActivity::class.java)
-                    startActivity(`in`)
-                } else {
-                    CustomToast().showToast(
-                        this,
-                        getString(R.string.txt_please_login_to_see_the_details)
-                    )
-                }
+                navigateToScreenAfterLogin(AppointmentActivity::class.java)
             }
             R.drawable.language -> {
                 val claIntent = Intent(this, ChangeLanguageActivity::class.java)
@@ -873,11 +842,22 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     override fun goToPropertyRentalFragment() {
-        startActivity(Intent(this, PropertyRentalListActivity::class.java))
+        navigateToScreenAfterLogin(PropertyRentalListActivity::class.java)
     }
 
     override fun navigateToHousingScreen() {
-        startActivity(Intent(this, HouseholdItemListActivity::class.java))
+        navigateToScreenAfterLogin(HouseholdItemListActivity::class.java)
+    }
+
+    private fun navigateToScreenAfterLogin(navigateToActivity: Class<*>? ) {
+        if (UserUtils.isLogin()) {
+            startActivity(Intent(this, navigateToActivity))
+        } else {
+            CustomToast().showToast(
+                this,
+                getString(R.string.txt_please_login_to_see_the_details)
+            )
+        }
     }
 
     private fun callReviewActivity(
