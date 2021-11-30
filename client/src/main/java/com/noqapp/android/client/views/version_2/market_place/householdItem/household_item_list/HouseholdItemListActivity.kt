@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.R
@@ -80,7 +81,7 @@ class HouseholdItemListActivity : BaseActivity() {
         householdItemListAdapter = HouseholdItemListAdapter(mutableListOf()) { marketPlace, view ->
             onMarketPlaceItemClicked(marketPlace, view)
         }
-        val layoutManager = LinearLayoutManager(this)
+        val layoutManager = GridLayoutManager(this, 2)
         activityHouseholdItemListBinding.rvMarketPlace.layoutManager = layoutManager
         activityHouseholdItemListBinding.rvMarketPlace.adapter = householdItemListAdapter
 
@@ -178,7 +179,7 @@ class HouseholdItemListActivity : BaseActivity() {
     private fun onMarketPlaceItemClicked(marketPlace: MarketplaceElastic?, view: View) {
         marketPlace?.let {
             when (view.id) {
-                R.id.btn_view_details -> {
+                R.id.cv_house_hold_item -> {
                     householdItemViewModel.viewDetails(it.id)
                     val propertyDetailsIntent =
                         Intent(this, ViewHouseHoldItemDetailsActivity::class.java).apply {

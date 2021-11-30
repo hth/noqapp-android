@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_house_hold_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="4dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_market_place"
+            android:layout_width="150dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/color_grey_bg"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_foreground"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+
+        <LinearLayout
+            android:id="@+id/ll_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/iv_market_place">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Rs. 44, 000/-"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#E75A30" />
+
+
+            <TextView
+                android:id="@+id/tv_property_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="14 Space Villa Apartments"
+                android:textColor="@color/color_black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/iv_market_place_rental"
+                app:layout_constraintTop_toTopOf="@+id/iv_market_place_rental" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/color_black"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_property_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_property_title"
+                tools:text="26, Spaze Street, Gurgaon, Sector 22" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -5,9 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.BuildConfig
-import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ItemLoadingBinding
-import com.noqapp.android.client.databinding.ListItemMarketPlaceBinding
+import com.noqapp.android.client.databinding.ListItemHouseHoldItemBinding
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.ImageUtils
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
@@ -26,44 +25,32 @@ class HouseholdItemListAdapter(
     private val VIEW_TYPE_NORMAL = 1
     private var isLoaderVisible = false
 
-    inner class MarketPlaceViewHolder(private val listItemMarketPlaceBinding: ListItemMarketPlaceBinding) :
+    inner class MarketPlaceViewHolder(private val listItemMarketPlaceBinding: ListItemHouseHoldItemBinding) :
         RecyclerView.ViewHolder(listItemMarketPlaceBinding.root) {
 
         private var marketPlaceElastic: MarketplaceElastic? = null
 
         init {
-            listItemMarketPlaceBinding.btnCallAgent.setOnClickListener {
-                onClickListener(marketplaceList[absoluteAdapterPosition], it)
-            }
 
-            listItemMarketPlaceBinding.btnViewDetails.setOnClickListener {
+            listItemMarketPlaceBinding.cvHouseHoldItem.setOnClickListener {
                 onClickListener(marketplaceList[absoluteAdapterPosition], it)
             }
         }
 
-        fun bind(marketplaceElastic: MarketplaceElastic) {
-            this.marketPlaceElastic = marketPlaceElastic
+        fun bind(mpElastic: MarketplaceElastic) {
+            this.marketPlaceElastic = mpElastic
             val nf: NumberFormat =
-                NumberFormat.getCurrencyInstance(Locale("en", marketplaceElastic.countryShortName))
-            listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
+                NumberFormat.getCurrencyInstance(Locale("en", mpElastic.countryShortName))
+            listItemMarketPlaceBinding.tvPropertyTitle.text = mpElastic.title
             listItemMarketPlaceBinding.tvPrice.text =
-                nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
-            listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.rating
-            listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.townCity()
-            listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
-                "%d %s",
-                marketplaceElastic.viewCount,
-                if (marketplaceElastic.viewCount > 1) {
-                    listItemMarketPlaceBinding.tvPropertyViews.context.getString(R.string.txt_views)
-                } else {
-                    listItemMarketPlaceBinding.tvPropertyViews.context.getString(R.string.txt_view)
-                }
-            )
+                nf.format(BigDecimal(mpElastic.productPrice)) + "/-"
+            listItemMarketPlaceBinding.tvLocation.text = mpElastic.townCity()
 
-            if (marketplaceElastic.postImages.size > 0) {
-                val displayImage = marketplaceElastic.postImages.iterator().next()
+
+            if (mpElastic.postImages.size > 0) {
+                val displayImage = mpElastic.postImages.iterator().next()
                 val url =
-                    marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
+                    mpElastic.businessType.name.lowercase() + "/" + mpElastic.id + "/" + displayImage
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
@@ -84,7 +71,7 @@ class HouseholdItemListAdapter(
                 )
             )
             VIEW_TYPE_NORMAL -> MarketPlaceViewHolder(
-                ListItemMarketPlaceBinding.inflate(
+                ListItemHouseHoldItemBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
