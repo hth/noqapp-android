@@ -596,23 +596,19 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 ShowAlertInformation.showNetworkDialog(this)
             }
             R.drawable.purchase_order -> {
-                val `in` = Intent(this, OrderQueueHistoryActivity::class.java)
-                startActivity(`in`)
+                startActivity(Intent(this, OrderQueueHistoryActivity::class.java))
             }
             R.drawable.ic_favorite -> {
-                val `in` = Intent(this, FavouriteListActivity::class.java)
-                startActivity(`in`)
+                startActivity(Intent(this, FavouriteListActivity::class.java))
             }
             R.id.nav_app_setting -> {
-                val `in` = Intent(this, SettingsActivity::class.java)
-                startActivity(`in`)
+                startActivity(Intent(this, SettingsActivity::class.java))
             }
             R.drawable.offers -> {
                 navigateToScreenAfterLogin(CouponsActivity::class.java)
             }
             R.drawable.settings -> {
-                val `in` = Intent(this, PreferenceSettings::class.java)
-                startActivity(`in`)
+                startActivity(Intent(this, PreferenceSettings::class.java))
             }
             R.drawable.ic_notification -> {
                 navController.navigate(R.id.notificationFragment)
@@ -644,16 +640,13 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 navigateToScreenAfterLogin(AppointmentActivity::class.java)
             }
             R.drawable.language -> {
-                val claIntent = Intent(this, ChangeLanguageActivity::class.java)
-                startActivity(claIntent)
+                startActivity(Intent(this, ChangeLanguageActivity::class.java))
             }
             R.drawable.contact_us -> {
-                val `in` = Intent(this, ContactUsActivity::class.java)
-                startActivity(`in`)
+                startActivity(Intent(this, ContactUsActivity::class.java))
             }
             R.drawable.apps -> {
-                val `in` = Intent(this, AppsLinksActivity::class.java)
-                startActivity(`in`)
+                startActivity(Intent(this, AppsLinksActivity::class.java))
             }
             R.drawable.ic_star -> AppUtils.openPlayStore(this)
             R.drawable.ic_menu_share ->                 // @TODO revert the permission changes when permission enabled in manifest
@@ -663,12 +656,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                     PermissionUtils.requestStoragePermission(this)
                 }
             R.drawable.legal -> {
-                val `in` = Intent(this, PrivacyActivity::class.java)
-                startActivity(`in`)
+                startActivity(Intent(this, PrivacyActivity::class.java))
             }
             R.drawable.invite -> {
-                val `in` = Intent(this, InviteActivity::class.java)
-                startActivity(`in`)
+                startActivity(Intent(this, InviteActivity::class.java))
             }
         }
     }
