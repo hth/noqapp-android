@@ -187,9 +187,6 @@ class HouseholdItemListActivity : BaseActivity() {
                         }
                     startActivity(propertyDetailsIntent)
                 }
-                R.id.btn_call_agent -> {
-                    householdItemViewModel.initiateContact(it.id)
-                }
             }
         }
     }

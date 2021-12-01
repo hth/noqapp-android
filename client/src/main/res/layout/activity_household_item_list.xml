@@ -151,7 +151,8 @@
             android:id="@+id/rlEmpty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/empty_screen_color"
+            android:background="@drawable/empty_bg_gradient"
+            android:padding="15dp"
             android:visibility="gone">
 
             <LinearLayout
@@ -172,13 +173,14 @@
                     android:layout_marginTop="10dp"
                     android:padding="10dp"
                     android:text="@string/empty_household_item_title"
-                    android:textSize="@dimen/empty_title_size"
+                    android:textColor="#E75A30"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_margin="10dp"
                     android:gravity="center"
                     android:text="@string/empty_household_item"
                     android:textSize="@dimen/empty_subtitle_size" />

@@ -32,17 +32,13 @@ class PropertyRentalListAdapter(
         private var marketPlaceElastic: MarketplaceElastic? = null
 
         init {
-            listItemMarketPlaceBinding.btnCallAgent.setOnClickListener {
-                onClickListener(marketplaceList[absoluteAdapterPosition], it)
-            }
-
-            listItemMarketPlaceBinding.btnViewDetails.setOnClickListener {
+            listItemMarketPlaceBinding.cvMarketPlace.setOnClickListener {
                 onClickListener(marketplaceList[absoluteAdapterPosition], it)
             }
         }
 
-        fun bind(marketplaceElastic: MarketplaceElastic) {
-            this.marketPlaceElastic = marketPlaceElastic
+        fun bind(mpElastic: MarketplaceElastic) {
+            this.marketPlaceElastic = mpElastic
 
             val radius = listItemMarketPlaceBinding.ivMarketPlace.resources.getDimension(R.dimen.corner_radius)
             val shapeAppearanceModel = listItemMarketPlaceBinding.ivMarketPlace.shapeAppearanceModel.toBuilder()
@@ -51,27 +47,17 @@ class PropertyRentalListAdapter(
             listItemMarketPlaceBinding.ivMarketPlace.shapeAppearanceModel = shapeAppearanceModel
 
             val nf: NumberFormat =
-                NumberFormat.getCurrencyInstance(Locale("en", marketplaceElastic.countryShortName))
-            listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
+                NumberFormat.getCurrencyInstance(Locale("en", mpElastic.countryShortName))
+            listItemMarketPlaceBinding.tvPropertyTitle.text = mpElastic.title
             listItemMarketPlaceBinding.tvPrice.text =
-                nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
-            listItemMarketPlaceBinding.tvRating.text = marketplaceElastic.rating
-            listItemMarketPlaceBinding.rbMarketPlaceRating.setStar(marketplaceElastic.rating.toFloat())
-            listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.townCity()
-            listItemMarketPlaceBinding.tvPropertyViews.text = String.format(
-                "%d %s",
-                marketplaceElastic.viewCount,
-                if (marketplaceElastic.viewCount > 1) {
-                    listItemMarketPlaceBinding.tvPropertyViews.context.getString(R.string.txt_views)
-                } else {
-                    listItemMarketPlaceBinding.tvPropertyViews.context.getString(R.string.txt_view)
-                }
-            )
+                nf.format(BigDecimal(mpElastic.productPrice)) + "/-"
+            listItemMarketPlaceBinding.tvLocation.text = mpElastic.townCity()
 
-            if (marketplaceElastic.postImages.size > 0) {
-                val displayImage = marketplaceElastic.postImages.iterator().next()
+
+            if (mpElastic.postImages.size > 0) {
+                val displayImage = mpElastic.postImages.iterator().next()
                 val url =
-                    marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
+                    mpElastic.businessType.name.lowercase() + "/" + mpElastic.id + "/" + displayImage
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
