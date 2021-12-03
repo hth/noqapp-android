@@ -626,7 +626,7 @@
     <string name="txt_views">Views</string>
     <string name="txt_view">View</string>
     <string name="txt_number_of_bedrooms_">Number of bedrooms:</string>
-    <string name="txt_owner_notified">\"Owner has been notified, you will get a callback shortly.\"</string>
+    <string name="txt_owner_notified">Owner has been notified, they will contact you.</string>
     <string name="google_maps_navigate_to" translatable="false">google.navigation:mode=%1$s&amp;q=%2$s</string>
     <string name="google_maps_package" translatable="false">com.google.android.apps.maps</string>
     <string name="google_maps_navigation_mode_driving" translatable="false">d</string>
