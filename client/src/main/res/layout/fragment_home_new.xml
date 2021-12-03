@@ -232,7 +232,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/tvHouseholdItem"
                                 app:layout_constraintStart_toStartOf="@id/tvHouseholdItem"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/household_item_main" />
+                                app:srcCompat="@drawable/couch_household_item" />
 
                             <TextView
                                 android:id="@+id/tvHouseholdItem"
