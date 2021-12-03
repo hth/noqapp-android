@@ -47,7 +47,7 @@ class DeviceClientImplITest extends ITest {
     void isSupportedAppVersion() {
         this.deviceClientImpl.isSupportedAppVersion();
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
-        assertEquals("1.3.150", deviceClientImpl.getJsonLatestAppVersion().getLatestAppVersion());
+        assertEquals("1.3.200", deviceClientImpl.getJsonLatestAppVersion().getLatestAppVersion());
     }
 
     private Callable<Boolean> awaitUntilResponseFromServer() {
