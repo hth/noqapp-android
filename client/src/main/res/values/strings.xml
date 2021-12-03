@@ -511,8 +511,8 @@
     <string name="txt_post">Post</string>
     <string name="txt_time_slot">Time slot: %1$s - %2$s</string>
     <string name="txt_services">Services</string>
-    <string name="txt_housing">Housing</string>
-    <string name="txt_market_place">Marketplace</string>
+    <string name="txt_rental">Rental</string>
+    <string name="txt_household">Household</string>
     <string name="txt_jobs">Jobs</string>
     <string name="txt_businesses">Businesses</string>
     <string name="txt_usr_csd">URC/CSD</string>

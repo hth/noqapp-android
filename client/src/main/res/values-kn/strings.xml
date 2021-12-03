@@ -507,8 +507,8 @@
     <string name="txt_post">ಪೋಸ್ಟ್ ಮಾಡಿ</string>
     <string name="txt_time_slot">ಕೊಟ್ಟ ಸಮಯ: %1$s - %2$s</string>
     <string name="txt_services">ಸೇವೆಗಳು</string>
-    <string name="txt_housing">ವಸತಿ</string>
-    <string name="txt_market_place">ಮಾರುಕಟ್ಟೆ</string>
+    <string name="txt_rental">ಬಾಡಿಗೆ</string>
+    <string name="txt_household">ಮನೆಯ ವಸ್ತು</string>
     <string name="txt_jobs">ಉದ್ಯೋಗಗಳು</string>
     <string name="txt_businesses">ವ್ಯವಹಾರಗಳು</string>
     <string name="txt_usr_csd">ಯುಆರ್‌ಸಿ / ಸಿಎಸ್‌ಡಿ</string>

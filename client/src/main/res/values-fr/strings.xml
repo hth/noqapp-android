@@ -507,8 +507,8 @@
     <string name="txt_post">Publier en ligne</string>
     <string name="txt_time_slot">Créneau horaire: %1$s - %2$s</string>
     <string name="txt_services">Prestations de service</string>
-    <string name="txt_housing">Logement</string>
-    <string name="txt_market_place">Marché</string>
+    <string name="txt_rental">De location</string>
+    <string name="txt_household">Appareil ménager</string>
     <string name="txt_jobs">Emplois</string>
     <string name="txt_businesses">Entreprises</string>
     <string name="txt_usr_csd">URC/CSD</string>

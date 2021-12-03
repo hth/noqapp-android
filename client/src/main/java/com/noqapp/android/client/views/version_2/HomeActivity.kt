@@ -831,11 +831,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         }
     }
 
-    override fun goToPropertyRentalFragment() {
+    override fun navigateToPropertyRentalScreen() {
         navigateToScreenAfterLogin(PropertyRentalListActivity::class.java)
     }
 
-    override fun navigateToHousingScreen() {
+    override fun navigateToHouseholdItemScreen() {
         navigateToScreenAfterLogin(HouseholdItemListActivity::class.java)
     }
 

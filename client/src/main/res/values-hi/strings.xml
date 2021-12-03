@@ -507,8 +507,8 @@
     <string name="txt_post">ऑनलाइन पोस्ट</string>
     <string name="txt_time_slot">टाइम स्लॉट: %1$s - %2$s</string>
     <string name="txt_services">सेवाएं</string>
-    <string name="txt_housing">आवास</string>
-    <string name="txt_market_place">बाजार</string>
+    <string name="txt_rental">किराये पर लेना</string>
+    <string name="txt_household">घर की वस्तुएँ</string>
     <string name="txt_jobs">नौकरियां</string>
     <string name="txt_businesses">व्यवसायों</string>
     <string name="txt_usr_csd">यूआरसी/सीएसडी</string>
