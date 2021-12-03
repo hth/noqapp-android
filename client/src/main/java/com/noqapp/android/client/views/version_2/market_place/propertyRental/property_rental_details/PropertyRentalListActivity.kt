@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.R
@@ -84,7 +83,7 @@ class PropertyRentalListActivity : BaseActivity() {
             onMarketPlaceItemClicked(marketPlace, view)
         }
 
-        val layoutManager = GridLayoutManager(this, 2)
+        val layoutManager = LinearLayoutManager(this)
         activityPropertyRentalListBinding.rvMarketPlace.layoutManager = layoutManager
         activityPropertyRentalListBinding.rvMarketPlace.adapter = propertyRentalListAdapter
 
@@ -182,13 +181,16 @@ class PropertyRentalListActivity : BaseActivity() {
     private fun onMarketPlaceItemClicked(marketPlace: MarketplaceElastic?, view: View) {
         marketPlace?.let {
             when (view.id) {
-                R.id.cv_market_place -> {
+                R.id.btn_view_details -> {
                     propertyRentalViewModel.viewDetails(it.id)
                     val propertyDetailsIntent =
                         Intent(this, ViewPropertyRentalDetailsActivity::class.java).apply {
                             putExtra(Constants.POST_PROPERTY_RENTAL, marketPlace)
                         }
                     startActivity(propertyDetailsIntent)
+                }
+                R.id.btn_call_agent -> {
+                    propertyRentalViewModel.initiateContact(it.id)
                 }
             }
         }
