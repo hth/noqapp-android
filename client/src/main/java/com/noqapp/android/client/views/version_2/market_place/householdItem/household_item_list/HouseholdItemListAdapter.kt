@@ -39,18 +39,15 @@ class HouseholdItemListAdapter(
 
         fun bind(marketplaceElastic: MarketplaceElastic) {
             this.marketPlaceElastic = marketplaceElastic
-            val nf: NumberFormat =
-                NumberFormat.getCurrencyInstance(Locale("en", marketplaceElastic.countryShortName))
+            val nf: NumberFormat = NumberFormat.getCurrencyInstance(Locale("en", marketplaceElastic.countryShortName))
             listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
-            listItemMarketPlaceBinding.tvPrice.text =
-                nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
+            listItemMarketPlaceBinding.tvPrice.text = nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
             listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.townCity()
 
 
             if (marketplaceElastic.postImages.size > 0) {
                 val displayImage = marketplaceElastic.postImages.iterator().next()
-                val url =
-                    marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
+                val url = marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
