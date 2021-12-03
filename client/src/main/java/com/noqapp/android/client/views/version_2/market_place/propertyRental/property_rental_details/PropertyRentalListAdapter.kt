@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ItemLoadingBinding
-import com.noqapp.android.client.databinding.ListItemMarketPlaceBinding
+import com.noqapp.android.client.databinding.ListItemPropertyRentalBinding
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.ImageUtils
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
@@ -26,42 +26,53 @@ class PropertyRentalListAdapter(
     private val VIEW_TYPE_NORMAL = 1
     private var isLoaderVisible = false
 
-    inner class MarketPlaceViewHolder(private val listItemMarketPlaceBinding: ListItemMarketPlaceBinding) :
-        RecyclerView.ViewHolder(listItemMarketPlaceBinding.root) {
+    inner class MarketPlaceViewHolder(private val listItemPropertyRentalBinding: ListItemPropertyRentalBinding) :
+        RecyclerView.ViewHolder(listItemPropertyRentalBinding.root) {
 
         private var marketPlaceElastic: MarketplaceElastic? = null
 
         init {
-            listItemMarketPlaceBinding.cvMarketPlace.setOnClickListener {
+            listItemPropertyRentalBinding.btnCallAgent.setOnClickListener {
+                onClickListener(marketplaceList[absoluteAdapterPosition], it)
+            }
+
+            listItemPropertyRentalBinding.btnViewDetails.setOnClickListener {
                 onClickListener(marketplaceList[absoluteAdapterPosition], it)
             }
         }
 
-        fun bind(mpElastic: MarketplaceElastic) {
-            this.marketPlaceElastic = mpElastic
+        fun bind(marketplaceElastic: MarketplaceElastic) {
+            this.marketPlaceElastic = marketPlaceElastic
 
-            val radius = listItemMarketPlaceBinding.ivMarketPlace.resources.getDimension(R.dimen.corner_radius)
-            val shapeAppearanceModel = listItemMarketPlaceBinding.ivMarketPlace.shapeAppearanceModel.toBuilder()
+            val radius = listItemPropertyRentalBinding.ivMarketPlace.resources.getDimension(R.dimen.corner_radius)
+            val shapeAppearanceModel = listItemPropertyRentalBinding.ivMarketPlace.shapeAppearanceModel.toBuilder()
                 .setAllCornerSizes(radius)
                 .build()
-            listItemMarketPlaceBinding.ivMarketPlace.shapeAppearanceModel = shapeAppearanceModel
+            listItemPropertyRentalBinding.ivMarketPlace.shapeAppearanceModel = shapeAppearanceModel
 
-            val nf: NumberFormat =
-                NumberFormat.getCurrencyInstance(Locale("en", mpElastic.countryShortName))
-            listItemMarketPlaceBinding.tvPropertyTitle.text = mpElastic.title
-            listItemMarketPlaceBinding.tvPrice.text =
-                nf.format(BigDecimal(mpElastic.productPrice)) + "/-"
-            listItemMarketPlaceBinding.tvLocation.text = mpElastic.townCity()
+            val nf: NumberFormat = NumberFormat.getCurrencyInstance(Locale("en", marketplaceElastic.countryShortName))
+            listItemPropertyRentalBinding.tvPropertyTitle.text = marketplaceElastic.title
+            listItemPropertyRentalBinding.tvPrice.text = nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
+            listItemPropertyRentalBinding.tvRating.text = marketplaceElastic.rating
+            listItemPropertyRentalBinding.rbMarketPlaceRating.setStar(marketplaceElastic.rating.toFloat())
+            listItemPropertyRentalBinding.tvLocation.text = marketplaceElastic.townCity()
+            listItemPropertyRentalBinding.tvPropertyViews.text = String.format(
+                "%d %s",
+                marketplaceElastic.viewCount,
+                if (marketplaceElastic.viewCount > 1) {
+                    listItemPropertyRentalBinding.tvPropertyViews.context.getString(R.string.txt_views)
+                } else {
+                    listItemPropertyRentalBinding.tvPropertyViews.context.getString(R.string.txt_view)
+                }
+            )
 
-
-            if (mpElastic.postImages.size > 0) {
-                val displayImage = mpElastic.postImages.iterator().next()
-                val url =
-                    mpElastic.businessType.name.lowercase() + "/" + mpElastic.id + "/" + displayImage
+            if (marketplaceElastic.postImages.size > 0) {
+                val displayImage = marketplaceElastic.postImages.iterator().next()
+                val url = marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
-                    .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
-                    .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
-                    .into(listItemMarketPlaceBinding.ivMarketPlace)
+                    .placeholder(ImageUtils.getThumbPlaceholder(listItemPropertyRentalBinding.ivMarketPlace.context))
+                    .error(ImageUtils.getThumbErrorPlaceholder(listItemPropertyRentalBinding.ivMarketPlace.context))
+                    .into(listItemPropertyRentalBinding.ivMarketPlace)
             }
         }
     }
@@ -78,7 +89,7 @@ class PropertyRentalListAdapter(
                 )
             )
             VIEW_TYPE_NORMAL -> MarketPlaceViewHolder(
-                ListItemMarketPlaceBinding.inflate(
+                ListItemPropertyRentalBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false

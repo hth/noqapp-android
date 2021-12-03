@@ -37,20 +37,17 @@ class HouseholdItemListAdapter(
             }
         }
 
-        fun bind(mpElastic: MarketplaceElastic) {
-            this.marketPlaceElastic = mpElastic
-            val nf: NumberFormat =
-                NumberFormat.getCurrencyInstance(Locale("en", mpElastic.countryShortName))
-            listItemMarketPlaceBinding.tvPropertyTitle.text = mpElastic.title
-            listItemMarketPlaceBinding.tvPrice.text =
-                nf.format(BigDecimal(mpElastic.productPrice)) + "/-"
-            listItemMarketPlaceBinding.tvLocation.text = mpElastic.townCity()
+        fun bind(marketplaceElastic: MarketplaceElastic) {
+            this.marketPlaceElastic = marketplaceElastic
+            val nf: NumberFormat = NumberFormat.getCurrencyInstance(Locale("en", marketplaceElastic.countryShortName))
+            listItemMarketPlaceBinding.tvPropertyTitle.text = marketplaceElastic.title
+            listItemMarketPlaceBinding.tvPrice.text = nf.format(BigDecimal(marketplaceElastic.productPrice)) + "/-"
+            listItemMarketPlaceBinding.tvLocation.text = marketplaceElastic.townCity()
 
 
-            if (mpElastic.postImages.size > 0) {
-                val displayImage = mpElastic.postImages.iterator().next()
-                val url =
-                    mpElastic.businessType.name.lowercase() + "/" + mpElastic.id + "/" + displayImage
+            if (marketplaceElastic.postImages.size > 0) {
+                val displayImage = marketplaceElastic.postImages.iterator().next()
+                val url = marketplaceElastic.businessType.name.lowercase() + "/" + marketplaceElastic.id + "/" + displayImage
                 Picasso.get().load(AppUtils.getImageUrls(BuildConfig.MARKETPLACE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
                     .error(ImageUtils.getThumbErrorPlaceholder(listItemMarketPlaceBinding.ivMarketPlace.context))
