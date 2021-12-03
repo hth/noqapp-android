@@ -17,7 +17,6 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.noqapp.android.client.BuildConfig
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentHomeNewBinding
 import com.noqapp.android.client.databinding.ViewIndicatorBinding
@@ -46,7 +45,6 @@ import java.util.*
 import kotlin.math.abs
 
 class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
-
     private lateinit var fragmentHomeNewBinding: FragmentHomeNewBinding
     private lateinit var tokenAndQueueAndQueueAdapter: TokenAndQueueAdapter
     private lateinit var scheduledAppointmentAdapter: ScheduledAppointmentAdapter
@@ -124,14 +122,12 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         })
 
         fragmentHomeNewBinding.clRestaurant.setOnClickListener {
-            val navigationDirections =
-                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
             findNavController().navigate(navigationDirections)
         }
 
         fragmentHomeNewBinding.clHospital.setOnClickListener {
-            val navigationDirections =
-                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
             findNavController().navigate(navigationDirections)
         }
 
@@ -149,17 +145,16 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.clGenericStore.setOnClickListener {
-            val navigationDirections =
-                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.ST)
+            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.ST)
             findNavController().navigate(navigationDirections)
         }
 
-        fragmentHomeNewBinding.clMarketplace.setOnClickListener {
-            homeFragmentInteractionListener.goToPropertyRentalFragment()
+        fragmentHomeNewBinding.clPropertyRental.setOnClickListener {
+            homeFragmentInteractionListener.navigateToPropertyRentalScreen()
         }
 
-        fragmentHomeNewBinding.clHousing.setOnClickListener {
-            homeFragmentInteractionListener.navigateToHousingScreen()
+        fragmentHomeNewBinding.clHouseholdItem.setOnClickListener {
+            homeFragmentInteractionListener.navigateToHouseholdItemScreen()
         }
     }
 
@@ -450,6 +445,6 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
 interface HomeFragmentInteractionListener {
     fun makeAnnouncement(jsonTextToSpeeches: List<JsonTextToSpeech?>, msgId: String)
     fun callReviewActivity(codeQr: String, token: String)
-    fun goToPropertyRentalFragment()
-    fun navigateToHousingScreen()
+    fun navigateToPropertyRentalScreen()
+    fun navigateToHouseholdItemScreen()
 }

@@ -191,62 +191,62 @@
                         android:orientation="horizontal">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/cl_housing"
+                            android:id="@+id/cl_propertyRental"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:visibility="visible">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/ivHousing"
+                                android:id="@+id/ivPropertyRental"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                app:layout_constraintEnd_toEndOf="@id/tvHousing"
-                                app:layout_constraintStart_toStartOf="@id/tvHousing"
+                                app:layout_constraintEnd_toEndOf="@id/tvPropertyRental"
+                                app:layout_constraintStart_toStartOf="@id/tvPropertyRental"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/metro_home" />
+                                app:srcCompat="@drawable/property_rental_main" />
 
                             <TextView
-                                android:id="@+id/tvHousing"
+                                android:id="@+id/tvPropertyRental"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="@string/txt_housing"
+                                android:text="@string/txt_rental"
                                 android:textColor="@color/text_header_color"
                                 android:textSize="@dimen/text_size_fourteen"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/ivHousing" />
+                                app:layout_constraintTop_toBottomOf="@id/ivPropertyRental" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/cl_marketplace"
+                            android:id="@+id/cl_householdItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/ivMarketPlace"
+                                android:id="@+id/ivHouseholdItem"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                app:layout_constraintEnd_toEndOf="@id/tvMarketPlace"
-                                app:layout_constraintStart_toStartOf="@id/tvMarketPlace"
+                                app:layout_constraintEnd_toEndOf="@id/tvHouseholdItem"
+                                app:layout_constraintStart_toStartOf="@id/tvHouseholdItem"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/metro_shop" />
+                                app:srcCompat="@drawable/household_item_main" />
 
                             <TextView
-                                android:id="@+id/tvMarketPlace"
+                                android:id="@+id/tvHouseholdItem"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="24dp"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="@string/txt_market_place"
+                                android:text="@string/txt_household"
                                 android:textColor="@color/text_header_color"
                                 android:textSize="@dimen/text_size_fourteen"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/ivMarketPlace" />
+                                app:layout_constraintTop_toBottomOf="@id/ivHouseholdItem" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
