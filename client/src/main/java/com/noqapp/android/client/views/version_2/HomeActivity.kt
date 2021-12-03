@@ -381,7 +381,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     }
 
     private fun updateNotificationBadgeCount() {
-
         homeViewModel.notificationCountLiveData.observe(this, { nc ->
             nc?.let { notificationCount ->
                 if (notificationCount > 0) {

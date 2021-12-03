@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
+    buildToolsVersion = '30.0.3'
 
     buildFeatures {
         viewBinding true
@@ -28,7 +29,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion = '30.0.3'
+
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
 }
 
 dependencies {
