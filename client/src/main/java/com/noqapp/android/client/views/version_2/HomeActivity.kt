@@ -470,14 +470,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
             )
         }
         menuDrawerItems.add(MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers))
-        menuDrawerItems.add(
-            MenuDrawer(
-                getString(R.string.notification_setting),
-                true,
-                false,
-                R.drawable.ic_notification
-            )
-        )
         val settingList: MutableList<MenuDrawer> = ArrayList()
         settingList.add(
             MenuDrawer(
