@@ -128,10 +128,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-//    kotlinOptions {
-//        jvmTarget = '1.8'
-//    }
-
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -474,22 +470,22 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.4.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'org.mockito:mockito-android:4.0.0'
+    androidTestImplementation 'org.mockito:mockito-android:4.1.0'
 
-    testImplementation 'org.mockito:mockito-core:4.0.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'org.mockito:mockito-core:4.1.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
 
     // (Required) Writing and executing Unit Tests on the JUnit Platform
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
     // (Optional) If you need "Parameterized Tests"
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
 
     // (Optional) If you also have JUnit 4-based tests
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.vintage:junit-vintage-engine:5.8.1'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.8.2'
     testImplementation 'org.awaitility:awaitility:4.1.1'
 }
 
