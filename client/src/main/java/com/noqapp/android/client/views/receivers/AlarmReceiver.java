@@ -24,33 +24,30 @@ public class AlarmReceiver extends BroadcastReceiver {
         String title = intent.getStringExtra("title");
         String body = intent.getStringExtra("body");
         long when = System.currentTimeMillis();
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String channelId = "channel-02";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelName = "Channel Name";
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(
-                    channelId, channelName, importance);
+            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
             notificationManager.createNotificationChannel(mChannel);
         }
         Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.mipmap.notification_icon);
         Intent notificationIntent = new Intent(context, HomeActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(
-                context, channelId)
-                .setColor(ContextCompat.getColor(context, R.color.colorMobile))
-                .setSmallIcon(getNotificationIcon())
-                .setLargeIcon(bm)
-                .setContentTitle(title)
-                .setContentText(body).setSound(alarmSound)
-                .setAutoCancel(true).setWhen(when)
-                .setContentIntent(pendingIntent)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
-                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+            context, channelId)
+            .setColor(ContextCompat.getColor(context, R.color.colorMobile))
+            .setSmallIcon(getNotificationIcon())
+            .setLargeIcon(bm)
+            .setContentTitle(title)
+            .setContentText(body).setSound(alarmSound)
+            .setAutoCancel(true).setWhen(when)
+            .setContentIntent(pendingIntent)
+            .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+            .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
         notificationManager.notify(55, mNotifyBuilder.build());
     }
 
